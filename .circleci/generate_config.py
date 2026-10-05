@@ -433,7 +433,7 @@ NIGHTLY_IMAGE = {
     "3.10": "arangodb/enterprise-preview:3.10-nightly",
     "3.11": "arangodb/enterprise-preview:3.11-nightly",
     "3.12": "arangodb/enterprise-preview:devel-nightly",
-    "4.x": "arangodb/enterprise-preview:4.0-nightly",
+    "4.x": "arangodb/core-preview:4.0-nightly",
 }
 
 
@@ -469,9 +469,21 @@ def needs_source():
 def needs_compile_job(branch):
     return not is_image_ref(branch) or needs_source()
 
+# Split images: the server-only image (repository "core", "core-preview",
+# "core-<suffix>") comes with a separate client tools image ("client-tools...") in
+# the same registry and with the same tag.
+# Keep in sync with client_image_for() in toolchain/scripts/toolchain.sh
+def client_image_for(image):
+    m = re.match(r"^(.*/)?core((?:-[^/:@]*)?)(:.*)$", image)
+    if m:
+        return f"{m.group(1) or ''}client-tools{m.group(2)}{m.group(3)}"
+    return ""
 def pullImageCmd(branch, version):
     image = imageRef(branch, version)
     pullImage = f"docker pull {image}"
+    clientImage = client_image_for(branch)
+    if clientImage:
+        pullImage += f"\ndocker pull {clientImage}"
     return pullImage
 
 

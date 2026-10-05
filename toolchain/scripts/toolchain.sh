@@ -226,9 +226,6 @@ function clean_docker_environment() {
   log "[clean_docker_environment] setup docs_net docker network"
   docker network inspect docs_net >/dev/null 2>&1 || docker network create --driver=bridge --subnet=192.168.129.0/24 docs_net
 
-  log "[clean_docker_environment] setup arangosh docker volume"
-  docker volume create arangosh
-
   ## Stop and remove old containers of this ArangoDB docker image
   log "[clean_docker_environment] Cleanup orphan containers"
   docker ps -a --filter name=docs_* -q | xargs docker stop | xargs docker rm
@@ -274,12 +271,15 @@ function run_arangoproxy_and_site() {
       --log-opt tag="{{.Name}}" \
       arangodb/docs-hugo:site-"$arch"
 
+    # arangoproxy uses the Docker socket (from --volumes-from toolchain) to run
+    # arangosh via "docker exec", so it needs the same super-privileged SELinux
+    # domain as the toolchain container (no effect without SELinux)
     docker run -d --name docs_arangoproxy --network=docs_net --ip=192.168.129.129 \
+      --security-opt label=type:spc_t \
       -e ENV="$ENV" \
       -e HUGO_URL="$HUGO_URL" \
       -e HUGO_ENV="$HUGO_ENV" \
       -e OVERRIDE="$OVERRIDE" \
-      -v arangosh:/arangosh \
       -e ARANGOPROXY_CONFIG=/home/toolchain/arangoproxy/cmd/configs/generated.yaml \
       --volumes-from toolchain \
       --log-opt tag="{{.Name}}" \
@@ -288,57 +288,49 @@ function run_arangoproxy_and_site() {
 }
 
 function setup_arangoproxy() {
-  image=$1
-  version=$2
+  version=$1
 
   container_name=docs_server_"$version"
-
-  setup_arangoproxy_arangosh "$image" "$version"
 
   setup_arangoproxy_repositories "$version" "$container_name"
 
   log "[setup_arangoproxy] Done"
 }
 
-function setup_arangoproxy_arangosh() {
-  image=$1
-  version=$2
-  container_name=docs_server_"$version"
-  log "[setup_arangoproxy_arangosh] Setup dedicated arangosh in arangoproxy"
-  ## Create directory where arangosh executable will be stored
-  docker exec  $container_name sh -c "mkdir -p /tmp/arangosh/$version/usr /tmp/arangosh/$version/usr/bin /tmp/arangosh/$version/usr/bin/etc/relative"
-  ## Copy arangosh executables from ArangoDB docker container to arangoproxy container
-  docker exec  $container_name sh -c "cp -r /usr/bin/arangosh /tmp/arangosh/$version/usr/bin/arangosh"
-
-  #docker cp "$container_name":/usr/bin/icudtl.dat ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/icudtl.dat
-  docker exec  $container_name sh -c "cp -r /usr/share/ /tmp/arangosh/$version/usr/"
-  docker exec  $container_name sh -c "cp -r /usr/bin/icudtl*.dat /tmp/arangosh/$version/usr/share/arangodb3/"
-
-  docker exec  $container_name sh -c "sed 's~startup-directory.*$~startup-directory = /arangosh/arangosh/$version/usr/share/arangodb3/js~' /etc/arangodb3/arangosh.conf > /tmp/arangosh/$version/usr/bin/etc/relative/arangosh.conf"
-  echo ""
+function container_ip() {
+  docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$1"
 }
 
 function setup_arangoproxy_repositories() {
   version="$1"
   container_name="$2"
 
+  ## arangoproxy runs arangosh via "docker exec" in the client container
+  ## (container name + extra arangosh args, as a YAML/JSON flow sequence)
+  client_args_yaml="["
+  for arg in "${client_args[@]}"; do
+    [ "$client_args_yaml" != "[" ] && client_args_yaml+=", "
+    client_args_yaml+="\"$arg\""
+  done
+  client_args_yaml+="]"
+
   log "[setup_arangoproxy_repositories] Retrieve single server ip"
-  single_server_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container_name")
+  single_server_ip=$(container_ip "$container_name")
   log "IP: "$single_server_ip""
 
   printf -v url "http://%s:8529" $single_server_ip
 
   log "[setup_arangoproxy_repositories] Copy single server configuration in arangoproxy repositories"
-  yq e '.repositories += [{"type": "single", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
+  yq e '.repositories += [{"type": "single", "version": "'"$version"'", "url": "'"$url"'", "container": "'"$client_container"'", "arangoshArgs": '"$client_args_yaml"'}]' -i "$ARANGOPROXY_CONFIG"
 
   log "[setup_arangoproxy_repositories] Retrieve cluster server ip"
-  cluster_server_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container_name"_cluster)
+  cluster_server_ip=$(container_ip "$container_name"_cluster)
   log "IP: "$cluster_server_ip""
 
   printf -v url "http://%s:8529" $cluster_server_ip
 
   log "[setup_arangoproxy_repositories] Copy cluster server configuration in arangoproxy repositories"
-  yq e '.repositories += [{"type": "cluster", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
+  yq e '.repositories += [{"type": "cluster", "version": "'"$version"'", "url": "'"$url"'", "container": "'"$client_container"'", "arangoshArgs": '"$client_args_yaml"'}]' -i "$ARANGOPROXY_CONFIG"
 }
 
 
@@ -346,10 +338,21 @@ function setup_arangoproxy_repositories() {
 
 function process_server() {
   server="$1"
+## Hot backup examples create the local backup repository (/tmp/backups) with
+## arangosh, but the server uploads to it. Share the directory between the servers
+## and the client container (only the same container for images that bundle the
+## client tools). A fresh volume per run, created by start_server.
+function set_backups_mount() {
+  backups_volume=docs_backups_$(version_var_suffix "$1" | tr '[:upper:]' '[:lower:]')
+  backups_mount=(-v "$backups_volume":/tmp/backups)
+}
 
   image=$(echo "$server" | yq e '.image' -)
   version=$(echo "$server" | yq e '.version' -)
 
+  set_backups_mount "$version"
+  docker volume rm -f "$backups_volume" > /dev/null 2>&1
+  docker volume create "$backups_volume" > /dev/null
   report_detail ""
   report_detail "## $version"
   report_detail ""
@@ -364,7 +367,7 @@ function process_server() {
   ## Generators stat do need arangodb instances running
   if [[ $GENERATORS == *"optimizer"* ]] || [[ $GENERATORS == *"options"* ]] || [[ $GENERATORS == *"examples"* ]]; then
     container_name=docs_server_"$version"
-    image_name=$(echo ${image##*/})
+    set_backups_mount "$version"
 
     image_id=$(get_docker_imageid $image $image_name $version)
     if [ "$image_id" == "" ]; then
@@ -381,6 +384,7 @@ function process_server() {
 
   
     run_arangodb_container "$container_name" "$image_id"
+      setup_client_container "$image" "$version" "$container_name"
 
     if [[ $GENERATORS == *"options"* ]] ; then
       generate_startup_options "$container_name" "$version"
@@ -391,9 +395,60 @@ function process_server() {
     fi
 
     if [[ $GENERATORS == *"examples"* ]] ; then
-      setup_arangoproxy "$image_name" "$version"
+      setup_arangoproxy "$version"
     fi
   fi
+}
+
+### Split images: the server image (repository "core", "core-preview", or
+### "core-<suffix>", e.g. arangodb/core-preview:TAG) has no client tools, which are
+### in a separate image of the same registry ("client-tools...", same tag).
+### Prints the client tools image for a split server image, nothing otherwise (also
+### for digests, which differ per image).
+### Keep in sync with client_image_for() in .circleci/generate_config.py
+function client_image_for() {
+  if [[ "$1" =~ ^(.*/)?core((-[^/:@]*)?)(:.*)$ ]]; then
+    echo "${BASH_REMATCH[1]}client-tools${BASH_REMATCH[2]}${BASH_REMATCH[4]}"
+  fi
+}
+### Set client_container (where arangosh & co. run) and client_args (extra arangosh args)
+function setup_client_container() {
+  image="$1"
+  version="$2"
+  server_container="$3"
+
+  client_container="$server_container"
+  client_image=$(client_image_for "$image")
+
+  if [ -n "$client_image" ]; then
+    client_container=docs_client_"$version"
+    log "[setup_client_container] Split image, using client tools image $client_image"
+    if ! docker image inspect "$client_image" > /dev/null 2>&1; then
+      docker pull "$client_image"
+    fi
+    if [ $TRAP == 0 ]; then
+      docker run -d --net docs_net --name "$client_container" "${backups_mount[@]}" --entrypoint sh "$client_image" -c 'tail -f /dev/null'
+      follow_container_logs "$client_container"
+    fi
+  fi
+
+  ## Pass the config file and JS directory explicitly in case the compiled-in
+  ## defaults of arangosh don't match the image layout (e.g. compiled images).
+  ## The directory name follows the major version (arangodb3, arangodb4, ...).
+  ## (exactly one line per path, empty if not found)
+  mapfile -t client_paths < <(docker exec "$client_container" sh -c '
+    echo "$(ls -d /etc/arangodb*/arangosh.conf 2>/dev/null | sort -V | tail -n 1)"
+    echo "$(ls -d /usr/share/arangodb*/js 2>/dev/null | sort -V | tail -n 1)"' 2>/dev/null | tr -d '\r')
+  client_args=()
+  if [ -n "${client_paths[0]}" ]; then
+    client_args+=(--config "${client_paths[0]}")
+  fi
+  if [ -n "${client_paths[1]}" ]; then
+    client_args+=(--javascript.startup-directory "${client_paths[1]}")
+  fi
+  printf -v shown_args '%s ' "${client_args[@]}"
+  log "[setup_client_container] Client container: $client_container, arangosh args: $shown_args"
+
 }
 
 ### Check status of ArangoDB instance until it is up and running
@@ -425,7 +480,7 @@ function run_arangodb_container() {
 
   if [ $TRAP == 0 ]; then
     log "[run_arangodb_container] Run cluster server"
-    docker run -d --net=docs_net -e ARANGO_NO_AUTH=1 --name="$container_name"_cluster \
+    docker run -d --net=docs_net -e ARANGO_NO_AUTH=1 --name="$container_name"_cluster "${backups_mount[@]}" \
       "$image_id" \
       arangodb --starter.local --starter.data-dir=./localdata
 
@@ -440,22 +495,34 @@ function run_arangodb_container() {
     # explicitly instead of relying on the config file.
     #
     # --database.directory applies to all versions and must match where the
-    # restore places data (the image's LOCALSTATEDIR, /var/lib/arangodb3).
+    # restore places data (the image's LOCALSTATEDIR, /var/lib/arangodbN).
     # The V8/JS paths (startup-directory + Foxx app-path) apply only when the
     # server has server-side V8: we detect the js dir from the image itself (not
     # hardcoded) so it is correct for any layout and local/CI alike, and use its
     # presence as the V8 test. 4.0+ has no server-side V8/Foxx, so the probe
-    # finds nothing and those flags are omitted.
+    # finds nothing and those flags are omitted (except in compiled images, which
+    # ship the JS files for arangosh; 4.0+ arangod ignores the obsolete flags).
+    # The directory name follows the major version (arangodb3, arangodb4, ...),
+    # detected from the config file (or data directory) in the image.
     # Use an array expanded as "${single_args[@]}": this script sets IFS=""
     # elsewhere, so relying on unquoted word-splitting would pass all flags as a
     # single argument. An array keeps each flag a separate word regardless.
-    single_args=(--server.endpoint http+tcp://0.0.0.0:8529 --database.directory=/var/lib/arangodb3)
-    js_dir=$(docker run --rm --entrypoint sh "$image_id" -c 'for d in /usr/share/arangodb3/js /usr/share/arangodb/js; do [ -d "$d" ] && printf "%s" "$d" && break; done' 2>/dev/null)
+    mapfile -t layout < <(docker run --rm --entrypoint sh "$image_id" -c '
+      d=$(ls -d /etc/arangodb*/arangod.conf 2>/dev/null | sort -V | tail -n 1)
+      if [ -n "$d" ]; then d=$(dirname "$d"); else d=$(ls -d /var/lib/arangodb[0-9]* 2>/dev/null | grep -v -- -apps | sort -V | tail -n 1); fi
+      name=$(basename "${d:-arangodb3}")
+      echo "$name"
+      for j in /usr/share/$name/js /usr/share/arangodb/js; do [ -d "$j" ] && echo "$j" && break; done
+      echo' 2>/dev/null | tr -d '\r')
+    arango_name="${layout[0]:-arangodb3}"
+    js_dir="${layout[1]}"
+    log "[run_arangodb_container] Detected directory name: $arango_name"
+    single_args=(--server.endpoint http+tcp://0.0.0.0:8529 --database.directory=/var/lib/$arango_name)
     if [ -n "$js_dir" ]; then
-      single_args+=("--javascript.startup-directory=$js_dir" --javascript.app-path=/var/lib/arangodb3-apps)
-      log "[run_arangodb_container] Single server V8 paths: startup-directory=$js_dir app-path=/var/lib/arangodb3-apps"
+      single_args+=("--javascript.startup-directory=$js_dir" --javascript.app-path=/var/lib/$arango_name-apps)
+      log "[run_arangodb_container] Single server V8 paths: startup-directory=$js_dir app-path=/var/lib/$arango_name-apps"
     fi
-    docker run -d --net docs_net -e ARANGO_NO_AUTH=1 --name "$container_name" -v arangosh:/tmp \
+    docker run -d --net docs_net -e ARANGO_NO_AUTH=1 --name "$container_name" "${backups_mount[@]}" \
       "$image_id" \
       "${single_args[@]}"
 
@@ -506,9 +573,14 @@ function generate_startup_options() {
 
   for HELPPROGRAM in ${ALLPROGRAMS[@]}; do
       log "[generate_startup_options] Dumping program options of ${HELPPROGRAM}"
-      log "docker exec -it $container_name ${HELPPROGRAM} --dump-options > ../../site/data/$version/$HELPPROGRAM.json"
+      ## arangod from the server, the client tools from the client container (same container unless split image)
+      program_container="$client_container"
+      if [ "$HELPPROGRAM" == "arangod" ]; then
+        program_container="$container_name"
+      fi
+      log "docker exec -it $program_container ${HELPPROGRAM} --dump-options > ../../site/data/$version/$HELPPROGRAM.json"
 
-      res=$((docker exec "$container_name" "${HELPPROGRAM}" --dump-options) 2>&1)
+      res=$((docker exec "$program_container" "${HELPPROGRAM}" --dump-options) 2>&1)
       
       if [ $? -ne 0 ]; then
         log "[generate_startup_options] [ERROR] $res"
@@ -532,11 +604,17 @@ function generate_optimizer_rules() {
   log "[generate_optimizer_rules] Generating optimizer rules " "$container_name"
   echo ""
   functions=$(cat generators/generateOptimizerRules.js)
-  res=$(docker exec "$container_name"_cluster arangosh --server.authentication false --javascript.execute-string $functions) 
+  cluster_server_ip=$(container_ip "$container_name"_cluster)
+  ## stderr separately, it has the startup errors but would corrupt the JSON output
+  errfile=$(mktemp)
+  res=$(docker exec "$client_container" arangosh "${client_args[@]}" --server.endpoint "tcp://$cluster_server_ip:8529" --server.authentication false --javascript.execute-string "$functions" 2>"$errfile")
+  exit_code=$?
+  err=$(cat "$errfile"); rm -f "$errfile"
 
-  if [ $? -ne 0 ]; then
-    log "[generate_optimizer_rules] [ERROR] $res"
-    echo "<error code=5><strong> ERROR: $res</strong></error>" >> /home/summary.md
+  if [ $exit_code -ne 0 ]; then
+    log "[generate_optimizer_rules] [ERROR] (exit code $exit_code) $res $err"
+    report_error "Optimizer rules" "$version" "" "" "arangosh exit code $exit_code"$'\n'"$res"$'\n'"$err"
+    status="❌"
   fi
 
   echo $res > ../../site/data/$version/optimizer-rules.json
@@ -749,6 +827,7 @@ function trap_container_exit() {
   docker stop docs_arangoproxy docs_site
 
   docker ps -a --filter name=docs_* -q | xargs docker stop | xargs docker rm
+  docker volume ls -q --filter name=docs_backups_ | xargs -r docker volume rm > /dev/null
   log "[stop_all_containers] Done" >> /home/toolchain.log
 
   if [ -n "$exit_source" ]; then

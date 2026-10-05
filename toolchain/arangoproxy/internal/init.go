@@ -36,10 +36,16 @@ func InitRepositories() {
 }
 
 func openRepoStream(repository *models.Repository) {
-	arangoSHBin := fmt.Sprintf("/arangosh/arangosh/%s/usr/bin/arangosh", repository.Version)
-	configFile := fmt.Sprintf("/arangosh/arangosh/%s/usr/bin/etc/relative/arangosh.conf", repository.Version)
+	// arangosh runs in its own container (the client-tools image, or the server
+	// image if it bundles the client tools). No -t so stdout/stderr stay separate.
+	// The servers run without authentication. Without the flag, arangosh would
+	// prompt for a password (arangosh.conf enables authentication) and consume
+	// the first line sent to stdin as the password.
+	args := []string{"exec", "-i", repository.Container, "arangosh"}
+	args = append(args, repository.ArangoshArgs...)
+	args = append(args, "--server.endpoint", repository.Url, "--server.authentication", "false", "--quiet")
 
-	cmd := exec.Command(arangoSHBin, "--config", configFile, "--server.endpoint", repository.Url, "--quiet")
+	cmd := exec.Command("docker", args...)
 
 	stdin, err := cmd.StdinPipe()
 	if err != nil {

@@ -140,6 +140,7 @@ Documentation pull requests specify upstream references like so:
 - 3.10: 
 - 3.11: https://github.com/arangodb/arangodb/pull/12345
 - 3.12: arangodb/enterprise-preview:devel-nightly
+- 4.x: arangodb/core-preview:4.0-nightly
 ```
 
 The above example indicates that ArangoDB versions 3.11 and 3.12 contain changes
@@ -173,6 +174,14 @@ authentication, for example, from public ECR or GCR:
 a tag is treated as an image (branch names can't contain colons). Docker Hub is
 used if no registry is specified.
 
+For 4.x, the server and the client tools are in separate images
+(`arangodb/core-preview:TAG` and `arangodb/client-tools-preview:TAG`, or
+`arangodb/core:TAG` and `arangodb/client-tools:TAG`). Only specify the server
+image. The matching client tools image is derived and pulled automatically:
+if the last part of the repository name is `core` or starts with `core-`, it is
+replaced by `client-tools` (keeping the rest, the registry, and the tag), e.g.
+`gcr.io/gcr-for-testing/arangodb/client-tools-preview:4.0-nightly` for
+`gcr.io/gcr-for-testing/arangodb/core-preview:4.0-nightly`.
 ## Release workflow for ArangoDB releases
 
 To run a release job for a new ArangoDB patch release (e.g. 3.11.4),
@@ -224,7 +233,7 @@ Invoke Args:
 | string | `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
 | string | `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
 | string | `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
-| string | `arangodb-4_x`  | `arangodb/enterprise-preview:4.0-nightly` |
+| string | `arangodb-4_x`  | `arangodb/core-preview:4.0-nightly` |
 | string | `generators` | `metrics error-codes exit-codes optimizer options` |
 | boolean | `commit-generated` | `true` |
 | boolean | `create-pr` | `true` |

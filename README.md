@@ -66,6 +66,10 @@ orchestrate builds. The following containers are created:
 - `docs_site` - contains Hugo and the logic to start it
 - `docs_server_<version>` - an ArangoDB single server
 - `docs_server_<version>_cluster` - an ArangoDB cluster
+- `docs_client_<version>` - the ArangoDB client tools (`arangosh` etc.), only for
+  versions with separate server and client tools images (4.x). Otherwise, the
+  client tools run in the `docs_server_<version>` container
+
 
 ### Render hooks
 
@@ -267,6 +271,15 @@ ARANGODB_BRANCH_3_12= docker compose up   # Bash and Fish
 
 You can also edit the `.env` file directly. It isn't committed to the repository.
 
+Starting with 4.x, the server (`arangod`, without V8) and the client tools
+(including `arangosh`) are in separate images, for example,
+`arangodb/core-preview:4.0-nightly` and `arangodb/client-tools-preview:4.0-nightly`.
+Only specify the server image (`core`/`core-preview`). The toolchain derives the
+matching client tools image (`client-tools`/`client-tools-preview` in the same
+registry, with the same tag; generally, a repository name `core` or `core-<suffix>`
+becomes `client-tools` or `client-tools-<suffix>`), pulls it if necessary, and runs
+`arangosh` and the other client tools in a separate container. For images that bundle the server and the client tools
+(like `arangodb/enterprise:3.12.9`), the client tools run in the server container.
 
 Images that exist locally are used as they are, otherwise the toolchain pulls
 them. To get the latest build of an image with a tag that is updated regularly,
@@ -1594,7 +1607,7 @@ It makes a warning show at the top of every page for that version.
     | Type | Name | Value |
     |:-----|:-----|:------|
     | string | `workflow` | `generate` |
-    | string | `arangodb-4_x` | Docker Hub image (e.g. `arangodb/enterprise-preview:devel-nightly`) or GitHub main repo PR link (e.g. `https://github.com/arangodb/arangodb/pull/123456`) |
+    | string | `arangodb-4_x` | Docker Hub image (e.g. `arangodb/core-preview:4.0-nightly`) or GitHub main repo PR link (e.g. `https://github.com/arangodb/arangodb/pull/123456`) |
     | string | `generators` | `examples metrics error-codes exit-codes optimizer options` |
     | string | `deploy-url` | `deploy-preview-{PR-number}` with the number of the docs PR |
     | boolean | `commit-generated` | `true` |

@@ -8,7 +8,7 @@ COPY --from=golang:alpine /usr/local/go/ /usr/local/go/
  
 ENV PATH="/usr/local/go/bin:${PATH}"
 
-RUN apk add --update --no-cache nodejs npm bash curl
+RUN apk add --update --no-cache nodejs npm bash curl docker-cli
 
 RUN wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_$ARCH -O /usr/bin/yq && chmod +x /usr/bin/yq
 RUN npm install -g @apidevtools/swagger-cli
