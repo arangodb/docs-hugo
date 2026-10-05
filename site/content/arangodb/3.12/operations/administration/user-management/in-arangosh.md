@@ -145,6 +145,7 @@ to grant the access rights for one or more databases using
 name: USER_02_saveUser
 description: ''
 ---
+~addIgnoreUser("my-user");
 require('@arangodb/users').save('my-user', 'my-secret-password');
 ```
 
@@ -283,6 +284,7 @@ name: USER_07_removeUser
 description: ''
 ---
 require("@arangodb/users").remove("my-user");
+~assert(!require("@arangodb/users").exists("my-user"));
 ~require('@arangodb/users').save('my-user', 'my-secret-password');
 ```
 
@@ -364,4 +366,6 @@ description: ''
 const users = require("@arangodb/users");
 users.permission("my-user", "testdb");
 users.permission("my-user", "testdb", "_graphs");
+~users.remove("my-user");
+~removeIgnoreUser("my-user");
 ```

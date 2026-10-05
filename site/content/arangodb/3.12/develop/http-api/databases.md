@@ -396,6 +396,9 @@ var data = {
 var response = logCurlRequest('POST', url, data);
 
 db._dropDatabase(name);
+// Users are not removed together with the database
+require("@arangodb/users").remove("admin");
+require("@arangodb/users").remove("tester");
 assert(response.code === 201);
 
 logJsonResponse(response);
