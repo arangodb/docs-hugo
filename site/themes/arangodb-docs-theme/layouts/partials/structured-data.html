@@ -32,7 +32,6 @@
       "description" $pageDescription
       "url" .Permalink
       "inLanguage" (.Language.Lang | default "en")
-      "isPartOf" (dict "@type" "WebSite" "name" .Site.Title "url" .Site.BaseURL)
       "publisher" $publisher -}}
 {{- else if or .IsPage .IsSection -}}
   {{- $schema = dict
@@ -41,7 +40,6 @@
       "headline" $documentTitle
       "description" $pageDescription
       "url" .Permalink
-      "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
       "inLanguage" (.Language.Lang | default "en")
       "author" $publisher
       "publisher" $publisher -}}
