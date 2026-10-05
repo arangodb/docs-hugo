@@ -38,7 +38,7 @@ func SaveCachedExampleResponse(chnl chan map[string]interface{}) error {
 			err = os.WriteFile(cacheFilepath, cacheJson, 0644)
 			if err != nil {
 				models.Logger.Printf("[%s] [ERROR] Error saving cache: %s", exampleResponse.Options.Name, err.Error())
-				models.Logger.Summary("<li><error code=9><strong>%s</strong><strong> ERROR Saving Cache: %s</strong></error>", exampleResponse.Options.Name, err.Error())
+				models.Logger.Error("Examples", exampleResponse.Options.Version, exampleResponse.Options.Name, exampleResponse.Options.Position, "Saving the output to the cache failed: "+err.Error())
 			} else {
 				models.Logger.Debug("[%s] Cache Saved", exampleResponse.Options.Name)
 			}

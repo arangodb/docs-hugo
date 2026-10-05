@@ -20,6 +20,8 @@ node_modules/
 /toolchain/docker/config.yaml
 /toolchain/arangoproxy/cmd/configs/local.yaml
 /summary.md
+/report.md
+/report-issues.tsv
 
 # Local Netlify folder
 .netlify

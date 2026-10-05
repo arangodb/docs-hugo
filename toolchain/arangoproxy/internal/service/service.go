@@ -581,7 +581,7 @@ func (service OpenapiService) AddSpecToGlobalSpec(chnl chan map[string]interface
 		OpenapiPendingSpecs.Done()
 	}
 	if errorEncountered {
-		models.Logger.Summary("<error code=2>%s</error>", "Conflict(s) in OpenAPI specifications")
+		models.Logger.Error("OpenAPI", "", "Conflicting OpenAPI specifications", "", "See the arangoproxy log for the conflicting endpoints")
 		return fmt.Errorf("OpenAPI specification conflicts detected")
 	}
 	return nil
@@ -698,7 +698,7 @@ func (service OpenapiService) ValidateOpenapiGlobalSpec() error {
 	models.Logger.Debug("[ValidateOpenapiGlobalSpec] All specs processed. Starting validation...")
 
 	var wg sync.WaitGroup
-	models.Logger.Summary("<h2>OPENAPI</h2>")
+	models.Logger.Summary("\n## OpenAPI validation\n")
 
 	OpenapiGlobalMapMutex.RLock()
 	totalEndpoints := 0
@@ -804,8 +804,8 @@ func (service OpenapiService) ValidateArangoDBFile(version string, apiVersionInd
 
 	if err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
-			models.Logger.Summary("<error code=2>%s %s - <strong>Error %d</strong>:", version, fileName, exitError.ExitCode())
-			models.Logger.Summary("%s</error>", er.String())
+			models.Logger.Error("OpenAPI", version, fileName, "", fmt.Sprintf("swagger-cli validation failed (exit code %d):\n%s", exitError.ExitCode(), er.String()))
+			models.Logger.Summary("- %s %s ❌", version, fileName)
 		} else {
 			models.Logger.Printf("[ERROR] swagger-cli failed for %s/%s: %v\nstdout: %s\nstderr: %s", version, fileName, err, out.String(), er.String())
 		}
@@ -815,7 +815,7 @@ func (service OpenapiService) ValidateArangoDBFile(version string, apiVersionInd
 		}
 		OpenapiValidationErrorMutex.Unlock()
 	} else {
-		models.Logger.Summary("%s %s &#x2713;", version, fileName)
+		models.Logger.Summary("- %s %s ✓", version, fileName)
 	}
 	return err
 }
@@ -861,8 +861,8 @@ func (service OpenapiService) ValidateServiceFile(serviceName string, wg *sync.W
 
 	if err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
-			models.Logger.Summary("<error code=2>%s - <strong>Error %d</strong>:", serviceName, exitError.ExitCode())
-			models.Logger.Summary("%s</error>", er.String())
+			models.Logger.Error("OpenAPI", "", serviceName, "", fmt.Sprintf("swagger-cli validation failed (exit code %d):\n%s", exitError.ExitCode(), er.String()))
+			models.Logger.Summary("- %s ❌", serviceName)
 		} else {
 			models.Logger.Printf("[ERROR] swagger-cli failed for service %s: %v\nstdout: %s\nstderr: %s", serviceName, err, out.String(), er.String())
 		}
@@ -872,7 +872,7 @@ func (service OpenapiService) ValidateServiceFile(serviceName string, wg *sync.W
 		}
 		OpenapiValidationErrorMutex.Unlock()
 	} else {
-		models.Logger.Summary("%s &#x2713;", serviceName)
+		models.Logger.Summary("- %s ✓", serviceName)
 	}
 	return err
 }
