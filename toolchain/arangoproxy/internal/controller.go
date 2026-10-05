@@ -21,9 +21,6 @@ var (
 	CacheChannel         = make(chan map[string]interface{})
 	OpenapiGlobalChannel = make(chan map[string]interface{})
 
-	ExampleChannel = make(chan map[string]interface{})
-	OutputChannel  = make(chan string)
-
 	Versions = models.LoadVersions()
 )
 
@@ -37,11 +34,12 @@ func StartController(url string) {
 func launchRoutines() {
 	go SaveCachedExampleResponse(CacheChannel)
 	go OPENAPIService.AddSpecToGlobalSpec(OpenapiGlobalChannel)
-	go arangosh.ExecRoutine(ExampleChannel, OutputChannel)
+	arangosh.StartRoutine()
 }
 
 func createRoutes() {
 	http.HandleFunc("/health", HealthHandler)
+	http.HandleFunc("/page-done", PageDoneHandler)
 	http.HandleFunc("/js", JSHandler)
 	http.HandleFunc("/curl", CurlExampleHandler)
 	http.HandleFunc("/aql", AQLHandler)
@@ -58,9 +56,9 @@ func JSHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	models.Logger.Printf("[js/CONTROLLER] Processing %s Example %s\n", request.Options.Version, request.Options.Name)
+	models.Logger.Printf("[js/CONTROLLER] Queued %s Example %s\n", request.Options.Version, request.Options.Name)
 
-	resp := JSService.Execute(request, CacheChannel, ExampleChannel, OutputChannel)
+	resp := JSService.Execute(request, CacheChannel)
 	response, err := json.Marshal(resp)
 	if err != nil {
 		fmt.Printf("[js/CONTROLLER] Error marshalling response: %s\n", err.Error())
@@ -79,9 +77,9 @@ func CurlExampleHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	models.Logger.Printf("[curl/CONTROLLER] Processing %s Example %s\n", request.Options.Version, request.Options.Name)
+	models.Logger.Printf("[curl/CONTROLLER] Queued %s Example %s\n", request.Options.Version, request.Options.Name)
 
-	resp, err := CurlService.Execute(request, CacheChannel, ExampleChannel, OutputChannel)
+	resp, err := CurlService.Execute(request, CacheChannel)
 	response, err := json.Marshal(resp)
 	if err != nil {
 		models.Logger.Printf("[curl/CONTROLLER] Error marshalling response: %s\n", err.Error())
@@ -100,9 +98,9 @@ func AQLHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	models.Logger.Printf("[aql/CONTROLLER] Processing %s Example %s\n", request.Options.Version, request.Options.Name)
+	models.Logger.Printf("[aql/CONTROLLER] Queued %s Example %s\n", request.Options.Version, request.Options.Name)
 
-	resp := AQLService.Execute(request, CacheChannel, ExampleChannel, OutputChannel)
+	resp := AQLService.Execute(request, CacheChannel)
 	response, err := json.Marshal(resp)
 	if err != nil {
 		fmt.Printf("[aql/CONTROLLER] Error marshalling response: %s\n", err.Error())
@@ -136,6 +134,19 @@ func ValidateOpenapiHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusOK)
+}
+
+// PageDoneHandler is requested by the page template after rendering a page with
+// examples, to remove what the examples exempted but didn't remove (see
+// arangosh.PageDone). Headers: Page (source file), Version.
+func PageDoneHandler(w http.ResponseWriter, r *http.Request) {
+	page, version := r.Header.Get("Page"), r.Header.Get("Version")
+	for _, repository := range models.Repositories {
+		if repository.Version == version {
+			arangosh.PageDone(page, repository)
+		}
+	}
+	w.Write([]byte("{}"))
 }
 
 func HealthHandler(w http.ResponseWriter, r *http.Request) {

@@ -71,6 +71,9 @@ if [ -z "$EXAMPLES_SCOPE" ]; then
   EXAMPLES_SCOPE=all
   [ "$ENV" == "local" ] && EXAMPLES_SCOPE=changed
 fi
+## The examples to override need to run
+effective_examples_scope="$EXAMPLES_SCOPE"
+[ -n "$OVERRIDE" ] && effective_examples_scope=all
 
 ## Docs versions from versions.yaml, the variable names use uppercase with
 ## underscores (e.g. "4.x" -> ARANGODB_BRANCH_4_X)
@@ -83,6 +86,7 @@ function version_var_suffix() {
 echo "[TOOLCHAIN] Settings:"
 echo "  GENERATORS=$GENERATORS"
 echo "  ARANGODB_STARTER=$ARANGODB_STARTER"
+echo "  EXAMPLES_SCOPE=$EXAMPLES_SCOPE (effective: $effective_examples_scope)"
 for version in "${DOCS_VERSIONS[@]}"; do
   suffix=$(version_var_suffix "$version")
   branch_var=ARANGODB_BRANCH_$suffix
@@ -136,6 +140,7 @@ function main() {
   report_detail "## Settings"
   report_detail ""
   report_detail "- Generators: $GENERATORS"
+  report_detail "- Examples: $effective_examples_scope"
 
   clean_docker_environment
 
@@ -279,6 +284,7 @@ function run_arangoproxy_and_site() {
       -e HUGO_URL="$HUGO_URL" \
       -e HUGO_ENV="$HUGO_ENV" \
       -e HUGO_NUMWORKERMULTIPLIER="$HUGO_NUMWORKERMULTIPLIER" \
+      -e HUGO_PARAMS_EXAMPLESSCOPE="$effective_examples_scope" \
       -p 1313:1313 \
       --volumes-from toolchain \
       --log-opt tag="{{.Name}}" \

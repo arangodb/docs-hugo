@@ -2,10 +2,12 @@ package arangosh
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"os"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/format"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
@@ -13,41 +15,104 @@ import (
 	"github.com/dlclark/regexp2"
 )
 
-func ExecRoutine(example chan map[string]interface{}, outChannel chan string) {
-	for {
-		select {
-		case exampleData := <-example:
-			name := exampleData["name"].(string)
-			code := exampleData["code"].(string)
-			filepath := exampleData["filepath"].(string)
-			repository := exampleData["repository"].(models.Repository)
+// Job is an example to run in the arangosh process of a repository
+type Job struct {
+	Name, Code, Filepath string
+	Repository           models.Repository
+	Reply                chan string
+}
 
-			out := Exec(name, code, filepath, repository)
+// The examples run one at a time (a single routine for all repositories)
+var queue = make(chan Job)
 
-			// A single long-lived arangosh serves every example for a version.
-			// Some examples (e.g. RestBackupRestoreBackup) restart the arangod
-			// process, which drops this shared connection. If we see "not
-			// connected", reconnect once and retry the example. If the server
-			// does not come back, it is gone for good (e.g. a restore that left
-			// arangod unable to restart): every remaining example would block on
-			// the reconnect timeout and then fail anyway, so abort the whole run
-			// immediately instead of wasting CI time. See reconnectSession.
-			if isNotConnected(out) {
-				models.Logger.Printf("[%s] [WARN] arangosh lost its connection to arangod; reconnecting and retrying", name)
-				if reconnectSession(name, repository) {
-					out = Exec(name, code, filepath, repository)
-				} else {
-					models.Logger.Printf("[%s] [FATAL] arangod (%s) is unreachable and could not be recovered; aborting example generation to avoid a cascade of timeouts", name, repository.Url)
-					models.Logger.Summary("<li><error code=3><strong>%s</strong> - %s <strong>FATAL: arangod unreachable, aborting generation %s</strong></error>", repository.Version, name, filepath)
-					os.Exit(1)
-				}
+func StartRoutine() {
+	go ExecRoutine(queue)
+}
+
+// Run queues an example and returns its output once it ran
+func Run(name, code, filepath string, repository models.Repository) string {
+	reply := make(chan string, 1)
+	queue <- Job{name, code, filepath, repository, reply}
+	return <-reply
+}
+
+func ExecRoutine(queue chan Job) {
+	for job := range queue {
+		name, code, filepath, repository := job.Name, job.Code, job.Filepath, job.Repository
+
+		// The handlers log "Queued" when they receive a request, this is where an
+		// example actually runs
+		models.Logger.Printf("[EXEC] Running %s %s example %s", repository.Version, repository.Type, name)
+		start := time.Now()
+		// Hidden lines before and after the example (in the same exchange with
+		// arangosh): the page for exemptions, and the cleanup (see common.js)
+		page, _ := json.Marshal(pageOf(filepath))
+		execCode := fmt.Sprintf("~__docsPage = %s;\n%s\n~__docsCleanup();", page, code)
+		out := Exec(name, execCode, filepath, repository)
+
+		// A single long-lived arangosh serves every example for a version.
+		// Some examples (e.g. RestBackupRestoreBackup) restart the arangod
+		// process, which drops this shared connection. If we see "not
+		// connected", reconnect once and retry the example. If the server
+		// does not come back, it is gone for good (e.g. a restore that left
+		// arangod unable to restart): every remaining example would block on
+		// the reconnect timeout and then fail anyway, so abort the whole run
+		// immediately instead of wasting CI time. See reconnectSession.
+		if isNotConnected(out) {
+			models.Logger.Printf("[%s %s] [WARN] arangosh lost its connection to arangod; reconnecting and retrying", repository.Version, name)
+			if reconnectSession(name, repository) {
+				out = Exec(name, execCode, filepath, repository)
+			} else {
+				models.Logger.Printf("[%s %s] [FATAL] arangod (%s) is unreachable and could not be recovered; aborting example generation to avoid a cascade of timeouts", repository.Version, name, repository.Url)
+				models.Logger.Error("Examples", repository.Version, name, filepath, "arangod is unreachable and could not be recovered, aborted the example generation")
+				os.Exit(1)
 			}
-
-			out = checkAssertionFailed(name, code, out, filepath, repository)
-			out = checkArangoError(name, code, out, filepath, repository)
-
-			outChannel <- out
 		}
+
+		out, cleaned := extractMarker(out, cleanedMarker)
+		if cleaned != "" {
+			models.Logger.Printf("[%s %s] [INFO] Removed after the example: %s", repository.Version, name, cleaned)
+		}
+		out = checkAssertionFailed(name, code, out, filepath, repository)
+		out = checkArangoError(name, code, out, filepath, repository)
+
+		models.Logger.Printf("[EXEC] Finished %s %s example %s in %d ms", repository.Version, repository.Type, name, time.Since(start).Milliseconds())
+		job.Reply <- out
+	}
+}
+
+// Output lines of the hidden code that arangoproxy runs around examples
+const cleanedMarker = "CLEANED "
+const pageDoneMarker = "PAGEDONE "
+
+// extractMarker removes the output line with the marker from the output and
+// returns it separately (without the marker)
+func extractMarker(out, marker string) (string, string) {
+	found := ""
+	lines := []string{}
+	for _, line := range strings.Split(out, "\n") {
+		if value, ok := strings.CutPrefix(line, marker); ok {
+			found = value
+			continue
+		}
+		lines = append(lines, line)
+	}
+	return strings.Join(lines, "\n"), found
+}
+
+// pageOf returns the source file of a code block position (file:line:column)
+func pageOf(position string) string {
+	return regexp.MustCompile(`:\d+:\d+$`).ReplaceAllString(position, "")
+}
+
+// PageDone removes the exemptions that the examples of a page added but didn't
+// remove, together with the exempted resources (__docsPageDone in common.js). It
+// runs through the queue, i.e. after the examples of the page.
+func PageDone(page string, repository models.Repository) {
+	code, _ := json.Marshal(page)
+	out := Run("page done "+page, fmt.Sprintf("__docsPageDone(%s);", code), page, repository)
+	if _, left := extractMarker(out, pageDoneMarker); left != "" {
+		models.Logger.Printf("[%s %s] [INFO] Removed at the end of the page (exempted but not removed by its examples): %s", repository.Version, page, left)
 	}
 }
 
@@ -141,6 +206,12 @@ func Exec(exampleName string, code, filepath string, repository models.Repositor
 
 			if strings.Contains(scanner.Text(), "HIDED-END") {
 				hide = false
+				continue
+			}
+
+			// The cleanup runs as hidden code but its result is needed
+			if strings.HasPrefix(scanner.Text(), cleanedMarker) || strings.HasPrefix(scanner.Text(), pageDoneMarker) {
+				output = output + scanner.Text() + "\n"
 				continue
 			}
 

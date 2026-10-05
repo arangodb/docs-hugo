@@ -31,6 +31,8 @@ func InitRepositories() {
 
 		cmd, _ := utils.GetSetupFunctions()
 		arangosh.Exec("Init collections", cmd, "", repo)
+		// The resources after the setup, see __docsCheckLeftovers in common.js
+		arangosh.Exec("Snapshot resources", "var __docsBaseline = __docsResources();", "", repo)
 		wg.Done()
 	}
 }

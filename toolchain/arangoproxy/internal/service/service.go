@@ -12,6 +12,7 @@ import (
 	"sync"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/format"
+	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/arangosh"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
 	"gopkg.in/yaml.v3"
 )
@@ -20,14 +21,10 @@ type CommonService struct{}
 
 var commonService = CommonService{}
 
-func (service CommonService) arangosh(name, code, filepath string, repository models.Repository, exampleChannel chan map[string]interface{}) {
-	exampleData := map[string]interface{}{
-		"name":       name,
-		"code":       code,
-		"filepath":   filepath,
-		"repository": repository,
-	}
-	exampleChannel <- exampleData
+// arangosh runs the example in the arangosh process of the repository and returns
+// the output (the examples of a repository run one at a time)
+func (service CommonService) arangosh(name, code, filepath string, repository models.Repository) string {
+	return arangosh.Run(name, code, filepath, repository)
 }
 
 func (service CommonService) saveCache(request string, response models.ExampleResponse, cacheChannel chan map[string]interface{}) {
@@ -43,18 +40,17 @@ func (service CommonService) saveCache(request string, response models.ExampleRe
 
 type JSService struct{}
 
-func (service JSService) Execute(request models.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan string) (res models.ExampleResponse) {
+func (service JSService) Execute(request models.Example, cacheChannel chan map[string]interface{}) (res models.ExampleResponse) {
 	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
 	models.Logger.Debug("[%s] Chosen repository: %s", request.Options.Name, repository.Version)
 	if err != nil {
 		responseMsg := fmt.Sprintf("A server for version %s has not been used during generation", request.Options.Version)
 		res = *models.NewExampleResponse(request.Code, responseMsg, request.Options)
+		res.NoServer = true
 		return
 	}
 
-	commonService.arangosh(request.Options.Name, request.Code, request.Options.Position, repository, exampleChannel)
-
-	arangoshResult := <-outputChannel
+	arangoshResult := commonService.arangosh(request.Options.Name, request.Code, request.Options.Position, repository)
 	res = *models.NewExampleResponse(request.Code, arangoshResult, request.Options)
 
 	commonService.saveCache(request.Base64Request, res, cacheChannel)
@@ -66,7 +62,7 @@ type CurlService struct{}
 
 var curlFormatter = format.CurlFormatter{}
 
-func (service CurlService) Execute(request models.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan string) (res models.ExampleResponse, err error) {
+func (service CurlService) Execute(request models.Example, cacheChannel chan map[string]interface{}) (res models.ExampleResponse, err error) {
 	commands := curlFormatter.FormatCommand(request.Code)
 
 	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
@@ -74,12 +70,11 @@ func (service CurlService) Execute(request models.Example, cacheChannel chan map
 	if err != nil {
 		responseMsg := fmt.Sprintf("A server for version %s has not been used during generation", request.Options.Version)
 		res = *models.NewExampleResponse(request.Code, responseMsg, request.Options)
+		res.NoServer = true
 		return
 	}
 
-	commonService.arangosh(request.Options.Name, commands, request.Options.Position, repository, exampleChannel)
-
-	arangoshResult := <-outputChannel
+	arangoshResult := commonService.arangosh(request.Options.Name, commands, request.Options.Position, repository)
 
 	curlRequest, curlOutput, err := curlFormatter.FormatCurlOutput(arangoshResult, string(request.Options.Render))
 	if err != nil {
@@ -97,7 +92,7 @@ type AQLService struct{}
 
 var AQLFormatter = format.AQLFormatter{}
 
-func (service AQLService) Execute(request models.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan string) (res models.AQLResponse) {
+func (service AQLService) Execute(request models.Example, cacheChannel chan map[string]interface{}) (res models.AQLResponse) {
 	commands := AQLFormatter.FormatRequestCode(request.Code, request.Options.BindVars)
 
 	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
@@ -105,6 +100,7 @@ func (service AQLService) Execute(request models.Example, cacheChannel chan map[
 	if err != nil {
 		responseMsg := fmt.Sprintf("A server for version %s has not been used during generation", request.Options.Version)
 		res.ExampleResponse.Input, res.ExampleResponse.Options, res.ExampleResponse.Output = request.Code, request.Options, responseMsg
+		res.NoServer = true
 		return
 	}
 
@@ -114,9 +110,7 @@ func (service AQLService) Execute(request models.Example, cacheChannel chan map[
 		commands = removeDSCmd + "\n" + createDSCmd + "\n" + commands + "\n" + removeDSCmd
 	}
 
-	commonService.arangosh(request.Options.Name, commands, request.Options.Position, repository, exampleChannel)
-
-	arangoshResult := <-outputChannel
+	arangoshResult := commonService.arangosh(request.Options.Name, commands, request.Options.Position, repository)
 
 	res.ExampleResponse.Input, res.ExampleResponse.Options = request.Code, request.Options
 

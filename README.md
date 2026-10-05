@@ -1905,8 +1905,16 @@ db.collection.save({ _key: "foo" });
 ~db._drop("collection");
 ```
 
-Examples need to remove the collections and Views they create. Not dropping them
-will raise an error unless they are specifically exempt:
+After each example, the toolchain automatically removes the resources that the
+example created: collections, Views, graphs, Analyzers, users, databases, and
+tasks. It also aborts running Stream Transactions, kills running AQL queries,
+and switches back to the `_system` database. The examples therefore don't need
+to clean up (but it doesn't hurt). Other changes like new indexes on existing
+collections or server settings (e.g. the read-only mode) aren't reset, so
+examples need to undo them.
+
+To use resources in subsequent examples on the same page, exempt them from the
+removal:
 
 ```js
 ~db._create("collection");
@@ -1916,27 +1924,58 @@ db.collection.save({...});
 ~addIgnoreCollection("collection");
 ```
 
-This is helpful for creating collections and Views once, using them in multiple
-examples, and finally dropping them instead of having to create and drop them
-in each example.
+This is helpful for creating collections and Views once and using them in
+multiple examples instead of creating them in each example. For other kinds of
+resources, use `addIgnoreGraph()`, `addIgnoreAnalyzer()`, `addIgnoreUser()`,
+`addIgnoreDatabase()`, and `addIgnoreTask()` with the name. A graph is also
+exempt if all of its collections are.
 
-<!-- TODO: Does Hugo guarantee to invoke the render hooks one after another,
-top to bottom of a page, and do this serially?
-
-You need to choose the names for the examples so that they are alphabetically
-sortable to have them execute in the correct order.
--->
-
-The last example of the series should undo the ignore to catch unintended leftovers:
+When all examples of a page ran, the toolchain removes the exempted resources
+of the page, so that they can't affect examples on other pages. You can end an
+exemption earlier with the corresponding `removeIgnore...()` function. The
+resource is then removed after the example:
 
 ```js
 ~removeIgnoreCollection("collection");
 ~removeIgnoreView("view");
-~db._dropView("view");
-~db._drop("collection");
 ```
 
+If an example fails because a resource doesn't exist that a previous example
+created, check whether the previous example exempts it. The log shows what the
+toolchain removed after each example.
+
 Note that a series of examples needs to be contained within a single file.
+
+Use assertions to verify that an example does what it is supposed to do,
+especially if the effect isn't visible in the output, like for operations that
+drop, remove, or change something, or for asynchronous operations that you wait
+for. A failed assertion is reported as an error with the condition:
+
+```js
+~db._create("example");
+var coll = db._collection("example");
+db._drop(coll.name());
+~assert(db._collection("example") === null);
+```
+
+When waiting for an asynchronous operation, poll in short intervals and stop
+on any final state, then assert the expected state. Otherwise, a failure leads
+to waiting until the time limit and isn't noticed:
+
+```js
+for (var count = 0; count < 150; ++count) {
+  var progress = hotbackup.uploadProgress(upload.uploadId);
+  if (progress.DBServers.SNGL.Status !== "STARTED") {
+    break;
+  }
+  internal.wait(0.1);
+}
+assert(progress.DBServers.SNGL.Status === "COMPLETED");
+```
+
+Create test data in batches (e.g. with an AQL query like
+`FOR i IN 1..10000 INSERT { value: i } INTO coll`) instead of inserting documents
+one by one, as every insert is a request to the server.
 
 If a statement is expected to fail (e.g. to demonstrate the error case), then
 this has to be indicated with a special JavaScript comment:
