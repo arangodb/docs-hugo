@@ -56,9 +56,21 @@ if [ "$ENV" = "local" ]; then
 fi
 
 
+## Stop Hugo on docker stop (SIGTERM) or Ctrl+C. The script is PID 1 (JSON form
+## of CMD in the Dockerfile), which ignores signals without a handler. Bash only
+## runs a trap when the foreground command ends, which hugo serve never does, so
+## Hugo runs in the background and the script waits for it (wait is interrupted
+## by signals). An intentional stop skips the report below.
+stopped=false
+trap 'stopped=true; pkill -TERM -P $$' TERM INT
+
 set -o pipefail
-hugo $hugoOptions -e $HUGO_ENV -b $HUGO_URL --minify 2>&1 | tee -a /tmp/hugo-summary.md
+hugo $hugoOptions -e $HUGO_ENV -b $HUGO_URL --minify 2>&1 | tee -a /tmp/hugo-summary.md &
+wait $!
 exit=$?
+if [ "$stopped" = true ]; then
+  exit 0
+fi
 
 ## Hugo's errors (e.g. from errorf in templates) for the report
 grep '^ERROR ' /tmp/hugo-summary.md | while IFS= read -r line; do

@@ -1,11 +1,16 @@
 services:
   toolchain:
     container_name: toolchain
+    # Time to remove the containers started by the toolchain on stop (see toolchain.sh)
+    stop_grace_period: 30s
     image: arangodb/docs-hugo:toolchain-amd64
     # Run in super-privileged container domain to use Docker socket
     security_opt:
       - label=type:spc_t
     tty: true
+    # The default bridge instead of a network of the project, which could take the
+    # address range of docs_net or docs_plain_net (the toolchain only uses docker exec)
+    network_mode: bridge
     volumes:
       - ${ARANGODB_SRC_3_10:-/dev/null}:/tmp/3.10
       - ${ARANGODB_SRC_3_11:-/tmp/1}:/tmp/3.11

@@ -55,4 +55,5 @@ fi
 
 cd /home/toolchain/arangoproxy/cmd
 go build -mod=vendor -o arangoproxy
-./arangoproxy $ARANGOPROXY_ARGS
+# exec so that arangoproxy gets the stop signal (docker stop) directly
+exec ./arangoproxy $ARANGOPROXY_ARGS

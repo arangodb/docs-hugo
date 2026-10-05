@@ -149,7 +149,16 @@ function main() {
       echo "{}" > ../../site/data/$version/cache.json
     fi
 
-    process_server "$server"
+    start_server "$image" "$version"
+  done
+
+  ## The servers of all versions start at the same time, now wait for each of them
+  for version in "${DOCS_VERSIONS[@]}"; do
+    branch_var=ARANGODB_BRANCH_$(version_var_suffix "$version")
+    image="${!branch_var}"
+    if [ "$image" != "" ]; then
+      process_server "$image" "$version"
+    fi
   done
 
   ## Independent of ArangoDB versions/servers
@@ -228,7 +237,7 @@ function clean_docker_environment() {
 
   ## Stop and remove old containers of this ArangoDB docker image
   log "[clean_docker_environment] Cleanup orphan containers"
-  docker ps -a --filter name=docs_* -q | xargs docker stop | xargs docker rm
+  docker ps -a --filter name=docs_* -q | xargs -r docker stop | xargs -r docker rm
 
 }
 
@@ -281,6 +290,7 @@ function run_arangoproxy_and_site() {
       -e HUGO_ENV="$HUGO_ENV" \
       -e OVERRIDE="$OVERRIDE" \
       -e ARANGOPROXY_CONFIG=/home/toolchain/arangoproxy/cmd/configs/generated.yaml \
+      -v docs_go_cache:/root/.cache/go-build \
       --volumes-from toolchain \
       --log-opt tag="{{.Name}}" \
       arangodb/docs-hugo:arangoproxy-"$arch"
@@ -336,8 +346,10 @@ function setup_arangoproxy_repositories() {
 
 ##### SERVER FUNCTIONS
 
-function process_server() {
-  server="$1"
+function needs_servers() {
+  [[ $GENERATORS == *"optimizer"* ]] || [[ $GENERATORS == *"options"* ]] || [[ $GENERATORS == *"examples"* ]]
+}
+
 ## Hot backup examples create the local backup repository (/tmp/backups) with
 ## arangosh, but the server uploads to it. Share the directory between the servers
 ## and the client container (only the same container for images that bundle the
@@ -347,12 +359,34 @@ function set_backups_mount() {
   backups_mount=(-v "$backups_volume":/tmp/backups)
 }
 
-  image=$(echo "$server" | yq e '.image' -)
-  version=$(echo "$server" | yq e '.version' -)
+
+### Start the containers of a version without waiting for them (see process_server)
+function start_server() {
+  image="$1"
+  version="$2"
+
+  LOG_TARGET="$image $version"
+  if ! needs_servers; then
+    return
+  fi
+  container_name=docs_server_"$version"
 
   set_backups_mount "$version"
   docker volume rm -f "$backups_volume" > /dev/null 2>&1
   docker volume create "$backups_volume" > /dev/null
+
+    image_id=$(find_or_pull_image "$image" "$version")
+    if [ -z "$image_id" ]; then
+      abort_with_error "No image found for $image"
+    fi
+    run_arangodb_container "$container_name" "$image_id"
+}
+
+### Wait for the containers of a version and generate its content
+function process_server() {
+  image="$1"
+  version="$2"
+
   report_detail ""
   report_detail "## $version"
   report_detail ""
@@ -365,26 +399,17 @@ function set_backups_mount() {
   generators_from_source
 
   ## Generators stat do need arangodb instances running
-  if [[ $GENERATORS == *"optimizer"* ]] || [[ $GENERATORS == *"options"* ]] || [[ $GENERATORS == *"examples"* ]]; then
+  if needs_servers; then
     container_name=docs_server_"$version"
     set_backups_mount "$version"
 
-    image_id=$(get_docker_imageid $image $image_name $version)
-    if [ "$image_id" == "" ]; then
-      if [ "$ENV" == "local" ]; then
-        pull_image "$image" "$version"
-        image_id=$(docker images --filter="reference=$image_name-$version" --format '{{.ID}}' | head -n1)
-      else
-        echo "[START_SERVER] No Image ID find to run"
-        echo "[ERROR] Aborting"
-        exit 1
-      fi
+    if [ $TRAP == 0 ]; then
+      wait_for_arangodb_ready "$container_name"
+      wait_for_arangodb_ready "$container_name"_cluster
     fi
-    image_id=$(get_docker_imageid $image $image_name $version)
 
-  
-    run_arangodb_container "$container_name" "$image_id"
       setup_client_container "$image" "$version" "$container_name"
+
 
     if [[ $GENERATORS == *"options"* ]] ; then
       generate_startup_options "$container_name" "$version"
@@ -411,6 +436,17 @@ function client_image_for() {
     echo "${BASH_REMATCH[1]}client-tools${BASH_REMATCH[2]}${BASH_REMATCH[4]}"
   fi
 }
+
+### Record an error for the report and exit
+function abort_with_error() {
+  message="$1"
+  log "[ERROR] $message"
+  report_error "Toolchain" "$version" "" "" "$message"
+  finalize_report
+  exit 1
+}
+
+
 ### Set client_container (where arangosh & co. run) and client_args (extra arangosh args)
 function setup_client_container() {
   image="$1"
@@ -448,28 +484,98 @@ function setup_client_container() {
   fi
   printf -v shown_args '%s ' "${client_args[@]}"
   log "[setup_client_container] Client container: $client_container, arangosh args: $shown_args"
+}
 
+
+### Stream a container's output to the toolchain log with a [name] prefix, without the
+### info/debug messages of arangod and the Starter (warnings, errors, and anything
+### else like crash output are kept; see `docker logs <name>` for everything, and
+### abort_container_start for the last lines on failure).
+### Started right after docker run: even if the container exits immediately,
+### docker logs --follow replays its full output (containers aren't --rm).
+LOG_FILTER_RE='^[0-9TZ:.+-]+ (\[[0-9-]+\] )?(INFO|DEBUG|TRACE) |\|(INFO|DEBUG|TRACE)\|'
+function follow_container_logs() {
+  name="$1"
+  docker logs --follow "$name" 2>&1 | while IFS= read -r line; do
+    [[ "$line" =~ $LOG_FILTER_RE ]] || echo "[$name] $line"
+  done &
+}
+
+### In local runs, keep all containers after an error for inspection (logs, site,
+### servers) until the toolchain is stopped (Ctrl+C, docker compose down), which
+### removes them (stop_on_signal). Returns immediately in CI.
+function keep_containers_for_inspection() {
+  if [ "$ENV" != "local" ]; then
+    return
+  fi
+  log "[TERMINATE] Error (exit status $1). The containers are kept for inspection, press Ctrl+C or run docker compose down to remove them."
+  while true; do
+    sleep 1
+  done
+}
+
+### The Starter writes the logs of the cluster's servers to files in its data
+### directory, not to the console
+STARTER_DATA_DIR=/localdata
+
+### Print the output that helps to find out why a container failed: the last console
+### lines including info messages (except the Starter's verbose version parsing),
+### and for a cluster, the warnings, errors, and last lines of each server's log file
+function print_failure_context() {
+  name="$1"
+  docker logs "$name" 2>&1 | grep -v "|INFO| Checking line" | tail -n 50 | while IFS= read -r line; do
+    echo "[$name] (last lines) $line"
+  done
+  if [[ "$name" != *_cluster ]]; then
+    return
+  fi
+  ## Copy the log files out of the container (also works if it exited)
+  logs_dir=/tmp/failure-logs-$name
+  rm -rf "$logs_dir"
+  docker cp "$name":"$STARTER_DATA_DIR" "$logs_dir" > /dev/null 2>&1 || return
+  find "$logs_dir" -name arangod.log | sort | while IFS= read -r file; do
+    server=$(basename "$(dirname "$file")")
+    {
+      grep -E " (WARNING|ERROR|FATAL) " "$file" | tail -n 20
+      echo "(last lines)"
+      tail -n 10 "$file"
+    } | while IFS= read -r line; do echo "[$name $server] $line"; done
+  done
+  rm -rf "$logs_dir"
+}
+
+### Log why a container failed to start, record the error in the summary, and exit
+function abort_container_start() {
+  name="$1"
+  reason="$2"
+  state=$(docker inspect -f 'status={{.State.Status}} exit code={{.State.ExitCode}} error={{.State.Error}}' "$name" 2>&1)
+  sleep 1 # let follow_container_logs flush the container output
+  print_failure_context "$name"
+  log "[ERROR] $name $reason ($state). See the [$name] lines above for its output."
+  report_error "Server" "$version" "$name" "" "$reason ($state)"
+  finalize_report
+  keep_containers_for_inspection 1
+  exit 1
 }
 
 ### Check status of ArangoDB instance until it is up and running
 function wait_for_arangodb_ready() {
-  attempts="${2:-1}"
-  # Use IPv4 explicitly as localhost can resolve to IPv6 [::1] on which the server isn't listening
-  # Caused by a change in Docker 26.0. Could also be solved with docker run --sysctl net.ipv6.conf.all.disable_ipv6=1 ...
-  res=$(docker exec -it $1 wget -q -S -O - http://127.0.0.1:8529/_api/version 2>&1 | grep -m 1 HTTP/ | awk '{print $2}')
-  if [ "$res" = "200" ]; then
-    log "Server is ready: $1"
-  else
-    log "Server not ready: $1  $res"
-    let attempts++
-    if [ "$attempts" -gt 30 ]; then
-      log "Giving up waiting on server."
-      exit 1
-    else
-      sleep 2s
-      wait_for_arangodb_ready $1 $attempts
+  name="$1"
+  for ((attempt = 1; attempt <= 30; attempt++)); do
+    if [ "$(docker inspect -f '{{.State.Running}}' "$name" 2>/dev/null)" != "true" ]; then
+      abort_container_start "$name" "is not running"
     fi
-  fi
+    # Use IPv4 explicitly as localhost can resolve to IPv6 [::1] on which the server isn't listening
+    # Caused by a change in Docker 26.0. Could also be solved with docker run --sysctl net.ipv6.conf.all.disable_ipv6=1 ...
+    res=$(docker exec "$name" wget -q -S -O - http://127.0.0.1:8529/_api/version 2>&1 | grep -m 1 HTTP/ | awk '{print $2}')
+    if [ "$res" = "200" ]; then
+      log "Server is ready: $name"
+      return 0
+    fi
+    log "Server not ready: $name  $res"
+    sleep 2s
+  done
+  abort_container_start "$name" "did not become ready in time"
 }
 
 
@@ -482,7 +588,8 @@ function run_arangodb_container() {
     log "[run_arangodb_container] Run cluster server"
     docker run -d --net=docs_net -e ARANGO_NO_AUTH=1 --name="$container_name"_cluster "${backups_mount[@]}" \
       "$image_id" \
-      arangodb --starter.local --starter.data-dir=./localdata
+      arangodb --starter.local --starter.data-dir=$STARTER_DATA_DIR
+    follow_container_logs "$container_name"_cluster
 
     log "[run_arangodb_container] Run single server"
     # A hot-backup restore restarts arangod via execvp, bypassing the image
@@ -525,9 +632,7 @@ function run_arangodb_container() {
     docker run -d --net docs_net -e ARANGO_NO_AUTH=1 --name "$container_name" "${backups_mount[@]}" \
       "$image_id" \
       "${single_args[@]}"
-
-    wait_for_arangodb_ready "$container_name"
-    wait_for_arangodb_ready "$container_name"_cluster
+    follow_container_logs "$container_name"
   fi
 }
 
@@ -782,6 +887,8 @@ function trap_container_exit() {
     if [ "$ENV" == "local" ] && report_has_errors; then
       terminate=true
     fi
+    ## Don't busy-loop, and let pending signals (stop_on_signal) be handled
+    [ "$terminate" = false ] && sleep 1
   done
 
   if report_has_errors; then
@@ -824,9 +931,13 @@ function trap_container_exit() {
   fi
 
   finalize_report
+  if [ "$exit_status" -ne 0 ]; then
+    keep_containers_for_inspection "$exit_status"
+  fi
+
   docker stop docs_arangoproxy docs_site
 
-  docker ps -a --filter name=docs_* -q | xargs docker stop | xargs docker rm
+  docker ps -a --filter name=docs_* -q | xargs -r docker stop | xargs -r docker rm
   docker volume ls -q --filter name=docs_backups_ | xargs -r docker volume rm > /dev/null
   log "[stop_all_containers] Done" >> /home/toolchain.log
 
@@ -839,6 +950,24 @@ function trap_container_exit() {
 }
 
 
+
+### The docs_* containers are started via the Docker socket, so docker compose doesn't
+### know about them. Remove them when the toolchain container is stopped (docker compose
+### down, Ctrl+C), as bash as PID 1 ignores SIGTERM/SIGINT without a handler.
+### A forced kill (second Ctrl+C) can't be handled, the next run cleans up instead.
+### Exits with 0 locally (an intentional stop), 143 (SIGTERM) in CI (cancellation).
+function stop_on_signal() {
+  TRAP=1
+  echo "[TOOLCHAIN] Stop requested, removing the docs_* containers"
+  docker ps -a --filter name=docs_* -q | xargs -r docker rm -f > /dev/null
+  docker volume ls -q --filter name=docs_backups_ | xargs -r docker volume rm > /dev/null
+  if [ "$ENV" == "local" ]; then
+    exit 0
+  fi
+  exit 143
+}
+
+trap stop_on_signal SIGTERM SIGINT
 
 ## --------------------------
 

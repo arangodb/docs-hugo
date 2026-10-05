@@ -70,6 +70,45 @@ orchestrate builds. The following containers are created:
   versions with separate server and client tools images (4.x). Otherwise, the
   client tools run in the `docs_server_<version>` container
 
+#### Update the toolchain dependencies
+
+- **Hugo**: Change `HUGO_VERSION` in
+  [`toolchain/docker/Dockerfile`](toolchain/docker/Dockerfile) to the desired
+  release of <https://github.com/gohugoio/hugo/releases> and rebuild the
+  images with the `create-docs-images-amd64` and `create-docs-images-arm64`
+  CircleCI workflows (see [CIRCLECI.md](CIRCLECI.md#toolchain-images)). Check the
+  release notes for breaking changes and test a build locally first (see below).
+- **Testing image changes locally**: The compose files and the toolchain use the
+  images by name, so build them with the official names to replace your local
+  copies. Changes to the `Dockerfile` can affect all three images (the stages
+  `hugo`, `arangoproxy`, and `toolchain`), so rebuild all of them, e.g. in the
+  `toolchain/docker` folder (use `arm64` on ARM):
+
+  ```sh
+  docker build --target hugo -t arangodb/docs-hugo:site-amd64 .
+  docker build --target arangoproxy -t arangodb/docs-hugo:arangoproxy-amd64 .
+  docker build --target toolchain -t arangodb/docs-hugo:toolchain-amd64 .
+  ```
+
+  Then run a plain build and an example generation. To go back to the published
+  images, pull them again (e.g. `docker pull arangodb/docs-hugo:site-amd64`).
+- **Go modules of arangoproxy**: arangoproxy is compiled from the source code in
+  the repository when its container starts, so updating the modules doesn't
+  require new images:
+
+  ```sh
+  cd toolchain/arangoproxy
+  go get -u ./...   # all modules, or e.g. go get -u github.com/dlclark/regexp2
+  go mod tidy
+  go mod vendor
+  go build ./... && go test ./...
+  ```
+
+  Commit the changes to `go.mod`, `go.sum`, and `vendor/`. If you raise the `go`
+  version in `go.mod`, rebuild the images to get a matching Go toolchain.
+- **Everything else** (Alpine packages, Go, yq, oasisctl) uses the latest versions
+  at the time the images are built. Rebuild the images regularly to get security
+  updates.
 
 ### Render hooks
 
@@ -177,11 +216,15 @@ Go to the `toolchain/docker/<architecture>` folder, with `<architecture>` being
 either `amd64` for x86-64 CPUs and `arm64` for 64-bit ARM CPUs (including
 Apple silicon like M1).
 
-Run the `docker compose` services using the `docker-compose.pain-build.yml` file.
+Run the `docker compose` services using the `docker-compose.plain-build.yml` file.
 
 ```sh
 docs-hugo/toolchain/docker/amd64> docker compose -f docker-compose.plain-build.yml up --exit-code-from site-frontend
 ```
+
+`--exit-code-from site-frontend` stops the arangoproxy service when the site
+service exits and returns its exit code (for static builds, see below). A live
+server runs until you press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 
 The site will be available at `http://localhost:1313`.
 
@@ -316,10 +359,19 @@ Apple silicon like M1).
 Run the `docker compose` services without specifying a file:
 
 ```sh
-docs-hugo/toolchain/docker/arm64> docker compose up --abort-on-container-exit
+docs-hugo/toolchain/docker/arm64> docker compose up
 ```
 
 The site will be available at `http://localhost:1313`
+
+To stop the toolchain, press <kbd>Ctrl</kbd>+<kbd>C</kbd> once or run
+`docker compose down` in the same folder. This also removes the containers that
+the toolchain started (servers, arangoproxy, site). If an error occurs, the
+toolchain keeps all containers running so that you can inspect them (e.g. their
+logs with `docker logs docs_server_4.x`) until you stop it. If you force-stop it, the
+containers keep running until the next toolchain run removes them. They can
+block the port of a subsequent plain build, for instance. You can remove them
+with `docker ps -aq --filter name=docs_ | xargs docker rm -f`.
 
 ## Work with the documentation content
 

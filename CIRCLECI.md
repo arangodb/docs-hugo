@@ -256,19 +256,40 @@ Invoke Args:
 Both workflows can be manually triggered in the CircleCI web interface
 via **Trigger Pipeline**.
 
-## Other workflows
+## Toolchain images
 
-### Create Docs Images AMD64
+The `create-docs-images-amd64` and `create-docs-images-arm64` workflows rebuild
+the Docker images of the toolchain (`arangodb/docs-hugo:site-<arch>`,
+`arangodb/docs-hugo:arangoproxy-<arch>`, `arangodb/docs-hugo:toolchain-<arch>`)
+and push them to Docker Hub.
+
+Run them after changing `toolchain/docker/Dockerfile`, for example, to update
+Hugo (`HUGO_VERSION`). Changes to the toolchain scripts and the arangoproxy code
+don't require new images, as they are used from the repository when the
+containers start. The other tools and packages of the images use the latest
+versions when the images are built, so also run the workflows regularly to get
+security updates.
+
+The workflows build from the `toolchain/docker/Dockerfile` of the branch you
+trigger them on, cloned from GitHub, so push your changes first. They overwrite
+the images that all builds use (every branch, PRs, plain builds, releases),
+however. Building from a feature branch therefore affects everyone immediately.
+Test changes locally first, then merge them into `main` and build from `main`:
+
+1. Build the images locally with the official names and test them (see the
+   [README](README.md#update-the-toolchain-dependencies)).
+2. Merge the changes to the `Dockerfile` into `main`.
+3. In CircleCI, select the `docs-hugo` project and the `main` branch.
+4. Click **Trigger Pipeline** and add the parameter below with the value
+   `create-docs-images-amd64`, then trigger another pipeline with
+   `create-docs-images-arm64`.
+5. To use the new images locally, pull them (e.g.
+   `docker pull arangodb/docs-hugo:site-amd64`), as images that exist locally
+   aren't updated automatically.
 
 | Parameter type | Name | Value |
 |:---------------|:-----|:------|
-| string | `workflow` | `create-docs-images-amd64` |
-
-### Create Docs Images ARM64
-
-| Parameter type | Name | Value |
-|:---------------|:-----|:------|
-| string | `workflow` | `create-docs-images-arm64` |
+| string | `workflow` | `create-docs-images-amd64` or `create-docs-images-arm64` |
 
 ## Troubleshooting
 
