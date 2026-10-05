@@ -1,7 +1,8 @@
 ---
-title: Lock with `oasisctl`
+title: Lock with _oasisctl_
 menuTitle: Lock
 weight: 16
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Lock resources

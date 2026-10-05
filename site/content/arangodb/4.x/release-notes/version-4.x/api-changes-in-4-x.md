@@ -6,7 +6,7 @@ description: >-
   A summary of the changes to the HTTP API and other interfaces that are relevant
   for developers, like maintainers of drivers and integrations for ArangoDB
 ---
-## HTTP RESTful API
+## HTTP API
 
 ### Behavior changes
 
@@ -344,6 +344,12 @@ The `/_admin/echo` endpoints supporting the `HEAD`, `GET`, `POST`, `PATCH`,
 `PUT`, `DELETE`, and `OPTIONS` HTTP methods have been removed. They returned
 an object with the servers request information, the HTTP request headers, or
 both and were used for debugging purposes.
+
+#### Code execution API removed
+
+The `/_admin/execute` endpoints supporting the `HEAD`, `GET`, `POST`, `PATCH`,
+`PUT`, and `DELETE` HTTP methods have been removed. They allowed to executes
+JavaScript code for administrative purposes on the server.
 
 #### Database `path` removed
 

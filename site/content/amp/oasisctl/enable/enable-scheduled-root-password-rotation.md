@@ -1,7 +1,8 @@
 ---
-title: Enable Scheduled Root Password Rotation with `oasisctl`
+title: Enable Scheduled Root Password Rotation with _oasisctl_
 menuTitle: Enable Scheduled Root Password Rotation
 weight: 1
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Enable scheduled root password rotation

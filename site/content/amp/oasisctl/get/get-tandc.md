@@ -1,7 +1,8 @@
 ---
-title: Get Terms & Conditions with `oasisctl`
+title: Get Terms & Conditions with _oasisctl_
 menuTitle: Get Terms & Conditions
-weight: 33
+weight: 32
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get current terms and conditions or get one by ID

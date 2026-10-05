@@ -21,7 +21,7 @@ be able to downgrade the binaries in this case.
 
 In order to downgrade, the following options are available:
 
-- Restore a backup you took using the tool [_arangodump_](../../components/tools/arangodump/_index.md)
+- Restore a backup you took using the tool [arangodump](../../components/tools/arangodump/_index.md)
   before the upgrade.
 - Start the old package on the data directory backup you took before the upgrade.
 

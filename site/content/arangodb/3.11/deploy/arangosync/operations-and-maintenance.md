@@ -2,7 +2,9 @@
 title: DC2DC Replication Operations & Maintenance
 menuTitle: Operations & Maintenance
 weight: 15
-description: ''
+description: >-
+  How to monitor the status of the ArangoSync components and the ArangoDB
+  clusters, what to look out for, and which metrics endpoints are available
 ---
 ## Operations & Maintenance
 
@@ -17,7 +19,7 @@ support.
 All of the components of ArangoSync provide means to monitor their status.
 Below you'll find an overview per component.
 
-- Sync master & workers: The `arangosync` servers running as either master
+- Sync master & workers: The _arangosync_ servers running as either master
   or worker, provide:
   - A status API, see `arangosync get status`. Make sure that all statuses report `running`.
     For even more detail the following commands are also available:
@@ -26,7 +28,7 @@ Below you'll find an overview per component.
   - A metrics API `GET /metrics`. This API is compatible with Prometheus.
     Sample Grafana dashboards for inspecting these metrics are available.
 
-- ArangoDB cluster: The `arangod` servers that make up the ArangoDB cluster
+- ArangoDB cluster: The _arangod_ servers that make up the ArangoDB cluster
   provide:
   - A log file. This is configurable with settings with a `log.` prefix.
   E.g. `--log.output=file://myLogFile` or `--log.level=info`.
@@ -57,8 +59,8 @@ what information to provide to support so they can assist you best when needed.
 ArangoSync (master & worker) provide metrics that can be used for monitoring the ArangoSync
 solution. These metrics are available using the following HTTPS endpoints:
 
-- GET `/metrics`: Provides metrics in a format supported by Prometheus.
-- GET `/metrics.json`: Provides the same metrics in JSON format.
+- `GET /metrics`: Provides metrics in a format supported by Prometheus.
+- `GET /metrics.json`: Provides the same metrics in JSON format.
 
 Both endpoints include help information per metrics.
 

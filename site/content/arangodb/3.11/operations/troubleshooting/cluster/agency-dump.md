@@ -1,8 +1,10 @@
 ---
-title: How to produce an Agency Dump
+title: How to create an Agency Dump
 menuTitle: Agency Dump
 weight: 5
-description: ''
+description: >-
+  Agency dumps help to analyze the cluster state in case of issues and may be
+  requested by the Arango support team
 ---
 One can read out all information of an _Agency_ in the following way:
 
@@ -36,5 +38,5 @@ curl -k --username root https://<any-coordinator>:<port>/_api/cluster/agency-dum
 
 Should the _Agency_ be down, an _Agency_ dump can still be created
 starting from the database directory of (one of) the _Agents_. Contact the
-Arango support in this case, to obtain more detailed guidelines on
+Arango support, in this case, to obtain more detailed guidelines on
 how to produce the dump.

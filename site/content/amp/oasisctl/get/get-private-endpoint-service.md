@@ -1,7 +1,8 @@
 ---
-title: Get Private Endpoint Service with `oasisctl`
+title: Get Private Endpoint Service with _oasisctl_
 menuTitle: Get Private Endpoint Service
-weight: 25
+weight: 24
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get a Private Endpoint Service the authenticated user has access to

@@ -1,7 +1,8 @@
 ---
-title: Unlock with `oasisctl`
+title: Unlock with _oasisctl_
 menuTitle: Unlock
 weight: 27
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Unlock resources

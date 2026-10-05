@@ -34,15 +34,15 @@ topic for messages that contain a topic, e.g.
 ```
 
 Alternatively, the log IDs can be suppressed in all log messages by setting the startup
-option `--log.ids false` when starting arangod or any of the client tools.
+option `--log.ids false` when starting _arangod_ or any of the client tools.
 
 ## Startup options
 
 The hidden startup option `--rocksdb.delayed_write_rate` was renamed to the more
 consistent `--rocksdb.delayed-write-rate`. When the old option name is used, the 
-arangod startup will be aborted with a descriptive error message.
+_arangod_ startup will be aborted with a descriptive error message.
 
-## HTTP REST API
+## HTTP API
 The following APIs have been added:
 
 - [The new Stream Transaction API](../../develop/http-api/transactions/_index.md)
@@ -147,15 +147,15 @@ The attribute key `openssl-version` in the server/client tool version details
 output was renamed to `openssl-version-compile-time`.
 
 This change affects the output produced when starting one of the ArangoDB
-executables (e.g. arangod, arangosh) with the `--version` command. It also 
-changes the attribute name in the detailed response of the `/_api/version` REST API.
+executables (e.g. _arangod_, _arangosh_) with the `--version` command. It also 
+changes the attribute name in the detailed response of the `/_api/version` HTTP API.
 
 ### Overcommit settings
 
 On Linux, ArangoDB will now show a startup warning in case the kernel setting 
 `vm.overcommit_memory` is set to a value of 2 and the jemalloc memory allocator 
 is in use. This combination does not play well together, and may lead to the 
-kernel denying arangod's memory allocation requests in more cases than necessary.
+kernel denying _arangod_'s memory allocation requests in more cases than necessary.
 
 ## Usage of V8
 

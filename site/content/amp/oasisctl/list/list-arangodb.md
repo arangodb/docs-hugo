@@ -1,7 +1,8 @@
 ---
-title: List ArangoDB with `oasisctl`
+title: List ArangoDB with _oasisctl_
 menuTitle: List ArangoDB
 weight: 2
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List ArangoDB information

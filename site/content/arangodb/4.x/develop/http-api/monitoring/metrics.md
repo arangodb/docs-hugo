@@ -28,7 +28,7 @@ paths:
       operationId: getMetrics
       description: |
         Returns the instance's current metrics in Prometheus format.
-        
+
         Whether the endpoint is available depends on the setting of
         the [`--server.export-metrics-api` startup option](../../../components/arangodb-server/options.md#--serverexport-metrics-api).
         For additional document read and write metrics, the
@@ -104,7 +104,7 @@ paths:
       operationId: getUsageMetrics
       description: |
         Returns detailed shard usage metrics on DB-Servers.
-        
+
         These metrics can be enabled by setting the
         [`--server.export-shard-usage-metrics` startup option](../../../components/arangodb-server/options.md#--serverexport-shard-usage-metrics)
         to `enabled-per-shard` to make DB-Servers collect per-shard

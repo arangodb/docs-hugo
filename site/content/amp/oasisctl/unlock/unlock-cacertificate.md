@@ -1,7 +1,8 @@
 ---
-title: Unlock CA Certificate with `oasisctl`
+title: Unlock CA Certificate with _oasisctl_
 menuTitle: Unlock CA Certificate
 weight: 1
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Unlock a CA certificate, so it can be deleted

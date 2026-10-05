@@ -1,7 +1,8 @@
 ---
-title: Add Group with `oasisctl`
+title: Add Group with _oasisctl_
 menuTitle: Add Group
 weight: 3
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Add group resources

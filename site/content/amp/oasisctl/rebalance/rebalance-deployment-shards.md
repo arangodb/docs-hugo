@@ -1,7 +1,8 @@
 ---
-title: Rebalance Deployment Shards with `oasisctl`
+title: Rebalance Deployment Shards with _oasisctl_
 menuTitle: Rebalance Deployment Shards
 weight: 2
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Rebalance shards of a deployment

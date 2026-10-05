@@ -30,7 +30,7 @@ with an [Analyzer](../../analyzers.md), for instance, to tokenize text into word
 ### Basic definition
 
 For example, you can create an inverted index for the attributes `value1` and
-`value2` with the following command in arangosh:
+`value2` with the following command in _arangosh_:
 
 ```js
 db.<collection>.ensureIndex({
@@ -208,7 +208,8 @@ Attribute paths specified in the `primarySort` option can be utilized for
 projections. Therefore, you don't need to add them to `storedValues`, too.
 
 For each object in the `storedValues` array, you can additionally set a
-`compression` (`lz4` by default) and `cache` option (`false` by default):
+`compression` (`lz4` by default) and `cache` option (`false` by default, and
+available in the Enterprise Edition only):
 
 ```js
 db.<collection>.ensureIndex({
@@ -313,7 +314,7 @@ Also see [Dealing with eventual consistency](../../arangosearch/_index.md#dealin
 ## Examples
 
 The following examples demonstrate how you can set up and use inverted indexes
-with the JavaScript API of arangosh. See the
+with the JavaScript API of _arangosh_. See the
 [`ensureIndex()` method](_index.md#creating-an-index)
 description for details. 
 

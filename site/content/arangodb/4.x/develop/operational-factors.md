@@ -108,7 +108,7 @@ someone else in the meantime. By specifying a document's previous revision ID
 you can avoid losing updates on these documents without noticing it.
 
 You can specify the revision via the `_rev` field inside the document or via
-the `If-Match: <revision>` HTTP header in the documents REST API.
+the `If-Match: <revision>` HTTP header in the documents HTTP API.
 In the _arangosh_ you can perform such an operation like this:
 
 ```js
@@ -133,7 +133,7 @@ FOR i IN 1..1000
 
 Indexes can improve the performance of AQL queries drastically. Queries that
 frequently filter on or one more fields can be made faster by creating an index
-(in arangosh via the _ensureIndex_ command, the web interface or your specific
+(in _arangosh_ via the `<coll>.ensureIndex()` function, the web interface, or your specific
 client driver). There is already an automatic (and non-deletable) primary index
 in every collection on the `_key` and `_id` fields as well as the edge index
 on `_from` and `_to` (for edge collections).

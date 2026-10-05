@@ -1,7 +1,8 @@
 ---
-title: Delete Deployment with `oasisctl`
+title: Delete Deployment with _oasisctl_
 menuTitle: Delete Deployment
 weight: 9
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete a deployment the authenticated user has access to

@@ -3,7 +3,7 @@ title: ArangoDB Server Options
 menuTitle: Options
 weight: 5
 description: >-
-  The startup options of the `arangod` executable
+  The startup options of the _arangod_ executable
 pageToc:
   maxHeadlineLevel: 2
 ---
@@ -59,6 +59,6 @@ configuration files and to learn more about startup options in general.
 
 See
 [Fetch Current Configuration Options](../../operations/administration/configuration.md#fetch-current-configuration-options)
-if you want to query the `arangod` server for the current settings at runtime.
+if you want to query the _arangod_ server for the current settings at runtime.
 
 {{% program-options name="arangod" %}}

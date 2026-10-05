@@ -1,7 +1,8 @@
 ---
-title: Update Policy Add Binding with `oasisctl`
+title: Update Policy Add Binding with _oasisctl_
 menuTitle: Update Policy Add Binding
-weight: 19
+weight: 18
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Add a role binding to a policy

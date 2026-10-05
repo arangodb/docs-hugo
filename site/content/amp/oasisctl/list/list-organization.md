@@ -1,7 +1,8 @@
 ---
-title: List Organization with `oasisctl`
+title: List Organization with _oasisctl_
 menuTitle: List Organization
-weight: 29
+weight: 27
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List organization resources

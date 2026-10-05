@@ -91,7 +91,7 @@ db._createDatabase("newDB", {}, [{ username: "newUser", passwd: "123456", active
 Changes the current database to the specified database.
 Note that the database specified by `name` must already exist.
 
-When performing this command from arangosh, the current credentials (username
+When performing this command from _arangosh_, the current credentials (username
 and password) will be re-used. These credentials might not be valid to
 connect to the database specified by `name`. Additionally, the database can
 be accessed from certain endpoints only. In this case, switching the

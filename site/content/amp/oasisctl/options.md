@@ -1,7 +1,8 @@
 ---
-title: The `oasisctl` command
+title: Command reference for _oasisctl_
 menuTitle: Options
 weight: 1
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Arango Managed Platform (AMP)
@@ -39,7 +40,7 @@ oasisctl [flags]
 * [oasisctl lock](lock/_index.md)	 - Lock resources
 * [oasisctl login](login.md)	 - Log in to the Arango Managed Platform (AMP) using an API key
 * [oasisctl logs](logs.md)	 - Get logs of the servers of a deployment the authenticated user has access to
-* [oasisctl pause](pause/_index.md)	 - Pause resources
+* [oasisctl pause](pause.md)	 - Pause resources
 * [oasisctl rebalance](rebalance/_index.md)	 - Rebalance resources
 * [oasisctl reject](reject/_index.md)	 - Reject invites
 * [oasisctl renew](renew/_index.md)	 - Renew keys & tokens

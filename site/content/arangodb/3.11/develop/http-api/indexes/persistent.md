@@ -1,8 +1,9 @@
 ---
-title: HTTP interface for persistent indexes
+title: Persistent index HTTP API
 menuTitle: Persistent
 weight: 5
-description: ''
+description: >-
+  HTTP interface reference for creating indexes of type `persistent`
 ---
 {{< info >}}
 The index types `hash` and `skiplist` are aliases for the `persistent` index
@@ -61,7 +62,7 @@ paths:
               properties:
                 type:
                   description: |
-                    Must be equal to `"persistent"`.
+                    Needs to be set to `"persistent"`.
                   type: string
                   example: persistent
                 name:
@@ -113,8 +114,9 @@ paths:
                   default: false
                 sparse:
                   description: |
-                    Whether create a sparse index that excludes documents with at least
-                    one of the `fields` missing or set to `null`.
+                    Whether to create a sparse index that excludes documents with
+                    at least one of the attributes for indexing missing or set to
+                    `null`. These attributes are defined by `fields`.
                   type: boolean
                   default: false
                 deduplicate:

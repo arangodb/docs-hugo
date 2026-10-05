@@ -4,7 +4,7 @@ menuTitle: '@arangodb'
 weight: 5
 description: >-
   The `@arangodb` module provides the `db` object and AQL helper methods for
-  arangosh
+  _arangosh_
 ---
 `const arangodb = require('@arangodb')`
 

@@ -105,6 +105,11 @@ paths:
     post:
       operationId: rotateEncryptionAtRestKey
       description: |
+        {{</* warning */>}}
+        The encryption at rest key rotation is an **experimental** feature,
+        and its APIs and behavior are still subject to change. 
+        {{</* /warning */>}}
+
         Change the user-supplied encryption at rest key by sending a request without
         payload to this endpoint. The file supplied via `--rocksdb.encryption-keyfolder`
         will be reloaded and the internal encryption key will be re-encrypted with the
@@ -115,7 +120,7 @@ paths:
       responses:
         '200':
           description: |
-            This API will return HTTP 200 if everything is ok
+            Encryption at rest key successfully rotated.
           content:
             application/json:
               schema:
@@ -149,13 +154,19 @@ paths:
                         type: array
                         items:
                           type: object
+                          required:
+                            - sha256
+                          properties:
+                            sha256:
+                              type: string
+                              example: e1b85b27d6bcb05846c18e6a48f118e89f0c0587140de9fb3359f8370d0dba08
         '403':
           description: |
-            This API will return HTTP 403 FORBIDDEN if it is not called with
-            superuser rights.
+            The endpoint needs to be called with superuser rights.
         '404':
           description: |
-            This API will return HTTP 404 in case encryption key rotation is disabled.
+            The encryption key rotation is disabled via the
+            `--rocksdb.encryption-key-rotation` startup option.
       tags:
         - Security
 ```

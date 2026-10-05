@@ -1,7 +1,8 @@
 ---
-title: Revoke Metrics Token with `oasisctl`
+title: Revoke Metrics Token with _oasisctl_
 menuTitle: Revoke Metrics Token
 weight: 4
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Revoke a metrics token for a deployment

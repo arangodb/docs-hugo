@@ -22,10 +22,11 @@ paths:
     get:
       operationId: listQueryCachePlans
       description: |
-        Returns an array containing information about each AQL execution plan
-        currently stored in the cache of the selected database.
+        Returns metadata about the AQL execution plans currently stored in the
+        query plan cache of the selected database. The execution plans
+        themselves aren't included.
 
-        This requires read privileges for the current database. In addition, only those
+        This requires read privileges for the selected database. In addition, only those
         query plans are returned for which the current user has at least read permissions
         on all collections and Views included in the query.
       parameters:
@@ -40,16 +41,17 @@ paths:
       responses:
         '200':
           description: |
-            The list of cached query plans.
+            The query plan cache entries are returned successfully.
           content:
             application/json:
               schema:
                 description: |
-                  The entries of the query plan cache.
+                  A list of query plan cache entries.
                 type: array
                 items:
                   description: |
-                    The properties of a cache entry.
+                    Each entry describes a cached query plan but doesn't include
+                    the execution plan itself.
                   type: object
                   required:
                     - hash
@@ -142,10 +144,10 @@ paths:
     delete:
       operationId: deleteAqlQueryPlanCache
       description: |
-        Clears all execution plans stored in the AQL query plan cache for the
-        current database.
+        Clears all AQL execution plans stored in the query plan cache for the
+        selected database.
 
-        This requires write privileges for the current database.
+        This requires write privileges for the selected database.
       parameters:
         - name: database-name
           in: path
@@ -158,7 +160,7 @@ paths:
       responses:
         '200':
           description: |
-            The query plan cache has been cleared for the current database.
+            The query plan cache has been cleared for the selected database.
           content:
             application/json:
               schema:

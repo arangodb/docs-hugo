@@ -11,7 +11,7 @@ collections and the async-job lifecycle, see [Architecture](../architecture.md).
 
 {{< info >}}
 **Field names are lowerCamelCase over HTTP.** This reference uses the
-protobuf field names, such as `partition_id` or `job_id`. The REST gateway
+protobuf field names, such as `partition_id` or `job_id`. The HTTP API
 emits the JSON names instead, so an actual response carries `partitionId` and
 `jobId`. Convert accordingly when you read a response or build a request body.
 {{< /info >}}
@@ -82,7 +82,7 @@ replaces documents across all three layers. See
    processing in the background. **No `job_id` is returned**.
 3. Monitor via the **platform service status** until the status reaches
    `service_completed` or a terminal failure status.
-4. Query ArangoDB or call the [Retriever](../../retriever/) against the
+4. Query ArangoDB or call [AutoRAG](../../autorag/) against the
    resulting knowledge graph.
 
 ### Standalone batch

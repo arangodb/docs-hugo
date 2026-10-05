@@ -1,7 +1,8 @@
 ---
-title: Create Organization with `oasisctl`
+title: Create Organization with _oasisctl_
 menuTitle: Create Organization
-weight: 14
+weight: 13
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Create a new organization

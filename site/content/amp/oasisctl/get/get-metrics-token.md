@@ -1,7 +1,8 @@
 ---
-title: Get Metrics Token with `oasisctl`
+title: Get Metrics Token with _oasisctl_
 menuTitle: Get Metrics Token
 weight: 13
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get a metrics token

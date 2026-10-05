@@ -1,7 +1,8 @@
 ---
-title: Delete Example with `oasisctl`
+title: Delete Example with _oasisctl_
 menuTitle: Delete Example
 weight: 10
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete example ...

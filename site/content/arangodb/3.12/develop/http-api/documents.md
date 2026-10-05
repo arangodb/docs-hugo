@@ -492,6 +492,10 @@ paths:
               return a unique constraint violation error so that the insert operation
               fails. This is also the default behavior in case the overwrite mode is
               not set, and the `overwrite` flag is `false` or not set either.
+
+              Note that operations with `overwriteMode` other than `"conflict"` require
+              a `_key` attribute in the request payload, therefore they can only be
+              performed on collections sharded by `_key`.
           schema:
             type: string
             enum: [ignore, replace, update, conflict]
@@ -2060,6 +2064,10 @@ paths:
               return a unique constraint violation error so that the insert operation
               fails. This is also the default behavior in case the overwrite mode is
               not set, and the `overwrite` flag is `false` or not set either.
+
+              Note that operations with `overwriteMode` other than `"conflict"` require
+              a `_key` attribute in the request payload, therefore they can only be
+              performed on collections sharded by `_key`.
           schema:
             type: string
             enum: [ignore, replace, update, conflict]

@@ -147,29 +147,20 @@ function showSidebarHandler() {
 
 var isMobile=false;
 
-function decodeHtmlEntities(text) {
-  var ta = document.createElement("textarea");
-  ta.innerHTML = text;
-  return ta.value;
-}
-
 function replaceArticle(href, newDoc) {
-  var re = /<title>(.*?)<\/title>/;
-  var match = re.exec(newDoc);
+  // Inert document: nothing loads or runs until a node is inserted into ours.
+  var parsed = new DOMParser().parseFromString(newDoc, "text/html");
+  var newContainer = parsed.querySelector(".container-main");
+  var currentContainer = document.querySelector(".container-main");
 
-  /* TODO: Replace with DOMParser?
-  const tempDiv = document.createElement('div');
-  tempDiv.innerHTML = newDoc;
-  const newContainer = tempDiv.querySelector(".container-main");
-  const currentContainer = document.querySelector(".container-main");
-  
   if (newContainer && currentContainer) {
-    currentContainer.parentNode.replaceChild(newContainer, currentContainer);
+    currentContainer.replaceWith(newContainer);
+  } else {
+    console.error("No .container-main to swap in from " + href);
   }
-  */
-  $(".container-main").replaceWith($(".container-main", newDoc));
-  if (match) {
-    document.title = decodeHtmlEntities(match[1]);
+  // Decoded by the parser, unlike a title scraped out of the response text.
+  if (parsed.title) {
+    document.title = parsed.title;
   }
 
   // Avoid `location.hash = ...` even when the value matches: Firefox runs the navigation
@@ -576,10 +567,17 @@ function trackPageView(title, urlPath) {
   }
 }
 
+// Hugo marks every code block <pre> with tabindex="0" for scrollable code. Code wraps here
+// and never scrolls, so the stop leads nowhere.
+function dropCodeBlockTabStops() {
+  document.querySelectorAll('article pre[tabindex]').forEach(el => el.removeAttribute('tabindex'));
+}
+
 function initArticle(url) {
   restoreTabSelections();
   initCopyToClipboard();
   addShowMoreButton('article');
+  dropCodeBlockTabStops();
   hideEmptyOpenapiDiv();
   goToTop();
   styleImages();
@@ -691,8 +689,20 @@ function switchTab(tabGroup, tabId, event) {
       var topBefore = clickedTab.getBoundingClientRect().top;
   }
 
-  allTabItems.forEach(item => item.classList.remove("selected"));
-  targetTabItems.forEach(item => item.classList.add("selected"));
+  allTabItems.forEach(item => {
+    item.classList.remove("selected");
+    if (item.getAttribute("role") === "tab") {
+      item.setAttribute("aria-selected", "false");
+      item.tabIndex = -1;
+    }
+  });
+  targetTabItems.forEach(item => {
+    item.classList.add("selected");
+    if (item.getAttribute("role") === "tab") {
+      item.setAttribute("aria-selected", "true");
+      item.tabIndex = 0;
+    }
+  });
   targetTabItems.forEach(item => addShowMoreButton(item));
   
   if (event) {
@@ -712,6 +722,32 @@ function switchTab(tabGroup, tabId, event) {
       tabSelections[tabGroup] = tabId;
       window.localStorage.setItem("tab-selections", JSON.stringify(tabSelections));
   }
+}
+
+// Arrow key navigation within a tablist; activation follows focus.
+function handleTabKeydown(event) {
+  const tab = event.target;
+  if (!tab || tab.getAttribute("role") !== "tab") return;
+  const tablist = tab.closest("[role='tablist']");
+  if (!tablist) return;
+
+  const tabsInList = Array.from(tablist.querySelectorAll("[role='tab']"));
+  const current = tabsInList.indexOf(tab);
+  if (current === -1) return;
+
+  var next;
+  switch (event.key) {
+    case "ArrowRight": next = (current + 1) % tabsInList.length; break;
+    case "ArrowLeft":  next = (current - 1 + tabsInList.length) % tabsInList.length; break;
+    case "Home":       next = 0; break;
+    case "End":        next = tabsInList.length - 1; break;
+    default: return;
+  }
+
+  event.preventDefault();
+  const target = tabsInList[next];
+  switchTab(target.getAttribute("data-tab-group"), target.getAttribute("data-tab-item"), event);
+  target.focus();
 }
 
 function restoreTabSelections() {
@@ -788,6 +824,47 @@ function hideEmptyOpenapiDiv() {
 
 
 /*
+    Code blocks
+
+*/
+
+// Chroma renders the code blocks, so the copy button cannot come from a template.
+// Clicks go through handleDocumentClick via .copy-trigger/.copy-ancestor/.copy-this.
+function initCopyToClipboard() {
+    document.querySelectorAll("article pre > code").forEach(code => {
+        const pre = code.parentElement;
+        if (pre.querySelector(":scope > .copy-trigger")) return; // Already initialized
+
+        pre.classList.add("copy-ancestor");
+        code.classList.add("copy-this");
+
+        const button = document.createElement("button");
+        button.className = "copy-to-clipboard-button copy-trigger";
+        button.setAttribute("type", "button");
+        button.setAttribute("title", "Copy to clipboard");
+        button.setAttribute("aria-label", "Copy to clipboard");
+        code.before(button);
+    });
+}
+
+function addShowMoreButton(parentElem) {
+    const roots = typeof parentElem === "string" ? document.querySelectorAll(parentElem) : [parentElem];
+    roots.forEach(root => {
+        root.querySelectorAll("pre > code").forEach(code => {
+            // n-times line-height * root em, larger than to-be-applied max-height to always reveal some lines
+            // False for currently collapsed code ("Show output" with display: none)
+            if (!code.classList.contains("code-long") && code.scrollHeight > 20 * 1.8 * 16) {
+                code.classList.add("code-long");
+                const showMore = document.createElement("button");
+                showMore.className = "code-show-more";
+                code.after(showMore);
+            }
+        });
+    });
+}
+
+
+/*
     Common custom functions
 
 */
@@ -821,6 +898,23 @@ function copyURI(evt) {
       return;
     }
     updateHistory(url);
+}
+
+// Copies the .copy-this text within the trigger's .copy-ancestor. CSS shows the checkmark.
+function copyFromScope(trigger) {
+  const scope = trigger.closest(".copy-ancestor");
+  const source = scope && scope.querySelector(".copy-this");
+  if (!source) {
+    console.log("Copy button without a .copy-this element in its .copy-ancestor");
+    return;
+  }
+
+  navigator.clipboard.writeText(source.textContent).then(() => {
+    trigger.classList.add("tooltipped");
+    setTimeout(() => trigger.classList.remove("tooltipped"), 1000);
+  }, () => {
+    console.log("clipboard copy failed");
+  });
 }
 
 function toggleExpandShortcode(event) {
@@ -969,23 +1063,12 @@ function handleDocumentClick(event) {
         return;
     }
 
-    // Endpoint copy button clicks
-    if (closest('.clipboard-copy')) {
+    // Copy button clicks (endpoint URLs, code blocks)
+    const copyTrigger = closest('.copy-trigger');
+    if (copyTrigger) {
         event.preventDefault();
-        const copyAncestor = target.closest('.copy-ancestor');
-        if (!copyAncestor) {
-            console.log("No copy ancestor found");
-            return;
-        }
-        const copyElement = copyAncestor.querySelector('.copy-this');
-        if (copyElement) {
-            navigator.clipboard.writeText(copyElement.textContent).then(() => {
-                target.classList.add("tooltipped");
-                setTimeout(function() {
-                    target.classList.remove("tooltipped");
-                }, 1000);
-            });
-        }
+        copyFromScope(copyTrigger);
+        return;
     }
   
     // Code show more button clicks
@@ -1029,7 +1112,8 @@ function handleDocumentClick(event) {
     }
   
     // Copy URI clicks
-    if (closest('.header-link')) {
+    if (closest('.header-link, .openapi-property-link')) {
+        if (openInNew) return;
         event.preventDefault();
         copyURI(event);
         return;
@@ -1072,6 +1156,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add central click handler to document
     document.addEventListener("click", handleDocumentClick);
     document.addEventListener("change", handleDocumentChange);
+    document.addEventListener("keydown", handleTabKeydown);
 
     var isMobile = window.innerWidth <= 768;
     if (isMobile) {

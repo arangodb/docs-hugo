@@ -1,7 +1,8 @@
 ---
-title: Update Policy Add with `oasisctl`
+title: Update Policy Add with _oasisctl_
 menuTitle: Update Policy Add
-weight: 18
+weight: 17
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Add to a policy

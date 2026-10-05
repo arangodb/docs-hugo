@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for documents
+title: Document HTTP API
 menuTitle: Documents
 weight: 30
 description: >-
-  The HTTP API for documents lets you create, read, update, and delete documents
+  The HTTP interface for documents lets you create, read, update, and delete documents
   in collections, either one or multiple at a time
 ---
 The basic operations for documents are mapped to the standard HTTP methods:

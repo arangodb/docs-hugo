@@ -284,7 +284,7 @@ func init() {
 					info["title"] = "ArangoDB Core API"
 				}
 				if info["summary"] == nil {
-					info["summary"] = "The RESTful HTTP API of the ArangoDB Core Database System"
+					info["summary"] = "The HTTP API of the ArangoDB Core Database System"
 				}
 				if info["contact"] == nil {
 					info["contact"] = map[string]interface{}{"name": "ArangoDB Inc.", "url": "https://arango.ai"}
@@ -322,6 +322,17 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 	pageVersion := headers.Get("Page-Version")
 	serviceName := headers.Get("Service-Name")
 	apiVersionsRaw := headers.Get("API-Versions")
+
+	OpenapiFormatter.EditDescriptions(spec)
+	if leftovers := OpenapiFormatter.LeftoverShortcodes(spec); len(leftovers) > 0 {
+		models.Logger.Printf("[ERROR] Unsupported Hugo shortcode(s) %s in openapi spec, endpoint: %s, summary: %s", strings.Join(leftovers, " "), firstSpecPath(spec), summary)
+		OpenapiSpecErrorMutex.Lock()
+		if OpenapiSpecError == nil {
+			OpenapiSpecError = fmt.Errorf("unsupported Hugo shortcode(s) %s in openapi spec, endpoint: %s, summary: %s", strings.Join(leftovers, " "), firstSpecPath(spec), summary)
+		}
+		OpenapiSpecErrorMutex.Unlock()
+		return
+	}
 
 	var apiVersions []string
 	if serviceName == "arangodb" || serviceName == "" {

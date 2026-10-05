@@ -1,0 +1,71 @@
+---
+
+# ArangoDB AI Suite Release v4.0.1
+
+version: 4.0.1
+date: May 2026
+
+packages:
+  arangodb-platform-ui:
+    version: v1.4.4
+  arangodb-platform-ui-server:
+    version: v1.4.4
+  arangodb-core-ui:
+    version: v1.4.4
+  arango-control-plane:
+    version: v0.0.20
+  arangodb-graph-rag:
+    version: v0.0.16
+  arangodb-graphrag-retriever:
+    version: v0.0.17
+  arangodb-graphrag-importer:
+    version: v0.0.28
+  arangodb-llm-host:
+    version: v0.0.18
+  arangodb-gral:
+    version: v1.1.11
+  arangodb-notebook-images:
+    version: v0.5.54
+  arangodb-mlflow:
+    version: v0.1.5
+  file-manager:
+    version: v0.0.17
+  arangodb-ml-api:
+    version: v1.0.13
+  arangodb-featurization-cpu:
+    version: v1.0.11
+  arangodb-training-cpu:
+    version: v1.0.10
+  arangodb-training-gpu:
+    version: v1.0.10
+  arangodb-prediction-cpu:
+    version: v1.0.13
+  arangodb-prediction-gpu:
+    version: v1.0.13
+  arango-cypher2aql:
+    version: v0.9.6
+  arangodb-autograph:
+    version: v0.0.11
+  arango-user-defined:
+    version: v0.0.3
+  arangodb-reasoner:
+    version: v0.0.7
+  arangodb-mcp-server:
+    version: v0.0.9
+releases:
+  arangodb-platform-ui:
+    package: arangodb-platform-ui
+  arangodb-platform-ui-server:
+    package: arangodb-platform-ui-server
+  arangodb-core-ui:
+    package: arangodb-core-ui
+  arango-control-plane:
+    package: arango-control-plane
+  arangodb-mlflow:
+    package: arangodb-mlflow
+    overrides:
+      mlflow_artifact_target: file-manager
+  file-manager:
+    package: file-manager
+  arangodb-ml-api:
+    package: arangodb-ml-api

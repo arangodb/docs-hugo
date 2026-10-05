@@ -21,7 +21,7 @@ startup parameters, installation in a cluster and so on, see
 [Deploy](../deploy/_index.md).
 
 <!--
-The web interface will become available shortly after you started `arangod`.
+The web interface will become available shortly after you started _arangod_.
 
 By default, authentication is enabled. The default user is `root`.
 Depending on the installation method used, the installation process either
@@ -75,7 +75,7 @@ You should create a database for your application together with a
 user that has access rights to this database. See
 [Managing Users](../operations/administration/user-management/_index.md).
 
-Use the *arangosh* to create a new database and user.
+Use the _arangosh_ to create a new database and user.
 
 ```js
 arangosh> db._useDatabase("_system");

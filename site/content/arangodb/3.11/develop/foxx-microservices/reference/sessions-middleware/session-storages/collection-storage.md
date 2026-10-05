@@ -2,7 +2,9 @@
 title: Foxx Collection Session Storage
 menuTitle: Collection storage
 weight: 5
-description: ''
+description: >-
+  The collection session storage persists sessions to a collection in the
+  database
 ---
 `const collectionStorage = require('@arangodb/foxx/sessions/storages/collection');`
 

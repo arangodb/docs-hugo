@@ -1,8 +1,9 @@
 ---
-title: HTTP interface for multi-dimensional indexes
+title: Multi-dimensional index HTTP API
 menuTitle: Multi-dimensional
 weight: 20
-description: ''
+description: >-
+  HTTP interface reference for creating indexes of type `zkd`
 ---
 ## Create a multi-dimensional index
 
@@ -42,7 +43,7 @@ paths:
               properties:
                 type:
                   description: |
-                    Must be equal to `"zkd"`.
+                    Needs to be set to `"zkd"`.
                   type: string
                   example: zkd
                 name:
@@ -62,7 +63,7 @@ paths:
                     type: string
                 fieldValueTypes:
                   description: |
-                    Must be equal to `"double"`. Currently only doubles are supported as values.
+                    Needs to be set to `"double"`. Currently only doubles are supported as values.
                   type: string
                 unique:
                   description: |

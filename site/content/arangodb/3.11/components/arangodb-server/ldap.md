@@ -1,9 +1,9 @@
 ---
-title: ArangoDB Server LDAP Options
+title: LDAP options of the ArangoDB server
 menuTitle: LDAP
 weight: 10
 description: >-
-  LDAP authentication options in the ArangoDB server
+  The LDAP-related startup options of _arangod_ and how to use LDAP authentication
 ---
 {{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
@@ -354,7 +354,7 @@ Note that the actual database and collection access rights
 are configured in ArangoDB itself by roles in the users module.
 The role name is always prefixed with `:role:`, e.g.: `:role:project-a`
 and `:role:project-b` respectively. You can use the normal user
-permissions tools in the Web interface or `arangosh` to configure these.
+permissions tools in the Web interface or _arangosh_ to configure these.
 
 ### Roles attribute
 

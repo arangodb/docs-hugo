@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for databases
+title: Database HTTP API
 menuTitle: Databases
 weight: 20
 description: >-
-  The HTTP API for databases lets you create and delete databases, list
+  The HTTP interface for databases lets you create and delete databases, list
   available databases, and get information about specific databases
 ---
 The HTTP interface for databases provides operations to create and drop
@@ -18,7 +18,7 @@ All database management operations can only be accessed via the default
 
 ## Addresses of databases
 
-Any operation triggered via ArangoDB's RESTful HTTP API is executed in the
+Any operation triggered via ArangoDB's HTTP API is executed in the
 context of exactly one database. The database name is read from the first part
 of the request URI path (e.g. `/_db/mydb/...`). If the request URI does not
 contain a database name, it defaults to `/_db/_system`.

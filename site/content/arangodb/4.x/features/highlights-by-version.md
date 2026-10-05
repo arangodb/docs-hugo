@@ -39,7 +39,7 @@ See [ArangoDB Editions](_index.md#arangodb-editions) for details.
   than the currently stored one when updating or replacing documents.
 
 - [**Improved dump performance**](../release-notes/version-3.12/whats-new-in-3-12.md#improved-dump-performance-and-size)
-  Create logical backups faster with arangodump thanks to parallel dumping at
+  Create logical backups faster with _arangodump_ thanks to parallel dumping at
   the shard level, as well as transfer compression and file splitting.
 
 - [**Request and response compression**](../release-notes/version-3.12/whats-new-in-3-12.md#transparent-compression-of-requests-and-responses-between-arangodb-servers-and-client-tools)
@@ -323,7 +323,7 @@ Also see [What's New in 3.6](../release-notes/version-3.6/whats-new-in-3-6.md).
   index to utilize.
 
 - [**Data Masking**](../components/tools/arangodump/maskings.md):
-  arangodump provides a convenient way to extract production data but mask
+  _arangodump_ provides a convenient way to extract production data but mask
   critical information that should not be visible.
 
 **Enterprise Edition**
@@ -427,6 +427,12 @@ Also see [What's New in 3.3](../release-notes/version-3.3/whats-new-in-3-3.md).
   We implemented distributed graph processing with Pregel to discover hidden
   patterns, identify communities and perform in-depth analytics of large graph
   data sets.
+
+- **Fault-Tolerant Foxx**: The Foxx management
+  internals have been rewritten from the ground up to make sure
+  multi-coordinator cluster setups always keep their services in sync and
+  new Coordinators are fully initialized even when all existing Coordinators
+  are unavailable.
 
 **Enterprise Edition**
 

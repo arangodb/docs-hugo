@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for authentication
+title: Authentication HTTP API
 menuTitle: Authentication
 weight: 10
 description: >-
@@ -8,13 +8,18 @@ description: >-
   user credentials or the JWT secret of the deployment
 ---
 Client authentication can be achieved by using the `Authorization` HTTP header
-in client requests. ArangoDB supports authentication via HTTP Basic or JWT.
+in client requests. ArangoDB supports authentication via the following:
 
-Authentication is turned on by default for all internal database APIs but
-turned off for custom Foxx apps. To toggle authentication for incoming
+- [**HTTP Basic Authentication**](#http-basic-authentication) with a username
+  and a password.
+- [**Bearer Token Authentication**](#bearer-token-authentication) using JWT,
+  which can be session tokens for regular users or non-expiring superuser tokens.
+
+Authentication is enabled by default for all internal database APIs but
+disabled for custom Foxx apps. To toggle authentication for incoming
 requests to the internal database APIs, use the
 [`--server.authentication`](../../components/arangodb-server/options.md#--serverauthentication)
-startup option. This option is turned on by default so authentication is
+startup option. This option is enabled by default so authentication is
 required for the database APIs.
 
 {{< security >}}
@@ -120,7 +125,7 @@ containing the `preferred_username` field with the username.
 You can either let ArangoDB generate this token for you via an API call
 or you can generate it yourself (only if you know the JWT secret).
 
-ArangoDB offers a RESTful API to generate user tokens for you if you know the
+ArangoDB offers an HTTP API to generate user tokens for you if you know the
 username and password. To do so, send a POST request to this endpoint:
 
 ```
@@ -276,8 +281,8 @@ curl -v -H "Authorization: bearer $(jwtgen -s <my-secret> -e 3600 -a "HS256" -c 
 
 {{< tag "ArangoDB Enterprise Edition" >}}
 
-To reload the JWT secrets of a local arangod process without a restart, you
-may use the following RESTful API. A `POST` request reloads the secret, a
+To reload the JWT secrets of a local _arangod_ process without a restart, you
+may use the following HTTP API. A `POST` request reloads the secret, a
 `GET` request may be used to load information about the currently used secrets.
 
 ### Get information about the loaded JWT secrets

@@ -89,7 +89,7 @@ For the chat and embedding models validated for the Importer, see
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
 - `project_name`: The project name created via the
-   [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
+   [web interface](../autograph/web-interface.md#create-an-autograph-project) or
   [Project API](../../platform-suite/control-plane-acp/api.md#create-a-project).
   This name is used as a prefix for all ArangoDB collections (for example, a
   project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
@@ -259,7 +259,7 @@ an OpenAI-compatible endpoint:
 
 The Importer maps a single completion cap to OpenAI-style chat calls
 (`max_completion_tokens` for newer models that require it, `max_tokens` otherwise)
-and derives an internal prompt-packing budget that GraphRAG uses when building
+and derives an internal prompt-packing budget it uses when building
 community reports. The values are auto-detected from the chat model name, so
 common OpenAI models work without manual tuning. You can override them with the
 following environment variables (also accepted as lower-case JSON keys in the

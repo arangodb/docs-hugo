@@ -1,7 +1,8 @@
 ---
-title: Get Backup Policy with `oasisctl`
+title: Get Backup Policy with _oasisctl_
 menuTitle: Get Backup Policy
 weight: 5
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get an existing backup policy
