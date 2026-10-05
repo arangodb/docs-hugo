@@ -2416,10 +2416,18 @@ body.image-viewer-open {
     background: transparent;
     color: #fff;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.image-viewer-toolbar button:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.18);
+/* Touch screens keep :hover on the last tapped button, which looks stuck */
+@media (hover: hover) {
+    .image-viewer-toolbar button:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.18);
+    }
+}
+
+.image-viewer-toolbar button:active:not(:disabled) {
+    background: rgba(255, 255, 255, 0.28);
 }
 
 .image-viewer-toolbar button:focus-visible {

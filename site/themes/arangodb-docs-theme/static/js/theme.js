@@ -1086,7 +1086,7 @@ const VIEWER_ZOOM_STEP = 1.5;
 const VIEWER_ICONS = {
   'zoom-out': '<path d="M5 12h14"/>',
   'zoom-in': '<path d="M12 5v14M5 12h14"/>',
-  'fit': '<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
+  'fit': '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
   'close': '<path d="M6 6l12 12M18 6L6 18"/>',
   'expand': '<path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/>',
 };
@@ -1203,7 +1203,7 @@ function getImageViewer() {
       <button type="button" data-action="zoom-out" aria-label="Zoom out" title="Zoom out (-)">${viewerIcon('zoom-out')}</button>
       <span class="image-viewer-zoom" aria-live="polite"></span>
       <button type="button" data-action="zoom-in" aria-label="Zoom in" title="Zoom in (+)">${viewerIcon('zoom-in')}</button>
-      <button type="button" data-action="fit" aria-label="Fit to screen" title="Fit to screen (0)">${viewerIcon('fit')}</button>
+      <button type="button" data-action="fit" aria-label="Reset zoom" title="Reset zoom (0)">${viewerIcon('fit')}</button>
       <button type="button" data-action="close" aria-label="Close" title="Close (Esc)">${viewerIcon('close')}</button>
     </div>
     <p class="image-viewer-caption"></p>`;
@@ -1247,6 +1247,13 @@ function getImageViewer() {
       return;
     }
     if (e.target === _viewer.stage || e.target === root) closeImageViewer();
+  }, true);
+
+  /* A new press anywhere in the viewer, toolbar included, starts afresh. Touch
+     drags are not followed by a click that would reset this otherwise, and the
+     next tap, say on the close button, would be swallowed. */
+  root.addEventListener('pointerdown', function () {
+    if (!_viewer.pointers.size) _viewer.dragged = false;
   }, true);
 
   root.addEventListener('dblclick', function (e) {
@@ -1440,6 +1447,14 @@ function applyImageViewerTransform() {
   viewer.zoomLabel.textContent = Math.round(viewer.scale / viewer.fitScale * 100) + '%';
   viewer.root.querySelector('[data-action="zoom-in"]').disabled = viewer.scale >= viewer.maxScale;
   viewer.root.querySelector('[data-action="zoom-out"]').disabled = viewer.scale <= viewer.minScale;
+  // Fitting is only offered when it changes something, so that it does not look broken
+  let area = imageViewerArea();
+  viewer.root.querySelector('[data-action="fit"]').disabled =
+    Math.abs(viewer.scale - viewer.fitScale) < 1e-6 &&
+    Math.abs(viewer.x - (area.left + (area.width - width) / 2)) < 1 &&
+    Math.abs(viewer.y - (area.top + (area.height - height) / 2)) < 1;
+  // A button that was just disabled drops the focus, and the keyboard shortcuts with it
+  if (document.activeElement?.disabled) viewer.root.focus({ preventScroll: true });
 }
 
 function stagePoint(e) {
@@ -1473,7 +1488,6 @@ function handleImageViewerPointerDown(e) {
   if (e.pointerType === 'mouse' && e.button !== 0) return;
   let viewer = _viewer;
   viewer.pointers.set(e.pointerId, stagePoint(e));
-  viewer.dragged = false;
   viewer.gesture = imageViewerGesture();
 }
 
@@ -1508,8 +1522,6 @@ function handleImageViewerPointerUp(e) {
   viewer.pointers.delete(e.pointerId);
   viewer.gesture = viewer.pointers.size ? imageViewerGesture() : null;
   if (!viewer.pointers.size) viewer.root.classList.remove('dragging');
-  // pointercancel and touch drags are not followed by a click that would reset this
-  if (e.type === 'pointercancel') viewer.dragged = false;
 }
 
 /** The midpoint of the active pointers and, for a pinch, the distance between the first two. */
