@@ -56,6 +56,8 @@ echo "[INIT] Toolchain setup"
 ##   version (e.g. ARANGODB_BRANCH_4_X for 4.x), no server for this version if empty
 ## - ARANGODB_SRC_<VERSION>: arangodb/arangodb working copy (host path) for the
 ##   metrics, error-codes, and exit-codes generators (mounted by docker compose)
+## - ARANGODB_STARTER: Starter executable (host path) for the cluster of local
+##   builds instead of the version of the source tree (see LOCAL BUILDS)
 ## - EXAMPLES_SCOPE: "changed" to only run the examples of pages with changed
 ##   examples (others use the saved output), "all" to run all examples. Defaults
 ##   to "changed" locally and "all" in CI. OVERRIDE implies "all".
@@ -80,6 +82,7 @@ function version_var_suffix() {
 
 echo "[TOOLCHAIN] Settings:"
 echo "  GENERATORS=$GENERATORS"
+echo "  ARANGODB_STARTER=$ARANGODB_STARTER"
 for version in "${DOCS_VERSIONS[@]}"; do
   suffix=$(version_var_suffix "$version")
   branch_var=ARANGODB_BRANCH_$suffix
@@ -97,6 +100,7 @@ function persist_settings() {
     echo "# Environment variables of the shell take precedence over these values."
     echo "# Set a variable to an empty string to clear it, or edit this file."
     echo "GENERATORS=\"$GENERATORS\""
+    echo "ARANGODB_STARTER=\"$ARANGODB_STARTER\""
     echo "EXAMPLES_SCOPE=\"$EXAMPLES_SCOPE\""
     for version in "${DOCS_VERSIONS[@]}"; do
       suffix=$(version_var_suffix "$version")
@@ -359,6 +363,8 @@ function set_backups_mount() {
   backups_mount=(-v "$backups_volume":/tmp/backups)
 }
 
+## The client tools arguments of local builds, per version (see process_server)
+declare -A LOCAL_CLIENT_ARGS
 
 ### Start the containers of a version without waiting for them (see process_server)
 function start_server() {
@@ -375,11 +381,16 @@ function start_server() {
   docker volume rm -f "$backups_volume" > /dev/null 2>&1
   docker volume create "$backups_volume" > /dev/null
 
+  if is_local_build "$image"; then
+    run_local_build_containers "$image" "$version" "$container_name"
+    LOCAL_CLIENT_ARGS["$version"]=$(printf '%s\x1f' "${client_args[@]}")
+  else
     image_id=$(find_or_pull_image "$image" "$version")
     if [ -z "$image_id" ]; then
       abort_with_error "No image found for $image"
     fi
     run_arangodb_container "$container_name" "$image_id"
+  fi
 }
 
 ### Wait for the containers of a version and generate its content
@@ -408,8 +419,15 @@ function process_server() {
       wait_for_arangodb_ready "$container_name"_cluster
     fi
 
+    if is_local_build "$image"; then
+      ## The client tools are in the same build, they run in the server container
+      client_container="$container_name"
+      IFS=$'\x1f' read -r -a client_args <<< "${LOCAL_CLIENT_ARGS[$version]}"
+    else
       setup_client_container "$image" "$version" "$container_name"
+    fi
 
+    warn_developer_build "$container_name"
 
     if [[ $GENERATORS == *"options"* ]] ; then
       generate_startup_options "$container_name" "$version"
@@ -437,6 +455,163 @@ function client_image_for() {
   fi
 }
 
+### LOCAL BUILDS
+### ARANGODB_BRANCH_<VERSION> can be the absolute path of a local build directory
+### (e.g. /path/to/arangodb/build-presets/nightly-package-x64) instead of an image
+### reference or a branch name, which can't start with a slash. The (static) binaries
+### of the build and the JavaScript files of the source tree are mounted read-only
+### into containers of the toolchain image, which only needs to provide a shell and
+### wget (the build has its own ICU and timezone data) and is available offline. The
+### source tree is ARANGODB_SRC_<VERSION> if set, otherwise the working copy that
+### contains the build directory.
+### The cluster uses the Starter version of the source tree (STARTER_REV in VERSIONS,
+### as in the official images), downloaded once into a Docker volume. Offline, it
+### falls back to another available Starter version. ARANGODB_STARTER can point to a
+### Starter executable on the host (e.g. self-compiled) to use instead.
+### Auxiliary executables of local builds (Starter, rclone), downloaded once
+TOOLS_VOLUME="docs_local_tools"
+LOCAL_BUILD_PATH="/arangodb-build/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+### Print the version of an executable (docker run args, then its path)
+function tool_version() {
+  docker run --rm --security-opt label=disable "${@:1:$#-1}" --entrypoint "${@: -1}" "$LOCAL_BUILD_IMAGE" --version 2>/dev/null | head -n 1
+}
+
+### Provide an auxiliary executable in the tools volume and print its path (or
+### nothing): the version that the source tree specifies, downloaded once (and
+### verified if a checksum is given), or offline, another version downloaded
+### before, or the one of a locally available official image.
+### Args: tool name, version, URL, SHA-256 checksum (optional), path in images
+function provide_tool() {
+  tool="$1"
+  rev="$2"
+  url="$3"
+  sha256="$4"
+  image_path="$5"
+  dest="/tools/$tool/$rev/$(basename "$image_path")"
+
+  check=""
+  if [ -n "$sha256" ]; then
+    check="&& echo '$sha256  $dest.tmp' | sha256sum -c -s -"
+  fi
+  source=$(docker run --rm -v "$TOOLS_VOLUME":/tools --entrypoint sh "$LOCAL_BUILD_IMAGE" -c "
+      if [ -x $dest ]; then
+        echo cached
+      else
+        mkdir -p \$(dirname $dest) &&
+        wget -q -T 30 -O $dest.tmp '$url' $check &&
+        chmod +x $dest.tmp && mv $dest.tmp $dest && echo downloaded
+      fi" 2>/dev/null)
+  if [ -n "$source" ]; then
+    log "[provide_tool] $tool $rev ($source, $url)" >&2
+    echo "$dest"
+    return
+  fi
+  log "[provide_tool] Failed to download $tool $rev from $url (offline?), looking for another version" >&2
+
+  ## Offline fallback 1: another version downloaded before
+  other=$(docker run --rm -v "$TOOLS_VOLUME":/tools --entrypoint sh "$LOCAL_BUILD_IMAGE" -c "rm -f /tools/$tool/*/*.tmp; ls -d /tools/$tool/*/$(basename "$image_path") 2>/dev/null | sort -V | tail -n 1")
+  ## Offline fallback 2: the executable of a locally available official image
+  if [ -z "$other" ]; then
+    mapfile -t candidates < <(docker images --format '{{.Repository}}:{{.Tag}}' | grep -E '^arangodb/(core|enterprise)(-preview)?:')
+    for candidate in "${candidates[@]}"; do
+      copy="/tools/$tool/image-$(echo "$candidate" | tr '/:' '__')/$(basename "$image_path")"
+      if docker run --rm -v "$TOOLS_VOLUME":/tools --entrypoint sh "$candidate" -c "[ -x $image_path ] && mkdir -p \$(dirname $copy) && cp $image_path $copy" 2>/dev/null; then
+        other="$copy"
+        break
+      fi
+    done
+  fi
+  echo "$other"
+}
+
+### Provide the Starter for the cluster, sets starter_mount (docker run args) and starter_bin
+function setup_local_starter() {
+  build_dir="$1"
+  src_dir="$2"
+
+  starter_rev=$(local_build_exec "$build_dir" "$src_dir" 'sed -n "s/^STARTER_REV *\"\(.*\)\"/\1/p" /arangodb-src/VERSIONS')
+  wanted="${starter_rev#v}"
+
+  ## Explicitly specified Starter executable
+  if [ -n "$ARANGODB_STARTER" ]; then
+    starter_mount=(-v "$ARANGODB_STARTER":/starter-custom/arangodb:ro)
+    starter_bin=/starter-custom/arangodb
+    found=$(tool_version "${starter_mount[@]}" "$starter_bin" | sed -n 's/^Version \([^,]*\).*/\1/p')
+    if [ -z "$found" ]; then
+      abort_with_error "The Starter $ARANGODB_STARTER (ARANGODB_STARTER) doesn't exist or doesn't run"
+    fi
+    log "[setup_local_starter] Starter $found from ARANGODB_STARTER ($ARANGODB_STARTER)"
+    warn_tool_version Starter "$found" "$wanted"
+    return
+  fi
+
+  if [ -z "$starter_rev" ]; then
+    abort_with_error "No STARTER_REV found in $src_dir/VERSIONS, set ARANGODB_STARTER to a Starter executable"
+  fi
+  starter_mount=()
+  starter_bin=$(provide_tool starter "$starter_rev" \
+    "https://github.com/arangodb-helper/arangodb/releases/download/$starter_rev/arangodb-linux-$(tool_arch)" \
+    "" /usr/bin/arangodb)
+  if [ -z "$starter_bin" ]; then
+    abort_with_error "No Starter available offline (download of $starter_rev failed), set ARANGODB_STARTER to a Starter executable"
+  fi
+  found=$(tool_version -v "$TOOLS_VOLUME":/tools:ro "$starter_bin" | sed -n 's/^Version \([^,]*\).*/\1/p')
+  log "[setup_local_starter] Starter $found ($starter_bin)"
+  warn_tool_version Starter "$found" "$wanted"
+}
+
+### Provide rclone-arangodb for hot backup uploads and downloads (official images
+### ship it, builds don't), sets rclone_dir (the directory for the PATH)
+function setup_local_rclone() {
+  build_dir="$1"
+  src_dir="$2"
+
+  rclone_dir=""
+  mapfile -t rclone_info < <(local_build_exec "$build_dir" "$src_dir" '
+    for v in RCLONE_GO RCLONE_VERSION RCLONE_SHA256_'$(tool_arch | tr '[:lower:]' '[:upper:]')'; do
+      echo "$(sed -n "s/^$v *\"\(.*\)\"/\1/p" /arangodb-src/VERSIONS)"
+    done
+    echo "$(sed -E "s/^([0-9]+\.[0-9]+).*/\1/" /arangodb-src/ARANGO-VERSION)"')
+  rclone_go="${rclone_info[0]}"
+  rclone_version="${rclone_info[1]}"
+  if [ -z "$rclone_go" ] || [ -z "$rclone_version" ]; then
+    log "[setup_local_rclone] No RCLONE_GO/RCLONE_VERSION in $src_dir/VERSIONS, hot backup uploads and downloads won't work"
+    return
+  fi
+  rclone_bin=$(provide_tool rclone "$rclone_version-$rclone_go" \
+    "https://github.com/arangodb/rclone-arangodb/releases/download/golang-$rclone_go/golang-${rclone_go}_${rclone_info[3]}_v${rclone_version}_rclone-arangodb-linux-$(tool_arch)" \
+    "${rclone_info[2]}" /usr/sbin/rclone-arangodb)
+  if [ -z "$rclone_bin" ]; then
+    log "[WARNING] No rclone-arangodb available offline, the hot backup examples with uploads and downloads will fail"
+    report_warning "Local build" "$version" "No rclone-arangodb" "" "No rclone-arangodb available offline, hot backup uploads and downloads fail"
+    return
+  fi
+  rclone_dir=$(dirname "$rclone_bin")
+  found=$(tool_version -v "$TOOLS_VOLUME":/tools:ro "$rclone_bin" | sed -n 's/^rclone v//p')
+  log "[setup_local_rclone] rclone-arangodb $found ($rclone_bin)"
+  warn_tool_version rclone-arangodb "$found" "$rclone_version"
+}
+
+function tool_arch() {
+  case "$(uname -m)" in
+    x86_64) echo amd64 ;;
+    aarch64) echo arm64 ;;
+    *) uname -m ;;
+  esac
+}
+
+function warn_tool_version() {
+  if [ -n "$3" ] && [ "$2" != "$3" ]; then
+    log "[WARNING] Using $1 $2 instead of $3 (VERSIONS of the source tree)"
+    report_warning "Local build" "$version" "$1 version" "" "Using $1 $2 instead of $3 (VERSIONS of the source tree)"
+  fi
+}
+
+function is_local_build() {
+  [[ "$1" == /* ]]
+}
+
 ### Record an error for the report and exit
 function abort_with_error() {
   message="$1"
@@ -446,6 +621,134 @@ function abort_with_error() {
   exit 1
 }
 
+### Run a command in a throwaway container with the build and source directories mounted
+function local_build_exec() {
+  build_dir="$1"
+  src_dir="$2"
+  shift 2
+  docker run --rm --security-opt label=disable \
+    -v "$build_dir":/arangodb-build:ro -v "$src_dir":/arangodb-src:ro \
+    --entrypoint sh "$LOCAL_BUILD_IMAGE" -c "$@" 2>/dev/null | tr -d '\r'
+}
+
+function run_local_build_containers() {
+  build_dir="${1%/}"
+  version="$2"
+  container_name="$3"
+
+  ## The image of this toolchain container, available offline
+  LOCAL_BUILD_IMAGE=$(docker inspect -f '{{.Image}}' toolchain)
+
+  ## Source tree with the JavaScript files
+  src_var=ARANGODB_SRC_$(version_var_suffix "$version")
+  src_dir="${!src_var%/}"
+  if [ -z "$src_dir" ]; then
+    for candidate in "$(dirname "$(dirname "$build_dir")")" "$(dirname "$build_dir")"; do
+      if [ "$(local_build_exec "$build_dir" "$candidate" 'test -f /arangodb-src/ARANGO-VERSION && test -d /arangodb-src/js && echo yes')" == "yes" ]; then
+        src_dir="$candidate"
+        break
+      fi
+    done
+  fi
+  if [ -z "$src_dir" ]; then
+    abort_with_error "No source tree found for the local build $build_dir, set $src_var"
+  fi
+  ## Paths are mounted from the host as given (no ~ expansion in the container)
+  if [[ "$src_dir" != /* ]] || [ "$(local_build_exec "$build_dir" "$src_dir" 'test -f /arangodb-src/ARANGO-VERSION && test -d /arangodb-src/js && echo yes')" != "yes" ]; then
+    abort_with_error "$src_var=$src_dir is not an ArangoDB source tree, it needs to be the absolute path of a working copy (without ~)"
+  fi
+
+  ## Version information (one line each): build version, maintainer mode, assertions,
+  ## source version, directory name (arangodb3, arangodb4, ...), enterprise JS present
+  mapfile -t info < <(local_build_exec "$build_dir" "$src_dir" '
+    if [ ! -x /arangodb-build/bin/arangod ] || [ ! -x /arangodb-build/bin/arangosh ]; then echo; exit; fi
+    v=$(/arangodb-build/bin/arangod --version 2>/dev/null)
+    echo "$v" | head -n 1
+    echo "$v" | sed -n "s/^maintainer-mode: //p"
+    echo "$v" | sed -n "s/^assertions: //p"
+    cat /arangodb-src/ARANGO-VERSION
+    echo "$(sed -n "s/^CMAKE_PROJECT_NAME:STATIC=//p" /arangodb-build/CMakeCache.txt 2>/dev/null)"
+    [ -d /arangodb-src/enterprise/js ] && echo yes || echo')
+  build_version="${info[0]}"
+  if [ -z "$build_version" ]; then
+    abort_with_error "No arangod and arangosh executables found in $build_dir/bin (or they don't run, only static builds are supported)"
+  fi
+  src_version="${info[3]}"
+  arango_name="${info[4]:-arangodb3}"
+  log "[run_local_build_containers] Local build $build_dir ($build_version), source tree $src_dir ($src_version)"
+
+  ## The docs version has to match (e.g. 3.12 for 3.12.11, 4.x for 4.0.0)
+  docs_prefix="${version%.x}"
+  if [[ "$build_version" != "$docs_prefix".* ]]; then
+    abort_with_error "The local build $build_dir is version $build_version, which doesn't match the docs version $version"
+  fi
+  if [ "${build_version%.*}" != "${src_version%.*}" ]; then
+    abort_with_error "The local build $build_dir ($build_version) doesn't match the source tree $src_dir ($src_version), set $src_var to a matching working copy"
+  fi
+  ## The JavaScript code of another patch version can be incompatible with the
+  ## executables (e.g. arangosh fails with JavaScript exceptions on startup)
+  if [ "${build_version%% *}" != "$src_version" ]; then
+    log "[WARNING] The local build $build_dir ($build_version) and the source tree $src_dir ($src_version) differ in version. If arangosh or the servers fail with JavaScript errors, set $src_var to the working copy the build is from."
+    report_warning "Server" "$version" "Version mismatch" "" "Local build $build_version, source tree $src_version (JavaScript files)"
+  fi
+
+  js_args=(--javascript.startup-directory /arangodb-src/js)
+  if [ "${info[5]}" == "yes" ]; then
+    js_args+=(--javascript.module-directory /arangodb-src/enterprise/js)
+  fi
+  ## The JavaScript options for the servers, only up to 3.x (4.0+ is V8-free, only
+  ## arangosh needs them)
+  server_js_args=()
+  starter_js_args=()
+  if [ "${build_version%%.*}" -lt 4 ]; then
+    server_js_args=("${js_args[@]}" --javascript.app-path /var/lib/$arango_name-apps)
+    starter_js_args=(--server.js-dir=/arangodb-src/js)
+    if [ "${info[5]}" == "yes" ]; then
+      starter_js_args+=(--args.all.javascript.module-directory=/arangodb-src/enterprise/js)
+    fi
+  fi
+  setup_local_starter "$build_dir" "$src_dir"
+  setup_local_rclone "$build_dir" "$src_dir"
+
+  ## The executables in the PATH also for arangod, which looks up rclone-arangodb
+  ## there (passing --rclone.executable would fail for builds without the feature)
+  local_path="$LOCAL_BUILD_PATH"
+  if [ -n "$rclone_dir" ]; then
+    local_path="$rclone_dir:$local_path"
+  fi
+  ## No working directory in the source tree: the programs look for
+  ## ./etc/relative/<name>.conf first, with developer settings. They use the
+  ## configuration of the build instead (build/etc/arangodbN/, like the packages),
+  ## e.g. for the startup option data. All paths passed to them are absolute.
+  mounts=(--security-opt label=disable -v "$build_dir":/arangodb-build:ro -v "$src_dir":/arangodb-src:ro
+    -v "$TOOLS_VOLUME":/tools:ro -e PATH="$local_path" "${backups_mount[@]}")
+
+  if [ $TRAP == 0 ]; then
+    log "[run_local_build_containers] Run cluster server"
+    docker run -d --net=docs_net --name="$container_name"_cluster "${mounts[@]}" \
+      "${starter_mount[@]}" --entrypoint "$starter_bin" "$LOCAL_BUILD_IMAGE" \
+      --starter.local --starter.data-dir=$STARTER_DATA_DIR \
+      --server.arangod=/arangodb-build/bin/arangod "${starter_js_args[@]}"
+    follow_container_logs "$container_name"_cluster
+
+    ## No config file (the image's would be for its own version), see
+    ## run_arangodb_container for why the paths are passed explicitly
+    log "[run_local_build_containers] Run single server"
+    ## Create the directories first, developer builds may crash if they don't exist
+    docker run -d --net docs_net --name "$container_name" "${mounts[@]}" \
+      --entrypoint sh "$LOCAL_BUILD_IMAGE" \
+      -c "mkdir -p /var/lib/$arango_name /var/lib/$arango_name-apps && exec /arangodb-build/bin/arangod \"\$@\"" sh \
+      --configuration none --server.endpoint http+tcp://0.0.0.0:8529 --server.authentication false \
+      --database.directory /var/lib/$arango_name \
+      "${server_js_args[@]}"
+    follow_container_logs "$container_name"
+  fi
+
+  ## The client tools are in the same build (see process_server). Without a
+  ## configuration file, they don't log anything (not even fatal errors): log to
+  ## stdout like with the arangosh.conf of the packages.
+  client_args=(--configuration none --log.output - "${js_args[@]}")
+}
 
 ### Set client_container (where arangosh & co. run) and client_args (extra arangosh args)
 function setup_client_container() {
@@ -486,6 +789,18 @@ function setup_client_container() {
   log "[setup_client_container] Client container: $client_container, arangosh args: $shown_args"
 }
 
+### Warn if the server is a developer build, whose output can differ from releases
+function warn_developer_build() {
+  details=$(docker exec "$1" wget -q -O - 'http://127.0.0.1:8529/_api/version?details=true' 2>/dev/null | tr -d ' \n')
+  maintainer=false
+  assertions=false
+  [[ "$details" == *'"maintainer-mode":"true"'* ]] && maintainer=true
+  [[ "$details" == *'"assertions":"true"'* ]] && assertions=true
+  if [ "$maintainer" == "true" ] || [ "$assertions" == "true" ]; then
+    log "[WARNING] $1 is a developer build (maintainer mode: $maintainer, assertions: $assertions). The output of examples can differ from release builds, don't commit it. For local builds, use e.g. the nightly-package-x64 preset for release-like builds."
+    report_warning "Server" "$version" "Developer build" "" "Maintainer mode: $maintainer, assertions: $assertions. The example output can differ from release builds."
+  fi
+}
 
 ### Stream a container's output to the toolchain log with a [name] prefix, without the
 ### info/debug messages of arangod and the Starter (warnings, errors, and anything

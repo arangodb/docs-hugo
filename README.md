@@ -257,6 +257,7 @@ The toolchain is configured with environment variables:
   `arangodb/core-preview:4.0-nightly`, or `arangodb/enterprise:3.12.9`
   (Docker Hub if no registry is given, other registries like
   `gcr.io/gcr-for-testing/arangodb/core-preview:4.0-nightly` work, too),
+  or the absolute path of a local build (see **Local builds** below).
   It can also be a branch name of the `arangodb/arangodb` repository if CI
   compiled it before: the toolchain then uses the cached image
   `arangodb/docs-hugo:<version>-<arangodb commit>-<enterprise commit>` (see
@@ -269,6 +270,8 @@ The toolchain is configured with environment variables:
   Required for the `metrics`, `error-codes`, and `exit-codes` generators.
   Don't use `~` for your home folder in the `.env` file or in quotes, it isn't
   expanded there.
+- `ARANGODB_STARTER`: the absolute path of an ArangoDB Starter executable for the
+  cluster of local builds (see **Local builds** below). Optional.
 - `EXAMPLES_SCOPE`: `changed` to only run the examples of pages that have
   changed or new examples, and to show the saved output for all other pages,
   or `all` to run all examples. The default is `changed` for local builds and
@@ -339,6 +342,45 @@ The same applies to the images of the toolchain itself
 `arangodb/docs-hugo:arangoproxy-amd64`, or `-arm64`). CI always pulls the latest
 images.
 
+**Local builds**
+
+Instead of an image, you can set `ARANGODB_BRANCH_{VERSION}` to the absolute path
+of a local build directory of ArangoDB, for example,
+`/path/to/arangodb/build-presets/nightly-package-x64`. The toolchain runs the
+`arangod`, `arangosh`, and other executables of this build, without creating an
+image. It uses the JavaScript files of the source tree from
+`ARANGODB_SRC_{VERSION}`, or of the working copy that contains the build
+directory if it isn't set. Its version should be the same as the one of the
+build: the JavaScript code of another patch version can be incompatible with the
+executables, and the toolchain warns about it.
+
+- Only static builds are supported, like the ones of the CMake presets except the
+  sanitizer presets (`*-tsan`, `*-alubsan`). Builds of the official build
+  container (e.g. `arangodb/ubuntubuildarangodb-devel`) work, too.
+- The version of the build needs to match the docs version and the version of the
+  source tree (major and minor version).
+- Prefer release-like presets like `nightly-package-x64` or
+  `pr-non-maintainer-x64`. Developer builds with maintainer mode and assertions
+  (e.g. the `developer-x64` preset) work, but the example output can differ from
+  release builds, so don't commit it. The toolchain warns about such builds.
+- Don't rebuild or switch branches in the source tree while the toolchain runs,
+  as the files are used directly.
+
+The executables run in containers of the toolchain image. Two executables that the
+official images include are missing in builds: the ArangoDB Starter (for the
+cluster) and `rclone-arangodb` (for hot backup uploads and downloads). The
+toolchain uses the versions that the source tree specifies (`STARTER_REV` and
+`RCLONE_*` in the `VERSIONS` file), like the official images. It downloads them
+from GitHub once (verifying the checksum of `rclone-arangodb`) and keeps them in
+the `docs_local_tools` Docker volume, so subsequent runs work offline. If a
+download fails (e.g. no internet connection), it uses another version that is
+available locally (downloaded before, or from a locally available `arangodb/core`,
+`arangodb/enterprise`, or `-preview` image) and warns about the version mismatch.
+
+To use a specific Starter executable instead, e.g. a self-compiled one, set
+`ARANGODB_STARTER` to its absolute path. Note that compiling the Starter
+requires an internet connection unless the Go modules are already cached, because
+its repository doesn't include the dependencies.
 
 **Available generators**
 
