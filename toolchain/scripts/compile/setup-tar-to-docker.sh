@@ -27,6 +27,13 @@ mkdir -p /usr/share/$NAME/js
 
 cp -r /build/etc/$NAME/* /etc/$NAME
 
+# The archive also contains the etc/ folder of the source code, extracted to /etc.
+# Remove its configuration files: the programs look for ./etc/relative/<name>.conf
+# first, which would be /etc/relative/ for the working directory /, and they
+# contain developer settings (e.g. javascript.app-path = ./js/apps) that would end
+# up in the generated startup option data instead of the ones of the packages.
+rm -rf /etc/relative /etc/testing
+rm -f /etc/arangodb*/*.conf.in
 
 cp -r /build/bin/* /usr/bin
 cp -r /js/* /usr/share/$NAME/js
