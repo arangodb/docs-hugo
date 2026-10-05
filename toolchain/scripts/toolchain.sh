@@ -179,56 +179,42 @@ function log(){
 
 ### DOCKER FUNCTIONS
 
-function pull_image() {
-  log "[pull_image] Invoke"
-  branch_name="$1"
+### Print the ID of the image for a docs version, pulling it if necessary (locally).
+### $1 is an image reference, or locally also an arangodb/arangodb branch name: then
+### the image that CI compiled for the commits of the working copy (ARANGODB_SRC_*,
+### see compiled_image_ref) is used if available.
+function find_or_pull_image() {
+  image="$1"
   version="$2"
 
-  # Check the image is an official dockerhub image
-  log "[pull_image] Try from Offical ArangoDB Dockerhub - Image: $branch_name"
-
-  docker pull "$branch_name"
-
-  if [ "$?" == "0" ]; then
-    log "[pull_image] Image downloaded from Dockerhub"
-    return
-  fi
-
-  pull_from_docs_repo $branch_name $version
-}
-
-
-
-function pull_from_docs_repo() {
-  branch_name="$1"
-  version="$2"
-
-  image_name=$(echo ${branch_name##*/})
-  main_hash=$(awk 'END{print}' /tmp/$version/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)  ## Get hash of latest commit of git branch of arangodb/arangodb repo
-
-  docker_tag="arangodb/docs-hugo:$image_name-$version-$main_hash"
-
-  image_id=$(docker images --filter="reference=$docker_tag" --format '{{.ID}}' | head -n1)
-  if [ "$image_id" == "" ]; then
-  log "[pull_from_docs_repo] Try from Private arangodb/docs-hugo Dockerhub repository - Image: $docker_tag"
-    docker pull $docker_tag
-    docker tag $docker_tag $image_name-$version ## tag with an easier name for easier local access to the image
-  fi
-}
-
-
-
-function get_docker_imageid() {
-  branch_name="$1"
-  image_name="$2"
-  version="$3"
-
-  ## Get the docker image id to run of the server
-  image_id=$(docker images --filter="reference=$image_name-$version" --format '{{.ID}}' | head -n1)
-  if [ "$image_id" == "" ]; then
-    image_id=$(docker images --filter="reference=$branch_name" --format '{{.ID}}' | head -n1) ## this is used for official arangodb images, arangodb/enterprise:tag
+  image_id=$(docker images -q "$image" 2>/dev/null | head -n1)
+  if [ -z "$image_id" ] && [ "$ENV" == "local" ]; then
+    log "[find_or_pull_image] Pull image $image" >&2
+    if docker pull "$image" >&2; then
+      image_id=$(docker images -q "$image" | head -n1)
+    else
+      compiled=$(compiled_image_ref "$version")
+      if [ -n "$compiled" ]; then
+        log "[find_or_pull_image] Not an image, try the image compiled by CI for branch $image: $compiled" >&2
+        image_id=$(docker images -q "$compiled" | head -n1)
+        if [ -z "$image_id" ] && docker pull "$compiled" >&2; then
+          image_id=$(docker images -q "$compiled" | head -n1)
+        fi
+      fi
+    fi
   fi
   echo "$image_id"
+}
+
+### The image reference that CI uses for compiled branches (see clone-arangodb in
+### .circleci/base_config.yml): <docs version>-<main commit>-<enterprise commit>
+function compiled_image_ref() {
+  version="$1"
+  main_hash=$(awk 'END{print $2}' /tmp/$version/.git/logs/HEAD 2>/dev/null | cut -c1-9)
+  enterprise_hash=$(awk 'END{print $2}' /tmp/$version/enterprise/.git/logs/HEAD 2>/dev/null | cut -c1-9)
+  if [ -n "$main_hash" ] && [ -n "$enterprise_hash" ]; then
+    echo "arangodb/docs-hugo:$version-$main_hash-$enterprise_hash"
+  fi
 }
 
 

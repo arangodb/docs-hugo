@@ -208,6 +208,13 @@ The toolchain is configured with environment variables:
 - `ARANGODB_BRANCH_{VERSION}`: the ArangoDB Docker image to use for a docs version,
   for example, `arangodb/enterprise-preview:devel-nightly`,
   `arangodb/core-preview:4.0-nightly`, or `arangodb/enterprise:3.12.9`
+  (Docker Hub if no registry is given, other registries like
+  `gcr.io/gcr-for-testing/arangodb/core-preview:4.0-nightly` work, too),
+  It can also be a branch name of the `arangodb/arangodb` repository if CI
+  compiled it before: the toolchain then uses the cached image
+  `arangodb/docs-hugo:<version>-<arangodb commit>-<enterprise commit>` (see
+  [CIRCLECI.md](CIRCLECI.md#upstream-references)) for the commits checked out in
+  `ARANGODB_SRC_{VERSION}` (including its `enterprise` folder).
   No server is started for a version if it is empty, and its content is not
   regenerated.
 - `ARANGODB_SRC_{VERSION}`: the absolute path to a working copy of the
@@ -261,7 +268,20 @@ ARANGODB_BRANCH_3_12= docker compose up   # Bash and Fish
 You can also edit the `.env` file directly. It isn't committed to the repository.
 
 
+Images that exist locally are used as they are, otherwise the toolchain pulls
+them. To get the latest build of an image with a tag that is updated regularly,
+like the nightly images, pull it manually before running the toolchain. For
+versions with separate server and client tools images, pull both:
+
+```sh
+docker pull arangodb/core-preview:4.0-nightly
+docker pull arangodb/client-tools-preview:4.0-nightly
 ```
+
+The same applies to the images of the toolchain itself
+(`arangodb/docs-hugo:toolchain-amd64`, `arangodb/docs-hugo:site-amd64`,
+`arangodb/docs-hugo:arangoproxy-amd64`, or `-arm64`). CI always pulls the latest
+images.
 
 
 **Available generators**

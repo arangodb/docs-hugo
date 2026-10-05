@@ -18,10 +18,13 @@ commands:
 
             echo "[SETUP] Setup server << parameters.branch >>"
 
-            if [[ "<< parameters.branch >>" == *"arangodb/enterprise"* ]]; then
-                echo "[SETUP] An official ArangoDB Enterprise image has been chosen"
+            # Image references (any registry) have a tag, branch names can't contain colons
+            if [[ "<< parameters.branch >>" == *:* ]]; then
+                echo "[SETUP] An image has been chosen"
                 echo "[SETUP] Using image tag as branch name (with hotfix suffixes removed)"
-                branch_name=$(echo << parameters.branch >> | cut -d: -f2 | cut -d- -f1 | sed -E 's/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
+                tag="<< parameters.branch >>"
+                tag="${tag##*:}"
+                branch_name=$(echo "$tag" | cut -d- -f1 | sed -E 's/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
             fi
 
             echo "[SETUP] Git clone $branch_name"
@@ -46,6 +49,17 @@ commands:
 
             mkdir -p /tmp/<< parameters.version >>
             cp -r /root/project/. /tmp/<< parameters.version >>
+
+            # Image reference for compiled branches, identified by the commits that are
+            # actually checked out (also of the enterprise fallback branch) instead of
+            # the branch name, which can contain characters that tags don't allow.
+            # Read by check-arangodb-image-exists, compile-and-dockerize-arangodb, and
+            # the generate job (generate_config.py). Keep in sync with
+            # compiled_image_ref in toolchain/scripts/toolchain.sh.
+            main_hash=$(git -C /root/project rev-parse HEAD | cut -c1-9)
+            enterprise_hash=$(git -C /root/project/enterprise rev-parse HEAD | cut -c1-9)
+            echo "arangodb/docs-hugo:<< parameters.version >>-$main_hash-$enterprise_hash" > /tmp/<< parameters.version >>/.docs-hugo-image
+            echo "[SETUP] Image for compiled branch: $(cat /tmp/<< parameters.version >>/.docs-hugo-image)"
 
   update-openssl-workaround:
     description: "Update OpenSSL in compiling"
@@ -95,11 +109,11 @@ commands:
       - run:
           name: Check Branch Image already exists
           command: |
-            # Image-based upstream references (enterprise-preview/enterprise) are used
-            # directly and are not compiled. Halt here so the shared compile-and-dockerize
-            # step (added to this job template whenever any version is branch-based) does
-            # not run for this version with an empty OpenSSL parameter.
-            if [[ "<< parameters.branch >>" == *"/enterprise-preview:"* || "<< parameters.branch >>" == *"/enterprise:"* ]]; then
+            # Image references (any registry, they have a tag) are used directly and are
+            # not compiled. Halt here so the shared compile-and-dockerize step (added to
+            # this job template whenever any version is branch-based) does not run for
+            # this version with an empty OpenSSL parameter.
+            if [[ "<< parameters.branch >>" == *:* || "<< parameters.branch >>" == *@* ]]; then
               echo "[SETUP] Image-based upstream reference '<< parameters.branch >>'; skipping compilation."
               circleci-agent step halt
             fi
@@ -111,11 +125,10 @@ commands:
               apt-get -y install skopeo
             fi
 
-            image_name=$(echo << parameters.branch >> | cut -d/ -f2)
-            latestRemoteHash=$(git ls-remote https://github.com/arangodb/arangodb.git << parameters.branch >> | awk '{print $1}' | cut -c1-9)
+            image=$(cat /tmp/<< parameters.version >>/.docs-hugo-image)
 
             set +e
-            skopeo inspect docker://"arangodb/docs-hugo:$image_name-<< parameters.version >>-$latestRemoteHash" 
+            skopeo inspect docker://"$image"
             if [ "$?" != "0" ]; then
               exit 0
             fi 
@@ -216,8 +229,7 @@ commands:
 
             mv install.tar.gz create-docker/
 
-            main_hash=$(awk 'END{print}' .git/logs/HEAD | awk '{print $2}' | cut -c1-9)
-            image_name=$(echo << parameters.branch >> | cut -d/ -f2)
+            image=$(cat /tmp/<< parameters.version >>/.docs-hugo-image)
 
             cd create-docker
             chmod +x setup-tar-to-docker.sh
@@ -241,10 +253,14 @@ commands:
               apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
             fi
 
-            docker build -t arangodb/docs-hugo:$image_name-<< parameters.version >>-$main_hash --build-arg ARANGODB_VERSION=<< parameters.version >> --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
+            # The branch names as labels for reference (not part of the tag)
+            docker build -t "$image" \
+              --label "org.arangodb.docs-hugo.branch=<< parameters.branch >>" \
+              --label "org.arangodb.docs-hugo.enterprise-branch=$(git -C /root/project/enterprise rev-parse --abbrev-ref HEAD)" \
+              --build-arg ARANGODB_VERSION=<< parameters.version >> --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
 
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
-            docker push arangodb/docs-hugo:$image_name-<< parameters.version >>-$main_hash
+            docker push "$image"
 
   launch-toolchain:
     description: "launch toolchain (extended by dynamic config)"

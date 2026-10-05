@@ -150,12 +150,28 @@ For 3.11, a link to a PR in the `arangodb/arangodb` repository is given. It is
 used by the GitHub integration to determine the feature branch to compile and
 use for generating examples. Do not specify a link when manually triggering a
 pipeline in CircleCI but the **branch name** (like `feature/new-aql-function`)!
+Compiled branches are cached as Docker images on Docker Hub, tagged with the
+docs version and the commits that were compiled:
+`arangodb/docs-hugo:<version>-<arangodb commit>-<enterprise commit>`
+(the first 9 characters of the commit hashes). The enterprise commit is the one
+of the branch with the same name in the `arangodb/enterprise` repository, or of
+the default branch (`devel`, or `4.0` for 4.x) if there is no such branch. Before
+compiling, CI checks whether this image exists and uses it instead, so reruns
+and later `/generate` commands for the same commits don't compile again. Only
+compiling uploads images. New commits in either repository lead to a new image.
 
 For 3.12, an ArangoDB Enterprise Edition image hosted on
 [Docker Hub](https://hub.docker.com/) is specified. Using container images has the
 advantage that the compilation of ArangoDB can be skipped, making the example
 generation faster. Of course, this requires that an image containing relevant
 changes to ArangoDB exists.
+
+Images can also come from other registries if they can be pulled without
+authentication, for example, from public ECR or GCR:
+`public.ecr.aws/<alias>/<repository>:<tag>` or
+`gcr.io/gcr-for-testing/arangodb/core-preview:4.0-nightly`. Every reference with
+a tag is treated as an image (branch names can't contain colons). Docker Hub is
+used if no registry is specified.
 
 ## Release workflow for ArangoDB releases
 

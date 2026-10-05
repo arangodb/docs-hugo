@@ -321,7 +321,9 @@ export GENERATORS='<< parameters.generators >>'\n"
         # and toolchain.sh reference.
         version_underscore = version.replace(".", "_").upper()
         branchEnv = f"{pullImage}\n \
-export ARANGODB_BRANCH_{version_underscore}={branch}\n \
+export ARANGODB_BRANCH_{version_underscore}={imageRef(branch, version)}"
+        if args.workflow != "generate" or needs_compile_job(branch):
+            branchEnv += f"\n \
 export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{version}"
 
         shell = f"{shell}\n{branchEnv}"
@@ -402,7 +404,7 @@ export GENERATORS=''\n"
 
     version_underscore = args.docs_version.replace(".", "_").upper()  # see note in workflow_generate_launch_command
     branchEnv = f"{pullImage}\n \
-export ARANGODB_BRANCH_{version_underscore}={args.arangodb_branch}\n \
+export ARANGODB_BRANCH_{version_underscore}={imageRef(args.arangodb_branch, args.docs_version)}\n \
 export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{args.docs_version}"
 
     shell = f"{shell}\n{branchEnv}"
@@ -446,20 +448,40 @@ def nightlyImage(version):
         )
 
 
+# Image references of any registry (Docker Hub, public ECR, ...), as opposed to
+# arangodb/arangodb branch names, which get compiled. Branch names can't contain
+# colons, image references have a tag (or a digest).
+def is_image_ref(branch):
+    return ":" in branch or "@" in branch
+
+
+# Generators that read the arangodb/arangodb source code (cloned by compile-linux)
+SOURCE_GENERATORS = ["metrics", "error-codes", "exit-codes"]
+
+
+def needs_source():
+    generators = " ".join(args.generators or []).split()
+    return not generators or any(g in SOURCE_GENERATORS for g in generators)
+
+
+# Branches need to be compiled (cloned and built), images only need to be cloned
+# for the generators that read the source code
+def needs_compile_job(branch):
+    return not is_image_ref(branch) or needs_source()
+
 def pullImageCmd(branch, version):
-    pullImage = f"docker pull {branch}"
-
-    if not "/enterprise-preview:" in branch and not "/enterprise:" in branch:
-        pullImage = f"BRANCH={branch}\n\
-version={version}\n"
-        pullImage += "\
-image_name=$(echo ${BRANCH##*/})\n\
-main_hash=$(awk 'END{print}' $version/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)\n\
-docker pull arangodb/docs-hugo:$image_name-$version-$main_hash\n\
-docker tag arangodb/docs-hugo:$image_name-$version-$main_hash $image_name-$version"
-
+    image = imageRef(branch, version)
+    pullImage = f"docker pull {image}"
     return pullImage
 
+
+# The image to use for a docs version: the image reference itself, or for a
+# compiled branch the image that the compile job built, whose reference it wrote to
+# the workspace (see clone-arangodb in base_config.yml)
+def imageRef(branch, version):
+    if is_image_ref(branch):
+        return branch
+    return f"$(cat {version}/.docs-hugo-image)"
 def findOpensslVersion(branch):
     url = f'https://raw.githubusercontent.com/arangodb/arangodb/{branch}/VERSIONS'
     print(f"Find OpenSSL Version for branch {branch}")
