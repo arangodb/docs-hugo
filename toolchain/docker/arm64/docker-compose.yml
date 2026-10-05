@@ -13,17 +13,21 @@ services:
       - ${ARANGODB_SRC_4_X:-/tmp/3}:/tmp/4.x
       - ../../../:/home/
       - /var/run/docker.sock:/var/run/docker.sock
+    # Settings come from the shell or the .env file next to this file, which the
+    # toolchain updates with the settings of each local run (see toolchain.sh)
     environment:
       ENV: ${ENV:-local}
       HUGO_URL: ${HUGO_URL:-http://localhost/}
       HUGO_ENV: ${HUGO_ENV:-development}
-      GENERATORS: ${GENERATORS}
-      OVERRIDE: ${OVERRIDE}
-      ARANGODB_SRC_3_10: ${ARANGODB_SRC_3_10}
-      ARANGODB_SRC_3_11: ${ARANGODB_SRC_3_11}
-      ARANGODB_SRC_3_12: ${ARANGODB_SRC_3_12}
-      ARANGODB_SRC_4_X: ${ARANGODB_SRC_4_X}
-      ARANGODB_BRANCH_3_10: ${ARANGODB_BRANCH_3_10}
-      ARANGODB_BRANCH_3_11: ${ARANGODB_BRANCH_3_11}
-      ARANGODB_BRANCH_3_12: ${ARANGODB_BRANCH_3_12}
-      ARANGODB_BRANCH_4_X: ${ARANGODB_BRANCH_4_X}
+      OVERRIDE: ${OVERRIDE:-}
+      TOOLCHAIN_ENV_FILE: /home/toolchain/docker/arm64/.env
+      GENERATORS: ${GENERATORS:-}
+      EXAMPLES_SCOPE: ${EXAMPLES_SCOPE:-}
+      ARANGODB_SRC_3_10: ${ARANGODB_SRC_3_10:-}
+      ARANGODB_SRC_3_11: ${ARANGODB_SRC_3_11:-}
+      ARANGODB_SRC_3_12: ${ARANGODB_SRC_3_12:-}
+      ARANGODB_SRC_4_X: ${ARANGODB_SRC_4_X:-}
+      ARANGODB_BRANCH_3_10: ${ARANGODB_BRANCH_3_10:-}
+      ARANGODB_BRANCH_3_11: ${ARANGODB_BRANCH_3_11:-}
+      ARANGODB_BRANCH_3_12: ${ARANGODB_BRANCH_3_12:-}
+      ARANGODB_BRANCH_4_X: ${ARANGODB_BRANCH_4_X:-}

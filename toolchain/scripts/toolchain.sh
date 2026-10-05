@@ -43,54 +43,79 @@ fi
 
 
 echo "[INIT] Toolchain setup"
-echo "[INIT] Environment variables:"
 
-## if no generators set, defaults to all
-if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
-  GENERATORS="examples metrics error-codes exit-codes options optimizer"
+### SETTINGS
+## The settings come from environment variables that docker compose passes to the
+## container: from the shell, or else from the .env file next to the compose file
+## (shell variables take precedence, set a variable to an empty string to clear it).
+## Local runs write the effective settings back to that .env file
+## ($TOOLCHAIN_ENV_FILE), so they only need to be specified once.
+##
+## - GENERATORS: space-separated list, all generators if empty
+## - ARANGODB_BRANCH_<VERSION>: image or arangodb/arangodb branch to use for a docs
+##   version (e.g. ARANGODB_BRANCH_4_X for 4.x), no server for this version if empty
+## - ARANGODB_SRC_<VERSION>: arangodb/arangodb working copy (host path) for the
+##   metrics, error-codes, and exit-codes generators (mounted by docker compose)
+## - EXAMPLES_SCOPE: "changed" to only run the examples of pages with changed
+##   examples (others use the saved output), "all" to run all examples. Defaults
+##   to "changed" locally and "all" in CI. OVERRIDE implies "all".
+
+ALL_GENERATORS="examples metrics error-codes exit-codes options optimizer oasisctl"
+if [ -z "$GENERATORS" ]; then
+  GENERATORS="$ALL_GENERATORS"
 fi
 
-## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
-if [ "$ARANGODB_BRANCH_3_10" != "" ] ; then
-      export ARANGODB_BRANCH_3_10_IMAGE="$ARANGODB_BRANCH_3_10"
-      export ARANGODB_BRANCH_3_10_VERSION="3.10"
+if [ -z "$EXAMPLES_SCOPE" ]; then
+  EXAMPLES_SCOPE=all
+  [ "$ENV" == "local" ] && EXAMPLES_SCOPE=changed
 fi
 
-if [ "$ARANGODB_BRANCH_3_11" != "" ] ; then
-      export ARANGODB_BRANCH_3_11_IMAGE="$ARANGODB_BRANCH_3_11"
-      export ARANGODB_BRANCH_3_11_VERSION="3.11"
-fi
+## Docs versions from versions.yaml, the variable names use uppercase with
+## underscores (e.g. "4.x" -> ARANGODB_BRANCH_4_X)
+mapfile -t DOCS_VERSIONS < <(yq -r '.["/arangodb/"][].name' ../../site/data/versions.yaml | sort -V)
 
-if [ "$ARANGODB_BRANCH_3_12" != "" ] ; then
-      export ARANGODB_BRANCH_3_12_IMAGE="$ARANGODB_BRANCH_3_12"
-      export ARANGODB_BRANCH_3_12_VERSION="3.12"
-fi
+function version_var_suffix() {
+  echo "$1" | tr '.' '_' | tr '[:lower:]' '[:upper:]'
+}
 
-if [ "$ARANGODB_BRANCH_4_X" != "" ] ; then
-      export ARANGODB_BRANCH_4_X_IMAGE="$ARANGODB_BRANCH_4_X"
-      export ARANGODB_BRANCH_4_X_VERSION="4.x"
-fi
+echo "[TOOLCHAIN] Settings:"
+echo "  GENERATORS=$GENERATORS"
+for version in "${DOCS_VERSIONS[@]}"; do
+  suffix=$(version_var_suffix "$version")
+  branch_var=ARANGODB_BRANCH_$suffix
+  src_var=ARANGODB_SRC_$suffix
+  echo "  $branch_var=${!branch_var}"
+  echo "  $src_var=${!src_var}"
+done
 
-start_servers=false
+function persist_settings() {
+  if [ "$ENV" != "local" ] || [ -z "$TOOLCHAIN_ENV_FILE" ]; then
+    return
+  fi
+  {
+    echo "# Written by the toolchain (toolchain.sh) with the settings of the last run."
+    echo "# Environment variables of the shell take precedence over these values."
+    echo "# Set a variable to an empty string to clear it, or edit this file."
+    echo "GENERATORS=\"$GENERATORS\""
+    echo "EXAMPLES_SCOPE=\"$EXAMPLES_SCOPE\""
+    for version in "${DOCS_VERSIONS[@]}"; do
+      suffix=$(version_var_suffix "$version")
+      for var in ARANGODB_BRANCH_$suffix ARANGODB_SRC_$suffix; do
+        echo "$var=\"${!var}\""
+      done
+    done
+  } > "$TOOLCHAIN_ENV_FILE"
+  ## The toolchain runs as root, keep the file editable for the owner of the folder
+  chown "$(stat -c '%u:%g' "$(dirname "$TOOLCHAIN_ENV_FILE")")" "$TOOLCHAIN_ENV_FILE"
+  echo "[TOOLCHAIN] Settings saved to $TOOLCHAIN_ENV_FILE"
+}
+persist_settings
 
-## Expand environment variables in config.yaml, if present
-yq  '(.. | select(tag == "!!str")) |= envsubst' -i ../docker/config.yaml
-
-GENERATORS=$(yq -r '.generators' ../docker/config.yaml)
-
-
-if [ "$GENERATORS" == "" ]; then
-  GENERATORS="examples metrics error-codes exit-codes options optimizer oasisctl"
-fi
-
-
-echo "[TOOLCHAIN] Expanded Config file:"
-cat ../docker/config.yaml
-echo ""
-
-## Flush repositories field of arangoproxy config
-echo "[TOOLCHAIN] Clean arangoproxy config file"
-yq '.repositories = []' -i ../arangoproxy/cmd/configs/local.yaml 
+## The arangoproxy config with the servers of this run (the committed local.yaml
+## without servers is used by plain builds)
+ARANGOPROXY_CONFIG=../arangoproxy/cmd/configs/generated.yaml
+echo "[TOOLCHAIN] Create arangoproxy config file"
+yq '.repositories = []' ../arangoproxy/cmd/configs/local.yaml > "$ARANGOPROXY_CONFIG"
 
 
 
@@ -110,12 +135,10 @@ function main() {
 
   clean_docker_environment
 
-  mapfile servers < <(yq e -o=j -I=0 '.servers[]' ../docker/config.yaml )
-
   ## Generate content and start server
-  for server in "${servers[@]}"; do
-    image=$(echo "$server" | yq e '.image' -)
-    version=$(echo "$server" | yq e '.version' -)
+  for version in "${DOCS_VERSIONS[@]}"; do
+    branch_var=ARANGODB_BRANCH_$(version_var_suffix "$version")
+    image="${!branch_var}"
 
     if [ "$image" == "" ]; then
       continue
@@ -271,6 +294,7 @@ function run_arangoproxy_and_site() {
       -e HUGO_ENV="$HUGO_ENV" \
       -e OVERRIDE="$OVERRIDE" \
       -v arangosh:/arangosh \
+      -e ARANGOPROXY_CONFIG=/home/toolchain/arangoproxy/cmd/configs/generated.yaml \
       --volumes-from toolchain \
       --log-opt tag="{{.Name}}" \
       arangodb/docs-hugo:arangoproxy-"$arch"

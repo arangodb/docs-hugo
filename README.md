@@ -201,16 +201,68 @@ includes Google Analytics etc.
 
 **Configuration**
 
-The toolchain container needs to be set up via config file in
-[`toolchain/docker/config.yaml`](toolchain/docker/config.yaml):
+The toolchain is configured with environment variables:
 
-```yaml
-generators:   # Generators to trigger - empty string defaults to all generators
-servers:      # Array to define arangodb servers to be used by the toolchain
-  - image:    # arangodb docker image to be used, can be arangodb/enterprise-preview:... or a branch name
-    version:  # docs branch to put the generated content into
-  - ...       # Additional images and versions as needed
+- `GENERATORS`: the generators to run as a space-separated string (see below).
+  All generators run if it is empty.
+- `ARANGODB_BRANCH_{VERSION}`: the ArangoDB Docker image to use for a docs version,
+  for example, `arangodb/enterprise-preview:devel-nightly`,
+  `arangodb/core-preview:4.0-nightly`, or `arangodb/enterprise:3.12.9`
+  No server is started for a version if it is empty, and its content is not
+  regenerated.
+- `ARANGODB_SRC_{VERSION}`: the absolute path to a working copy of the
+  [`arangodb/arangodb`](https://github.com/arangodb/arangodb) repository.
+  Required for the `metrics`, `error-codes`, and `exit-codes` generators.
+  Don't use `~` for your home folder in the `.env` file or in quotes, it isn't
+  expanded there.
+- `EXAMPLES_SCOPE`: `changed` to only run the examples of pages that have
+  changed or new examples, and to show the saved output for all other pages,
+  or `all` to run all examples. The default is `changed` for local builds and
+  `all` in CI. `OVERRIDE` implies `all`.
+- `OVERRIDE`: force saving the output of the examples whose names match these
+  comma-separated regular expressions, even if the example code didn't change.
+
+Substitute `{VERSION}` with the docs version in uppercase and with underscores,
+like `3_12` for 3.12 and `4_X` for 4.x. There is one setting per docs version,
+so you can use one server per version.
+
+```sh
+# Bash
+export GENERATORS="examples options optimizer"
+export ARANGODB_BRANCH_3_12="arangodb/enterprise:3.12.9"
+export ARANGODB_SRC_3_12="path/to/arangodb"
+export ARANGODB_BRANCH_4_X="arangodb/core-preview:4.0-nightly"
+export ARANGODB_SRC_4_X="path/to/arangodb2"
 ```
+
+```fish
+# Fish
+set -xg GENERATORS "examples options optimizer"
+set -xg ARANGODB_BRANCH_4_X arangodb/core-preview:4.0-nightly
+```
+
+On Windows using PowerShell, use a Unix-like path:
+
+```powershell
+$Env:ARANGODB_SRC_{VERSION} = "/Drive/path/to/arangodb"
+```
+
+A local run saves the settings to a `.env` file next to the compose file
+(e.g. `toolchain/docker/amd64/.env`), which `docker compose` reads by default.
+This means that you only need to specify the settings once. Subsequent runs use
+the saved settings unless you set the environment variables to different values.
+Set a variable to an empty string to clear a saved setting, for example, to no
+longer start a server for a version:
+
+```sh
+ARANGODB_BRANCH_3_12= docker compose up   # Bash and Fish
+```
+
+You can also edit the `.env` file directly. It isn't committed to the repository.
+
+
+```
+
 
 **Available generators**
 
@@ -221,48 +273,6 @@ servers:      # Array to define arangodb servers to be used by the toolchain
 - `optimizer`
 - `options`
 - `oasisctl`
-
-The generators entry is a space-separated string.
-
-If `metrics`, `error-codes`, or `exit-codes` is in the `generators` string,
-the following environment variable has to be exported to point to a working copy
-of the [`arangodb/arangodb`](https://github.com/arangodb/arangodb) repository:
-
-```sh
-export ARANGODB_SRC_{VERSION}=path/to/arangodb  # Bash
-set -xg ARANGODB_SRC_{VERSION} path/to/arangodb # Fish
-```
-
-Substitute `{VERSION}` with a version number like `3_12`.
-
-On Windows using PowerShell, use a Unix-like path:
-
-```powershell
-$Env:ARANGODB_SRC_{VERSION} = "/Drive/path/to/arangodb"
-```
-
-As long as `toolchain/docker/config.yaml` is unmodified and has the original
-placeholders like `generators: ${GENERATORS}`, you can also use environment
-variables to configure the build:
-
-```sh
-export GENERATORS="examples options optimizer"
-export ARANGODB_BRANCH_3_12="arangodb/enterprise:3.12.9"
-export ARANGODB_SRC_3_12="path/to/arangodb"
-export ARANGODB_BRANCH_4_X="arangodb/enterprise-preview:4.0-nightly"
-export ARANGODB_SRC_4_X="path/to/arangodb2"
-```
-
-**Configuration example**
-
-```yaml
-generators: examples options optimizer
-servers:
-  - image: arangodb/enterprise:3.12.9
-    version: "3.12"
-  - image: arangodb/enterprise-preview:4.0-nightly
-    version: "4.x"
-```
 
 **Run the toolchain**
 
@@ -1451,47 +1461,20 @@ It makes a warning show at the top of every page for that version.
    for the new version. Example:
 
    ```diff
-          ARANGODB_SRC_3_11: ${ARANGODB_SRC_3_11}
-          ARANGODB_SRC_3_12: ${ARANGODB_SRC_3_12}
-   +      ARANGODB_SRC_4_X: ${ARANGODB_SRC_4_X}
-          ARANGODB_BRANCH_3_11: ${ARANGODB_BRANCH_3_11}
-          ARANGODB_BRANCH_3_12: ${ARANGODB_BRANCH_3_12}
-   +      ARANGODB_BRANCH_4_X: ${ARANGODB_BRANCH_4_X}
+          ARANGODB_SRC_3_11: ${ARANGODB_SRC_3_11:-}
+          ARANGODB_SRC_3_12: ${ARANGODB_SRC_3_12:-}
+   +      ARANGODB_SRC_4_X: ${ARANGODB_SRC_4_X:-}
+          ARANGODB_BRANCH_3_11: ${ARANGODB_BRANCH_3_11:-}
+          ARANGODB_BRANCH_3_12: ${ARANGODB_BRANCH_3_12:-}
+   +      ARANGODB_BRANCH_4_X: ${ARANGODB_BRANCH_4_X:-}
    ```
 
    The same changes are required in the
-   `toolchain/docker/arm64/docker-compose.yml` file.
+   `toolchain/docker/arm64/docker-compose.yml` and
+   `toolchain/docker/docker-compose.local.yml` files. The toolchain script reads
+   the versions from `site/data/versions.yaml`, so it doesn't need changes.
 
-4. In the `toolchain/docker/config.yaml` file, add an entry for the new version.
-   Example:
-
-   ```diff
-      - image: ${ARANGODB_BRANCH_3_12_IMAGE}
-        version: ${ARANGODB_BRANCH_3_12_VERSION}
-   +
-   +  - image: ${ARANGODB_BRANCH_4_X_IMAGE}
-   +    version: ${ARANGODB_BRANCH_4_X_VERSION}
-   ```
-
-5. In the `toolchain/scripts/toolchain.sh` file, find the code that accesses
-   environment variables with the format `$ARANGODB_BRANCH_X_XX` where `X_XX`
-   is a version number like `3_12`, so `$ARANGODB_BRANCH_3_12` for instance.
-   Duplicate the block of an existing version and adjust all version numbers.
-   Example:
-
-   ```diff
-    if [ "$ARANGODB_BRANCH_3_12" != "" ] ; then
-          export ARANGODB_BRANCH_3_12_IMAGE="$ARANGODB_BRANCH_3_12"
-          export ARANGODB_BRANCH_3_12_VERSION="3.12"
-    fi
-    
-   +if [ "$ARANGODB_BRANCH_4_X" != "" ] ; then
-   +      export ARANGODB_BRANCH_4_X_IMAGE="$ARANGODB_BRANCH_4_X"
-   +      export ARANGODB_BRANCH_4_X_VERSION="4.x"
-   +fi
-   ```
-
-6. In the `site/data` folder, create a new folder with the short version number
+4. In the `site/data` folder, create a new folder with the short version number
    as the name, e.g. `4.x`. In the new `site/data/4.x` folder, create a
    `cache.json` file with the following content:
 
@@ -1501,7 +1484,7 @@ It makes a warning show at the top of every page for that version.
 
    Add this untracked file to Git!
 
-7. Duplicate the folder of the most recent version in `site/content`, e.g.
+5. Duplicate the folder of the most recent version in `site/content`, e.g.
    the `3.12` folder, and rename the copy to the new version, e.g. `4.x`.
 
    The `menuTitle` in the front matter of the version homepage, e.g.
@@ -1544,7 +1527,7 @@ It makes a warning show at the top of every page for that version.
 
    Add the new, untracked files to Git!
 
-8. Check whether you need to add additional `aliases` in the front matter of
+6. Check whether you need to add additional `aliases` in the front matter of
    pages. This is necessary keep the switching using the version selector
    working, from renamed/moved pages in older versions to the corresponding
    pages in the newer versions.

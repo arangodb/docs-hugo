@@ -317,8 +317,8 @@ export GENERATORS='<< parameters.generators >>'\n"
         pullImage = pullImageCmd(branch, version)
 
         # Uppercase so a version name with letters (e.g. "4.x" -> "4_X") matches
-        # the ARANGODB_BRANCH_4_X/ARANGODB_SRC_4_X vars that docker-compose.yml,
-        # config.yaml and toolchain.sh reference.
+        # the ARANGODB_BRANCH_4_X/ARANGODB_SRC_4_X vars that docker-compose.yml
+        # and toolchain.sh reference.
         version_underscore = version.replace(".", "_").upper()
         branchEnv = f"{pullImage}\n \
 export ARANGODB_BRANCH_{version_underscore}={branch}\n \
