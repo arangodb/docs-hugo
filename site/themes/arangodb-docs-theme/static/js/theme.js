@@ -329,16 +329,24 @@ function docKeyWithoutHash(urlString) {
   }
 }
 
+/** The element the current fragment points at, or null. A fragment may be percent-encoded in the
+    URL while the ID in the document is not, so try the decoded form first and the raw one after. */
+function fragmentTarget() {
+  var hash = location.hash;
+  if (!hash || hash.length < 2) return null;
+  var fragment = hash.slice(1);
+  try {
+    var el = document.getElementById(decodeURIComponent(fragment));
+    if (el) return el;
+  } catch (e) {
+    // Malformed escape sequence, so the raw fragment is all there is to go on.
+  }
+  return document.getElementById(fragment);
+}
+
 // CSS :target rule wouldn't wait for scrolling
 function flashTarget() {
-  const hash = location.hash;
-  if (!hash || hash.length < 2) return;
-  let el;
-  try {
-    el = document.getElementById(decodeURIComponent(hash.slice(1)));
-  } catch (e) {
-    return;
-  }
+  const el = fragmentTarget();
   if (!el) return;
   if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -366,12 +374,22 @@ function flashTarget() {
   setTimeout(() => obs.disconnect(), 2000);
 }
 
+/** Runs one step of displaying a page. A step that fails, like scrolling to a fragment that no
+    longer resolves, must not abort the other steps nor the page load. */
+function runPageStep(name, step) {
+  try {
+    step();
+  } catch (e) {
+    console.error("Error in " + name + " while displaying the page:", e);
+  }
+}
+
 function loadPage(target) {
   var href = target;
 
   var requestedKey = docKeyWithoutHash(href);
   if (docsLastFetchedDocKey !== null && requestedKey !== null && requestedKey === docsLastFetchedDocKey) {
-    scrollToFragment();
+    runPageStep("scrollToFragment", scrollToFragment);
     return;
   }
 
@@ -421,13 +439,21 @@ function loadPage(target) {
         }
         return;
       }
-      replaceArticle(href, newDoc);
-      docsLastFetchedDocKey = docKeyWithoutHash(href);
-      scrollToFragment();
-      initArticle(href);
-      flashTarget();
+      // The document was fetched, so the page exists. Failures from here on are rendering
+      // problems rather than a missing page, and must not show the not found page.
+      try {
+        replaceArticle(href, newDoc);
+        docsLastFetchedDocKey = docKeyWithoutHash(href);
+      } catch (e) {
+        console.error("Error displaying page:", e);
+        return;
+      }
+      runPageStep("initArticle", function() { initArticle(href); });
+      // After initArticle, whose restoreTabSelections() would override the tab a link selects.
+      runPageStep("scrollToFragment", scrollToFragment);
+      runPageStep("flashTarget", flashTarget);
       if (window.setupDocSearch) {
-        window.setupDocSearch(getSelectedVersion());
+        runPageStep("setupDocSearch", function() { window.setupDocSearch(getSelectedVersion()); });
       }
       return true;
     })
@@ -803,23 +829,23 @@ function hideEmptyOpenapiDiv() {
  }
 
  function scrollToFragment() {
-  fragment = location.hash.replace("#", "")
-  if (fragment) {
-    var element = document.getElementById(fragment);
-    if (!element) return;
+  var element = fragmentTarget();
+  if (!element) return;
 
-    if (element.tagName == "DETAILS") {
-      method = fragment.split("_").slice(0,2).join("_")
-      fields = fragment.split("_").slice(2)
-      for (var i = 0; i < fields.length; i++) {
-        field = fields.slice(0, i+1).join("_")
-        var el = document.getElementById(method+"_"+field);
-        el.setAttribute("open", "")
-        el.childNodes[0].classList.remove("collapsed")
-      }
+  // Reveal the collapsed and hidden ancestors, or the target has no layout box and scrolling to
+  // it does nothing. Walk the DOM instead of deriving the ancestor IDs from the fragment:
+  // underscores separate the parts of an ID, but a part like a `_key` property contains them too.
+  for (var el = element; el; el = el.parentElement) {
+    if (el.tagName == "DETAILS") {
+      el.setAttribute("open", "");
+      var summary = el.querySelector(":scope > summary");
+      if (summary) summary.classList.remove("collapsed");
+    } else if (el.classList.contains("tab-item") && !el.classList.contains("selected")) {
+      // A link into a tab wins over the tab remembered for that group.
+      switchTab(el.getAttribute("data-tab-group"), el.getAttribute("data-tab-item"));
     }
-    element.scrollIntoView();
   }
+  element.scrollIntoView();
  }
 
 

@@ -25,6 +25,14 @@ URL of that index is as follows:
 http://localhost:8529/_api/index/demo/63563528
 ```
 
+{{< info >}}
+In a cluster, the index endpoints check whether the user account you
+authenticate with has read access to the collection before they look the
+collection up. If it doesn't, they report the collection as not found
+(HTTP `404`, error code `1203`) rather than revealing that it exists.
+On single servers, the request is rejected with HTTP `403` instead.
+{{< /info >}}
+
 ## List all indexes of a collection
 
 ```openapi
