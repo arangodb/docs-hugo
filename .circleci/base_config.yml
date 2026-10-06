@@ -380,32 +380,6 @@ commands:
                 git push
               fi
 
-  commit-api-docs:
-    description: Commit api-docs files to api-docs repository
-    parameters:
-      version:
-        type: string
-        default: ""
-      tag:
-        type: string
-        default: ""
-    steps:
-      - run:
-          name: Clone api-docs repo
-          command: |
-            git clone git@github.com:arangodb/api-docs.git
-            cd /home/circleci/project/api-docs
-            mkdir -p "<< parameters.version >>"
-            for f in /home/circleci/project/docs-hugo/site/data/<< parameters.version >>/*-openapi.json; do
-              [ -e "$f" ] && cp "$f" "<< parameters.version >>/" || true
-            done
-            git add "<< parameters.version >>/"
-            git status
-            git diff --cached --quiet || git commit -m 'Commit api-docs << parameters.tag >>'
-            git tag -f << parameters.tag >>
-            git push -f origin << parameters.tag >>
-            git push -f
-
 jobs:
   create-docs-images:
     parameters:
@@ -484,13 +458,6 @@ jobs:
             docker compose -f docker-compose.plain-build.yml up --exit-code-from site-frontend
       - upload-summary:
           summary-name: "plain-build-summary"
-      - when:
-          condition:
-            equal: [ "api-docs", << pipeline.parameters.workflow >> ]
-          steps:
-            - commit-api-docs:
-                version: << pipeline.parameters.version >>
-                tag: << pipeline.parameters.tag >>
 
       - persist_to_workspace:
           root: .
@@ -656,11 +623,6 @@ workflows:
       - deploy:
           requires:
             - plain-build
-
-  api-docs:
-    when: { equal: [ api-docs, << pipeline.parameters.workflow >> ] }
-    jobs:
-      - plain-build
 
   release:
     when: { equal: [ release, << pipeline.parameters.workflow >> ] }

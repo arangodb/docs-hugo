@@ -9,7 +9,7 @@ orbs:
 parameters:
   workflow:
     type: enum
-    enum: [no-op, plain-build, generate, api-docs, release, compile, generate-scheduled, commit-generated, generate-oasisctl, create-docs-images-amd64, create-docs-images-arm64]
+    enum: [no-op, plain-build, generate, release, compile, generate-scheduled, commit-generated, generate-oasisctl, create-docs-images-amd64, create-docs-images-arm64]
     default: no-op
   
   deploy-url:
@@ -26,10 +26,6 @@ parameters:
 
   # "all" or "changed" (see EXAMPLES_SCOPE in the README), empty for the default
   examples-scope:
-    type: string
-    default: ""
-
-  version:
     type: string
     default: ""
 
@@ -78,9 +74,6 @@ parameters:
     type: string
     default: ""
 
-  tag:
-    type: string
-    default: ""
 
 jobs:
   generate-config:
