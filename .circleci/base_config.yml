@@ -313,7 +313,7 @@ commands:
             conclusion=success
             REPORT_DIR=. DOCS_COMMIT=$CIRCLE_SHA1 python3 toolchain/scripts/report.py || conclusion=failure
 
-            cat report.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-check-name: << parameters.summary-name >>'  --header 'docs-branch-name: '<< parameters.branch >>'' --header "docs-check-conclusion: $conclusion"
+            cat report.md | curl -X POST --data-binary @- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-check-name: << parameters.summary-name >>'  --header 'docs-branch-name: '<< parameters.branch >>'' --header "docs-check-conclusion: $conclusion"
           when: always
 
   update-arangodb-release-version:
