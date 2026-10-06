@@ -69,11 +69,54 @@ paths:
         '200':
           description: |
             Metrics were returned successfully.
+          content:
+            'text/plain; charset=utf-8':
+              schema:
+                description: |
+                  The metrics in the Prometheus text exposition format.
+                  It is line-based. Each metric family is introduced by a
+                  `# HELP <name> <description>` and a `# TYPE <name> <type>`
+                  comment line, where the type is `counter`, `gauge`,
+                  `histogram`, `summary`, or `untyped`. They are followed by
+                  one or more sample lines in the form
+                  `<name>{<label>="<value>",...} <value>`. The labels are
+                  optional. Histograms consist of multiple series with the
+                  `_bucket` (with an `le` label for the upper bound),
+                  `_sum`, and `_count` suffixes.
+                type: string
         '404':
           description: |
             The metrics API may be disabled using `--server.export-metrics-api false`
             setting in the server. In this case, the result of the call indicates the API
             to be not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Monitoring
 ```
@@ -105,7 +148,11 @@ paths:
       description: |
         Returns detailed shard usage metrics on DB-Servers.
 
-        These metrics can be enabled by setting the
+        Whether the endpoint is available depends on the setting of
+        the [`--server.export-metrics-api` startup option](../../../components/arangodb-server/options.md#--serverexport-metrics-api),
+        which needs to be enabled.
+
+        The shard usage metrics can be enabled by setting the
         [`--server.export-shard-usage-metrics` startup option](../../../components/arangodb-server/options.md#--serverexport-shard-usage-metrics)
         to `enabled-per-shard` to make DB-Servers collect per-shard
         usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
@@ -135,6 +182,58 @@ paths:
         '200':
           description: |
             Metrics were returned successfully.
+
+            This is also the case if the collection of shard usage metrics is
+            disabled via the `--server.export-shard-usage-metrics` startup option.
+            The response doesn't contain any shard usage metrics then.
+          content:
+            'text/plain; charset=utf-8':
+              schema:
+                description: |
+                  The metrics in the Prometheus text exposition format.
+                  It is line-based. Each metric family is introduced by a
+                  `# HELP <name> <description>` and a `# TYPE <name> <type>`
+                  comment line, where the type is `counter`, `gauge`,
+                  `histogram`, `summary`, or `untyped`. They are followed by
+                  one or more sample lines in the form
+                  `<name>{<label>="<value>",...} <value>`. The labels are
+                  optional. Histograms consist of multiple series with the
+                  `_bucket` (with an `le` label for the upper bound),
+                  `_sum`, and `_count` suffixes.
+                type: string
+        '404':
+          description: |
+            The metrics API may be disabled using `--server.export-metrics-api false`
+            setting in the server. In this case, the result of the call indicates the API
+            to be not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Monitoring
 ```
