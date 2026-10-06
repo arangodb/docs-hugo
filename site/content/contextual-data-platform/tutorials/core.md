@@ -155,5 +155,5 @@ plots end up close together in that vector space.
 - Combine approaches: filter or traverse the graph first, then rank the results
   by vector similarity for hybrid, context-aware search.
 - Add full-text search with ArangoSearch `View`s for keyword queries.
-- Connect from your application with an official [driver](../../index.md).
+- Connect from your application with an official [driver](../../ecosystem/drivers/_index.md).
 - Deepen your AQL and graph skills with the fundamentals courses.
