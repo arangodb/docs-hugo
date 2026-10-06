@@ -148,6 +148,9 @@ function main() {
   report_detail ""
   report_detail "- Generators: $GENERATORS"
   report_detail "- Examples: $effective_examples_scope"
+  if [ -n "$OVERRIDE" ]; then
+    report_detail "- Override: \`$OVERRIDE\`"
+  fi
 
   clean_docker_environment
 

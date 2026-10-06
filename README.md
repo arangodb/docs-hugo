@@ -278,6 +278,9 @@ The toolchain is configured with environment variables:
   `all` in CI. `OVERRIDE` implies `all`.
 - `OVERRIDE`: force saving the output of the examples whose names match these
   comma-separated regular expressions, even if the example code didn't change.
+  Without it, only the output of new examples and of examples whose code changed
+  is saved to `site/data/<version>/cache.json`, regardless of the scope (see
+  [Saved example output and previews](CIRCLECI.md#saved-example-output-and-previews)).
 
 Substitute `{VERSION}` with the docs version in uppercase and with underscores,
 like `3_12` for 3.12 and `4_X` for 4.x. There is one setting per docs version,

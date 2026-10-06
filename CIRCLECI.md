@@ -73,6 +73,53 @@ If upstream PRs are indicated, ArangoDB is compiled, which takes a while and is
 costly, so the workflow needs to be approved in CircleCI first. If only images
 are indicated, the workflow starts without approval and without compile jobs.
 
+`/generate` and `/generate-commit` accept optional arguments, separated by spaces:
+
+- `scope=all` or `scope=changed`: whether to run all examples (the default) or
+  only the examples of pages with changed or new examples
+  (see `EXAMPLES_SCOPE` in the [README](README.md)).
+- `override=<regexes>`: save the output of the examples whose names match the
+  comma-separated regular expressions to the cache even if their code didn't
+  change, e.g. `override=^aql,RestVersion` (see [Cache override](#cache-override)).
+  `override=.*` refreshes the output of all examples.
+- `generators=<names>`: the generators to run, comma-separated, instead of
+  `examples`, e.g. `generators=options,optimizer` to update the startup option
+  and optimizer rule data. Available: `examples`, `options`, `optimizer`,
+  `metrics`, `error-codes`, `exit-codes`, `oasisctl`.
+
+For example: `/generate-commit scope=changed` or
+`/generate-commit generators=examples,options override=RestVersion`.
+
+The bot reacts to the command comment with 🚀 when it triggered the workflow.
+Invalid arguments are reported in a comment instead. The effective settings
+are listed in the details of the `generate-summary` check.
+
+### Saved example output and previews
+
+The `generate` workflow runs the examples (all of them by default), but only
+saves the output of examples whose code changed, of new examples, and of the
+examples that match `override` to `site/data/<version>/cache.json`. The output
+of other examples stays as it is, even if the server now returns something
+different. This keeps the diffs small, as many examples contain values that
+change with every run (document keys and revisions, IDs, timestamps, timings).
+Releases are different: the [release workflow](#release-workflow-for-arangodb-releases) empties the
+cache of the released version first, so it saves the output of all examples.
+
+- `/generate`: the deploy preview is built from the live responses, so all
+  examples (of the versions with a server) show the current server output. The
+  output is stored as artifacts but not committed.
+- `/commit`: commits the cache of the last `/generate` run, which only contains
+  the changes described above. `/generate` followed by `/commit` is the same as
+  `/generate-commit`.
+- The commit doesn't trigger a new build (`[skip ci]`), so the preview keeps
+  showing all-fresh output. The next push to the PR triggers a regular build
+  from the cache, and the preview then shows the committed output: new output
+  for changed examples, the previous output for all others. The published
+  documentation is built the same way.
+
+To refresh the saved output of examples whose code didn't change, for example,
+because the server behavior changed, use `override`.
+
 ### `/generate`
 
 When commenting a PR with the `/generate` command, the following
@@ -85,8 +132,10 @@ arguments are invoked:
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
 | string | `arangodb-4_x`  | [Upstream reference](#upstream-references) for 4.x  |
-| string | `generators` | `examples` |
+| string | `generators` | `examples` (or the `generators` argument) |
 | string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
+| string | `examples-scope` | The `scope` argument, empty by default |
+| string | `override` | The `override` argument, empty by default |
 
 ### `/commit`
 
@@ -104,14 +153,17 @@ arguments are invoked:
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
 | string | `arangodb-4_x`  | [Upstream reference](#upstream-references) for 4.x  |
-| string | `generators` | `examples` |
+| string | `generators` | `examples` (or the `generators` argument) |
 | string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
+| string | `examples-scope` | The `scope` argument, empty by default |
+| string | `override` | The `override` argument, empty by default |
 | boolean | `commit-generated` | `true` |
 
-### `cache override`
+### Cache override
 
-You can override the cache of an example with the `override` CircleCI parameter
-in the `generate` workflow.
+You can override the cache of an example with the `override` argument of the
+`/generate` and `/generate-commit` commands, or the `override` CircleCI
+parameter in the `generate` workflow.
 
 The override parameter is a comma-separated string of regexes.
 
@@ -220,6 +272,11 @@ If the release images are already published, specify the image (e.g.
 ArangoDB, which makes the workflow much faster. Specify the branch to compile
 ArangoDB instead, for example, to test the workflow before a release or to prepare
 the documentation before the images are published.
+
+The release workflow runs all generators for the version and regenerates all of
+its data from scratch: it empties `site/data/<version>/`, including the example
+cache, so that the output of all examples is saved, not only of the changed ones
+(see [Saved example output and previews](#saved-example-output-and-previews)).
 
 The ArangoDB release workflow includes the following jobs:
 - `generate` workflow (all examples are re-generated for the specified version)

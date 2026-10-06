@@ -24,6 +24,11 @@ parameters:
     type: string
     default: ""
 
+  # "all" or "changed" (see EXAMPLES_SCOPE in the README), empty for the default
+  examples-scope:
+    type: string
+    default: ""
+
   version:
     type: string
     default: ""
