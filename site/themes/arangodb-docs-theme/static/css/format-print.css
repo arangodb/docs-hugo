@@ -178,6 +178,7 @@ article {
     break-before: avoid;
 }
 .image-zoom-hint,
+.image-zoom-badge,
 .image-viewer {
     display: none !important;
 }

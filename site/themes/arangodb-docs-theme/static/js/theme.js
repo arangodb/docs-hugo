@@ -1082,6 +1082,11 @@ const VIEWER_PAN_GUTTER = 80;
 /* Pointer movement in pixels below which a press counts as a click, not a drag. */
 const VIEWER_DRAG_THRESHOLD = 5;
 const VIEWER_ZOOM_STEP = 1.5;
+/* Devices without hover get a permanent button on every illustration instead of the hover hint. */
+const ZOOM_BADGE_QUERY = '(hover: none)';
+/* Illustrations rendered smaller than this get no permanent button, as it would cover them. */
+const ZOOM_BADGE_MIN_WIDTH = 96;
+const ZOOM_BADGE_MIN_HEIGHT = 64;
 
 const VIEWER_ICONS = {
   'zoom-out': '<path d="M5 12h14"/>',
@@ -1097,6 +1102,9 @@ function viewerIcon(name) {
 
 let _viewer = null;
 let _zoomHint = null;
+let _zoomBadges = [];
+let _zoomBadgeObserver = null;
+let _zoomBadgeFrame = 0;
 
 /** Marks the illustrations of the current article as zoomable. */
 function prepareZoomables() {
@@ -1118,6 +1126,66 @@ function prepareZoomables() {
     }
     let label = zoomableCaption(el);
     el.setAttribute('aria-label', label ? 'Enlarge: ' + label : 'Enlarge illustration');
+    if (window.matchMedia(ZOOM_BADGE_QUERY).matches) addZoomBadge(el);
+  });
+  scheduleZoomBadgeLayout();
+}
+
+/* On touch screens, tapping an illustration opens it too, but nothing would
+   tell that it can be enlarged, and in diagrams full of links it is easy to
+   follow a link instead. A button in the corner of every illustration always
+   opens it. The buttons sit on top of the page rather than being wrapped
+   around the illustrations, which would change how they are sized. */
+function addZoomBadge(el) {
+  let button = document.createElement('button');
+  button.className = 'image-zoom-badge';
+  button.type = 'button';
+  // The illustration itself is the keyboard and screen reader target
+  button.tabIndex = -1;
+  button.setAttribute('aria-hidden', 'true');
+  button.innerHTML = viewerIcon('expand');
+  button.addEventListener('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    openImageViewer(el);
+  });
+  document.body.appendChild(button);
+  _zoomBadges.push({ el, button });
+
+  if (!_zoomBadgeObserver) {
+    // The page growing or shrinking moves the illustrations below the change
+    _zoomBadgeObserver = new ResizeObserver(scheduleZoomBadgeLayout);
+    _zoomBadgeObserver.observe(document.body);
+    window.addEventListener('resize', scheduleZoomBadgeLayout);
+  }
+  // Also catches illustrations in tabs and collapsed sections being shown
+  _zoomBadgeObserver.observe(el);
+}
+
+function scheduleZoomBadgeLayout() {
+  if (_zoomBadgeFrame) return;
+  _zoomBadgeFrame = requestAnimationFrame(function () {
+    _zoomBadgeFrame = 0;
+    layoutZoomBadges();
+  });
+}
+
+function layoutZoomBadges() {
+  _zoomBadges = _zoomBadges.filter(({ el, button }) => {
+    // The illustration is gone after navigating to another page
+    if (!document.contains(el)) {
+      _zoomBadgeObserver.unobserve(el);
+      button.remove();
+      return false;
+    }
+    let rect = el.getBoundingClientRect();
+    let fits = rect.width >= ZOOM_BADGE_MIN_WIDTH && rect.height >= ZOOM_BADGE_MIN_HEIGHT;
+    button.hidden = !fits;
+    if (fits) {
+      button.style.top = (rect.top + window.scrollY + 6) + 'px';
+      button.style.left = (rect.right + window.scrollX - 6) + 'px';
+    }
+    return true;
   });
 }
 
