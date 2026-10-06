@@ -1561,28 +1561,12 @@ It makes a warning show at the top of every page for that version.
    ```diff
                 python3 generate_config.py \
                   --workflow << pipeline.parameters.workflow >> \
-   -              --arangodb-branches << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> \
-   +              --arangodb-branches << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_x >> \
+   -              --arangodb-branches 3.11="<< pipeline.parameters.arangodb-3_11 >>" 3.12="<< pipeline.parameters.arangodb-3_12 >>" \
+   +              --arangodb-branches 3.11="<< pipeline.parameters.arangodb-3_11 >>" 3.12="<< pipeline.parameters.arangodb-3_12 >>" 4.x="<< pipeline.parameters.arangodb-4_x >>" \
    ```
 
-   Note that the order of the branches is important because the version information
-   is looked up based on the index number. The branches need to be ordered according
-   to a sorted list of the `name` fields as defined in the `versions.yaml`.
-   
-   Code excerpt from `generate_config.py`:
-   
-   ```py
-   versions = yaml.safe_load(open("versions.yaml", "r"))
-   versions = sorted(versions["/arangodb/"], key=lambda d: d['name'])
-   
-   def workflow_generate(config):
-       # ...
-   
-       for i in range(len(versions)):
-           version = versions[i]["name"]
-           # ...
-           branch = args.arangodb_branches[i]
-   ```
+   Each entry is `VERSION=REF`, with `VERSION` being the `name` of the version in
+   `versions.yaml`. The order doesn't matter.
 
 3. In the `toolchain/docker/amd64/docker-compose.yml` file, add an entry under
    `services.toolchain.volumes` for the new version. Simply increment the value

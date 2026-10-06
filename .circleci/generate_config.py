@@ -33,7 +33,7 @@ parser.add_argument(
     "--workflow", help="The workflow to trigger", type=str
 )
 parser.add_argument(
-    "--arangodb-branches",  nargs='+', help="The arangodb/arangodb branches to be used for the generate workflow (sorted by name)"
+    "--arangodb-branches",  nargs='*', help="The upstream references for the generate workflow as VERSION=REF entries, e.g. 4.x=arangodb/core-preview:4.0-nightly (any order, undefined if omitted)"
 )
 parser.add_argument(
     "--arangodb-branch", help="The arangodb/arangodb branch to be used for the release workflow", type=str
@@ -61,6 +61,22 @@ parser.add_argument(
 )
 
 args = parser.parse_args()
+
+# Upstream references by docs version name (e.g. "4.x"), passed as VERSION=REF
+# entries so that their order doesn't matter
+arangodb_branches = {}
+for entry in args.arangodb_branches or []:
+    version, sep, ref = entry.partition("=")
+    if not sep:
+        sys.exit(f"Invalid --arangodb-branches entry {entry!r}, expected VERSION=REF")
+    if version not in [v["name"] for v in versions]:
+        sys.exit(f"Unknown version {version!r} in --arangodb-branches, not in versions.yaml")
+    arangodb_branches[version] = ref or "undefined"
+
+
+def branch_for(version):
+    """The upstream reference for a docs version, "undefined" if there is none"""
+    return arangodb_branches.get(version, "undefined")
 
 
 def generate_workflow(config):
@@ -99,7 +115,7 @@ def workflow_generate(config):
         version = versions[i]["name"]
         if args.workflow in ["generate-scheduled", "generate-oasisctl"] and version in ["3.10", "3.11"]:
             continue # Skip compilation, 3.10 nightly images no longer available and >= 3.11.14-3 non-public
-        branch = args.arangodb_branches[i]
+        branch = branch_for(version)
         if branch == "undefined":
             continue
 
@@ -342,7 +358,7 @@ export GENERATORS='<< parameters.generators >>'\n"
         version = versions[i]["name"]
         if args.workflow in ["generate-scheduled", "generate-oasisctl"] and version in ["3.10", "3.11"]:
             continue # Skip generation, 3.10 nightly images no longer available and >= 3.11.14-3 non-public
-        branch = args.arangodb_branches[i]
+        branch = branch_for(version)
 
         if args.workflow != "generate": #generate scheduled etc.
             branch = nightlyImage(version)
@@ -378,7 +394,7 @@ def workflow_generate_store_artifacts_command(config):
 
     for i in range(len(versions)):
         version = versions[i]["name"]
-        branch = args.arangodb_branches[i]
+        branch = branch_for(version)
         if branch == "undefined":
             continue
 

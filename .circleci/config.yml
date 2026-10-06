@@ -119,10 +119,10 @@ jobs:
 
             pip install pyyaml requests
 
-            # The list of branches needs to be sorted by name (based on the `name` field in versions.yaml)!
+            # Upstream references as VERSION=REF, VERSION being a name in versions.yaml
             python3 generate_config.py \
               --workflow << pipeline.parameters.workflow >> \
-              --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_x >> \
+              --arangodb-branches 3.10="<< pipeline.parameters.arangodb-3_10 >>" 3.11="<< pipeline.parameters.arangodb-3_11 >>" 3.12="<< pipeline.parameters.arangodb-3_12 >>" 4.x="<< pipeline.parameters.arangodb-4_x >>" \
               --arangodb-branch << pipeline.parameters.arangodb-branch >> \
               --release-type << pipeline.parameters.release-type >> \
               --docs-version << pipeline.parameters.docs-version >> \
