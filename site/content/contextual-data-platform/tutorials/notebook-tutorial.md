@@ -13,7 +13,7 @@ ready-made `Autograph_DEMO.ipynb` notebook cell by cell in a platform Notebook
 server, meeting each service that AutoGraph orchestrates along the way: the
 Secrets Manager for the LLM key, the File Manager for the documents, the corpus
 build that clusters them, the RAG Strategizer that picks a retrieval strategy,
-and the Retriever we finally chat with.
+and the AutoRAG service we finally chat with.
 
 This is the same workflow you would run in the
 [web interface](../../agentic-ai-suite/autograph/web-interface.md), but here
@@ -28,7 +28,7 @@ By the end, you will have:
 - Your documents uploaded through the File Manager and embedded into a Corpus Graph.
 - A per-domain RAG strategy chosen automatically for your content.
 - A knowledge graph built by the orchestrated GraphRAG importers.
-- A running Retriever service you can query in natural language.
+- A running AutoRAG service you can query in natural language.
 - A simple way to stop the services when you are done. Your ArangoDB data
   (documents, corpus graph, and knowledge graph) persists until you delete it.
 
@@ -447,9 +447,9 @@ explore the resulting knowledge graph at any time in the
 [Graph Visualizer](../../platform-suite/graph-visualizer.md).
 {{< /tip >}}
 
-## Step 12: Deploy the Retriever and query the graph
+## Step 12: Deploy AutoRAG and query the graph
 
-Deploy the [Retriever service](../../agentic-ai-suite/retriever/) to query your
+Deploy the [AutoRAG service](../../agentic-ai-suite/autorag/_index.md) to query your
 knowledge graph. It starts the same way as AutoGraph, with the same LLM
 configuration:
 
@@ -500,7 +500,7 @@ Pick the `query_type` that fits your question:
 Optional request fields include `include_metadata` (return citations and an
 execution log) and `use_cache` (reuse answers to similar questions). For the full
 list, see the
-[Retriever parameters](../../agentic-ai-suite/retriever/parameters.md).
+[AutoRAG parameters](../../agentic-ai-suite/autorag/parameters.md).
 
 {{< tip >}}
 The service can report healthy a moment before `/v1/graphrag-query` is fully
@@ -523,7 +523,7 @@ knowledge graph you can query. From here:
   [Architecture](../../agentic-ai-suite/autograph/architecture.md) overview and
   the [Design Guide](../../agentic-ai-suite/autograph/design-guide.md).
 - Tune retrieval with the
-  [Retriever parameters](../../agentic-ai-suite/retriever/parameters.md) and
+  [AutoRAG parameters](../../agentic-ai-suite/autorag/parameters.md) and
   search methods.
 - Dive into the endpoints in the
   [API Reference](../../agentic-ai-suite/autograph/reference/_index.md).
