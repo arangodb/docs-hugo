@@ -3,117 +3,164 @@ title: What is Arango?
 menuTitle: What is Arango?
 weight: 5
 description: >-
-  How the Arango products relate to each other, what each one adds, and which
-  one to install for your use case
+  The Arango Contextual Data Platform delivers a governed, continuously
+  maintained context graph that AI agents and applications query for the
+  entities, relationships, and sources behind an answer
 ---
-{{< comment >}}
-DRAFT - the two-product framing on this page follows the docs restructuring
-proposal and still needs Product sign-off before it is published. The
-"Editions and capabilities" section deliberately links to the per-product
-license pages instead of restating a capability matrix, because Product owns
-the authoritative edition mapping.
-{{< /comment >}}
-
-Arango is a database and a data platform built on top of it.
-
-[**ArangoDB**](../arangodb/_index.md) is the multi-model database: graph,
-document, key-value, full-text search, and vector, all reachable through a
-single query language. It is open source and you can run it on your laptop in a
-container.
+## What is the Arango Contextual Data Platform
 
 The [**Arango Contextual Data Platform**](../contextual-data-platform/_index.md)
-is the licensed, Kubernetes-native system that runs on top of ArangoDB. It adds
-the ingestion, graph construction, retrieval, and governance services that
-agentic AI applications need.
+delivers a contextual data layer (also called a context layer): a governed,
+continuously maintained context graph that AI agents and applications query for
+the entities, relationships, and sources behind an answer.
 
-Choosing the platform does not mean giving up anything in the database. The
-query language, the drivers, and the HTTP API are the same.
-
-## Which product do I need?
-
-| | ArangoDB | Contextual Data Platform |
-|---|---|---|
-| **Use it for** | Storing and querying connected data in your own application | Turning a document corpus into context that agents and co-pilots can use |
-| **You write** | AQL queries, driver code | Documents in, natural-language questions out |
-| **Runs on** | A container, a VM, or bare metal | Kubernetes |
-| **Licensing** | Community Edition is free and open source; Enterprise Edition adds clustering and security features | Licensed; requires ArangoDB Enterprise Edition 3.12.9 or later |
-| **Install time** | About 2 minutes | About 10 minutes |
-| **Start here** | [Get started with ArangoDB](arangodb.md) | [Get started with the data platform](data-platform.md) |
-
-If you are building an application that stores and traverses connected data,
-you want ArangoDB. If you are building something that has to answer questions
-over a body of documents, you want the Contextual Data Platform.
-
-## How the products fit together
-
-The platform is layered. Every platform service reads and writes through
-ArangoDB - nothing bypasses it. This is why storage, indexing, AQL, and the
-HTTP API are documented once, in the ArangoDB manual, and apply unchanged when
-you run the platform.
+The platform consists of three modules: the Agentic AI Suite, the Platform
+Suite, and ArangoDB. Every service in the platform reads and writes through
+ArangoDB, and agents and applications access the context layer through the
+[ArangoDB Query Language (AQL)](../arangodb/3.12/aql/_index.md), the
+[HTTP API](../arangodb/3.12/develop/http-api/_index.md), or the
+[Model Context Protocol (MCP)](../ecosystem/arangodb-mcp-server.md).
 
 {{< embed-svg "Arango-Contextual-Data-Platform-Overview" >}}
 
-The platform itself comes in two parts:
+### Agentic AI Suite
 
-- The [**Platform Suite**](../platform-suite/_index.md) is always included. It
-  provides the Kubernetes orchestration, the unified web interface with the
-  [Graph Visualizer](../platform-suite/graph-visualizer.md) and the
-  [Query Editor](../platform-suite/query-editor.md), the
-  [Control Plane](../platform-suite/control-plane-acp/_index.md), and the
-  operational services around them.
+The [**Agentic AI Suite**](../agentic-ai-suite/_index.md) builds the context
+graph, keeps it current, and answers questions from it.
 
-- The [**Agentic AI Suite**](../agentic-ai-suite/_index.md) is the optional
-  capability layer on top. It adds
-  [AutoGraph](../agentic-ai-suite/autograph/_index.md) with AutoRAG and
-  [GraphRAG](../agentic-ai-suite/autograph/concepts.md),
-  [GraphML](../agentic-ai-suite/graphml/_index.md),
-  [Graph Analytics](../agentic-ai-suite/graph-analytics/_index.md),
-  the [Reasoner](../agentic-ai-suite/reasoner/_index.md),
-  [Ada](../agentic-ai-suite/ada/_index.md), and
-  [natural language to AQL](../agentic-ai-suite/natural-language-to-aql/_index.md).
+[**AutoGraph Studio**](../agentic-ai-suite/autograph/_index.md) turns enterprise
+data into a context graph and retrieves from it:
 
-## What each product adds
+- **Build**: Ingests documents as-is (PDF, Office, text, and Markdown), clusters
+  them into knowledge domains, and uses a large language model (LLM) to derive
+  the entity types for each domain. It then extracts entities and relationships
+  into the context graph. Each domain gets the processing depth it needs: full
+  [GraphRAG](../agentic-ai-suite/autograph/concepts.md) (graph-based
+  retrieval-augmented generation) for relationship-rich content, or a lighter
+  VectorRAG path where similarity search is enough.
+- **Maintain**: Updates are
+  [incremental](../agentic-ai-suite/autograph/incremental-graph-updates.md).
+  Inserting, deleting, or replacing a document reprocesses only what changed,
+  and new documents join the nearest existing domain. Domains that have drifted
+  since they were clustered are flagged; reclustering runs when you start it.
+- **Retrieve**: Selects a retrieval strategy for each question (vector search,
+  graph traversal, or a combination) and answers against the context graph.
+- **Trace**: Documents, chunks, and entities carry provenance metadata, so
+  answers can be traced back to their source files.
 
-**ArangoDB** gives you the data model and the query engine. One record can be a
-JSON document, a node in a graph, or both. AQL composes across the models in a
-single query, so a traversal can filter on document attributes and rank results
-with a vector or full-text search without leaving the query. See
-[Features](../arangodb/3.12/features/_index.md) for what each edition includes.
+The suite also includes:
 
-**The Contextual Data Platform** gives you everything between a folder of
-documents and a grounded answer. AutoGraph discovers knowledge domains in your
-data and builds a contextual knowledge graph per domain, GraphRAG extracts
-entities and relationships from raw text, and the retrieval services answer
-questions against the resulting graph instead of against a flat index. The
-platform also supplies the operational layer - deployment, scaling, monitoring,
-backup, and access control - through the ArangoDB Kubernetes Operator.
+- [**AQLizer**](../agentic-ai-suite/natural-language-to-aql/_index.md)
+  translates natural-language questions into AQL, so users can query across
+  domains in the context graph without writing AQL first.
+- [**Ada**](../agentic-ai-suite/ada/_index.md) is an AI assistant for
+  natural-language interaction and development.
+- [**Reasoner**](../agentic-ai-suite/reasoner/_index.md) analyzes and optimizes
+  AQL queries with AI-assisted reasoning.
+- [**GraphML**](../agentic-ai-suite/graphml/_index.md) applies machine learning
+  to graphs for link prediction, classification, and embeddings.
+- [**Graph Analytics**](../agentic-ai-suite/graph-analytics/_index.md) runs
+  graph algorithms such as PageRank on dedicated compute.
 
-## Where the managed option fits
+### Platform Suite
 
-[**Arango Managed Platform (AMP)**](../amp/_index.md) runs ArangoDB for you as a
-service on Google Cloud Platform or Amazon Web Services, with 24/7 monitoring,
-automatic upgrades, and managed backups. Use it when you want the database
-without operating it yourself.
+The [**Platform Suite**](../platform-suite/_index.md) runs, secures, and manages
+the platform on Kubernetes.
 
-AMP provides the database. The Contextual Data Platform is deployed and licensed
-separately - see
-[Install and upgrade](../contextual-data-platform/install-and-upgrade/_index.md).
+- [**Kubernetes Operator**](../contextual-data-platform/architecture.md):
+  deployment, scaling, upgrades, backups, and license management.
+- [**Role-based access control (RBAC)**](../contextual-data-platform/access-control/authorization.md):
+  controls which users and agents can read or act on which data.
+- **Web interface**: [Graph Visualizer](../platform-suite/graph-visualizer.md)
+  and [Query Editor](../platform-suite/query-editor.md) for exploring and
+  querying the context graph.
+- [**Bring Your Own Code**](../platform-suite/container-manager/_index.md): run
+  custom services alongside the platform.
 
-## Where the drivers live
+### ArangoDB
 
-Drivers, the MCP server, framework integrations, and data science adapters are
-documented under [Ecosystem](../ecosystem/_index.md). They work against both
-products, because both speak the same HTTP API.
+[**ArangoDB**](../arangodb/_index.md) is the multi-model database at the
+foundation of the platform. Graph, document, key-value, full-text, and vector
+data share one storage engine, one index layer, and one transaction system. A
+document, its graph edges, its full-text index entries, and its vector embedding
+are stored and updated together, so there is no second store to synchronize and
+no cross-system join by ID.
 
-## Editions and licensing
+A single AQL query can start from a full-text match, walk the graph, filter on
+document attributes, and rank by
+[vector similarity](../arangodb/3.12/indexes-and-search/indexing/working-with-indexes/vector-indexes.md):
 
-- ArangoDB is available in a free Community Edition and a commercial Enterprise
-  Edition. See [Features](../arangodb/3.12/features/_index.md) for the
-  per-edition breakdown.
-- The Contextual Data Platform is licensed, and the Agentic AI Suite is licensed
-  on top of it. Licenses are activated and renewed automatically by the
-  ArangoDB Kubernetes Operator - see
-  [License Management](../contextual-data-platform/license-management.md).
+```aql
+FOR article IN articlesView
+  SEARCH ANALYZER(article.body IN TOKENS(@topic, "text_en"), "text_en")
+  FOR related, edge IN 1..2 OUTBOUND article cites
+    FILTER related.published >= @since
+    SORT APPROX_NEAR_COSINE(related.embedding, @queryVector) DESC
+    LIMIT 10
+    RETURN { title: related.title, via: edge._from }
+```
+
+ArangoDB is also available on its own for applications that store and query
+connected data.
+
+## What is a contextual data layer?
+
+To answer a question reliably, an AI agent needs more than retrieved text
+passages. It needs to know which entities are involved, how they connect, what
+they mean, what is true now, where each fact came from, and whether the caller
+is allowed to see it. In most architectures, that context is split across a
+vector store, a graph database, a document store, and the pipelines that sync
+them.
+
+A contextual data layer holds this context in one place as a context graph.
+Each layer below adds an answer the one before it cannot give:
+
+| Layer | What it adds | What it answers |
+|-------|--------------|-----------------|
+| Graph | Entities and relationships that can be traversed at scale | How is it connected? |
+| Ontology | Shared entity types, relationships, and constraints | What does it mean? |
+| Knowledge graph | Meaning applied to real entities across source systems | What is this, and how is it connected? |
+| Context graph | Current state, sources, and access policies | What is true now, and can I trace why? |
+
+## What the contextual data layer delivers
+
+| Capability | How it works | Result |
+|------------|--------------|--------|
+| Relational depth | Multi-hop graph traversal in the same query as filters, text search, and vector ranking | Answers that span systems and relationships, not isolated passages |
+| Traceability | Provenance metadata links graph content to source files; graph paths show how an answer was reached | Explainable answers that can be verified |
+| Freshness | Incremental updates; only changed documents are reprocessed | Context stays current without full rebuilds |
+| Governed access | RBAC applied at the data layer for users and agents | Agents retrieve only what they are permitted to see |
+| Fewer moving parts | One engine for graph, document, key-value, full-text, and vector data | No separate stores to sync, secure, and operate |
+| Model choice | Access through AQL, the HTTP API, and MCP | Use any LLM, agent framework, or application |
+
+## Ways to run it
+
+### Arango Contextual Data Platform
+
+**Self-managed**: Runs on your own Kubernetes cluster, in the cloud,
+on-premises, or in air-gapped environments. Available in two editions:
+
+- **Developer Edition**: free under a non-commercial license.
+- **Enterprise Edition**: licensed for production and commercial use.
+
+Both editions require ArangoDB Enterprise Edition 3.12.12 or later. Licenses
+activate and renew automatically through the Kubernetes Operator. See
+[License Management](../contextual-data-platform/license-management.md).
+
+**Managed**: The [Arango Managed Platform (AMP)](../amp/_index.md) runs the
+Contextual Data Platform for you on Google Cloud or AWS, with monitoring,
+upgrades, and backups handled.
+
+### ArangoDB
+
+**Self-managed**: ArangoDB Community Edition is free to use under the ArangoDB
+Community License. Enterprise Edition adds clustering features, including
+[SmartGraphs](../arangodb/3.12/graphs/smartgraphs/_index.md) for sharding
+connected data without cross-node traversal, and security features. See
+[Features](../arangodb/3.12/features/_index.md) for the per-edition breakdown.
+
+**Managed**: [AMP](../amp/_index.md) runs ArangoDB for you on Google Cloud or
+AWS, with monitoring, upgrades, and backups handled.
 
 ## Next step
 
