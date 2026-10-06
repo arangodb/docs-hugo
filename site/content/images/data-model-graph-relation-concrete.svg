@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 90" width="350" height="90" role="img" aria-labelledby="data-model-graph-relation-concrete-t data-model-graph-relation-concrete-d">
+  <title id="data-model-graph-relation-concrete-t">Mary isFriendOf John</title>
+  <desc id="data-model-graph-relation-concrete-d">The node Mary connected to the node John by an edge labeled isFriendOf.</desc>
+  <defs><marker id="data-model-graph-relation-concrete-m" markerWidth="12" markerHeight="12" refX="0" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,6 L0,12 z" fill="#044926"/></marker></defs>
+  <line x1="90.0" y1="45.0" x2="248.0" y2="45.0" stroke="#044926" stroke-width="2.5" marker-end="url(#data-model-graph-relation-concrete-m)"/>
+  <g transform="translate(172.0 45.0) rotate(0.0)"><rect x="-50.0" y="-12" width="100" height="24" rx="12" fill="#f4faf4" stroke="#044926" stroke-width="1.5"/><text x="0.0" y="4.5" text-anchor="middle" font-size="13" font-weight="600" fill="#044926" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">isFriendOf</text></g>
+  <circle cx="44" cy="45" r="40" fill="#007339"/>
+  <text x="44.0" y="51.0" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff" font-family="Urbanist, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">Mary</text>
+  <circle cx="306" cy="45" r="40" fill="#02245f"/>
+  <text x="306.0" y="51.0" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff" font-family="Urbanist, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">John</text>
+</svg>
