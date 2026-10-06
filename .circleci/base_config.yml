@@ -24,6 +24,13 @@ commands:
                 echo "[SETUP] Using image tag as branch name (with hotfix suffixes removed)"
                 tag="<< parameters.branch >>"
                 tag="${tag##*:}"
+                # Digests (image@sha256:...) and references without a tag (a colon
+                # only in registry:port) don't identify a source branch
+                if [[ "<< parameters.branch >>" == *@* ]] || [[ "$tag" == */* ]]; then
+                    echo "[SETUP] ERROR: Can't derive the arangodb/arangodb branch from << parameters.branch >>,"
+                    echo "[SETUP] ERROR: which the metrics, error-codes, and exit-codes generators need. Use an image with a version tag."
+                    exit 1
+                fi
                 branch_name=$(echo "$tag" | cut -d- -f1 | sed -E 's/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
             fi
 

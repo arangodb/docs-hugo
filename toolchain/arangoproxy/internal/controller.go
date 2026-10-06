@@ -141,6 +141,12 @@ func ValidateOpenapiHandler(w http.ResponseWriter, r *http.Request) {
 // arangosh.PageDone). Headers: Page (source file), Version.
 func PageDoneHandler(w http.ResponseWriter, r *http.Request) {
 	page, version := r.Header.Get("Page"), r.Header.Get("Version")
+	// An empty page would match the exemptions of the setup (no page), and
+	// removing them would break all subsequent examples
+	if page == "" {
+		http.Error(w, "missing Page header", http.StatusBadRequest)
+		return
+	}
 	for _, repository := range models.Repositories {
 		if repository.Version == version {
 			arangosh.PageDone(page, repository)

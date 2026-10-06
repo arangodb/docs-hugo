@@ -64,8 +64,11 @@ Commands you can use in GitHub comments on PRs:
 - `/commit`: to commit the previously generated examples to the PR
 - `/generate-commit`: to build and commit the examples in one go
 
-These commands work only if you indicate the upstream PRs or a nightly
-image in the PR description, as they are required for the compile step.
+These commands work only if you indicate the upstream PRs or images in the PR
+description (see [Upstream references](#upstream-references)). Use images with a
+tag, like `arangodb/core-preview:4.0-nightly` or `arangodb/enterprise:3.12.12`:
+the source code for the `metrics`, `error-codes`, and `exit-codes` generators is
+cloned from the branch that the tag indicates.
 
 Only members of the `arangodb` GitHub organization can use these commands.
 
@@ -243,7 +246,9 @@ image. The matching client tools image is derived and pulled automatically:
 if the last part of the repository name is `core` or starts with `core-`, it is
 replaced by `client-tools` (keeping the rest, the registry, and the tag), e.g.
 `gcr.io/gcr-for-testing/arangodb/client-tools-preview:4.0-nightly` for
-`gcr.io/gcr-for-testing/arangodb/core-preview:4.0-nightly`.
+`gcr.io/gcr-for-testing/arangodb/core-preview:4.0-nightly`. This requires a tag:
+the client tools image of a server image pinned by digest (`core@sha256:...`)
+can't be derived, as its digest differs, so the toolchain rejects such references.
 
 ## Release workflow for ArangoDB releases
 

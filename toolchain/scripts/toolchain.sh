@@ -26,9 +26,10 @@ function report_detail() {
 
 ### Assemble the final build report (report.md) from the errors, warnings, and details.
 ### report.py exits with 1 if errors were reported, which is not a failure here.
+### Absolute path, as the working directory changes (run_arangoproxy_and_site).
 function finalize_report() {
   local output
-  output=$("$PYTHON_EXECUTABLE" report.py 2>&1)
+  output=$("$PYTHON_EXECUTABLE" /home/toolchain/scripts/report.py 2>&1)
   if [ $? -gt 1 ] || [ -n "$output" ]; then
     log "[finalize_report] Failed to assemble the report: $output"
   elif report_has_errors; then
@@ -774,6 +775,11 @@ function setup_client_container() {
 
   client_container="$server_container"
   client_image=$(client_image_for "$image")
+  ## The client tools image of a split image pinned by digest can't be derived, as
+  ## its digest differs
+  if [ -z "$client_image" ] && [[ "$image" =~ ^(.*/)?core(-[^/:@]*)?@ ]]; then
+    abort_with_error "$image is a server image without client tools, pinned by digest. The matching client tools image can't be derived from it, use a tag instead (e.g. arangodb/core-preview:4.0-nightly)."
+  fi
 
   if [ -n "$client_image" ]; then
     client_container=docs_client_"$version"
@@ -1224,7 +1230,7 @@ function trap_container_exit() {
 
   if report_has_errors; then
     log "[TERMINATE] Errors during content generation:" >> toolchain.log
-    grep '^error' "$REPORT_ISSUES" | cut -f2-5 | tr '\t' ' ' >> toolchain.log
+    grep '^error' "$REPORT_ISSUES" | cut -f2-6 | tr '\t' ' ' >> toolchain.log
   fi
 
   log "[stop_all_containers] A stop signal has been captured. Stopping all containers" >> toolchain.log

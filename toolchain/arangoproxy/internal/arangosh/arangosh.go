@@ -302,7 +302,7 @@ func handleCollectionNotFound(name, code, out, filepath string, repository model
 		models.Logger.Printf("[%s %s] [ERROR]: Command output: %s", repository.Version, name, output)
 
 		re := regexp.MustCompile(`(?m)JavaScript exception.*|ArangoError.*`)
-		models.Logger.Error("Examples", repository.Version, name, filepath, "Unexpected error (no xpError):\n"+strings.Join(re.FindAllString(out, -1), "\n"))
+		models.Logger.Error("Examples", repository.Version, name, filepath, "Unexpected error (no xpError):\n"+strings.Join(re.FindAllString(output, -1), "\n"))
 
 		return "ERRORD"
 	}

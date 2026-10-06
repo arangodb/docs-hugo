@@ -214,7 +214,7 @@ var response = logCurlRequest('GET', url + "/testTask");
 
 assert(response.code === 200);
 logJsonResponse(response);
-internal.arango.DELETE("/_api/tasks/testTask");
+~internal.arango.DELETE("/_api/tasks/testTask");
 ```
 
 ```curl
