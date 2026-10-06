@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 1100" width="940" height="1100" role="img" aria-labelledby="custom-retriever-standard-run-t custom-retriever-standard-run-d" font-family="Urbanist, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="custom-retriever-standard-run-t">Custom Retriever standard run</title>
+  <desc id="custom-retriever-standard-run-d">A query with query_type CUSTOM goes through an optional cache check, partition routing against the AutoGraph corpus graph, and loading of tool configs from the Tools collection. Every requested tool then runs in parallel: custom_retriever tools use the three-stage pipeline, local, global and unified tools call the built-in retriever. Results are merged with citations renumbered, synthesized by the LLM into an answer, and optionally saved to the cache. A cache hit returns the cached answer directly.</desc>
+  <defs><marker id="custom-retriever-standard-run-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4f6d8b"/></marker></defs>
+  <rect x="0" y="0" width="940" height="1100" fill="#ffffff"/>
+  <rect x="130" y="504" width="700" height="170" rx="12" fill="#f4faf4" stroke="#cfe3d3" stroke-width="1.5"/>
+  <text x="148" y="528" font-size="13.5" font-weight="700" fill="#044926">Run every requested tool in parallel</text>
+  <polyline points="300,116 300,156" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <polyline points="300,222 300,262" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <text x="309" y="246" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">no hit</text>
+  <polyline points="430,310 560,310" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <text x="495" y="303" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">read</text>
+  <polyline points="300,358 300,398" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <text x="309" y="382" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">partition_ids</text>
+  <polyline points="430,431 560,431" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <text x="495" y="424" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">read</text>
+  <polyline points="300,464 300,504" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <text x="309" y="488" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">route each tool by tool_type</text>
+  <polyline points="300,674 300,714" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <text x="309" y="698" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">result text + citation map per tool</text>
+  <polyline points="300,825 300,865" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <polyline points="300,946 300,986" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <text x="309" y="970" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">LLM response</text>
+  <polyline points="430,1026.5 560,1026.5" fill="none" stroke="#4f6d8b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <text x="495" y="1019.5" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">store</text>
+  <polyline points="170,189 110,189 110,1026.5 170,1026.5" fill="none" stroke="#4f6d8b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <text x="102" y="600" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" transform="rotate(-90 102 600)">cache hit → return the cached answer</text>
+  <rect x="170" y="20" width="260" height="96" rx="22" fill="#044926" stroke="#044926" stroke-width="1.6"/>
+  <text x="184" y="42" font-size="13" font-weight="700" fill="#ffffff">Query request</text>
+  <text x="184" y="60" font-size="11.5" fill="#cfe3d3">query_type = CUSTOM</text>
+  <text x="184" y="75" font-size="11.5" fill="#cfe3d3">custom_tools = [tool_id, …]</text>
+  <text x="184" y="90" font-size="11.5" fill="#cfe3d3">optional: response_instructions,</text>
+  <text x="184" y="105" font-size="11.5" fill="#cfe3d3">show_citations, use_cache, partitions</text>
+  <rect x="170" y="156" width="260" height="66" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6" stroke-dasharray="6 4"/>
+  <text x="184" y="178" font-size="13" font-weight="700" fill="#151d25">Cache check</text>
+  <text x="184" y="196" font-size="11.5" fill="#4f6d8b">only when use_cache = true</text>
+  <text x="184" y="211" font-size="11.5" fill="#4f6d8b">semantic match in CachedResponses</text>
+  <rect x="394.8" y="163" width="26.2" height="16" rx="8" fill="#b9ff38" stroke="#044926" stroke-width="1"/>
+  <text x="407.90000000000003" y="174.5" font-size="10" font-weight="700" fill="#044926" text-anchor="middle">DB</text>
+  <rect x="170" y="262" width="260" height="96" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6"/>
+  <text x="184" y="284" font-size="13" font-weight="700" fill="#151d25">Partition routing</text>
+  <text x="184" y="302" font-size="11.5" fill="#4f6d8b">request partition_ids win, else tool</text>
+  <text x="184" y="317" font-size="11.5" fill="#4f6d8b">config, else automatic (on by default)</text>
+  <text x="184" y="332" font-size="11.5" fill="#4f6d8b">query → nearest sources → rags</text>
+  <text x="184" y="347" font-size="11.5" fill="#4f6d8b">→ partition_ids</text>
+  <rect x="394.8" y="269" width="26.2" height="16" rx="8" fill="#b9ff38" stroke="#044926" stroke-width="1"/>
+  <text x="407.90000000000003" y="280.5" font-size="10" font-weight="700" fill="#044926" text-anchor="middle">DB</text>
+  <rect x="560" y="277" width="230" height="66" rx="10" fill="#cfe3d3" stroke="#044926" stroke-width="1.6"/>
+  <text x="574" y="299" font-size="13" font-weight="700" fill="#151d25">AutoGraph corpus graph</text>
+  <text x="574" y="317" font-size="11.5" fill="#044926">sources · corpus_relations · rags</text>
+  <text x="574" y="332" font-size="11.5" fill="#044926">nearest sources → partition ids</text>
+  <rect x="170" y="398" width="260" height="66" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6"/>
+  <text x="184" y="420" font-size="13" font-weight="700" fill="#151d25">Load tool configs</text>
+  <text x="184" y="438" font-size="11.5" fill="#4f6d8b">one document per tool_id</text>
+  <text x="184" y="453" font-size="11.5" fill="#4f6d8b">missing tool → that tool fails</text>
+  <rect x="394.8" y="405" width="26.2" height="16" rx="8" fill="#b9ff38" stroke="#044926" stroke-width="1"/>
+  <text x="407.90000000000003" y="416.5" font-size="10" font-weight="700" fill="#044926" text-anchor="middle">DB</text>
+  <rect x="560" y="398" width="230" height="66" rx="10" fill="#cfe3d3" stroke="#044926" stroke-width="1.6"/>
+  <text x="574" y="420" font-size="13" font-weight="700" fill="#151d25">Tools collection</text>
+  <text x="574" y="438" font-size="11.5" fill="#044926">one document per tool</text>
+  <text x="574" y="453" font-size="11.5" fill="#044926">tool_type · description · config</text>
+  <rect x="160" y="552" width="300" height="81" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6"/>
+  <text x="174" y="574" font-size="13" font-weight="700" fill="#151d25">custom_retriever tool</text>
+  <text x="174" y="592" font-size="11.5" fill="#4f6d8b">3-stage pipeline:</text>
+  <text x="174" y="607" font-size="11.5" fill="#4f6d8b">search → AQL expansion → citations</text>
+  <text x="174" y="622" font-size="11.5" fill="#4f6d8b">(next diagram)</text>
+  <rect x="500" y="552" width="300" height="81" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6"/>
+  <text x="514" y="574" font-size="13" font-weight="700" fill="#151d25">local / global / unified tool</text>
+  <text x="514" y="592" font-size="11.5" fill="#4f6d8b">built-in retriever called directly</text>
+  <text x="514" y="607" font-size="11.5" fill="#4f6d8b">no cache, no planner, no nested</text>
+  <text x="514" y="622" font-size="11.5" fill="#4f6d8b">status updates</text>
+  <rect x="170" y="714" width="260" height="111" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6"/>
+  <text x="184" y="736" font-size="13" font-weight="700" fill="#151d25">Merge tool results</text>
+  <text x="184" y="754" font-size="11.5" fill="#4f6d8b">join each tool’s context block</text>
+  <text x="184" y="769" font-size="11.5" fill="#4f6d8b">renumber citations 1…N across tools</text>
+  <text x="184" y="784" font-size="11.5" fill="#4f6d8b">record successful / failed tools</text>
+  <text x="184" y="799" font-size="11.5" fill="#4f6d8b">all failed → errors returned, no LLM</text>
+  <text x="184" y="814" font-size="11.5" fill="#4f6d8b">one built-in tool → its answer as is</text>
+  <rect x="170" y="865" width="260" height="81" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6"/>
+  <text x="184" y="887" font-size="13" font-weight="700" fill="#151d25">LLM synthesis</text>
+  <text x="184" y="905" font-size="11.5" fill="#4f6d8b">prompt = query + merged context</text>
+  <text x="184" y="920" font-size="11.5" fill="#4f6d8b">+ response_instructions</text>
+  <text x="184" y="935" font-size="11.5" fill="#4f6d8b">[CITE:X] only when show_citations</text>
+  <rect x="388.7" y="872" width="32.3" height="16" rx="8" fill="#b9ff38" stroke="#044926" stroke-width="1"/>
+  <text x="404.84999999999997" y="883.5" font-size="10" font-weight="700" fill="#044926" text-anchor="middle">LLM</text>
+  <rect x="170" y="986" width="260" height="81" rx="22" fill="#044926" stroke="#044926" stroke-width="1.6"/>
+  <text x="184" y="1008" font-size="13" font-weight="700" fill="#ffffff">Answer</text>
+  <text x="184" y="1026" font-size="11.5" fill="#cfe3d3">text with [X] or [[X](URL)] citations</text>
+  <text x="184" y="1041" font-size="11.5" fill="#cfe3d3">metadata when include_metadata</text>
+  <text x="184" y="1056" font-size="11.5" fill="#cfe3d3">streamed on the stream endpoint</text>
+  <rect x="560" y="993.5" width="230" height="66" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6" stroke-dasharray="6 4"/>
+  <text x="574" y="1015.5" font-size="13" font-weight="700" fill="#151d25">Cache save</text>
+  <text x="574" y="1033.5" font-size="11.5" fill="#4f6d8b">only when use_cache = true</text>
+  <text x="574" y="1048.5" font-size="11.5" fill="#4f6d8b">also after a streamed answer</text>
+  <rect x="754.8" y="1000.5" width="26.2" height="16" rx="8" fill="#b9ff38" stroke="#044926" stroke-width="1"/>
+  <text x="767.9" y="1012" font-size="10" font-weight="700" fill="#044926" text-anchor="middle">DB</text>
+</svg>

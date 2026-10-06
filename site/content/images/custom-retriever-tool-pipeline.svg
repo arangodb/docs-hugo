@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 1724" width="940" height="1724" role="img" aria-labelledby="custom-retriever-tool-pipeline-t custom-retriever-tool-pipeline-d" font-family="Urbanist, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="custom-retriever-tool-pipeline-t">Inside one custom_retriever tool</title>
+  <desc id="custom-retriever-tool-pipeline-d">Stage 1 reads the search modes, checks or creates indexes and views, runs lexical and semantic search, fuses the ranked ids with RRF for hybrid search and yields the starting node ids. Stage 2 validates the AQL config and runs the AQL template with the node ids bound, falling back to raw documents if the relations collection is missing, the query fails or returns nothing. Stage 3 deduplicates chunks, builds the citation mapping when citations are on, and formats the context text into the tool result.</desc>
+  <defs><marker id="custom-retriever-tool-pipeline-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4f6d8b"/></marker></defs>
+  <rect x="0" y="0" width="940" height="1724" fill="#ffffff"/>
+  <rect x="40" y="141" width="860" height="660" rx="12" fill="#f4faf4" stroke="#cfe3d3" stroke-width="1.5"/>
+  <text x="58" y="165" font-size="13.5" font-weight="700" fill="#044926">1. Search for starting nodes</text>
+  <rect x="40" y="841" width="860" height="363" rx="12" fill="#f4faf4" stroke="#cfe3d3" stroke-width="1.5"/>
+  <text x="58" y="865" font-size="13.5" font-weight="700" fill="#044926">2. AQL graph expansion</text>
+  <rect x="40" y="1244" width="860" height="348" rx="12" fill="#f4faf4" stroke="#cfe3d3" stroke-width="1.5"/>
+  <text x="58" y="1268" font-size="13.5" font-weight="700" fill="#044926">3. Citation processing</text>
+  <polyline points="375,101 375,181" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-tool-pipeline-arrow)"/>
+  <polyline points="375,247 375,287" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-tool-pipeline-arrow)"/>
+  <polyline points="375,398 375,428 195,428 195,458" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-tool-pipeline-arrow)"/>
+  <text x="285" y="422" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">lexical modes</text>
+  <polyline points="375,398 375,428 555,428 555,458" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-tool-pipeline-arrow)"/>
+  <text x="465" y="422" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">semantic modes</text>
+  <polyline points="195,539 195,569 375,569 375,599" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-tool-pipeline-arrow)"/>
+  <text x="285" y="563" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">ranked ids</text>
+  <polyline points="555,539 555,569 375,569 375,599" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-tool-pipeline-arrow)"/>
+  <text x="465" y="563" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">ranked ids</text>
+  <polyline points="375,680 375,720" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-tool-pipeline-arrow)"/>
+  <text x="384" y="704" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">top_k ids</text>
+  <polyline points="375,771 375,881" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-tool-pipeline-arrow)"/>
+  <text x="384" y="830" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">@nodes</text>
+  <polyline points="375,947 375,987" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-tool-pipeline-arrow)"/>
+  <text x="384" y="971" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">valid</text>
+  <polyline points="525,914 750,914 750,987" fill="none" stroke="#4f6d8b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#custom-retriever-tool-pipeline-arrow)"/>
+  <text x="640" y="908" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">relations collection not found</text>
+  <polyline points="525,1027.5 620,1027.5" fill="none" stroke="#4f6d8b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#custom-retriever-tool-pipeline-arrow)"/>
+  <text x="572.5" y="1020.5" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">error / empty</text>
+  <polyline points="375,1068 375,1108" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-tool-pipeline-arrow)"/>
+  <text x="384" y="1092" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">rows</text>
+  <polyline points="375,1174 375,1284" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-tool-pipeline-arrow)"/>
+  <polyline points="375,1335 375,1375" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-tool-pipeline-arrow)"/>
+  <polyline points="375,1441 375,1481" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-tool-pipeline-arrow)"/>
+  <polyline points="375,1562 375,1632" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-tool-pipeline-arrow)"/>
+  <polyline points="880,1027.5 915,1027.5 915,1665 525,1665" fill="none" stroke="#4f6d8b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#custom-retriever-tool-pipeline-arrow)"/>
+  <text x="907" y="1339" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" transform="rotate(-90 907 1339)">plain text result, no citations</text>
+  <rect x="225" y="20" width="300" height="81" rx="22" fill="#044926" stroke="#044926" stroke-width="1.6"/>
+  <text x="239" y="42" font-size="13" font-weight="700" fill="#ffffff">Tool run input</text>
+  <text x="239" y="60" font-size="11.5" fill="#cfe3d3">query · tool config · partition_ids</text>
+  <text x="239" y="75" font-size="11.5" fill="#cfe3d3">top_k (default 10) · show_citations</text>
+  <text x="239" y="90" font-size="11.5" fill="#cfe3d3">response_instructions · auto_create_indexes</text>
+  <rect x="225" y="181" width="300" height="66" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6"/>
+  <text x="239" y="203" font-size="13" font-weight="700" fill="#151d25">Read search_modes</text>
+  <text x="239" y="221" font-size="11.5" fill="#4f6d8b">lexical and/or semantic modes</text>
+  <text x="239" y="236" font-size="11.5" fill="#4f6d8b">both present = hybrid search</text>
+  <rect x="225" y="287" width="300" height="111" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6"/>
+  <text x="239" y="309" font-size="13" font-weight="700" fill="#151d25">Check indexes and views</text>
+  <text x="239" y="327" font-size="11.5" fill="#4f6d8b">lexical: index cr_{collection}_{field}</text>
+  <text x="239" y="342" font-size="11.5" fill="#4f6d8b">(a matching existing index is reused)</text>
+  <text x="239" y="357" font-size="11.5" fill="#4f6d8b">and view cr_{collection}_view</text>
+  <text x="239" y="372" font-size="11.5" fill="#4f6d8b">semantic: idx_vector_{collection}_{field}</text>
+  <text x="239" y="387" font-size="11.5" fill="#4f6d8b">missing → create, or fail with a list</text>
+  <rect x="489.8" y="294" width="26.2" height="16" rx="8" fill="#b9ff38" stroke="#044926" stroke-width="1"/>
+  <text x="502.90000000000003" y="305.5" font-size="10" font-weight="700" fill="#044926" text-anchor="middle">DB</text>
+  <rect x="60" y="458" width="270" height="81" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6"/>
+  <text x="74" y="480" font-size="13" font-weight="700" fill="#151d25">Lexical search</text>
+  <text x="74" y="498" font-size="11.5" fill="#4f6d8b">SEARCH on the view, analyzer text_en</text>
+  <text x="74" y="513" font-size="11.5" fill="#4f6d8b">SORT BM25 desc · LIMIT 20</text>
+  <text x="74" y="528" font-size="11.5" fill="#4f6d8b">partition filter inside SEARCH</text>
+  <rect x="294.8" y="465" width="26.2" height="16" rx="8" fill="#b9ff38" stroke="#044926" stroke-width="1"/>
+  <text x="307.90000000000003" y="476.5" font-size="10" font-weight="700" fill="#044926" text-anchor="middle">DB</text>
+  <rect x="420" y="458" width="270" height="81" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6"/>
+  <text x="434" y="480" font-size="13" font-weight="700" fill="#151d25">Semantic search</text>
+  <text x="434" y="498" font-size="11.5" fill="#4f6d8b">query embedding vs the embedding field</text>
+  <text x="434" y="513" font-size="11.5" fill="#4f6d8b">APPROX_NEAR_COSINE · LIMIT 20</text>
+  <text x="434" y="528" font-size="11.5" fill="#4f6d8b">partition filter when partition_ids</text>
+  <rect x="654.8" y="465" width="26.2" height="16" rx="8" fill="#b9ff38" stroke="#044926" stroke-width="1"/>
+  <text x="667.9" y="476.5" font-size="10" font-weight="700" fill="#044926" text-anchor="middle">DB</text>
+  <rect x="225" y="599" width="300" height="81" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6"/>
+  <text x="239" y="621" font-size="13" font-weight="700" fill="#151d25">RRF fusion (hybrid only)</text>
+  <text x="239" y="639" font-size="11.5" fill="#4f6d8b">score = weight / (60 + rank), summed</text>
+  <text x="239" y="654" font-size="11.5" fill="#4f6d8b">SORT fused score · LIMIT top_k</text>
+  <text x="239" y="669" font-size="11.5" fill="#4f6d8b">single mode → first top_k ids, no RRF</text>
+  <rect x="489.8" y="606" width="26.2" height="16" rx="8" fill="#b9ff38" stroke="#044926" stroke-width="1"/>
+  <text x="502.90000000000003" y="617.5" font-size="10" font-weight="700" fill="#044926" text-anchor="middle">DB</text>
+  <rect x="225" y="720" width="300" height="51" rx="22" fill="#044926" stroke="#044926" stroke-width="1.6"/>
+  <text x="239" y="742" font-size="13" font-weight="700" fill="#ffffff">Starting node ids (@nodes)</text>
+  <text x="239" y="760" font-size="11.5" fill="#cfe3d3">none → tool answers “No relevant results”</text>
+  <rect x="225" y="881" width="300" height="66" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6"/>
+  <text x="239" y="903" font-size="13" font-weight="700" fill="#151d25">Validate aql_config</text>
+  <text x="239" y="921" font-size="11.5" fill="#4f6d8b">no @nodes / RETURN in template → tool error</text>
+  <text x="239" y="936" font-size="11.5" fill="#4f6d8b">relations_collection must exist</text>
+  <rect x="225" y="987" width="300" height="81" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6"/>
+  <text x="239" y="1009" font-size="13" font-weight="700" fill="#151d25">Run the AQL template</text>
+  <text x="239" y="1027" font-size="11.5" fill="#4f6d8b">bind @nodes, @@relations_collection, @top_k,</text>
+  <text x="239" y="1042" font-size="11.5" fill="#4f6d8b">@partition_ids, bind_params, runtime inputs</text>
+  <text x="239" y="1057" font-size="11.5" fill="#4f6d8b">returns the expanded rows</text>
+  <rect x="489.8" y="994" width="26.2" height="16" rx="8" fill="#b9ff38" stroke="#044926" stroke-width="1"/>
+  <text x="502.90000000000003" y="1005.5" font-size="10" font-weight="700" fill="#044926" text-anchor="middle">DB</text>
+  <rect x="620" y="987" width="260" height="81" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6" stroke-dasharray="6 4"/>
+  <text x="634" y="1009" font-size="13" font-weight="700" fill="#151d25">Fallback: raw documents</text>
+  <text x="634" y="1027" font-size="11.5" fill="#4f6d8b">no aql_config · relations not found</text>
+  <text x="634" y="1042" font-size="11.5" fill="#4f6d8b">AQL error · AQL returned nothing</text>
+  <text x="634" y="1057" font-size="11.5" fill="#4f6d8b">→ top_k docs by id, plain fields</text>
+  <rect x="844.8" y="994" width="26.2" height="16" rx="8" fill="#b9ff38" stroke="#044926" stroke-width="1"/>
+  <text x="857.9" y="1005.5" font-size="10" font-weight="700" fill="#044926" text-anchor="middle">DB</text>
+  <rect x="225" y="1108" width="300" height="66" rx="22" fill="#044926" stroke="#044926" stroke-width="1.6"/>
+  <text x="239" y="1130" font-size="13" font-weight="700" fill="#ffffff">Enriched rows</text>
+  <text x="239" y="1148" font-size="11.5" fill="#cfe3d3">node fields + chunks[] + related data</text>
+  <text x="239" y="1163" font-size="11.5" fill="#cfe3d3">a chunks[] array is what gets cited</text>
+  <rect x="225" y="1284" width="300" height="51" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6"/>
+  <text x="239" y="1306" font-size="13" font-weight="700" fill="#151d25">Deduplicate chunks</text>
+  <text x="239" y="1324" font-size="11.5" fill="#4f6d8b">same chunk_id kept once across rows</text>
+  <rect x="225" y="1375" width="300" height="66" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6" stroke-dasharray="6 4"/>
+  <text x="239" y="1397" font-size="13" font-weight="700" fill="#151d25">Build citation mapping</text>
+  <text x="239" y="1415" font-size="11.5" fill="#4f6d8b">only when show_citations = true</text>
+  <text x="239" y="1430" font-size="11.5" fill="#4f6d8b">[CITE:X] → chunk_id, citable_url, preview</text>
+  <rect x="225" y="1481" width="300" height="81" rx="10" fill="#ffffff" stroke="#007339" stroke-width="1.6"/>
+  <text x="239" y="1503" font-size="13" font-weight="700" fill="#151d25">Format context text</text>
+  <text x="239" y="1521" font-size="11.5" fill="#4f6d8b">one block per node, Chunk (ID: X) labels</text>
+  <text x="239" y="1536" font-size="11.5" fill="#4f6d8b">plain key-value text for custom rows</text>
+  <text x="239" y="1551" font-size="11.5" fill="#4f6d8b">no markers when citations are off</text>
+  <rect x="225" y="1632" width="300" height="66" rx="22" fill="#044926" stroke="#044926" stroke-width="1.6"/>
+  <text x="239" y="1654" font-size="13" font-weight="700" fill="#ffffff">Tool result</text>
+  <text x="239" y="1672" font-size="11.5" fill="#cfe3d3">result text + metadata: citation_mapping,</text>
+  <text x="239" y="1687" font-size="11.5" fill="#cfe3d3">context_data, graph_metadata, instructions</text>
+</svg>
