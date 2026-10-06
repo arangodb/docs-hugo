@@ -138,7 +138,7 @@ paths:
                     side, with late binding. It is thus critical that the code specified in
                     `action` properly sets up all the variables it needs.
                     If the code specified in `action` ends with a return statement, the
-                    value returned is also returned by the REST API in the `result`
+                    value returned is also returned by the HTTP API in the `result`
                     attribute if the transaction committed successfully.
                   type: string
                 waitForSync:

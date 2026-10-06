@@ -18,7 +18,7 @@ All database management operations can only be accessed via the default
 
 ## Addresses of databases
 
-Any operation triggered via ArangoDB's RESTful HTTP API is executed in the
+Any operation triggered via ArangoDB's HTTP API is executed in the
 context of exactly one database. The database name is read from the first part
 of the request URI path (e.g. `/_db/mydb/...`). If the request URI does not
 contain a database name, it defaults to `/_db/_system`.

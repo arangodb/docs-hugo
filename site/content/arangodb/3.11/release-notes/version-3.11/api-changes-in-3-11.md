@@ -6,7 +6,7 @@ description: >-
   A summary of the changes to the HTTP API and other interfaces that are relevant
   for developers, like maintainers of drivers and integrations for ArangoDB
 ---
-## HTTP RESTful API
+## HTTP API
 
 ### Behavior changes
 
@@ -56,7 +56,7 @@ Also see:
 #### Stricter validation of Unicode surrogate values in JSON data
 
 ArangoDB 3.11 employs a stricter validation of Unicode surrogate pairs in
-incoming JSON data, for all REST APIs.
+incoming JSON data, for all HTTP APIs.
 
 In previous versions, the following loopholes existed when validating UTF-8 
 surrogate pairs in incoming JSON data:
@@ -330,7 +330,7 @@ for this reason if your deployment is at or above the configured maximum. Exampl
 
 <small>Introduced in: v3.8.8, v3.9.4, v3.10.1</small>
 
-Changed the encoding of revision IDs returned by the below listed REST APIs:
+Changed the encoding of revision IDs returned by the below listed HTTP APIs:
 
 - `GET /_api/collection/<collection-name>/revision`: The revision ID was
   previously returned as numeric value, and now it is returned as
