@@ -30,7 +30,7 @@ connect nodes.
 A node typically represents a specific entity (a person, a book, a sensor
 reading, etc.) and an edge defines how one entity relates to another.
 
-![Three circles labeled "Mary", "Book", and "John", with an arrow labeled "bought" from "Mary" to "Book" and an arrow labeled "isFriendOf" from "Mary" to "John"](../images/data-model-graph-relations.svg)
+![Four nodes with properties: Person nodes Mary and John, a Book node Arango, and an Author node Sara. Mary isFriendOf John since 2019, Mary bought Arango, John rated Arango with 5 stars, and Sara wrote Arango in 2024](../images/data-model-graph-relations.svg)
 
 This paradigm of storing data feels natural because it closely matches the
 cognitive model of humans. It is an expressive data model that allows you to
