@@ -2,7 +2,10 @@
 title: Set up ArangoDB clusters for Datacenter-to-Datacenter Replication
 menuTitle: ArangoDB Cluster
 weight: 5
-description: ''
+description: >-
+  How to start the ArangoDB clusters that DC2DC replication requires using the
+  ArangoDB Starter, how the cluster nodes authenticate, and which ports need to
+  be available
 ---
 There are several ways to start an ArangoDB cluster. This section focuses
 on the recommended way to start ArangoDB: the ArangoDB _Starter_.
@@ -20,7 +23,7 @@ The _Starter_ supervises its child tasks (namely _Coordinators_,
 _DB-Servers_ and _Agents_) and restarts them in case of failures.
 
 Datacenter-to-Datacenter Replication (DC2DC) requires a normal ArangoDB cluster in both datacenters
-and one or more (`arangosync`) syncmasters & syncworkers in both datacenters.
+and one or more (_arangosync_) syncmasters & syncworkers in both datacenters.
 The Starter enables you to run these syncmasters & syncworkers in combination with your normal
 cluster.
 

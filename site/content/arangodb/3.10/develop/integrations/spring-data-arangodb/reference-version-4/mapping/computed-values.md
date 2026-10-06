@@ -3,7 +3,6 @@ title: Computed Values
 menuTitle: Computed Values
 weight: 27
 description: ''
-archetype: default
 ---
 Spring Data ArangoDB provides annotations to allow mapping computed values to
 entity properties and to include computed values data definitions during

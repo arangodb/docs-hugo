@@ -1,5 +1,5 @@
 ---
-title: Backups in the Arango Managed Platform (AMP)
+title: Backups in AMP
 menuTitle: Backups
 weight: 50
 description: >-

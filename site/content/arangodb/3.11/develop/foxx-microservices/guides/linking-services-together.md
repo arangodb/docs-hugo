@@ -2,7 +2,9 @@
 title: Linking Foxx services together
 menuTitle: Linking services together
 weight: 55
-description: ''
+description: >-
+  Use Foxx dependencies to share collections and JavaScript APIs between
+  multiple services in the same database
 ---
 When using multiple services (or multiple copies of the same service) in the
 same database, sometimes you may want to share collections or methods between

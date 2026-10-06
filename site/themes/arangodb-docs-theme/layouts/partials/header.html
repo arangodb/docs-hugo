@@ -7,9 +7,9 @@
     </div>
     <div class="version-logo-container">
       <div class="logo-container arangodb-logo-large">
-        <div class="logo" vocab="https://schema.org/" typeof="Organization">
-          <a href="https://arango.ai/" property="url">
-            <img src="/Arango_logo.png" alt="Arango logo" property="logo">
+        <div class="logo">
+          <a href="https://arango.ai/">
+            <img src="/Arango_logo.png" alt="Arango logo">
           </a>
         </div>
       </div>
@@ -24,6 +24,5 @@
   <div class="search-and-version-container" >
     <a href="{{ .Site.Home.RelPermalink }}" class="home-link is-current" aria-label="Go to home page"></a>
     <div class="docsearch"></div>
-    {{ partialCached "inkeep-widget.html" . -}}
   </div>
 </header>

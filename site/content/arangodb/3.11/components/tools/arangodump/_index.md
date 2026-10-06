@@ -1,16 +1,16 @@
 ---
-title: _arangodump_
+title: _arangodump_ command-line tool
 menuTitle: arangodump
 weight: 15
 description: >-
-  `arangodump` is a command-line client tool to create backups of the data and
-  structures stored in ArangoDB
+  _arangodump_ is a client tool to create backups of the data and structures
+  stored in ArangoDB using a command-line interface (CLI)
 ---
-Dumps are meant to be restored with [_arangorestore_](../arangorestore/_index.md).
+Dumps are meant to be restored with [arangorestore](../arangorestore/_index.md).
 
 If you want to export for external programs to formats like JSON or CSV, see
-[_arangoexport_](../arangoexport/_index.md) instead. For _Hot Backups_ see
-[_arangobackup_](../arangobackup/_index.md).
+[arangoexport](../arangoexport/_index.md) instead. For _Hot Backups_ see
+[arangobackup](../arangobackup/_index.md).
 
 _arangodump_ can be used for all ArangoDB deployments modes (Single Instance, 
 Active Failover, Cluster and DC2DC) and it can backup selected collections

@@ -8,7 +8,7 @@ aliases:
   - ../../arangodb/3.11/develop/integrations/arangodb-datasource-for-apache-spark
   - ../../arangodb/3.12/develop/integrations/arangodb-datasource-for-apache-spark
   - ../../arangodb/stable/develop/integrations/arangodb-datasource-for-apache-spark
-  - ../../arangodb/4.0/develop/integrations/arangodb-datasource-for-apache-spark
+  - ../../arangodb/4.x/develop/integrations/arangodb-datasource-for-apache-spark
   - ../../arangodb/devel/develop/integrations/arangodb-datasource-for-apache-spark
 ---
 ArangoDB Datasource for Apache Spark allows batch reading and writing Spark DataFrame data from and to ArangoDB, by implementing the Spark Data Source V2 API.
@@ -29,6 +29,7 @@ There are several variants of this library, each one compatible with different S
 - `com.arangodb:arangodb-spark-datasource-3.5_2.13` (Spark 3.5, Scala 2.13)
 - `com.arangodb:arangodb-spark-datasource-4.0_2.13` (Spark 4.0, Scala 2.13)
 - `com.arangodb:arangodb-spark-datasource-4.1_2.13` (Spark 4.1, Scala 2.13)
+- `com.arangodb:arangodb-spark-datasource-4.2_2.13` (Spark 4.2, Scala 2.13)
 
 The following variants are no longer supported:
 
@@ -41,9 +42,6 @@ The following variants are no longer supported:
 - `com.arangodb:arangodb-spark-datasource-3.3_2.13` (Spark 3.3, Scala 2.13)
 - `com.arangodb:arangodb-spark-datasource-3.4_2.12` (Spark 3.4, Scala 2.12) (compatible with Spark `3.4.2+`)
 - `com.arangodb:arangodb-spark-datasource-3.4_2.13` (Spark 3.4, Scala 2.13) (compatible with Spark `3.4.2+`)
-
-Since version `1.7.0`, due to [breaking changes](https://github.com/apache/spark/commit/ad29290a02fb94a958fd21e301100338c9f5b82a#diff-b25c8acff88c1b4850c6642e80845aac4fb882c664795c3b0aa058e37ed732a0L42-R52)
-in Spark `3.4.2`, `arangodb-spark-datasource-3.4` is not compatible anymore with Spark versions `3.4.0` and `3.4.1`.
 
 In the following sections the `${sparkVersion}` and `${scalaVersion}` placeholders refer to the Spark and Scala versions.
 

@@ -2,7 +2,8 @@
 title: Administrate an Active Failover deployment
 menuTitle: Administration
 weight: 15
-description: ''
+description: >-
+  How to find the leader, read from followers, and manage leader and follower nodes
 ---
 ## Introduction
 
@@ -14,7 +15,7 @@ in an _Active Failover_ setup.
 ## Determining the current *Leader*
 
 It is possible to determine the _leader_ by asking any of the involved single-server
-instances. Just send a request to the `/_api/cluster/endpoints` REST API.
+instances. Just send a request to the `/_api/cluster/endpoints` HTTP API.
 
 ```bash
 curl http://server.domain.org:8530/_api/cluster/endpoints

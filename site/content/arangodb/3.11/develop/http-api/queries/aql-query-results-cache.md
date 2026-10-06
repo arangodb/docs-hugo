@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for the query results cache
+title: AQL query results cache HTTP API
 menuTitle: AQL query results cache
 weight: 10
 description: >-
-  The query results cache HTTP API lets you control the cache for AQL query results
+  Control the caching of AQL query results with the HTTP interface
 ---
 See [The AQL query results cache](../../../aql/execution-and-performance/caching-query-results.md)
 for a description of the feature and the configuration options.
@@ -21,8 +21,8 @@ paths:
     get:
       operationId: listQueryCacheResults
       description: |
-        Returns an array containing the AQL query results currently stored in the query results
-        cache of the selected database.
+        Returns metadata about the AQL query results currently stored in the query results cache
+        of the selected database. The cached result data itself isn't included.
       parameters:
         - name: database-name
           in: path
@@ -35,16 +35,17 @@ paths:
       responses:
         '200':
           description: |
-            The list of cached query results.
+            The query results cache entries are returned successfully.
           content:
             application/json:
               schema:
                 description: |
-                  The entries of the query results cache.
+                  A list of query results cache entries.
                 type: array
                 items:
                   description: |
-                    The properties of a cache entry.
+                    Each entry describes a cached query result but doesn't include
+                    the cached result data itself.
                   type: object
                   required:
                     - hash
@@ -73,11 +74,11 @@ paths:
                       type: object
                     size:
                       description: |
-                        The size of the query result and bind parameters (in bytes).
+                        The size of the cached query result and bind parameters (in bytes).
                       type: integer
                     results:
                       description: |
-                        The number of documents/rows in the query result.
+                        The number of documents/rows in the cached query result.
                       type: integer
                     started:
                       description: |
@@ -102,6 +103,10 @@ paths:
         '400':
           description: |
             The request is malformed.
+        '401':
+          description: |
+            The user account you authenticate with lacks read access to the
+            specified database.
       tags:
         - Queries
 ```
@@ -140,14 +145,17 @@ paths:
     delete:
       operationId: deleteAqlQueryCache
       description: |
-        Clears all results stored in the AQL query results cache for the current database.
+        Clears all results stored in the AQL query results cache for the selected database.
       parameters:
         - name: database-name
           in: path
           required: true
           example: _system
           description: |
-            The name of the database.
+            The name of the database whose query results cache to clear.
+
+            The user account you authenticate with needs at least read access to
+            this database.
           schema:
             type: string
       responses:
@@ -175,6 +183,10 @@ paths:
         '400':
           description: |
             The request is malformed.
+        '401':
+          description: |
+            The user account you authenticate with lacks read access to the
+            specified database.
       tags:
         - Queries
 ```
@@ -221,6 +233,12 @@ paths:
                 description: |
                   The result cache configuration.
                 type: object
+                required:
+                  - mode
+                  - maxResults
+                  - maxResultsSize
+                  - maxEntrySize
+                  - includeSystem
                 properties:
                   mode:
                     description: |
@@ -242,6 +260,7 @@ paths:
                     description: |
                       The maximum individual result size of queries that are
                       stored per database-specific cache (in bytes).
+                    type: integer
                   includeSystem:
                     description: |
                       Whether results of queries that involve system collections
@@ -250,6 +269,10 @@ paths:
         '400':
           description: |
             The request is malformed.
+        '401':
+          description: |
+            The user account you authenticate with lacks read access to the
+            specified database.
       tags:
         - Queries
 ```
@@ -346,6 +369,12 @@ paths:
                 description: |
                   The result cache configuration.
                 type: object
+                required:
+                  - mode
+                  - maxResults
+                  - maxResultsSize
+                  - maxEntrySize
+                  - includeSystem
                 properties:
                   mode:
                     description: |
@@ -367,6 +396,7 @@ paths:
                     description: |
                       The maximum individual result size of queries that are
                       stored per database-specific cache (in bytes).
+                    type: integer
                   includeSystem:
                     description: |
                       Whether results of queries that involve system collections
@@ -375,6 +405,10 @@ paths:
         '400':
           description: |
             The request is malformed.
+        '401':
+          description: |
+            The user account you authenticate with lacks read access to the
+            specified database.
       tags:
         - Queries
 ```

@@ -1,12 +1,11 @@
 ---
-title: Data Loader Example
+title: AMP Data Loader Example
 menuTitle: Example
 weight: 20
 description: >-
   Follow this complete working example to see how easy it is to transform existing
   data into a graph and get insights from the connected entities 
 ---
-
 To transform your data into a graph, you need to have CSV files with entities
 representing the nodes and a corresponding CSV file representing the edges.
 

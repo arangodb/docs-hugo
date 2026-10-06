@@ -1,5 +1,5 @@
 ---
-title: Deployments in the Arango Managed Platform (AMP)
+title: Deployments in AMP
 menuTitle: Deployments
 weight: 20
 description: >-

@@ -157,9 +157,9 @@ Stream Transactions which could not be adjusted.
 The default value for `--server.descriptors-minimum` changed from `0` in previous
 versions to `8192` in ArangoDB 3.8.
 This change means that on Linux and macOS, the system limits need to allow the
-arangod process to use at least 8192 file descriptors.
-If less file descriptors are available to the arangod process, then the startup
-process of the arangod server is automatically aborted.
+_arangod_ process to use at least 8192 file descriptors.
+If less file descriptors are available to the _arangod_ process, then the startup
+process of the _arangod_ server is automatically aborted.
 
 Even the chosen minimum value of 8192 will often not be high enough to store
 considerable amounts of data. However, no higher value was chosen in order to not
@@ -167,7 +167,7 @@ make too many existing installations fail after upgrading.
 
 The required number of file descriptors can be configured using the startup option
 `--server.descriptors-minimum`. It now defaults to 8192, but it can be increased
-to ensure that arangod can make use of a sufficiently high number of files.
+to ensure that _arangod_ can make use of a sufficiently high number of files.
 
 Setting `--server.descriptors-minimum` to a value of `0` will make the startup
 require only an absolute minimum limit of 1024 file descriptors, effectively
@@ -180,7 +180,7 @@ The default value of the startup option `--server.unavailability-queue-fill-grad
 has been changed from value `1` in previous versions to a value of `0.75` in ArangoDB
 3.8.
 
-This change has a consequence for the `/_admin/server/availability` REST API only,
+This change has a consequence for the `/_admin/server/availability` HTTP API only,
 which is often called by load-balancers and other availability probing systems.
 
 The `/_admin/server/availability` API will return HTTP 200 if the fill grade of the
@@ -206,7 +206,7 @@ scheduler's queue fill grade as an (un)availability indicator.
 #### Per-query memory limit
 
 ArangoDB 3.8 introduces a default per-query memory limit to prevent rogue AQL
-queries from consuming the entire memory available to an arangod instance.
+queries from consuming the entire memory available to an _arangod_ instance.
 
 The per-query memory limit is introduced via changing the default value of the
 startup option `--query.memory-limit` from previously `0` (meaning: no limit)
@@ -310,7 +310,7 @@ To restore the pre-3.8 format, please set the option `--log.time-format` to
 `local-datestring`, which will make the audit logger (and all other server log
 messages) use the server's local time.
 
-## HTTP RESTful API
+## HTTP API
 
 ### Www-Authenticate response header
 
@@ -358,7 +358,7 @@ as a database only. It may have an effect for Foxx applications that use HTTP
   names and the new, corrected format of the output. Over time, you can
   then retire your old metrics collection process and dashboards.
 
-- Changed the encoding of revision IDs returned by the below listed REST APIs.
+- Changed the encoding of revision IDs returned by the below listed HTTP APIs.
 
   <small>Introduced in: v3.8.8</small>
 
@@ -371,11 +371,11 @@ as a database only. It may have an effect for Foxx applications that use HTTP
     that the `revision` attribute always contains a string value with
     either numeric encoding or HLC-encoding inside.
 
-### Optional lockdown of `/_admin/cluster` REST API
+### Optional lockdown of `/_admin/cluster` HTTP API
 
 ArangoDB 3.8 provides a new startup option `--cluster.api-jwt-policy` that
 allows *additional* checking for valid JWTs in all requests to sub-routes of
-the `/_admin/cluster` REST API endpoint.
+the `/_admin/cluster` HTTP API endpoint.
 This is a security option to restrict access to these cluster APIs to
 operator tools and privileged users.
 
@@ -539,30 +539,30 @@ Also see [AQL UPDATE queries with `keepNull: false`](#update-queries-with-keepnu
 
 ### arangoimport
 
-The default value for arangoimport's `--batch-size` option was raised from
-1 MB to 8 MB. This means that arangoimport can send larger batches containing
+The default value for _arangoimport_'s `--batch-size` option was raised from
+1 MB to 8 MB. This means that _arangoimport_ can send larger batches containing
 more documents.
 
 _arangoimport_ also has a rate limiting feature, which was turned on by default
 previously. This rate limiting feature limited the import rate to 1 MB per
 second, which is probably too low for most use cases. In ArangoDB 3.8, the
-rate limiting for arangoimport is now turned off by default, but can be
+rate limiting for _arangoimport_ is now turned off by default, but can be
 enabled on demand using the new `--auto-rate-limit` option. When enabled, it
 will start sending batches with up to `--batch-size` bytes, and then adapt
 the loading rate dynamically.
 
 ### arangodump
 
-arangodump can now dump multiple shards of cluster collections in parallel.
-While this normally helps with dump performance, it may lead to more arangodump
+_arangodump_ can now dump multiple shards of cluster collections in parallel.
+While this normally helps with dump performance, it may lead to more _arangodump_
 issuing more concurrent requests to a cluster than it did before.
 
-Previously, arangodump's `--threads` option controlled how many collections were
-dumped concurrently, at most. As arangodump can now dump the shards of
+Previously, _arangodump_'s `--threads` option controlled how many collections were
+dumped concurrently, at most. As _arangodump_ can now dump the shards of
 collections in parallel, `--threads` now controls the maximum amount of shards
 that are dumped concurrently.
 
-If arangodump now causes too much load on a cluster with a high degree of
-parallelism, it is possible to reduce it by decreasing arangodump's `--threads` 
+If _arangodump_ now causes too much load on a cluster with a high degree of
+parallelism, it is possible to reduce it by decreasing _arangodump_'s `--threads` 
 value. The value of `--threads` will the determine the maximum parallelism 
-used by arangodump.
+used by _arangodump_.

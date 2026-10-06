@@ -3,7 +3,8 @@ title: SatelliteGraphs
 menuTitle: SatelliteGraphs
 weight: 90
 description: >-
-  Graphs synchronously replicated to all servers, available in the Enterprise Edition
+  Graphs synchronously replicated to all servers to enable local traversals,
+  available in the Enterprise Edition
 ---
 {{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
@@ -42,8 +43,9 @@ operation can also be executed without talking to other DB-Servers.
 
 ## When to use SatelliteGraphs?
 
-While General Graphs are available in all Editions, the Enterprise Edition
-offers two more _named graph_ types to achieve single-server alike query
+While General Graphs can be used in clusters and are available in all Editions,
+they don't offer any optimizations. The Enterprise Edition offers two more
+_named graph_ types to achieve single server-alike query
 execution times for graph queries in cluster deployments.
 
 - **General Graphs**:

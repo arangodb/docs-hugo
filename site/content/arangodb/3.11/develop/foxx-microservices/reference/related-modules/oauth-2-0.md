@@ -2,7 +2,9 @@
 title: Foxx OAuth 2.0
 menuTitle: OAuth 2.0
 weight: 15
-description: ''
+description: >-
+  The OAuth2 module provides abstractions over OAuth 2.0 providers like
+  Facebook, GitHub, and Google
 ---
 `const createOAuth2Client = require('@arangodb/foxx/oauth2');`
 

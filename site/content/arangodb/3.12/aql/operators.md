@@ -65,7 +65,7 @@ The supported wildcards are `_` to match a single arbitrary character, and `%` t
 match any number of arbitrary characters. Literal `%` and `_` need to be escaped
 with a backslash. Backslashes need to be escaped themselves, which effectively
 means that two reverse solidus characters need to precede a literal percent sign
-or underscore. In arangosh, additional escaping is required, making it four
+or underscore. In _arangosh_, additional escaping is required, making it four
 backslashes in total preceding the to-be-escaped character.
 
 ```aql
@@ -133,8 +133,9 @@ calculate it dynamically using an expression.
 ["foo", "bar"]  AT LEAST (1+1) ==  "foo"   // false
 ```
 
-Note that these operators do not utilize indexes in regular queries.
-The operators are also supported in [SEARCH expressions](high-level-operations/search.md),
+Array comparison operators do not utilize indexes in regular queries, except `ANY ==`
+from v3.12.10 onward because it gets transformed into an equivalent `IN` operator.
+The operators are also supported in [`SEARCH` expressions](high-level-operations/search.md),
 where ArangoSearch's indexes can be utilized. The semantics differ however, see
 [AQL `SEARCH` operation](high-level-operations/search.md#array-comparison-operators).
 

@@ -1,7 +1,8 @@
 ---
-title: List Example Installations with `oasisctl`
+title: List Example Installations with _oasisctl_
 menuTitle: List Example Installations
 weight: 18
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List all example dataset installations for a deployment

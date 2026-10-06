@@ -2,7 +2,8 @@
 title: Foxx response objects
 menuTitle: Response
 weight: 20
-description: ''
+description: >-
+  Reference for the properties and methods of the Foxx response object
 ---
 The response object specifies the following properties:
 

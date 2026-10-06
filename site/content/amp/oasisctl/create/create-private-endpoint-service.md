@@ -1,7 +1,8 @@
 ---
-title: Create Private Endpoint Service with `oasisctl`
+title: Create Private Endpoint Service with _oasisctl_
 menuTitle: Create Private Endpoint Service
-weight: 18
+weight: 17
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Create a Private Endpoint Service attached to an existing deployment

@@ -2,7 +2,9 @@
 title: Start an Active Failover deployment manually
 menuTitle: Manual Start
 weight: 5
-description: ''
+description: >-
+  How to set up a local or distributed Active Failover deployment by manually
+  starting _arangod_ processes
 ---
 An ArangoDB _Active Failover_ setup consists of several running _tasks_ or _processes_. 
 

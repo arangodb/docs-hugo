@@ -1,5 +1,5 @@
 ---
-title: My Account in the Arango Managed Platform (AMP)
+title: My Account in AMP
 menuTitle: My Account
 weight: 35
 description: >-

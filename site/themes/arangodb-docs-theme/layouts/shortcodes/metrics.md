@@ -3,7 +3,7 @@
 {{- if not $pageVersion }}
   {{- $pageVersion = (partialCached "version-short.html" .Page.RelPermalink .Page.RelPermalink) }}
 {{- end }}
-{{- $dataFolderByVersion := index site.Data $pageVersion }}
+{{- $dataFolderByVersion := index hugo.Data $pageVersion }}
 {{- $allMetricsFile := index $dataFolderByVersion "allMetrics" }}
 {{- if not $allMetricsFile }}{{ errorf "Could not find %q in %q data folder" "allMetrics" $pageVersion}}{{ end }}
 {{- $metricGroups := newScratch }}

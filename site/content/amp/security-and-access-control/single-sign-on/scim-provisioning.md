@@ -1,5 +1,5 @@
 ---
-title: SCIM Provisioning in the Arango Managed Platform (AMP)
+title: SCIM Provisioning in AMP
 menuTitle: SCIM Provisioning
 weight: 5
 description: >-

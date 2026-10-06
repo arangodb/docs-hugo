@@ -24,6 +24,10 @@ In both cases, the Container Manager orchestrates deployment through the
 Arango Control Plane (ACP) service. The platform handles security and
 integration automatically.
 
+Services that serve their own user interface can additionally be registered as
+**Apps**, making them available in the platform's Apps catalog with their UI
+embedded in the web interface. See [Host a UI with Apps](apps/).
+
 ## Getting Started
 
 ### Bring Your Own Code
@@ -67,9 +71,13 @@ You may consider using AI tools for this.
 - **Custom Service Deployment**: Upload code packages (`.tar.gz` files) or
   provide Docker image URLs to deploy running services.
 
+- **Apps**: Register a service that serves a UI as an App and use
+  it embedded in the platform's Apps catalog.
+
 - **Multiple Runtimes**: For code-based deployments, supported runtime
-  environments include Python with optional CUDA/GPU support. For image-based
-  deployments, you can use any runtime packaged in your Docker image.
+  environments include Python with optional CUDA/GPU support, as well as Node.js.
+  For image-based deployments, you can use any runtime packaged in your
+  Docker image.
 
 - **Version Management**: Maintain and deploy multiple versions of the same
   service with easy updates.
@@ -96,6 +104,7 @@ Deploy services using runtime environments and resources tailored to your needs.
 
 **Code-based deployments (Bring Your Own Code):**
 - **Python 3.12** (base, PyTorch, and cuGraph variants available)
+- **Node.js 22** (base variant)
 
 **Container-based deployments (Bring Your Own Container):**
 - Any runtime or language packaged in your container image

@@ -1,18 +1,19 @@
 ---
-title: Query methods
+title: Query methods in Spring Data ArangoDB
 menuTitle: Query methods
 weight: 10
-description: ''
+description: >-
+  How to use AQL queries in the Spring Data ArangoDB integration
 aliases:
   - ../../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/query-methods
   - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/query-methods
   - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/query-methods
-  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/query-methods
+  - ../../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/query-methods
   - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/query-methods
   - ../../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/query-methods
   - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/query-methods
   - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/query-methods
-  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/query-methods
+  - ../../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/query-methods
   - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/query-methods
 ---
 Queries using [ArangoDB Query Language (AQL)](../../../../../../arangodb/3.12/aql/_index.md)

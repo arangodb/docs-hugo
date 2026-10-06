@@ -3,10 +3,9 @@ title: Importer Service
 menuTitle: Importer
 description: >-
   The Importer service transforms your text documents into a knowledge graph
-  stored in ArangoDB, ready for semantic search and Retriever-driven Q&A
+  stored in ArangoDB, ready for semantic search and AutoRAG-driven Q&A
 weight: 6
 ---
-
 ## What is the Importer?
 
 The Importer service turns documents into a **knowledge graph** stored in
@@ -15,7 +14,7 @@ models, extracts entities and communities (in full GraphRAG mode), writes the
 graph data, and creates vector indexes where embeddings exist.
 
 The resulting knowledge graph is the data layer your applications query with
-the [Retriever service](../retriever/) or with AQL directly.
+[AutoRAG](../autorag/) or with AQL directly.
 
 ## When to use it
 
@@ -23,7 +22,7 @@ The Importer fits three usage patterns:
 
 | Pattern | How you use it |
 |---------|----------------|
-| **Web interface** | The fastest path. Configure, run, and inspect imports through the [GraphRAG web interface](../graphrag/web-interface.md) without writing code. |
+| **Web interface** | The fastest path. Configure, run, and inspect imports through [AutoGraph Studio](../autograph/web-interface.md) without writing code. |
 | **Direct API** | Call the Importer over HTTP API when you want full control - custom partitions, custom prompts, batch automation, or integration into an existing pipeline. |
 | **Driven by AutoGraph** | For large or heterogeneous corpora, [AutoGraph](../autograph/) discovers domains, assigns a RAG strategy per domain, and orchestrates Importer workers automatically. You don't call the Importer directly in this mode. See [AutoGraph Integration](autograph-integration.md). |
 
@@ -52,6 +51,9 @@ See [Architecture](architecture.md) for the collections each mode populates.
   embedding providers (OpenAI-compatible APIs or Triton Inference Server).
 - [**Import Files**](importing-files.md): Single-file and multi-file import
   workflows with examples.
+- [**Incremental Updates**](incremental-updates.md): Rebuild the community layer
+  of a partition without importing the documents again, and how documents are
+  removed and replaced in the knowledge graph.
 - [**Verify and explore**](verify-and-explore.md): Check that your import
   succeeded and inspect the resulting collections.
 - [**Semantic Units**](semantic-units.md) *(optional)*: Process images and

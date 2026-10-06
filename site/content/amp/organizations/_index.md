@@ -1,5 +1,5 @@
 ---
-title: Organizations in the Arango Managed Platform (AMP)
+title: Organizations in AMP
 menuTitle: Organizations
 weight: 10
 description: >-
@@ -39,7 +39,6 @@ credit card.
 The free trial gives you access to:
 - One small deployment (4GB) in a region of your choice for 14 days
 - Local backups
-- One AMP Notebook for learning and data science
 
 After the trial period, your deployment will be deleted automatically.
 

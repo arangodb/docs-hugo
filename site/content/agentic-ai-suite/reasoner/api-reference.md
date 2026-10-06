@@ -6,6 +6,7 @@ description: >-
   Use the Reasoner programmatically via its HTTP API, with support for
   streaming (SSE) and non-streaming response modes
 ---
+{{< tag "Beta" >}}
 
 The Reasoner exposes an HTTP API for programmatic access. The service listens on
 port `8080`, so the base URL is `https://<EXTERNAL_ENDPOINT>:8080` (or

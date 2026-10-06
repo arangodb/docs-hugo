@@ -1,7 +1,8 @@
 ---
-title: Renew API Key with `oasisctl`
+title: Renew API Key with _oasisctl_
 menuTitle: Renew API Key
 weight: 1
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Renew API keys & tokens

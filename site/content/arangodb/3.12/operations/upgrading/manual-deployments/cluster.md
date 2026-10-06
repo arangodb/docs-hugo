@@ -3,7 +3,7 @@ title: Manually Upgrading a _Cluster_ Deployment
 menuTitle: Cluster
 weight: 10
 description: >-
-  The server binaries need to be upgraded, requiring a restart of the `arangod`
+  The server binaries need to be upgraded, requiring a restart of the _arangod_
   processes and using the supervision maintenance mode
 ---
 To manually upgrade a [_cluster_](../../../deploy/cluster/_index.md)
@@ -18,7 +18,7 @@ for detailed information.
 ## Preparations
 
 The ArangoDB installation packages (e.g. for Debian or Ubuntu) set up a
-convenient standalone instance of `arangod`. During installation, this instance's
+convenient standalone instance of _arangod_. During installation, this instance's
 database will be upgraded (see [`--database.auto-upgrade`](../../../components/arangodb-server/options.md#--databaseauto-upgrade))
 and the service will be (re)started.
 
@@ -39,7 +39,7 @@ changes as possible to the running _cluster_.
 
 {{< warning >}}
 It is highly recommended to take a backup of your data before upgrading ArangoDB
-using [_arangodump_](../../../components/tools/arangodump/_index.md).
+using [arangodump](../../../components/tools/arangodump/_index.md).
 {{< /warning >}}
 
 ### Install the new ArangoDB version binary

@@ -1,5 +1,5 @@
 ---
-title: Billing in the Arango Managed Platform (AMP)
+title: Billing in AMP
 menuTitle: Billing
 weight: 10
 description: >-

@@ -79,7 +79,7 @@ FOR u IN users
   RETURN u
 ```
 
-When using `db._query()` (in arangosh for instance), then an
+When using `db._query()` (in _arangosh_ for instance), then an
 object of key-value pairs can be passed for the parameters. Such an object
 can also be passed to the HTTP API endpoint `_api/cursor`, as attribute
 value for the key `bindVars`:

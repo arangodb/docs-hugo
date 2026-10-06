@@ -1,11 +1,10 @@
 ---
-title: Monitoring tools in the Arango Contextual Data Platform
+title: Monitoring tools in the data platform
 menuTitle: Monitoring
 weight: 35
 description: >-
   Monitor your Arango Contextual Data Platform deployment with integrated Grafana and Prometheus dashboards
 ---
-
 ## Overview
 
 The **Monitoring** section of the Arango Contextual Data Platform provides integrated access

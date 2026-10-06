@@ -6,7 +6,7 @@ description: >-
   ArangoDB can divide collections into multiple shards to distribute the data
   across multiple cluster nodes
 ---
-ArangoDB organizes its collection data in _shards_. Sharding allows to use
+ArangoDB organizes its collection data in _shards_. Sharding allows you to use
 multiple machines to run a cluster of ArangoDB instances that together
 constitute a single database system.
 
@@ -28,7 +28,7 @@ There are two main ways of scaling a database system:
 - Vertical scaling
 - Horizontal scaling
 
-Vertical scaling scaling means to upgrade to better server hardware (faster
+Vertical scaling means to upgrade to better server hardware (faster
 CPU, more RAM / disk). This can be a cost effective way of scaling, because
 administration is easy and performance characteristics do not change much.
 Reasoning about the behavior of a single machine is also a lot easier than

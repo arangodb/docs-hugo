@@ -5,7 +5,6 @@ weight: 30
 description: >-
   Deploy and manage services programmatically using the Container Manager APIs
 ---
-
 The Container Manager API enables programmatic deployment and management of
 services, ideal for automation, CI/CD pipelines, and infrastructure-as-code
 workflows.
@@ -41,9 +40,13 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc
 |-------|-------------|----------|
 | `name` | Application name identifier (alphanumeric, hyphens, underscores) | Yes |
 | `version` | Application version (e.g., `1.0.0`) | Yes |
-| `language` | Programming language: `python` | Yes |
+| `language` | Programming language: `python` or `nodejs` | Yes |
 | `type` | Deployment type: `Service` | Yes |
 | `file` | The `.tar.gz` archive file | Yes |
+
+The `language` value must match the runtime of the base image you deploy with:
+use `python` with the `py12*` images and `nodejs` with the `node22base` image
+(see [Available Base Images](#available-base-images)).
 
 **Success Response:**
 
@@ -91,13 +94,18 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
 | `app_instance_name` | env | Service instance name (alphanumeric with a 32-character length limit, used in routing) | Yes |
 | `db_name` | env | Database name (optional) | No |
 
+The `env` object also accepts arbitrary additional key-value pairs beyond the
+keys documented here. Any extra keys you provide are passed through to your
+service as environment variables.
+
 ### Available Base Images
 
-| Image Name | Description |
-|------------|-------------|
-| `py12base` | Python 3.12 base runtime |
-| `py12torch` | Python 3.12 with PyTorch |
-| `py12cugraph` | Python 3.12 with cuGraph |
+| Image Name | Description | Upload `language` |
+|------------|-------------|-------------------|
+| `py12base` | Python 3.12 base runtime | `python` |
+| `py12torch` | Python 3.12 with PyTorch | `python` |
+| `py12cugraph` | Python 3.12 with cuGraph | `python` |
+| `node22base` | Node.js 22 base runtime | `nodejs` |
 
 ## Deploy an Image-Based Service
 
@@ -158,6 +166,45 @@ Your Docker image must:
 - Handle requests at the root path (`/`). The platform routes traffic to
   your container's root.
 
+## Register a Service as an App
+
+If your service serves a user interface (HTML) at the root path (`/`), you can
+register it as an **App** so it becomes available in the platform's Apps catalog
+and its UI is rendered embedded in the web interface. This works for both
+code-based and image-based deployments.
+
+To register a service as an App, add the following properties to the `env`
+object of the deploy request:
+
+| Parameter | Location | Description | Required |
+|-----------|----------|-------------|----------|
+| `has_ui` | env | Set to `"true"` to register the service as an App. Pass as a string (`"true"` / `"false"`); the value is compared case-insensitively. Defaults to `"false"`. | No |
+| `display_name` | env | Name shown for the app in the Apps catalog. Recommended when `has_ui` is enabled. | No |
+| `description` | env | Description shown for the app in the Apps catalog. Recommended when `has_ui` is enabled. | No |
+
+For example, to deploy a code-based service and register it as an App:
+
+```bash
+curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "app_name": "<APP_NAME>",
+    "app_version": "<APP_VERSION>",
+    "env": {
+      "service_type": "base_type",
+      "base_image": "py12base",
+      "app_instance_name": "<APP_INSTANCE_NAME>",
+      "has_ui": "true",
+      "display_name": "My App",
+      "description": "A short description of my app"
+    }
+  }'
+```
+
+For more about the App requirements and how to open an app from the catalog,
+see [Host a UI with Apps](apps/).
+
 ## Service Access
 
 Once deployed, your service is accessible via HTTP at a specific endpoint pattern which depends on whether your service is database-scoped or global.
@@ -184,6 +231,56 @@ If you did not provide `db_name`, your service is accessible at:
 
 All HTTP requests to these paths are routed to your container's service.
 
+## List Deployed Services
+
+Get a list of the deployed services, including services registered as Apps:
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services" >}}
+
+```bash
+curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services" \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{}'
+```
+
+The request body is optional. To narrow the results, pass a JSON object with
+`labels` to filter services by their labels:
+
+```bash
+curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services" \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{"labels": {"<KEY>": "<VALUE>"}}'
+```
+
+For services registered as Apps, the App metadata is available under each
+service's `serviceMeta.udsMeta` object:
+
+| Property | Description |
+|----------|-------------|
+| `hasUi` | Whether the service is registered as an App (serves a UI at `/`) |
+| `displayName` | Name shown for the app in the Apps catalog |
+| `description` | Description shown for the app in the Apps catalog |
+
+**Response (excerpt):**
+
+```json
+{
+  "services": [
+    {
+      "serviceMeta": {
+        "udsMeta": {
+          "hasUi": true,
+          "displayName": "My App",
+          "description": "A short description of my app"
+        }
+      }
+    }
+  ]
+}
+```
+
 ## Manage Uploaded Files
 
 {{< info >}}
@@ -202,7 +299,7 @@ Get a list of all uploaded services:
 | Parameter | Description | Required |
 |-----------|-------------|----------|
 | `name` | Filter by service name | No |
-| `language` | Filter by language (`python`) | No |
+| `language` | Filter by language (`python` or `nodejs`) | No |
 | `type` | Filter by type (`Service` or `Job`) | No |
 | `limit` | Maximum results to return (default: 100) | No |
 | `offset` | Pagination offset (default: 0) | No |
@@ -309,7 +406,8 @@ The file content is streamed back with `Content-Type: application/octet-stream`.
 ### Code-Based Deployment
 
 A complete workflow for uploading and deploying a database-scoped service
-from a code package:
+from a code package. The example uses a Python service. For a Node.js service,
+upload with `language=nodejs` and deploy with `"base_image": "node22base"`:
 
 ```bash
 #!/bin/bash

@@ -1,7 +1,8 @@
 ---
-title: Rotate Deployment Server with `oasisctl`
+title: Rotate Deployment Server with _oasisctl_
 menuTitle: Rotate Deployment Server
 weight: 2
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Rotate a single server of a deployment

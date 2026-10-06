@@ -1,7 +1,8 @@
 ---
-title: Update Organization Email Domain Restrictions with `oasisctl`
+title: Update Organization Email Domain Restrictions with _oasisctl_
 menuTitle: Update Organization Email Domain Restrictions
-weight: 16
+weight: 15
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Update which domain restrictions are placed on accessing a specific organization

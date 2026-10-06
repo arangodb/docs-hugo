@@ -1,7 +1,8 @@
 ---
-title: Update Group with `oasisctl`
+title: Update Group with _oasisctl_
 menuTitle: Update Group
 weight: 6
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Update a group the authenticated user has access to

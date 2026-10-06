@@ -7,10 +7,10 @@ description: >-
   started
 ---
 Using a _single server_ or _single instance_ means to run the ArangoDB server
-binary `arangod` stand-alone, without replication, without failover opportunity,
+binary _arangod_ stand-alone, without replication, without failover opportunity,
 and not as a cluster together with other nodes.
 
-You may run multiple processes of `arangod` side-by-side on the same machine as
+You may run multiple processes of _arangod_ side-by-side on the same machine as
 single instances, as long as they are configured for different ports and data
 folders. The official installers may not support multiple installations
 side-by-side, but you can get archive packages and unpack them manually.

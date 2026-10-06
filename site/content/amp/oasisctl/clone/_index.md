@@ -1,7 +1,8 @@
 ---
-title: Clone with `oasisctl`
+title: Clone with _oasisctl_
 menuTitle: Clone
 weight: 6
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Clone resources

@@ -2,7 +2,9 @@
 title: Foxx in a cluster setup
 menuTitle: Foxx in a cluster
 weight: 30
-description: ''
+description: >-
+  Foxx services run on every Coordinator in a cluster, and ArangoDB
+  automatically distributes installations and changes across them
 ---
 When running ArangoDB in a cluster the Foxx services will run on each
 Coordinator. Installing, upgrading and uninstalling services on any Coordinator

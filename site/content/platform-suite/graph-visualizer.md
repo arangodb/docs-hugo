@@ -1,5 +1,5 @@
 ---
-title: The Graph Visualizer of the Arango Contextual Data Platform
+title: The Graph Visualizer of the data platform
 menuTitle: Graph Visualizer
 weight: 5
 description: >-

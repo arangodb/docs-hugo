@@ -35,7 +35,7 @@ If the leader fails, then a follower takes over seamlessly.
 [Cluster deployments](cluster/_index.md) are designed for large scale
 operations and analytics, allowing you to scale elastically with your
 applications and data models. ArangoDB's synchronously-replicating cluster
-technology runs on premises, on Kubernetes, and in the cloud on
+technology runs on premises, on Kubernetes, and in the cloud on the
 [Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic) - Arango's fully managed service.
 
 Clustering ArangoDB not only delivers better performance and capacity improvements,
@@ -106,7 +106,7 @@ simplifies this process.
 
 The Starter supports different deployment modes (single server, Active Failover,
 cluster) and it can either use Docker containers or processes (using the
-`arangod` executable).
+_arangod_ executable).
 
 Besides starting and maintaining ArangoDB deployments, the Starter also provides
 various commands to create TLS certificates and JWT token secrets to secure your

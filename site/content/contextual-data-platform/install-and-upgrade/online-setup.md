@@ -1,5 +1,5 @@
 ---
-title: Install the Arango Contextual Data Platform (v4.0) on-premises online
+title: Install the data platform on-premises online
 menuTitle: Online setup
 weight: 5
 description: >-
@@ -92,7 +92,7 @@ the necessary Kubernetes resources.
 You can find the latest release on GitHub:
 <https://github.com/arangodb/kube-arangodb/releases/>
 
-Make sure set the the options as shown below to enable webhooks, certificates,
+Make sure to set the options as shown below to enable webhooks, certificates,
 the gateway feature, and machine learning:
 
 ```sh

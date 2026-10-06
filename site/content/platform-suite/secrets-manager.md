@@ -1,5 +1,5 @@
 ---
-title: The Secrets Manager of the Arango Contextual Data Platform
+title: Secrets Manager
 menuTitle: Secrets Manager
 weight: 20
 description: >-

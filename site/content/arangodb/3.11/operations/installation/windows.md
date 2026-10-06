@@ -14,7 +14,7 @@ You can use ArangoDB on Windows (64-bit) in different ways:
 - Manually, using a [ZIP archive](#installing-using-the-zip-archive)
 
 Visit the official [Download](https://arango.ai/downloads/)
-page of the ArangoDB web site.
+page of the ArangoDB website.
 
 You may verify the download by comparing the SHA256 hash listed on the website
 to the hash of the file. For example, you can run `openssl sha256 <filename>`
@@ -119,7 +119,7 @@ installation) or user's path (single-user installation).
 Select if you want the installer to create Desktop Icons that let you:
 
 - access the web interface
-- start the command-line client (arangosh)
+- start the command-line client (_arangosh_)
 - start the database server (single-user installation only)
 
 ### Starting
@@ -207,7 +207,7 @@ be specified like `/OPTIONNAME=value`.
     automatically, but creates a shortcut on the desktop to start it.
 - `/DESKTOPICON`
   - `0` - Do not create any shortcuts
-  - `1` - Create shortcuts on the desktop for arangosh and the web interface
+  - `1` - Create shortcuts on the desktop for _arangosh_ and the web interface
 - `/UPGRADE`
   - `1` - Automatically upgrade existing ArangoDB databases
   - `0` - No upgrade of databases

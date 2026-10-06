@@ -4,6 +4,7 @@ setup: true
 
 orbs:
   continuation: circleci/continuation@0.4.0
+  trivy: arangodb/trivy-scan@1.1.2
 
 parameters:
   workflow:
@@ -43,7 +44,7 @@ parameters:
     type: string
     default: "undefined"
 
-  arangodb-4_0:
+  arangodb-4_x:
     type: string
     default: "undefined"
 
@@ -121,7 +122,7 @@ jobs:
             # The list of branches needs to be sorted by name (based on the `name` field in versions.yaml)!
             python3 generate_config.py \
               --workflow << pipeline.parameters.workflow >> \
-              --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_0 >> \
+              --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_x >> \
               --arangodb-branch << pipeline.parameters.arangodb-branch >> \
               --release-type << pipeline.parameters.release-type >> \
               --docs-version << pipeline.parameters.docs-version >> \
@@ -137,3 +138,15 @@ workflows:
   setup:
     jobs:
       - generate-config
+      # Reports fixable CRITICAL/HIGH CVEs in the toolchain's dependency
+      # manifests. Warn-only: findings do not fail the job. The job does fail
+      # when the manifest it expects is no longer scanned, so the dependency
+      # surface cannot silently drop out of scope.
+      - trivy/scan-fs:
+          name: dependency-cve-scan
+          scanners: vuln
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          report-severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          fail-on-findings: false
+          expect-targets: toolchain/arangoproxy/go.mod

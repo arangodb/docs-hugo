@@ -6,6 +6,7 @@ description: >-
   Query your ArangoDB database using natural language with the AQLizer feature,
   which automatically translates plain language into AQL queries using generative AI
 ---
+{{< tag "Beta" >}}
 
 {{< embed-svg "AQLizer-Flow" "Natural Language to AQL flow." >}}
 
@@ -87,7 +88,7 @@ See [Web Interface](web-interface.md) for step-by-step instructions.
 
 ### API
 
-The Natural Language to AQL service exposes a REST API for programmatic access.
+The Natural Language to AQL service exposes an HTTP API for programmatic access.
 You can integrate it into your applications, call it from the command line, or use
 it as part of a larger workflow.
 

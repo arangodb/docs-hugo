@@ -2,7 +2,9 @@
 title: _arangodump_ Examples
 menuTitle: Examples
 weight: 5
-description: ''
+description: >-
+  How to create database dumps of an ArangoDB server and use encryption,
+  compression, multi-threading, and other features of _arangodump_
 ---
 _arangodump_ can be invoked in a command line by executing the following command:
 
@@ -128,7 +130,7 @@ sorted first by shards and within each shard by ascending timestamp. The
 structural information of the collection contains the number of shards
 and the shard keys.
 
-Note that the version of the arangodump client tool needs to match the
+Note that the version of the _arangodump_ client tool needs to match the
 version of the ArangoDB server it connects to.
 
 ### Dumping collections with sharding prototypes
@@ -136,7 +138,7 @@ version of the ArangoDB server it connects to.
 Collections may be created with the shard distribution identical to an existing
 prototypical collection (see [`distributeShardsLike`](../../../develop/javascript-api/@arangodb/db-object.md#db_createcollection-name--properties--type--options));
 i.e. shards are distributed in the very same pattern as in the prototype collection.
-Such collections cannot be dumped without the referenced collection or arangodump
+Such collections cannot be dumped without the referenced collection or _arangodump_
 yields an error.
 
 ```
@@ -211,12 +213,11 @@ RocksDB encryption-at-rest feature.
 
 ## Compression
 
-`--compress-output`
+You can optionally store data in a compressed format to save space on disk with
+the `--compress-output` startup option. It cannot be used together with
+[Encryption](#encryption).
 
-Data can optionally be dumped in a compressed format to save space on disk.
-The `--compress-output` option cannot be used together with [Encryption](#encryption).
-
-If compression is enabled, no `.data.json` files are written. Instead, the
+If output compression is enabled, no `.data.json` files are written. Instead, the
 collection data gets compressed using the Gzip algorithm and for each collection
 a `.data.json.gz` file is written. Metadata files such as `.structure.json` and
 `.view.json` do not get compressed.
@@ -233,8 +234,6 @@ arangorestore --input-directory "dump"
 ```
 
 ## Dump output format
-
-<small>Introduced in: v3.8.0</small>
 
 Since its inception, _arangodump_ wrapped each dumped document into an extra
 JSON envelope, such as follows:

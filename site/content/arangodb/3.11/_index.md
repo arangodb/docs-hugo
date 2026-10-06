@@ -2,7 +2,6 @@
 title: Recommended Resources
 menuTitle: '3.11'
 weight: 98
-layout: default
 ---
 {{< cloudbanner >}}
 
@@ -22,8 +21,8 @@ Try out Arango's fully-managed cloud offering for a faster time to value.
 {{% /card %}}
 
 {{% card title="AQL" link="aql/" %}}
-ArangoDB's Query Language AQL lets you use graphs, JSON documents, and search
-via a single, composable query language.
+ArangoDB's Query Language AQL lets you use graphs, JSON documents, search,
+and geo-spatial data via a single, composable query language.
 {{% /card %}}
 
 {{% card title="Data Science" link="data-science/" %}}

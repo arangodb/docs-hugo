@@ -3,7 +3,7 @@ title: Manually Upgrading an _Active Failover_ Deployment
 menuTitle: Active Failover
 weight: 5
 description: >-
-  The server binaries need to be upgraded, requiring a restart of the `arangod`
+  The server binaries need to be upgraded, requiring a restart of the _arangod_
   processes and optionally using the supervision maintenance mode
 ---
 To manually upgrade an [_Active Failover_](../../../deploy/active-failover/_index.md)
@@ -24,7 +24,7 @@ supported in the next minor version of ArangoDB, from v3.12 onward.
 ## Preparations
 
 The ArangoDB installation packages (e.g. for Debian or Ubuntu) set up a
-convenient standalone instance of `arangod`. During installation, this instance's
+convenient standalone instance of _arangod_. During installation, this instance's
 database will be upgraded (see [`--database.auto-upgrade`](../../../components/arangodb-server/options.md#--databaseauto-upgrade))
 and the service will be (re)started.
 
@@ -37,7 +37,7 @@ that it would start or stop your  _Active Failover_ instance instead.
 
 {{< warning >}}
 It is highly recommended to take a backup of your data before upgrading ArangoDB
-using [_arangodump_](../../../components/tools/arangodump/_index.md).
+using [arangodump](../../../components/tools/arangodump/_index.md).
 {{< /warning >}}
 
 ### Install the new ArangoDB version binary

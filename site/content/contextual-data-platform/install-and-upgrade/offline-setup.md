@@ -1,5 +1,5 @@
 ---
-title: Install the Arango Contextual Data Platform (v4.0) on-premises offline
+title: Install the data platform on-premises offline
 menuTitle: Offline setup
 weight: 10
 description: >-
@@ -199,7 +199,7 @@ This operator is the core component that manages ArangoDB
 deployments and the Contextual Data Platform. It watches for custom resources and creates
 the necessary Kubernetes resources.
 
-Make sure set the the options as shown below to enable the gateway feature and
+Make sure to set the options as shown below to enable the gateway feature and
 machine learning feature:
 
 ```sh

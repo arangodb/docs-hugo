@@ -1,7 +1,8 @@
 ---
-title: Version with `oasisctl`
+title: Version with _oasisctl_
 menuTitle: Version
 weight: 30
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Show the current version of this tool

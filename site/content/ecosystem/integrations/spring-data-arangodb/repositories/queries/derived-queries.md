@@ -1,18 +1,19 @@
 ---
-title: Derived queries
+title: Derived queries in Spring Data ArangoDB
 menuTitle: Derived queries
 weight: 5
-description: ''
+description: >-
+  How to use derived queries in the Spring Data ArangoDB integration
 aliases:
   - ../../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/derived-queries
   - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/derived-queries
   - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/derived-queries
-  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/derived-queries
+  - ../../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/derived-queries
   - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/derived-queries
   - ../../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/derived-queries
   - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/derived-queries
   - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/derived-queries
-  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/derived-queries
+  - ../../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/derived-queries
   - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/derived-queries
 ---
 ## Semantic parts
