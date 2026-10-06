@@ -24,9 +24,16 @@ function report_detail() {
   echo "$1" >> /home/summary.md
 }
 
-### Assemble the final build report (summary.md) from the errors, warnings, and details
+### Assemble the final build report (report.md) from the errors, warnings, and details.
+### report.py exits with 1 if errors were reported, which is not a failure here.
 function finalize_report() {
-  "$PYTHON_EXECUTABLE" report.py > /dev/null 2>&1 || log "[finalize_report] Failed to assemble the report"
+  local output
+  output=$("$PYTHON_EXECUTABLE" report.py 2>&1)
+  if [ $? -gt 1 ] || [ -n "$output" ]; then
+    log "[finalize_report] Failed to assemble the report: $output"
+  elif report_has_errors; then
+    log "[finalize_report] Report assembled, it contains errors (see report.md)"
+  fi
 }
 
 
