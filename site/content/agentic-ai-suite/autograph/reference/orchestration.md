@@ -76,6 +76,8 @@ upper bound.
   "replicas": 3,
   "max_retries": 3,
   "categories": ["legal", "finance"],
+  "chat_secret_profile_ids": ["<chat-profile-id-1>", "<chat-profile-id-2>"],
+  "embedding_secret_profile_id": "<embedding-profile-id>",
   "importer_env": {
     "CUSTOM_ENV": "value"
   }
@@ -89,8 +91,8 @@ upper bound.
 | `project` | string | Yes | The platform project that holds the corpus. It has to match the project the service runs against, otherwise the request is rejected with `400`. | The project name of your deployment. Send it in **every** orchestrate request. |
 | `replicas` | integer | No | Number of Importer worker replicas (parallelism). Defaults to **1**. A value of `0`, or omitting the field, is silently treated as `1`. | **2–4** for typical jobs. Scale up only if you have many partitions and capacity. |
 | `max_retries` | integer | No | Retries per failed Importer job before giving up. | **3** (default) is appropriate for transient errors. |
-| `chat_secret_profile_ids` | string[] | No | Platform secret profile IDs for chat keys. | Provide one or more secret profile IDs. Follow your operator's convention. Raw chat keys are not accepted on this endpoint. |
-| `embedding_secret_profile_id` | string | No | Secret profile for embedding key on the Importer. | Set when embedding must come from vault, not env. |
+| `chat_secret_profile_ids` | string[] | No | [Secrets Manager](../../../platform-suite/secrets-manager.md#reference-secrets-in-service-requests) profile IDs of the chat API keys. The keys are rotated across the Importer workers. | Store each key as a separate secret and list all profile IDs to spread the load across multiple keys. |
+| `embedding_secret_profile_id` | string | No | Secrets Manager profile ID of the embedding API key for the Importer workers. | A single profile ID; multiple embedding keys are not supported here. |
 | `importer_env` | map | No | Extra environment variables for Importer pods (e.g. model names, timeouts). | Start **empty**; add only keys documented for your Importer version (often chunk or model overrides). |
 | `categories` | string[] | No | If **non-empty**, only the strategy profiles of the listed categories are orchestrated. A category is a bare category label, such as `legal`, not a partition ID. If no strategy profile matches, the request is rejected with `400`. | **Omit or `[]`** for the full corpus. This is the coarsest scoping level; there is no way to single out one partition of a category. |
 | `file_ids` | string[] | No | If **non-empty**, the run is narrowed to the strategized clusters that contain these File Manager IDs, each of those partitions imports only those IDs, and the stale-partition filter is skipped. IDs that match nothing are skipped and reported in `unmatched_file_ids` on the response. Matching uses the `file_id` that a corpus build stamps on the corpus sources; there is no fallback to file names. | **Omit** for a normal build. Use it after an [incremental graph update](../incremental-graph-updates.md) to import only the documents that changed. |
@@ -215,7 +217,7 @@ see [Automatic reaping of a wedged run](#automatic-reaping-of-a-wedged-run).
 curl -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
-  -d '{"project": "my_project", "replicas": 2, "max_retries": 3}' \
+  -d '{"project": "my_project", "replicas": 2, "max_retries": 3, "chat_secret_profile_ids": ["<chat-profile-id>"], "embedding_secret_profile_id": "<embedding-profile-id>"}' \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate
 ```
 
