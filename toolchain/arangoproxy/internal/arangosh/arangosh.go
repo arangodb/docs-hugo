@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"os"
 	"regexp"
 	"strings"
 	"time"
@@ -65,7 +64,7 @@ func ExecRoutine(queue chan Job) {
 			} else {
 				models.Logger.Printf("[%s %s] [FATAL] arangod (%s) is unreachable and could not be recovered; aborting example generation to avoid a cascade of timeouts", repository.Version, name, repository.Url)
 				models.Logger.Error("Examples", repository.Version, name, filepath, "arangod is unreachable and could not be recovered, aborted the example generation")
-				os.Exit(1)
+				models.Exit(1)
 			}
 		}
 

@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/arangosh"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
@@ -33,6 +36,8 @@ func StartController(url string) {
 
 func launchRoutines() {
 	go SaveCachedExampleResponse(CacheChannel)
+	models.BeforeExit = append(models.BeforeExit, FlushCache)
+	handleStopSignals()
 	go OPENAPIService.AddSpecToGlobalSpec(OpenapiGlobalChannel)
 	arangosh.StartRoutine()
 }
@@ -40,6 +45,7 @@ func launchRoutines() {
 func createRoutes() {
 	http.HandleFunc("/health", HealthHandler)
 	http.HandleFunc("/page-done", PageDoneHandler)
+	http.HandleFunc("/flush-cache", FlushCacheHandler)
 	http.HandleFunc("/js", JSHandler)
 	http.HandleFunc("/curl", CurlExampleHandler)
 	http.HandleFunc("/aql", AQLHandler)
@@ -142,6 +148,24 @@ func PageDoneHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	w.Write([]byte("{}"))
+}
+
+// Writes the pending cache entries, called by the toolchain before it assembles
+// the report (errors while writing are reported)
+func FlushCacheHandler(w http.ResponseWriter, r *http.Request) {
+	FlushCache()
+	w.Write([]byte("{}"))
+}
+
+// docker stop (SIGTERM), Ctrl+C (SIGINT): write the pending cache entries first
+func handleStopSignals() {
+	signals := make(chan os.Signal, 1)
+	signal.Notify(signals, syscall.SIGTERM, syscall.SIGINT)
+	go func() {
+		sig := <-signals
+		models.Logger.Printf("[STOP] Received %s, writing the pending cache entries", sig)
+		models.Exit(0)
+	}()
 }
 
 func HealthHandler(w http.ResponseWriter, r *http.Request) {

@@ -1228,6 +1228,15 @@ function trap_container_exit() {
     [ "$terminate" = false ] && sleep 1
   done
 
+  ### arangoproxy writes the example cache in batches. Write the pending entries
+  ### before the report is assembled, so that errors while writing are included
+  ### (docker stop writes them too, but after the report)
+  if [ -n "$(docker ps -q --filter name=^docs_arangoproxy$)" ]; then
+    if ! docker exec docs_arangoproxy curl -sf -X POST http://localhost:8080/flush-cache > /dev/null; then
+      log "[TERMINATE] Failed to write the pending example cache entries" >> toolchain.log
+    fi
+  fi
+
   if report_has_errors; then
     log "[TERMINATE] Errors during content generation:" >> toolchain.log
     grep '^error' "$REPORT_ISSUES" | cut -f2-6 | tr '\t' ' ' >> toolchain.log
