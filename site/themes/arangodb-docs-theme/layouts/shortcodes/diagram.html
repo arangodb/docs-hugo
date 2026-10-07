@@ -1,13 +1,13 @@
 {{- $src := .Get "src" }}
 {{- $alt := .Get "alt" }}
 {{- $caption := .Get "caption" }}
-{{- $maxWidth := .Get "maxWidth" | default "1200px" }}
-<figure class="diagram-figure" style="margin: 2rem 0; text-align: center;">
-  <img src="{{ $src }}" 
-       alt="{{ $alt }}"
-       style="width: 100%; max-width: {{ $maxWidth }}; height: auto; border: 1px solid #e0e0e0; border-radius: 4px;">
+{{- $maxWidth := .Get "maxWidth" }}
+<figure class="diagram-figure">
+  <img src="{{ $src }}"
+       alt="{{ $alt }}"{{ with $maxWidth }}
+       style="max-width: {{ . }};"{{ end }}>
   {{- with $caption }}
-  <figcaption style="font-size: 0.9em; color: #666; margin-top: 0.5rem;">
+  <figcaption>
     <em>{{ . | markdownify }}</em>
   </figcaption>
   {{- end }}

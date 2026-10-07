@@ -1420,13 +1420,6 @@ li > code {
     white-space: pre-wrap;
 }
 
-/* Breaking between any two characters lets tables squeeze a column of
-   identifiers down to a single character. Only wrap code that overflows. */
-td code, th code {
-    word-break: normal;
-    overflow-wrap: break-word;
-}
-
 .copy-to-clipboard-button {
     position: absolute;
     align-items: center;
@@ -2292,6 +2285,27 @@ nav.pagination .next {
 
 .none {
     display: none;
+}
+
+.svg-figure,
+.diagram-figure {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.svg-figure figcaption,
+.diagram-figure figcaption {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+.diagram-figure img {
+    width: 100%;
+    max-width: 1200px;
+    height: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
 }
 
 [data-zoomable] {
