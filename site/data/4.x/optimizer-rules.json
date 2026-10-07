@@ -156,18 +156,6 @@
     }
   },
   {
-    "name": "optimize-join-order",
-    "description": "Detect adjacent `FOR` loops that are joined by equijoin conditions and\nbuild the corresponding join graph, as a basis for (in-future) cost-based join reordering.",
-    "flags": {
-      "hidden": false,
-      "clusterOnly": false,
-      "canBeDisabled": true,
-      "canCreateAdditionalPlans": false,
-      "disabledByDefault": true,
-      "enterpriseOnly": false
-    }
-  },
-  {
     "name": "move-calculations-up-2",
     "description": "Second pass of moving calculations up in the processing\npipeline as far as possible, to pull them out of inner loops etc.",
     "flags": {
@@ -339,9 +327,9 @@
     "name": "materialize-for-enumerate-near",
     "description": "Choose how each EnumerateNearVectorNode emits its document.\nIf the vector index storedValues cover the downstream projections, or if a\npushed-down filter already loaded the document, the vector node produces the\noutput directly. Otherwise a MaterializeRocksDBNode is inserted after the\nvector node to translate the doc-id into the full document.",
     "flags": {
-      "hidden": true,
+      "hidden": false,
       "clusterOnly": false,
-      "canBeDisabled": false,
+      "canBeDisabled": true,
       "canCreateAdditionalPlans": false,
       "disabledByDefault": false,
       "enterpriseOnly": false
