@@ -13,7 +13,12 @@ async function renderMermaidDiagrams() {
     if (!_mermaid) {
       let mermaidjs = await import('https://cdn.jsdelivr.net/npm/mermaid@11.14.0/dist/mermaid.esm.min.mjs');
       _mermaid = mermaidjs.default;
-      _mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+      _mermaid.initialize({
+        startOnLoad: false,
+        theme: 'neutral',
+        /* Same as the pre.mermaid background in theme.css */
+        themeVariables: { edgeLabelBackground: '#f3f4f6' },
+      });
     }
     try {
       await _mermaid.run({ nodes });

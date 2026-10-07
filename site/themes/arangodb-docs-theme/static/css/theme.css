@@ -2342,6 +2342,9 @@ pre.mermaid {
     height: 500px;
     margin: 0;
     overflow: hidden;
+    /* Keep in sync with edgeLabelBackground in theme.js so that edge labels
+       only mask the lines behind them instead of showing as boxes. */
+    background: #f3f4f6;
 }
 
 pre.mermaid > svg {
