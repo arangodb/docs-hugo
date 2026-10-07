@@ -68,7 +68,10 @@ These commands work only if you indicate the upstream PRs or images in the PR
 description (see [Upstream references](#upstream-references)). Use images with a
 tag, like `arangodb/core-preview:4.0-nightly` or `arangodb/enterprise:3.12.12`:
 the source code for the `metrics`, `error-codes`, and `exit-codes` generators is
-cloned from the branch that the tag indicates.
+cloned from the `arangodb/arangodb` branch that the tag indicates. Anything after
+the first `-` and after the third version number is removed (`4.0-nightly` → `4.0`,
+`devel-nightly` → `devel`, `3.12.5.2` → `3.12.5`), and the result needs to exist as
+a branch or tag in `arangodb/arangodb`.
 
 Only members of the `arangodb` GitHub organization can use these commands.
 
