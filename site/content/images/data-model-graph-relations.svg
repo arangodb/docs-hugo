@@ -1,20 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 360" width="860" height="360" role="img" aria-labelledby="data-model-graph-relations-t data-model-graph-relations-d">
   <title id="data-model-graph-relations-t">A property graph of people, a book, and its author</title>
   <desc id="data-model-graph-relations-d">Four nodes with properties: the Person nodes Mary (age 34) and John (age 31), the Book node Arango (320 pages), and the Author node Sara (country DE). Edges also carry properties: Mary isFriendOf John since 2019, Mary bought Arango on 2025-03-14, John rated Arango with 5 stars, and Sara wrote Arango in 2024.</desc>
-  <defs><marker id="data-model-graph-relations-m" markerWidth="12" markerHeight="12" refX="0" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,6 L0,12 z" fill="#044926"/></marker></defs>
-  <line x1="85.0" y1="104.0" x2="85.0" y2="244.0" stroke="#044926" stroke-width="2.5" marker-end="url(#data-model-graph-relations-m)"/>
+  <defs><marker id="data-model-graph-relations-m" markerWidth="12" markerHeight="12" refX="2" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,6 L0,12 z" fill="#044926"/></marker></defs>
+  <line x1="85.0" y1="104.0" x2="85.0" y2="252.0" stroke="#044926" stroke-width="2.5" marker-end="url(#data-model-graph-relations-m)"/>
   <rect x="34.0" y="160.0" width="102" height="40" rx="12" fill="#f4faf4" stroke="#044926" stroke-width="1.5"/>
   <text x="85.0" y="177.0" text-anchor="middle" font-size="13" font-weight="700" fill="#044926" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">isFriendOf</text>
   <text x="85.0" y="193.0" text-anchor="middle" font-size="11.5" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"><tspan fill="#4f6d8b">since: </tspan><tspan fill="#151d25" font-weight="600">2019</tspan></text>
-  <line x1="165.7" y1="84.6" x2="343.0" y2="147.4" stroke="#044926" stroke-width="2.5" marker-end="url(#data-model-graph-relations-m)"/>
+  <line x1="165.7" y1="84.6" x2="350.5" y2="150.1" stroke="#044926" stroke-width="2.5" marker-end="url(#data-model-graph-relations-m)"/>
   <rect x="193.0" y="98.0" width="134" height="40" rx="12" fill="#f4faf4" stroke="#044926" stroke-width="1.5"/>
   <text x="260.0" y="115.0" text-anchor="middle" font-size="13" font-weight="700" fill="#044926" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">bought</text>
   <text x="260.0" y="131.0" text-anchor="middle" font-size="11.5" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"><tspan fill="#4f6d8b">date: </tspan><tspan fill="#151d25" font-weight="600">2025-03-14</tspan></text>
-  <line x1="165.7" y1="275.4" x2="343.0" y2="212.6" stroke="#044926" stroke-width="2.5" marker-end="url(#data-model-graph-relations-m)"/>
+  <line x1="165.7" y1="275.4" x2="350.5" y2="209.9" stroke="#044926" stroke-width="2.5" marker-end="url(#data-model-graph-relations-m)"/>
   <rect x="221.0" y="222.0" width="78" height="40" rx="12" fill="#f4faf4" stroke="#044926" stroke-width="1.5"/>
   <text x="260.0" y="239.0" text-anchor="middle" font-size="13" font-weight="700" fill="#044926" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">rated</text>
   <text x="260.0" y="255.0" text-anchor="middle" font-size="11.5" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"><tspan fill="#4f6d8b">stars: </tspan><tspan fill="#151d25" font-weight="600">5</tspan></text>
-  <line x1="694.0" y1="180.0" x2="528.0" y2="180.0" stroke="#044926" stroke-width="2.5" marker-end="url(#data-model-graph-relations-m)"/>
+  <line x1="694.0" y1="180.0" x2="520.0" y2="180.0" stroke="#044926" stroke-width="2.5" marker-end="url(#data-model-graph-relations-m)"/>
   <rect x="559.0" y="160.0" width="92" height="40" rx="12" fill="#f4faf4" stroke="#044926" stroke-width="1.5"/>
   <text x="605.0" y="177.0" text-anchor="middle" font-size="13" font-weight="700" fill="#044926" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">wrote</text>
   <text x="605.0" y="193.0" text-anchor="middle" font-size="11.5" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"><tspan fill="#4f6d8b">year: </tspan><tspan fill="#151d25" font-weight="600">2024</tspan></text>

@@ -58,8 +58,8 @@
     <g class="card">
       <path d="M 480 148 L 480 200 A 75 14 0 0 0 630 200 L 630 148" class="cyl-db"/>
       <ellipse cx="555" cy="148" rx="75" ry="14" class="cyl-db-top"/>
-      <text x="555" y="178" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">Corpus Graph</text>
-      <text x="555" y="196" text-anchor="middle" font-family="sans-serif" font-size="10" font-style="italic" fill="#b9ff38">topic domains</text>
+      <text x="555" y="183" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">Corpus Graph</text>
+      <text x="555" y="201" text-anchor="middle" font-family="sans-serif" font-size="10" font-style="italic" fill="#b9ff38">topic domains</text>
     </g>
 
     <path d="M 555 218 L 555 240" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agf-arrow)"/>
@@ -67,8 +67,8 @@
     <g class="card">
       <path d="M 480 252 L 480 304 A 75 14 0 0 0 630 304 L 630 252" class="cyl-db"/>
       <ellipse cx="555" cy="252" rx="75" ry="14" class="cyl-db-top"/>
-      <text x="555" y="282" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">Knowledge Graph</text>
-      <text x="555" y="300" text-anchor="middle" font-family="sans-serif" font-size="10" font-style="italic" fill="#b9ff38">entities + embeddings</text>
+      <text x="555" y="287" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">Knowledge Graph</text>
+      <text x="555" y="305" text-anchor="middle" font-family="sans-serif" font-size="10" font-style="italic" fill="#b9ff38">entities + embeddings</text>
     </g>
 
     <path d="M 650 200 L 694 200" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agf-arrow)"/>
@@ -85,8 +85,8 @@
     <g class="card">
       <path d="M 920 172 L 920 228 A 75 14 0 0 0 1070 228 L 1070 172" class="cyl-llm"/>
       <ellipse cx="995" cy="172" rx="75" ry="14" class="cyl-llm-top"/>
-      <text x="995" y="202" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#111827">LLM provider</text>
-      <text x="995" y="221" text-anchor="middle" font-family="sans-serif" font-size="10" font-style="italic" fill="#374151">generates answer</text>
+      <text x="995" y="208" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#111827">LLM provider</text>
+      <text x="995" y="227" text-anchor="middle" font-family="sans-serif" font-size="10" font-style="italic" fill="#374151">generates answer</text>
     </g>
 
     <path d="M 1070 200 L 1188 200" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agf-arrow)"/>

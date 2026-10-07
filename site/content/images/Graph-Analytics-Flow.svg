@@ -64,8 +64,8 @@
     <g class="card">
       <path d="M 1155 87 L 1155 152 A 75 16 0 0 0 1305 152 L 1305 87" class="cyl-db"/>
       <ellipse cx="1230" cy="87" rx="75" ry="16" class="cyl-db-top"/>
-      <text x="1230" y="122" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">ArangoDB</text>
-      <text x="1230" y="142" text-anchor="middle" font-family="sans-serif" font-size="10" font-style="italic" fill="#b9ff38">your graph</text>
+      <text x="1230" y="129" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">ArangoDB</text>
+      <text x="1230" y="149" text-anchor="middle" font-family="sans-serif" font-size="10" font-style="italic" fill="#b9ff38">your graph</text>
     </g>
 
     <path d="M 930 170 L 930 230 L 120 230 L 120 170" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#gan-arrow)"/>
