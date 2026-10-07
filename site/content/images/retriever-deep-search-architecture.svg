@@ -14,7 +14,7 @@
     .lbg-frame { fill: #f8fafc; }
   </style>
   <defs>
-    <marker id="ds-arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+    <marker id="ds-arrow" markerWidth="10" markerHeight="8" refX="0.4" refY="4" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M0,0 L10,4 L0,8 z" fill="#64748b"/>
     </marker>
   </defs>
@@ -29,71 +29,71 @@
   <text class="ftitle" x="450.0" y="1660.0" text-anchor="middle">4. Deep Research Final Answer (Direct)</text>
   <rect class="box" x="37.0" y="20" width="220" height="40" rx="20" fill="#dbeafe" stroke="#1d4ed8"/>
   <text class="btitle" x="147.0" y="45" text-anchor="middle">Deep Research Query (text)</text>
-  <path class="edge" d="M147.0,60.0 L147.0,145.0" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M147.0,60.0 L147,135" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="157.0" y="82.0">user input</text>
-  <path class="edge" d="M250.0,213.5 L346.0,213.5" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M250.0,213.5 L336,213.5" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="298.5" y="205.5" text-anchor="middle">context query</text>
-  <path class="edge" d="M553.0,213.5 L649.0,213.5" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M553.0,213.5 L639,213.5" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="601.5" y="205.5" text-anchor="middle">broad results</text>
-  <path class="edge" d="M753.0,281.0 L753.0,305.0 Q753.0,313.0 745.0,313.0 L155.0,313.0 Q147.0,313.0 147.0,321.0 L147.0,344.0" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M753.0,281.0 L753.0,305.0 Q753.0,313.0 745.0,313.0 L155.0,313.0 Q147.0,313.0 147.0,321.0 L147,334" marker-end="url(#ds-arrow)"/>
   <rect class="lbg-frame" x="408.4" y="304.0" width="83.2" height="18" rx="3"/>
   <text class="elabel" x="450.0" y="317.0" text-anchor="middle">context text</text>
-  <path class="edge" d="M250.0,404.0 L649.0,404.0" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M250.0,404.0 L639,404" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="450.0" y="396.0" text-anchor="middle">no relevant data</text>
-  <path class="edge" d="M147.0,463.0 L147.0,596.0" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M147.0,463.0 L147,586" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="157.0" y="534.0">relevant data present</text>
-  <path class="edge" d="M856.0,404.0 L904.0,404.0 Q912.0,404.0 912.0,412.0 L912.0,1932.0 Q912.0,1940.0 904.0,1940.0 L857.0,1940.0" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M856.0,404.0 L904.0,404.0 Q912.0,404.0 912.0,412.0 L912.0,1932.0 Q912.0,1940.0 904.0,1940.0 L867,1940" marker-end="url(#ds-arrow)"/>
   <g transform="rotate(-90 912.0 1172.0)">
   <rect class="lbg-page" x="843.0" y="1163.0" width="138.1" height="18" rx="3"/>
   <text class="elabel" x="912.0" y="1176.0" text-anchor="middle">user-friendly message</text>
   </g>
-  <path class="edge" d="M250.0,656.0 L346.0,656.0" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M250.0,656.0 L336,656" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="298.5" y="648.0" text-anchor="middle">instructions</text>
   <text class="elabel" x="298.5" y="635.0" text-anchor="middle">planning</text>
-  <path class="edge" d="M553.0,656.0 L649.0,656.0" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M553.0,656.0 L639,656" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="601.5" y="648.0" text-anchor="middle">LLM raw plan</text>
-  <path class="edge" d="M753.0,715.0 L753.0,778.0" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M753.0,715.0 L753,768" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="763.0" y="751.0">structured steps</text>
-  <path class="edge" d="M650.0,838.0 L554.0,838.0" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M650.0,838.0 L564,838" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="601.5" y="830.0" text-anchor="middle">available</text>
   <text class="elabel" x="601.5" y="817.0" text-anchor="middle">steps</text>
-  <path class="edge" d="M856.0,838.0 L863.0,838.0 Q870.0,838.0 870.0,830.0 L870.0,525.0 Q870.0,517.0 862.0,517.0 L761.0,517.0 Q753.0,517.0 753.0,509.0 L753.0,464.0" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M856.0,838.0 L863.0,838.0 Q870.0,838.0 870.0,830.0 L870.0,525.0 Q870.0,517.0 862.0,517.0 L761.0,517.0 Q753.0,517.0 753.0,509.0 L753,474" marker-end="url(#ds-arrow)"/>
   <rect class="lbg-page" x="754.8" y="508.0" width="101.5" height="18" rx="3"/>
   <text class="elabel" x="805.5" y="521.0" text-anchor="middle">no usable steps</text>
-  <path class="edge" d="M450.0,897.0 L450.0,943.0 Q450.0,951.0 442.0,951.0 L155.0,951.0 Q147.0,951.0 147.0,959.0 L147.0,1030.0" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M450.0,897.0 L450.0,943.0 Q450.0,951.0 442.0,951.0 L155.0,951.0 Q147.0,951.0 147.0,959.0 L147,1020" marker-end="url(#ds-arrow)"/>
   <rect class="lbg-page" x="256.9" y="942.0" width="83.2" height="18" rx="3"/>
   <text class="elabel" x="298.5" y="955.0" text-anchor="middle">initial plan</text>
-  <path class="edge" d="M147.0,1166.0 L147.0,1229.0" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M147.0,1166.0 L147,1219" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="157.0" y="1202.0">start execution</text>
-  <path class="edge" d="M250.0,1252.0 L290.5,1252.0 Q298.5,1252.0 298.5,1244.0 L298.5,1106.5 Q298.5,1098.5 306.5,1098.5 L649.0,1098.5" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M250.0,1252.0 L290.5,1252.0 Q298.5,1252.0 298.5,1244.0 L298.5,1106.5 Q298.5,1098.5 306.5,1098.5 L639,1098.5" marker-end="url(#ds-arrow)"/>
   <rect class="lbg-frame" x="414.4" y="1089.5" width="119.8" height="18" rx="3"/>
   <text class="elabel" x="474.2" y="1102.5" text-anchor="middle">no executable step</text>
-  <path class="edge" d="M250.0,1297.5 L346.0,1297.5" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M250.0,1297.5 L336,1297.5" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="298.5" y="1289.5" text-anchor="middle">deps satisfied</text>
   <text class="elabel" x="298.5" y="1276.5" text-anchor="middle">found step with</text>
-  <path class="edge" d="M553.0,1297.5 L649.0,1297.5" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M553.0,1297.5 L639,1297.5" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="601.5" y="1289.5" text-anchor="middle">step query</text>
   <text class="elabel" x="601.5" y="1276.5" text-anchor="middle">concrete</text>
-  <path class="edge" d="M753.0,1365.0 L753.0,1428.0" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M753.0,1365.0 L753,1418" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="763.0" y="1401.0">step result</text>
-  <path class="edge" d="M650.0,1488.5 L554.0,1488.5" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M650.0,1488.5 L564,1488.5" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="601.5" y="1480.5" text-anchor="middle">update state</text>
-  <path class="edge" d="M347.0,1488.5 L251.0,1488.5" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M347.0,1488.5 L261,1488.5" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="298.5" y="1480.5" text-anchor="middle">summary</text>
   <text class="elabel" x="298.5" y="1467.5" text-anchor="middle">current</text>
-  <path class="edge" d="M147.0,1429.0 L147.0,1366.0" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M147.0,1429.0 L147,1376" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="157.0" y="1401.0">decision: CONTINUE</text>
-  <path class="edge" d="M147.0,1548.0 L147.0,1681.0" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M147.0,1548.0 L147,1671" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="137.0" y="1619.0" text-anchor="end">decision: SOLVED</text>
-  <path class="edge" d="M856.0,1098.5 L863.0,1098.5 Q870.0,1098.5 870.0,1106.5 L870.0,1594.0 Q870.0,1602.0 862.0,1602.0 L218.0,1602.0 Q210.0,1602.0 210.0,1610.0 L210.0,1681.0" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M856.0,1098.5 L863.0,1098.5 Q870.0,1098.5 870.0,1106.5 L870.0,1594.0 Q870.0,1602.0 862.0,1602.0 L218.0,1602.0 Q210.0,1602.0 210.0,1610.0 L210,1671" marker-end="url(#ds-arrow)"/>
   <rect class="lbg-page" x="474.0" y="1593.0" width="132.0" height="18" rx="3"/>
   <text class="elabel" x="540.0" y="1606.0" text-anchor="middle">proceed to synthesis</text>
-  <path class="edge" d="M250.0,1749.5 L346.0,1749.5" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M250.0,1749.5 L336,1749.5" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="298.5" y="1741.5" text-anchor="middle">step results</text>
   <text class="elabel" x="298.5" y="1728.5" text-anchor="middle">aggregate</text>
-  <path class="edge" d="M553.0,1749.5 L649.0,1749.5" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M553.0,1749.5 L639,1749.5" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="601.5" y="1741.5" text-anchor="middle">final prompt</text>
-  <path class="edge" d="M753.0,1817.0 L753.0,1880.0" marker-end="url(#ds-arrow)"/>
+  <path class="edge" d="M753.0,1817.0 L753,1870" marker-end="url(#ds-arrow)"/>
   <text class="elabel" x="763.0" y="1853.0">synthesized answer</text>
   <rect class="box" x="44" y="146.0" width="206" height="135.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
   <text class="btitle" x="56" y="173.0">Broaden query for</text>

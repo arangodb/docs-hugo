@@ -1,29 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 1100" width="940" height="1100" role="img" aria-labelledby="custom-retriever-standard-run-t custom-retriever-standard-run-d" font-family="Urbanist, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
   <title id="custom-retriever-standard-run-t">Custom Retriever standard run</title>
   <desc id="custom-retriever-standard-run-d">A query with query_type CUSTOM goes through an optional cache check, partition routing against the AutoGraph corpus graph, and loading of tool configs from the Tools collection. Every requested tool then runs in parallel: custom_retriever tools use the three-stage pipeline, local, global and unified tools call the built-in retriever. Results are merged with citations renumbered, synthesized by the LLM into an answer, and optionally saved to the cache. A cache hit returns the cached answer directly.</desc>
-  <defs><marker id="custom-retriever-standard-run-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4f6d8b"/></marker></defs>
+  <defs><marker id="custom-retriever-standard-run-arrow" viewBox="0 0 10 10" refX="0.46" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4f6d8b"/></marker></defs>
   <rect x="0" y="0" width="940" height="1100" fill="#ffffff"/>
   <rect x="130" y="504" width="700" height="170" rx="12" fill="#f4faf4" stroke="#cfe3d3" stroke-width="1.5"/>
   <text x="148" y="528" font-size="13.5" font-weight="700" fill="#044926">Run every requested tool in parallel</text>
-  <polyline points="300,116 300,156" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
-  <polyline points="300,222 300,262" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <polyline points="300,116 300,145.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <polyline points="300,222 300,251.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
   <text x="309" y="246" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">no hit</text>
-  <polyline points="430,310 560,310" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <polyline points="430,310 549.12,310" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
   <text x="495" y="303" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">read</text>
-  <polyline points="300,358 300,398" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <polyline points="300,358 300,387.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
   <text x="309" y="382" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">partition_ids</text>
-  <polyline points="430,431 560,431" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <polyline points="430,431 549.12,431" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
   <text x="495" y="424" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">read</text>
-  <polyline points="300,464 300,504" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <polyline points="300,464 300,493.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
   <text x="309" y="488" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">route each tool by tool_type</text>
-  <polyline points="300,674 300,714" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <polyline points="300,674 300,703.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
   <text x="309" y="698" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">result text + citation map per tool</text>
-  <polyline points="300,825 300,865" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
-  <polyline points="300,946 300,986" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <polyline points="300,825 300,854.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <polyline points="300,946 300,975.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-standard-run-arrow)"/>
   <text x="309" y="970" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">LLM response</text>
-  <polyline points="430,1026.5 560,1026.5" fill="none" stroke="#4f6d8b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <polyline points="430,1026.5 549.12,1026.5" fill="none" stroke="#4f6d8b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#custom-retriever-standard-run-arrow)"/>
   <text x="495" y="1019.5" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">store</text>
-  <polyline points="170,189 110,189 110,1026.5 170,1026.5" fill="none" stroke="#4f6d8b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#custom-retriever-standard-run-arrow)"/>
+  <polyline points="170,189 110,189 110,1026.5 159.12,1026.5" fill="none" stroke="#4f6d8b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#custom-retriever-standard-run-arrow)"/>
   <text x="102" y="600" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" transform="rotate(-90 102 600)">cache hit → return the cached answer</text>
   <rect x="170" y="20" width="260" height="96" rx="22" fill="#044926" stroke="#044926" stroke-width="1.6"/>
   <text x="184" y="42" font-size="13" font-weight="700" fill="#ffffff">Query request</text>

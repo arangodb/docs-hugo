@@ -14,7 +14,7 @@
     .lbg-frame { fill: #f8fafc; }
   </style>
   <defs>
-    <marker id="ls-arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+    <marker id="ls-arrow" markerWidth="10" markerHeight="8" refX="0.4" refY="4" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M0,0 L10,4 L0,8 z" fill="#64748b"/>
     </marker>
   </defs>
@@ -27,66 +27,66 @@
   <text class="ftitle" x="450.0" y="1434.0" text-anchor="middle">3. Local Graph Context Assembly</text>
   <rect class="box" x="47.0" y="20" width="200" height="40" rx="20" fill="#dbeafe" stroke="#1d4ed8"/>
   <text class="btitle" x="147.0" y="45" text-anchor="middle">Local Query (text)</text>
-  <path class="edge" d="M147.0,60.0 L147.0,242.5" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M147.0,60.0 L147,232.5" marker-end="url(#ls-arrow)"/>
   <text class="elabel" x="157.0" y="82.0">user input text</text>
-  <path class="edge" d="M250.0,283.0 L290.5,283.0 Q298.5,283.0 298.5,275.0 L298.5,213.5 Q298.5,205.5 306.5,205.5 L346.0,205.5" marker-end="url(#ls-arrow)"/>
-  <path class="edge" d="M250.0,283.0 L290.5,283.0 Q298.5,283.0 298.5,291.0 L298.5,352.5 Q298.5,360.5 306.5,360.5 L346.0,360.5" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M250.0,283.0 L290.5,283.0 Q298.5,283.0 298.5,275.0 L298.5,213.5 Q298.5,205.5 306.5,205.5 L336,205.5" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M250.0,283.0 L290.5,283.0 Q298.5,283.0 298.5,291.0 L298.5,352.5 Q298.5,360.5 306.5,360.5 L336,360.5" marker-end="url(#ls-arrow)"/>
   <rect class="lbg-frame" x="275.2" y="235.2" width="46.6" height="18" rx="3"/>
   <text class="elabel" x="298.5" y="248.2" text-anchor="middle">encode</text>
   <rect class="lbg-frame" x="275.2" y="312.8" width="46.6" height="18" rx="3"/>
   <text class="elabel" x="298.5" y="325.8" text-anchor="middle">encode</text>
-  <path class="edge" d="M553.0,205.5 L593.5,205.5 Q601.5,205.5 601.5,213.5 L601.5,275.0 Q601.5,283.0 609.5,283.0 L649.0,283.0" marker-end="url(#ls-arrow)"/>
-  <path class="edge" d="M553.0,360.5 L593.5,360.5 Q601.5,360.5 601.5,352.5 L601.5,291.0 Q601.5,283.0 609.5,283.0 L649.0,283.0" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M553.0,205.5 L593.5,205.5 Q601.5,205.5 601.5,213.5 L601.5,275.0 Q601.5,283.0 609.5,283.0 L639,283" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M553.0,360.5 L593.5,360.5 Q601.5,360.5 601.5,352.5 L601.5,291.0 Q601.5,283.0 609.5,283.0 L639,283" marker-end="url(#ls-arrow)"/>
   <rect class="lbg-frame" x="553.8" y="235.2" width="95.4" height="18" rx="3"/>
   <text class="elabel" x="601.5" y="248.2" text-anchor="middle">lexical scores</text>
   <rect class="lbg-frame" x="550.8" y="312.8" width="101.5" height="18" rx="3"/>
   <text class="elabel" x="601.5" y="325.8" text-anchor="middle">semantic scores</text>
-  <path class="edge" d="M753.0,352.0 L753.0,444.0 Q753.0,452.0 745.0,452.0 L155.0,452.0 Q147.0,452.0 147.0,460.0 L147.0,483.0" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M753.0,352.0 L753.0,444.0 Q753.0,452.0 745.0,452.0 L155.0,452.0 Q147.0,452.0 147.0,460.0 L147,473" marker-end="url(#ls-arrow)"/>
   <rect class="lbg-frame" x="411.4" y="443.0" width="77.1" height="18" rx="3"/>
   <text class="elabel" x="450.0" y="456.0" text-anchor="middle">top-K fused</text>
-  <path class="edge" d="M250.0,543.0 L649.0,543.0" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M250.0,543.0 L639,543" marker-end="url(#ls-arrow)"/>
   <rect class="lbg-frame" x="393.1" y="534.0" width="113.7" height="18" rx="3"/>
   <text class="elabel" x="450.0" y="547.0" text-anchor="middle">anchors available</text>
-  <path class="edge" d="M147.0,602.0 L147.0,636.5 Q147.0,644.5 155.0,644.5 L346.0,644.5" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M147.0,602.0 L147.0,636.5 Q147.0,644.5 155.0,644.5 L336,644.5" marker-end="url(#ls-arrow)"/>
   <rect class="lbg-frame" x="207.1" y="635.5" width="119.8" height="18" rx="3"/>
   <text class="elabel" x="267.0" y="648.5" text-anchor="middle">no anchors / error</text>
-  <path class="edge" d="M553.0,644.5 L692.0,644.5 Q700.0,644.5 700.0,636.5 L700.0,603.0" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M553.0,644.5 L692.0,644.5 Q700.0,644.5 700.0,636.5 L700,613" marker-end="url(#ls-arrow)"/>
   <path class="edge" d="M806.0,602.0 L806.0,846.0"/>
   <path class="edge" d="M138.0,846.0 L806.0,846.0"/>
-  <path class="edge" d="M138.0,846.0 L138.0,893.0" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M138.0,846.0 L138,883" marker-end="url(#ls-arrow)"/>
   <rect class="lbg-frame" x="96.4" y="861.0" width="83.2" height="18" rx="3"/>
   <text class="elabel" x="138.0" y="874.0" text-anchor="middle">MENTIONED_IN</text>
   <path class="edge" d="M138.0,1082.0 L138.0,1130.0"/>
   <rect class="lbg-frame" x="93.3" y="1097.0" width="89.3" height="18" rx="3"/>
   <text class="elabel" x="138.0" y="1110.0" text-anchor="middle">attach chunks</text>
-  <path class="edge" d="M346.0,846.0 L346.0,893.0" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M346.0,846.0 L346,883" marker-end="url(#ls-arrow)"/>
   <rect class="lbg-frame" x="304.4" y="861.0" width="83.2" height="18" rx="3"/>
   <text class="elabel" x="346.0" y="874.0" text-anchor="middle">IN_COMMUNITY</text>
   <path class="edge" d="M346.0,1082.0 L346.0,1130.0"/>
   <rect class="lbg-frame" x="292.2" y="1097.0" width="107.6" height="18" rx="3"/>
   <text class="elabel" x="346.0" y="1110.0" text-anchor="middle">attach summaries</text>
-  <path class="edge" d="M554.0,846.0 L554.0,893.0" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M554.0,846.0 L554,883" marker-end="url(#ls-arrow)"/>
   <rect class="lbg-frame" x="494.1" y="861.0" width="119.8" height="18" rx="3"/>
   <text class="elabel" x="554.0" y="874.0" text-anchor="middle">RELATION → outside</text>
   <path class="edge" d="M554.0,1082.0 L554.0,1130.0"/>
   <rect class="lbg-frame" x="506.3" y="1097.0" width="95.4" height="18" rx="3"/>
   <text class="elabel" x="554.0" y="1110.0" text-anchor="middle">attach outside</text>
-  <path class="edge" d="M762.0,846.0 L762.0,893.0" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M762.0,846.0 L762,883" marker-end="url(#ls-arrow)"/>
   <rect class="lbg-frame" x="705.1" y="861.0" width="113.7" height="18" rx="3"/>
   <text class="elabel" x="762.0" y="874.0" text-anchor="middle">RELATION → inside</text>
   <path class="edge" d="M762.0,1082.0 L762.0,1130.0"/>
   <rect class="lbg-frame" x="717.4" y="1097.0" width="89.3" height="18" rx="3"/>
   <text class="elabel" x="762.0" y="1110.0" text-anchor="middle">attach inside</text>
   <path class="edge" d="M138.0,1130.0 L762.0,1130.0"/>
-  <path class="edge" d="M450.0,1130.0 L450.0,1161.0" marker-end="url(#ls-arrow)"/>
-  <path class="edge" d="M450.0,1322.0 L450.0,1368.0 Q450.0,1376.0 442.0,1376.0 L155.0,1376.0 Q147.0,1376.0 147.0,1384.0 L147.0,1455.0" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M450.0,1130.0 L450,1151" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M450.0,1322.0 L450.0,1368.0 Q450.0,1376.0 442.0,1376.0 L155.0,1376.0 Q147.0,1376.0 147.0,1384.0 L147,1445" marker-end="url(#ls-arrow)"/>
   <rect class="lbg-page" x="263.0" y="1367.0" width="71.0" height="18" rx="3"/>
   <text class="elabel" x="298.5" y="1380.0" text-anchor="middle">all chunks</text>
-  <path class="edge" d="M250.0,1542.5 L346.0,1542.5" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M250.0,1542.5 L336,1542.5" marker-end="url(#ls-arrow)"/>
   <text class="elabel" x="298.5" y="1534.5" text-anchor="middle">unique chunks</text>
-  <path class="edge" d="M553.0,1542.5 L649.0,1542.5" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M553.0,1542.5 L639,1542.5" marker-end="url(#ls-arrow)"/>
   <text class="elabel" x="601.5" y="1534.5" text-anchor="middle">citations</text>
-  <path class="edge" d="M753.0,1629.0 L753.0,1653.0 Q753.0,1661.0 745.0,1661.0 L155.0,1661.0 Q147.0,1661.0 147.0,1669.0 L147.0,1692.0" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M753.0,1629.0 L753.0,1653.0 Q753.0,1661.0 745.0,1661.0 L155.0,1661.0 Q147.0,1661.0 147.0,1669.0 L147,1682" marker-end="url(#ls-arrow)"/>
   <rect class="lbg-frame" x="405.4" y="1652.0" width="89.3" height="18" rx="3"/>
   <text class="elabel" x="450.0" y="1665.0" text-anchor="middle">final context</text>
   <rect class="box" x="44" y="243.5" width="206" height="79.0" rx="8" fill="#dcfce7" stroke="#15803d"/>

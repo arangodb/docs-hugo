@@ -1,34 +1,34 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 1270" width="940" height="1270" role="img" aria-labelledby="custom-retriever-deep-search-t custom-retriever-deep-search-d" font-family="Urbanist, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
   <title id="custom-retriever-deep-search-t">Custom Deep Search</title>
   <desc id="custom-retriever-deep-search-d">The tool list is resolved, global context is read from community reports, the LLM creates a multi-step plan and matches tools in two passes. Each step fills its query template from earlier results, runs the matched tools and runs a completion check, looping to the next step until done. The step results are then synthesized into the answer. When global context is empty, tools are matched directly, run in parallel, summarized and synthesized.</desc>
-  <defs><marker id="custom-retriever-deep-search-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4f6d8b"/></marker></defs>
+  <defs><marker id="custom-retriever-deep-search-arrow" viewBox="0 0 10 10" refX="0.46" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4f6d8b"/></marker></defs>
   <rect x="0" y="0" width="940" height="1270" fill="#ffffff"/>
   <rect x="60" y="610" width="400" height="393" rx="12" fill="#f4faf4" stroke="#cfe3d3" stroke-width="1.5"/>
   <text x="78" y="634" font-size="13.5" font-weight="700" fill="#044926">4. Execute the steps in order</text>
-  <polyline points="250,101 250,141" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
-  <polyline points="250,222 250,262" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
+  <polyline points="250,101 250,130.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
+  <polyline points="250,222 250,251.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
   <text x="259" y="246" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">tool ids</text>
-  <polyline points="250,328 250,368" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
+  <polyline points="250,328 250,357.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
   <text x="259" y="352" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">context found</text>
-  <polyline points="400,295 710,295 710,368" fill="none" stroke="#4f6d8b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#custom-retriever-deep-search-arrow)"/>
+  <polyline points="400,295 710,295 710,357.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#custom-retriever-deep-search-arrow)"/>
   <text x="555" y="289" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">empty / no communities</text>
-  <polyline points="250,449 250,489" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
-  <polyline points="250,570 250,610" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
+  <polyline points="250,449 250,478.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
+  <polyline points="250,570 250,599.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
   <text x="259" y="594" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">matched tool ids</text>
-  <polyline points="250,731 250,771" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
-  <polyline points="250,852 250,892" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
+  <polyline points="250,731 250,760.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
+  <polyline points="250,852 250,881.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
   <text x="259" y="876" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">step result + citations</text>
-  <polyline points="400,932.5 432,932.5 432,690.5 400,690.5" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
+  <polyline points="400,932.5 432,932.5 432,690.5 410.88,690.5" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
   <text x="444" y="811" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" transform="rotate(-90 444 811)">next step</text>
-  <polyline points="250,1003 250,1043" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
+  <polyline points="250,1003 250,1032.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
   <text x="259" y="1027" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">all step results</text>
-  <polyline points="250,1124 250,1164" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
+  <polyline points="250,1124 250,1153.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
   <text x="259" y="1148" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">final answer</text>
-  <polyline points="710,434 710,489" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
+  <polyline points="710,434 710,478.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
   <text x="719" y="465.5" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">tool ids</text>
-  <polyline points="710,540 710,650" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
+  <polyline points="710,540 710,639.12" fill="none" stroke="#4f6d8b" stroke-width="1.6" marker-end="url(#custom-retriever-deep-search-arrow)"/>
   <text x="719" y="599" font-size="11" font-weight="600" fill="#044926" text-anchor="start" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">results</text>
-  <polyline points="710,716 710,1197 400,1197" fill="none" stroke="#4f6d8b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#custom-retriever-deep-search-arrow)"/>
+  <polyline points="710,716 710,1197 410.88,1197" fill="none" stroke="#4f6d8b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#custom-retriever-deep-search-arrow)"/>
   <text x="702" y="955" font-size="11" font-weight="600" fill="#044926" text-anchor="middle" stroke="#ffffff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" transform="rotate(-90 702 955)">direct path answer</text>
   <rect x="100" y="20" width="300" height="81" rx="22" fill="#044926" stroke="#044926" stroke-width="1.6"/>
   <text x="114" y="42" font-size="13" font-weight="700" fill="#ffffff">Query request</text>
