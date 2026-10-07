@@ -115,6 +115,9 @@ type ExampleResponse struct {
 	Output  string         `json:"output"`
 	Error   string         `json:"error"`
 	Options ExampleOptions `json:"options"`
+	// No server for the requested version was used during generation, so the
+	// example didn't run and Output only contains a notice (see service.go)
+	NoServer bool `json:"noServer,omitempty"`
 }
 
 func NewExampleResponse(input, output string, options ExampleOptions) (res *ExampleResponse) {
