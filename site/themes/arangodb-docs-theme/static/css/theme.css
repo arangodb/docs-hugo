@@ -2310,6 +2310,8 @@ nav.pagination .next {
 
 [data-zoomable] {
     cursor: zoom-in;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 [data-zoomable]:focus-visible {
