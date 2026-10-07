@@ -347,6 +347,10 @@ commands:
           command: |
            git clone git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
            cd docs-hugo/
+           # Use an email linked to a GitHub account so the CLA bot can identify
+           # the merge and generated-files commits
+           git config user.name "CircleCI Job"
+           git config user.email "7819991+Simran-B@users.noreply.github.com"
            git fetch --all
            git pull --all
            git merge --no-edit -X theirs origin/main
@@ -371,8 +375,6 @@ commands:
               fi
 
               cd /home/circleci/project/docs-hugo/site
-              git config user.email "simran@arango.ai"
-              git config user.name "CircleCI Job"
               git add data/ content/
               git commit --allow-empty -m "[skip ci] Automatic commit of generated files from CircleCI"
 
