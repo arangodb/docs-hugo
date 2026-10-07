@@ -2353,10 +2353,12 @@ pre.mermaid > svg {
     margin: 0;
     /* Don't shrink SVG to the size of the diagram, avoiding clipping */
     max-width: none !important;
-}
-
-pre.mermaid > svg .nodeLabel {
+    /* Undo Bootstrap */
     word-break: normal;
     overflow-wrap: break-word;
+}
+
+pre.mermaid > svg .label {
     font-weight: normal;
+    text-shadow: none;
 }
