@@ -52,7 +52,9 @@ thing:
 | Deploy the service | **Start build** deploys it for you | `project.autograph.deploy()` |
 | Build the Corpus Graph | **Build Corpus Graph** | `project.autograph.corpus_build()` |
 | Add documents to a built graph | **Update Corpus Graph** | `project.autograph.corpus_build(incremental=True)` |
-| Generate strategies | **Generate strategies**, with the **Complexity** slider | `project.autograph.strategize()` |
+| Generate strategies | **Generate strategies** | `project.autograph.strategize()` |
+| Set the GraphRAG ↔ VectorRAG mix | **Complexity** slider | `strategize(complexity=...)` |
+| Extract entities from images | **Extract images from documents** | `strategize(extract_images_default=True)` |
 | Review strategies | **Review strategies** step | `project.autograph.strategies()` (read-only) |
 | Build the Knowledge Graph | **Build Knowledge Graph** | `project.autograph.orchestrate()` |
 | Run the whole ingestion | — | `project.autograph.ingest()` |
@@ -62,7 +64,11 @@ The mapping is not one to one. The web interface folds several steps into a
 single button, and the SDK groups operations into namespaces on a client. In the
 other direction, `ingest()` runs the corpus build, the strategizer, and the
 Knowledge Graph import in one call, which the web interface spreads over two
-wizards. The SDK reads the stored strategies but cannot edit them.
+wizards. The SDK reads the stored strategies but cannot edit them. Image
+extraction and `max_parallel_clusters`, which sets how many clusters the
+strategizer analyzes at once, are only on `strategize()`, not on `ingest()`. The
+web interface's **Parallel builds** setting for the import has no SDK
+equivalent yet.
 
 ## How it relates to the rest of the platform
 
