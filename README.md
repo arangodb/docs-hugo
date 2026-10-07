@@ -276,8 +276,12 @@ The toolchain is configured with environment variables:
   changed or new examples, and to show the saved output for all other pages,
   or `all` to run all examples. The default is `changed` for local builds and
   `all` in CI. `OVERRIDE` implies `all`.
-- `OVERRIDE`: force saving the output of the examples whose names match these
-  comma-separated regular expressions, even if the example code didn't change.
+- `OVERRIDE`: only save the output of the examples that match these
+  comma-separated regular expressions, whether the example code changed or not.
+  They are matched against the example name (e.g. `HttpGharialCreate`) and the
+  name of the cache entry (e.g. `HttpGharialCreate_single`). The output of other
+  new and changed examples isn't saved. A regular expression that matches no
+  example is reported as a warning.
   Without it, only the output of new examples and of examples whose code changed
   is saved to `site/data/<version>/cache.json`, regardless of the scope (see
   [Saved example output and previews](CIRCLECI.md#saved-example-output-and-previews)).

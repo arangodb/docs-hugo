@@ -154,6 +154,12 @@ func PageDoneHandler(w http.ResponseWriter, r *http.Request) {
 // the report (errors while writing are reported)
 func FlushCacheHandler(w http.ResponseWriter, r *http.Request) {
 	FlushCache()
+	// End of the run: an override that matched nothing saved nothing, e.g. a
+	// misspelled example name
+	for _, pattern := range models.UnmatchedOverrides() {
+		models.Logger.Printf("[OVERRIDE] [WARN] %s matched no example, no output was saved for it", pattern)
+		models.Logger.Issue("warning", "Examples", "", "Override", "", "`"+pattern+"` matched no example, no output was saved for it")
+	}
 	w.Write([]byte("{}"))
 }
 

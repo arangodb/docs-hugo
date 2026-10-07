@@ -84,9 +84,9 @@ are indicated, the workflow starts without approval and without compile jobs.
 - `scope=all` or `scope=changed`: whether to run all examples (the default) or
   only the examples of pages with changed or new examples
   (see `EXAMPLES_SCOPE` in the [README](README.md)).
-- `override=<regexes>`: save the output of the examples whose names match the
-  comma-separated regular expressions to the cache even if their code didn't
-  change, e.g. `override=^aql,RestVersion` (see [Cache override](#cache-override)).
+- `override=<regexes>`: only save the output of the examples whose names match
+  the comma-separated regular expressions, whether their code changed or not,
+  e.g. `override=^aql,RestVersion` (see [Cache override](#cache-override)).
   `override=.*` refreshes the output of all examples.
 - `generators=<names>`: the generators to run, comma-separated, instead of
   `examples`, e.g. `generators=options,optimizer` to update the startup option
@@ -103,8 +103,9 @@ are listed in the details of the `generate-summary` check.
 ### Saved example output and previews
 
 The `generate` workflow runs the examples (all of them by default), but only
-saves the output of examples whose code changed, of new examples, and of the
-examples that match `override` to `site/data/<version>/cache.json`. The output
+saves the output of examples whose code changed and of new examples to
+`site/data/<version>/cache.json`. With `override`, it only saves the output of
+the matching examples instead (see [Cache override](#cache-override)). The output
 of other examples stays as it is, even if the server now returns something
 different. This keeps the diffs small, as many examples contain values that
 change with every run (document keys and revisions, IDs, timestamps, timings).
@@ -171,14 +172,22 @@ You can override the cache of an example with the `override` argument of the
 `/generate` and `/generate-commit` commands, or the `override` CircleCI
 parameter in the `generate` workflow.
 
-The override parameter is a comma-separated string of regexes.
+The override parameter is a comma-separated string of regexes. The output of an
+example is saved if one of them matches the example name (e.g.
+`HttpGharialCreate`) or the name of its cache entry (e.g.
+`HttpGharialCreate_single`).
 
-The comma will be replaced by `|` and creates an `OR` of all the regexes in the
-`override` parameter.
+Only the output of the matching examples is saved, also if other examples are
+new or their code changed. This lets you update specific examples and leave
+other changes for later. To save the output of new and changed examples, too,
+run the workflow without `override`, or include these examples in it.
+
+A regex that matches no example is reported as a warning, as nothing is saved
+for it (e.g. because of a typo).
 
 The example below overrides all examples having `http` or starting with `aql` in
 the example name. You can also specify the name of the example to override the
-cache for, i.e. `AqlDateTimeToLocal_3`. 
+cache for, i.e. `AqlDateTimeToLocal_3`.
 
 Note that the override is valid for all versions that are specified using the
 `arangodb` parameters. You can override the example output for a single version
