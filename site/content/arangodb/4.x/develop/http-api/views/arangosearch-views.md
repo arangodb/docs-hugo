@@ -2996,6 +2996,38 @@ paths:
                     description: |
                       A descriptive error message.
                     type: string
+        '403':
+          description: |
+            The `view-name` path parameter is a numeric View identifier
+            instead of a View name.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
             A View called `view-name` could not be found.
@@ -3035,22 +3067,6 @@ paths:
 
 ```curl
 ---
-description: |-
-  Using an identifier:
-name: RestViewDeleteViewIdentifierArangoSearch
----
-var view = db._createView("productsView", "arangosearch");
-
-var url = "/_api/view/"+ view._id;
-var response = logCurlRequest('DELETE', url);
-assert(response.code === 200);
-logJsonResponse(response);
-```
-
-```curl
----
-description: |-
-  Using a name:
 name: RestViewDeleteViewNameArangoSearch
 ---
 var view = db._createView("productsView", "arangosearch");

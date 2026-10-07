@@ -64,8 +64,67 @@ Commands you can use in GitHub comments on PRs:
 - `/commit`: to commit the previously generated examples to the PR
 - `/generate-commit`: to build and commit the examples in one go
 
-These commands work only if you indicate the upstream PRs or a nightly
-image in the PR description, as they are required for the compile step.
+These commands work only if you indicate the upstream PRs or images in the PR
+description (see [Upstream references](#upstream-references)). Use images with a
+tag, like `arangodb/core-preview:4.0-nightly` or `arangodb/enterprise:3.12.12`:
+the source code for the `metrics`, `error-codes`, and `exit-codes` generators is
+cloned from the `arangodb/arangodb` branch that the tag indicates. Anything after
+the first `-` and after the third version number is removed (`4.0-nightly` → `4.0`,
+`devel-nightly` → `devel`, `3.12.5.2` → `3.12.5`), and the result needs to exist as
+a branch or tag in `arangodb/arangodb`.
+
+Only members of the `arangodb` GitHub organization can use these commands.
+
+If upstream PRs are indicated, ArangoDB is compiled, which takes a while and is
+costly, so the workflow needs to be approved in CircleCI first. If only images
+are indicated, the workflow starts without approval and without compile jobs.
+
+`/generate` and `/generate-commit` accept optional arguments, separated by spaces:
+
+- `scope=all` or `scope=changed`: whether to run all examples (the default) or
+  only the examples of pages with changed or new examples
+  (see `EXAMPLES_SCOPE` in the [README](README.md)).
+- `override=<regexes>`: save the output of the examples whose names match the
+  comma-separated regular expressions to the cache even if their code didn't
+  change, e.g. `override=^aql,RestVersion` (see [Cache override](#cache-override)).
+  `override=.*` refreshes the output of all examples.
+- `generators=<names>`: the generators to run, comma-separated, instead of
+  `examples`, e.g. `generators=options,optimizer` to update the startup option
+  and optimizer rule data. Available: `examples`, `options`, `optimizer`,
+  `metrics`, `error-codes`, `exit-codes`, `oasisctl`.
+
+For example: `/generate-commit scope=changed` or
+`/generate-commit generators=examples,options override=RestVersion`.
+
+The bot reacts to the command comment with 🚀 when it triggered the workflow.
+Invalid arguments are reported in a comment instead. The effective settings
+are listed in the details of the `generate-summary` check.
+
+### Saved example output and previews
+
+The `generate` workflow runs the examples (all of them by default), but only
+saves the output of examples whose code changed, of new examples, and of the
+examples that match `override` to `site/data/<version>/cache.json`. The output
+of other examples stays as it is, even if the server now returns something
+different. This keeps the diffs small, as many examples contain values that
+change with every run (document keys and revisions, IDs, timestamps, timings).
+Releases are different: the [release workflow](#release-workflow-for-arangodb-releases) empties the
+cache of the released version first, so it saves the output of all examples.
+
+- `/generate`: the deploy preview is built from the live responses, so all
+  examples (of the versions with a server) show the current server output. The
+  output is stored as artifacts but not committed.
+- `/commit`: commits the cache of the last `/generate` run, which only contains
+  the changes described above. `/generate` followed by `/commit` is the same as
+  `/generate-commit`.
+- The commit doesn't trigger a new build (`[skip ci]`), so the preview keeps
+  showing all-fresh output. The next push to the PR triggers a regular build
+  from the cache, and the preview then shows the committed output: new output
+  for changed examples, the previous output for all others. The published
+  documentation is built the same way.
+
+To refresh the saved output of examples whose code didn't change, for example,
+because the server behavior changed, use `override`.
 
 ### `/generate`
 
@@ -79,8 +138,10 @@ arguments are invoked:
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
 | string | `arangodb-4_x`  | [Upstream reference](#upstream-references) for 4.x  |
-| string | `generators` | `examples` |
+| string | `generators` | `examples` (or the `generators` argument) |
 | string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
+| string | `examples-scope` | The `scope` argument, empty by default |
+| string | `override` | The `override` argument, empty by default |
 
 ### `/commit`
 
@@ -98,14 +159,17 @@ arguments are invoked:
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
 | string | `arangodb-4_x`  | [Upstream reference](#upstream-references) for 4.x  |
-| string | `generators` | `examples` |
+| string | `generators` | `examples` (or the `generators` argument) |
 | string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
+| string | `examples-scope` | The `scope` argument, empty by default |
+| string | `override` | The `override` argument, empty by default |
 | boolean | `commit-generated` | `true` |
 
-### `cache override`
+### Cache override
 
-You can override the cache of an example with the `override` CircleCI parameter
-in the `generate` workflow.
+You can override the cache of an example with the `override` argument of the
+`/generate` and `/generate-commit` commands, or the `override` CircleCI
+parameter in the `generate` workflow.
 
 The override parameter is a comma-separated string of regexes.
 
@@ -140,6 +204,7 @@ Documentation pull requests specify upstream references like so:
 - 3.10: 
 - 3.11: https://github.com/arangodb/arangodb/pull/12345
 - 3.12: arangodb/enterprise-preview:devel-nightly
+- 4.x: arangodb/core-preview:4.0-nightly
 ```
 
 The above example indicates that ArangoDB versions 3.11 and 3.12 contain changes
@@ -148,14 +213,45 @@ behavior changes of _arangod_ that will be visible in documentation examples.
 
 For 3.11, a link to a PR in the `arangodb/arangodb` repository is given. It is
 used by the GitHub integration to determine the feature branch to compile and
-use for generating examples. Do not specify a link when manually triggering a
-pipeline in CircleCI but the **branch name** (like `feature/new-aql-function`)!
+use for generating examples. For a branch without a PR, specify the branch name
+(like `feature/new-aql-function`) or a link to the branch
+(`https://github.com/arangodb/arangodb/tree/feature/new-aql-function`) instead.
+Do not specify a link when manually triggering a pipeline in CircleCI but the
+**branch name**!
+
+Compiled branches are cached as Docker images on Docker Hub, tagged with the
+docs version and the commits that were compiled:
+`arangodb/docs-hugo:<version>-<arangodb commit>-<enterprise commit>`
+(the first 9 characters of the commit hashes). The enterprise commit is the one
+of the branch with the same name in the `arangodb/enterprise` repository, or of
+the default branch (`devel`, or `4.0` for 4.x) if there is no such branch. Before
+compiling, CI checks whether this image exists and uses it instead, so reruns
+and later `/generate` commands for the same commits don't compile again. Only
+compiling uploads images. New commits in either repository lead to a new image.
 
 For 3.12, an ArangoDB Enterprise Edition image hosted on
 [Docker Hub](https://hub.docker.com/) is specified. Using container images has the
 advantage that the compilation of ArangoDB can be skipped, making the example
 generation faster. Of course, this requires that an image containing relevant
 changes to ArangoDB exists.
+
+Images can also come from other registries if they can be pulled without
+authentication, for example, from public ECR or GCR:
+`public.ecr.aws/<alias>/<repository>:<tag>` or
+`gcr.io/gcr-for-testing/arangodb/core-preview:4.0-nightly`. Every reference with
+a tag is treated as an image (branch names can't contain colons). Docker Hub is
+used if no registry is specified.
+
+For 4.x, the server and the client tools are in separate images
+(`arangodb/core-preview:TAG` and `arangodb/client-tools-preview:TAG`, or
+`arangodb/core:TAG` and `arangodb/client-tools:TAG`). Only specify the server
+image. The matching client tools image is derived and pulled automatically:
+if the last part of the repository name is `core` or starts with `core-`, it is
+replaced by `client-tools` (keeping the rest, the registry, and the tag), e.g.
+`gcr.io/gcr-for-testing/arangodb/client-tools-preview:4.0-nightly` for
+`gcr.io/gcr-for-testing/arangodb/core-preview:4.0-nightly`. This requires a tag:
+the client tools image of a server image pinned by digest (`core@sha256:...`)
+can't be derived, as its digest differs, so the toolchain rejects such references.
 
 ## Release workflow for ArangoDB releases
 
@@ -176,8 +272,19 @@ steps below.
 | string | `workflow` | `release` |
 | string | `release-type` | `arangodb` |
 | string | `docs-version` | `3.11` (the docs version folder) |
-| string | `arangodb-branch` | `3.11.4` (the arangodb/arangodb branch to compile) |
+| string | `arangodb-branch` | `arangodb/enterprise:3.11.4` (the release image), or `3.11.4` (the arangodb/arangodb branch to compile) |
 | string | `arangodb-version` | `3.11.4` (updates the `versions.yaml` file) |
+
+If the release images are already published, specify the image (e.g.
+`arangodb/enterprise:3.12.13`, or `arangodb/core:4.0.1` for 4.x) to skip compiling
+ArangoDB, which makes the workflow much faster. Specify the branch to compile
+ArangoDB instead, for example, to test the workflow before a release or to prepare
+the documentation before the images are published.
+
+The release workflow runs all generators for the version and regenerates all of
+its data from scratch: it empties `site/data/<version>/`, including the example
+cache, so that the output of all examples is saved, not only of the changed ones
+(see [Saved example output and previews](#saved-example-output-and-previews)).
 
 The ArangoDB release workflow includes the following jobs:
 - `generate` workflow (all examples are re-generated for the specified version)
@@ -208,7 +315,7 @@ Invoke Args:
 | string | `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
 | string | `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
 | string | `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
-| string | `arangodb-4_x`  | `arangodb/enterprise-preview:4.0-nightly` |
+| string | `arangodb-4_x`  | `arangodb/core-preview:4.0-nightly` |
 | string | `generators` | `metrics error-codes exit-codes optimizer options` |
 | boolean | `commit-generated` | `true` |
 | boolean | `create-pr` | `true` |
@@ -231,19 +338,44 @@ Invoke Args:
 Both workflows can be manually triggered in the CircleCI web interface
 via **Trigger Pipeline**.
 
-## Other workflows
+## Toolchain images
 
-### Create Docs Images AMD64
+The `create-docs-images-amd64` and `create-docs-images-arm64` workflows rebuild
+the Docker images of the toolchain (`arangodb/docs-hugo:site-<arch>`,
+`arangodb/docs-hugo:arangoproxy-<arch>`, `arangodb/docs-hugo:toolchain-<arch>`)
+and push them to Docker Hub.
+
+Run them after changing `toolchain/docker/Dockerfile`, for example, to update
+Hugo (`HUGO_VERSION`). Changes to the toolchain scripts and the arangoproxy code
+don't require new images, as they are used from the repository when the
+containers start. The other tools and packages of the images use the latest
+versions when the images are built, so also run the workflows regularly to get
+security updates.
+
+The workflows build from the `toolchain/docker/Dockerfile` of the branch you
+trigger them on, cloned from GitHub, so push your changes first. They overwrite
+the images that all builds use (every branch, PRs, plain builds, releases),
+however. Building from a feature branch therefore affects everyone immediately.
+Test changes locally first, then merge them into `main` and build from `main`:
+
+1. Build the images locally with the official names and test them (see the
+   [README](README.md#update-the-toolchain-dependencies)).
+2. Merge the changes to the `Dockerfile` into `main`.
+3. In CircleCI, select the `docs-hugo` project and the `main` branch.
+4. Click **Trigger Pipeline** and add the parameter below with the value
+   `create-docs-images-amd64`, then trigger another pipeline with
+   `create-docs-images-arm64`.
+5. To use the new images locally, pull them (e.g.
+   `docker pull arangodb/docs-hugo:site-amd64`), as images that exist locally
+   aren't updated automatically.
+6. Let the other docs contributors know that they need to pull the new images,
+   too. Otherwise, they keep using their older local images, which may not be
+   compatible with the content anymore (e.g. if it relies on a newer Hugo
+   version). See the [README](README.md#scheduled-and-example-generation-build) for the commands.
 
 | Parameter type | Name | Value |
 |:---------------|:-----|:------|
-| string | `workflow` | `create-docs-images-amd64` |
-
-### Create Docs Images ARM64
-
-| Parameter type | Name | Value |
-|:---------------|:-----|:------|
-| string | `workflow` | `create-docs-images-arm64` |
+| string | `workflow` | `create-docs-images-amd64` or `create-docs-images-arm64` |
 
 ## Troubleshooting
 
