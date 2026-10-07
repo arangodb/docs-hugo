@@ -57,7 +57,9 @@ echo "[INIT] Toolchain setup"
 ## container: from the shell, or else from the .env file next to the compose file
 ## (shell variables take precedence, set a variable to an empty string to clear it).
 ## Local runs write the effective settings back to that .env file
-## ($TOOLCHAIN_ENV_FILE), so they only need to be specified once.
+## ($TOOLCHAIN_ENV_FILE), so they only need to be specified once. OVERRIDE,
+## HUGO_URL, HUGO_ENV, and ENV are only used for the current run and not saved
+## (e.g. OVERRIDE=".*" would save the output of all examples in every run).
 ##
 ## - GENERATORS: space-separated list, all generators if empty
 ## - ARANGODB_BRANCH_<VERSION>: image or arangodb/arangodb branch to use for a docs
@@ -95,6 +97,7 @@ echo "[TOOLCHAIN] Settings:"
 echo "  GENERATORS=$GENERATORS"
 echo "  ARANGODB_STARTER=$ARANGODB_STARTER"
 echo "  EXAMPLES_SCOPE=$EXAMPLES_SCOPE (effective: $effective_examples_scope)"
+echo "  OVERRIDE=$OVERRIDE (not saved)"
 for version in "${DOCS_VERSIONS[@]}"; do
   suffix=$(version_var_suffix "$version")
   branch_var=ARANGODB_BRANCH_$suffix
@@ -111,6 +114,7 @@ function persist_settings() {
     echo "# Written by the toolchain (toolchain.sh) with the settings of the last run."
     echo "# Environment variables of the shell take precedence over these values."
     echo "# Set a variable to an empty string to clear it, or edit this file."
+    echo "# OVERRIDE, HUGO_URL, HUGO_ENV, and ENV aren't saved, set them in the shell for a run."
     echo "GENERATORS=\"$GENERATORS\""
     echo "ARANGODB_STARTER=\"$ARANGODB_STARTER\""
     echo "EXAMPLES_SCOPE=\"$EXAMPLES_SCOPE\""

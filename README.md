@@ -281,6 +281,7 @@ The toolchain is configured with environment variables:
   Without it, only the output of new examples and of examples whose code changed
   is saved to `site/data/<version>/cache.json`, regardless of the scope (see
   [Saved example output and previews](CIRCLECI.md#saved-example-output-and-previews)).
+  It only applies to the current run and isn't saved to the `.env` file (see below).
 
 Substitute `{VERSION}` with the docs version in uppercase and with underscores,
 like `3_12` for 3.12 and `4_X` for 4.x. There is one setting per docs version,
@@ -319,6 +320,19 @@ ARANGODB_BRANCH_3_12= docker compose up   # Bash and Fish
 ```
 
 You can also edit the `.env` file directly. It isn't committed to the repository.
+
+Exceptions are `OVERRIDE`, `HUGO_URL`, `HUGO_ENV`, and `ENV`: they only apply to
+the run you set them for and aren't saved, so that, for example, `OVERRIDE=".*"`
+doesn't save the output of all examples again in every later run. Set them in
+the shell, not in the `.env` file: each run rewrites the file with the saved
+settings only, so these variables would only take effect once. Variables that
+you `export` (Bash) or `set -x` (Fish) stay set for the rest of the shell
+session, unset them afterwards (`unset OVERRIDE` or `set -e OVERRIDE`), or set
+them for a single command:
+
+```sh
+OVERRIDE=".*" docker compose up   # Bash and Fish
+```
 
 Starting with 4.x, the server (`arangod`, without V8) and the client tools
 (including `arangosh`) are in separate images, for example,
