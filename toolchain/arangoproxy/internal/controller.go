@@ -59,15 +59,7 @@ func JSHandler(w http.ResponseWriter, r *http.Request) {
 	models.Logger.Printf("[js/CONTROLLER] Queued %s Example %s\n", request.Options.Version, request.Options.Name)
 
 	resp := JSService.Execute(request, CacheChannel)
-	response, err := json.Marshal(resp)
-	if err != nil {
-		fmt.Printf("[js/CONTROLLER] Error marshalling response: %s\n", err.Error())
-		return
-	}
-
-	models.Logger.Printf("[js/CONTROLLER] END %s Example %s\n", request.Options.Version, request.Options.Name)
-
-	w.Write(response)
+	writeExampleResponse(w, "js", request.Options, resp)
 }
 
 func CurlExampleHandler(w http.ResponseWriter, r *http.Request) {
@@ -79,16 +71,8 @@ func CurlExampleHandler(w http.ResponseWriter, r *http.Request) {
 
 	models.Logger.Printf("[curl/CONTROLLER] Queued %s Example %s\n", request.Options.Version, request.Options.Name)
 
-	resp, err := CurlService.Execute(request, CacheChannel)
-	response, err := json.Marshal(resp)
-	if err != nil {
-		models.Logger.Printf("[curl/CONTROLLER] Error marshalling response: %s\n", err.Error())
-		return
-	}
-
-	models.Logger.Printf("[curl/CONTROLLER] END %s Example %s\n", request.Options.Version, request.Options.Name)
-
-	w.Write(response)
+	resp, _ := CurlService.Execute(request, CacheChannel)
+	writeExampleResponse(w, "curl", request.Options, resp)
 }
 
 func AQLHandler(w http.ResponseWriter, r *http.Request) {
@@ -101,13 +85,18 @@ func AQLHandler(w http.ResponseWriter, r *http.Request) {
 	models.Logger.Printf("[aql/CONTROLLER] Queued %s Example %s\n", request.Options.Version, request.Options.Name)
 
 	resp := AQLService.Execute(request, CacheChannel)
+	writeExampleResponse(w, "aql", request.Options, resp)
+}
+
+// The run itself is logged by arangosh.Run ([EXEC] Running/Finished, errors
+// with the example name), only failures after it are logged here.
+func writeExampleResponse(w http.ResponseWriter, kind string, options models.ExampleOptions, resp interface{}) {
 	response, err := json.Marshal(resp)
 	if err != nil {
-		fmt.Printf("[aql/CONTROLLER] Error marshalling response: %s\n", err.Error())
+		models.Logger.Printf("[%s/CONTROLLER] [ERROR] %s Example %s: Encoding the response failed: %s", kind, options.Version, options.Name, err.Error())
+		models.Logger.Error("Examples", options.Version, options.Name, options.Position, "Encoding the response for Hugo failed: "+err.Error())
 		return
 	}
-	models.Logger.Printf("[aql/CONTROLLER] END %s Example %s\n", request.Options.Version, request.Options.Name)
-
 	w.Write(response)
 }
 
