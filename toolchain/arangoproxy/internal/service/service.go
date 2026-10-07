@@ -11,8 +11,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/format"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/arangosh"
+	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/format"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
 	"gopkg.in/yaml.v3"
 )
@@ -140,9 +140,9 @@ var arangoDBAPIVersionToIndex = map[string]int{
 }
 
 var arangoDBAPIVersionPrefix = map[int]string{
-	0: "",                          // v0: no prefix
-	1: "/_arango/v1",               // v1
-	2: "/_arango/experimental",     // experimental
+	0: "",                      // v0: no prefix
+	1: "/_arango/v1",           // v1
+	2: "/_arango/experimental", // experimental
 }
 
 // arangoDBVersionToAllowedIndices is populated from site/data/versions.yaml (allowedAPIVersions per version).
@@ -160,8 +160,8 @@ func arangoDBAllowedAPIVersionIndices(pageVersion string) []int {
 type OpenapiService struct{}
 
 var OpenapiFormatter = format.OpenapiFormatter{}
-var OpenapiGlobalMap map[string]interface{}      // key: "version_apiIndex" e.g. "3.12_0"
-var OpenapiServiceMap map[string]interface{}     // key: service name (e.g. "cypher2aql")
+var OpenapiGlobalMap map[string]interface{}  // key: "version_apiIndex" e.g. "3.12_0"
+var OpenapiServiceMap map[string]interface{} // key: service name (e.g. "cypher2aql")
 var OpenapiGlobalMapMutex sync.RWMutex
 var OpenapiServiceMapMutex sync.RWMutex
 var OpenapiPendingSpecs sync.WaitGroup
@@ -174,8 +174,8 @@ var OpenapiSpecErrorMutex sync.Mutex
 var OpenapiValidationError error
 var OpenapiValidationErrorMutex sync.Mutex
 var Versions map[string][]models.Version
-var openapiServicesConfig map[string]interface{} // service name -> baseInfo from openapi_services.yaml
-var arangoDBTagsByAPIIndex [3][]map[string]string            // tags for arangodb_0, arangodb_1, arangodb_2
+var openapiServicesConfig map[string]interface{}  // service name -> baseInfo from openapi_services.yaml
+var arangoDBTagsByAPIIndex [3][]map[string]string // tags for arangodb_0, arangodb_1, arangodb_2
 
 func loadTagsFile(path string) ([]map[string]string, error) {
 	data, err := os.ReadFile(path)
@@ -361,9 +361,9 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 		// Non-ArangoDB service: single spec per service
 		OpenapiPendingSpecs.Add(1)
 		globalOpenapiChannel <- map[string]interface{}{
-			"_target":      "service",
-			"serviceName":  serviceName,
-			"spec":         spec,
+			"_target":     "service",
+			"serviceName": serviceName,
+			"spec":        spec,
 		}
 		models.Logger.Debug("[ProcessOpenapiSpec] Received spec for service '%s': %s %s", serviceName, strings.ToUpper(method), path)
 		return
