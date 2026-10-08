@@ -1,0 +1,273 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 936 2041" width="936" height="2041" role="img" aria-labelledby="ds-title ds-desc">
+  <title id="ds-title">Deep Search architecture</title>
+  <desc id="ds-desc">A deep research query flows through four stages: global context retrieval and screening, plan generation from the global context, iterative step execution with local retrieval until a completion check reports the question as solved, and final answer synthesis. If no relevant data is found or no usable plan results, a short message is returned instead.</desc>
+  <style>
+    text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2937; }
+    .frame { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1.5; }
+    .ftitle { font-size: 15px; font-weight: 700; fill: #334155; }
+    .box { stroke-width: 2; }
+    .btitle { font-size: 13.5px; font-weight: 700; }
+    .bullet { font-size: 12.5px; }
+    .edge { fill: none; stroke: #64748b; stroke-width: 1.75; }
+    .elabel { font-size: 11px; fill: #475569; }
+    .lbg-page { fill: #ffffff; }
+    .lbg-frame { fill: #f8fafc; }
+  </style>
+  <defs>
+    <marker id="ds-arrow" markerWidth="10" markerHeight="8" refX="0.4" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,4 L0,8 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="936" height="2041" fill="#ffffff"/>
+  <rect class="frame" x="16" y="96.0" width="868" height="391.0" rx="10"/>
+  <text class="ftitle" x="450.0" y="124.0" text-anchor="middle">1. Global Context Retrieval &amp; Screening</text>
+  <rect class="frame" x="16" y="547.0" width="868" height="374.0" rx="10"/>
+  <text class="ftitle" x="450.0" y="575.0" text-anchor="middle">2. Plan Generation from Global Context</text>
+  <rect class="frame" x="16" y="981.0" width="868" height="591.0" rx="10"/>
+  <text class="ftitle" x="450.0" y="1009.0" text-anchor="middle">3. Step Execution &amp; Iterative Reasoning (LOCAL)</text>
+  <rect class="frame" x="16" y="1632.0" width="868" height="391.0" rx="10"/>
+  <text class="ftitle" x="450.0" y="1660.0" text-anchor="middle">4. Deep Research Final Answer (Direct)</text>
+  <rect class="box" x="37.0" y="20" width="220" height="40" rx="20" fill="#dbeafe" stroke="#1d4ed8"/>
+  <text class="btitle" x="147.0" y="45" text-anchor="middle">Deep Research Query (text)</text>
+  <path class="edge" d="M147.0,60.0 L147,135" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="157.0" y="82.0">user input</text>
+  <path class="edge" d="M250.0,213.5 L336,213.5" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="298.5" y="205.5" text-anchor="middle">context query</text>
+  <path class="edge" d="M553.0,213.5 L639,213.5" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="601.5" y="205.5" text-anchor="middle">broad results</text>
+  <path class="edge" d="M753.0,281.0 L753.0,305.0 Q753.0,313.0 745.0,313.0 L155.0,313.0 Q147.0,313.0 147.0,321.0 L147,334" marker-end="url(#ds-arrow)"/>
+  <rect class="lbg-frame" x="408.4" y="304.0" width="83.2" height="18" rx="3"/>
+  <text class="elabel" x="450.0" y="317.0" text-anchor="middle">context text</text>
+  <path class="edge" d="M250.0,404.0 L639,404" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="450.0" y="396.0" text-anchor="middle">no relevant data</text>
+  <path class="edge" d="M147.0,463.0 L147,586" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="157.0" y="534.0">relevant data present</text>
+  <path class="edge" d="M856.0,404.0 L904.0,404.0 Q912.0,404.0 912.0,412.0 L912.0,1932.0 Q912.0,1940.0 904.0,1940.0 L867,1940" marker-end="url(#ds-arrow)"/>
+  <g transform="rotate(-90 912.0 1172.0)">
+  <rect class="lbg-page" x="843.0" y="1163.0" width="138.1" height="18" rx="3"/>
+  <text class="elabel" x="912.0" y="1176.0" text-anchor="middle">user-friendly message</text>
+  </g>
+  <path class="edge" d="M250.0,656.0 L336,656" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="298.5" y="648.0" text-anchor="middle">instructions</text>
+  <text class="elabel" x="298.5" y="635.0" text-anchor="middle">planning</text>
+  <path class="edge" d="M553.0,656.0 L639,656" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="601.5" y="648.0" text-anchor="middle">LLM raw plan</text>
+  <path class="edge" d="M753.0,715.0 L753,768" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="763.0" y="751.0">structured steps</text>
+  <path class="edge" d="M650.0,838.0 L564,838" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="601.5" y="830.0" text-anchor="middle">available</text>
+  <text class="elabel" x="601.5" y="817.0" text-anchor="middle">steps</text>
+  <path class="edge" d="M856.0,838.0 L863.0,838.0 Q870.0,838.0 870.0,830.0 L870.0,525.0 Q870.0,517.0 862.0,517.0 L761.0,517.0 Q753.0,517.0 753.0,509.0 L753,474" marker-end="url(#ds-arrow)"/>
+  <rect class="lbg-page" x="754.8" y="508.0" width="101.5" height="18" rx="3"/>
+  <text class="elabel" x="805.5" y="521.0" text-anchor="middle">no usable steps</text>
+  <path class="edge" d="M450.0,897.0 L450.0,943.0 Q450.0,951.0 442.0,951.0 L155.0,951.0 Q147.0,951.0 147.0,959.0 L147,1020" marker-end="url(#ds-arrow)"/>
+  <rect class="lbg-page" x="256.9" y="942.0" width="83.2" height="18" rx="3"/>
+  <text class="elabel" x="298.5" y="955.0" text-anchor="middle">initial plan</text>
+  <path class="edge" d="M147.0,1166.0 L147,1219" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="157.0" y="1202.0">start execution</text>
+  <path class="edge" d="M250.0,1252.0 L290.5,1252.0 Q298.5,1252.0 298.5,1244.0 L298.5,1106.5 Q298.5,1098.5 306.5,1098.5 L639,1098.5" marker-end="url(#ds-arrow)"/>
+  <rect class="lbg-frame" x="414.4" y="1089.5" width="119.8" height="18" rx="3"/>
+  <text class="elabel" x="474.2" y="1102.5" text-anchor="middle">no executable step</text>
+  <path class="edge" d="M250.0,1297.5 L336,1297.5" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="298.5" y="1289.5" text-anchor="middle">deps satisfied</text>
+  <text class="elabel" x="298.5" y="1276.5" text-anchor="middle">found step with</text>
+  <path class="edge" d="M553.0,1297.5 L639,1297.5" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="601.5" y="1289.5" text-anchor="middle">step query</text>
+  <text class="elabel" x="601.5" y="1276.5" text-anchor="middle">concrete</text>
+  <path class="edge" d="M753.0,1365.0 L753,1418" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="763.0" y="1401.0">step result</text>
+  <path class="edge" d="M650.0,1488.5 L564,1488.5" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="601.5" y="1480.5" text-anchor="middle">update state</text>
+  <path class="edge" d="M347.0,1488.5 L261,1488.5" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="298.5" y="1480.5" text-anchor="middle">summary</text>
+  <text class="elabel" x="298.5" y="1467.5" text-anchor="middle">current</text>
+  <path class="edge" d="M147.0,1429.0 L147,1376" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="157.0" y="1401.0">decision: CONTINUE</text>
+  <path class="edge" d="M147.0,1548.0 L147,1671" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="137.0" y="1619.0" text-anchor="end">decision: SOLVED</text>
+  <path class="edge" d="M856.0,1098.5 L863.0,1098.5 Q870.0,1098.5 870.0,1106.5 L870.0,1594.0 Q870.0,1602.0 862.0,1602.0 L218.0,1602.0 Q210.0,1602.0 210.0,1610.0 L210,1671" marker-end="url(#ds-arrow)"/>
+  <rect class="lbg-page" x="474.0" y="1593.0" width="132.0" height="18" rx="3"/>
+  <text class="elabel" x="540.0" y="1606.0" text-anchor="middle">proceed to synthesis</text>
+  <path class="edge" d="M250.0,1749.5 L336,1749.5" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="298.5" y="1741.5" text-anchor="middle">step results</text>
+  <text class="elabel" x="298.5" y="1728.5" text-anchor="middle">aggregate</text>
+  <path class="edge" d="M553.0,1749.5 L639,1749.5" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="601.5" y="1741.5" text-anchor="middle">final prompt</text>
+  <path class="edge" d="M753.0,1817.0 L753,1870" marker-end="url(#ds-arrow)"/>
+  <text class="elabel" x="763.0" y="1853.0">synthesized answer</text>
+  <rect class="box" x="44" y="146.0" width="206" height="135.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="56" y="173.0">Broaden query for</text>
+  <text class="btitle" x="56" y="190.0">context</text>
+  <text class="bullet" x="56" y="213.0">•</text>
+  <text class="bullet" x="66" y="213.0">Ask for overview and</text>
+  <text class="bullet" x="66" y="229.0">background</text>
+  <text class="bullet" x="56" y="248.0">•</text>
+  <text class="bullet" x="66" y="248.0">Keep tied to original</text>
+  <text class="bullet" x="66" y="264.0">question</text>
+  <rect class="box" x="347" y="146.0" width="206" height="135.0" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <text class="btitle" x="359" y="181.5">Run GLOBAL retriever</text>
+  <text class="bullet" x="359" y="204.5">•</text>
+  <text class="bullet" x="369" y="204.5">Community-level search</text>
+  <text class="bullet" x="369" y="220.5">over graph</text>
+  <text class="bullet" x="359" y="239.5">•</text>
+  <text class="bullet" x="369" y="239.5">Aggregate high-level</text>
+  <text class="bullet" x="369" y="255.5">reports</text>
+  <rect class="box" x="650" y="146.0" width="206" height="135.0" rx="8" fill="#fce7f3" stroke="#be185d"/>
+  <text class="btitle" x="662" y="181.5">Global context text</text>
+  <text class="bullet" x="662" y="204.5">•</text>
+  <text class="bullet" x="672" y="204.5">Summarized view of</text>
+  <text class="bullet" x="672" y="220.5">relevant communities</text>
+  <text class="bullet" x="662" y="239.5">•</text>
+  <text class="bullet" x="672" y="239.5">Used as planning</text>
+  <text class="bullet" x="672" y="255.5">substrate</text>
+  <rect class="box" x="44" y="345.0" width="206" height="118.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="56" y="372.0">Screen for missing data</text>
+  <text class="bullet" x="56" y="395.0">•</text>
+  <text class="bullet" x="66" y="395.0">Check for &#x27;no relevant</text>
+  <text class="bullet" x="66" y="411.0">information&#x27; signals</text>
+  <text class="bullet" x="56" y="430.0">•</text>
+  <text class="bullet" x="66" y="430.0">Detect empty or weak</text>
+  <text class="bullet" x="66" y="446.0">context</text>
+  <rect class="box" x="650" y="345.0" width="206" height="118.0" rx="8" fill="#ccfbf1" stroke="#0f766e"/>
+  <text class="btitle" x="662" y="372.0">No relevant data path</text>
+  <text class="bullet" x="662" y="395.0">•</text>
+  <text class="bullet" x="672" y="395.0">Return short,</text>
+  <text class="bullet" x="672" y="411.0">user-friendly message</text>
+  <text class="bullet" x="662" y="430.0">•</text>
+  <text class="bullet" x="672" y="430.0">Skip planning and step</text>
+  <text class="bullet" x="672" y="446.0">execution</text>
+  <rect class="box" x="44" y="597.0" width="206" height="118.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="56" y="640.0">Build planning prompt</text>
+  <text class="bullet" x="56" y="663.0">•</text>
+  <text class="bullet" x="66" y="663.0">Insert original query</text>
+  <text class="bullet" x="56" y="682.0">•</text>
+  <text class="bullet" x="66" y="682.0">Insert global context</text>
+  <rect class="box" x="347" y="597.0" width="206" height="118.0" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <text class="btitle" x="359" y="624.0">Call planning LLM</text>
+  <text class="bullet" x="359" y="647.0">•</text>
+  <text class="bullet" x="369" y="647.0">Ask for JSON step plan</text>
+  <text class="bullet" x="359" y="666.0">•</text>
+  <text class="bullet" x="369" y="666.0">Each step has</text>
+  <text class="bullet" x="369" y="682.0">description, template,</text>
+  <text class="bullet" x="369" y="698.0">deps, expected info</text>
+  <rect class="box" x="650" y="597.0" width="206" height="118.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="662" y="640.0">Parse and validate plan</text>
+  <text class="bullet" x="662" y="663.0">•</text>
+  <text class="bullet" x="672" y="663.0">Extract steps from JSON</text>
+  <text class="bullet" x="662" y="682.0">•</text>
+  <text class="bullet" x="672" y="682.0">Normalize structure</text>
+  <rect class="box" x="347" y="779.0" width="206" height="118.0" rx="8" fill="#fce7f3" stroke="#be185d"/>
+  <text class="btitle" x="359" y="806.0">Structured step plan</text>
+  <text class="bullet" x="359" y="829.0">•</text>
+  <text class="bullet" x="369" y="829.0">Ordered steps with</text>
+  <text class="bullet" x="369" y="845.0">dependencies</text>
+  <text class="bullet" x="359" y="864.0">•</text>
+  <text class="bullet" x="369" y="864.0">Guides deep research</text>
+  <text class="bullet" x="369" y="880.0">execution</text>
+  <rect class="box" x="650" y="779.0" width="206" height="118.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="662" y="806.0">Empty or invalid plan?</text>
+  <text class="bullet" x="662" y="829.0">•</text>
+  <text class="bullet" x="672" y="829.0">If no steps or unusable</text>
+  <text class="bullet" x="672" y="845.0">plan</text>
+  <text class="bullet" x="662" y="864.0">•</text>
+  <text class="bullet" x="672" y="864.0">Treat as no relevant</text>
+  <text class="bullet" x="672" y="880.0">data</text>
+  <rect class="box" x="44" y="1031.0" width="206" height="135.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="56" y="1058.0">Initialize execution</text>
+  <text class="btitle" x="56" y="1075.0">state</text>
+  <text class="bullet" x="56" y="1098.0">•</text>
+  <text class="bullet" x="66" y="1098.0">Track pending/completed</text>
+  <text class="bullet" x="66" y="1114.0">steps</text>
+  <text class="bullet" x="56" y="1133.0">•</text>
+  <text class="bullet" x="66" y="1133.0">Store global context</text>
+  <text class="bullet" x="66" y="1149.0">and logs</text>
+  <rect class="box" x="650" y="1031.0" width="206" height="135.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="662" y="1074.5">No executable steps</text>
+  <text class="bullet" x="662" y="1097.5">•</text>
+  <text class="bullet" x="672" y="1097.5">All steps done or</text>
+  <text class="bullet" x="672" y="1113.5">blocked</text>
+  <text class="bullet" x="662" y="1132.5">•</text>
+  <text class="bullet" x="672" y="1132.5">Move to final synthesis</text>
+  <rect class="box" x="44" y="1230.0" width="206" height="135.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="56" y="1265.0">Select next executable</text>
+  <text class="btitle" x="56" y="1282.0">step</text>
+  <text class="bullet" x="56" y="1305.0">•</text>
+  <text class="bullet" x="66" y="1305.0">Pick first pending step</text>
+  <text class="bullet" x="56" y="1324.0">•</text>
+  <text class="bullet" x="66" y="1324.0">All dependencies must</text>
+  <text class="bullet" x="66" y="1340.0">be completed</text>
+  <rect class="box" x="347" y="1230.0" width="206" height="135.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="359" y="1265.5">Generate step query</text>
+  <text class="bullet" x="359" y="1288.5">•</text>
+  <text class="bullet" x="369" y="1288.5">Start from step template</text>
+  <text class="bullet" x="359" y="1307.5">•</text>
+  <text class="bullet" x="369" y="1307.5">Optionally fill</text>
+  <text class="bullet" x="369" y="1323.5">placeholders from</text>
+  <text class="bullet" x="369" y="1339.5">previous results</text>
+  <rect class="box" x="650" y="1230.0" width="206" height="135.0" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <text class="btitle" x="662" y="1257.0">Run LOCAL/semantic</text>
+  <text class="btitle" x="662" y="1274.0">retrieval</text>
+  <text class="bullet" x="662" y="1297.0">•</text>
+  <text class="bullet" x="672" y="1297.0">Execute targeted search</text>
+  <text class="bullet" x="672" y="1313.0">per step</text>
+  <text class="bullet" x="662" y="1332.0">•</text>
+  <text class="bullet" x="672" y="1332.0">Use entity-centric RAG</text>
+  <text class="bullet" x="672" y="1348.0">context</text>
+  <rect class="box" x="44" y="1429.0" width="206" height="119.0" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <text class="btitle" x="56" y="1456.5">Completion check LLM</text>
+  <text class="bullet" x="56" y="1479.5">•</text>
+  <text class="bullet" x="66" y="1479.5">Compare original query</text>
+  <text class="bullet" x="66" y="1495.5">vs gathered info</text>
+  <text class="bullet" x="56" y="1514.5">•</text>
+  <text class="bullet" x="66" y="1514.5">Return &#x27;SOLVED&#x27; or</text>
+  <text class="bullet" x="66" y="1530.5">&#x27;CONTINUE&#x27;</text>
+  <rect class="box" x="347" y="1429.0" width="206" height="119.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="359" y="1456.0">Summarize completed</text>
+  <text class="btitle" x="359" y="1473.0">results</text>
+  <text class="bullet" x="359" y="1496.0">•</text>
+  <text class="bullet" x="369" y="1496.0">Concatenate step outputs</text>
+  <text class="bullet" x="359" y="1515.0">•</text>
+  <text class="bullet" x="369" y="1515.0">Prepare for completion</text>
+  <text class="bullet" x="369" y="1531.0">check</text>
+  <rect class="box" x="650" y="1429.0" width="206" height="119.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="662" y="1464.5">Update execution state</text>
+  <text class="bullet" x="662" y="1487.5">•</text>
+  <text class="bullet" x="672" y="1487.5">Store step result and</text>
+  <text class="bullet" x="672" y="1503.5">status</text>
+  <text class="bullet" x="662" y="1522.5">•</text>
+  <text class="bullet" x="672" y="1522.5">Append to execution log</text>
+  <rect class="box" x="44" y="1682.0" width="206" height="135.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="56" y="1709.0">Format deep-research</text>
+  <text class="btitle" x="56" y="1726.0">context</text>
+  <text class="bullet" x="56" y="1749.0">•</text>
+  <text class="bullet" x="66" y="1749.0">Aggregate all step</text>
+  <text class="bullet" x="66" y="1765.0">results</text>
+  <text class="bullet" x="56" y="1784.0">•</text>
+  <text class="bullet" x="66" y="1784.0">Include queries and</text>
+  <text class="bullet" x="66" y="1800.0">outcomes</text>
+  <rect class="box" x="347" y="1682.0" width="206" height="135.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="359" y="1716.0">Build synthesis prompt</text>
+  <text class="bullet" x="359" y="1739.0">•</text>
+  <text class="bullet" x="369" y="1739.0">Insert original query</text>
+  <text class="bullet" x="359" y="1758.0">•</text>
+  <text class="bullet" x="369" y="1758.0">Insert deep-research</text>
+  <text class="bullet" x="369" y="1774.0">context</text>
+  <text class="bullet" x="359" y="1793.0">•</text>
+  <text class="bullet" x="369" y="1793.0">Apply response style</text>
+  <rect class="box" x="650" y="1682.0" width="206" height="135.0" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <text class="btitle" x="662" y="1717.5">Call synthesis LLM</text>
+  <text class="bullet" x="662" y="1740.5">•</text>
+  <text class="bullet" x="672" y="1740.5">Integrate all step</text>
+  <text class="bullet" x="672" y="1756.5">findings</text>
+  <text class="bullet" x="662" y="1775.5">•</text>
+  <text class="bullet" x="672" y="1775.5">Produce single, coherent</text>
+  <text class="bullet" x="672" y="1791.5">answer</text>
+  <rect class="box" x="650" y="1881.0" width="206" height="118.0" rx="8" fill="#ccfbf1" stroke="#0f766e"/>
+  <text class="btitle" x="662" y="1908.0">Deep research response</text>
+  <text class="bullet" x="662" y="1931.0">•</text>
+  <text class="bullet" x="672" y="1931.0">Final summarized</text>
+  <text class="bullet" x="672" y="1947.0">multi-step answer</text>
+  <text class="bullet" x="662" y="1966.0">•</text>
+  <text class="bullet" x="672" y="1966.0">Grounded in global +</text>
+  <text class="bullet" x="672" y="1982.0">local evidence</text>
+</svg>
