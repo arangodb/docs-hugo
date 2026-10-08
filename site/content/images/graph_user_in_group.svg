@@ -2,7 +2,7 @@
   <title id="graph_user_in_group-t">John in the Users collection is linked to BowlingGroupHappyPin in the Groups collection</title>
   <desc id="graph_user_in_group-d">An edge from the UsersInGroups edge collection points from the document John in the Users collection to the document BowlingGroupHappyPin in the Groups collection.</desc>
   <defs><marker id="graph_user_in_group-m" markerWidth="12" markerHeight="12" refX="2" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,6 L0,12 z" fill="#044926"/></marker></defs>
-  <line x1="128" y1="34" x2="370.0" y2="34.0" stroke="#044926" stroke-width="2.5" marker-end="url(#graph_user_in_group-m)"/>
+  <line x1="122" y1="34" x2="370.0" y2="34.0" stroke="#044926" stroke-width="2.5" marker-end="url(#graph_user_in_group-m)"/>
   <rect x="188.0" y="22" width="126" height="24" rx="12" fill="#f4faf4" stroke="#044926" stroke-width="1.5"/>
   <text x="251.0" y="38.5" text-anchor="middle" font-size="13" font-weight="600" fill="#044926" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">UsersInGroups</text>
   <rect x="2" y="2" width="120" height="64" rx="10" fill="#ffffff" stroke="#007339" stroke-width="2"/>
