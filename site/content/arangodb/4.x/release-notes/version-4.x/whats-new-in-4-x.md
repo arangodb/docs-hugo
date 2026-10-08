@@ -3,9 +3,21 @@ title: Features and Improvements in ArangoDB 4.x
 menuTitle: What's New in 4.x
 weight: 5
 description: >-
-  A streamlined database core with faster joins in sharded clusters and
-  SmartGraphs
+  Faster joins in sharded clusters and SmartGraphs, spread syntax and string
+  concatenation in AQL
 ---
+ArangoDB 4.x streamlines the database core. The server (_arangod_) no longer
+executes JavaScript: [Foxx microservices](incompatible-changes-in-4-x.md#foxx-removed),
+[JavaScript Transactions](incompatible-changes-in-4-x.md#javascript-transactions-removed),
+and [user-defined AQL functions](incompatible-changes-in-4-x.md#user-defined-aql-functions-removed)
+have been removed, and the [web interface](incompatible-changes-in-4-x.md#built-in-web-interface-removed)
+now runs separately from the server. Without server-side code execution, the
+attack surface of the database is considerably smaller, and there are fewer
+components to configure, secure, and maintain. Legacy index types, deprecated
+APIs, and obsolete startup options have been removed as well. See
+[Incompatible changes in ArangoDB 4.x](incompatible-changes-in-4-x.md) for the
+full list and how to migrate.
+
 The following list shows in detail which features have been added or improved in
 ArangoDB 4.x. ArangoDB 4.x also contains several bug fixes that are not listed
 here.

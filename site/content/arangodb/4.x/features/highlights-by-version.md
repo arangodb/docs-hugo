@@ -11,6 +11,14 @@ description: >-
   Join queries in sharded clusters and SmartGraphs only involve the DB-Servers
   that hold the relevant documents instead of all of them.
 
+- [**AQL spread syntax**](../release-notes/version-4.x/whats-new-in-4-x.md#spread-operator-for-arrays-and-objects):
+  Insert the elements of an array into an array literal and copy the attributes
+  of an object into an object literal with `...`, as a more concise alternative
+  to `PUSH()`, `APPEND()`, and `MERGE()`.
+
+- [**String concatenation in AQL**](../release-notes/version-4.x/whats-new-in-4-x.md#string-concatenation-with-the--operator):
+  Concatenate strings with the `+` operator instead of calling `CONCAT()`.
+
 Also see [What's New in 4.x](../release-notes/version-4.x/whats-new-in-4-x.md).
 
 ## Version 3.12
