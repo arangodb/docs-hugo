@@ -166,5 +166,5 @@ AWS, with monitoring, upgrades, and backups handled.
 
 Pick an installation path:
 
-- [Get started with the Arango Contextual Data Platform](data-platform.md)
-- [Get started with ArangoDB](arangodb.md)
+- [Get started with the Arango Contextual Data Platform](data-platform/_index.md)
+- [Get started with ArangoDB](arangodb/_index.md)

@@ -1,7 +1,7 @@
 ---
 title: Build and tune Context Graphs from file corpora
 menuTitle: Build with AutoGraph
-weight: 5
+weight: 10
 description: >-
   Ingest a directory of documents with AutoGraph, tune the build parameters,
   and pick the right retrieval mode for each kind of question
@@ -10,7 +10,7 @@ description: >-
 
 - **Completed installation**: A running Arango Contextual Data Platform instance
   and the Arango AI SDK installed, see
-  [Get started with the data platform](_index.md).
+  [Install the Arango Contextual Data Platform](install/_index.md).
 - **Document corpus**: A directory of text or Markdown files ready for
   ingestion.
 
@@ -27,7 +27,7 @@ and extract its contents into the local `./files` directory.
 
 ## Ingest a file corpus
 
-While the [Quick Start](_index.md#quick-start) processed inline text strings
+While the [Quick Start](install/_index.md#quick-start) processed inline text strings
 directly, real-world applications require ingesting complete file corpora. You
 can ingest an entire local directory with `ag.upload()`.
 

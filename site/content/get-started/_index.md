@@ -40,5 +40,5 @@ Takes about 2 minutes.
 Each installation path has a troubleshooting page that covers the problems you
 are most likely to hit on a first install:
 
-- [Troubleshooting the data platform installation](data-platform/troubleshooting.md)
+- [Troubleshooting the data platform installation](data-platform/install/troubleshooting.md)
 - [Troubleshooting the ArangoDB installation](arangodb/troubleshooting.md)
