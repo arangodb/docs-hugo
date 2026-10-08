@@ -1,6 +1,5 @@
-<svg viewBox="0 0 820 480"
-     xmlns="http://www.w3.org/2000/svg"
-     style="display:block;width:100%;max-width:820px;margin:0 auto">
+<svg viewBox="0 0 820 480" width="820" height="480"
+     xmlns="http://www.w3.org/2000/svg">
   <style>
     .agkg text { font-family: sans-serif; }
     .agkg .vtx { fill: #b9f5a0; stroke: #4ade80; stroke-width: 1.5; }

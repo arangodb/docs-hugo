@@ -1,7 +1,6 @@
-<svg viewBox="0 0 900 600"
+<svg viewBox="0 0 900 600" width="900" height="600"
      xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink"
-     style="display:block;width:100%;max-width:900px;margin:0 auto">
+     xmlns:xlink="http://www.w3.org/1999/xlink">
   <style>
     .arch .card-link { cursor: pointer; }
     .arch .card-link .node { transition: fill 120ms, stroke 120ms; }
