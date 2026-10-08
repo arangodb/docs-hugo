@@ -1,7 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 676 226" width="676" height="226" role="img" aria-labelledby="enterprisegraph-distribution-t enterprisegraph-distribution-d">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-16 -12 708 242" width="708" height="242" role="img" aria-labelledby="enterprisegraph-distribution-t enterprisegraph-distribution-d">
   <title id="enterprisegraph-distribution-t">EnterpriseGraph distribution</title>
   <desc id="enterprisegraph-distribution-d">The same graph stored in three databases, A, B and C. Nodes are distributed randomly, and each edge is stored in the same database as the node it starts from.</desc>
   <defs><marker id="enterprisegraph-distribution-m0" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 z" fill="#c2cbd5"/></marker><marker id="enterprisegraph-distribution-m1" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 z" fill="#044926"/></marker><marker id="enterprisegraph-distribution-m2" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 z" fill="#58df20"/></marker></defs>
+  <rect x="-16" y="-12" width="708" height="242" rx="6" fill="#ffffff"/>
   <text x="0" y="16" font-size="15" font-weight="700" fill="#151d25" font-family="Urbanist, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">Advanced Random Distribution</text>
   <rect x="0.75" y="30.75" width="214.5" height="154.5" rx="12" fill="#f4faf4" stroke="#cfe3d3" stroke-width="1.5"/>
   <path d="M16,46 v9 a6,2.2 0 0 0 12,0 v-9" fill="none" stroke="#044926" stroke-width="1.5"/><ellipse cx="22" cy="46" rx="6" ry="2.2" fill="none" stroke="#044926" stroke-width="1.5"/>

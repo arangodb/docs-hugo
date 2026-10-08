@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 360" width="860" height="360" role="img" aria-labelledby="data-model-graph-relations-t data-model-graph-relations-d">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-7 -3 874 366" width="874" height="366" role="img" aria-labelledby="data-model-graph-relations-t data-model-graph-relations-d">
   <title id="data-model-graph-relations-t">A property graph of people, a book, and its author</title>
   <desc id="data-model-graph-relations-d">Four nodes with properties: the Person nodes Mary (age 34) and John (age 31), the Book node Arango (320 pages), and the Author node Sara (country DE). Edges also carry properties: Mary isFriendOf John since 2019, Mary bought Arango on 2025-03-14, John rated Arango with 5 stars, and Sara wrote Arango in 2024.</desc>
   <defs><marker id="data-model-graph-relations-m" markerWidth="12" markerHeight="12" refX="2" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,6 L0,12 z" fill="#044926"/></marker></defs>

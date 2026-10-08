@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 410 180" width="410" height="180" role="img" aria-labelledby="data-model-document-t data-model-document-d">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-7 -7 424 194" width="424" height="194" role="img" aria-labelledby="data-model-document-t data-model-document-d">
   <title id="data-model-document-t">Two collections: Person with the documents Mary and John, and Book with the document Arango</title>
   <desc id="data-model-document-d">Collections are drawn as folders and documents as pages. The Person collection holds two documents with the names Mary and John. The Book collection holds one document with the title Arango.</desc>
   <rect x="10" y="32" width="186" height="138" rx="12" fill="#f4faf4" stroke="#044926" stroke-width="1.5"/>
