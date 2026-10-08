@@ -465,12 +465,10 @@ in the _arangojs_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Go" >}}
-The Go driver supports vector indexes from v2.2.0 onward.
-
 ```go
 import (
-  "github.com/arangodb/go-driver/v2/arangodb"
-  "github.com/arangodb/go-driver/v2/utils"
+  "github.com/arangodb/go-driver/v3/arangodb"
+  "github.com/arangodb/go-driver/v3/utils"
   "fmt"
 )
 
@@ -482,7 +480,7 @@ params := arangodb.VectorParams{
   DefaultNProbe: utils.NewType(1),
   Dimension: utils.NewType(544),
   Metric: utils.NewType(arangodb.VectorMetricL2),
-  NLists: utils.NewType(100),
+  NLists: arangodb.NewVectorNLists(100),
   TrainingIterations: utils.NewType(25),
 }
 
@@ -502,8 +500,8 @@ if err != nil {
 }
 ```
 
-See [`CollectionIndexes.EnsureVectorIndex()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionIndexes)
-in the _go-driver_ v2 documentation for details.
+See [`CollectionIndexes.EnsureVectorIndex()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#CollectionIndexes)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
