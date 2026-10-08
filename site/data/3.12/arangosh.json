@@ -100,6 +100,25 @@
     "section" : "",
     "type" : "string"
   },
+  "connect" : {
+    "category" : "option",
+    "default" : true,
+    "deprecatedIn" : null,
+    "description" : "whether to attempt to connect the server.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : null,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "",
+    "type" : "boolean"
+  },
   "console.audit-file" : {
     "category" : "option",
     "default" : "",
@@ -424,7 +443,7 @@
   },
   "javascript.allow-external-process-control" : {
     "category" : "option",
-    "default" : true,
+    "default" : false,
     "deprecatedIn" : null,
     "description" : "Allow the execution and control of external processes from within JavaScript.",
     "dynamic" : false,
@@ -443,7 +462,7 @@
   },
   "javascript.allow-port-testing" : {
     "category" : "option",
-    "default" : true,
+    "default" : false,
     "deprecatedIn" : null,
     "description" : "Allow the testing of ports from within JavaScript.",
     "dynamic" : false,
@@ -773,7 +792,6 @@
   "javascript.module-directory" : {
     "category" : "option",
     "default" : [
-      "./enterprise/js"
     ],
     "deprecatedIn" : null,
     "description" : "Additional paths containing JavaScript modules.",
@@ -792,7 +810,7 @@
   },
   "javascript.startup-directory" : {
     "category" : "option",
-    "default" : "./js",
+    "default" : "/usr/share/arangodb3/js",
     "deprecatedIn" : null,
     "description" : "The startup paths containing the JavaScript files.",
     "dynamic" : false,
@@ -1587,7 +1605,7 @@
   },
   "server.authentication" : {
     "category" : "option",
-    "default" : false,
+    "default" : true,
     "deprecatedIn" : null,
     "description" : "Require authentication credentials when connecting (does not affect the server-side authentication settings).",
     "dynamic" : false,
@@ -1648,7 +1666,7 @@
   "server.endpoint" : {
     "category" : "option",
     "default" : [
-      "http+tcp://127.0.0.1:8529"
+      "tcp://127.0.0.1:8529"
     ],
     "deprecatedIn" : null,
     "description" : "The endpoint to connect to. Use 'none' to start without a server. Use http+ssl:// as schema to connect to an SSL-secured server endpoint, otherwise http+tcp:// or unix://.",
@@ -1690,7 +1708,7 @@
     "category" : "option",
     "default" : 300,
     "deprecatedIn" : null,
-    "description" : "The time (in seconds) before JWT token expiry to trigger automatic renewal. Default is 300 seconds (5 minutes).",
+    "description" : "The time (in seconds) before JWT token expiry to trigger automatic renewal. Default is 300 seconds (5 minutes). With 0, a renewal is only attempted once the token has expired.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -1699,7 +1717,7 @@
     "maxInclusive" : true,
     "maxValue" : 1.7976931348623157e+308,
     "minInclusive" : true,
-    "minValue" : 2.2250738585072014e-308,
+    "minValue" : 0,
     "obsolete" : false,
     "os" : [
       "linux"
@@ -1730,7 +1748,7 @@
     "category" : "option",
     "default" : "",
     "deprecatedIn" : null,
-    "description" : "If enabled, the JWT token is used directly for authentication. You can either specify the token directly or set the value to \"-\" to get prompted for the token to not leak the token to the process list. This option is not compatible with --server.ask-jwt-secret, --server.jwt-secret-keyfile, --server.username and --server.password. If specified, it is used for all connections - even if a new connection to another server is created.",
+    "description" : "If enabled, the JWT token is used directly for authentication. You can either specify the token directly or set the value to \"-\" to get prompted for the token to not leak the token to the process list. This option is not compatible with --server.ask-jwt-secret, --server.jwt-secret-keyfile, --server.username and --server.password. If specified, it is used for all connections - even if a new connection to another server is created. A token with an expiry is renewed automatically before it expires (see --server.jwt-renewal-threshold).",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -1771,7 +1789,7 @@
     "category" : "option",
     "default" : "",
     "deprecatedIn" : null,
-    "description" : "The password or access token to use when connecting. If not specified and authentication is required, you are prompted for a password.\nIn startup options, you can wrap the names of environment variables in at signs to use their value, like @ARANGO_PASSWORD@. This helps to expose the password less, like to the process list. Literal @ need to be escaped as @@.",
+    "description" : "The password or access token to use when connecting. If not specified and authentication is required, you are prompted for a password.\nIn startup options, you can wrap the names of environment variables in at signs to use their value, like @ARANGO_PASSWORD@. This helps to expose the password less, like to the process list. Literal @ need to be escaped as @@.\nThe credentials are exchanged for a JWT via /_open/auth, which is renewed automatically before it expires (see --server.jwt-renewal-threshold). If the server does not issue tokens, HTTP basic authentication is used.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,

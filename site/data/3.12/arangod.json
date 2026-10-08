@@ -1271,7 +1271,7 @@
     ],
     "default" : 0,
     "deprecatedIn" : null,
-    "description" : "The number of remote-to-remote copy operations to run in parallel when uploading/downloading Hot Backups (0 = use system-specific default of 100)",
+    "description" : "The number of remote-to-remote copy operations to run in parallel when uploading/downloading Hot Backups (0 = use system-specific default of 50)",
     "dynamic" : true,
     "enterpriseOnly" : true,
     "experimental" : false,
@@ -1539,7 +1539,7 @@
       "agent",
       "single"
     ],
-    "default" : 7735559168,
+    "default" : 3580413952,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -2510,7 +2510,7 @@
       "agent",
       "single"
     ],
-    "default" : "",
+    "default" : "/var/lib/arangodb3",
     "deprecatedIn" : null,
     "description" : "The path to the database directory.",
     "dynamic" : false,
@@ -2976,7 +2976,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 6188447334,
+    "default" : 2864331161,
     "deprecatedIn" : null,
     "description" : "Maximum memory usage (in bytes) to be used by all ongoing dumps.",
     "dynamic" : true,
@@ -3017,6 +3017,36 @@
       "v3.12.0"
     ],
     "longDescription" : "Each dump action on a server can use at most\nthis many parallel threads. Note that end users can still start multiple\ndump actions that run in parallel.",
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 1,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "dump",
+    "type" : "uint64"
+  },
+  "dump.max-prefetch-count" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "single"
+    ],
+    "default" : 1024,
+    "deprecatedIn" : null,
+    "description" : "Maximum number of batches that can be prefetched in a dump.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.12.12"
+    ],
+    "longDescription" : "Each dump action on a server keeps at most this\nmany prepared batches around, waiting to be fetched by the client. The queue\nholding them is allocated upfront, so this value also bounds the memory a\nsingle dump request can reserve for it.",
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
     "minInclusive" : true,
@@ -3647,7 +3677,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "./js/apps",
+    "default" : "/var/lib/arangodb3-apps",
     "deprecatedIn" : null,
     "description" : "The directory for Foxx applications.",
     "dynamic" : false,
@@ -3934,7 +3964,6 @@
       "single"
     ],
     "default" : [
-      "./enterprise/js"
     ],
     "deprecatedIn" : null,
     "description" : "Additional paths containing JavaScript modules.",
@@ -4007,7 +4036,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "./js",
+    "default" : "/usr/share/arangodb3/js",
     "deprecatedIn" : null,
     "description" : "A path to the directory containing the JavaScript startup scripts.",
     "dynamic" : false,
@@ -4453,7 +4482,7 @@
       "agent",
       "single"
     ],
-    "default" : "",
+    "default" : "-",
     "deprecatedIn" : null,
     "description" : "Shortcut for `--log.output file://<filename>`",
     "dynamic" : false,
@@ -5305,7 +5334,7 @@
       "agent",
       "single"
     ],
-    "default" : 2,
+    "default" : 1,
     "deprecatedIn" : null,
     "description" : "The number of network I/O threads for cluster-internal communication.",
     "dynamic" : false,
@@ -5892,7 +5921,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33089720320,
+    "base" : 16469139456,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5900,7 +5929,7 @@
       "agent",
       "single"
     ],
-    "default" : 26802673459,
+    "default" : 13340002959,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -6227,7 +6256,7 @@
     "type" : "uint64"
   },
   "query.memory-limit" : {
-    "base" : 33089720320,
+    "base" : 16469139456,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -6235,7 +6264,7 @@
       "agent",
       "single"
     ],
-    "default" : 19853832192,
+    "default" : 9881483673,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7467,7 +7496,7 @@
       "agent",
       "single"
     ],
-    "default" : 9282671001,
+    "default" : 4296496742,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -8389,7 +8418,7 @@
       "agent",
       "single"
     ],
-    "default" : 8,
+    "default" : 4,
     "deprecatedIn" : null,
     "description" : "The maximum number of concurrent background jobs (compactions and flushes).",
     "dynamic" : true,
@@ -10103,7 +10132,7 @@
       "agent",
       "single"
     ],
-    "default" : 12376894668,
+    "default" : 5728662323,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
@@ -11047,7 +11076,7 @@
       "agent",
       "single"
     ],
-    "default" : 2,
+    "default" : 1,
     "deprecatedIn" : null,
     "description" : "The number of threads used to handle I/O.",
     "dynamic" : true,
