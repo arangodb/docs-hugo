@@ -20,7 +20,8 @@ description: >-
 - **An API key for a model provider**, for example OpenAI, for the chat and
   embedding models AutoGraph uses.
 
-<!-- TODO: link to the open-source repository of the SDK once it is published -->
+The source code is available in the
+[arango-ai-sdk repository](https://github.com/arangoml/arango-ai-sdk) on GitHub.
 
 ## Install the package
 

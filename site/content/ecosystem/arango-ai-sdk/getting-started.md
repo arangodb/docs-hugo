@@ -247,4 +247,5 @@ Editing strategies and deleting categories or files from the graph are not in
 the SDK yet; use the web interface or the
 [AutoGraph HTTP API](../../agentic-ai-suite/autograph/reference/_index.md).
 
-<!-- TODO: link to the SDK's own reference documentation once it is published -->
+For every parameter, return value, and exception of the calls used here, see the
+[SDK reference documentation](https://arangoml.github.io/arango-ai-sdk/).

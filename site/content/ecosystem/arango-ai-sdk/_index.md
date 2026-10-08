@@ -8,7 +8,7 @@ description: >-
 ---
 {{< tag "Experimental" >}}
 
-`arango-ai-sdk` is the official Python SDK for the
+[`arango-ai-sdk`](https://github.com/arangoml/arango-ai-sdk) is the official Python SDK for the
 [Agentic AI Suite](../../agentic-ai-suite/_index.md). It is the code-first way to
 drive an [AutoGraph](../../agentic-ai-suite/autograph/_index.md) workflow: sign
 in, create a project, store the API keys the models need, upload your documents,
@@ -91,5 +91,6 @@ The SDK is a client for services that are documented in their own right:
 - [Installation](installation.md): requirements and how to install the package.
 - [Getting started](getting-started.md): a short tutorial that takes you from an
   empty database to a Context Graph built from your documents.
-
-<!-- TODO: link to the SDK's own reference documentation once it is published -->
+- [SDK reference documentation](https://arangoml.github.io/arango-ai-sdk/): every class, method, parameter, and
+  exception in the SDK.
+- [Source code](https://github.com/arangoml/arango-ai-sdk): the SDK's GitHub repository, including its changelog.
