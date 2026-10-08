@@ -88,16 +88,16 @@ system before the setup.
   in the air-gapped environment to load the images into the container registry.
 
   You need at least the image of the ArangoDB Kubernetes Operator
-  (`arangodb/kube-arangodb-enterprise`). If you want to use a local MinIO
+  (`arangodb/kube-arangodb-enterprise`). If you want to use a local SeaweedFS
   instance for blob storage, make sure to also get this image
-  (e.g. `minio/minio:latest`). The process is the same for any image.
+  (`chrislusf/seaweedfs:4.47`). The process is the same for any image.
 
   {{< tabs "container-management" >}}
 
   {{< tab "Docker" >}}
   ```sh
-  docker pull docker.io/arangodb/kube-arangodb-enterprise:1.4.2
-  docker save docker.io/arangodb/kube-arangodb-enterprise:1.4.2 -o kube-arangodb-enterprise.tar
+  docker pull docker.io/arangodb/kube-arangodb-enterprise:1.4.5
+  docker save docker.io/arangodb/kube-arangodb-enterprise:1.4.5 -o kube-arangodb-enterprise.tar
   ```
   {{< /tab >}}
 
@@ -118,7 +118,7 @@ system before the setup.
   To pull the image and save it to a file as follows:
 
   ```sh
-  regctl image export docker.io/arangodb/kube-arangodb-enterprise:1.4.2 kube-arangodb-enterprise.tar
+  regctl image export docker.io/arangodb/kube-arangodb-enterprise:1.4.5 kube-arangodb-enterprise.tar
   ```
   {{< /tab >}}
 
@@ -138,10 +138,10 @@ image you may need from there without internet access.
 ```sh
 docker load -i kube-arangodb-enterprise.tar
 
-docker tag arangodb/kube-arangodb-enterprise:1.4.2 \
-  <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.2
+docker tag arangodb/kube-arangodb-enterprise:1.4.5 \
+  <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.5
 
-docker push <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.2
+docker push <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.5
 ```
 {{< /tab >}}
 
@@ -151,7 +151,7 @@ opposed to HTTPS:
 
 ```sh
 regctl image import \
-  <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.2 \
+  <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.5 \
   kube-arangodb-enterprise.tar \
   --host "reg=<YOUR_REGISTRY_ADDRESS:5000>,tls=disabled"
 ```
@@ -203,7 +203,7 @@ Make sure to set the options as shown below to enable the gateway feature and
 machine learning feature:
 
 ```sh
-VERSION_OPERATOR='1.4.2' # Use a newer version if available
+VERSION_OPERATOR='1.4.5' # Use a newer version if available
 
 helm upgrade --install operator \
   --namespace arango \
@@ -212,6 +212,13 @@ helm upgrade --install operator \
   --set "operator.args[0]=--deployment.feature.gateway=true" \
   --set "operator.architectures={amd64}"
 ```
+
+{{< tip >}}
+Use `--set "operator.architectures={arm64}"` instead if your Kubernetes nodes
+run on ARM CPUs, such as on Macs with Apple silicon (M1 and later). If the
+configured architecture doesn't match the nodes, the operator cannot start the
+deployment.
+{{< /tip >}}
 
 The output looks similar to the following on success:
 
@@ -225,13 +232,13 @@ REVISION: 1
 DESCRIPTION: Install complete
 TEST SUITE: None
 NOTES:
-You have installed Kubernetes ArangoDB Operator in version 1.4.2
+You have installed Kubernetes ArangoDB Operator in version 1.4.5
 
 To access ArangoDeployments you can use:
 
 kubectl --namespace "arango" get arangodeployments
 
-More details can be found on https://github.com/arangodb/kube-arangodb/tree/1.4.2/docs
+More details can be found on https://github.com/arangodb/kube-arangodb/tree/1.4.5/docs
 ```
 
 You may use the following commands to wait for the operator to be ready and
@@ -253,7 +260,7 @@ NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
 arango-operator-operator   1/1     1            1           45s
 
 NAME                                        READY   STATUS    RESTARTS   AGE
-arango-operator-operator-xxxxxxxxxx-xxxxx   2/2     Running   0          45s
+arango-operator-operator-xxxxxxxxxx-xxxxx   1/1     Running   0          45s
 ```
 
 ## Step 5: Create a deployment
@@ -270,7 +277,7 @@ You need to enable the gateway feature by setting `spec.gateway.enabled` and
 required by features such as GraphRAG.<!-- TODO: Default enabled 4.0.0 --> You also need to set `spec.license` to
 a secret that you will create later.
 
-Example for an ArangoDB cluster deployment using version 3.12.9 with three
+Example for an ArangoDB cluster deployment using version 3.12.11 with three
 DB-Servers and two Coordinators with the name `deployment-example`:
 
 ```yaml
@@ -280,7 +287,9 @@ metadata:
   name: "deployment-example"
 spec:
   mode: Cluster
-  image: "arangodb/enterprise:3.12.9"
+  architecture:
+    - amd64
+  image: "arangodb/enterprise:3.12.11"
   gateway:
     enabled: true
     dynamic: true
@@ -299,6 +308,21 @@ spec:
   # ...
 ```
 
+{{< tip >}}
+The example sets `spec.architecture` to `amd64` for x86-64 nodes. On ARM-based
+Kubernetes nodes, such as Macs with Apple silicon, set it to `arm64` instead:
+
+```yaml
+spec:
+  architecture:
+    - arm64
+```
+
+This setting is independent of the architecture option of the operator
+described in the previous step. If the architecture doesn't match the nodes,
+the pods of the deployment remain in the `Pending` state.
+{{< /tip >}}
+
 You can save the specification as a YAML file, e.g. `deployment.yaml`.
 
 Apply the specification using the previously created name (here: `arango`)
@@ -316,6 +340,24 @@ eventually see pods with the following names with a status of `Running`:
 - `deployment-example-crdn-*` (2 Coordinators)
 - `deployment-example-prmr-*` (3 DB-Servers)
 - `deployment-example-gway-*` (1 Gateway)
+
+{{< info >}}
+If the pods remain `Pending` and never start, the architecture of the
+deployment most likely doesn't match the nodes. Inspect the pod to confirm:
+
+```sh
+kubectl get pod <pod-name> --namespace arango -o yaml
+```
+
+A message such as `0/1 nodes are available: 1 node(s) didn't match Pod's node
+affinity/selector` in the `status` section indicates a mismatch. Correct
+`spec.architecture`, apply the specification again, and then delete the stuck
+pod so that the Operator recreates it with the correct architecture:
+
+```sh
+kubectl delete pod <pod-name> --namespace arango
+```
+{{< /info >}}
 
 ## Step 6: Collect information for the licensing
 
@@ -388,7 +430,7 @@ Expected output:
 
 ```
 2026-02-05T17:03:07+01:00 INF Connecting to the server...
-2026-02-05T17:03:07+01:00 INF Discovered Arango 3.12.9 (enterprise)
+2026-02-05T17:03:07+01:00 INF Discovered Arango 3.12.11 (enterprise)
 2026-02-05T17:03:07+01:00 INF Starting executor name=server.mode thread=0
 2026-02-05T17:03:07+01:00 INF Starting executor name=server.info thread=0
 2026-02-05T17:03:07+01:00 INF Starting executor name=aql.timestamp thread=0
@@ -615,164 +657,124 @@ specify the following option in addition:
   --registry.docker.insecure <YOUR_REGISTRY_ADDRESS:5000>
 ```
 
-## Step 11: Install the Contextual Data Platform package
-
-{{< tag "Air-gapped system" >}}
-
-Install the platform package using the Platform CLI tool.
-
-The package installation creates and enables various services, including
-the unified web interface of the Contextual Data Platform.
-
-The platform name (`deployment-example`) needs to match the name as specified in
-the `ArangoDeployment` configuration. Substitute  `./platform.imported.yaml` with the
-path to the package configuration file from the previous step:
-
-```sh
-arangodb_operator_platform --namespace arango package install \
-  --platform.name deployment-example \
-  ./platform.imported.yaml
-```
-
-It can take a while to import everything into the container registry.
-
-## Step 12: Set up object storage
+## Step 11: Set up object storage
 
 {{< tag "Air-gapped system" >}}
 
 Features like MLflow and GraphML require an additional storage system to save
 model training data, for instance.
 
-The following example shows how to set up a local MinIO and integrate it with
-the Arango Contextual Data Platform, but you can also use a remote object storage like S3.
-For the supported storage systems, see the
+The following example shows how to set up a local SeaweedFS and integrate it
+with the Arango Contextual Data Platform, but you can also use a remote object
+storage like S3. For the supported storage systems, see the
 [`kube-arangodb` documentation](https://arangodb.github.io/kube-arangodb/docs/platform/storage.html).
 
-Create a Kubernetes namespace for MinIO, then create a secret in this namespace
-with the username and password to use for the MinIO root user (replace `minioadmin`
-and `miniopassword` with the credentials you actually want to use). Create another
-secret with the same credentials but in the namespace of your `ArangoDeployment`,
-which is `arango` in this example:
+SeaweedFS authenticates clients of its S3 API against a list of identities.
+Create a namespace, a secret with these identities, and a secret with the same
+credentials in the namespace of your `ArangoDeployment`, which is `arango` in
+this example. Replace `seaweedfsadmin` and `seaweedfspassword` with the
+credentials you actually want to use:
 
 ```sh
-kubectl create namespace minio
+kubectl create namespace seaweedfs
 
-kubectl create secret generic minio-root \
-  --namespace minio \
-  --from-literal=MINIO_ROOT_USER=minioadmin \
-  --from-literal=MINIO_ROOT_PASSWORD=miniopassword
+kubectl create secret generic seaweedfs-config --namespace seaweedfs \
+  --from-literal=s3.json='{"identities":[{"name":"admin","credentials":
+    [{"accessKey":"seaweedfsadmin","secretKey":"seaweedfspassword"}],
+    "actions":["Admin","Read","Write","List","Tagging"]}]}'
 
-kubectl create secret generic minio-credentials \
-  --namespace arango \
-  --from-literal=accessKey=minioadmin \
-  --from-literal=secretKey=miniopassword
+kubectl create secret generic seaweedfs-credentials --namespace arango \
+  --from-literal=accessKey=seaweedfsadmin \
+  --from-literal=secretKey=seaweedfspassword
 ```
 
-Create a file to configure MinIO service and call it e.g. `minio.yaml`.
-Example using a Persistent Volume Claim (PVC) of five gibibytes:
+Create a file to configure the SeaweedFS service and call it e.g.
+`seaweedfs.yaml`. Example using a Persistent Volume Claim (PVC) of five
+gibibytes:
 
 ```yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
- name: minio-data-pvc
- namespace: minio
+  name: seaweedfs-data-pvc
+  namespace: seaweedfs
 spec:
- accessModes:
-   - ReadWriteOnce
- resources:
-   requests:
-     storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: minio
-  namespace: minio
+  name: seaweedfs
+  namespace: seaweedfs
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
-      app: minio
+      app: seaweedfs
   template:
     metadata:
       labels:
-        app: minio
+        app: seaweedfs
     spec:
       containers:
-      - name: minio
-        image: minio/minio:latest
-        args:
+      - name: seaweedfs
+        image: chrislusf/seaweedfs:4.47
+        command:
+          - weed
           - server
-          - /data
-        envFrom:
-          - secretRef:
-              name: minio-root
+          - -dir=/data
+          - -ip.bind=0.0.0.0
+          - -master.volumeSizeLimitMB=1024
+          - -volume.max=0
+          - -s3
+          - -s3.port=8333
+          - -s3.config=/etc/seaweedfs/s3.json
         ports:
-          - containerPort: 9000
+          - containerPort: 8333
         volumeMounts:
           - name: data
             mountPath: /data
+          - name: s3-config
+            mountPath: /etc/seaweedfs
+            readOnly: true
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: minio-data-pvc
+            claimName: seaweedfs-data-pvc
+        - name: s3-config
+          secret:
+            secretName: seaweedfs-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: minio
-  namespace: minio
+  name: seaweedfs
+  namespace: seaweedfs
 spec:
   selector:
-    app: minio
+    app: seaweedfs
   ports:
-    - port: 9000
-      targetPort: 9000
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: minio-create-bucket
-  namespace: minio
-spec:
-  backoffLimit: 1
-  template:
-    spec:
-      restartPolicy: Never
-      containers:
-        - name: mc
-          image: minio/mc
-          env:
-            - name: MINIO_ENDPOINT
-              value: http://minio.minio.svc.cluster.local:9000
-            - name: MINIO_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: minio-root
-                  key: MINIO_ROOT_USER
-            - name: MINIO_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: minio-root
-                  key: MINIO_ROOT_PASSWORD
-          command:
-            - sh
-            - -c
-            - |
-              mc alias set local $MINIO_ENDPOINT $MINIO_ACCESS_KEY $MINIO_SECRET_KEY
-              mc mb local/arango-platform-storage || true
+    - port: 8333
+      targetPort: 8333
 ```
 
-Set up the MinIO service by applying the configuration file:
+
+Set up the SeaweedFS service by applying the configuration file:
 
 ```sh
-kubectl apply -f ./minio.yaml
+kubectl apply -f ./seaweedfs.yaml
 ```
 
-Create another file to configure the storage for the Contextual Data Platform and call the
-file e.g. `platform-storage.yaml`. Note that the name of the `ArangoPlatformStorage`
-must be the same as for the `ArangoDeployment`:
+Create another file to configure the storage for the Contextual Data Platform
+and call it e.g. `platform-storage.yaml`. The name of the `ArangoPlatformStorage`
+must match the name of the `ArangoDeployment`. The `allowInsecure` option is
+required because the in-cluster connection uses plain HTTP:
 
 ```yaml
 apiVersion: platform.arangodb.com/v1beta1
@@ -785,8 +787,9 @@ spec:
     s3:
       bucketName: arango-platform-storage
       credentialsSecret:
-        name: minio-credentials
-      endpoint: http://minio.minio.svc.cluster.local:9000
+        name: seaweedfs-credentials
+      endpoint: http://seaweedfs.seaweedfs.svc.cluster.local:8333
+      allowInsecure: true
 ```
 
 Integrate the object storage with the Contextual Data Platform by applying the file:
@@ -794,3 +797,118 @@ Integrate the object storage with the Contextual Data Platform by applying the f
 ```sh
 kubectl apply -f ./platform-storage.yaml
 ```
+
+Verify that the storage integration is ready. The `READY` column needs to show
+`True` before you proceed:
+
+```sh
+kubectl get arangoplatformstorage --namespace arango
+```
+
+Expected output:
+
+```
+NAME                 READY
+deployment-example   True
+```
+
+You don't need to create the bucket yourself. The platform services create it
+on startup if it doesn't exist yet.
+
+{{< info >}}
+Set up the object storage before you install the data platform package.
+The storage configuration is injected into the pods of the platform services
+when the pods are created. If you set up the storage after installing the data
+platform package, restart the services that use the storage so that they are
+recreated with the storage configuration. Only do so after the storage reports
+`READY` as `True`. The following command restarts all services that use the
+storage by matching their storage integration label:
+
+```sh
+kubectl delete pod --namespace arango \
+  --selector integration.profiles.arangodb.com/storage=v2
+```
+
+If a service started before the storage was ready, operations that need the
+storage fail and the service logs show errors such as
+`unknown service storage.StorageV2`. Restarting the affected pods as shown
+above resolves this.
+{{< /info >}}
+
+## Step 12: Install the Contextual Data Platform package
+
+{{< tag "Air-gapped system" >}}
+
+Install the platform package using the Platform CLI tool.
+
+The package installation creates and enables various services, including
+the unified web interface of the Contextual Data Platform.
+
+The platform name (`deployment-example`) needs to match the name as specified in
+the `ArangoDeployment` configuration. Substitute `./platform.imported.yaml` with
+the path to the package configuration file from the previous step:
+
+```sh
+arangodb_operator_platform --namespace arango package install \
+  --platform.name deployment-example \
+  ./platform.imported.yaml
+```
+
+It can take a while to import everything into the container registry.
+
+## Step 13: Verify the installation
+
+{{< tag "Air-gapped system" >}}
+
+The Operator downloads and starts the platform services. Watch the pods until
+they are all up:
+
+```sh
+kubectl get pods --namespace arango --watch
+```
+
+The first run takes several minutes because the service images are large and
+are pulled for the first time. Eventually, every pod reaches the `Running`
+state with all of its containers ready.
+
+The pod list shows the readiness at a glance, but the reliable way to confirm
+that the platform is fully up is to check the platform services. They should
+all report `READY` as `True`:
+
+```sh
+kubectl get arangoplatformservices --namespace arango
+```
+
+If a pod stays in `Pending` or keeps restarting, the nodes most likely ran out
+of resources. To find out why a pod doesn't start, describe it and check its
+events and logs. Most platform pods run multiple containers, so pass
+`--all-containers=true` to get the logs of all of them:
+
+```sh
+kubectl describe pod <pod-name> --namespace arango
+kubectl logs <pod-name> --namespace arango --all-containers=true
+```
+
+## Step 14: Open the web interface
+
+{{< tag "Air-gapped system" >}}
+
+The platform exposes all of its services through the gateway on port `8529`
+inside Kubernetes. Forward that port to your machine:
+
+```sh
+kubectl port-forward --namespace arango \
+  service/deployment-example-ea 8529:8529
+```
+
+Leave that command running and open the unified web interface in your browser:
+
+<https://127.0.0.1:8529/ui/>
+
+Log in with the default user `root` and an empty password. These defaults are
+fine for a local evaluation but are not secure; set a password before you
+expose a deployment beyond your own machine.
+
+For the browser warning about the self-signed certificate, how to stop the port
+forwarding, and how to reach the other interfaces, see
+[Interfaces](_index.md#interfaces).

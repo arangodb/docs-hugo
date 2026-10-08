@@ -43,7 +43,7 @@ You can find the latest release on GitHub:
 <https://github.com/arangodb/kube-arangodb/releases/latest>
 
 ```sh
-VERSION_OPERATOR='1.4.3' # Use a newer version if available
+VERSION_OPERATOR='1.4.5' # Use a newer version if available
 
 helm upgrade --install operator \
   --namespace arango \
@@ -52,6 +52,13 @@ helm upgrade --install operator \
   --set "operator.args[0]=--deployment.feature.gateway=true" \
   --set "operator.architectures={amd64}"
 ```
+
+{{< tip >}}
+Use `--set "operator.architectures={arm64}"` instead if your Kubernetes nodes
+run on ARM CPUs, such as on Macs with Apple silicon (M1 and later). If the
+configured architecture doesn't match the nodes, the operator cannot start the
+deployment.
+{{< /tip >}}
 
 The output looks similar to the following on success:
 
@@ -65,13 +72,13 @@ REVISION: 2
 DESCRIPTION: Upgrade complete
 TEST SUITE: None
 NOTES:
-You have installed Kubernetes ArangoDB Operator in version 1.4.3
+You have installed Kubernetes ArangoDB Operator in version 1.4.5
 
 To access ArangoDeployments you can use:
 
 kubectl --namespace "arango" get arangodeployments
 
-More details can be found on https://github.com/arangodb/kube-arangodb/tree/1.4.3/docs
+More details can be found on https://github.com/arangodb/kube-arangodb/tree/1.4.5/docs
 ```
 
 ### Step 3: Update the deployment
@@ -109,7 +116,7 @@ metadata:
   name: deployment-example
   # ...
 spec:
-  image: arangodb/enterprise:3.12.9  # <-- Update here
+  image: arangodb/enterprise:3.12.11  # <-- Update here
   # ...
 ```
 
