@@ -1,0 +1,202 @@
+---
+title: Build and tune Context Graphs from file corpora
+menuTitle: Build with AutoGraph
+weight: 5
+description: >-
+  Ingest a directory of documents with AutoGraph, tune the build parameters,
+  and pick the right retrieval mode for each kind of question
+---
+## Prerequisites
+
+- **Completed installation**: A running Arango Contextual Data Platform instance
+  and the Arango AI SDK installed, see
+  [Get started with the data platform](_index.md).
+- **Document corpus**: A directory of text or Markdown files ready for
+  ingestion.
+
+To follow along with this tutorial, download the example file corpus containing
+sample documents. You can download and unpack the dataset directly with `curl`:
+
+```bash
+curl -L https://github.com/ArangoDB/example-datasets/releases/latest/download/data.zip -o data.zip && unzip -o data.zip -d ./files
+```
+
+Alternatively, you can manually download the archive from the
+[example dataset repository](https://github.com/ArangoDB/example-datasets/releases/latest)
+and extract its contents into the local `./files` directory.
+
+## Ingest a file corpus
+
+While the [Quick Start](_index.md#quick-start) processed inline text strings
+directly, real-world applications require ingesting complete file corpora. You
+can ingest an entire local directory with `ag.upload()`.
+
+### Connect
+
+```python
+from arango_ai import ArangoAIClient
+
+client = ArangoAIClient("https://localhost:8529", verify_tls=False)
+db = client.db('tech_corpus', username='root', password='test')
+ag = db.autograph('enterprise-docs', llm_api_key='YOUR_LLM_API_KEY')
+```
+
+### Upload files
+
+```python
+# Point to a directory containing Markdown files
+ag.upload("./files/tech_articles")
+```
+
+AutoGraph automatically parses supported document formats, including PDF, DOCX,
+PPTX, XLSX, TXT, and Markdown, without requiring manual format conversion. For
+optimal results, ensure files use standard extensions and contain
+well-structured text headings to assist topic segmentation. For full details on
+supported formats and ingestion limits, see
+[Document parsing](../../agentic-ai-suite/autograph/reference/corpus-build.md#document-parsing)
+and [Limitations](../../agentic-ai-suite/autograph/reference/limitations.md).
+
+## Basic pipeline configuration
+
+When `ag.build()` is executed, AutoGraph processes the ingested document corpus
+through three primary phases:
+
+- **Corpus Build**: Generates a single vector embedding per document, connects
+  nearest-neighbor whole documents using `SIMILAR_TO` edges, applies Leiden
+  clustering across topic domains, and defers chunking to the orchestration
+  phase.
+- **RAG Strategizer**: Analyzes clusters and determines the retrieval strategy
+  partitioning between FullGraphRAG (deep entity-relationship knowledge graph
+  extraction) and VectorRAG (pure vector indexing) based on the specified
+  complexity level.
+- **Orchestration**: Provisions importer pods and executes distributed graph
+  loading jobs into ArangoDB.
+
+You can tune key build parameters in `ag.build()` to balance extraction depth,
+accuracy, and operational throughput:
+
+- `top_k` (default: `7`): The number of nearest-neighbor documents each
+  document is linked to via `SIMILAR_TO` edges in the Corpus Graph.
+- `cluster_threshold` (default: `1` in the SDK, `2` in the REST API): Determines
+  hierarchical versus flat clustering granularity across the corpus. The
+  allowed values are `1` (single-level clustering) and `2` (two-level
+  clustering).
+- `complexity` (default: `moderate`): Controls the FullGraphRAG versus VectorRAG
+  strategy split across clusters. The supported levels are:
+  - `very_low`: 0% FullGraphRAG / 100% VectorRAG
+  - `low`: 25% FullGraphRAG / 75% VectorRAG
+  - `moderate`: 50% FullGraphRAG / 50% VectorRAG
+  - `high`: 75% FullGraphRAG / 25% VectorRAG
+  - `very_high`: 100% FullGraphRAG / 0% VectorRAG
+- `replicas` (default: `2`): Configures worker pod parallelism for ingestion
+  throughput.
+
+{{< warning >}}
+If `complexity` is set too low and too many clusters fall back to VectorRAG,
+entity-based multi-hop traversal queries fail due to missing entity-relationship
+graph structures.
+{{< /warning >}}
+
+```python
+# Build the Context Graph with tuned parameters
+ag.build(
+    top_k=10,
+    cluster_threshold=2,
+    complexity="very_high",
+    replicas=2,
+)
+```
+
+## Choose a retrieval strategy
+
+Selecting the appropriate retrieval mode balances response speed, factual
+accuracy, and reasoning depth across different query types:
+
+- [**Local search**](../../agentic-ai-suite/autorag/search-methods/local-search.md)
+  (`mode="local"`, the default): Focuses on entity neighborhood traversal and
+  precise local relationship lookups.
+- [**Global search**](../../agentic-ai-suite/autorag/search-methods/global-search.md)
+  (`mode="global"`): Synthesizes high-level thematic insights across overall
+  community summaries.
+- [**Unified search**](../../agentic-ai-suite/autorag/search-methods/unified-search.md)
+  (`mode="unified"`): Blends vector similarity search with entity-relationship
+  path traversal for balanced contextual recall.
+- [**Deep search**](../../agentic-ai-suite/autorag/search-methods/deep-search.md)
+  (`use_llm_planner=True`): Leverages an LLM planner to decompose complex
+  multi-step questions and execute multi-hop reasoning pathways across documents
+  and graph entities.
+
+See [Search methods](../../agentic-ai-suite/autorag/search-methods/_index.md)
+for more information.
+
+```python
+# Local search
+local_search_response = ag.ask("Who founded SpaceX and what other company does he run?")
+
+# Global search (themes across the whole graph)
+global_search_response = ag.ask("What are the recurring themes across these tech companies and products?", mode="global")
+
+# Unified search (passages + entities combined)
+unified_search_response = ag.ask("Which companies offer delivery drones?", mode="unified")
+
+# Deep search (multi-hop reasoning with LLM planner)
+deep_search_response = ag.ask("How are Google, Android, and NVIDIA connected through GPU or AI hardware?", use_llm_planner=True)
+```
+
+## Execute queries and verify accuracy
+
+Executing queries with `ag.ask()` returns a response object. Key components to
+observe in the output include:
+
+- `response.text`: The final synthesized answer text generated by the model.
+- `response.citations`: Explicit source document and chunk references backing
+  the generated answer, enabling grounding and verification.
+- `response.metadata`: Retrieval diagnostic data detailing query routing, graph
+  traversal strategy, sub-queries, and performance metrics.
+
+```python
+response = ag.ask("Who founded SpaceX and what other company does he run?")
+print(response.text)
+print("Citations:", response.citations)
+```
+
+## Complete Python script
+
+The following script combines all the steps above into a single file. It reads
+the database password and the LLM API key from the `ARANGODB_PASSWORD` and
+`LLM_API_KEY` environment variables:
+
+```python
+import os
+
+from arango_ai import ArangoAIClient
+
+client = ArangoAIClient("https://localhost:8529", verify_tls=False)
+db = client.db("tech_corpus", username="root", password=os.environ["ARANGODB_PASSWORD"])
+
+ag = db.autograph("enterprise-docs", llm_api_key=os.environ["LLM_API_KEY"])
+
+ag.upload("./files/tech_articles")
+
+ag.build(
+    top_k=10,
+    cluster_threshold=2,
+    complexity="very_high",
+    replicas=2,
+)
+
+print("=== Local search (entity neighborhood) ===")
+print(ag.ask("Who founded SpaceX and what other company does he run?"))
+
+print("\n=== Global search (themes across the whole graph) ===")
+print(ag.ask("What are the recurring themes across these tech companies and products?", mode="global"))
+
+print("\n=== Unified search (passages + entities combined) ===")
+print(ag.ask("Which companies offer delivery drones?", mode="unified"))
+
+print("\n=== Deep search (multi-hop reasoning with LLM planner) ===")
+print(ag.ask("How are Google, Android, and NVIDIA connected through GPU or AI hardware?", use_llm_planner=True))
+
+# Stop services
+ag.stop()
+```
