@@ -43,16 +43,16 @@ Not everything is a graph use case. ArangoDB lets you equally work with
 structured, semi-structured, and unstructured data in the form of schema-free
 JSON objects, without having to connect these objects to form a graph.
 
-![Person Mary, Book ArangoDB](../images/data-model-document.svg)
+![Three collections as folders with documents as pages: Person with Mary, aged 34, and John, aged 31, Book with Arango, 320 pages, and Author with Sara from DE](../images/data-model-document.svg)
 
 Depending on your needs, you may mix graphs and unconnected data.
 ArangoDB is designed from the ground up to support multiple data models with a
 single, composable query language.
 
 ```aql
-FOR book IN Books
+FOR book IN Book
   FILTER book.title == "Arango"
-  FOR person IN 2..2 INBOUND book transferred, OUTBOUND knows
+  FOR person IN 2..2 INBOUND book bought, OUTBOUND isFriendOf
     RETURN person.name
 ```
 
