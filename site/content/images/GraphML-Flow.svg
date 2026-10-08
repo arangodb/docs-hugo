@@ -1,6 +1,5 @@
-<svg viewBox="0 0 1380 360"
-     xmlns="http://www.w3.org/2000/svg"
-     style="display:block;width:100%;max-width:1380px;margin:0 auto">
+<svg viewBox="0 0 1380 360" width="1380" height="360"
+     xmlns="http://www.w3.org/2000/svg">
   <style>
     .gml .pill-aai { fill: #b9f5a0; stroke: #4ade80; stroke-width: 1.5; }
     .gml .pill-ps  { fill: #ffffff; stroke: #86efac; stroke-width: 1.5; }
@@ -16,7 +15,7 @@
       <feGaussianBlur stdDeviation="2" result="blur"/>
       <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-    <marker id="gml-arrow" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+    <marker id="gml-arrow" markerWidth="10" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse">
       <polygon points="0 0,10 4,0 8" fill="#4ade80"/>
     </marker>
   </defs>
@@ -30,7 +29,7 @@
       <text x="120" y="135" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#14532d">picks graph + task</text>
     </g>
 
-    <path d="M 210 120 L 258 120" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#gml-arrow)"/>
+    <path d="M 210 120 L 252.2 120" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#gml-arrow)"/>
     <rect x="216" y="98" width="38" height="16" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="0.5"/>
     <text x="235" y="110" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#14532d">select</text>
 
@@ -41,7 +40,7 @@
       <text x="360" y="143" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#0b2e1e">AI-ready format</text>
     </g>
 
-    <path d="M 460 120 L 538 120" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#gml-arrow)"/>
+    <path d="M 460 120 L 532.2 120" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#gml-arrow)"/>
 
     <g class="card">
       <rect x="540" y="70" width="200" height="100" rx="14" class="pill-aai" filter="url(#gml-glow)"/>
@@ -49,7 +48,7 @@
       <text x="640" y="138" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#0b2e1e">learn from your graph</text>
     </g>
 
-    <path d="M 740 120 L 818 120" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#gml-arrow)"/>
+    <path d="M 740 120 L 812.2 120" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#gml-arrow)"/>
 
     <g class="card">
       <rect x="820" y="70" width="220" height="100" rx="14" class="pill-aai" filter="url(#gml-glow)"/>
@@ -58,21 +57,21 @@
       <text x="930" y="143" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#0b2e1e">similar items</text>
     </g>
 
-    <path d="M 1040 120 L 1153 120" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#gml-arrow)"/>
+    <path d="M 1040 120 L 1147 120" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#gml-arrow)"/>
     <rect x="1058" y="98" width="68" height="16" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="0.5"/>
     <text x="1092" y="110" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#14532d">saved back</text>
 
     <g class="card">
       <path d="M 1155 87 L 1155 152 A 75 16 0 0 0 1305 152 L 1305 87" class="cyl-db"/>
       <ellipse cx="1230" cy="87" rx="75" ry="16" class="cyl-db-top"/>
-      <text x="1230" y="122" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">ArangoDB</text>
-      <text x="1230" y="142" text-anchor="middle" font-family="sans-serif" font-size="10" font-style="italic" fill="#b9ff38">your graph data</text>
+      <text x="1230" y="129" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">ArangoDB</text>
+      <text x="1230" y="149" text-anchor="middle" font-family="sans-serif" font-size="10" font-style="italic" fill="#b9ff38">your graph data</text>
     </g>
 
-    <path d="M 930 170 L 930 230 L 120 230 L 120 170" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#gml-arrow)"/>
+    <path d="M 930 170 L 930 230 L 120 230 L 120 177.8" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#gml-arrow)"/>
     <rect x="475" y="222" width="100" height="16" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="0.5"/>
     <text x="525" y="234" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#14532d">labels + insights</text>
 
-    <path d="M 1230 168 L 1230 300 L 360 300 L 360 170" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#gml-arrow)"/>
+    <path d="M 1230 168 L 1230 300 L 360 300 L 360 177.8" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#gml-arrow)"/>
   </g>
 </svg>

@@ -2307,6 +2307,16 @@ nav.pagination .next {
     border-radius: 4px;
 }
 
+/* SVGs inlined with the embed-svg shortcode keep their width and height
+   attributes as natural size but shrink to fit narrower columns.
+   The margin also overrides the svg:not(:root) margins from nucleus.css */
+.svg-figure > svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+
 [data-zoomable] {
     cursor: zoom-in;
     user-select: none;
