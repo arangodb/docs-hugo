@@ -34,7 +34,16 @@ automatically based on the query.
 
 ## How it works
 
-Custom Retriever uses a **3-stage pipeline**:
+Every tool listed in `custom_tools` runs at the same time. A `custom_retriever`
+tool goes through the 3-stage pipeline described below; a `local`, `global`, or
+`unified` tool calls the built-in retriever directly. Citations from different
+tools are renumbered so they never collide, and the LLM synthesizes the merged
+results into one answer.
+
+{{< diagram src="/images/custom-retriever-standard-run.svg"
+            alt="Standard Custom Retriever run: query request, optional cache check, partition routing, loading tool configs, parallel tool execution by tool type, merging results, LLM synthesis, and the answer" >}}
+
+Each `custom_retriever` tool uses a **3-stage pipeline**:
 
 1. **Stage 1 - Search for starting nodes**: Find relevant documents using one
    or more search modes:
@@ -52,6 +61,13 @@ Custom Retriever uses a **3-stage pipeline**:
 3. **Stage 3 - Citation processing**: Format results with optional citations.
    Deduplicate chunks, create citation mappings, and format context data with
    `[CITE:X]` markers.
+
+{{< diagram src="/images/custom-retriever-tool-pipeline.svg"
+            alt="Inside one custom_retriever tool: stage 1 searches for starting nodes with lexical, semantic, or hybrid search; stage 2 expands them with an AQL template or falls back to raw documents; stage 3 deduplicates chunks, builds citations, and formats the tool result" >}}
+
+If the relations collection is missing, the AQL query fails, or it returns no
+results, the tool falls back to the plain starting documents. A template without
+`@nodes` or `RETURN` makes the tool fail instead.
 
 ## Tool configuration
 

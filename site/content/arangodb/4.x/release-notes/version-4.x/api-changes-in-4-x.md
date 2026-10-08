@@ -124,6 +124,13 @@ A `smart-join-smart-edge` rule has been added.
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
 
+#### Collections and Views cannot be referenced by ID
+
+Referencing a collection or View by its internal `id` in an endpoint path
+like `/_api/collection/357` or `/_api/view/468` is no longer supported.
+Reference the data source by its name instead, like `/_api/collection/coll`
+or `/_api/view/myView`.
+
 ### Privilege changes
 
 

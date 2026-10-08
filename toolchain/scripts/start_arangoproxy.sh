@@ -24,17 +24,29 @@ function checkIPIsReachable() {
    checkIPIsReachable "$url" $((attempt + 1))
 }
 
-ARANGOPROXY_ARGS=""
+# Example generation uses the config with the servers written by toolchain.sh,
+# plain builds use the committed one without servers
+ARANGOPROXY_CONFIG="${ARANGOPROXY_CONFIG:-/home/toolchain/arangoproxy/cmd/configs/local.yaml}"
+## An array: OVERRIDE contains regular expressions (e.g. .*) that must not be
+## expanded by the shell
+ARANGOPROXY_ARGS=(-config "$ARANGOPROXY_CONFIG")
 
 
 if [ "$HUGO_ENV" != "prod" ] && [ "$HUGO_ENV" != "frontend" ]; then
-  # For each server in arangoproxy/cmd/configs/local.yaml filled by previous step, check the server is up and healthy
-  ARANGOPROXY_ARGS="-use-servers"
+  # For each server in the arangoproxy config written by toolchain.sh, check the server is up and healthy
+  ARANGOPROXY_ARGS+=(-use-servers)
+
+  # arangoproxy runs arangosh via "docker exec" in the per-version client containers.
+  # Older arangoproxy images lack the docker CLI (added to the Dockerfile).
+  if ! command -v docker &> /dev/null; then
+    echo "Installing docker CLI"
+    apk add --no-cache docker-cli
+  fi
   if [ "$OVERRIDE" != "" ] ; then
-    ARANGOPROXY_ARGS="$ARANGOPROXY_ARGS -override $OVERRIDE"
+    ARANGOPROXY_ARGS+=(-override "$OVERRIDE")
   fi
 
-  mapfile servers < <(yq e -o=j -I=0 '.repositories.[]' /home/toolchain/arangoproxy/cmd/configs/local.yaml )
+  mapfile servers < <(yq e -o=j -I=0 '.repositories.[]' "$ARANGOPROXY_CONFIG" )
 
   for server in "${servers[@]}"; do
       url=$(echo "$server" | yq e '.url' -)
@@ -45,4 +57,5 @@ fi
 
 cd /home/toolchain/arangoproxy/cmd
 go build -mod=vendor -o arangoproxy
-./arangoproxy $ARANGOPROXY_ARGS
+# exec so that arangoproxy gets the stop signal (docker stop) directly
+exec ./arangoproxy "${ARANGOPROXY_ARGS[@]}"

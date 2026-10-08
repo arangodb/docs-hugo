@@ -9,18 +9,18 @@ description: >-
 ---
 ## Addresses of collections
 
-All collections in ArangoDB have a unique identifier and a unique
-name. To access a collection, use the collection name to refer to it:
+All collections in ArangoDB have a name that is unique within a database.
+To access a collection, use the collection name to refer to it:
 
 ```
-http://server:port/_api/collection/<collection-name>
+http://server:port/_db/<database-name>/_api/collection/<collection-name>
 ```
 
-For example, assume that the collection identifier is `7254820` and
-the collection name is `demo`, then the URL of that collection is:
+For example, assume ArangoDB runs locally, the collection name is `demo` and it
+is in the `mydb` database. The URL of that collection is the following:
 
 ```
-http://localhost:8529/_api/collection/demo
+http://localhost:8529/_db/mydb/_api/collection/demo
 ```
 
 ## Get information about collections
@@ -1651,7 +1651,7 @@ paths:
 ```curl
 ---
 description: |-
-  Using an identifier and requesting the figures of the collection:
+  Requesting the figures of a collection:
 name: RestCollectionGetCollectionFigures
 ---
 var cn = "products";
