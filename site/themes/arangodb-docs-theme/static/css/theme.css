@@ -2301,8 +2301,7 @@ nav.pagination .next {
 }
 
 .diagram-figure img {
-    width: 100%;
-    max-width: 1200px;
+    max-width: 100%;
     height: auto;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
