@@ -14,10 +14,20 @@ description: >-
 - **Document corpus**: A directory of documents ready for ingestion, such as
   text, Markdown, or PDF files.
 
-The examples in this tutorial use a directory named `./files/tech_articles`
-that holds short articles about technology companies such as SpaceX, Tesla,
-Google, and NVIDIA. Put your own documents in a directory of your choice, and
-adjust the path and the example questions to match your content.
+To follow along with this tutorial, download the example corpus: 50 Markdown
+articles about technology companies, products, and people, such as Google,
+NVIDIA, Amazon, and Elon Musk. Download and unpack it with `curl`:
+
+```bash
+curl -L https://github.com/arangodb/docs-tutorials/releases/download/autograph-v1/corpus.zip -o corpus.zip && unzip -o corpus.zip -d ./files
+```
+
+This creates the `./files/tech_articles` directory used in the examples below.
+Alternatively, download `corpus.zip` manually from the
+[docs-tutorials repository](https://github.com/arangodb/docs-tutorials/releases/tag/autograph-v1)
+and extract it into a local `./files` directory. You can also use your own
+documents instead, and adjust the path and the example questions to match your
+content.
 
 ## Ingest a file corpus
 
