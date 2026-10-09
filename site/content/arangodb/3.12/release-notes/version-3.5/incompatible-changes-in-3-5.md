@@ -42,7 +42,7 @@ The hidden startup option `--rocksdb.delayed_write_rate` was renamed to the more
 consistent `--rocksdb.delayed-write-rate`. When the old option name is used, the 
 _arangod_ startup will be aborted with a descriptive error message.
 
-## HTTP REST API
+## HTTP API
 The following APIs have been added:
 
 - [The new Stream Transaction API](../../develop/http-api/transactions/_index.md)
@@ -148,7 +148,7 @@ output was renamed to `openssl-version-compile-time`.
 
 This change affects the output produced when starting one of the ArangoDB
 executables (e.g. _arangod_, _arangosh_) with the `--version` command. It also 
-changes the attribute name in the detailed response of the `/_api/version` REST API.
+changes the attribute name in the detailed response of the `/_api/version` HTTP API.
 
 ### Overcommit settings
 

@@ -294,24 +294,22 @@ paths:
                   type: array
                   items:
                     type: string
-                isSmart:
-                  description: |
-                    Define if the created graph should be smart.
-                    - Setting `options.smartGraphAttribute` creates a SmartGraph (`isSmart` is automatically `true`).
-                    - Setting `isSmart` to `true` but no `options.smartGraphAttribute` creates an EnterpriseGraph.
-                  type: boolean
-                  default: false
-                isDisjoint:
-                  description: |
-                    Whether to create a Disjoint SmartGraph instead of a regular SmartGraph.
-                  type: boolean
-                  default: false
                 options:
                   description: |
                     Options for creating collections within this graph.
                     It can contain the following attributes:
                   type: object
                   properties:
+                    isSmart:
+                      description: |
+                        Define if the created graph should be smart.
+                        - Setting `smartGraphAttribute` creates a SmartGraph (`isSmart` is automatically `true`).
+                        - Setting `isSmart` to `true` but no `smartGraphAttribute` creates an EnterpriseGraph.
+
+                        Ignored if `replicationFactor` is set to `"satellite"`
+                        (a SatelliteGraph is created in that case).
+                      type: boolean
+                      default: false
                     smartGraphAttribute:
                       description: |
                         Setting this option creates a SmartGraph.
@@ -320,6 +318,12 @@ paths:
                         Every node in this SmartGraph has to have this attribute.
                         Cannot be modified later.
                       type: string
+                    isDisjoint:
+                      description: |
+                        Whether to create a Disjoint SmartGraph instead of a regular SmartGraph.
+                        Only has an effect in combination with `smartGraphAttribute` or `isSmart`.
+                      type: boolean
+                      default: false
                     satellites:
                       description: |
                         An array of collection names that is used to create SatelliteCollections
@@ -782,8 +786,8 @@ body = {
     to: [ "endNodes" ]
   }],
   orphanCollections: [ "orphanNodes" ],
-  isSmart: true,
   options: {
+    isSmart: true,
     replicationFactor: 2,
     numberOfShards: 9,
     smartGraphAttribute: "region"
@@ -821,8 +825,8 @@ body = {
     to: [ "endNodes" ]
   }],
   orphanCollections: [ "orphanNodes" ],
-  isSmart: true,
   options: {
+    isSmart: true,
     isDisjoint: true,
     replicationFactor: 2,
     numberOfShards: 9,
@@ -862,8 +866,8 @@ body = {
     to: [ "endNodes" ]
   }],
   orphanCollections: [ "orphanNodes" ],
-  isSmart: true,
   options: {
+    isSmart: true,
     replicationFactor: 2,
     numberOfShards: 9,
     smartGraphAttribute: "region",
@@ -900,8 +904,8 @@ body = {
     to: [ "endNodes" ]
   }],
   orphanCollections: [ ],
-  isSmart: true,
   options: {
+    isSmart: true,
     replicationFactor: 2,
     numberOfShards: 9,
   }

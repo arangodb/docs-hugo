@@ -11,7 +11,7 @@ aliases:
 Deleting nodes with associated edges is currently not handled via AQL while 
 the [graph management interface](../../graphs/general-graphs/management.md#remove-a-node)
 and the
-[REST API for the graph module](../../develop/http-api/graphs/named-graphs.md#remove-a-node)
+[HTTP API for the graph module](../../develop/http-api/graphs/named-graphs.md#remove-a-node)
 offer a node deletion functionality.
 However, as shown in this example based on the
 [Knows Graph](../../graphs/example-graphs.md#knows-graph), a query for this 

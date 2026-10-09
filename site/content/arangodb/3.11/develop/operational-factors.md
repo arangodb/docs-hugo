@@ -108,7 +108,7 @@ someone else in the meantime. By specifying a document's previous revision ID
 you can avoid losing updates on these documents without noticing it.
 
 You can specify the revision via the `_rev` field inside the document or via
-the `If-Match: <revision>` HTTP header in the documents REST API.
+the `If-Match: <revision>` HTTP header in the documents HTTP API.
 In the _arangosh_ you can perform such an operation like this:
 
 ```js

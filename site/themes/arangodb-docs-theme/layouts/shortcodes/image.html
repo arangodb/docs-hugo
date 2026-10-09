@@ -16,5 +16,5 @@
   {{- with $class }} class="{{ . }}"{{ end }}
   {{- with $style }} style="{{ . | safeCSS }}"{{ end }}>
 {{- else }}
-  {{- errorf "<error code=1>Broken image reference '%v' found in %v </error><br>" $src $file.Path }}
+  {{- errorf "Broken image reference '%v' found in %v" $src $file.Path }}
 {{- end }}

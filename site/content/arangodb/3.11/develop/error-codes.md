@@ -11,7 +11,7 @@ pageToc:
 ## Numbers, names, and descriptions of errors
 
 When an error occurs in an operation of an ArangoDB server, the
-[HTTP REST API](http-api/_index.md) responds to a request with an
+[HTTP API](http-api/_index.md) responds to a request with an
 **HTTP status code** like `400 Bad Request`, `401 Unauthorized`,
 `503 Service Unavailable`, or similar. This code is typically also included in
 the body of the response, specifically the `code` attribute, along with the
