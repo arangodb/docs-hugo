@@ -15,7 +15,7 @@ It is built on a modern, cloud-native foundation designed for enterprise
 scalability and reliability.
 
 To install the platform and run your first graph-powered questions, see
-[Get started with the data platform](../get-started/data-platform/_index.md).
+[Get started with the Contextual Data Platform](../get-started/contextual-data-platform/_index.md).
 
 ## Architecture
 
