@@ -32,7 +32,7 @@ content.
 ## Ingest a file corpus
 
 While the [Quickstart](quickstart/_index.md#quick-start) uploaded three short
-text files one by one, real-world applications require ingesting complete file
+While the Quickstart uploaded a folder of three short text files, real-world applications require ingesting complete file corpora.
 corpora. You can upload an entire local directory with
 `client.files.upload_folder()`.
 
