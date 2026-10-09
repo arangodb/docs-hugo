@@ -1,6 +1,6 @@
 ---
-title: Install the Arango Contextual Data Platform
-menuTitle: Install
+title: Arango Contextual Data Platform Quickstart
+menuTitle: Quickstart
 weight: 5
 description: >-
   Install the Arango Contextual Data Platform and run your first graph-powered
@@ -175,32 +175,29 @@ documents every endpoint. Going from documents to answers that way takes more
 than a dozen calls in the right order, though: obtaining and renewing a JWT,
 storing your LLM API key as a secret, creating a project, starting the AutoGraph
 service, running the three build stages one after another while polling each
-one until it finishes, and finally deploying a retriever to query. The Arango AI SDK, the official Python client, wraps that
-whole sequence into a handful of methods - `upload()`, `build()`, and `ask()` -
-and takes care of authentication, waiting on long-running steps, and reconnecting
-to a project you built earlier. It is the quickest way to put the platform to
-work from your own code, and it is what the quick start below uses.
+one until it finishes, and finally deploying a retriever to query. The Arango
+AI SDK, the official Python client, wraps that
+whole sequence into named methods on a client object and takes care of
+authentication, waiting on long-running steps, and reconnecting to a project
+you built earlier. It is the quickest way to put the platform to work from
+your own code, and it is what the quick start below uses.
 
-The SDK requires **Python 3.10 or higher** - note that the Python shipped with
+The SDK requires **Python 3.12 or higher** - note that the Python shipped with
 macOS is older than that, so check your version first:
 
 ```bash
 python3 --version
 ```
 
-Create and activate a virtual environment with a supported Python version, then
-install the SDK into it:
+Install the SDK:
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install https://releases.license.arango.ai/releases/plg/python_arango_ai_sdk-0.1.0-py3-none-any.whl
+pip install arango-ai-sdk
 ```
 
-If `pip` reports `requires a different Python: 3.9.x not in '>=3.10'`, the
-virtual environment was created with too old an interpreter. Delete `.venv`,
-and create it again with a newer Python, for example
-`python3.12 -m venv .venv`.
+If `pip` reports `requires a different Python: 3.11.x not in '>=3.12'`, it is
+running under too old an interpreter. Install with a newer Python instead, for
+example `python3.12 -m pip install arango-ai-sdk`.
 
 ## Quick Start
 
@@ -243,93 +240,193 @@ Follow these steps to connect and run your first graph query.
 
 ### Connect
 
-Connect to the platform, select a database, and open an AutoGraph project. The
-database and the project are created if they do not exist yet. Opening the
-project also stores your LLM API key on the platform and starts the AutoGraph
-service, which can take a minute or two:
+Constructing the client signs you in, so a wrong password fails here rather
+than on your first real call. Every later call carries a valid token, which
+the SDK renews silently when it expires. The client connects to the `_system`
+database by default:
 
 ```python
-from arango_ai import ArangoAIClient
+from arango_ai_sdk import ArangoAIClient
 
-client = ArangoAIClient("https://localhost:8529", verify_tls=False)
-db = client.db('quickstart_db', username='root', password='test')
-ag = db.autograph('my-project', llm_api_key='YOUR_LLM_API_KEY')
+client = ArangoAIClient(
+    base_url="https://localhost:8529",
+    username="root",
+    password="test",
+    verify=False,  # the local deployment uses a self-signed certificate
+)
 ```
 
-### Build
+### Create a project
 
-Upload the three biographies as separate documents, and then build the graph.
-`build()` runs the whole AutoGraph pipeline described above - Corpus Graph,
-per-cluster strategies, and Knowledge Graph extraction - and finally starts the
-retriever. Most steps call your LLM or embedding model, so expect it to take
-several minutes even for this small dataset:
+A project is the workspace everything else belongs to: the documents you
+upload, the Context Graph built from them, and the questions you later ask
+against it:
 
 ```python
-ag.upload(
-    text="Albert Einstein developed the theory of relativity and received "
+project = client.project.create(
+    project_name="quickstart",
+    project_type="autograph",
+)
+```
+
+`create` returns a project handle, which is where everything project-scoped
+happens from here on. A project name can only be created once; to pick up a
+project from an earlier run, use `client.project.get(project_name="quickstart")`
+instead.
+
+### Store your LLM API key
+
+AutoGraph needs a chat model to read your documents and an embedding model to
+index them. You store the API key once as a *secret profile* and refer to it
+by ID afterwards, so the key never travels through your code again:
+
+```python
+profile = client.secret_profile.create(
+    name="quickstart-openai",
+    secret="YOUR_LLM_API_KEY",
+    provider="openai",
+)
+```
+
+One key can serve both the chat and the embedding model; pass its
+`profile_id` twice in the next step.
+
+### Deploy AutoGraph
+
+Deploying starts the AutoGraph service for the project. The call returns as
+soon as the platform accepts the install, while the pod may still be starting,
+so wait for the service to become ready before you continue:
+
+```python
+project.autograph.deploy(
+    chat_api_provider="openai",
+    embedding_api_provider="openai",
+    chat_secret_profile_id=profile.profile_id,
+    embedding_secret_profile_id=profile.profile_id,
+    fps_recovery_username="root",
+    chat_model="gpt-4o",
+    embedding_model="text-embedding-3-small",
+)
+
+if not project.autograph.wait_until_ready():
+    raise RuntimeError("AutoGraph did not become ready in time")
+```
+
+`fps_recovery_username` names an existing ArangoDB user with read and write
+access to the project's database; AutoGraph uses it to resume file parsing
+after a pod restart. For this local evaluation setup, `root` is fine.
+
+### Upload and build
+
+Files are uploaded under a *scope*: the first label is the project name and
+the second is the *category*, a label you later ingest by. Save the three
+biographies as text files and upload the folder:
+
+```python
+from pathlib import Path
+
+docs = Path("./quickstart-docs")
+docs.mkdir(exist_ok=True)
+
+(docs / "einstein.txt").write_text(
+    "Albert Einstein developed the theory of relativity and received "
     "the Nobel Prize in Physics in 1921. He worked at the Institute for "
     "Advanced Study in Princeton and collaborated with many physicists "
     "including Niels Bohr on quantum mechanics debates."
 )
-
-ag.upload(
-    text="Niels Bohr proposed the Bohr model of the atom and won the Nobel "
+(docs / "bohr.txt").write_text(
+    "Niels Bohr proposed the Bohr model of the atom and won the Nobel "
     "Prize in Physics in 1922. He founded the Institute of Theoretical "
     "Physics in Copenhagen and mentored Werner Heisenberg, who later "
     "developed the uncertainty principle."
 )
-
-ag.upload(
-    text="Werner Heisenberg formulated quantum mechanics and the uncertainty "
+(docs / "heisenberg.txt").write_text(
+    "Werner Heisenberg formulated quantum mechanics and the uncertainty "
     "principle. He received the Nobel Prize in Physics in 1932. During "
     "World War II he led Germany's nuclear energy project. He had studied "
     "under Niels Bohr in Copenhagen and later debated with Einstein about "
     "the foundations of quantum theory."
 )
 
-ag.build()
+results = client.files.upload_folder(docs, scope=["quickstart", "physicists"])
+for result in results:
+    print(result.name, result.status)
+```
+
+Now build the graph. `ingest()` runs the whole AutoGraph pipeline described
+above - Corpus Graph, per-cluster strategies, and Knowledge Graph extraction -
+and blocks until it finishes. Most steps call your LLM or embedding model, so
+expect it to take several minutes even for this small dataset:
+
+```python
+result = project.autograph.ingest(categories=["physicists"])
+print(result.build.document_count, "documents ingested")
+```
+
+A category can only be built once. If you upload more files later, ingest
+again with `incremental=True`; running the same ingest twice without it raises
+`CategoryAlreadyBuiltError`.
+
+### Deploy a retriever
+
+**AutoRAG** answers questions from the Context Graph, and it runs as its own
+service that you deploy with the same model settings as AutoGraph:
+
+```python
+retriever = project.autorag.deploy(
+    chat_api_provider="openai",
+    embedding_api_provider="openai",
+    chat_secret_profile_id=profile.profile_id,
+    embedding_secret_profile_id=profile.profile_id,
+    chat_model="gpt-4o",
+    embedding_model="text-embedding-3-small",
+)
+
+rag = retriever.autorag
+if not rag.wait_until_ready():
+    raise RuntimeError("The retriever did not become ready in time")
 ```
 
 ### Query
 
-With the graph built, you can ask questions about the three biographies.
-`ask()` sends your question to the AutoRAG retriever. The retriever looks up the
-relevant entities, relationships, and text passages in the Context Graph and
-passes them to your LLM, which writes an answer based on that retrieved context
-rather than on its general knowledge.
+With the graph built and the retriever running, you can ask questions about
+the three biographies. `ask()` sends your question to the retriever. The
+retriever looks up the relevant entities, relationships, and text passages in
+the Context Graph and passes them to your LLM, which writes an answer based on
+that retrieved context rather than on its general knowledge.
 
 How the retriever searches depends on the kind of question, and you select it
-with the `mode` and `use_llm_planner` parameters:
+with the `query_type` parameter:
 
 - [**Local search**](../../../agentic-ai-suite/autorag/search-methods/local-search.md)
-  (the default) starts from the entities your question names, such as
+  (`QueryType.LOCAL`) starts from the entities your question names, such as
   Heisenberg, and follows their direct relationships. Use it for questions about
   a specific person or thing.
 - [**Global search**](../../../agentic-ai-suite/autorag/search-methods/global-search.md)
-  (`mode="global"`) works from summaries of groups of closely related entities
-  across the whole graph. Use it for broad questions about overall themes.
+  (`QueryType.GLOBAL`) works from summaries of groups of closely related
+  entities across the whole graph. Use it for broad questions about overall
+  themes.
 - [**Unified search**](../../../agentic-ai-suite/autorag/search-methods/unified-search.md)
-  (`mode="unified"`) combines matching text passages with matching entities in
-  a single fast lookup.
-- [**Deep search**](../../../agentic-ai-suite/autorag/search-methods/deep-search.md)
-  (`use_llm_planner=True`) lets the LLM break the question into steps and
-  follow relationships over several hops. Use it for questions that combine
-  facts from several documents. It is the slowest mode.
+  (`QueryType.UNIFIED`, the default) combines matching text passages with
+  matching entities in a single fast lookup, and works on every part of the
+  graph.
 
-Try one question with each mode:
+Try one question with each mode. The answer is in the `result` field of the
+response:
 
 ```python
+from arango_ai_sdk.models import QueryType
+
 # Local search: one entity and its direct relationships
-print(ag.ask("What did Heisenberg contribute to physics?"))
+print(rag.ask("What did Heisenberg contribute to physics?",
+              query_type=QueryType.LOCAL).result)
 
 # Global search: themes across the whole graph
-print(ag.ask("What are the big themes across these documents?", mode="global"))
+print(rag.ask("What are the big themes across these documents?",
+              query_type=QueryType.GLOBAL).result)
 
-# Unified search: text passages and entities combined
-print(ag.ask("Explain the Nobel Prize contributions in quantum mechanics.", mode="unified"))
-
-# Deep search: multi-step reasoning across documents
-print(ag.ask("Which physicists here won Nobel Prizes and what were they for?", use_llm_planner=True))
+# Unified search (the default): text passages and entities combined
+print(rag.ask("Which physicists here won Nobel Prizes and what were they for?").result)
 ```
 
 The last question is the one from the start of this quick start. No single
@@ -338,12 +435,15 @@ from all three documents.
 
 ### Cleanup
 
-Stop the AutoGraph and retriever services when you are done. The project and
-the graph it built stay in the database, so opening the same project again later
-reconnects to them:
+Remove the retriever and the AutoGraph service when you are done, and close
+the client. The project and the graph it built stay in the database, so you
+can pick the project up again later with `client.project.get()` and deploy a
+new retriever to ask more questions:
 
 ```python
-ag.stop()
+rag.undeploy()
+project.autograph.undeploy()
+client.close()
 ```
 
 ## Complete Python Script
@@ -355,80 +455,120 @@ the database password and the LLM API key from the `ARANGODB_PASSWORD` and
 ```python
 # Complete Quick Start Script
 import os
-import logging
+from pathlib import Path
 
-from arango_ai import ArangoAIClient
+from arango_ai_sdk import ArangoAIClient
+from arango_ai_sdk.models import QueryType
 
-# Enable SDK logs so you can see progress instead of a blank screen
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-
-client = ArangoAIClient("https://localhost:8529", verify_tls=False)
-db = client.db("quickstart_db", username="root", password=os.environ["ARANGODB_PASSWORD"])
-ag = db.autograph("my-project", llm_api_key=os.environ["LLM_API_KEY"])
+client = ArangoAIClient(
+    base_url="https://localhost:8529",
+    username="root",
+    password=os.environ["ARANGODB_PASSWORD"],
+    verify=False,
+)
 print("Connected to Arango AI...")
 
-# Upload three separate documents - each about a different person
+project = client.project.create(
+    project_name="quickstart",
+    project_type="autograph",
+)
 
-print("Uploading files...")
-ag.upload(
-    text="Albert Einstein developed the theory of relativity and received "
+# Store the LLM API key once; one key serves both models here
+profile = client.secret_profile.create(
+    name="quickstart-openai",
+    secret=os.environ["LLM_API_KEY"],
+    provider="openai",
+)
+
+project.autograph.deploy(
+    chat_api_provider="openai",
+    embedding_api_provider="openai",
+    chat_secret_profile_id=profile.profile_id,
+    embedding_secret_profile_id=profile.profile_id,
+    fps_recovery_username="root",
+    chat_model="gpt-4o",
+    embedding_model="text-embedding-3-small",
+)
+if not project.autograph.wait_until_ready():
+    raise RuntimeError("AutoGraph did not become ready in time")
+
+# Write three separate documents - each about a different person
+
+docs = Path("./quickstart-docs")
+docs.mkdir(exist_ok=True)
+(docs / "einstein.txt").write_text(
+    "Albert Einstein developed the theory of relativity and received "
     "the Nobel Prize in Physics in 1921. He worked at the Institute for "
     "Advanced Study in Princeton and collaborated with many physicists "
     "including Niels Bohr on quantum mechanics debates."
 )
-ag.upload(
-    text="Niels Bohr proposed the Bohr model of the atom and won the Nobel "
+(docs / "bohr.txt").write_text(
+    "Niels Bohr proposed the Bohr model of the atom and won the Nobel "
     "Prize in Physics in 1922. He founded the Institute of Theoretical "
     "Physics in Copenhagen and mentored Werner Heisenberg, who later "
     "developed the uncertainty principle."
 )
-ag.upload(
-    text="Werner Heisenberg formulated quantum mechanics and the uncertainty "
+(docs / "heisenberg.txt").write_text(
+    "Werner Heisenberg formulated quantum mechanics and the uncertainty "
     "principle. He received the Nobel Prize in Physics in 1932. During "
     "World War II he led Germany's nuclear energy project. He had studied "
     "under Niels Bohr in Copenhagen and later debated with Einstein about "
     "the foundations of quantum theory."
 )
+
+print("Uploading files...")
+for result in client.files.upload_folder(docs, scope=["quickstart", "physicists"]):
+    print(result.name, result.status)
 print("Upload complete. Building knowledge graph (this may take several minutes)...")
 
 # Build the knowledge graph
 
-ag.build()
+project.autograph.ingest(categories=["physicists"])
 print("Build complete.")
+
+# Deploy the retriever that answers questions from the graph
+
+retriever = project.autorag.deploy(
+    chat_api_provider="openai",
+    embedding_api_provider="openai",
+    chat_secret_profile_id=profile.profile_id,
+    embedding_secret_profile_id=profile.profile_id,
+    chat_model="gpt-4o",
+    embedding_model="text-embedding-3-small",
+)
+rag = retriever.autorag
+if not rag.wait_until_ready():
+    raise RuntimeError("The retriever did not become ready in time")
 
 # Cross-document question
 # This is the key value of a knowledge graph: connecting dots across documents
 # that no single document answers on its own.
 
 print("=== Cross-document question ===")
-print(ag.ask("How are Einstein, Bohr, and Heisenberg connected to each other?"))
+print(rag.ask("How are Einstein, Bohr, and Heisenberg connected to each other?").result)
 
-# All four query modes
+# All three query modes
 
-print("\n=== Local (default) - entity neighborhood ===")
-print(ag.ask("What did Heisenberg contribute to physics?"))
+print("\n=== Local - entity neighborhood ===")
+print(rag.ask("What did Heisenberg contribute to physics?",
+              query_type=QueryType.LOCAL).result)
 
 print("\n=== Global - themes across the whole graph ===")
-print(ag.ask("What are the big themes across these documents?", mode="global"))
+print(rag.ask("What are the big themes across these documents?",
+              query_type=QueryType.GLOBAL).result)
 
-print("\n=== Unified - passages + entities combined ===")
-print(ag.ask("Explain the Nobel Prize contributions in quantum mechanics.", mode="unified"))
-
-print("\n=== Deep - multi-hop reasoning with LLM planner ===")
-print(
-    ag.ask(
-        "Which physicists here won Nobel Prizes and what were they for?",
-        use_llm_planner=True,
-    )
-)
+print("\n=== Unified (default) - passages + entities combined ===")
+print(rag.ask("Which physicists here won Nobel Prizes and what were they for?").result)
 
 # Out-of-scope question (grounding check)
 # The retriever should tell you it doesn't know - it stays inside your knowledge
 # graph instead of inventing an answer.
 
 print("\n=== Out-of-scope question (grounding check) ===")
-print(ag.ask("What was the score of last night's football game?"))
+print(rag.ask("What was the score of last night's football game?").result)
 
-# Stop services
-ag.stop()
+# Stop services; the project and the graph stay in the database
+rag.undeploy()
+project.autograph.undeploy()
+client.close()
 ```

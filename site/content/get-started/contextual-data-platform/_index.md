@@ -1,5 +1,5 @@
 ---
-title: Get started with the data platform
+title: Get started with the Contextual Data Platform
 menuTitle: Arango Contextual Data Platform
 weight: 10
 description: >-
@@ -14,10 +14,10 @@ sources behind each answer.
 
 This section takes you from an empty machine to a working Context Graph:
 
-1. [Install](install/_index.md) the platform and the Arango AI SDK, then run
+1. [Install](quickstart/_index.md) the platform and the Arango AI SDK, then run
    the quick start: build a small graph from three short texts and query it.
    If the installation does not go as expected, see
-   [Troubleshooting the install](install/troubleshooting.md).
+   [Troubleshooting the install](quickstart/troubleshooting.md).
 2. [Build with AutoGraph](build-with-autograph.md): ingest a whole directory of
    documents, tune the build parameters, and pick the right retrieval mode for
    each kind of question.

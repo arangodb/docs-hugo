@@ -162,9 +162,35 @@ connected data without cross-node traversal, and security features. See
 **Managed**: [AMP](../amp/_index.md) runs ArangoDB for you on Google Cloud or
 AWS, with monitoring, upgrades, and backups handled.
 
-## Next step
+## Which product do I need?
+
+Two offers are available to try for free:
+
+- **ArangoDB with the Platform Suite**: the multi-model database plus the
+  services to run, secure, and explore it on Kubernetes.
+- **Arango Contextual Data Platform**: everything above, plus the Agentic AI
+  Suite, which builds and queries a context graph for AI agents.
+
+The deciding question is simple. Will you model and query your data yourself,
+or do you want the platform to build AI-ready context for you?
+
+| If you are building... | Choose |
+|------------------------|--------|
+| An application that stores and traverses connected data, such as recommendations, fraud detection, network and IT asset graphs, or identity and access | ArangoDB with the Platform Suite |
+| An application that combines graph, document, key-value, full-text, and vector data in a single query | ArangoDB with the Platform Suite |
+| Your own retrieval or RAG (retrieval-augmented generation) pipeline, where you design the schema and write the AQL queries | ArangoDB with the Platform Suite |
+| AI agents, copilots, or assistants that need trusted context from enterprise documents | Arango Contextual Data Platform |
+| GraphRAG without hand-building a schema, ontology, or extraction pipeline | Arango Contextual Data Platform |
+| Answers to natural-language questions across domains, traced back to their source | Arango Contextual Data Platform |
+| Shared memory and context for multiple agents, kept current as data changes | Arango Contextual Data Platform |
+
+Not sure? If your project involves AI agents or LLMs answering questions over
+documents, start with the Arango Contextual Data Platform. It includes ArangoDB
+and the Platform Suite, so you won't outgrow it.
+
+## Next steps
 
 Pick an installation path:
 
-- [Get started with the Arango Contextual Data Platform](data-platform/_index.md)
+- [Get started with the Arango Contextual Data Platform](contextual-data-platform/_index.md)
 - [Get started with ArangoDB](arangodb/_index.md)

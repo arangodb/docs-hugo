@@ -7,7 +7,7 @@ description: >-
   first time and running the quick start, and how to fix them
 ---
 This page covers the problems you are most likely to hit when following
-[Install the Arango Contextual Data Platform](_index.md).
+the [Arango Contextual Data Platform Quickstart](_index.md).
 
 ## Start here
 
@@ -123,9 +123,14 @@ browser, the option to continue is behind an **Advanced** button.
 The SDK has to accept the same self-signed certificate:
 
 ```python
-from arango_ai import ArangoAIClient
+from arango_ai_sdk import ArangoAIClient
 
-client = ArangoAIClient("https://localhost:8529", verify_tls=False)
+client = ArangoAIClient(
+    base_url="https://localhost:8529",
+    username="root",
+    password="test",
+    verify=False,
+)
 ```
 
 Note the `https` scheme - the platform gateway does not serve plain HTTP.
@@ -146,13 +151,16 @@ before exposing the deployment beyond your machine.
 
 ### The build never finishes
 
-`ag.build()` is the long step - a few minutes on the sample documents, longer on
-your own documents. It streams progress, so enable the SDK logs to see where it is
+`project.autograph.ingest()` is the long step - a few minutes on the sample
+documents, longer on your own documents. It polls the platform every 30
+seconds, so pass an `on_progress` callback to see each status as it arrives
 instead of watching a blank screen:
 
 ```python
-import logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+def show(progress):
+    print(progress.step, progress.status.status)
+
+project.autograph.ingest(categories=["physicists"], on_progress=show)
 ```
 
 No output for more than a minute or two means something is wrong. Check the
@@ -179,9 +187,12 @@ supported providers and models.
 
 ### Questions return nothing useful
 
-Make sure `ag.build()` completed before you call `ag.ask()`. Until the graph is
-built there is nothing to retrieve from, and the retriever will tell you it does
-not know rather than inventing an answer.
+Make sure `project.autograph.ingest()` completed and the retriever reported
+ready before you call `ask()`. Until the graph is built there is nothing to
+retrieve from, and the retriever will tell you it does not know rather than
+inventing an answer. Asking through a retriever that was removed from the
+project raises `AutoRagNotDeployedError`; deploy a new one with
+`project.autorag.deploy()`.
 
 ## Start over
 

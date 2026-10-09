@@ -19,7 +19,7 @@ to each other and which one to install.
 
 {{< cards >}}
 
-{{% card title="Arango Contextual Data Platform" link="data-platform/" %}}
+{{% card title="Arango Contextual Data Platform" link="contextual-data-platform/" %}}
 Install the data platform, turn documents into a knowledge graph with AutoGraph,
 and ask questions about them in natural language. Choose between an
 installation script for local evaluation and a manual install of the full
@@ -40,5 +40,5 @@ Takes about 2 minutes.
 Each installation path has a troubleshooting page that covers the problems you
 are most likely to hit on a first install:
 
-- [Troubleshooting the data platform installation](data-platform/install/troubleshooting.md)
+- [Troubleshooting the data platform installation](contextual-data-platform/quickstart/troubleshooting.md)
 - [Troubleshooting the ArangoDB installation](arangodb/troubleshooting.md)
