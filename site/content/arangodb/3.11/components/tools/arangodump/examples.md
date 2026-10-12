@@ -122,7 +122,15 @@ Simply point it to one of the _Coordinators_ and it
 behaves exactly as described above, working on sharded collections
 in the Cluster.
 
-Please see the [Limitations](limitations.md).
+{{< warning >}}
+In a cluster, _arangodump_ does not guarantee to dump a consistent snapshot
+if write operations happen while the dump is in progress. It is therefore
+recommended not to perform any data-modification operations on the cluster
+while _arangodump_ is running, or to use [Hot Backups](../../../operations/backup-and-restore.md#hot-backups)
+instead. This is in contrast to a single instance or an Active Failover setup,
+where the dump is consistent even if write operations are ongoing, as a
+snapshot is taken when the dump starts.
+{{< /warning >}}
 
 As above, the output is one structure description file and one data
 file per sharded collection. Note that the data in the data file is
