@@ -609,16 +609,17 @@ var backup = hotbackup.create();
 var upload = hotbackup.upload(backup.id, "local://tmp/backups",
                               {local:{type:"local"}});
 // Wait until upload complete:
-for (var count = 0; count < 30; ++count) {
+for (var count = 0; count < 150; ++count) {
   var progress = hotbackup.uploadProgress(upload.uploadId);
   try {
-    if (progress.DBServers.SNGL.Status === "COMPLETED") {
+    if (progress.DBServers.SNGL.Status !== "STARTED") {
       break;
     }
   } catch(e) {
   }
-  internal.wait(0.5);
+  internal.wait(0.1);
 }
+assert(progress.DBServers.SNGL.Status === "COMPLETED");
 hotbackup.delete(backup.id);
 var url = "/_admin/backup/download";
 body = {"id" : backup.id,
@@ -665,16 +666,17 @@ var body = {"id" : backup.id,
 var upload = hotbackup.upload(backup.id, "local://tmp/backups",
                               {local:{type:"local"}});
 // Wait until upload complete:
-for (var count = 0; count < 30; ++count) {
+for (var count = 0; count < 150; ++count) {
   var progress = hotbackup.uploadProgress(upload.uploadId);
   try {
-    if (progress.DBServers.SNGL.Status === "COMPLETED") {
+    if (progress.DBServers.SNGL.Status !== "STARTED") {
       break;
     }
   } catch(e) {
   }
-  internal.wait(0.5);
+  internal.wait(0.1);
 }
+assert(progress.DBServers.SNGL.Status === "COMPLETED");
 hotbackup.delete(backup.id);
 var download = hotbackup.download(backup.id, "local://tmp/backups",
                                   {local:{type:"local"}});

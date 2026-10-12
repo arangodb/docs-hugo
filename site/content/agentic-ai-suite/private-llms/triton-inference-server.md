@@ -175,7 +175,7 @@ Once deployed, the service exposes two endpoints:
 
 | Port | Protocol | Purpose |
 |------|----------|---------|
-| 8000 | HTTP/REST | Model inference, management, status |
+| 8000 | HTTP | Model inference, management, status |
 | 8001 | gRPC | High-performance binary communication |
 
 

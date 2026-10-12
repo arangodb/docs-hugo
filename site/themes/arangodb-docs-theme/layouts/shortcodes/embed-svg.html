@@ -16,10 +16,9 @@
     {{ if $svg -}}
       <figure class="svg-figure">
         {{- $svg.Content | safeHTML -}}
-        <figcaption>
-        {{- with $caption }}<em>{{ . | markdownify }}</em>{{ end -}}
-        &nbsp;<a href="{{ $svg.Permalink }}" target="_blank" rel="noopener" class="link"><em>View file</em></a>{{/* Whitespace control */ -}}
-        </figcaption>
+        {{- with $caption }}
+        <figcaption><em>{{ . | markdownify }}</em></figcaption>
+        {{- end }}
       </figure>
     {{- else -}}
       {{ errorf "File '%v' not found for '%v'" $svgPath .Page.File.Path -}}

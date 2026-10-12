@@ -7,9 +7,10 @@ Disallow:
 {{ if $isProduction -}}
 User-agent: *
 Disallow: /nav.html
+
+Sitemap: {{ .Site.BaseURL }}sitemap.xml
 {{ else -}}
 {{/* Don't let search engines index deploy previews on Netlify */ -}}
 User-agent: *
 Disallow: /
 {{ end -}}
-Sitemap: /sitemap.xml
