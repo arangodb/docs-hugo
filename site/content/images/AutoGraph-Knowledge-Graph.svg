@@ -1,6 +1,5 @@
-<svg viewBox="0 0 820 480"
-     xmlns="http://www.w3.org/2000/svg"
-     style="display:block;width:100%;max-width:820px;margin:0 auto">
+<svg viewBox="0 0 820 480" width="820" height="480"
+     xmlns="http://www.w3.org/2000/svg">
   <style>
     .agkg text { font-family: sans-serif; }
     .agkg .vtx { fill: #b9f5a0; stroke: #4ade80; stroke-width: 1.5; }
@@ -12,7 +11,7 @@
     .agkg .note { font-size: 11px; fill: #666; }
   </style>
   <defs>
-    <marker id="agkg-arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+    <marker id="agkg-arrow" markerWidth="10" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse">
       <polygon points="0 0,10 4,0 8" fill="#4ade80"/>
     </marker>
   </defs>
@@ -44,23 +43,23 @@
       <text class="vsub" x="675" y="370" text-anchor="middle">report, level</text>
     </g>
 
-    <path d="M 312 131 L 240 131" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agkg-arrow)"/>
+    <path d="M 312 131 L 247.8 131" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agkg-arrow)"/>
     <rect class="ebadge" x="232" y="71" width="88" height="22" rx="11"/>
     <text class="elabel" x="276" y="86" text-anchor="middle">PART_OF</text>
 
-    <path d="M 580 131 L 507 131" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agkg-arrow)"/>
+    <path d="M 580 131 L 514.8 131" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agkg-arrow)"/>
     <rect class="ebadge" x="491" y="71" width="106" height="22" rx="11"/>
     <text class="elabel" x="544" y="86" text-anchor="middle">MENTIONED_IN</text>
 
-    <path d="M 712 95 C 752 52, 808 128, 766 158" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agkg-arrow)"/>
+    <path d="M 712 95 C 752 52, 818.4 120.5, 776.4 150.5" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agkg-arrow)"/>
     <rect class="ebadge" x="716" y="58" width="92" height="22" rx="11"/>
     <text class="elabel" x="762" y="73" text-anchor="middle">RELATED_TO</text>
 
-    <path d="M 675 167 L 675 320" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agkg-arrow)"/>
+    <path d="M 675 167 L 675 312.2" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agkg-arrow)"/>
     <rect class="ebadge" x="620" y="232" width="110" height="22" rx="11"/>
     <text class="elabel" x="675" y="247" text-anchor="middle">IN_COMMUNITY</text>
 
-    <path d="M 630 392 C 600 445, 750 445, 720 394" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agkg-arrow)"/>
+    <path d="M 630 392 C 600 445, 752.8 449.8, 722.8 398.8" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agkg-arrow)"/>
     <rect class="ebadge" x="615" y="430" width="120" height="22" rx="11"/>
     <text class="elabel" x="675" y="445" text-anchor="middle">SUB_COMMUNITY_OF</text>
 

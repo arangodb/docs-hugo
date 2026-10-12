@@ -10,7 +10,7 @@ aliases:
 {{< tag "Agentic AI Suite" >}}
 
 After an import finishes, you can confirm success and inspect the resulting
-knowledge graph in two ways: through the Importer / platform APIs, and
+knowledge graph in two ways: through the Importer / data platform APIs, and
 directly in your ArangoDB database.
 
 For the schema of each collection (Documents, Chunks, Entities, Communities,

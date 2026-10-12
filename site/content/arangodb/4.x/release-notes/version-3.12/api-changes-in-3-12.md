@@ -6,7 +6,7 @@ description: >-
   A summary of the changes to the HTTP API and other interfaces that are relevant
   for developers, like maintainers of drivers and integrations for ArangoDB
 ---
-## HTTP RESTful API
+## HTTP API
 
 ### Behavior changes
 
@@ -1316,14 +1316,14 @@ are unaffected.
 #### JavaScript-based traversal using `/_api/traversal`
 
 The long-deprecated JavaScript-based traversal functionality has been removed
-in v3.12.0, including the REST API endpoint `/_api/traversal`.
+in v3.12.0, including the HTTP API endpoint `/_api/traversal`.
 
 The functionality provided by this API was deprecated and unmaintained since
 v3.4.0. JavaScript-based traversals have been replaced with AQL traversals in
-v2.8.0. Additionally, the JavaScript-based traversal REST API could not handle
+v2.8.0. Additionally, the JavaScript-based traversal HTTP API could not handle
 larger amounts of data and was thus very limited.
 
-Users of the `/_api/traversal` REST API should use
+Users of the `/_api/traversal` HTTP API should use
 [AQL traversal queries](../../aql/graph-queries/traversals.md) instead.
 
 #### Pregel API
