@@ -19,7 +19,7 @@ Once that lock could be acquired the hot backup itself is most
 readily described as a consistent snapshot on the local file system.
 
 ```bash
-arangobackup create --server.endpoint tcp://myserver:8529 --label my-label 
+arangobackup create --server.endpoint http://myserver:8529 --label my-label 
 ```
 
 The above will create a hot backup with a unique identifier consisting
@@ -124,7 +124,7 @@ Hot backups can be uploaded to a remote repository, here is an example which
 uses the `S3` protocol:
 
 ```bash
-arangobackup upload --server.endpoint tcp://myserver:8529 --rclone-config-file /path/to/remote.json --identifier 2019-05-13T07.15.43Z_some-label --remote-path S3://remote-endpoint/remote-directory
+arangobackup upload --server.endpoint http://myserver:8529 --rclone-config-file /path/to/remote.json --identifier 2019-05-13T07.15.43Z_some-label --remote-path S3://remote-endpoint/remote-directory
 ```
 
 The output will look like this:
@@ -162,7 +162,7 @@ to the same remote site.
 The status of the process may be acquired at any later time.
 
 ```bash
-arangobackup upload --server.endpoint tcp://myserver:8529 --status-id=114
+arangobackup upload --server.endpoint http://myserver:8529 --status-id=114
 ```
 
 where the number given in the `--status-id` option is the one which was
@@ -184,7 +184,7 @@ file to configure the remote site for `rclone` for different protocols than S3.
 Hot backups can be downloaded from a remote repository like this:
 
 ```bash
-arangobackup download --server.endpoint tcp://myserver:8529 --rclone-config-file /path/to/remote.json --identifier 2019-05-13T07.15.43Z_some-label --remote-path S3://remote-endpoint/remote-directory
+arangobackup download --server.endpoint http://myserver:8529 --rclone-config-file /path/to/remote.json --identifier 2019-05-13T07.15.43Z_some-label --remote-path S3://remote-endpoint/remote-directory
 ```
 
 The output will look like this:
@@ -207,7 +207,7 @@ present.
 The status of the download process may be acquired at any later time.
 
 ```bash
-arangobackup download --server.endpoint tcp://myserver:8529 --status-id=250
+arangobackup download --server.endpoint http://myserver:8529 --status-id=250
 ```
 
 The output will look like this:

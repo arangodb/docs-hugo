@@ -102,7 +102,7 @@ key = value
 It may look like this:
 
 ```cfg
-server.endpoint = tcp://127.0.0.1:8529
+server.endpoint = http://127.0.0.1:8529
 server.authentication = true
 ```
 
@@ -111,7 +111,7 @@ that section can be specified in a shorter form:
 
 ```cfg
 [server]
-endpoint = tcp://127.0.0.1:8529
+endpoint = http://127.0.0.1:8529
 authentication = true
 ```
 

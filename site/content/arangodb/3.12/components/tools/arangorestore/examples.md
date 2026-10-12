@@ -16,7 +16,7 @@ _arangorestore_ can be invoked from the command-line as follows:
 arangorestore --input-directory "dump"
 ```
 
-This connects to an ArangoDB server (`tcp://127.0.0.1:8529` by default), then restores the
+This connects to an ArangoDB server (`http://127.0.0.1:8529` by default), then restores the
 collection structure and the documents from the files found in the input directory `dump`.
 Note that the input directory must have been created by running _arangodump_ before.
 
@@ -60,7 +60,7 @@ Here's an example of reloading data to a non-standard endpoint, using a dedicate
 
 ```
 arangorestore \
-  --server.endpoint tcp://192.168.173.13:8531 \
+  --server.endpoint http://192.168.173.13:8531 \
   --server.username backup \
   --server.database mydb \
   --input-directory "dump" \
@@ -70,8 +70,8 @@ Also, more than one endpoint can be provided, such as:
 
 ```
 arangorestore \
-  --server.endpoint tcp://192.168.173.13:8531 \
-  --server.endpoint tcp://192.168.173.13:8532 \
+  --server.endpoint http://192.168.173.13:8531 \
+  --server.endpoint http://192.168.173.13:8532 \
   --server.username backup \
   --server.database mydb \
   --input-directory "dump"

@@ -25,7 +25,7 @@ is only one. You can connect to any node in case of a cluster (_DB-Server_,
 _Coordinator_, _Agent_).
 
 ```
-arangoinspect --server.endpoint tcp://127.0.0.1:8529
+arangoinspect --server.endpoint http://127.0.0.1:8529
 ```
 
 This starts the tool with a prompt for the JWT secret and tries to connect
@@ -45,7 +45,7 @@ If _arangoinspect_ succeeds to authenticate, it starts to gather information
 and writes the result to `arangodb-inspector.json`, then exits:
 
 ```
-arangoinspect --server.endpoint tcp://127.0.0.1:8629
+arangoinspect --server.endpoint http://127.0.0.1:8629
 
 Please specify the JWT secret: 
 Connected to ArangoDB 'http+tcp://127.0.0.1:8629' version: 3.4.devel [server], database: '_system', username: 'root'

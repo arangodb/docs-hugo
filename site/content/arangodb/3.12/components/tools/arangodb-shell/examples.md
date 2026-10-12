@@ -23,7 +23,7 @@ For example, to connect to an ArangoDB server on IP `192.168.173.13` on port
 8530 with the user `foo` and using the database `test`, use:
 
 ```
-arangosh --server.endpoint tcp://192.168.173.13:8530 --server.username foo --server.database test --server.authentication true
+arangosh --server.endpoint http://192.168.173.13:8530 --server.username foo --server.database test --server.authentication true
 ```
 
 _arangosh_ then displays a password prompt and tries to connect to the 
@@ -48,20 +48,20 @@ The shell prints its own version number, and if successfully connected
 to a server, the version number of the ArangoDB server.
 
 {{< tip >}}
-If the server endpoint is configured for SSL then clients such as _arangosh_
-need to connect to it using an SSL socket as well. For example, use `http+ssl://`
-as schema in `--server.endpoint` for an SSL-secured HTTP connection.
+If the server endpoint is configured for TLS encryption then clients such as
+_arangosh_ need to connect to it using a TLS socket as well. For example, use
+`https://` as schema in `--server.endpoint` for a TLS-secured HTTP connection.
 {{< /tip >}}
 
 The schema of an endpoint is comprised of a protocol and a socket in the format
 `protocol+socket://`. There are alternatives and shorthands for some combinations,
-`ssl://` is equivalent to `http+ssl://` and `https://` for instance:
+`https://` is equivalent to `ssl://` and `http+ssl://` for instance:
 
 Protocol     | Socket           | Schema
 -------------|------------------|-----------
-HTTP         | TCP              | `http+tcp`, `http+srv`, `http`, `tcp`
-HTTP         | TCP with SSL/TLS | `http+ssl`, `https`, `ssl`
-HTTP         | Unix             | `http+unix`, `unix`
+HTTP         | TCP              | `http`, `http+tcp`, `http+srv`, `tcp`
+HTTP         | TCP with SSL/TLS | `https`, `http+ssl`, `ssl`
+HTTP         | Unix             | `unix`, `http+unix`
 
 ## Using *arangosh*
 

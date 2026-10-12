@@ -36,7 +36,7 @@ Here is an example of exporting data from a non-standard endpoint, using a dedic
 
 ```bash
 arangoexport \
-  --server.endpoint tcp://192.168.173.13:8531 \
+  --server.endpoint http://192.168.173.13:8531 \
   --server.username backup \
   --server.database mydb \
   --collection test \
