@@ -32,7 +32,7 @@
     <rect x="20" y="120" width="620" height="20" fill="#134d2e"/>
     <text x="40" y="126" font-family="sans-serif" font-size="15" font-weight="bold" fill="#ffffff">Agentic AI Suite</text>
     <text x="620" y="126" text-anchor="end" font-family="sans-serif" font-size="12" fill="#b9ff38">optional · separate license</text>
-    <a class="card-link" xlink:href="/contextual-data-platform/autograph-studio/">
+    <a class="card-link" xlink:href="/contextual-data-platform/autograph/">
       <rect x="45" y="155" width="285" height="36" rx="18" class="pill-aai"/>
       <text x="187" y="177" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0b2e1e">AutoGraph Studio</text>
     </a>

@@ -25,7 +25,7 @@ instead; the Importer detects this and falls back automatically (see
 
 The following models are validated for use with the Importer service. For the full
 list across all services, see
-[Supported LLM and embedding models](../../../llm-models.md).
+[Supported LLM and embedding models](../../llm-models.md).
 
 The recommended provider is `openai` with the OpenAI models below. That is the
 combination ArangoDB tests, so prefer it where you can; other endpoints can
@@ -93,8 +93,8 @@ For the chat and embedding models validated for the Importer, see
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
 - `project_name`: The project name created via the
-   [web interface](../../web-interface.md#create-an-autograph-project) or
-  [Project API](../../../control-plane-acp/api.md#create-a-project).
+   [web interface](../web-interface.md#create-an-autograph-project) or
+  [Project API](../../control-plane-acp/api.md#create-a-project).
   This name is used as a prefix for all ArangoDB collections (for example, a
   project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
 - `chat_api_provider`: Set to `"openai"` for the OpenAI API, or `"custom"` for
@@ -220,8 +220,8 @@ Use the model deployment names from your Azure resource as `chat_model` and
 The first step is to install the LLM Host service with the LLM and
 embedding models of your choice. The setup will use the 
 Triton Inference Server and MLflow at the backend. 
-For more details, please refer to the [Triton Inference Server](../../../private-llms/triton-inference-server.md)
-and [MLflow](../../../private-llms/mlflow.md) documentation.
+For more details, please refer to the [Triton Inference Server](../../private-llms/triton-inference-server.md)
+and [MLflow](../../private-llms/mlflow.md) documentation.
 
 Once the `llmhost` service is up-and-running, then you can start the Importer
 service using the below configuration:

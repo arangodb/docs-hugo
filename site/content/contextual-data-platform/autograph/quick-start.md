@@ -74,7 +74,7 @@ source documents they came from.
 {{< info >}}
 To add, remove, or replace individual documents later, use the API. The web
 interface does not offer these operations in Arango Contextual Data Platform
-4.1.0. See [Incremental Graph Updates](autograph/incremental-graph-updates.md).
+4.1.0. See [Incremental Graph Updates](incremental-graph-updates.md).
 {{< /info >}}
 {{< /tab >}}
 
@@ -86,7 +86,7 @@ First, install the AutoGraph service through the
 
 Then run the pipeline. Every call uses an `Authorization: Bearer <token>`
 header. Each step below links to the endpoint's full reference, and the
-[Reference](autograph/_index.md) section lists every endpoint in one table.
+[Reference](reference/_index.md) section lists every endpoint in one table.
 
 {{< steps >}}
 
@@ -94,7 +94,7 @@ header. Each step below links to the endpoint's full reference, and the
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/health" >}}
 Confirm AutoGraph is up before you start. It is a liveness and token check, so
 a `200` here does not mean the model providers or the File Manager are reachable.
-See [Endpoints](autograph/_index.md#endpoints).
+See [Endpoints](reference/_index.md#endpoints).
 {{< /step >}}
 
 {{< step "Upload your files" >}}
@@ -108,11 +108,11 @@ example `legal` and `engineering`.
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds" >}}
 List your category labels in `categories`. Builds the Corpus Graph and discovers
 domain clusters. Returns `202` with a `corpus_build_id`. See
-[Create Corpus Build](autograph/corpus-build.md#create-corpus-build).
+[Create Corpus Build](reference/corpus-build.md#create-corpus-build).
 
-Poll [`GET /v1/corpus/builds/{corpus_build_id}`](autograph/corpus-build.md#monitoring-build-status)
+Poll [`GET /v1/corpus/builds/{corpus_build_id}`](reference/corpus-build.md#monitoring-build-status)
 until `status` is `completed` before moving on, and check `error_code` even
-then, see [Build error codes](autograph/corpus-build.md#build-error-codes).
+then, see [Build error codes](reference/corpus-build.md#build-error-codes).
 {{< /step >}}
 
 {{< step "Generate RAG strategies" >}}
@@ -120,11 +120,11 @@ then, see [Build error codes](autograph/corpus-build.md#build-error-codes).
 Assigns each domain a strategy (FullGraphRAG or VectorRAG) and an ontology.
 `project` and `complexity` are required; send `complexity: "very_high"` if every
 domain has to answer entity-based questions, see
-[How `complexity` is applied](autograph/rag-strategizer.md#how-complexity-is-applied).
+[How `complexity` is applied](reference/rag-strategizer.md#how-complexity-is-applied).
 Run this only after the corpus build has completed. See
-[Trigger RAG Strategizer](autograph/rag-strategizer.md#trigger-rag-strategizer).
+[Trigger RAG Strategizer](reference/rag-strategizer.md#trigger-rag-strategizer).
 
-Poll [`GET /v1/rag-strategizer/jobs/{strategize_job_id}`](autograph/rag-strategizer.md#monitor-a-strategizer-job)
+Poll [`GET /v1/rag-strategizer/jobs/{strategize_job_id}`](reference/rag-strategizer.md#monitor-a-strategizer-job)
 until `status` is `completed`.
 {{< /step >}}
 
@@ -133,9 +133,9 @@ until `status` is `completed`.
 Spawns the per-domain Importer workers to build the knowledge graph. Run this
 only after the strategizer has finished. Returns `202` with an
 `orchestration_id`. See
-[Trigger Orchestration](autograph/orchestration.md#trigger-orchestration).
+[Trigger Orchestration](reference/orchestration.md#trigger-orchestration).
 
-Poll [`GET /v1/orchestrate/{orchestration_id}`](autograph/orchestration.md#monitor-an-orchestration)
+Poll [`GET /v1/orchestrate/{orchestration_id}`](reference/orchestration.md#monitor-an-orchestration)
 until it reports a terminal status. Only `completed` means the knowledge graph
 is ready.
 {{< /step >}}
@@ -143,13 +143,13 @@ is ready.
 {{< step "Keep the graph up-to-date (optional)" >}}
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update" >}}
 Once the graph is built, you can add, remove, or replace individual documents
-with [`/v1/graph/insert`](autograph/orchestration.md#insert-documents),
-[`/v1/graph/delete`](autograph/orchestration.md#delete-documents), and
-[`/v1/graph/update`](autograph/orchestration.md#update-documents) instead of
+with [`/v1/graph/insert`](reference/orchestration.md#insert-documents),
+[`/v1/graph/delete`](reference/orchestration.md#delete-documents), and
+[`/v1/graph/update`](reference/orchestration.md#update-documents) instead of
 rebuilding the corpus. After an insert or update, call
-[`/v1/orchestrate`](autograph/orchestration.md#trigger-orchestration) again with
+[`/v1/orchestrate`](reference/orchestration.md#trigger-orchestration) again with
 the `file_ids` of the changed documents so that the change reaches the knowledge
-graph. See [Incremental Graph Updates](autograph/incremental-graph-updates.md).
+graph. See [Incremental Graph Updates](incremental-graph-updates.md).
 {{< /step >}}
 
 {{< /steps >}}
@@ -157,20 +157,20 @@ graph. See [Incremental Graph Updates](autograph/incremental-graph-updates.md).
 {{< info >}}
 Insert and update identify every document by its File Manager `file_id`, which
 is why step 2 uploads through the File Manager. The deprecated
-[`POST /v1/import-multiple`](autograph/importing-files.md) path uploads files
+[`POST /v1/import-multiple`](reference/importing-files.md) path uploads files
 directly to the service, but a corpus built that way cannot be changed document
 by document. See
-[Identifying documents for Layer 3](autograph/incremental-graph-updates.md#identifying-documents-for-layer-3).
+[Identifying documents for Layer 3](incremental-graph-updates.md#identifying-documents-for-layer-3).
 {{< /info >}}
 
 {{< tip >}}
 At any point,
-[`GET /v1/projects/{project}/overview`](autograph/project-operations.md#project-overview)
+[`GET /v1/projects/{project}/overview`](reference/project-operations.md#project-overview)
 reports where the project stands: the document and cluster counts, and which
 categories still need a build, strategies, or an orchestration.
 {{< /tip >}}
 
-Next, query your knowledge base with [AutoRAG](autorag/quick-start.md).
+Next, query your knowledge base with [AutoRAG](../autorag/quick-start.md).
 {{< /tab >}}
 
 {{< /tabs >}}
@@ -178,13 +178,13 @@ Next, query your knowledge base with [AutoRAG](autorag/quick-start.md).
 {{< tip >}}
 **You now have** a knowledge base built from your documents and a chat
 interface that answers questions about them, with citations back to the
-source. To query it programmatically, see [AutoRAG](autorag/quick-start.md).
+source. To query it programmatically, see [AutoRAG](../autorag/quick-start.md).
 {{< /tip >}}
 
 ## Next steps
 
 - [Use Cases](use-cases.md): Real-world enterprise scenarios.
-- [Incremental Graph Updates](autograph/incremental-graph-updates.md): Add, remove, and
+- [Incremental Graph Updates](incremental-graph-updates.md): Add, remove, and
   replace documents in a knowledge graph that has already been built.
 - [Architecture](architecture.md): The three-layer knowledge graph and
   resulting collections.

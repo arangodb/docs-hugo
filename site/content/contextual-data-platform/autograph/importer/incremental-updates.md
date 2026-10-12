@@ -77,7 +77,7 @@ removes the Layer 3 data as well, using AQL queries of its own. No Importer job
 is spawned and there is nothing to poll: the response is the final result and
 reports what was removed, along with the affected Layer 3 partitions. For the
 request and response fields, see
-[Delete documents](../orchestration.md#delete-documents).
+[Delete documents](../reference/orchestration.md#delete-documents).
 
 What a deletion removes from the Layer 3 collections of `{project}_kg`:
 
@@ -112,7 +112,7 @@ version to Layers 1 and 2. The new content only reaches Layer 3 once you run a
 targeted orchestration with that `file_id`, which submits an import to the
 Importer. AutoGraph resolves the partitions itself, so you do not name one. For the phases of an update and its response
 fields, see
-[Update documents](../orchestration.md#update-documents).
+[Update documents](../reference/orchestration.md#update-documents).
 
 {{< warning >}}
 Do not import a revised file into a partition that still holds the old version.
@@ -258,7 +258,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POST
 | Symptom | Likely cause | What to do |
 |---------|--------------|------------|
 | Recluster returns `HTTP 503` (gRPC `UNAVAILABLE`), or an import returns `"success": false` | Another import or recluster job holds the single global lock on this replica, whichever partition it works on | Try again once the running job is done (`GET /v1/jobs/{job_id}` or `GET /v1/jobs`). If a **single-file** import (`POST /v1/import`) holds the lock, there is no `job_id` to poll. Watch the platform service status or `GET /v1/health` for the busy message until it clears |
-| An update left duplicate content in the graph | The revised file was imported instead of replaced, so it was added as another import batch next to the old version | Use [`POST /v1/graph/update`](../orchestration.md#update-documents) in AutoGraph to replace a document |
+| An update left duplicate content in the graph | The revised file was imported instead of replaced, so it was added as another import batch next to the old version | Use [`POST /v1/graph/update`](../reference/orchestration.md#update-documents) in AutoGraph to replace a document |
 | Communities look outdated after inserts, deletions, or updates | The community layer of a `full_graphrag` partition has not been rebuilt yet | Reclustering is never automatic. Start it in AutoGraph once it reports `needs_reclustering: true`, or call `POST /v1/recluster` for that `partition_id` yourself |
 | A reclustering takes a long time and blocks other work | The LLM community reports take a while and the lock is held for the whole job | This is expected for large partitions. Avoid overlapping calls on the same replica until the recluster job is done |
 | Recluster is rejected with gRPC `FAILED_PRECONDITION` (`HTTP 400`) | The project runs on Triton | Triton projects cannot be reclustered. There is nothing to retry and no job to poll |

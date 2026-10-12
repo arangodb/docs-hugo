@@ -88,8 +88,8 @@ All service creation endpoints share the same `env` and `labels` fields:
 
 - **env**: Service-specific parameters as key-value pairs. The required keys
   depend on the service type; see the corresponding service documentation, such
-  as [Importer](../autograph-studio/autograph/importer/_index.md) and
-  [AutoRAG](../autograph-studio/autorag/_index.md).
+  as [Importer](../autograph/importer/_index.md) and
+  [AutoRAG](../autorag/_index.md).
 - **labels** (optional): Key-value pairs used to filter and identify services
   in the platform.
 - **profiles** (optional): A comma-separated string inside `env` defining
@@ -115,7 +115,7 @@ you deploy any Helm chart:
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragimporter" >}}
 
 Installs a service of the given type. The example below deploys the
-[Importer](../autograph-studio/autograph/importer/_index.md) service.
+[Importer](../autograph/importer/_index.md) service.
 
 ```bash
 curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragimporter \
@@ -164,7 +164,7 @@ Where:
 Instead of inline API keys, you can use `chat_secret_profile_id` and
 `embedding_secret_profile_id` when your platform supports secret profiles for
 the Importer install. For Triton Inference Server and other deployment
-options, see the [LLM Configuration](../autograph-studio/autograph/importer/llm-configuration.md)
+options, see the [LLM Configuration](../autograph/importer/llm-configuration.md)
 documentation.
 {{< /tip >}}
 

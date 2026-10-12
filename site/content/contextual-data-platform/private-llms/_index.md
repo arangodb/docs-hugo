@@ -34,8 +34,8 @@ Two services work together to enable this:
 2. Register the bundle in the **MLflow** service.
 3. Deploy the **Triton LLM Host** service, pointing it at the registered
    model name (and optionally a version).
-4. Configure the [Importer](../autograph-studio/autograph/importer/llm-configuration.md) and
-   [AutoRAG](../autograph-studio/autorag/llm-configuration.md) to call the Triton
+4. Configure the [Importer](../autograph/importer/llm-configuration.md) and
+   [AutoRAG](../autorag/llm-configuration.md) to call the Triton
    endpoint instead of a public LLM provider.
 
 When you only need MLflow as a general-purpose experiment tracker (without

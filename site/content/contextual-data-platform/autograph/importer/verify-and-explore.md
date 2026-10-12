@@ -70,7 +70,7 @@ See [Monitoring jobs](import-endpoints.md#monitoring-jobs) for details.
 
 Once collections are populated, you can:
 
-- Run [AQL queries](../../../../arangodb/3.12/aql/) directly against the collections.
+- Run [AQL queries](../../../arangodb/3.12/aql/) directly against the collections.
 - Traverse the graph using ArangoDB's graph functions.
 - Filter by `partition_id` to scope queries to a specific partition.
 - Use [AutoRAG](../../autorag/) for question-answering with
@@ -81,7 +81,7 @@ Once collections are populated, you can:
 - **Query your data**: Use [AutoRAG](../../autorag/) for
   semantic search and Q&A.
 - **Visualize relationships**: Explore your graph with the
-  [Graph Visualizer](../../../graph-visualizer.md).
+  [Graph Visualizer](../../graph-visualizer.md).
 - **Import more documents**: Return to [Import Files](import-endpoints.md) to
   add more data.
 - **Optimize parameters**: Review the

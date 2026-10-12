@@ -1,10 +1,11 @@
 ---
 title: AutoRAG
 menuTitle: AutoRAG
+group: Build
 description: >-
   AutoRAG enables intelligent search and retrieval from the knowledge graphs
   built by the Importer and AutoGraph
-weight: 85
+weight: 105
 aliases:
   - /agentic-ai-suite/autorag/
 ---
@@ -13,7 +14,7 @@ aliases:
 ## Overview
 
 AutoRAG provides intelligent search and retrieval from the knowledge graphs
-built by the [Importer](../autograph/importer/_index.md) and [AutoGraph](../_index.md). Its
+built by the [Importer](../autograph/importer/_index.md) and [AutoGraph](../autograph/_index.md). Its
 search methods rely on the specific structure these services create, with
 entities, relations, and community summaries, so they cannot run against an
 arbitrary graph of your own. AutoRAG offers multiple search methods optimized
@@ -25,7 +26,7 @@ in the database using search logic you define yourself.
 AutoRAG was previously called the **Retriever service**. The former name still
 appears in the API surface, for example in the `graphragretriever` deployment
 endpoint and in the `/graphrag/retriever/` URL prefix of the query API, and in
-[AutoGraph Studio](../web-interface.md#deploy-an-autorag-retriever),
+[AutoGraph Studio](../autograph/web-interface.md#deploy-an-autorag-retriever),
 which calls the services it deploys *retrievers*.
 {{< /info >}}
 
@@ -36,7 +37,7 @@ Context Graph that [AutoGraph](../autograph/_index.md) built.
 
 ### Against a Context Graph built by AutoGraph
 
-When [AutoGraph](../_index.md) manages your document pipeline, it builds
+When [AutoGraph](../autograph/_index.md) manages your document pipeline, it builds
 partitioned knowledge graphs with domain-aware RAG strategies. AutoRAG queries
 across these partitions using `partition_ids` to target specific domains. AutoGraph's two-stage retrieval pattern first identifies relevant
 partitions, then performs deep search within them.
@@ -56,7 +57,7 @@ AutoGraph, is queried with the
 parameters.
 
 The standalone Importer workflow is not available in the web interface.
-[AutoGraph Studio](../web-interface.md) can only query Context Graphs
+[AutoGraph Studio](../autograph/web-interface.md) can only query Context Graphs
 that belong to an AutoGraph project.
 {{< /info >}}
 
@@ -78,8 +79,8 @@ guidance on choosing the right method.
 Before using AutoRAG, you need:
 
 1. **A project with a Context Graph**. Build one with the
-   [AutoGraph Studio quick start](../quick-start.md) or the
-   [AutoGraph service](../autograph/_index.md). A graph built with the
+   [AutoGraph Studio quick start](../autograph/quick-start.md) or the
+   [AutoGraph HTTP API](../autograph/reference/_index.md). A graph built with the
    Importer directly works too, see the note above.
 
 2. **An LLM provider** configured for AutoRAG. See
@@ -93,7 +94,7 @@ To install and start AutoRAG, use the following endpoint:
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragretriever" >}}
 
 For detailed instructions on installing, monitoring, and managing services, see
-[The Arango Control Plane (ACP) service](../../control-plane-acp/_index.md).
+[The Arango Control Plane (ACP) service](../control-plane-acp/_index.md).
 
 ## Getting Started
 

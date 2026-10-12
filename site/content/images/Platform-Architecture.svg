@@ -115,7 +115,7 @@
     </a>
     <path d="M 590 181 L 590 240 L 720 240 L 720 247.2" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
 
-    <a class="card-link" xlink:href="/contextual-data-platform/autograph-studio/">
+    <a class="card-link" xlink:href="/contextual-data-platform/autograph/">
       <rect x="675" y="300" width="180" height="60" rx="8" class="node-ai" fill="#ffffff" stroke="#470878" stroke-width="1.5"/>
       <text x="765" y="326" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">AutoGraph</text>
       <text x="765" y="343" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6b21a8">Context Graph &amp; retrievers</text>

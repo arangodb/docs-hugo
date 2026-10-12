@@ -281,7 +281,7 @@ A scope is an ordered list of labels that addresses a file within a database,
 for example `["acme", "legal", "q3"]`. The model is deliberately
 generic: the same mechanism represents a project, a module, or any deeper
 folder level. Consumers map their own concepts onto scope levels —
-[AutoGraph](../autograph-studio/design-guide.md#designing-categories)
+[AutoGraph](../autograph/design-guide.md#designing-categories)
 uses the first level for the project and the second, the *category*, for its
 module, for instance.
 
@@ -395,7 +395,7 @@ The link has to start with `http://` or `https://` and must not contain
 whitespace or unmatched parentheses. File Manager does not check this; it only
 applies the size limits above. Anything that is not a usable link is quietly
 skipped, which leaves the citation unlinked. See
-[Import parameters](../autograph-studio/autograph/importer/parameters.md#citation-urls)
+[Import parameters](../autograph/importer/parameters.md#citation-urls)
 for how the Importer resolves the key.
 
 ### Safe-to-delete

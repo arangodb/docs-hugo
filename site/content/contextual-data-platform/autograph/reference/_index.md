@@ -1,7 +1,7 @@
 ---
-title: The AutoGraph service
-menuTitle: AutoGraph service
-weight: 80
+title: AutoGraph HTTP API reference
+menuTitle: Reference
+weight: 90
 description: >-
   The service that builds your Context Graph: what it does, how to install it,
   and the HTTP API for the corpus build, the RAG Strategizer, and the
@@ -12,11 +12,12 @@ aliases:
 ---
 {{< tag "Agentic AI Suite" >}}
 
-The AutoGraph service is the first stage of [AutoGraph Studio](../_index.md).
+The AutoGraph service is the first stage of AutoGraph Studio, see the
+[AutoGraph overview](../_index.md).
 It builds the **Corpus Graph** from your documents, assigns a RAG strategy to
 every knowledge domain it discovers, and orchestrates the
-[Importer](importer/_index.md) to build the **Knowledge Graph**. Together, the
-two graphs form your **Context Graph**, which [AutoRAG](../autorag/_index.md)
+[Importer](../importer/_index.md) to build the **Knowledge Graph**. Together, the
+two graphs form your **Context Graph**, which [AutoRAG](../../autorag/_index.md)
 answers questions from.
 
 You can drive the service in two ways:
@@ -59,7 +60,7 @@ of a project.
 
 The Importer workers that build the Knowledge Graph are installed, run, and
 torn down by the orchestration. You do not install the Importer yourself unless
-you use it outside AutoGraph, see [The Importer](importer/_index.md).
+you use it outside AutoGraph, see [The Importer](../importer/_index.md).
 
 ## Supported file formats
 
@@ -69,7 +70,7 @@ samples it and converts it to Markdown. AutoGraph then embeds and clusters
 that Markdown.
 
 The File Parser is an internal data platform service installed once per environment,
-without a web interface of its own. The [Importer](importer/_index.md)
+without a web interface of its own. The [Importer](../importer/_index.md)
 uses the same service when it builds the knowledge graph, so the whole AutoGraph
 pipeline accepts one consistent set of inputs:
 
@@ -78,14 +79,14 @@ pipeline accepts one consistent set of inputs:
 - **Plain text**: `.txt` and `.md` files
 
 For the per-format detail and for how to size the parser on a self-hosted
-cluster, see [Document conversion and the File Parser](document-conversion.md).
+cluster, see [Document conversion and the File Parser](../document-conversion.md).
 
 {{< tip >}}
 Parsing runs on CPU. Throughput for large-scale ingestion of PDF and Office
 documents is governed by how many File Parser worker pods your node pool can
 support, not by GPU availability. Parsing PDFs is by far the most expensive
 operation, because every page without a text layer has to be read using OCR. See
-[Tuning the File Parser](document-conversion.md#tuning-the-file-parser-for-self-hosted-deployments)
+[Tuning the File Parser](../document-conversion.md#tuning-the-file-parser-for-self-hosted-deployments)
 if a self-hosted cluster is slower than you expect.
 {{< /tip >}}
 
@@ -253,7 +254,7 @@ corpus, the strategies, or the knowledge graph are stale, and which categories
 still need work.
 
 Once the Knowledge Graph is built, deploy a retriever and query it with
-[AutoRAG](../autorag/_index.md).
+[AutoRAG](../../autorag/_index.md).
 
 ### Embed-only workflow
 
@@ -287,7 +288,7 @@ also the supported recovery path for a partition that imported incompletely.
 
 Use these calls if the corpus graph is already built and you only want to change
 individual documents. See
-[Incremental Graph Updates](incremental-graph-updates.md) for the
+[Incremental Graph Updates](../incremental-graph-updates.md) for the
 prerequisites, a comparison with a rebuild, and the full endpoint reference.
 
 1. Call `POST /v1/graph/insert`, `/v1/graph/delete`, or `/v1/graph/update`,
@@ -420,13 +421,13 @@ curl -X POST \
 
 ## Learn more
 
-- [LLM Configuration](llm-configuration.md): Configure the chat and embedding
+- [LLM Configuration](../llm-configuration.md): Configure the chat and embedding
   providers the service calls.
-- [Incremental Graph Updates](incremental-graph-updates.md): Insert, delete,
+- [Incremental Graph Updates](../incremental-graph-updates.md): Insert, delete,
   and replace individual documents in a graph that is already built.
-- [Document conversion and the File Parser](document-conversion.md): What the
+- [Document conversion and the File Parser](../document-conversion.md): What the
   parser extracts from each format and how to size it.
-- [The Importer](importer/_index.md): The worker that builds the Knowledge
+- [The Importer](../importer/_index.md): The worker that builds the Knowledge
   Graph, and the parameters you can pass to it through `importer_env`.
 - [Architecture](../architecture.md): The three-layer knowledge graph
   architecture and the resulting collections.

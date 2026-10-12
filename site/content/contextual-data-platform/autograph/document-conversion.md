@@ -26,7 +26,7 @@ The Importer then chunks that Markdown and builds the knowledge graph from it.
 
 The File Parser is a data platform service installed once per environment.
 It has no web interface and you do not call it directly.
-[AutoGraph](_index.md#supported-file-formats) uses the same service
+[AutoGraph](reference/_index.md#supported-file-formats) uses the same service
 for its corpus build, so both paths accept the same inputs. The Markdown they
 get back differs: a corpus build only needs enough text to cluster a document,
 so it requests a truncated sample and never images, whereas an import converts
@@ -62,7 +62,7 @@ succeed with empty content and a warning rather than failing.
 ### Tuning the File Parser for self-hosted deployments
 
 The File Parser ships with defaults sized for a reference data platform deployment.
-Deployments on the [Arango Managed Platform (AMP)](../../../amp/_index.md) run
+Deployments on the [Arango Managed Platform (AMP)](../../amp/_index.md) run
 these defaults unchanged. For self-hosted clusters, the settings below are the
 most relevant ones to adjust limits and resource utilization.
 
@@ -101,7 +101,7 @@ The File Parser is installed once per environment as the `arangodb-file-parser`
 data platform service. Put your values in that service's `overrides` block in
 the platform package (`platform.yaml`), the same file you install the
 data platform with, and apply the configuration using
-[`arangodb_operator_platform package install`](../../install-and-upgrade/online-setup.md#step-7-install-the-contextual-data-platform-package):
+[`arangodb_operator_platform package install`](../install-and-upgrade/online-setup.md#step-7-install-the-contextual-data-platform-package):
 
 ```yaml
   arangodb-file-parser:
@@ -146,11 +146,11 @@ or timeout errors, the per-job limits are too tight for your documents.
 
 ## Related
 
-- [The AutoGraph service](_index.md#supported-file-formats): The formats the
+- [The AutoGraph service](reference/_index.md#supported-file-formats): The formats the
   corpus build accepts.
 - [The Importer](importer/_index.md): The worker that consumes the converted
   Markdown.
 - [Semantic Units](importer/semantic-units.md): What the Importer does with the
   extracted images.
-- [Install and upgrade](../../install-and-upgrade/_index.md): Where the
+- [Install and upgrade](../install-and-upgrade/_index.md): Where the
   platform package lives.

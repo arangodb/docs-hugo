@@ -4,7 +4,7 @@ menuTitle: LLM Configuration
 description: >-
   Configure OpenAI-compatible APIs or Triton Inference Server for the chat and
   embedding models AutoGraph uses
-weight: 10
+weight: 20
 aliases:
   - /agentic-ai-suite/autograph/llm-configuration/
 ---
@@ -13,11 +13,11 @@ aliases:
 AutoGraph uses two kinds of models:
 
 - A **chat (LLM) model**, used by the
-  [RAG Strategizer](rag-strategizer.md) to generate the per-cluster
+  [RAG Strategizer](reference/rag-strategizer.md) to generate the per-cluster
   ontology (the entity types for each domain).
 - An **embedding model**, used during the
-  [corpus build](corpus-build.md) to embed documents for similarity
-  and clustering, and by the [embed-field endpoint](embeddings.md).
+  [corpus build](reference/corpus-build.md) to embed documents for similarity
+  and clustering, and by the [embed-field endpoint](reference/embeddings.md).
 
 Each model can be backed by either any OpenAI-compatible API or a Triton
 Inference Server. That covers the OpenAI API itself, which is the recommended
@@ -35,7 +35,7 @@ instead; AutoGraph detects this and falls back automatically (see
 
 The following models are validated for use with the AutoGraph service. For the full
 list across all services, see
-[Supported LLM and embedding models](../../llm-models.md).
+[Supported LLM and embedding models](../llm-models.md).
 
 The recommended provider is `openai` with the OpenAI models below. That is the
 combination ArangoDB tests, so prefer it where you can; other endpoints can
@@ -178,8 +178,8 @@ For a full description of all parameters, see
 The first step is to install the LLM Host service with the LLM and embedding
 models of your choice. The setup uses the Triton Inference Server and MLflow at
 the backend. For more details, see the
-[Triton Inference Server](../../private-llms/triton-inference-server.md) and
-[MLflow](../../private-llms/mlflow.md) documentation.
+[Triton Inference Server](../private-llms/triton-inference-server.md) and
+[MLflow](../private-llms/mlflow.md) documentation.
 
 Once the `llmhost` service is up and running, configure AutoGraph to use it for
 chat, embeddings, or both. The `chat_api_url` and `embedding_api_url` are
@@ -242,8 +242,8 @@ Parameter names are also accepted in uppercase (for example, `CHAT_API_URL`).
   all ArangoDB collections (for example, a project named `docs` creates
   `docs_sources`, `docs_domains`, `docs_CorpusGraph`, and so on). Set it to the
   same name you chose when creating the project via the
-  [web interface](../web-interface.md) or the
-  [Project API](../../control-plane-acp/api.md#create-a-project).
+  [web interface](web-interface.md) or the
+  [Project API](../control-plane-acp/api.md#create-a-project).
   The Project API names this field `project_name`; the AutoGraph install
   request uses `genai_project_name` for the same value.
 
@@ -387,9 +387,9 @@ provider or a missing required parameter with an error message.
 
 ## Next Steps
 
-- [**Build a corpus**](corpus-build.md): Generate document embeddings
+- [**Build a corpus**](reference/corpus-build.md): Generate document embeddings
   and similarity edges.
-- [**Run the RAG Strategizer**](rag-strategizer.md): Assign retrieval
+- [**Run the RAG Strategizer**](reference/rag-strategizer.md): Assign retrieval
   strategies and generate per-cluster ontologies with the chat model.
-- [**Embed a field**](embeddings.md): Add embeddings to an existing
+- [**Embed a field**](reference/embeddings.md): Add embeddings to an existing
   ArangoDB collection.

@@ -10,7 +10,7 @@ aliases:
 {{< tag "Agentic AI Suite" >}}
 
 This page documents the import endpoints of the Importer and how to monitor
-running imports. During an [AutoGraph](../_index.md) orchestration, these calls
+running imports. During an [AutoGraph](../reference/_index.md) orchestration, these calls
 are submitted for you, one per partition. Call them yourself only to re-run a
 partition with custom settings, or to import documents outside AutoGraph, which
 has no web interface. In that case, install the service and configure its
@@ -128,7 +128,7 @@ The response payload looks like this:
 
 {{< tip >}}
 You can also reference files already uploaded to
-[File Manager](../../../file-manager/_index.md) by passing
+[File Manager](../../file-manager/_index.md) by passing
 `file_ids` instead of inline `files`. When `file_ids` is non-empty, the
 `files` array is ignored. Those files bring their own citation URLs; see
 [Citation URLs](parameters.md#citation-urls).

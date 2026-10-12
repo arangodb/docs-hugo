@@ -3,7 +3,7 @@ title: AutoGraph RAG Strategizer Reference
 menuTitle: RAG Strategizer
 description: >-
   Analyze document clusters, assign RAG strategies, and override them per cluster
-weight: 82
+weight: 12
 aliases:
   - /agentic-ai-suite/autograph/reference/rag-strategizer/
 ---

@@ -28,7 +28,7 @@ Parameters differ between single file and multi-file import:
 - `file_content` (required, or use `file_url` / `file_id`): Direct file content as base64-encoded string.
 - `file_url` (required, or use `file_content` / `file_id`): URL to download the file from.
 - `file_id` (required, or use `file_content` / `file_url`): RAG file ID from
-  [File Manager](../../../file-manager/). When provided, the file
+  [File Manager](../../file-manager/). When provided, the file
   is fetched by ID and `file_content` / `file_url` are ignored.
 - `file_name` (required): Original filename with extension.
 
@@ -62,7 +62,7 @@ brings its citation URL along from File Manager; see
 ### Multi-File Import
 
 You can provide files inline using the `files` array, or reference files
-already uploaded to [File Manager](../../../file-manager/) using
+already uploaded to [File Manager](../../file-manager/) using
 `file_ids`. When `file_ids` is provided, files are fetched by ID and the
 `files` array is ignored.
 
@@ -106,7 +106,7 @@ is cited as a plain number.
 
 **If your files are in File Manager, there is nothing to set on the import
 request.** Give the file a `citable_url` in its
-[custom metadata](../../../file-manager/api.md#the-citable_url-key)
+[custom metadata](../../file-manager/api.md#the-citable_url-key)
 when you upload it, and the Importer picks it up on its own:
 
 | How you import | Where the citation URL comes from |
@@ -312,7 +312,7 @@ These parameters configure the vector indexes used for semantic search and simil
 ```
 
 {{< info >}}
-Vector index parameters apply to all embedding fields in your knowledge graph (chunks, edges, entities, and communities). For more details on ArangoDB vector indexes, see the [Vector Search](../../../../arangodb/3.12/indexes-and-search/indexing/working-with-indexes/vector-indexes.md) documentation.
+Vector index parameters apply to all embedding fields in your knowledge graph (chunks, edges, entities, and communities). For more details on ArangoDB vector indexes, see the [Vector Search](../../../arangodb/3.12/indexes-and-search/indexing/working-with-indexes/vector-indexes.md) documentation.
 {{< /info >}}
 
 ## Semantic Units and Image Processing
@@ -378,7 +378,7 @@ These parameters configure ArangoDB graph features for distributed deployments.
 
 {{< info >}}
 These parameters are primarily used for distributed ArangoDB deployments. 
-Consult the [ArangoDB SmartGraphs documentation](../../../../arangodb/3.12/graphs/smartgraphs/_index.md) 
+Consult the [ArangoDB SmartGraphs documentation](../../../arangodb/3.12/graphs/smartgraphs/_index.md) 
 for more details. For the SmartGraph validation rules enforced by the
 Importer, see [Error Handling](error-handling.md#troubleshooting).
 {{< /info >}}

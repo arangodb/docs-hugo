@@ -3,7 +3,7 @@ title: AutoGraph Limitations
 menuTitle: Limitations
 description: >-
   Known limitations of the AutoGraph API
-weight: 94
+weight: 24
 aliases:
   - /agentic-ai-suite/autograph/reference/limitations/
 ---

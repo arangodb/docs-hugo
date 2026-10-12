@@ -142,7 +142,7 @@ Whether the service selects the relevant partitions itself.
 - **Applicable to**: All query types (`GLOBAL`, `LOCAL`, `UNIFIED`, `CUSTOM`).
 - **Description**:
   - When `true` (default): The service searches the
-    [AutoGraph](../_index.md) corpus graph before retrieval and
+    [AutoGraph](../autograph/_index.md) corpus graph before retrieval and
     restricts the query to the partitions that match. Omitting the parameter has
     the same effect as setting it to `true`.
   - When `false`: No automatic selection happens, and the query runs without a

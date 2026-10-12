@@ -13,7 +13,7 @@ aliases:
 ## Prerequisites
 
 - A **Context Graph built with AutoGraph Studio**. If you do not have one
-  yet, follow the [AutoGraph Studio quick start](../quick-start.md) first.
+  yet, follow the [AutoGraph Studio quick start](../autograph/quick-start.md) first.
 - An **LLM provider** for AutoRAG (Triton or any OpenAI-compatible
   API). See [LLM Configuration](llm-configuration.md).
 - A **valid JWT** (`Authorization: Bearer ...`).

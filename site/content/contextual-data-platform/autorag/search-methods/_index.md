@@ -39,7 +39,7 @@ Retriever tools if you have any, and Local Search if you do not. Set a
 
 A partition is ingested either as **VectorRAG** or as **FullGraphRAG**, and the
 search methods you can run against it depend on that choice.
-[AutoGraph](../../_index.md) assigns the strategy per cluster, and the
+[AutoGraph](../../autograph/_index.md) assigns the strategy per cluster, and the
 [Importer](../../autograph/importer/_index.md) receives it as `rag_mode`.
 
 - **VectorRAG** stores documents and chunk embeddings. It does not build
@@ -66,7 +66,7 @@ If you need Deep Search on a VectorRAG partition, use the
 {{< info >}}
 For how AutoGraph decides which clusters become VectorRAG and which become
 FullGraphRAG, see the
-[RAG strategizer](../../autograph/rag-strategizer.md). For how the
+[RAG strategizer](../../autograph/reference/rag-strategizer.md). For how the
 resulting partitions are named and imported, see the
 [How AutoGraph runs the Importer](../../autograph/importer/_index.md#how-autograph-runs-the-importer).
 {{< /info >}}

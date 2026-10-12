@@ -3,7 +3,7 @@ title: AutoGraph Corpus Build Reference
 menuTitle: Corpus Build
 description: >-
   Create and monitor corpus builds for document analysis and clustering
-weight: 80
+weight: 10
 aliases:
   - /agentic-ai-suite/autograph/reference/corpus-build/
 ---
@@ -99,7 +99,7 @@ accepted with `202` first and the build then fails with
 
 Send only new categories with `incremental: false`, use `incremental: true` to
 append, change individual documents with an
-[incremental graph update](incremental-graph-updates.md), or remove the
+[incremental graph update](../incremental-graph-updates.md), or remove the
 category with
 [`DELETE /v1/projects/{project}/categories/{category}`](project-operations.md#delete-category)
 and build it again.
@@ -490,7 +490,7 @@ the [Design Guide](../design-guide.md#designing-categories).
 - For a first build, or when you add a category that is new to the corpus, leave
   `incremental` at its default of `false`.
 - To change individual documents in a graph that is already built, use an
-  [incremental graph update](incremental-graph-updates.md) instead.
+  [incremental graph update](../incremental-graph-updates.md) instead.
 
 {{< warning >}}
 A corpus build never removes Layer 3 records, whether `incremental` is `true` or

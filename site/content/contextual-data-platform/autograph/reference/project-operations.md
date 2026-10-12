@@ -4,7 +4,7 @@ menuTitle: Project Operations
 description: >-
   Inspect the state of a project, configure its chat and embedding models, and
   remove categories or the whole project
-weight: 88
+weight: 18
 aliases:
   - /agentic-ai-suite/autograph/reference/project-operations/
 ---
@@ -202,7 +202,7 @@ a running build keeps its existing clients and the change only takes effect on
 the next one.
 
 For guidance on picking providers and models, see
-[LLM Configuration](llm-configuration.md).
+[LLM Configuration](../llm-configuration.md).
 
 ### Request
 
@@ -636,5 +636,5 @@ curl -X DELETE \
 ## Next Steps
 
 - **[Corpus Build](corpus-build.md)**: Build or extend the corpus graph
-- **[LLM Configuration](llm-configuration.md)**: Choose providers and models
+- **[LLM Configuration](../llm-configuration.md)**: Choose providers and models
 - **[Error Handling](error-handling.md)**: HTTP codes and troubleshooting

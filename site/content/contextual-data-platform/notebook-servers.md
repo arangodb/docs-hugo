@@ -20,7 +20,7 @@ infrastructure, and can immediately start using the GraphML and AI
 functionalities.
 
 The notebooks are primarily focused on the following solutions:
-- [AutoGraph](autograph-studio/_index.md): Extract entities from text files to create a
+- [AutoGraph](autograph/_index.md): Extract entities from text files to create a
   knowledge graph that you can then query with a natural language interface.
 - [GraphML](graphml/_index.md): Apply machine learning to graphs for link prediction,
   classification, and similar tasks.

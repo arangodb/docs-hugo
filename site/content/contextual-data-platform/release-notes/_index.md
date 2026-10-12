@@ -65,7 +65,7 @@ training, and model generation have finished successfully.
 {{< tag "Agentic AI Suite" >}}
 
 The AutoGraph and GraphRAG web interfaces have been unified into
-[AutoGraph Studio](../autograph-studio/web-interface.md), a single
+[AutoGraph Studio](../autograph/web-interface.md), a single
 workflow that covers document upload, model configuration, corpus and knowledge
 graph building, retriever deployment, and querying your Context Graph.
 
@@ -77,23 +77,23 @@ The workflow has two stages, and the first one can be your finish line:
   [Graph Visualizer](../graph-visualizer.md)
   or query it directly.
 - **AutoRAG**: Optionally
-  [deploys retrievers](../autograph-studio/web-interface.md#deploy-an-autorag-retriever)
+  [deploys retrievers](../autograph/web-interface.md#deploy-an-autorag-retriever)
   on top of that Context Graph, so your agents and applications can
-  [ask questions](../autograph-studio/web-interface.md#ask-questions-against-your-context-graph)
+  [ask questions](../autograph/web-interface.md#ask-questions-against-your-context-graph)
   against it.
 
 The terminology has been aligned across the documentation: **Corpus Graph**,
 **Knowledge Graph**, and **Context Graph** now refer to distinct artifacts of
 the AutoGraph pipeline. The standalone GraphRAG web interface has been removed;
 use AutoGraph and the new AutoGraph Studio web interface instead. You can also
-use the [Importer](../autograph-studio/autograph/importer/_index.md) and
-[AutoRAG](../autograph-studio/autorag/_index.md) APIs.
+use the [Importer](../autograph/importer/_index.md) and
+[AutoRAG](../autorag/_index.md) APIs.
 
 ### Incremental Graph Updates
 
 {{< tag "Agentic AI Suite" >}}
 
-[Incremental Graph Updates](../autograph-studio/autograph/incremental-graph-updates.md)
+[Incremental Graph Updates](../autograph/incremental-graph-updates.md)
 keep a Knowledge Graph current after it has been built. It is faster and more
 efficient than to recreate it, and can significantly reduce the LLM cost and
 latency.
@@ -105,19 +105,19 @@ only the documents that actually changed are processed.
 
 AutoGraph also tracks how far a FullGraphRAG partition has drifted since it was
 last clustered and flags it, so you can trigger
-[reclustering](../autograph-studio/autograph/incremental-graph-updates.md#partition-divergence-and-reclustering)
+[reclustering](../autograph/incremental-graph-updates.md#partition-divergence-and-reclustering)
 when you choose to. Reclustering is never automatic.
 
 In this release, incremental updates are available through the
-[HTTP API](../autograph-studio/autograph/orchestration.md) only.
+[HTTP API](../autograph/reference/orchestration.md) only.
 
 ### File Parser Service
 
 {{< tag "Agentic AI Suite" >}}
 
 A new internal service for converting documents has been added. Both
-[AutoGraph](../autograph-studio/autograph/_index.md#supported-file-formats) and
-the [Importer](../autograph-studio/autograph/document-conversion.md#document-conversion-and-supported-formats)
+[AutoGraph](../autograph/reference/_index.md#supported-file-formats) and
+the [Importer](../autograph/document-conversion.md#document-conversion-and-supported-formats)
 now delegate the conversion of documents into Markdown to the new File Parser
 service.
 
@@ -125,15 +125,15 @@ PDF files, including scanned documents that are read using OCR, and some Office
 document formats (`.docx`, `.pptx`, `.doc`, `.ppt`) are now officially supported.
 The service additionally extracts embedded images together with their
 surrounding text (if requested), so that the Importer can pick them up as
-[semantic units](../autograph-studio/autograph/importer/semantic-units.md). For what each
+[semantic units](../autograph/importer/semantic-units.md). For what each
 format guarantees, see
-[Document conversion and supported formats](../autograph-studio/autograph/document-conversion.md#document-conversion-and-supported-formats).
+[Document conversion and supported formats](../autograph/document-conversion.md#document-conversion-and-supported-formats).
 
 The new service is designed for horizontal scalability, using two worker tiers,
 one for PDF documents and one for everything else, with 3 worker pods per tier
 by default. Deployments in AMP run these defaults unchanged. For self-hosted
 clusters, see
-[Tuning the File Parser](../autograph-studio/autograph/document-conversion.md#tuning-the-file-parser-for-self-hosted-deployments).
+[Tuning the File Parser](../autograph/document-conversion.md#tuning-the-file-parser-for-self-hosted-deployments).
 
 ### File Manager
 
@@ -150,7 +150,7 @@ clusters, see
   to uploaded files. The reserved
   [`citable_url`](../file-manager/api.md#the-citable_url-key) key
   lets AutoRAG resolve
-  [citations](../autograph-studio/autograph/importer/parameters.md#citation-urls)
+  [citations](../autograph/importer/parameters.md#citation-urls)
   back to the original source document.
 - You can upload
   [many files in one request](../file-manager/api.md#upload-a-batch-of-rag-input-files),
@@ -210,22 +210,22 @@ This release contains improvements and refinements to features introduced in v4.
 {{< tag "Agentic AI Suite" >}}
 
 - Corpus build failures caused by the LLM or embedding provider now surface a
-  machine-readable [`error_code`](../autograph-studio/autograph/corpus-build.md)
+  machine-readable [`error_code`](../autograph/reference/corpus-build.md)
   on the build status response (authentication failed, permission denied,
   rate limited, quota exceeded, or API key missing), so clients can react to
   each case instead of parsing free-text messages. The
-  [error reference](../autograph-studio/autograph/error-handling.md)
+  [error reference](../autograph/reference/error-handling.md)
   also adds HTTP `429` (provider rate-limited or quota exhausted), expands
   the meanings of `401` and `403` to cover LLM provider auth and permission
   failures, and explains why an accepted (`202`) async job can still fail
   later.
 - The new Known Limitations section in the
-  [error reference](../autograph-studio/autograph/error-handling.md)
+  [error reference](../autograph/reference/error-handling.md)
   documents two important behaviors: citation extraction and `SemanticUnits`
   linking are not yet automatic (you provide `citable_url` and run your own
   post-processing); and VectorRAG partitions cannot serve Global or Local
   queries because they skip entity and community extraction.
-- The [RAG Strategizer](../autograph-studio/autograph/rag-strategizer.md)
+- The [RAG Strategizer](../autograph/reference/rag-strategizer.md)
   response is documented more precisely: `rag_partition_id` suffixes
   (`_a` = FullGraphRAG, `_b` = VectorRAG), the full list of FullGraphRAG
   importer tunables returned in `parameters`, empty `entity_types` for
@@ -242,13 +242,13 @@ This release contains improvements and refinements to features introduced in v4.
   (`CHAT_MAX_COMPLETION_TOKENS`, `CHAT_MODEL_CONTEXT_TOKENS`,
   `GRAPHRAG_LLM_PROMPT_TOKEN_BUDGET`) let you override the defaults for
   private fine-tunes or sparse graphs. See
-  [LLM configuration](../autograph-studio/autograph/importer/llm-configuration.md#token-budget-for-chat-models).
+  [LLM configuration](../autograph/importer/llm-configuration.md#token-budget-for-chat-models).
 - Before each chat call, the Importer re-tokenizes the actual prompt and
   truncates it if it would exceed the model's window, so jobs no longer fail
   with `context_length_exceeded` on long prompts.
 - The Importer now auto-detects newer OpenAI models that require
   `/v1/responses` (for example `gpt-5.4-pro`, `o3-pro`), retries the call via
-  the [Responses API](../autograph-studio/autograph/importer/llm-configuration.md#openai-responses-api-fallback),
+  the [Responses API](../autograph/importer/llm-configuration.md#openai-responses-api-fallback),
   and caches the result so subsequent calls skip the failing chat-completion
   attempt.
 - Provider errors during graph build are mapped to short remediation messages
@@ -257,7 +257,7 @@ This release contains improvements and refinements to features introduced in v4.
   actionable text instead of raw SDK output.
 - The model used for image description during semantic-unit processing is now
   configurable via the
-  [`MULTIMODAL_MODEL`](../autograph-studio/autograph/importer/semantic-units.md#image-description-model)
+  [`MULTIMODAL_MODEL`](../autograph/importer/semantic-units.md#image-description-model)
   environment variable (default `gpt-4o-mini`), and it honors the same token
   budget and Responses API settings as the rest of the pipeline.
 
@@ -265,10 +265,10 @@ This release contains improvements and refinements to features introduced in v4.
 
 {{< tag "Agentic AI Suite" >}}
 
-- Response [caching](../autograph-studio/autorag/parameters.md#use_cache)
+- Response [caching](../autorag/parameters.md#use_cache)
   (`use_cache: true`) now works for every query type (`GLOBAL`, `LOCAL`,
   `UNIFIED`, and `CUSTOM`); previously only some query types could be cached.
-- [`show_citations`](../autograph-studio/autorag/parameters.md#show_citations)
+- [`show_citations`](../autorag/parameters.md#show_citations)
   is documented as a no-op in Deep Search (`use_llm_planner=true`) and
   `GLOBAL` queries, because those modes always strip citations regardless of
   the flag. The parameter still applies to `LOCAL`, `UNIFIED`, and `CUSTOM`
@@ -283,8 +283,8 @@ This release contains improvements and refinements to features introduced in v4.
 {{< tag "Agentic AI Suite" >}}
 
 Default OpenAI chat model upgraded from `gpt-4o` to the
-GPT-5.4 family. The [Importer](../autograph-studio/autograph/importer/llm-configuration.md)
-and [Retriever](../autograph-studio/autorag/llm-configuration.md) now default
+GPT-5.4 family. The [Importer](../autograph/importer/llm-configuration.md)
+and [Retriever](../autorag/llm-configuration.md) now default
 to `gpt-5.4-nano`; the
 [Natural Language to AQL](../natural-language-to-aql/setup.md)
 service (AQLizer) defaults to `gpt-5.4`. [Ada](../ada/_index.md) also
@@ -316,7 +316,7 @@ The minimum required ArangoDB version is the Enterprise Edition v3.12.9.
 
 {{< tag "Agentic AI Suite" >}}
 
-[AutoGraph](../autograph-studio/_index.md) is an automation copilot
+[AutoGraph](../autograph/_index.md) is an automation copilot
 that analyzes enterprise documents, discovers natural knowledge domains, and
 automatically builds optimized knowledge graphs for intelligent retrieval at scale.
 
@@ -330,7 +330,7 @@ Key features:
   with entities, relationships, and semantic connections.
 - **Natural language querying**: Chat with your knowledge graph using natural language
   to ask questions and retrieve insights from your documents.
-- **Web interface**: Streamlined [workflow](../autograph-studio/web-interface.md)
+- **Web interface**: Streamlined [workflow](../autograph/web-interface.md)
   guides you through document upload, corpus building, strategy generation, knowledge graph
   import, retriever deployment, and chat.
 
@@ -466,13 +466,13 @@ The minimum required ArangoDB version has been raised to Enterprise Edition v3.1
 {{< tag "Agentic AI Suite" >}}
 
 - **Instant and Deep Search**: New Retriever (now
-  [AutoRAG](../autograph-studio/autorag/search-methods/_index.md)) search methods
+  [AutoRAG](../autorag/search-methods/_index.md)) search methods
   optimized for different use cases. Instant Search provides fast responses with
   streaming support. Deep Search offers detailed, accurate responses for complex queries
   requiring high accuracy. Both methods are accessible via the API or the
-  [AutoGraph web interface](../autograph-studio/web-interface.md#ask-questions-against-your-context-graph).
+  [AutoGraph web interface](../autograph/web-interface.md#ask-questions-against-your-context-graph).
 
-- **Update Knowledge Graphs**: [Add additional data sources](../autograph-studio/web-interface.md#add-more-documents)
+- **Update Knowledge Graphs**: [Add additional data sources](../autograph/web-interface.md#add-more-documents)
   to existing Knowledge Graphs through the web interface. Upload new files to
   automatically update the Knowledge Graph and underlying collections with new data.
 
@@ -562,7 +562,7 @@ The minimum required ArangoDB version is the Enterprise Edition v3.12.5.
 
 What's included:
 
-- [**GraphRAG**](../autograph-studio/concepts.md):
+- [**GraphRAG**](../autograph/concepts.md):
   Transform unstructured documents into intelligent knowledge graphs and
   natural language querying through the Importer and Retriever (now AutoRAG)
   services.

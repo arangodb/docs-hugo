@@ -22,7 +22,7 @@ with clickable references to the relevant documents.
 
 {{< info >}}
 Unified Search is also available as **Instant Search** via the
-[web interface](../../web-interface.md).
+[web interface](../../autograph/web-interface.md).
 {{< /info >}}
 
 ## Configuration

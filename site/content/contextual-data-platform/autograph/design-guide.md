@@ -68,7 +68,7 @@ flowchart LR
 A category is the label a document is filed under: the second level of its
 [File Manager](../file-manager/api.md#scopes) scope,
 `[project, category]`.
-A legacy [`POST /v1/import-multiple`](autograph/importing-files.md) upload sets
+A legacy [`POST /v1/import-multiple`](reference/importing-files.md) upload sets
 it through the `module` field instead. Categories are the unit of isolation:
 
 - No cross-category similarity edges
@@ -84,7 +84,7 @@ category as a `module`. Some internal fields keep that name, such as the
 value, such as the `jobs[].category` of an orchestration status. Either way the
 value is encoded, for example `myproject_legal`, and is never what you send.
 Requests always take the bare label, see
-[The category contract](autograph/_index.md#the-category-contract).
+[The category contract](reference/_index.md#the-category-contract).
 {{< /info >}}
 
 ### Layer 2 - Corpus Graph (AutoGraph)
@@ -96,7 +96,7 @@ For each category, AutoGraph builds:
 - Membership and `HAS_CLUSTER` edges in `corpus_relations`
 - A `modules` collection linking categories to their clusters
 - Strategy profiles in `rags` (after running the
-  [RAG strategizer](autograph/rag-strategizer.md))
+  [RAG strategizer](reference/rag-strategizer.md))
 
 The named graph `{project}_CorpusGraph` is the map of your entire corpus; it
 shows what is connected to what before the full GraphRAG import.
@@ -104,7 +104,7 @@ shows what is connected to what before the full GraphRAG import.
 ### Layer 3 - Per-partition Knowledge Graph (Importer)
 
 After strategies exist,
-[orchestration](autograph/orchestration.md#trigger-orchestration) assigns each
+[orchestration](reference/orchestration.md#trigger-orchestration) assigns each
 `rag_partition_id` to an Importer job. The Importer creates `Documents`,
 `Chunks`, and `Relations` for every partition. FullGraphRAG partitions also get
 `Entities` and `Communities` (rich entity and relationship graphs); VectorRAG
@@ -136,9 +136,9 @@ Importer partitions:
    Files uploaded to the
    [File Manager](../file-manager/api.md#upload-a-rag-input-file)
    carry the category as the second level of their scope, and
-   [`POST /v1/corpus/builds`](autograph/corpus-build.md) takes those labels in
+   [`POST /v1/corpus/builds`](reference/corpus-build.md) takes those labels in
    `categories`. The legacy
-   [`POST /v1/import-multiple`](autograph/importing-files.md) accepts a `module`
+   [`POST /v1/import-multiple`](reference/importing-files.md) accepts a `module`
    field for the batch instead. Files without a label receive the `default`
    category when the corpus build runs.
 
@@ -157,7 +157,7 @@ Importer partitions:
    link into clusters via `corpus_relations` membership edges.
 
 5. **RAG strategizer** -
-   The [strategizer](autograph/rag-strategizer.md) reads clusters, ranks them by
+   The [strategizer](reference/rag-strategizer.md) reads clusters, ranks them by
    complexity, and assigns VectorRAG or FullGraphRAG. It writes profiles to the
    `rags` collection with a `rag_partition_id` derived from the cluster key.
    - Suffix `_a` indicates a FullGraphRAG partition
@@ -165,7 +165,7 @@ Importer partitions:
    - Example: cluster key `cluster_legal_0` produces partition ID `legal_0_a`
 
 6. **Orchestration** -
-   [`POST /v1/orchestrate`](autograph/orchestration.md#trigger-orchestration) loads every matching
+   [`POST /v1/orchestrate`](reference/orchestration.md#trigger-orchestration) loads every matching
    profile from `rags` and runs one Importer job per `rag_partition_id`. This is
    how categories become parallel partitions in Layer 3; a partitioned knowledge
    graph, not a single undifferentiated blob.
@@ -184,17 +184,17 @@ Use AutoGraph for everything up to and including Layer 2.
 | Goal | Endpoint |
 |------|----------|
 | Upload documents and assign them to a category | Upload to the [File Manager](../file-manager/api.md#upload-a-rag-input-file) under the scope `[project, category]`, then build with those labels in `categories` |
-| Build the Corpus Graph (similarity + clusters) | [`POST /v1/corpus/builds`](autograph/corpus-build.md) |
-| Monitor a build in progress | [`GET /v1/corpus/builds/{id}`](autograph/corpus-build.md#monitoring-build-status) |
-| Assign VectorRAG or FullGraphRAG per cluster | [`POST /v1/rag-strategizer/analyze`](autograph/rag-strategizer.md) |
-| Run orchestration (Importer jobs for all profiles) | [`POST /v1/orchestrate`](autograph/orchestration.md#trigger-orchestration) |
-| Add a category without rebuilding the whole corpus | [`POST /v1/corpus/builds`](autograph/corpus-build.md) with only the new category in `categories` |
-| Append documents to a category that is already built | [`POST /v1/corpus/builds`](autograph/corpus-build.md#incremental-builds) with `incremental: true` |
-| Add, remove, or replace individual documents in an existing category | [`POST /v1/graph/insert`, `/delete`, `/update`](autograph/orchestration.md#insert-documents) |
-| Rebuild the Layer 3 communities of a FullGraphRAG partition after many document changes | [`POST /v1/graph/recluster`](autograph/orchestration.md#trigger-reclustering) |
-| Inspect the state of the project and its categories | [`GET /v1/projects/{project}/overview`](autograph/project-operations.md#project-overview) |
-| Remove a category and everything it contributed | [`DELETE /v1/projects/{project}/categories/{category}`](autograph/project-operations.md#delete-category) |
-| Embed a field on an existing ArangoDB collection | [`POST /v1/embed-field-in-collection`](autograph/embeddings.md) |
+| Build the Corpus Graph (similarity + clusters) | [`POST /v1/corpus/builds`](reference/corpus-build.md) |
+| Monitor a build in progress | [`GET /v1/corpus/builds/{id}`](reference/corpus-build.md#monitoring-build-status) |
+| Assign VectorRAG or FullGraphRAG per cluster | [`POST /v1/rag-strategizer/analyze`](reference/rag-strategizer.md) |
+| Run orchestration (Importer jobs for all profiles) | [`POST /v1/orchestrate`](reference/orchestration.md#trigger-orchestration) |
+| Add a category without rebuilding the whole corpus | [`POST /v1/corpus/builds`](reference/corpus-build.md) with only the new category in `categories` |
+| Append documents to a category that is already built | [`POST /v1/corpus/builds`](reference/corpus-build.md#incremental-builds) with `incremental: true` |
+| Add, remove, or replace individual documents in an existing category | [`POST /v1/graph/insert`, `/delete`, `/update`](reference/orchestration.md#insert-documents) |
+| Rebuild the Layer 3 communities of a FullGraphRAG partition after many document changes | [`POST /v1/graph/recluster`](reference/orchestration.md#trigger-reclustering) |
+| Inspect the state of the project and its categories | [`GET /v1/projects/{project}/overview`](reference/project-operations.md#project-overview) |
+| Remove a category and everything it contributed | [`DELETE /v1/projects/{project}/categories/{category}`](reference/project-operations.md#delete-category) |
+| Embed a field on an existing ArangoDB collection | [`POST /v1/embed-field-in-collection`](reference/embeddings.md) |
 
 ### Incremental vs. full builds
 
@@ -212,7 +212,7 @@ Use AutoGraph for everything up to and including Layer 2.
 new vectors.
 
 To rebuild a category cleanly, remove it with
-[`DELETE /v1/projects/{project}/categories/{category}`](autograph/project-operations.md#delete-category)
+[`DELETE /v1/projects/{project}/categories/{category}`](reference/project-operations.md#delete-category)
 first, then build it, run the RAG Strategizer, and orchestrate again.
 {{< /warning >}}
 
@@ -223,14 +223,14 @@ the granularity of a whole category and recomputes its similarity and clustering
 and it never touches Layer 3. To add, remove, or replace individual documents in
 a category that is already built, and keep its clusters, strategy profiles, and
 knowledge graph consistent, use
-[Incremental Graph Updates](autograph/incremental-graph-updates.md) instead.
+[Incremental Graph Updates](incremental-graph-updates.md) instead.
 
 | Change | How to apply it |
 |--------|------|
-| A few documents are added, removed, or replaced | [Incremental Graph Updates](autograph/incremental-graph-updates.md) |
+| A few documents are added, removed, or replaced | [Incremental Graph Updates](incremental-graph-updates.md) |
 | Many documents are added to an existing category | Corpus build with that category in `categories` and `incremental: true` |
 | A new category | Corpus build with only the new category in `categories` |
-| A clean rebuild of one category | [Delete the category](autograph/project-operations.md#delete-category), then build, strategize, and orchestrate it again |
+| A clean rebuild of one category | [Delete the category](reference/project-operations.md#delete-category), then build, strategize, and orchestrate it again |
 
 ---
 
@@ -255,7 +255,7 @@ AutoGraph orchestration (POST /v1/orchestrate)
 **When you do interact with the Importer directly:**
 
 - **Re-running part of the corpus** - pass `categories` in
-  [`POST /v1/orchestrate`](autograph/orchestration.md#trigger-orchestration) to orchestrate only the
+  [`POST /v1/orchestrate`](reference/orchestration.md#trigger-orchestration) to orchestrate only the
   categories you need, or `file_ids` to reprocess only specific documents, rather
   than re-orchestrating the entire corpus.
 - **Configuring Importer behavior** - pass environment variable overrides in
@@ -277,7 +277,7 @@ scope the run to specific categories if you want to exclude the others.
 ## Per-cluster ontology (entity_types)
 
 Beyond assigning VectorRAG or FullGraphRAG, the
-[strategizer](autograph/rag-strategizer.md) generates a domain-specific ontology
+[strategizer](reference/rag-strategizer.md) generates a domain-specific ontology
 for each cluster - a list of 8–12 entity types that defines what the Importer
 extracts.
 
@@ -300,7 +300,7 @@ knowledge graph; it determines what entities, relationships, and communities
 Layer 3 contains.
 
 You can inspect each cluster's ontology via
-[`GET /v1/rag-strategizer/strategy`](autograph/rag-strategizer.md#retrieve-rag-strategies)
+[`GET /v1/rag-strategizer/strategy`](reference/rag-strategizer.md#retrieve-rag-strategies)
 (the `entity_types` field in each strategy profile).
 
 ---
@@ -345,12 +345,12 @@ categories.
 ## Next steps
 
 - [Architecture](architecture.md): Collections and named graphs per layer
-- [Incremental Graph Updates](autograph/incremental-graph-updates.md): Insert, delete, and
+- [Incremental Graph Updates](incremental-graph-updates.md): Insert, delete, and
   update documents in a knowledge graph that has already been built
-- [Setup](autograph/_index.md): End-to-end setup with the web interface or API
-- [Import Files](autograph/importing-files.md): Upload documents with the legacy `module` label
-- [Corpus Build](autograph/corpus-build.md): Trigger and monitor corpus builds
-- [RAG Strategizer](autograph/rag-strategizer.md): Analyze clusters and assign strategies
-- [Graph Operations](autograph/orchestration.md): Spawn Importer workers and
+- [Setup](reference/_index.md): End-to-end setup with the web interface or API
+- [Import Files](reference/importing-files.md): Upload documents with the legacy `module` label
+- [Corpus Build](reference/corpus-build.md): Trigger and monitor corpus builds
+- [RAG Strategizer](reference/rag-strategizer.md): Analyze clusters and assign strategies
+- [Graph Operations](reference/orchestration.md): Spawn Importer workers and
   apply document-level graph updates
-- [Error Handling](autograph/error-handling.md): Troubleshooting common issues
+- [Error Handling](reference/error-handling.md): Troubleshooting common issues

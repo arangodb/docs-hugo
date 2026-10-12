@@ -136,7 +136,7 @@ document content (for example, citations referencing web URLs and images). While
 the orchestrator enables semantic units for FullGraphRAG partitions
 (`enable_semantic_units: true`), automatic extraction and node creation is not yet
 implemented. The collection structure exists but requires manual population or
-custom post-processing. See [Known Limitations](autograph/error-handling.md#citation-handling) for details.
+custom post-processing. See [Known Limitations](reference/error-handling.md#citation-handling) for details.
 {{< /warning >}}
 
 Layer 3 collections share the same `{project}_` prefix. Each document in Layer 3
@@ -168,7 +168,7 @@ Where collections inherit their replication factor from a prototype collection
 through `distributeShardsLike`, as in a OneShard database, the inherited value
 stands and AutoGraph leaves it alone.
 
-The [Importer](autograph/importer/limits.md#graphs-and-sharding) uses the
+The [Importer](importer/limits.md#graphs-and-sharding) uses the
 same replication factor for the Knowledge Graph collections it creates.
 
 ## Node fields
@@ -212,7 +212,7 @@ prefix is `SG_`).
 | `enable_chunk_embeddings` | `true` | Whether chunks get their own embeddings. |
 | `entity_types` | `[configured types]` | Entity types the extractor may produce (the per-cluster ontology; typically 8–12 types). |
 | `smart_graph_attribute` | `partition_id` | The SmartGraph sharding key. |
-| `divergence_score` | `0.20` | FullGraphRAG only. How far the partition has drifted since it was last clustered. It is calculated again after every [incremental graph update](autograph/incremental-graph-updates.md#partition-divergence-and-reclustering). |
+| `divergence_score` | `0.20` | FullGraphRAG only. How far the partition has drifted since it was last clustered. It is calculated again after every [incremental graph update](incremental-graph-updates.md#partition-divergence-and-reclustering). |
 | `divergence_threshold` | `0.25` | FullGraphRAG only. If the score gets above this value, the partition is flagged for reclustering. Stored per partition, but not configurable through the API. |
 | `needs_reclustering` | `false` | FullGraphRAG only. Set to `true` if the `divergence_score` is above the threshold. You still need to start the reclustering yourself. |
 | `last_reclustered_at` | `1778230320.0` | FullGraphRAG only. When the partition was last clustered or reclustered successfully, as **epoch seconds**, not an ISO-8601 string. Unset until the first successful clustering. |
@@ -239,7 +239,7 @@ rebuilds its communities. A VectorRAG partition has neither collection, see
 | `content` | `"--- source: https://…"` | Full document text. |
 | `partition_id` | `default_0_a` | Which RAG partition it belongs to. |
 | `import_number` | `1` | Which import / build produced it. Every incremental import into the same partition adds another batch. |
-| `file_ids` | `["rag-input-…"]` | The File Manager IDs stored at import time. [Incremental graph updates](autograph/incremental-graph-updates.md) use them to find a document that you want to delete. |
+| `file_ids` | `["rag-input-…"]` | The File Manager IDs stored at import time. [Incremental graph updates](incremental-graph-updates.md) use them to find a document that you want to delete. |
 
 **`Chunks`** — a token-sized passage, the retrieval unit
 

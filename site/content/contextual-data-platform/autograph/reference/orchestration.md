@@ -4,7 +4,7 @@ menuTitle: Graph Operations
 description: >-
   Spawn Importer workers, execute RAG pipeline builds, and apply document-level
   updates to a knowledge graph that is already built
-weight: 84
+weight: 14
 aliases:
   - /agentic-ai-suite/autograph/reference/orchestration/
 ---
@@ -17,7 +17,7 @@ individual documents in a graph that has already been built.
 
 To learn when to use the `/v1/graph/*` endpoints, how they compare to a full
 rebuild, and how the partition divergence is measured, see
-[Incremental Graph Updates](incremental-graph-updates.md).
+[Incremental Graph Updates](../incremental-graph-updates.md).
 
 {{< info >}}
 The endpoints on this page scope documents by **category**. A category is the
@@ -63,7 +63,7 @@ non-empty, the run is narrowed to the strategized clusters that actually contain
 those File Manager IDs, and each of those partitions imports only those IDs. You
 do not name the partitions, and there is no parameter for doing so. A non-empty
 `file_ids` also **bypasses the stale filter**, so an
-[incremental graph update](incremental-graph-updates.md) can add a newly
+[incremental graph update](../incremental-graph-updates.md) can add a newly
 inserted or replaced document to a partition that is already imported, without
 processing the whole partition again.
 
@@ -97,7 +97,7 @@ upper bound.
 | `embedding_secret_profile_id` | string | No | Secret profile for embedding key on the Importer. | Set when embedding must come from vault, not env. |
 | `importer_env` | map | No | Extra environment variables for Importer pods (e.g. model names, timeouts). | Start **empty**; add only keys documented for your Importer version (often chunk or model overrides). |
 | `categories` | string[] | No | If **non-empty**, only the strategy profiles of the listed categories are orchestrated. A category is a bare category label, such as `legal`, not a partition ID. If no strategy profile matches, the request is rejected with `400`. | **Omit or `[]`** for the full corpus. This is the coarsest scoping level; there is no way to single out one partition of a category. |
-| `file_ids` | string[] | No | If **non-empty**, the run is narrowed to the strategized clusters that contain these File Manager IDs, each of those partitions imports only those IDs, and the stale-partition filter is skipped. IDs that match nothing are skipped and reported in `unmatched_file_ids` on the response. Matching uses the `file_id` that a corpus build stamps on the corpus sources; there is no fallback to file names. | **Omit** for a normal build. Use it after an [incremental graph update](incremental-graph-updates.md) to import only the documents that changed. |
+| `file_ids` | string[] | No | If **non-empty**, the run is narrowed to the strategized clusters that contain these File Manager IDs, each of those partitions imports only those IDs, and the stale-partition filter is skipped. IDs that match nothing are skipped and reported in `unmatched_file_ids` on the response. Matching uses the `file_id` that a corpus build stamps on the corpus sources; there is no fallback to file names. | **Omit** for a normal build. Use it after an [incremental graph update](../incremental-graph-updates.md) to import only the documents that changed. |
 
 ### Credential precedence
 
@@ -237,7 +237,7 @@ partition. For a **FullGraphRAG** partition, the entry carries the
 `divergence_score` and `needs_reclustering` of that partition, measured after the
 job has created its Layer 3 entities. This is the value to act on, not the one
 from an insert or update response, see
-[Where to read the score](incremental-graph-updates.md#where-to-read-the-score).
+[Where to read the score](../incremental-graph-updates.md#where-to-read-the-score).
 
 ### Response
 
@@ -373,7 +373,7 @@ way, returns `404`.
 
 The durable copy of the divergence lives on the partition's `rags` strategy
 profile, see [Where the values are
-stored](incremental-graph-updates.md#where-the-values-are-stored). Read it
+stored](../incremental-graph-updates.md#where-the-values-are-stored). Read it
 from there if you need the state after the run has been evicted.
 {{< /warning >}}
 
@@ -545,7 +545,7 @@ before the targeted orchestration has created the insert's Layer 3 entities. Rea
 the authoritative value from
 [`GET /v1/orchestrate/{orchestration_id}`](#monitor-an-orchestration) once the
 orchestration has run. See [Where to read the
-score](incremental-graph-updates.md#where-to-read-the-score).
+score](../incremental-graph-updates.md#where-to-read-the-score).
 {{< /info >}}
 
 Insert extracts the text, creates an embedding, stores the source, assigns the
@@ -554,7 +554,7 @@ updates **Layers 1 and 2**. To add the document to Layer 3, run a targeted
 orchestration with its `file_id`. AutoGraph resolves the partition itself, so you
 do not pass one. Because every insert is keyed by a File Manager ID, an inserted
 document is always targetable, see
-[Identifying documents for Layer 3](incremental-graph-updates.md#identifying-documents-for-layer-3).
+[Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
 
 | Status Code | Meaning |
 |-------------|---------|
@@ -711,7 +711,7 @@ affected partition again and stamps `divergence_score` and `needs_reclustering`
 onto the result of each file. The fields are only present if `overall_status` is
 `COMMITTED`. A deletion that ends in `ROLLED_BACK` or `FAILED` writes no score.
 See
-[Where to read the score](incremental-graph-updates.md#where-to-read-the-score).
+[Where to read the score](../incremental-graph-updates.md#where-to-read-the-score).
 
 | Status Code | Meaning |
 |-------------|---------|
@@ -906,7 +906,7 @@ starts a reclustering on its own. The flag is reported by
 [delete](#delete-documents) once its Layer 3 cleanup has committed, and by the
 `rags` profile of the partition. Insert and update responses do not report it,
 see [Where to read the
-score](incremental-graph-updates.md#where-to-read-the-score).
+score](../incremental-graph-updates.md#where-to-read-the-score).
 
 Only FullGraphRAG partitions have a community layer that can be rebuilt. A
 VectorRAG partition has no `Entities` or `Communities`, so there is nothing to
@@ -935,7 +935,7 @@ multi_batch_score = (total_entities - largest_batch) / total_entities
 `needs_reclustering` is set when the score is **strictly above** the threshold,
 which is `0.25` and not configurable. For the baseline bootstrap, worked
 examples, and the lifecycle of the values, see [Partition divergence and
-reclustering](incremental-graph-updates.md#partition-divergence-and-reclustering).
+reclustering](../incremental-graph-updates.md#partition-divergence-and-reclustering).
 
 {{< warning >}}
 **Plan a reclustering as a maintenance operation.** It holds the single
@@ -1014,7 +1014,7 @@ the partition is authoritative:
 If `needs_reclustering` is still `true` and `last_reclustered_at` has not moved,
 the partition was not reclustered, whether it failed or never got the slot.
 Trigger it again. See [Where the values are
-stored](incremental-graph-updates.md#where-the-values-are-stored).
+stored](../incremental-graph-updates.md#where-the-values-are-stored).
 
 | Status Code | Meaning |
 |-------------|---------|
@@ -1036,7 +1036,7 @@ stored](incremental-graph-updates.md#where-the-values-are-stored).
   them.** A recluster of a Triton project is accepted (`accepted: true`) but
   fails in the background: the Importer rejects it with gRPC
   `FAILED_PRECONDITION` before doing any work, see
-  [Reclustering](importer/incremental-updates.md#reclustering). The failure
+  [Reclustering](../importer/incremental-updates.md#reclustering). The failure
   appears in the `importerOrchestration` status slot, and `needs_reclustering`
   stays set.
 - A partition **without entities** is a successful no-op. The job reports `0`
@@ -1045,7 +1045,7 @@ stored](incremental-graph-updates.md#where-the-values-are-stored).
   `Communities` of the partition.
 - To learn what the Importer does during a reclustering and how long it takes,
   see
-  [Importer Incremental Updates](importer/incremental-updates.md#reclustering).
+  [Importer Incremental Updates](../importer/incremental-updates.md#reclustering).
 
 ### HTTP example
 
@@ -1152,7 +1152,7 @@ pick a maintenance window for them.
   entries have no `file_id`. Update reads the replacement from the File Manager
   and takes no inline content, so every entry needs one, and one missing ID
   rejects the whole batch. Upload the new version first, then send the returned
-  ID. See [Identifying documents for Layer 3](incremental-graph-updates.md#identifying-documents-for-layer-3).
+  ID. See [Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
 - **The delete reports `overall_status: "ROLLED_BACK"`.** Something failed, and
   the state from before the call has been fully restored, so the documents are
   still in the graph. There is nothing to poll and nothing to clean up by hand.
@@ -1227,7 +1227,7 @@ pick a maintenance window for them.
   measured before Layer 3 holds the new entities. Read the score from
   [`GET /v1/orchestrate/{orchestration_id}`](#monitor-an-orchestration) after the
   targeted orchestration, or from the partition's `rags` profile. See
-  [Where to read the score](incremental-graph-updates.md#where-to-read-the-score).
+  [Where to read the score](../incremental-graph-updates.md#where-to-read-the-score).
 - **The reclustering was accepted but `needs_reclustering` is still `true`.**
   `accepted: true` only means the request was taken up. The partition may still
   be running, it may have failed (a Triton project always fails here), or it may
@@ -1247,8 +1247,8 @@ pick a maintenance window for them.
 
 ## Next Steps
 
-- **[AutoRAG](../autorag/)**: Query your built knowledge graphs
-- **[Monitor Results](importer/verify-and-explore.md)**: Verify import success
-- **[Incremental Graph Updates](incremental-graph-updates.md)**: When to use the `/v1/graph/*` endpoints and how the partition divergence is measured
+- **[AutoRAG](../../autorag/)**: Query your built knowledge graphs
+- **[Monitor Results](../importer/verify-and-explore.md)**: Verify import success
+- **[Incremental Graph Updates](../incremental-graph-updates.md)**: When to use the `/v1/graph/*` endpoints and how the partition divergence is measured
 - **[Design Guide - Categories to partitions](../design-guide.md#how-categories-become-a-partitioned-knowledge-graph)**: How category labels flow into partition IDs
 - **[Error Handling](error-handling.md)**: HTTP codes and general troubleshooting

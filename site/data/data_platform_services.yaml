@@ -77,19 +77,19 @@ platform-monitoring-prometheus:
 arangodb-autograph:
   features:
     - name: AutoGraph
-      link: contextual-data-platform/autograph-studio/_index.md
+      link: contextual-data-platform/autograph/_index.md
 arangodb-graphrag-importer:
   features:
     - name: Importer
-      link: contextual-data-platform/autograph-studio/autograph/importer/_index.md
+      link: contextual-data-platform/autograph/importer/_index.md
 arangodb-graphrag-retriever:
   features:
     - name: AutoRAG
-      link: contextual-data-platform/autograph-studio/autorag/_index.md
+      link: contextual-data-platform/autorag/_index.md
 arangodb-file-parser:
   features:
     - name: File Parser
-      link: contextual-data-platform/autograph-studio/autograph/document-conversion.md
+      link: contextual-data-platform/autograph/document-conversion.md
 arangodb-graph-rag:
   features:
     - name: Natural Language to AQL (AQLizer)

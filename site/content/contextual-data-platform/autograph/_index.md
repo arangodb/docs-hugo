@@ -1,6 +1,6 @@
 ---
-title: AutoGraph Studio
-menuTitle: AutoGraph Studio
+title: AutoGraph
+menuTitle: AutoGraph
 group: Build
 weight: 100
 description: >-
@@ -13,8 +13,9 @@ aliases:
 ---
 {{< tag "Agentic AI Suite" >}}
 
-AutoGraph Studio is **AutoGraph**, which builds your Context Graph, plus
-**AutoRAG**, which answers questions from it.
+AutoGraph builds your Context Graph from your documents. Together with
+[AutoRAG](../autorag/_index.md), which answers questions from it, it forms
+**AutoGraph Studio**.
 
 {{< embed-svg "AutoGraph-Flow" "AutoGraph builds the Context Graph from your documents; AutoRAG serves questions from it." >}}
 
@@ -33,10 +34,10 @@ interface:
 - **The web interface.** The [AutoGraph Studio web interface](web-interface.md)
   guides you from uploading documents to asking questions, without writing
   code. It installs and runs every service for you.
-- **The HTTP APIs.** The [AutoGraph service](autograph/_index.md) exposes the
+- **The HTTP APIs.** The [AutoGraph HTTP API](reference/_index.md) exposes the
   corpus build, the RAG Strategizer, and the orchestration of the Knowledge
-  Graph; [AutoRAG](autorag/_index.md) exposes the retrievers and the query
-  API. The [Importer](autograph/importer/_index.md) that builds the Knowledge
+  Graph; [AutoRAG](../autorag/_index.md) exposes the retrievers and the query
+  API. The [Importer](importer/_index.md) that builds the Knowledge
   Graph is orchestrated for you: you configure it, you do not call it.
 
 Both paths produce the same result. The [Quick Start](quick-start.md) shows
@@ -117,7 +118,7 @@ drifted since it was last clustered and flags the ones that may need a refresh,
 but it never reclusters on its own. That decision, and the cost of it, is up to
 you.
 
-See [Incremental Graph Updates](autograph/incremental-graph-updates.md).
+See [Incremental Graph Updates](incremental-graph-updates.md).
 
 ## What's next
 
@@ -131,8 +132,8 @@ See [Incremental Graph Updates](autograph/incremental-graph-updates.md).
 - **[Use Cases](use-cases.md)**: Understand the business value through real-world enterprise scenarios and how AutoGraph compares to traditional RAG.
 - **[Architecture](architecture.md)**: Explore AutoGraph's three-layer knowledge graph architecture and ArangoDB collections.
 - **[Design Guide](design-guide.md)**: Learn how to structure your data with categories, layers, and components.
-- **[AutoGraph service](autograph/_index.md)**: Install the service and drive
-  the corpus build, the RAG Strategizer, the orchestration, and incremental
-  graph updates through the HTTP API.
-- **[AutoRAG](autorag/_index.md)**: Deploy retrievers and query your Context
+- **[Reference](reference/_index.md)**: Install the service and drive the
+  corpus build, the RAG Strategizer, and the orchestration through the HTTP
+  API.
+- **[AutoRAG](../autorag/_index.md)**: Deploy retrievers and query your Context
   Graph with instant, deep, global, local, and custom search.

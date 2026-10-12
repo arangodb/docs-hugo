@@ -3,7 +3,7 @@ title: AutoGraph Embed Field in Collection
 menuTitle: Embeddings
 description: >-
   Add embeddings to documents in any ArangoDB collection
-weight: 86
+weight: 16
 aliases:
   - /agentic-ai-suite/autograph/reference/embeddings/
 ---

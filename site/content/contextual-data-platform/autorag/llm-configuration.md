@@ -28,7 +28,7 @@ supported.
 
 The following models are validated for use with AutoRAG. For the full
 list across all services, see
-[Supported LLM and embedding models](../../llm-models.md).
+[Supported LLM and embedding models](../llm-models.md).
 
 The recommended provider is `openai` with the OpenAI models below. That is the
 combination ArangoDB tests, so prefer it where you can; other endpoints can
@@ -208,8 +208,8 @@ For a full description of all parameters, see
 The first step is to install the LLM Host service with the LLM and
 embedding models of your choice. The setup will use the 
 Triton Inference Server and MLflow at the backend. 
-For more details, please refer to the [Triton Inference Server](../../private-llms/triton-inference-server.md)
-and [MLflow](../../private-llms/mlflow.md) documentation.
+For more details, please refer to the [Triton Inference Server](../private-llms/triton-inference-server.md)
+and [MLflow](../private-llms/mlflow.md) documentation.
 
 Once the `llmhost` service is up-and-running, then you can start AutoRAG
 using the below configuration:
@@ -242,8 +242,8 @@ Provider-specific defaults and requirements are noted where applicable.
 
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored.
 - `project_name`: The project name created via the
-  [web interface](../web-interface.md#create-an-autograph-project) or
-  [Project API](../../control-plane-acp/api.md#create-a-project).
+  [web interface](../autograph/web-interface.md#create-an-autograph-project) or
+  [Project API](../control-plane-acp/api.md#create-a-project).
   This name is used as a prefix for all ArangoDB collections (for example, a
   project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.).
 
@@ -376,7 +376,7 @@ URL of a running AutoRAG service without reinstalling or restarting it:
 | `embedding_api_provider` | string | Yes | | `"openai"` or `"custom"`. It can differ from `chat_api_provider`. |
 | `chat_model` | string | Yes | | Model name for chat. |
 | `embedding_model` | string | Yes | | Model name for embeddings. |
-| `chat_secret_profile_id` | string | Yes | | UUID of the [secret profile](../../secrets-manager.md) that holds the chat API key. |
+| `chat_secret_profile_id` | string | Yes | | UUID of the [secret profile](../secrets-manager.md) that holds the chat API key. |
 | `embedding_secret_profile_id` | string | Yes | | UUID of the secret profile that holds the embedding API key. |
 | `chat_api_url` | string | Yes for `custom` | Unchanged | URL of the chat endpoint. See [Setting the URLs](#setting-the-urls). |
 | `embedding_api_url` | string | Yes for `custom` | Unchanged | URL of the embedding endpoint. See [Setting the URLs](#setting-the-urls). |

@@ -108,8 +108,8 @@ data is not properly or cleanly represented. GraphRAG is a technique that
 lets you ground GenAI applications in trusted context using the power of graph
 relationships and vector embeddings.
 
-Arango's [GraphRAG](contextual-data-platform/autograph-studio/concepts.md) implementation,
-[AutoGraph Studio](contextual-data-platform/autograph-studio/_index.md), is a turn-key solution to
+Arango's [GraphRAG](contextual-data-platform/autograph/concepts.md) implementation,
+[AutoGraph Studio](contextual-data-platform/autograph/_index.md), is a turn-key solution to
 transform your organization's data into a knowledge graph and let everyone
 utilize the knowledge by asking questions in natural language.
 
@@ -122,7 +122,7 @@ accurate, context-aware intelligence grounded in enterprise data.
 
 ### AutoGraph with AutoRAG
 
-Arango [AutoGraph](contextual-data-platform/autograph-studio/_index.md) extends GraphRAG by
+Arango [AutoGraph](contextual-data-platform/autograph/_index.md) extends GraphRAG by
 automatically discovering knowledge domains in your organization's data and
 building a **Context Graph** from them. It assigns each domain the right
 processing depth: full entity extraction (`FullGraphRAG`) for complex content,

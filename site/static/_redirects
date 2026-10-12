@@ -213,26 +213,26 @@
 /arangodb/4.x/aql/graphs/*                                                      /arangodb/4.x/aql/graph-queries/:splat                          301
 /arangodb/devel/aql/graphs/*                                                    /arangodb/devel/aql/graph-queries/:splat                        301
 
-/agentic-ai-suite/reference/autograph/                                          /contextual-data-platform/autograph-studio/autograph/                          301
-/agentic-ai-suite/reference/autograph/corpus-build/                             /contextual-data-platform/autograph-studio/autograph/corpus-build/             301
-/agentic-ai-suite/reference/autograph/embeddings/                               /contextual-data-platform/autograph-studio/autograph/embeddings/               301
-/agentic-ai-suite/reference/autograph/importing-files/                          /contextual-data-platform/autograph-studio/autograph/importing-files/          301
-/agentic-ai-suite/reference/autograph/orchestration/                            /contextual-data-platform/autograph-studio/autograph/orchestration/            301
-/agentic-ai-suite/reference/autograph/rag-strategizer/                          /contextual-data-platform/autograph-studio/autograph/rag-strategizer/          301
-/agentic-ai-suite/autograph/quickstart/                                         /contextual-data-platform/autograph-studio/autograph/                              301
+/agentic-ai-suite/reference/autograph/                                          /contextual-data-platform/autograph/reference/                          301
+/agentic-ai-suite/reference/autograph/corpus-build/                             /contextual-data-platform/autograph/reference/corpus-build/             301
+/agentic-ai-suite/reference/autograph/embeddings/                               /contextual-data-platform/autograph/reference/embeddings/               301
+/agentic-ai-suite/reference/autograph/importing-files/                          /contextual-data-platform/autograph/reference/importing-files/          301
+/agentic-ai-suite/reference/autograph/orchestration/                            /contextual-data-platform/autograph/reference/orchestration/            301
+/agentic-ai-suite/reference/autograph/rag-strategizer/                          /contextual-data-platform/autograph/reference/rag-strategizer/          301
+/agentic-ai-suite/autograph/quickstart/                                         /contextual-data-platform/autograph/reference/                              301
 /agentic-ai-suite/graphml/quickstart/                                           /contextual-data-platform/graphml/setup/                                301
 /agentic-ai-suite/aqlizer/                                                      /contextual-data-platform/natural-language-to-aql/                      301
 /agentic-ai-suite/reference/natural-language-to-aql/                            /contextual-data-platform/natural-language-to-aql/api-reference/        301
 /agentic-ai-suite/reference/mlflow/                                             /contextual-data-platform/private-llms/mlflow/                          301
 /agentic-ai-suite/reference/triton-inference-server/                            /contextual-data-platform/private-llms/triton-inference-server/         301
 /agentic-ai-suite/reference/                                                    /contextual-data-platform/private-llms/                                 301
-/agentic-ai-suite/graphrag/web-interface/                                       /contextual-data-platform/autograph-studio/web-interface/                      301
-/agentic-ai-suite/graphrag/technical-overview/                                  /contextual-data-platform/autograph-studio/                                    301
-/agentic-ai-suite/graphrag/use-cases/                                           /contextual-data-platform/autograph-studio/use-cases/                          301
-/agentic-ai-suite/graphrag/quick-start/                                         /contextual-data-platform/autograph-studio/quick-start/                        301
-/agentic-ai-suite/graphrag/tutorial-notebook/                                   /contextual-data-platform/autograph-studio/web-interface/                      301
-/agentic-ai-suite/graphrag/                                                     /contextual-data-platform/autograph-studio/                                    301
-/agentic-ai-suite/graphrag/*                                                    /contextual-data-platform/autograph-studio/                                    301
+/agentic-ai-suite/graphrag/web-interface/                                       /contextual-data-platform/autograph/web-interface/                      301
+/agentic-ai-suite/graphrag/technical-overview/                                  /contextual-data-platform/autograph/                                    301
+/agentic-ai-suite/graphrag/use-cases/                                           /contextual-data-platform/autograph/use-cases/                          301
+/agentic-ai-suite/graphrag/quick-start/                                         /contextual-data-platform/autograph/quick-start/                        301
+/agentic-ai-suite/graphrag/tutorial-notebook/                                   /contextual-data-platform/autograph/web-interface/                      301
+/agentic-ai-suite/graphrag/                                                     /contextual-data-platform/autograph/                                    301
+/agentic-ai-suite/graphrag/*                                                    /contextual-data-platform/autograph/                                    301
 /amp/notebooks/                                                                 /contextual-data-platform/notebook-servers/                             301
 /arangodb/3.10/data-science/arangograph-notebooks/                              /contextual-data-platform/notebook-servers/                             301
 /arangodb/3.11/data-science/arangograph-notebooks/                              /contextual-data-platform/notebook-servers/                             301
@@ -240,10 +240,10 @@
 /arangodb/stable/data-science/arangograph-notebooks/                            /contextual-data-platform/notebook-servers/                             301
 /arangodb/4.x/data-science/arangograph-notebooks/                               /contextual-data-platform/notebook-servers/                             301
 /arangodb/devel/data-science/arangograph-notebooks/                             /contextual-data-platform/notebook-servers/                             301
-/agentic-ai-suite/retriever/                                                    /contextual-data-platform/autograph-studio/autorag/                                      301
-/agentic-ai-suite/retriever/*                                                   /contextual-data-platform/autograph-studio/autorag/:splat                                301
-/agentic-ai-suite/reference/retriever/                                          /contextual-data-platform/autograph-studio/autorag/                                      301
-/agentic-ai-suite/reference/retriever/*                                         /contextual-data-platform/autograph-studio/autorag/:splat                                301
+/agentic-ai-suite/retriever/                                                    /contextual-data-platform/autorag/                                      301
+/agentic-ai-suite/retriever/*                                                   /contextual-data-platform/autorag/:splat                                301
+/agentic-ai-suite/reference/retriever/                                          /contextual-data-platform/autorag/                                      301
+/agentic-ai-suite/reference/retriever/*                                         /contextual-data-platform/autorag/:splat                                301
 
 /data-platform/get-started/                                                     /contextual-data-platform/                                                301
 /data-platform/installation/                                                    /contextual-data-platform/install-and-upgrade/                  301
@@ -3981,39 +3981,39 @@
 /agentic-ai-suite/ada/llm-configuration/                                        /contextual-data-platform/ada/llm-configuration/                301
 /agentic-ai-suite/ada/quick-start/                                              /contextual-data-platform/ada/quick-start/                      301
 /agentic-ai-suite/ada/start-a-conversation/                                     /contextual-data-platform/ada/start-a-conversation/             301
-/agentic-ai-suite/autograph/                                                    /contextual-data-platform/autograph-studio/                     301
-/agentic-ai-suite/autograph/architecture/                                       /contextual-data-platform/autograph-studio/architecture/        301
-/agentic-ai-suite/autograph/concepts/                                           /contextual-data-platform/autograph-studio/concepts/            301
-/agentic-ai-suite/autograph/design-guide/                                       /contextual-data-platform/autograph-studio/design-guide/        301
-/agentic-ai-suite/autograph/incremental-graph-updates/                          /contextual-data-platform/autograph-studio/autograph/incremental-graph-updates/301
-/agentic-ai-suite/autograph/llm-configuration/                                  /contextual-data-platform/autograph-studio/autograph/llm-configuration/301
-/agentic-ai-suite/autograph/quick-start/                                        /contextual-data-platform/autograph-studio/quick-start/         301
-/agentic-ai-suite/autograph/reference/                                          /contextual-data-platform/autograph-studio/autograph/           301
-/agentic-ai-suite/autograph/reference/corpus-build/                             /contextual-data-platform/autograph-studio/autograph/corpus-build/301
-/agentic-ai-suite/autograph/reference/embeddings/                               /contextual-data-platform/autograph-studio/autograph/embeddings/301
-/agentic-ai-suite/autograph/reference/error-handling/                           /contextual-data-platform/autograph-studio/autograph/error-handling/301
-/agentic-ai-suite/autograph/reference/importing-files/                          /contextual-data-platform/autograph-studio/autograph/importing-files/301
-/agentic-ai-suite/autograph/reference/limitations/                              /contextual-data-platform/autograph-studio/autograph/limitations/301
-/agentic-ai-suite/autograph/reference/orchestration/                            /contextual-data-platform/autograph-studio/autograph/orchestration/301
-/agentic-ai-suite/autograph/reference/project-operations/                       /contextual-data-platform/autograph-studio/autograph/project-operations/301
-/agentic-ai-suite/autograph/reference/rag-strategizer/                          /contextual-data-platform/autograph-studio/autograph/rag-strategizer/301
-/agentic-ai-suite/autograph/setup/                                              /contextual-data-platform/autograph-studio/autograph/           301
-/agentic-ai-suite/autograph/use-cases/                                          /contextual-data-platform/autograph-studio/use-cases/           301
-/agentic-ai-suite/autograph/web-interface/                                      /contextual-data-platform/autograph-studio/web-interface/       301
-/agentic-ai-suite/autorag/                                                      /contextual-data-platform/autograph-studio/autorag/             301
-/agentic-ai-suite/autorag/custom-prompts/                                       /contextual-data-platform/autograph-studio/autorag/custom-prompts/301
-/agentic-ai-suite/autorag/error-handling/                                       /contextual-data-platform/autograph-studio/autorag/error-handling/301
-/agentic-ai-suite/autorag/executing-queries/                                    /contextual-data-platform/autograph-studio/autorag/executing-queries/301
-/agentic-ai-suite/autorag/llm-configuration/                                    /contextual-data-platform/autograph-studio/autorag/llm-configuration/301
-/agentic-ai-suite/autorag/parameters/                                           /contextual-data-platform/autograph-studio/autorag/parameters/  301
-/agentic-ai-suite/autorag/quick-start/                                          /contextual-data-platform/autograph-studio/autorag/quick-start/ 301
-/agentic-ai-suite/autorag/search-methods/                                       /contextual-data-platform/autograph-studio/autorag/search-methods/301
-/agentic-ai-suite/autorag/search-methods/custom-retriever/                      /contextual-data-platform/autograph-studio/autorag/search-methods/custom-retriever/301
-/agentic-ai-suite/autorag/search-methods/deep-search/                           /contextual-data-platform/autograph-studio/autorag/search-methods/deep-search/301
-/agentic-ai-suite/autorag/search-methods/global-search/                         /contextual-data-platform/autograph-studio/autorag/search-methods/global-search/301
-/agentic-ai-suite/autorag/search-methods/local-search/                          /contextual-data-platform/autograph-studio/autorag/search-methods/local-search/301
-/agentic-ai-suite/autorag/search-methods/unified-search/                        /contextual-data-platform/autograph-studio/autorag/search-methods/unified-search/301
-/agentic-ai-suite/autorag/verify-and-monitor/                                   /contextual-data-platform/autograph-studio/autorag/verify-and-monitor/301
+/agentic-ai-suite/autograph/                                                    /contextual-data-platform/autograph/                     301
+/agentic-ai-suite/autograph/architecture/                                       /contextual-data-platform/autograph/architecture/        301
+/agentic-ai-suite/autograph/concepts/                                           /contextual-data-platform/autograph/concepts/            301
+/agentic-ai-suite/autograph/design-guide/                                       /contextual-data-platform/autograph/design-guide/        301
+/agentic-ai-suite/autograph/incremental-graph-updates/                          /contextual-data-platform/autograph/incremental-graph-updates/301
+/agentic-ai-suite/autograph/llm-configuration/                                  /contextual-data-platform/autograph/llm-configuration/301
+/agentic-ai-suite/autograph/quick-start/                                        /contextual-data-platform/autograph/quick-start/         301
+/agentic-ai-suite/autograph/reference/                                          /contextual-data-platform/autograph/reference/           301
+/agentic-ai-suite/autograph/reference/corpus-build/                             /contextual-data-platform/autograph/reference/corpus-build/301
+/agentic-ai-suite/autograph/reference/embeddings/                               /contextual-data-platform/autograph/reference/embeddings/301
+/agentic-ai-suite/autograph/reference/error-handling/                           /contextual-data-platform/autograph/reference/error-handling/301
+/agentic-ai-suite/autograph/reference/importing-files/                          /contextual-data-platform/autograph/reference/importing-files/301
+/agentic-ai-suite/autograph/reference/limitations/                              /contextual-data-platform/autograph/reference/limitations/301
+/agentic-ai-suite/autograph/reference/orchestration/                            /contextual-data-platform/autograph/reference/orchestration/301
+/agentic-ai-suite/autograph/reference/project-operations/                       /contextual-data-platform/autograph/reference/project-operations/301
+/agentic-ai-suite/autograph/reference/rag-strategizer/                          /contextual-data-platform/autograph/reference/rag-strategizer/301
+/agentic-ai-suite/autograph/setup/                                              /contextual-data-platform/autograph/reference/           301
+/agentic-ai-suite/autograph/use-cases/                                          /contextual-data-platform/autograph/use-cases/           301
+/agentic-ai-suite/autograph/web-interface/                                      /contextual-data-platform/autograph/web-interface/       301
+/agentic-ai-suite/autorag/                                                      /contextual-data-platform/autorag/             301
+/agentic-ai-suite/autorag/custom-prompts/                                       /contextual-data-platform/autorag/custom-prompts/301
+/agentic-ai-suite/autorag/error-handling/                                       /contextual-data-platform/autorag/error-handling/301
+/agentic-ai-suite/autorag/executing-queries/                                    /contextual-data-platform/autorag/executing-queries/301
+/agentic-ai-suite/autorag/llm-configuration/                                    /contextual-data-platform/autorag/llm-configuration/301
+/agentic-ai-suite/autorag/parameters/                                           /contextual-data-platform/autorag/parameters/  301
+/agentic-ai-suite/autorag/quick-start/                                          /contextual-data-platform/autorag/quick-start/ 301
+/agentic-ai-suite/autorag/search-methods/                                       /contextual-data-platform/autorag/search-methods/301
+/agentic-ai-suite/autorag/search-methods/custom-retriever/                      /contextual-data-platform/autorag/search-methods/custom-retriever/301
+/agentic-ai-suite/autorag/search-methods/deep-search/                           /contextual-data-platform/autorag/search-methods/deep-search/301
+/agentic-ai-suite/autorag/search-methods/global-search/                         /contextual-data-platform/autorag/search-methods/global-search/301
+/agentic-ai-suite/autorag/search-methods/local-search/                          /contextual-data-platform/autorag/search-methods/local-search/301
+/agentic-ai-suite/autorag/search-methods/unified-search/                        /contextual-data-platform/autorag/search-methods/unified-search/301
+/agentic-ai-suite/autorag/verify-and-monitor/                                   /contextual-data-platform/autorag/verify-and-monitor/301
 /agentic-ai-suite/graph-analytics/                                              /contextual-data-platform/graph-analytics/                      301
 /agentic-ai-suite/graph-analytics/api/                                          /contextual-data-platform/graph-analytics/api/                  301
 /agentic-ai-suite/graph-analytics/quick-start/                                  /contextual-data-platform/graph-analytics/quick-start/          301
@@ -4023,20 +4023,20 @@
 /agentic-ai-suite/graphml/quick-start/                                          /contextual-data-platform/graphml/quick-start/                  301
 /agentic-ai-suite/graphml/setup/                                                /contextual-data-platform/graphml/setup/                        301
 /agentic-ai-suite/graphml/ui/                                                   /contextual-data-platform/graphml/ui/                           301
-/agentic-ai-suite/importer/                                                     /contextual-data-platform/autograph-studio/autograph/importer/  301
-/agentic-ai-suite/importer/architecture/                                        /contextual-data-platform/autograph-studio/autograph/importer/architecture/301
-/agentic-ai-suite/importer/autograph-integration/                               /contextual-data-platform/autograph-studio/autograph/importer/  301
-/agentic-ai-suite/importer/importing-files/                                     /contextual-data-platform/autograph-studio/autograph/importer/import-endpoints/301
-/agentic-ai-suite/importer/incremental-updates/                                 /contextual-data-platform/autograph-studio/autograph/importer/incremental-updates/301
-/agentic-ai-suite/importer/llm-configuration/                                   /contextual-data-platform/autograph-studio/autograph/importer/llm-configuration/301
-/agentic-ai-suite/importer/quick-start/                                         /contextual-data-platform/autograph-studio/quick-start/         301
-/agentic-ai-suite/importer/reference/                                           /contextual-data-platform/autograph-studio/autograph/importer/  301
-/agentic-ai-suite/importer/reference/error-handling/                            /contextual-data-platform/autograph-studio/autograph/importer/error-handling/301
-/agentic-ai-suite/importer/reference/limits/                                    /contextual-data-platform/autograph-studio/autograph/importer/limits/301
-/agentic-ai-suite/importer/reference/parameters/                                /contextual-data-platform/autograph-studio/autograph/importer/parameters/301
-/agentic-ai-suite/importer/semantic-units/                                      /contextual-data-platform/autograph-studio/autograph/importer/semantic-units/301
-/agentic-ai-suite/importer/setup/                                               /contextual-data-platform/autograph-studio/autograph/document-conversion/301
-/agentic-ai-suite/importer/verify-and-explore/                                  /contextual-data-platform/autograph-studio/autograph/importer/verify-and-explore/301
+/agentic-ai-suite/importer/                                                     /contextual-data-platform/autograph/importer/  301
+/agentic-ai-suite/importer/architecture/                                        /contextual-data-platform/autograph/importer/architecture/301
+/agentic-ai-suite/importer/autograph-integration/                               /contextual-data-platform/autograph/importer/  301
+/agentic-ai-suite/importer/importing-files/                                     /contextual-data-platform/autograph/importer/import-endpoints/301
+/agentic-ai-suite/importer/incremental-updates/                                 /contextual-data-platform/autograph/importer/incremental-updates/301
+/agentic-ai-suite/importer/llm-configuration/                                   /contextual-data-platform/autograph/importer/llm-configuration/301
+/agentic-ai-suite/importer/quick-start/                                         /contextual-data-platform/autograph/quick-start/         301
+/agentic-ai-suite/importer/reference/                                           /contextual-data-platform/autograph/importer/  301
+/agentic-ai-suite/importer/reference/error-handling/                            /contextual-data-platform/autograph/importer/error-handling/301
+/agentic-ai-suite/importer/reference/limits/                                    /contextual-data-platform/autograph/importer/limits/301
+/agentic-ai-suite/importer/reference/parameters/                                /contextual-data-platform/autograph/importer/parameters/301
+/agentic-ai-suite/importer/semantic-units/                                      /contextual-data-platform/autograph/importer/semantic-units/301
+/agentic-ai-suite/importer/setup/                                               /contextual-data-platform/autograph/document-conversion/301
+/agentic-ai-suite/importer/verify-and-explore/                                  /contextual-data-platform/autograph/importer/verify-and-explore/301
 /agentic-ai-suite/natural-language-to-aql/                                      /contextual-data-platform/natural-language-to-aql/              301
 /agentic-ai-suite/natural-language-to-aql/api-reference/                        /contextual-data-platform/natural-language-to-aql/api-reference/301
 /agentic-ai-suite/natural-language-to-aql/quick-start/                          /contextual-data-platform/natural-language-to-aql/quick-start/  301

@@ -61,12 +61,12 @@ as the installation guide, apply to the platform as a whole.
 The Agentic AI Suite is composed of the following major components:
 
 - [**Ada**](ada/_index.md): The AI digital assistant, for natural language interaction and development.
-- [**AutoGraph and AutoRAG**](autograph-studio/_index.md): **AutoGraph** organizes
+- [**AutoGraph and AutoRAG**](autograph/_index.md): **AutoGraph** organizes
   enterprise data into a **Context Graph**, assigning each domain the right
   processing depth. **AutoRAG** is the retrieval layer on top: it deploys the
   retrievers that answer questions from that Context Graph. Both stages are
   driven from the **AutoGraph Studio** view of the web interface. See
-  [GraphRAG Concepts](autograph-studio/concepts.md) for the approach behind them.
+  [GraphRAG Concepts](autograph/concepts.md) for the approach behind them.
 - [**Natural Language to AQL/AQLizer**](natural-language-to-aql/_index.md): Generate AQL
   queries from natural language to explore your data and gain insights without having
   to learn the query language first.

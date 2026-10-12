@@ -48,7 +48,7 @@ operational excellence. Read more about the platform's
 
 | Goal | Pages |
 |:-----|:------|
-| **Build** context, retrieval, and models from your data | [AutoGraph Studio](autograph-studio/_index.md), [GraphML](graphml/_index.md), [Graph Analytics](graph-analytics/_index.md), [Supported LLM providers and models](llm-models.md) |
+| **Build** context, retrieval, and models from your data | [AutoGraph](autograph/_index.md), [AutoRAG](autorag/_index.md), [GraphML](graphml/_index.md), [Graph Analytics](graph-analytics/_index.md), [Supported LLM providers and models](llm-models.md) |
 | **Query & explore** your data in the web interface | [Query Editor](query-editor.md), [Graph Visualizer](graph-visualizer.md), [Natural Language to AQL](natural-language-to-aql/_index.md), [Reasoner](reasoner/_index.md), [Ada](ada/_index.md), [Cypher to AQL](cypher-to-aql.md) |
 | **Develop & extend** the platform with your own code | [Container Manager](container-manager/_index.md), [File Manager](file-manager/_index.md), [Notebook Servers](notebook-servers.md) |
 | **Deploy & operate** the platform | [Install & Upgrade](install-and-upgrade/_index.md), [License Management](license-management.md), [Access control](access-control/_index.md), [Control Plane](control-plane-acp/_index.md), [Secrets Manager](secrets-manager.md), [Private LLM hosting](private-llms/_index.md), [Monitoring](monitoring.md) |

@@ -3,7 +3,7 @@ title: AutoGraph Error Handling and Troubleshooting
 menuTitle: Error Handling
 description: >-
   HTTP error codes, common issues, and troubleshooting for the AutoGraph service
-weight: 92
+weight: 22
 aliases:
   - /agentic-ai-suite/autograph/reference/error-handling/
 ---
@@ -139,7 +139,7 @@ logged and leave the gate open.
   [Update Model Config Credentials](project-operations.md#update-model-config-credentials).
 - `project` or `complexity` is missing on a RAG Strategizer request.
 - The RAG Strategizer was called before a corpus build finished successfully.
-- An [incremental graph update](incremental-graph-updates.md) was called
+- An [incremental graph update](../incremental-graph-updates.md) was called
   before the initial corpus build had finished.
 - The `category` of an incremental graph update is unknown, or it was omitted in
   a project that has more than one category.
@@ -326,7 +326,7 @@ For the full comparison, see
 - **An insert or update is rejected with `400` and a list of `doc_name`
   values.** Those entries have no `file_id`. Both endpoints take File Manager
   input only, and a single missing ID rejects the whole batch. See
-  [Identifying documents for Layer 3](incremental-graph-updates.md#identifying-documents-for-layer-3).
+  [Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
 - **Embed Field endpoint fails.** The target collection must exist, the
   source field must have non-empty values, and an embedding provider must
   be configured on the service.

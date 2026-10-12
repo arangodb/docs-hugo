@@ -18,7 +18,7 @@ lifecycle of an import, and the operational rules to keep in mind when
 deploying the service.
 
 For Layer 1 and Layer 2 (modules and Corpus Graph), see
-[AutoGraph Architecture](../../architecture.md).
+[AutoGraph Architecture](../architecture.md).
 
 ## Knowledge graph collections
 
@@ -162,7 +162,7 @@ retrieval time. Index parameters (`vector_index_metric`,
 [Parameter Reference](parameters.md#vector-index-configuration).
 
 For background on ArangoDB vector indexes, see
-[Vector indexes](../../../../arangodb/3.12/indexes-and-search/indexing/working-with-indexes/vector-indexes.md).
+[Vector indexes](../../../arangodb/3.12/indexes-and-search/indexing/working-with-indexes/vector-indexes.md).
 
 ## Asynchronous import lifecycle
 

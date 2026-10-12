@@ -36,7 +36,7 @@ This page describes how to build a knowledge graph from scratch. To keep it
 up-to-date afterwards by inserting, deleting, or replacing individual documents,
 you need to use the API. These operations are not available in the web interface
 in Arango Contextual Data Platform 4.1.0. See
-[Incremental Graph Updates](autograph/incremental-graph-updates.md).
+[Incremental Graph Updates](incremental-graph-updates.md).
 {{< /info >}}
 
 ## Create an AutoGraph project
@@ -82,7 +82,7 @@ the project when you continue to the next step.
    - **Office documents**: `.docx`, `.pptx`, `.doc`, `.ppt`
 
    For details, especially around image extraction, see
-   [Format support](autograph/document-conversion.md#format-support).
+   [Format support](document-conversion.md#format-support).
 2. The **Name this category** dialog opens and lists the files you selected.
    Enter a short, unique **Category name** that describes what these files
    cover, for example `architecture` or `release-notes`. You can edit it later.
@@ -188,12 +188,12 @@ Clicking **Start build** moves the wizard to the **Build** step and deploys the
 AutoGraph service with these settings. The Corpus Graph itself is built in the
 next step, once the service is up and you click **Build Corpus Graph**.
 
-For more details, see [LLM Configuration](autograph/llm-configuration.md).
+For more details, see [LLM Configuration](llm-configuration.md).
 
 ## Build the Corpus Graph
 
 The **Build** step shows the two operations it performs. For details on what
-happens during the corpus build, see [Corpus Build](autograph/corpus-build.md).
+happens during the corpus build, see [Corpus Build](reference/corpus-build.md).
 
 1. **Deploy AutoGraph service**: The service is deployed and the interface waits
    for it to respond, showing *Checking service status…* and
@@ -286,7 +286,7 @@ The **Knowledge Graph** card shows the graph name (for example `<project>_kg`)
 and whether the Knowledge Graph is built. Once it is, the card reports how many
 entities and relationships it contains. The RAG Strategizer analyzes the
 Corpus Graph and generates the import strategies per cluster. For details on how
-strategies are determined, see [RAG Strategizer](autograph/rag-strategizer.md).
+strategies are determined, see [RAG Strategizer](reference/rag-strategizer.md).
 
 Click **Generate strategies** on the **Knowledge Graph** card to open a
 three-step wizard: **Configure**, **Review**, and **Build**.
@@ -372,7 +372,7 @@ The **Build** step imports every cluster with its assigned strategy: GraphRAG
 clusters extract entities and relationships, VectorRAG clusters embed chunks. It
 names what it is about to build, for example
 *Building 2 GraphRAG clusters and 1 VectorRAG cluster*. For details, see
-[Orchestration](autograph/orchestration.md).
+[Orchestration](reference/orchestration.md).
 
 Set **Parallel builds** to the number of clusters to import at the same time.
 More parallel builds finish faster but put more load on the service. The default
@@ -479,14 +479,14 @@ the service does not come up, the panel reports *This retriever isn't responding
 with a **Check again** button, or *This retriever failed to start*.
 {{< /info >}}
 
-1. Choose a [search mode](autorag/search-methods/_index.md):
+1. Choose a [search mode](../autorag/search-methods/_index.md):
    - **Instant**: Single-pass retrieval that combines semantic and lexical search
      with graph expansion. Lower latency, narrower coverage.
    - **Deep Search**: Multi-hop, LLM-planned retrieval. Higher latency, broader
      coverage.
 2. Optionally, use the buttons next to the mode chips to shape the request.
    Active toggles show a cross that clears them again. For the underlying
-   settings, see the [retriever parameters](autorag/parameters.md).
+   settings, see the [retriever parameters](../autorag/parameters.md).
    - **Add to query** (`+`): Attach extra context to the question you are asking.
      Once you change any option, the menu also offers **Reset to defaults**.
    - **Include metadata** (document icon): Return the retrieval metadata
@@ -525,7 +525,7 @@ trust. It has the following views:
   names the document the passage comes from and shows the retrieved chunk itself,
   so you can compare a claim against the original wording. Documents imported
   with a canonical URL link out to it — see
-  [`citable_url`](autograph/importer/parameters.md#file-source-parameters).
+  [`citable_url`](importer/parameters.md#file-source-parameters).
   Each entry also offers **Open document in database**.
 
   ![The Citations view of the Provenance panel](../../images/autograph-ui-provenance-citations.png)
@@ -550,7 +550,7 @@ trust. It has the following views:
   involved, including the ones that failed, for example
   *5 steps · 4 of 6 tools used · 1 failed*. Tools come from the `Tools` collection
   and are defined manually; see
-  [Tool configuration](autorag/search-methods/custom-retriever.md#tool-configuration).
+  [Tool configuration](../autorag/search-methods/custom-retriever.md#tool-configuration).
 
 Each view needs the data it displays, so the tabs are only there if the answer
 carries it: **Graph** and **Trace** require **Include metadata**, and
@@ -581,4 +581,4 @@ to the running service — no redeployment is needed.
 Each retriever can have different settings for search mode, response
 instructions, and other parameters, allowing you to create specialized
 retrievers optimized for different types of queries or use cases. For more
-details, see the [AutoRAG](autorag/) reference documentation.
+details, see the [AutoRAG](../autorag/) reference documentation.

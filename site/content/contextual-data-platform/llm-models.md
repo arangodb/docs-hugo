@@ -41,7 +41,7 @@ A model is listed as supported only if it works seamlessly across
 the Importer, AutoRAG, and AutoGraph services. Individual services may also
 work with additional models. For the full list available to a specific
 service, see that service's own documentation (for example,
-[Importer LLM Configuration](autograph-studio/autograph/importer/llm-configuration.md#supported-models)).
+[Importer LLM Configuration](autograph/importer/llm-configuration.md#supported-models)).
 
 {{% llm-models %}}
 
@@ -49,9 +49,9 @@ service, see that service's own documentation (for example,
 
 The provider and model are set per service, because their parameters differ:
 
-- [AutoGraph service](autograph-studio/autograph/llm-configuration.md)
-- [Importer](autograph-studio/autograph/importer/llm-configuration.md)
-- [AutoRAG](autograph-studio/autorag/llm-configuration.md)
+- [AutoGraph service](autograph/llm-configuration.md)
+- [Importer](autograph/importer/llm-configuration.md)
+- [AutoRAG](autorag/llm-configuration.md)
 - [Natural Language to AQL](natural-language-to-aql/setup.md)
 - [Ada](ada/llm-configuration.md)
 
