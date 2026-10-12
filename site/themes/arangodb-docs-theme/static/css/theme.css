@@ -904,17 +904,6 @@ body .page-container {
     }
 }
 
-.home-link {
-    background: url(/home.svg) no-repeat 50% 45%;
-    background-size: 80%;
-    display: block;
-    height: auto;
-    padding: 0;
-    margin-top: -3px;
-    width: 2rem;
-    height: 2rem;
-}
-
 /* end Header */
 
 .main-nav.active {
