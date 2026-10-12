@@ -25,8 +25,8 @@ statistics and the query profile.
 
 ## Example: Simple AQL query
 
-Assuming we got a collection named `acollection` and insert 10000 documents
-via `for (let i=0; i < 10000;i++) db.acollection.insert({value:i})`.
+Assuming we got a collection named `coll` and insert 10000 documents
+via `db._query("FOR i IN 0..9999 INSERT { value: i } INTO coll")`.
 Then a simple query filtering for `value < 10` will return 10 results:
 
 ```js
@@ -34,15 +34,15 @@ Then a simple query filtering for `value < 10` will return 10 results:
 name: 01_workWithAQL_profileQuerySimple
 description: ''
 ---
-~db._drop("acollection");
-~db._create('acollection');
-~for (let i=0; i < 10000; i++) { db.acollection.insert({value:i}); }
+~db._drop("coll");
+~db._create('coll');
+~db._query("FOR i IN 0..9999 INSERT { value: i } INTO coll");
+~addIgnoreCollection("coll");
 db._profileQuery(`
-  FOR doc IN acollection
+  FOR doc IN coll
     FILTER doc.value < 10
     RETURN doc`, {}, {colors: false}
 );
-~db._drop("acollection");
 ```
 
 An AQL query is essentially executed in a pipeline that chains together different
@@ -74,7 +74,7 @@ and only had to be called once, because the result size fits within a single bat
 Let us add a persistent index on `value` to speed up the query:
 
 ```js
-db.acollection.ensureIndex({type:"persistent", fields:["value"]});
+db.coll.ensureIndex({type:"persistent", fields:["value"]});
 ```
 
 ```js
@@ -82,15 +82,12 @@ db.acollection.ensureIndex({type:"persistent", fields:["value"]});
 name: 02_workWithAQL_profileQuerySimpleIndex
 description: ''
 ---
-~db._create('acollection');
-~db.acollection.ensureIndex({type:"persistent", fields:["value"]});
-~for (let i=0; i < 10000; i++) { db.acollection.insert({value:i}); }
+~db.coll.ensureIndex({type:"persistent", fields:["value"]});
 db._profileQuery(`
-  FOR doc IN acollection
+  FOR doc IN coll
     FILTER doc.value < 10
     RETURN doc`, {}, {colors: false}
 );
-~db._drop("acollection");
 ```
 
 This results in replacing the collection scan and filter block with an
@@ -107,16 +104,15 @@ Let us consider a query containing a subquery:
 name: 03_workWithAQL_profileQuerySubquery
 description: ''
 ---
-~db._create('acollection');
-~db.acollection.ensureIndex({type:"persistent", fields:["value"]});
-~for (let i=0; i < 10000;i++) { db.acollection.insert({value:i}); }
+~db.coll.ensureIndex({type:"persistent", fields:["value"]});
 db._profileQuery(`
-  LET list = (FOR doc in acollection FILTER doc.value > 90 RETURN doc)
+  LET list = (FOR doc in coll FILTER doc.value > 90 RETURN doc)
   FOR a IN list 
     FILTER a.value < 91 
     RETURN a`, {}, {colors: false, optimizer:{rules:["-all"]}}
 );
-~db._drop("acollection");
+~removeIgnoreCollection("coll");
+~db._drop("coll");
 ```
 
 The resulting query profile contains a _SubqueryNode_ which has the runtime of

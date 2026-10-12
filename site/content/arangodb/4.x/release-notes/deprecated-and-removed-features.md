@@ -301,10 +301,11 @@ detailed information about breaking changes before upgrading.
   maintenance complexity. The `/_api/simple/*` HTTP API endpoints have been
   removed in ArangoDB v4.0.
 
-- **Accessing collections by ID instead of by name**:\
-  Accessing collections by their internal ID instead of accessing them by name
-  is deprecated and highly discouraged. This functionality may be removed in
-  future versions of ArangoDB.
+- **Accessing collections and Views by ID instead of by name**:\
+  Referencing a collection or View by its internal `id` in an endpoint path
+  like `/_api/collection/357` or `/_api/view/468` instead of by its name
+  like `/_api/collection/coll` or `/_api/view/myView` was deprecated and is no
+  longer supported in ArangoDB v4.0.
 
 - **Old metrics HTTP API**:\
   The old metrics API under `/_admin/metrics` is deprecated and replaced by
