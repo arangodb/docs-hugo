@@ -5,13 +5,25 @@
 {{- define "main-nav-tree" }}
   {{- $pages := .Pages }}
   {{- $prevGroup := "" }}
+  {{- $seenGroups := slice }}
+  {{- $grouped := 0 }}
+  {{- $ungrouped := 0 }}
+  {{- $section := "" }}
   {{- range $page := $pages.ByWeight }}
+    {{- if not $section }}{{ $section = $page.Parent.RelPermalink }}{{ end }}
     {{- /* non-clickable group label, printed once when the `group` front matter value changes */}}
     {{- with $page.Params.group }}
+      {{- $grouped = add $grouped 1 }}
       {{- if ne . $prevGroup }}
+        {{- if in $seenGroups . }}
+          {{- errorf "Navigation group %q in section %s is not contiguous: give its pages adjacent weights (page %s)" . $section $page.File.Path }}
+        {{- end }}
+        {{- $seenGroups = $seenGroups | append . }}
       <li class="nav-group-label">{{ . | markdownify }}</li>
         {{- $prevGroup = . }}
       {{- end }}
+    {{- else }}
+      {{- $ungrouped = add $ungrouped 1 }}
     {{- end }}
     {{- if $page.Pages }}
       {{- /* section (with child pages) */}}
@@ -40,5 +52,8 @@
         <a class="link-nav" href="{{ .RelPermalink }}">{{ .Params.menuTitle | markdownify }}</a>
       </li>
     {{- end }}
+  {{- end }}
+  {{- if and (gt $grouped 0) (gt $ungrouped 0) }}
+    {{- errorf "Section %s mixes pages with and without a navigation `group`: either set `group` on every page of the section or on none" $section }}
   {{- end }}
 {{- end }}
