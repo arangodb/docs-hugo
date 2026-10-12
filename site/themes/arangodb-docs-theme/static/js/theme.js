@@ -23,6 +23,8 @@ async function renderMermaidDiagrams() {
          on the page their image viewer. */
       console.warn('Mermaid rendering failed', err);
     }
+    // Lets theme.css style the diagrams also when cloned into the image viewer
+    nodes.forEach(node => node.querySelector(':scope > svg')?.classList.add('mermaid-diagram'));
     prepareZoomables();
   } catch (err) {
     console.warn('Mermaid rendering failed', err);
