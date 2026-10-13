@@ -23,10 +23,10 @@ description: >-
 - **Resources**: 2+ CPU cores, 8 GB+ RAM, and 50 GB+ free disk space.
 - **Connectivity**: Active internet connection for downloading container images
   and tools.
-- **License key**: An Arango license key. Get one for free with the
-  [license key request form](https://arango.ai/cdp-license-request/) - fill in
-  your name, work email, company, and country, accept the license terms, and
-  select **Generate license key**. No credit card is required.
+- **License key**: An Arango license key. Get one for free from the
+  [Arango Developer Edition page](https://arango.ai/arango-developer-edition/) -
+  fill in your name, work email, company, and country, accept the license
+  terms, and select **Get started**. No credit card is required.
 - **LLM access**: A valid OpenAI API key. Any other OpenAI-compatible endpoint
   works as well - OpenRouter, Google Gemini, Anthropic, Azure, or a private
   corporate LLM - see
@@ -52,7 +52,7 @@ deployment. Pick the one that matches what you need:
 The installation script sets up a complete local evaluation environment. It
 takes about 10 minutes, most of it spent downloading container images.
 Replace `YOUR_LICENSE_KEY` with the key you received from the
-[license key request form](https://arango.ai/cdp-license-request/):
+[Arango Developer Edition page](https://arango.ai/arango-developer-edition/):
 
 ```bash
 curl --proto '=https' --tlsv1.2 -fsSL https://releases.license.arango.ai/releases/plg/install.sh | bash -s -- --license-key "YOUR_LICENSE_KEY"
