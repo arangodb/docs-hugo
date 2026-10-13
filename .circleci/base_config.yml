@@ -224,6 +224,19 @@ commands:
             STARTER_VERSION=$(awk -F\" '/^STARTER_REV/ {print $2}' VERSIONS)
             curl -L -o build/bin/arangodb "https://github.com/arangodb-helper/arangodb/releases/download/$STARTER_VERSION/arangodb-linux-amd64"
             chmod +x build/bin/arangodb
+
+            # rclone-arangodb is needed for hot backup uploads and downloads (not part of the build).
+            # Same download as in the CircleCI config of arangodb/arangodb.
+            RCLONE_GO=$(awk -F\" '/^RCLONE_GO / {print $2}' VERSIONS)
+            RCLONE_VERSION=$(awk -F\" '/^RCLONE_VERSION / {print $2}' VERSIONS)
+            RCLONE_SHA256=$(awk -F\" '/^RCLONE_SHA256_AMD64 / {print $2}' VERSIONS)
+            MAJOR_MINOR=$(sed -E 's/^([0-9]+\.[0-9]+).*/\1/' ARANGO-VERSION)
+            curl -fL -o build/bin/rclone-arangodb "https://github.com/arangodb/rclone-arangodb/releases/download/golang-${RCLONE_GO}/golang-${RCLONE_GO}_${MAJOR_MINOR}_v${RCLONE_VERSION}_rclone-arangodb-linux-amd64"
+            if [ -n "$RCLONE_SHA256" ]; then
+              echo "$RCLONE_SHA256  build/bin/rclone-arangodb" | sha256sum -c -
+            fi
+            chmod +x build/bin/rclone-arangodb
+
             tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/ enterprise/
       - run:
           name: Create docker image
