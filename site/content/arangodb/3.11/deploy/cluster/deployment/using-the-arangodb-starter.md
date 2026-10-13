@@ -2,7 +2,8 @@
 title: Create an ArangoDB cluster Using the ArangoDB Starter
 menuTitle: Using the ArangoDB Starter
 weight: 10
-description: ''
+description: >-
+  How to start an ArangoDB cluster in a convenient and managed fashion
 ---
 This section describes how to start a Cluster using the [_Starter_](../../../components/tools/arangodb-starter/_index.md)
 tool (the `arangodb` executable).
@@ -193,7 +194,7 @@ You can get a free evaluation license key by visiting:
 
 [arangodb.ai/downloads/](https://arango.ai/downloads/)
 
-**TLS verified Docker services**
+**TLS-verified Docker services**
 
 Oftentimes, one needs to harden Docker services using client certificate 
 and TLS verification. The Docker API allows subsequently only certified access.

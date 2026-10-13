@@ -636,7 +636,10 @@ coll.count();
 
 ### `db._drop(collection [, options])`
 
-Drops a `collection` and all its indexes and data.
+Drops a collection and all its indexes and data.
+
+You need to specify the name or ID of the collection. You cannot pass a
+_collection_ object.
 
 `db._drop(collection-name)`
 
@@ -674,7 +677,8 @@ description: ''
 ---
 ~db._create("example");
 var coll = db._collection("example");
-db._drop(coll);
+db._drop(coll.name());
+~assert(db._collection("example") === null);
 ```
 
 Drops a collection identified by name:

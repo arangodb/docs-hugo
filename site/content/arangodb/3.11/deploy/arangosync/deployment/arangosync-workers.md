@@ -2,7 +2,9 @@
 title: Set up the ArangoSync Workers for Datacenter-to-Datacenter Replication
 menuTitle: ArangoSync Workers
 weight: 15
-description: ''
+description: >-
+  The ArangoSync Workers execute the synchronization tasks, and you can run them
+  as a systemd service on every machine that hosts a DB-Server
 ---
 The _ArangoSync Worker_ is responsible for executing synchronization tasks.
 

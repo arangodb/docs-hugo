@@ -12,6 +12,9 @@ description: >-
 In the Community Edition, use [arangodump](../arangodump/_index.md) and
 [arangorestore](../arangorestore/_index.md) for
 [logical backups](../../../operations/backup-and-restore.md#logical-backups).
+
+In the Arango Managed Platform (AMP), use managed
+[Backups](../../../../../amp/backups.md) instead.
 {{< /tip >}}
 
 _arangobackup_ creates instantaneous and consistent

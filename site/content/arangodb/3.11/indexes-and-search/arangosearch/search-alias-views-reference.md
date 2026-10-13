@@ -2,7 +2,9 @@
 title: '`search-alias` Views Reference'
 menuTitle: '`search-alias` Views Reference'
 weight: 80
-description: ''
+description: >-
+  Overview of `search-alias` View properties you can set when creating or
+  modifying a View
 ---
 `search-alias` Views let you add one or more inverted indexes to a View, enabling
 federate searching, sorting search results by relevance, and search highlighting, on top of

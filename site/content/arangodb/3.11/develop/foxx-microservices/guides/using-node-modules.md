@@ -2,7 +2,9 @@
 title: Bundled Node modules for Foxx services
 menuTitle: Using Node modules
 weight: 40
-description: ''
+description: >-
+  Bundle third-party Node.js modules with your Foxx service using the
+  `node_modules` folder
 ---
 You can use the `node_modules` folder to bundle Node.js modules with your Foxx
 service. Note that many third-party libraries written for Node.js or the

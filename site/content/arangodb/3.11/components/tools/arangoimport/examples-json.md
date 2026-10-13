@@ -2,7 +2,9 @@
 title: _arangoimport_ Examples JSON
 menuTitle: Examples JSON
 weight: 5
-description: ''
+description: >-
+  How to import JSON and JSONL data into ArangoDB on the command-line with
+  _arangoimport_
 ---
 Using JSON as data format, records are represented as JSON objects and called
 documents in ArangoDB. They are self-contained. Therefore, there is no need
@@ -88,7 +90,7 @@ which allows any valid JSON value on a line.
 
 An input with JSON objects in an array, optionally pretty printed, can be
 easily converted into JSONL with one JSON object per line using the
-[**jq** command line tool](http://stedolan.github.io/jq/):
+[**jq** command-line tool](https://jqlang.github.io/jq/):
 
 ```
 jq -c ".[]" inputFile.json > outputFile.jsonl
@@ -264,7 +266,7 @@ arangoimport --threads 4 --file "data.jsonl" --type jsonl --collection users
 Using multiple threads may lead to a non-sequential import of the input
 data. Data that appears later in the input file may be imported earlier than data
 that appears earlier in the input file. This is normally not a problem but may cause
-issues when when there are data dependencies or duplicates in the import data. In
+issues when there are data dependencies or duplicates in the import data. In
 this case, the number of threads should be set to 1. Also, using parallelism with
 the `--threads X` parameter together with the `--on-duplicate` parameter set to `ignore`,
 `update` or `replace` can lead to a race condition, when there are duplicates e.g. multiple 

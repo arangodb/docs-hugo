@@ -1,7 +1,8 @@
 ---
-title: Create Metrics with `oasisctl`
+title: Create Metrics with _oasisctl_
 menuTitle: Create Metrics
 weight: 11
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Create metrics resources

@@ -236,7 +236,7 @@ paths:
             (after the last `-`).
           schema:
             type: string
-            example: z8fue
+          example: z8fue
       requestBody:
         content:
           application/json:
@@ -265,6 +265,12 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - cypher
+                  - AQL
+                  - error
+                  - errorMessage
+                  - errorCode
                 properties:
                   cypher:
                     description: |
@@ -293,6 +299,12 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - cypher
+                  - AQL
+                  - error
+                  - errorMessage
+                  - errorCode
                 properties:
                   cypher:
                     description: |
@@ -374,7 +386,7 @@ paths:
             (after the last `-`).
           schema:
             type: string
-            example: z8fue
+          example: z8fue
       responses:
         '200':
           description: |
@@ -441,7 +453,7 @@ paths:
             (after the last `-`).
           schema:
             type: string
-            example: z8fue
+          example: z8fue
       responses:
         '200':
           description: |
@@ -510,7 +522,7 @@ paths:
             `arango-cypher2aql` service.
           schema:
             type: string
-            example: arango-cypher2aql-z8fue
+          example: arango-cypher2aql-z8fue
       responses:
         '200':
           description: |

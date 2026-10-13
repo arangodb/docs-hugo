@@ -20,7 +20,7 @@ any kind.
 For example, you can represent people by nodes and their friendships by
 relations. This lets you form a graph that is a social network in this case.
 
-![Mary - is friend of - John](../../../images/data-model-graph-relation-concrete.png)
+![Mary - is friend of - John](../../../images/data-model-graph-relation-concrete.svg)
 
 The specific terms to refer to nodes and relations in a graph vary depending
 on the field or context, but they are conceptually the same. In computer science
@@ -35,7 +35,7 @@ relate to one another is a very expressive data model. It lets you represent
 a wide variety of information in a compact and intuitive way. It lets you model
 complex relationships and interactions of basically everything.
 
-![Mary - bought - Book, is friend of - John](../../../images/data-model-graph-relations.png)
+![Four nodes with properties: Person nodes Mary and John, a Book node Arango, and an Author node Sara. Mary isFriendOf John since 2019, Mary bought Arango, John rated Arango with 5 stars, and Sara wrote Arango in 2024](../../../images/data-model-graph-relations.svg)
 
 Graphs are commonly directed (_digraphs_), which means that each edge goes from
 one vertex to another vertex in a specific direction. This lets you model
@@ -221,7 +221,7 @@ suboptimal query performance due to random data distribution.
 General graphs are the easiest way to get started, no special configuration required.
 {{< /tip >}}
 
-![General Graph Random Distribution](../../../images/general-graph-distribution.png)
+![General Graph Random Distribution](../../../images/general-graph-distribution.svg)
 
 #### When to use SmartGraphs
 
@@ -236,7 +236,7 @@ scenarios, use SmartGraphs. Organize your data efficiently using the
 `smartGraphAttribute`.
 {{< /tip >}}
 
-![SmartGraph Distribution](../../../images/smartgraph-distribution.png)
+![SmartGraph Distribution](../../../images/smartgraph-distribution.svg)
 
 #### When to use EnterpriseGraphs
 
@@ -250,7 +250,7 @@ If you need improved query execution without manual data distribution, consider
 using EnterpriseGraphs.
 {{< /tip >}}
 
-![EnterpriseGraph Distribution](../../../images/enterprisegraph-distribution.png)
+![EnterpriseGraph Distribution](../../../images/enterprisegraph-distribution.svg)
 
 #### When to use SatelliteGraphs
 
@@ -337,7 +337,7 @@ with `_from` pointing to `Users/John` and `_to` pointing to
 attributes to qualify the relation further, like the permissions of **John** in
 this group, the date when John joined the group, and so on.
 
-![User in group example](../../../images/graph_user_in_group.png)
+![The document John in the Users collection linked by an UsersInGroups edge to the document BowlingGroupHappyPin in the Groups collection](../../../images/graph_user_in_group.svg)
 
 As a rule of thumb, if you use documents and their attributes in a sentence,
 nouns would typically be vertices, and the verbs the edges.

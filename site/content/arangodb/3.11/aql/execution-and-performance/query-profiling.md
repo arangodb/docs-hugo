@@ -6,7 +6,7 @@ description: >-
   For understanding the performance of specific queries, you can profile them to
   identify slow parts of query execution plans
 ---
-ArangoDB allows to execute your query with special instrumentation code enabled.
+ArangoDB allows you to execute your query with special instrumentation code enabled.
 It provides you a query plan with detailed execution statistics.
 
 To use this in an interactive fashion on the shell you can use

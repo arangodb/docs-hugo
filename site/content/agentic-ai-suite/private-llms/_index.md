@@ -15,7 +15,7 @@ Two services work together to enable this:
 
 - [**Triton LLM Host**](triton-inference-server.md): Serves the LLM itself
   using the NVIDIA Triton Inference Server, exposing HTTP endpoints
-  that other services in the suite (such as the Importer and the Retriever)
+  that other services in the suite (such as the Importer and AutoRAG)
   call for inference.
 - [**MLflow**](mlflow.md): Acts as the model registry. You
   register your model bundle (model code, Triton config, and the MLflow
@@ -30,7 +30,7 @@ Two services work together to enable this:
 3. Deploy the **Triton LLM Host** service, pointing it at the registered
    model name (and optionally a version).
 4. Configure the [Importer](../importer/llm-configuration.md) and
-   [Retriever](../retriever/llm-configuration.md) to call the Triton
+   [AutoRAG](../autorag/llm-configuration.md) to call the Triton
    endpoint instead of a public LLM provider.
 
 When you only need MLflow as a general-purpose experiment tracker (without

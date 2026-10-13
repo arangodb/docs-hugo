@@ -86,13 +86,13 @@ components.
 
 The set theory for these lists works as follow:
 
-- **No allowlist or denylist is specified**:
+- **No allowlist or denylist is specified**:\
   Everything is allowed in versions up to ArangoDB v3.12.8. From v3.12.9 onward,
   access to the respective resources is disallowed by default in _arangod_.
   In _arangosh_, everything remains allowed by default. The shell runs
   client-side and is under the control of the user who starts it, so it doesn't
   need to be as restrictive as the server.
-- **Only a denylist is specified:**
+- **Only a denylist is specified:**\
   Everything is allowed except a set of items matching the denylist.
 - **Only an allowlist is specified:**\
   Everything is disallowed except the set of items matching the allowlist.
@@ -460,7 +460,7 @@ in an ArangoDB server:
   If set to `false`, this option disables access to any user-defined Foxx apps.
   Accessing the URL of any (existing or potentially existing) Foxx app produces an
   HTTP `403 Forbidden` error with this setting.
-  ArangoDB's built-in web interface and all built-in REST APIs remain accessible,
+  ArangoDB's built-in web interface and all built-in HTTP APIs remain accessible,
   except the Foxx service management API, which makes it impossible to install and
   uninstall Foxx applications. Setting the option to `false` also deactivates the
   **Services** section in the web interface.
@@ -485,5 +485,5 @@ in an ArangoDB server:
   section of the web interface. Installing apps from Github and/or zip files is 
   still possible with this setting, but any other remote sources are blocked.
   When set to `true`, installing Foxx apps from other remote sources via URLs
-  is allowed (introduced in v3.8.5).
+  is allowed.
   The default value is `false`.

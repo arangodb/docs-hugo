@@ -21,8 +21,6 @@ body {
 }
 pre code {
     font-size: 8.3pt;
-}
-code.copy-to-clipboard-code {
     border-bottom-right-radius: 2px;
     border-top-right-radius: 2px;
     border-right-width: 1px;
@@ -178,4 +176,9 @@ article {
 }
 #body-inner > * > article:first-of-type {
     break-before: avoid;
+}
+.image-zoom-hint,
+.image-zoom-badge,
+.image-viewer {
+    display: none !important;
 }

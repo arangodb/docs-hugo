@@ -93,7 +93,7 @@ latency.
 
 You can still use any other OpenAI-compatible endpoint — OpenRouter, Google
 Gemini, Anthropic, Azure, or a corporate LLM — and run a model that is not on the
-list. In the Importer, AutoGraph, and Retriever, use the `custom` provider for
+list. In the Importer, AutoGraph, and AutoRAG, use the `custom` provider for
 these: it is the intended way to point a service at an OpenAI-compatible
 endpoint that is not the OpenAI API itself, and you should always set
 `chat_api_url` / `embedding_api_url` explicitly with it. In those three
@@ -113,7 +113,7 @@ require the Responses API (`/v1/responses`) instead; the Importer and AutoGraph
 detect this and fall back automatically.
 
 A model is listed as supported by the suite only if it works seamlessly across
-the Importer, Retriever, and AutoGraph services. Individual services may also
+the Importer, AutoRAG, and AutoGraph services. Individual services may also
 work with additional models — for the full list available to a specific
 service, see that service's own documentation (for example,
 [Importer LLM Configuration](importer/llm-configuration.md#supported-models)).

@@ -57,8 +57,10 @@ The meaning of the statistics attributes is as follows:
   an index. Documents scanned by subqueries are included in the result, but operations
   triggered by built-in AQL functions are not.
 - **searchParallelism** (integer):
-  The number of threads used by ArangoSearch for this
-  query (introduced in v3.12.9).
+
+  <small>Introduced in: v3.12.9</small>
+
+  The number of threads used by ArangoSearch for this query.
 - **cursorsCreated** (integer):
   The total number of cursor objects created during query execution. Cursor
   objects are created for index lookups.

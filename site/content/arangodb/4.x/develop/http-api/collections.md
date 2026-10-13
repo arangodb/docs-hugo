@@ -9,18 +9,18 @@ description: >-
 ---
 ## Addresses of collections
 
-All collections in ArangoDB have a unique identifier and a unique
-name. To access a collection, use the collection name to refer to it:
+All collections in ArangoDB have a name that is unique within a database.
+To access a collection, use the collection name to refer to it:
 
 ```
-http://server:port/_api/collection/<collection-name>
+http://server:port/_db/<database-name>/_api/collection/<collection-name>
 ```
 
-For example, assume that the collection identifier is `7254820` and
-the collection name is `demo`, then the URL of that collection is:
+For example, assume ArangoDB runs locally, the collection name is `demo` and it
+is in the `mydb` database. The URL of that collection is the following:
 
 ```
-http://localhost:8529/_api/collection/demo
+http://localhost:8529/_db/mydb/_api/collection/demo
 ```
 
 ## Get information about collections
@@ -217,7 +217,7 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
@@ -398,13 +398,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -600,7 +603,7 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
@@ -814,13 +817,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -1016,7 +1022,7 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
@@ -1308,13 +1314,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -1510,17 +1519,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - code
                   - error
-                  - errorMessage
+                  - code
                   - errorNum
+                  - errorMessage
                 properties:
                   error:
                     description: |
@@ -1580,7 +1589,7 @@ paths:
 ```curl
 ---
 description: |-
-  Using an identifier and requesting the figures of the collection:
+  Requesting the figures of a collection:
 name: RestCollectionGetCollectionFigures
 ---
 var cn = "products";
@@ -1692,7 +1701,7 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or invalid, or not all of the
+            The `collection-name` parameter is missing or invalid, or not all of the
             collection's shard key attributes are present in the input document.
             You cannot use a numeric ID to reference the collection.
           content:
@@ -1973,13 +1982,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -2175,17 +2187,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - code
                   - error
-                  - errorMessage
+                  - code
                   - errorNum
+                  - errorMessage
                 properties:
                   error:
                     description: |
@@ -2433,13 +2445,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -2635,17 +2650,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - code
                   - error
-                  - errorMessage
+                  - code
                   - errorNum
+                  - errorMessage
                 properties:
                   error:
                     description: |
@@ -2848,7 +2863,7 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
@@ -3093,7 +3108,7 @@ paths:
                 computedValues:
                   description: |
                     An optional list of objects, each representing a computed value.
-                  type: array
+                  type: array # TODO: [array, null]
                   items:
                     type: object
                     required:
@@ -3467,13 +3482,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -3822,17 +3840,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - code
                   - error
-                  - errorMessage
+                  - code
                   - errorNum
+                  - errorMessage
                 properties:
                   error:
                     description: |
@@ -4009,17 +4027,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - code
                   - error
-                  - errorMessage
+                  - code
                   - errorNum
+                  - errorMessage
                 properties:
                   error:
                     description: |
@@ -4219,7 +4237,7 @@ paths:
                 computedValues:
                   description: |
                     An optional list of objects, each representing a computed value.
-                  type: array
+                  type: array # TODO: [array, null]
                   items:
                     type: object
                     required:
@@ -4395,13 +4413,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -4597,17 +4618,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - code
                   - error
-                  - errorMessage
+                  - code
                   - errorNum
+                  - errorMessage
                 properties:
                   error:
                     description: |
@@ -4757,17 +4778,17 @@ paths:
                     example: true
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - code
                   - error
-                  - errorMessage
+                  - code
                   - errorNum
+                  - errorMessage
                 properties:
                   error:
                     description: |
@@ -4976,13 +4997,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -5181,7 +5205,7 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or invalid, or the `name` attribute
+            The `collection-name` parameter is missing or invalid, or the `name` attribute
             is missing. You cannot use a numeric ID to reference the collection.
           content:
             application/json:
@@ -5327,17 +5351,17 @@ paths:
                     type: integer
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - code
                   - error
-                  - errorMessage
+                  - code
                   - errorNum
+                  - errorMessage
                 properties:
                   error:
                     description: |
@@ -5481,7 +5505,7 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:

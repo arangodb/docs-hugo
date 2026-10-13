@@ -2,7 +2,8 @@
 title: Other Replication Commands
 menuTitle: Other Replication Commands
 weight: 20
-description: ''
+description: >-
+  Get a server's ID as used by other endpoints of the replication HTTP interface
 ---
 ## Get the replication server ID
 

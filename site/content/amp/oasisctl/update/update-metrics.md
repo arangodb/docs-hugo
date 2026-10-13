@@ -1,7 +1,8 @@
 ---
-title: Update Metrics with `oasisctl`
+title: Update Metrics with _oasisctl_
 menuTitle: Update Metrics
 weight: 8
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Update metrics resources

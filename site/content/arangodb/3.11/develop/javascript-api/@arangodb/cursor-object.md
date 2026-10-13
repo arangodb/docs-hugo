@@ -77,7 +77,7 @@ position. In _arangosh_, the results are buffered locally in batches; when the
 current batch is exhausted and more results are available on the server,
 `next()` fetches the next batch, which requires a roundtrip to the server.
 
-If you use `next()` on an exhausted cursor, then an error is thrown in
+If you call `next()` on an exhausted cursor, then an error is thrown in
 _arangosh_, whereas `undefined` is returned in server-side JavaScript contexts.
 To avoid this, check the availability of results with `hasNext()` beforehand.
 

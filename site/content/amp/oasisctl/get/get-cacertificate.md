@@ -1,7 +1,8 @@
 ---
-title: Get CA Certificate with `oasisctl`
+title: Get CA Certificate with _oasisctl_
 menuTitle: Get CA Certificate
 weight: 6
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get a CA certificate the authenticated user has access to

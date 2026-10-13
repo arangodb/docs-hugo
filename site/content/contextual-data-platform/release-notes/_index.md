@@ -7,6 +7,56 @@ description: >-
 pageToc:
   maxHeadlineLevel: 2
 ---
+## v4.1.1-preview (September 2026)
+
+{{< tag "Limited Release" >}}
+
+This preview release is available to selected customers as part of a Limited Release. 
+It is a maintenance release with bug fixes and security improvements.
+
+### MLflow
+
+{{< tag "Agentic AI Suite" >}}
+
+Authentication is now enforced on the route of the integrated
+[MLflow](../../agentic-ai-suite/private-llms/mlflow.md) service. As a result,
+the MLflow web interface is only available through the Arango Contextual Data
+Platform web interface, under **AI Tools**. Opening
+`https://<EXTERNAL_ENDPOINT>:8529/mlflow/` directly in a browser is no longer
+possible.
+
+Programmatic access is unchanged. The official MLflow client and other HTTP
+callers continue to use the same endpoint with a valid JWT, see
+[Programmatic access](../../agentic-ai-suite/private-llms/mlflow.md#programmatic-access).
+
+### AutoGraph
+
+{{< tag "Agentic AI Suite" >}}
+
+- **More accurate answers**: Retrieval no longer matches questions against the
+  wrong passages, content from your documents is no longer left out of the graph
+  along with its connections, and search stays within the boundaries of each
+  project.
+- **More reliable builds**: Large document sets and large file uploads no longer
+  cause timeouts or failures, builds no longer fail while a valid API key is in
+  use, and existing Corpus Graphs can be updated after they have been built.
+- **Visible failure causes**: A failed Knowledge Graph build now shows the
+  strategy execution summary, so you can see why it failed.
+
+{{< info >}}
+The fixes for wrong passages and missing content only apply to new imports.
+Graphs built before this release keep the old behavior. If your graph was built
+from more than one document, import the content again to get the corrected
+result.
+{{< /info >}}
+
+### GraphML
+
+{{< tag "Agentic AI Suite" >}}
+
+Prediction jobs no longer remain in the **Pending** state after featurization,
+training, and model generation have finished successfully.
+
 ## v4.1.0 (August 2026)
 
 ### AutoGraph Studio
@@ -36,7 +86,7 @@ The terminology has been aligned across the documentation: **Corpus Graph**,
 the AutoGraph pipeline. The standalone GraphRAG web interface has been removed;
 use AutoGraph and the new AutoGraph Studio web interface instead. You can also
 use the [Importer](../../agentic-ai-suite/importer/_index.md) and
-[Retriever](../../agentic-ai-suite/retriever/_index.md) APIs.
+[AutoRAG](../../agentic-ai-suite/autorag/_index.md) APIs.
 
 ### Incremental Graph Updates
 
@@ -98,7 +148,7 @@ clusters, see
   [custom metadata](../../platform-suite/file-manager/_index.md#attaching-custom-metadata)
   to uploaded files. The reserved
   [`citable_url`](../../platform-suite/file-manager/api.md#the-citable_url-key) key
-  lets Retriever resolve
+  lets AutoRAG resolve
   [citations](../../agentic-ai-suite/importer/reference/parameters.md#citation-urls)
   back to the original source document.
 - You can upload
@@ -210,14 +260,14 @@ This release contains improvements and refinements to features introduced in v4.
   environment variable (default `gpt-4o-mini`), and it honors the same token
   budget and Responses API settings as the rest of the pipeline.
 
-### Retriever
+### Retriever (now AutoRAG)
 
 {{< tag "Agentic AI Suite" >}}
 
-- Response [caching](../../agentic-ai-suite/retriever/parameters.md#use_cache)
+- Response [caching](../../agentic-ai-suite/autorag/parameters.md#use_cache)
   (`use_cache: true`) now works for every query type (`GLOBAL`, `LOCAL`,
   `UNIFIED`, and `CUSTOM`); previously only some query types could be cached.
-- [`show_citations`](../../agentic-ai-suite/retriever/parameters.md#show_citations)
+- [`show_citations`](../../agentic-ai-suite/autorag/parameters.md#show_citations)
   is documented as a no-op in Deep Search (`use_llm_planner=true`) and
   `GLOBAL` queries, because those modes always strip citations regardless of
   the flag. The parameter still applies to `LOCAL`, `UNIFIED`, and `CUSTOM`
@@ -233,7 +283,7 @@ This release contains improvements and refinements to features introduced in v4.
 
 Default OpenAI chat model upgraded from `gpt-4o` to the
 GPT-5.4 family. The [Importer](../../agentic-ai-suite/importer/llm-configuration.md)
-and [Retriever](../../agentic-ai-suite/retriever/llm-configuration.md) now default
+and [Retriever](../../agentic-ai-suite/autorag/llm-configuration.md) now default
 to `gpt-5.4-nano`; the
 [Natural Language to AQL](../../agentic-ai-suite/natural-language-to-aql/setup.md)
 service (AQLizer) defaults to `gpt-5.4`. [Ada](../../agentic-ai-suite/ada/_index.md) also
@@ -414,7 +464,8 @@ The minimum required ArangoDB version has been raised to Enterprise Edition v3.1
 
 {{< tag "Agentic AI Suite" >}}
 
-- **Instant and Deep Search**: New [Retriever](../../agentic-ai-suite/retriever/search-methods/_index.md) search methods
+- **Instant and Deep Search**: New Retriever (now
+  [AutoRAG](../../agentic-ai-suite/autorag/search-methods/_index.md)) search methods
   optimized for different use cases. Instant Search provides fast responses with
   streaming support. Deep Search offers detailed, accurate responses for complex queries
   requiring high accuracy. Both methods are accessible via the API or the
@@ -512,7 +563,8 @@ What's included:
 
 - [**GraphRAG**](../../agentic-ai-suite/autograph/concepts.md):
   Transform unstructured documents into intelligent knowledge graphs and
-  natural language querying through Importer and Retriever services.
+  natural language querying through the Importer and Retriever (now AutoRAG)
+  services.
 
 - [**GraphML**](../../agentic-ai-suite/graphml/_index.md):
   Apply machine learning to graphs with node classification and

@@ -1,7 +1,8 @@
 ---
-title: Lock IP Allowlist with `oasisctl`
+title: Lock IP Allowlist with _oasisctl_
 menuTitle: Lock IP Allowlist
 weight: 3
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Lock an IP allowlist, so it cannot be deleted

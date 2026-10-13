@@ -111,6 +111,16 @@ documents of various collections and databases.
 ArangoSearch stores data in database-specific directories underneath the
 `databases` folder.
 
+```
+<database-directory>/
+├── engine-rocksdb/
+│   └── journals/
+│       └── archive/
+└── databases/
+    └── database-#/
+        └── arangosearch-#_#/
+```
+
 Foxx applications are also organized in database-specific directories but inside
 the application path (here: `apps`). The filesystem layout could look like this:
 

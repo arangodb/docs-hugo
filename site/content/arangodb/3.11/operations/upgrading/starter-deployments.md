@@ -189,7 +189,7 @@ the following situation:
 
 ### Start the upgrade process of all *arangod* & *arangosync* servers
 
-Once you have carried out the above steps on all servers of the clusters, the
+Once you have carried out the above steps on all servers of the cluster, the
 actual upgrade procedure can be started.
 
 Run the following command on any of the cluster nodes for any of the starter 

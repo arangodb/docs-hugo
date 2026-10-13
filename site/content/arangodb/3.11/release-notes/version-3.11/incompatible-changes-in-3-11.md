@@ -149,7 +149,7 @@ deployments minimal.
 ## Stricter validation of Unicode surrogate values in JSON data
 
 ArangoDB 3.11 employs a stricter validation of Unicode surrogate pairs in
-incoming JSON data, for all REST APIs.
+incoming JSON data, for all HTTP APIs.
 
 In previous versions, the following loopholes existed when validating UTF-8 
 surrogate pairs in incoming JSON data:
@@ -745,7 +745,7 @@ version of ArangoDB. Setting the option to anything but the value of
 `--agency.size` should be avoided.
 
 From v3.11.0 onwards, this option is deprecated, and setting it to a value
-different than the value of `--agency.size` leads to a startup error.
+different from the value of `--agency.size` leads to a startup error.
 
 ### `--query.parallelize-gather-writes` obsoleted
 

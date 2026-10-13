@@ -61,7 +61,7 @@ execute the following:
 shell> arango-secure-installation
 ```
 
-This commands asks for a root password and sets it.
+This command asks for a root password and sets it.
 
 {{< warning >}}
 The password that is set for the root user during the installation of the ArangoDB
@@ -72,7 +72,7 @@ See [Securing Starter Deployments](../operations/security/securing-starter-deplo
 <!-- NOT ON-PREMISES SPECIFIC!
 Authentication
 
-ArangoDB allows to restrict access to databases to certain users. All
+ArangoDB allows you to restrict access to databases to certain users. All
 users of the system database are considered administrators. During
 installation a default user *root* is created, which has access to
 all databases.

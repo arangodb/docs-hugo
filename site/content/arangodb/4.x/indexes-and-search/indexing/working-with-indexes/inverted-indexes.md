@@ -249,6 +249,12 @@ settings are used in this case:
 See the full list of options in the [HTTP API](../../../develop/http-api/indexes/inverted.md)
 documentation.
 
+Inverted indexes store their data in immutable segments that are created by
+commits and merged by the background consolidation process, governed by
+options like `commitIntervalMsec` and `consolidationPolicy`. To inspect the
+resulting segment layout, see the
+[ArangoSearch statistics HTTP API](../../../develop/http-api/monitoring/arangosearch-statistics.md).
+
 ### Restrictions
 
 - You cannot index the same field twice in a single inverted index. This includes

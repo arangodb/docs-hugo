@@ -26,9 +26,9 @@ Error responses are usually JSON with a `message` field (and sometimes a
 
 {{< info >}}
 **`429 Too Many Requests` and `507 Insufficient Storage` are defined but never
-reached.** The gateway maps a provider rate limit onto `429` and a local storage
-limit onto `507`, but no endpoint raises either of them. Do not write a client
-branch for these two statuses.
+reached.** The gRPC-to-HTTP mapping turns a provider rate limit into `429` and a
+local storage limit into `507`, but no endpoint raises either of them. Do not
+write a client branch for these two statuses.
 
 - **Provider throttling** always happens while a job runs in the background, so
   it is reported on the job as `error_code: LLM_RATE_LIMITED` or
@@ -153,7 +153,7 @@ logged and leave the gate open.
 ### Citation handling
 
 **Citations require manual processing.** AutoGraph preserves the `citable_url`
-field throughout the pipeline (from import through the GraphRAG Importer), but
+field throughout the pipeline (from import through the Importer), but
 it does not yet detect or link citations automatically. The service stores
 any citation URLs you provide at import and passes them on to later stages;
 you have to handle these citation features yourself:
@@ -189,8 +189,8 @@ creation.
 ### VectorRAG query support
 
 **VectorRAG partitions support a smaller set of queries.** When the RAG
-Strategizer assigns **VectorRAG** to a cluster (domain), the GraphRAG
-Importer creates only the `Documents`, `Chunks`, and `Relations` collections
+Strategizer assigns **VectorRAG** to a cluster (domain), the Importer
+creates only the `Documents`, `Chunks`, and `Relations` collections
 for that partition. It does not create `Entities` or `Communities`, which
 some query types need. This limits which queries you can run later.
 
@@ -273,7 +273,7 @@ For the full comparison, see
   orchestration status is evicted by the next orchestration trigger. All of them
   are lost on a pod restart, so persist any ID you need for an audit.
 - **Orchestration fails.** Confirm that the `rags` collection contains
-  strategies, and that platform authentication and the GraphRAG Importer
+  strategies, and that platform authentication and the Importer
   integration are configured for your environment.
 - **You uploaded more files than the corpus has documents.** There are two
   causes and they show up in different places. Check them in this order:

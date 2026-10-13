@@ -475,14 +475,14 @@ the service does not come up, the panel reports *This retriever isn't responding
 with a **Check again** button, or *This retriever failed to start*.
 {{< /info >}}
 
-1. Choose a [search mode](../retriever/search-methods/_index.md):
+1. Choose a [search mode](../autorag/search-methods/_index.md):
    - **Instant**: Single-pass retrieval that combines semantic and lexical search
      with graph expansion. Lower latency, narrower coverage.
    - **Deep Search**: Multi-hop, LLM-planned retrieval. Higher latency, broader
      coverage.
 2. Optionally, use the buttons next to the mode chips to shape the request.
    Active toggles show a cross that clears them again. For the underlying
-   settings, see the [retriever parameters](../retriever/parameters.md).
+   settings, see the [retriever parameters](../autorag/parameters.md).
    - **Add to query** (`+`): Attach extra context to the question you are asking.
      Once you change any option, the menu also offers **Reset to defaults**.
    - **Include metadata** (document icon): Return the retrieval metadata
@@ -544,9 +544,9 @@ trust. It has the following views:
   question into sub-questions and runs each step with the tool it selected for
   it, and the trace reports that work. Its header counts the steps and the tools
   involved, including the ones that failed, for example
-  *5 steps · 4 of 6 tools used · 1 failed*. Tools come from the Tools collection
+  *5 steps · 4 of 6 tools used · 1 failed*. Tools come from the `Tools` collection
   and are defined manually; see
-  [Tool configuration](../retriever/search-methods/custom-retriever.md#tool-configuration).
+  [Tool configuration](../autorag/search-methods/custom-retriever.md#tool-configuration).
 
 Each view needs the data it displays, so the tabs are only there if the answer
 carries it: **Graph** and **Trace** require **Include metadata**, and
@@ -577,4 +577,4 @@ to the running service — no redeployment is needed.
 Each retriever can have different settings for search mode, response
 instructions, and other parameters, allowing you to create specialized
 retrievers optimized for different types of queries or use cases. For more
-details, see the [Retriever service](../retriever/) reference documentation.
+details, see the [AutoRAG](../autorag/) reference documentation.

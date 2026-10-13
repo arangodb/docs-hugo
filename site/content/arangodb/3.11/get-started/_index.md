@@ -47,7 +47,7 @@ MariaDB or PostgreSQL, you should be familiar with the SQL query language.
 ArangoDB's query language is called AQL. There are some similarities between both
 languages despite the different data models of the database systems. The most
 notable difference is probably the concept of loops in AQL, which makes it feel
-more like a programming language. It suits the schema-less model more natural
+more like a programming language. It suits the schema-less model more naturally
 and makes the query language very powerful while remaining easy to read and write.
 
 <!-- TODO
@@ -56,8 +56,8 @@ To get started with AQL, check out the AQL vs. SQL comparison.
 
 ## In the Cloud or On-premises
 
-When you are ready for your own ArangoDB server, you can sign up for ArangoDB's
-cloud service called the Arango Managed Platform (AMP), which takes care of the setup and maintenance, so
+When you are ready for your own ArangoDB server, you can sign up for Arango's
+cloud service called Arango Managed Platform (AMP), which takes care of the setup and maintenance, so
 that you can focus on building amazing things on top of ArangoDB. See
 [Use ArangoDB in the Cloud](set-up-a-cloud-instance.md) to get started.
 

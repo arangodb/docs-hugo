@@ -44,7 +44,7 @@ arangod --version
 
 ## Starter deployment modes
 
-The Starter supports 3 different modes of ArangoDB deployments:
+The Starter supports three different modes of ArangoDB deployments:
 
 1. Single server
 1. Active failover

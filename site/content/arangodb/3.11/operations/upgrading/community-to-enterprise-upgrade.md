@@ -2,7 +2,8 @@
 title: Community Edition to Enterprise Edition Upgrade Procedure
 menuTitle: Community to Enterprise Edition
 weight: 5
-description: ''
+description: >-
+  How to upgrade to the commercial ArangoDB edition
 ---
 {{< warning >}}
 While migrating from the Community to the Enterprise Edition is supported, 
@@ -54,7 +55,7 @@ For more information about setting a license key, see [License Management](../ad
    your data directory with the option `--database.auto-upgrade` (in addition to
    any other options you are currently using). The server will stop after a while
    (check the log file of _arangod_ as it should contain relevant information about
-   the upgrade). If you are using a setup that involves several _arangod_ processes
+   the upgrade). If you use a setup that involves several _arangod_ processes
    (e.g. _Active Failover_ or _Cluster_) this step has to be repeated for all _arangod_
    processes
 5. Start ArangoDB Enterprise Edition

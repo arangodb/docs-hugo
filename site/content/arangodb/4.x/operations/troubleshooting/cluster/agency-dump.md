@@ -1,8 +1,10 @@
 ---
-title: How to produce an Agency Dump
+title: How to create an Agency Dump
 menuTitle: Agency Dump
 weight: 5
-description: ''
+description: >-
+  Agency dumps help to analyze the cluster state in case of issues and may be
+  requested by the Arango support team
 ---
 One can read out all information of an _Agency_ in the following way:
 

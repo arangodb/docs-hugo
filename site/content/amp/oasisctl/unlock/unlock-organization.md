@@ -1,7 +1,8 @@
 ---
-title: Unlock Organization with `oasisctl`
+title: Unlock Organization with _oasisctl_
 menuTitle: Unlock Organization
 weight: 4
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Unlock an organization, so it can be deleted

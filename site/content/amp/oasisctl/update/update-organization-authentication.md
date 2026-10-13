@@ -1,7 +1,8 @@
 ---
-title: Update Organization Authentication with `oasisctl`
+title: Update Organization Authentication with _oasisctl_
 menuTitle: Update Organization Authentication
-weight: 12
+weight: 11
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Update authentication settings for an organization

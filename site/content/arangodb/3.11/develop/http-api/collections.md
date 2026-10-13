@@ -1,26 +1,26 @@
 ---
-title: HTTP interface for collections
+title: Collection HTTP API
 menuTitle: Collections
 weight: 25
 description: >-
-  The HTTP API for collections lets you create and delete collections, get
+  The HTTP interface for collections lets you create and delete collections, get
   information about collections, and modify certain properties of existing
   collections
 ---
 ## Addresses of collections
 
-All collections in ArangoDB have a unique identifier and a unique
-name. To access a collection, use the collection name to refer to it:
+All collections in ArangoDB have a name that is unique within a database.
+To access a collection, use the collection name to refer to it:
 
 ```
-http://server:port/_api/collection/<collection-name>
+http://server:port/_db/<database-name>/_api/collection/<collection-name>
 ```
 
-For example, assume that the collection identifier is `7254820` and
-the collection name is `demo`, then the URL of that collection is:
+For example, assume ArangoDB runs locally, the collection name is `demo` and it
+is in the `mydb` database. The URL of that collection is the following:
 
 ```
-http://localhost:8529/_api/collection/demo
+http://localhost:8529/_db/mydb/_api/collection/demo
 ```
 
 ## Get information about collections
@@ -417,13 +417,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -622,7 +625,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `name` attribute is missing or has an invalid value.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/properties`.
           content:
             application/json:
               schema:
@@ -880,13 +884,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -1085,7 +1092,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/count`.
         '404':
           description: |
             The collection cannot be found.
@@ -1374,13 +1382,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -1579,7 +1590,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/figures`.
           content:
             application/json:
               schema:
@@ -1648,7 +1660,7 @@ paths:
 ```curl
 ---
 description: |-
-  Using an identifier and requesting the figures of the collection:
+  Requesting the figures of a collection:
 name: RestCollectionGetCollectionFigures
 ---
 var cn = "products";
@@ -2061,13 +2073,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -2266,7 +2281,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/shards`.
           content:
             application/json:
               schema:
@@ -2549,13 +2565,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -2754,7 +2773,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/revision`.
           content:
             application/json:
               schema:
@@ -2981,8 +3001,8 @@ paths:
                     type: string
         '400':
           description: |
-            If the `collection-name` placeholder is missing, then a *HTTP 400* is
-            returned.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/checksum`.
         '404':
           description: |
             If the collection is unknown, then a *HTTP 404*
@@ -3140,7 +3160,7 @@ paths:
                 computedValues:
                   description: |
                     An optional list of objects, each representing a computed value.
-                  type: array
+                  type: array # TODO: [array, null]
                   items:
                     type: object
                     required:
@@ -3538,13 +3558,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -4324,7 +4347,7 @@ paths:
                 computedValues:
                   description: |
                     An optional list of objects, each representing a computed value.
-                  type: array
+                  type: array # TODO: [array, null]
                   items:
                     type: object
                     required:
@@ -4523,13 +4546,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -5136,13 +5162,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |

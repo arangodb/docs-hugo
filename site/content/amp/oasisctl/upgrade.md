@@ -1,7 +1,8 @@
 ---
-title: Upgrade with `oasisctl`
+title: Upgrade with _oasisctl_
 menuTitle: Upgrade
 weight: 29
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Upgrade Oasisctl tool

@@ -14,8 +14,10 @@ The two options in managing graphs are to either use
 - named graphs where ArangoDB manages the collections involved in one graph, or
 - graph functions on a combination of document and edge collections.
 
-Named graphs can be defined through the [graph-module](../../graphs/general-graphs/_index.md)
-or via the [web interface](../../components/web-interface/_index.md).
+Named graphs can be defined via the JavaScript API through the
+[graph-module](../../graphs/general-graphs/_index.md),
+via the [web interface](../../components/web-interface/_index.md),
+or via the [HTTP API](../../develop/http-api/graphs/named-graphs.md).
 The definition contains the name of the graph, and the node and edge collections
 involved. Since the management functions are layered on top of simple sets of
 document and edge collections, you can also use regular AQL functions to work with them. 
@@ -25,9 +27,10 @@ are supported by the AQL language constructs for graph querying. These construct
 make full use of optimizations and therefore best performance is to be expected:
 
 - [AQL Traversals](traversals.md) to follow edges connected to a start node,
-  up to a variable depth. It can be combined with AQL filter conditions.
+  with multiple hops up to a configured, optionally variable depth. It can be
+  combined with AQL filter conditions.
 
-- [AQL Shortest Path](shortest-path.md) to find one shortest path
+- [AQL Shortest Path](shortest-path.md) to find one shortest (or lightest) path
   between two given documents.
 
 - [AQL All Shortest Paths](all-shortest-paths.md) to find all shortest

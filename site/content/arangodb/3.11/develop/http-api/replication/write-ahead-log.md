@@ -1,13 +1,15 @@
 ---
-title: HTTP interface for WAL access
+title: WAL (Write-Ahead Log) HTTP API
 menuTitle: Write-Ahead Log
 weight: 25
-description: ''
+description: >-
+  The WAL access HTTP interface provides access to the server's write-ahead log to
+  facilitate faster and more reliable asynchronous replication
 ---
 The WAL Access API is used to facilitate faster and
 more reliable asynchronous replication. The API offers access to the 
 write-ahead log or operations log of the ArangoDB server. As a public
-API, it is only supported to access these REST endpoints on a single-server
+API, it is only supported to access these HTTP endpoints on a single-server
 instance. While these APIs are also available on DB-Server instances, accessing them
 as a user is not supported. This API replaces some of the APIs in `/_api/replication`.
 

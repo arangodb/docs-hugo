@@ -32,7 +32,7 @@ The default value for this option is `false`.
 ## API availability and access
 
 Certain administrative endpoints can be restricted with startup options. Some
-only let you control the availability of APIs endpoint while others let you
+only let you control the availability of API endpoints while others let you
 specify the access permissions and required level of authentication, or both.
 Disabling APIs you don't use and increasing the access restriction help to
 reduce the attack surface.

@@ -11,10 +11,10 @@ description: >-
 When you store sensitive data in your ArangoDB database, you want to protect
 that data under all circumstances. At runtime you will protect it with SSL
 transport encryption and strong authentication, but when the data is already
-on disk, you also need protection. That is where the Encryption feature comes
-in.
+on disk, you also need protection. That is where the on-disk encryption
+feature comes in.
 
-The Encryption feature of ArangoDB will encrypt all data that ArangoDB is
+Encryption at rest encrypts all data that ArangoDB is
 storing in your database before it is written to disk.
 
 The data is encrypted with AES-256-CTR, which is a strong encryption algorithm,
@@ -126,6 +126,11 @@ servers) and directly store them in your secret management tool.
 
 ## Rotating encryption keys
 
+{{< warning >}}
+The encryption at rest key rotation is an **experimental** feature,
+and its APIs and behavior are still subject to change. 
+{{< /warning >}}
+
 ArangoDB supports rotating the user supplied encryption at rest key.
 This is implemented via key indirection. At initial startup, the first found 
 user-supplied key is used as the internal master key. Alternatively, the internal 
@@ -187,5 +192,3 @@ internal keystore in this case. The key material that the data on disk is
 encrypted with remains the same.
 {{< /info >}}
 
-Please be aware that the encryption at rest key rotation is an **experimental** 
-feature, and its APIs and behavior are still subject to change. 

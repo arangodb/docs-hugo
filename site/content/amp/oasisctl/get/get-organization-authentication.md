@@ -1,7 +1,8 @@
 ---
-title: Get Organization Authentication with `oasisctl`
+title: Get Organization Authentication with _oasisctl_
 menuTitle: Get Organization Authentication
-weight: 16
+weight: 15
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get authentication specific information for an organization

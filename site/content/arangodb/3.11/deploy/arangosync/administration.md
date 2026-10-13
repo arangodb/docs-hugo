@@ -14,7 +14,7 @@ of the _Datacenter-to-Datacenter Replication_.
 
 Once all components of the _ArangoSync_ solution have been deployed and are
 running properly, _ArangoSync_ will not automatically replicate database structure
-and content. For that, it is is needed to configure synchronization.
+and content. For that, it is needed to configure synchronization.
 
 To configure synchronization, you need the following:
 
@@ -31,7 +31,7 @@ With that information, run:
 ```bash
 arangosync configure sync \
   --master.endpoint=<endpoints of sync masters in target datacenter> \
-  --master.keyfile=<keyfile of of sync masters in target datacenter> \
+  --master.keyfile=<keyfile of sync masters in target datacenter> \
   --source.endpoint=<endpoints of sync masters in source datacenter> \
   --source.cacert=<public key of CA certificate used to verify sync master in source datacenter> \
   --auth.user=<username used for authentication of this command> \

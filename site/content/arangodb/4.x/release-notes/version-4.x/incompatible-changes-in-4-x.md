@@ -449,7 +449,7 @@ You should check for the following things in particular:
   You might need to force specific settings in case your provider is not known
   to rclone and therefore doesn't handle specific quirks on its own.
 
-## HTTP RESTful API
+## HTTP API
 
 ### Simple Queries endpoints removed
 
@@ -541,6 +541,12 @@ The `/_admin/echo` endpoints supporting the `HEAD`, `GET`, `POST`, `PATCH`,
 `PUT`, `DELETE`, and `OPTIONS` HTTP methods have been removed. They returned
 an object with the servers request information, the HTTP request headers, or
 both and were used for debugging purposes.
+
+### Code execution API removed
+
+The `/_admin/execute` endpoints supporting the `HEAD`, `GET`, `POST`, `PATCH`,
+`PUT`, and `DELETE` HTTP methods have been removed. They allowed to executes
+JavaScript code for administrative purposes on the server.
 
 ### Metrics API v2 endpoint removed
 
@@ -652,16 +658,23 @@ A few obsolete endpoints related to the write-ahead log have been removed, too.
 - `GET /_admin/wal/properties`
 - `PUT /_admin/wal/properties`
 
-#### Job and version admin APIs removed
+### Job and version admin APIs removed
 
 The `/_admin/job*` endpoints as well as the `/_admin/version` endpoint have
 been removed. The identical functionality is now only available using the
 corresponding `/_api/job*` and `/_api/version` endpoints.
 
-#### Database `path` removed
+### Database `path` removed
 
 The `GET /_api/database/current` endpoint no longer includes a `path` attribute
 in responses. It always returned `"none"`.
+
+### Collections and Views cannot be referenced by ID
+
+Referencing a collection or View by its internal `id` in an endpoint path
+like `/_api/collection/357` or `/_api/view/468` is no longer supported.
+Reference the data source by its name instead, like `/_api/collection/coll`
+or `/_api/view/myView`.
 
 ## JavaScript API
 

@@ -1,8 +1,10 @@
 ---
-title: Provides arangodb-memory-configuration
-menuTitle: Linux OS Tuning Script Examples
+title: Linux OS tuning script examples for ArangoDB
+menuTitle: Linux OS Tuning
 weight: 10
-description: ''
+description: >-
+  Example init scripts for Debian and Red Hat-based systems that apply the
+  recommended Linux kernel settings for ArangoDB at boot
 ---
 The most important suggestions listed in the section
 [Linux Operating System Configuration](operating-system-configuration.md)

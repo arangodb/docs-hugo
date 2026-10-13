@@ -2,7 +2,8 @@
 title: Cluster Deployment
 menuTitle: Deployment
 weight: 5
-description: ''
+description: >-
+  Overview of the cluster deployment options for ArangoDB
 ---
 You can deploy an ArangoDB cluster in different ways:
 

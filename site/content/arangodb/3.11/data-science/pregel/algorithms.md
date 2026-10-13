@@ -26,7 +26,7 @@ Pregel algorithms in ArangoDB.
 PageRank is a well known algorithm to rank vertices in a graph: the more
 important a vertex, the higher rank it gets. It goes back to L. Page and S. Brin's
 [paper](http://infolab.stanford.edu/pub/papers/google.pdf) and
-is used to rank pages in in search engines (hence the name). The algorithm runs
+is used to rank pages in search engines (hence the name). The algorithm runs
 until the execution converges. To specify a custom threshold, use the `threshold`
 parameter; to run for a fixed number of iterations, use the `maxGSS` parameter.
 

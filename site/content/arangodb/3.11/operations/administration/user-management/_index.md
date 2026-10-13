@@ -1,14 +1,38 @@
 ---
-title: Managing Users
+title: User account and access level management
 menuTitle: User Management
 weight: 30
 description: >-
-  User management is possible in the web interface and in _arangosh_ in the
-  context of the `_system` database
+  How to create user accounts in ArangoDB and grant them access levels that
+  control which databases and collections they may access
 ---
+ArangoDB uses user accounts to authenticate requests and to control what the
+authenticated users are allowed to do. An account stores the credentials for
+logging in as well as the access levels that govern which databases and
+collections the user may access and which actions are permitted. User accounts
+are valid throughout a server instance, across all databases.
+
+There is a built-in user account `root` which cannot be removed. Note that it
+has an empty password by default, so make sure to set a strong password
+immediately. You can create additional user accounts and grant them different
+actions and access levels.
+
+## Interfaces for managing user accounts
+
+You can manage ArangoDB user accounts in the following ways:
+
+- In the [web interface](../../../components/web-interface/users.md) while
+  logged on to the `_system` database
+- In [arangosh](in-arangosh.md), the ArangoDB shell
+- Via the [HTTP API](../../../develop/http-api/users.md)
+- Using a [driver](../../../../../ecosystem/drivers/_index.md), if it supports
+  the user management HTTP API
+
+## How to enable authentication
+
 Authentication needs to be enabled on the server in order to employ user
-permissions. Authentication is turned on by default in ArangoDB. You should
-make sure that it was not turned off manually however. Check the configuration
+permissions. Authentication is enabled by default in ArangoDB. You should
+make sure that it was not turned off manually, however. Check the configuration
 file (normally named `/etc/arangodb.conf`) and make sure it contains the
 following line in the `[server]` section:
 
@@ -16,11 +40,13 @@ following line in the `[server]` section:
 authentication = true
 ```
 
-This will make ArangoDB require authentication for every request (including
-requests to Foxx apps depending on the option below). If you want to run Foxx
-apps without HTTP authentication, but activate HTTP authentication for the built-in
-server APIs, you can add the following line in the `[server]` section of the 
-configuration:
+This makes ArangoDB require authentication for every request (including
+requests to Foxx apps depending on the option below), except for
+endpoints with the `/_open` prefix that never require authentication.
+
+If you want to run Foxx apps without HTTP authentication, but activate
+HTTP authentication for the built-in server APIs, you can add the following
+line in the `[server]` section of the configuration:
 
 ```
 authentication-system-only = true
@@ -34,18 +60,7 @@ When finished making changes, you need to restart ArangoDB, e.g.:
 service arangodb restart
 ```
 
-User management is possible in the [web interface](../../../components/web-interface/users.md)
-while logged on to the `_system` database and in
-[arangosh](in-arangosh.md), as well as via the
-[HTTP API](../../../develop/http-api/users.md).
-
-There is a built-in user account `root` which cannot be removed. Note that it
-has an empty password by default, so make sure to set a strong password
-immediately. Additional users can be created and granted different actions and
-access levels. ArangoDB user accounts are valid throughout a server instance
-(across databases).
-
-## Actions and Access Levels
+## Actions and access levels
 
 An ArangoDB server contains a list of users. It also defines various
 access levels that can be assigned to a user (for details, see below)
@@ -56,18 +71,18 @@ into three categories:
 - database actions
 - collection actions
 
-The **server actions** are
+The **server actions** are as follows:
 
-- **create user**: allows to create a new user.
+- **create user**: allows you to create a new user.
 
-- **update user**: allows to change the access levels and details of an existing
-user.
+- **update user**: allows you to change the access levels and details of an existing
+  user.
 
-- **drop user**: allows to delete an existing user.
+- **drop user**: allows you to delete an existing user.
 
-- **create database**: allows to create a new database.
+- **create database**: allows you to create a new database.
 
-- **drop database**: allows to delete an existing database.
+- **drop database**: allows you to delete an existing database.
 
 - **shutdown server**: remove server from cluster and shutdown
 
@@ -75,16 +90,16 @@ The **database actions** are tied to a given database, and access
 levels must be set
 for each database individually. For a given database the actions are
 
-- **create collection**: allows to create a new collection in the given database.
+- **create collection**: allows you to create a new collection in the given database.
 
-- **update collection**: allows to update properties of an existing collection.
+- **update collection**: allows you to update properties of an existing collection.
 
-- **drop collection**: allows to delete an existing collection.
+- **drop collection**: allows you to delete an existing collection.
 
-- **create index**: allows to create an index for an existing collection in the
-given database.
+- **create index**: allows you to create an index for an existing collection in the
+  given database.
 
-- **drop index**: allows to delete an index of an existing collection in the given
+- **drop index**: allows you to delete an index of an existing collection in the given
 database.
 
 The **collection actions** are tied to a given collection of a given
@@ -163,7 +178,7 @@ is allowed to read, create, modify or delete documents in the collection
 *data*. But the user is, for example, not allowed to create indexes for the
 collection *data* nor create new collections in the database *example*.
 
-## Granting Access Levels
+## How to grant access levels
 
 Access levels can be managed via the [web interface](../../../components/web-interface/users.md),
 in [arangosh](in-arangosh.md), or via the [HTTP API](../../../develop/http-api/users.md#manage-permissions).
@@ -176,13 +191,13 @@ from the database access level in the `_system` database, it is
 *Administrate*. Note that this means that database access level
 *Access* does not grant a user server access level *Administrate*.
 
-### Initial Access Levels
+### Initial access levels
 
 When a user creates a database, the access level of the user for that database
 is set to *Administrate*. The same is true for creating a collection, in this
 case the user gets *Read/Write* access to the collection.
 
-### Wildcard Database Access Level
+### Wildcard database access level
 
 With the above definition, one must define the database access level for
 all database/user pairs in the server, which would be very tedious. In
@@ -243,7 +258,7 @@ explicitly defined access level:
 - database `shop2`: *No Access*
 - database `something`: *Administrate*
 
-### Wildcard Collection Access Level
+### Wildcard collection access level
 
 For each user and database, there is a wildcard collection access level.
 This level is used for all collections of a database without an explicitly
@@ -355,7 +370,7 @@ access level of *No Access*.  However, the *Administrate* database access level
 leads to *Read-Write* access for all collections in the database, including the
 `reviews` collection.
 
-### Permission Resolution
+### Permission resolution
 
 The access levels for databases and collections are resolved in the following way:
 
@@ -381,7 +396,7 @@ For a collection named "*bar*" in a database "*foo*":
 An exception to this are system collections, where only the access level for the
 database is used.
 
-### System Collections
+### System collections
 
 The access level for system collections cannot be changed. They follow
 different rules than user defined collections and may change without further

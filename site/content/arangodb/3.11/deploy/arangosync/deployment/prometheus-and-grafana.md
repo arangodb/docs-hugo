@@ -2,7 +2,9 @@
 title: Set up Prometheus & Grafana for Datacenter-to-Datacenter-Replication
 menuTitle: Prometheus & Grafana
 weight: 20
-description: ''
+description: >-
+  How to configure Prometheus to scrape the metrics of all sync masters and sync
+  workers, and how to view them with the Grafana dashboards of ArangoDB
 ---
 _ArangoSync_ provides metrics in a format supported by [Prometheus](https://prometheus.io)
 that you can optionally use.

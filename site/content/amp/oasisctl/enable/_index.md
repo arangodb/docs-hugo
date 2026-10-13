@@ -1,7 +1,8 @@
 ---
-title: Enable with `oasisctl`
+title: Enable with _oasisctl_
 menuTitle: Enable
 weight: 11
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Enable some settings related to deployment

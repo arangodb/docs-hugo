@@ -1,7 +1,8 @@
 ---
-title: Create Private with `oasisctl`
+title: Create Private with _oasisctl_
 menuTitle: Create Private
-weight: 16
+weight: 15
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Create private resources
