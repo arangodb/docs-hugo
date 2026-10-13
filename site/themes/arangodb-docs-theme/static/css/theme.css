@@ -383,18 +383,6 @@ img {
     margin: 0;
 }
 
-.svg-figure {
-    margin: 2rem 0;
-    text-align: center;
-}
-
-.svg-figure > figcaption {
-    font-size: 0.9em;
-    color: var(--gray-700);
-    margin-top: 0.5rem;
-    text-wrap: balance;
-}
-
 /* end Images */
 
 /* Tables */
@@ -2308,8 +2296,10 @@ nav.pagination .next {
 .svg-figure figcaption,
 .diagram-figure figcaption {
     font-size: 0.9em;
-    color: #666;
+    color: var(--gray-700);
     margin-top: 0.5rem;
+    text-wrap: balance;
+    font-style: italic;
 }
 
 .diagram-figure img {

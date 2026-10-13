@@ -8,7 +8,7 @@
        style="max-width: {{ . }};"{{ end }}>
   {{- with $caption }}
   <figcaption>
-    <em>{{ . | markdownify }}</em>
+    {{ . | markdownify }}
   </figcaption>
   {{- end }}
 </figure>
