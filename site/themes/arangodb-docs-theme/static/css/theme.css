@@ -1435,7 +1435,7 @@ li > code {
     opacity: 0;
 }
 
-.copy-to-clipboard:hover > .copy-to-clipboard-button {
+pre:hover > .copy-to-clipboard-button {
     opacity: 0.7;
 }
 
