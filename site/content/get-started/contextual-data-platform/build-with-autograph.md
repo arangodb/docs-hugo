@@ -31,16 +31,20 @@ content.
 
 ## Ingest a file corpus
 
-While the [Quickstart](quickstart/_index.md#quick-start) uploaded three short
-While the Quickstart uploaded a folder of three short text files, real-world applications require ingesting complete file corpora.
-corpora. You can upload an entire local directory with
+While the [Quickstart](quickstart/_index.md#quick-start) uploaded
+three short text files, a real application ingests a whole corpus of
+documents. You can upload an entire local directory with
 `client.files.upload_folder()`.
 
-### Connect and create a project
+### Connect
 
-Connect to the platform and create a project for this corpus. To pick up a
-project you created earlier, use `client.project.get(project_name=...)`
-instead:
+Connect to the platform, create a project for this corpus, store your LLM API
+key once as a secret profile, and deploy the project's AutoGraph service with
+it. To pick up a project you created earlier, use
+`client.project.get(project_name=...)` instead of `create`. One key can serve
+both the chat and the embedding model. `fps_recovery_username` names an
+existing ArangoDB user with read and write access to the project's database;
+for a local evaluation setup, `root` is fine:
 
 ```python
 import urllib3
@@ -61,17 +65,7 @@ project = client.project.create(
     project_name="enterprise-docs",
     project_type="autograph",
 )
-```
 
-### Store the API key and deploy AutoGraph
-
-Store your LLM API key once as a secret profile and deploy the project's
-AutoGraph service with it. One key can serve both the chat and the embedding
-model. `fps_recovery_username` names an existing ArangoDB user with read and
-write access to the project's database; for a local evaluation setup, `root`
-is fine:
-
-```python
 profile = client.secret_profile.create(
     name="enterprise-docs-openai",
     secret="YOUR_LLM_API_KEY",
@@ -115,18 +109,14 @@ call it once per directory, each with its own category. To upload an explicit
 list of files, use `client.files.upload_files()`, and for a single file,
 `client.files.upload_file()`.
 
-AutoGraph automatically parses supported document formats, including PDF, DOCX,
-PPTX, XLSX, TXT, and Markdown, without requiring manual format conversion. For
-optimal results, ensure files use standard extensions and contain
-well-structured text headings to assist topic segmentation. For full details on
-supported formats and ingestion limits, see
-[Document parsing](../../agentic-ai-suite/autograph/reference/corpus-build.md#document-parsing)
-and [Limitations](../../agentic-ai-suite/autograph/reference/limitations.md).
+AutoGraph parses PDF files (including scanned documents, read using OCR),
+Office documents (`.doc`, `.docx`, `.ppt`, `.pptx`), plain text, and Markdown,
+so you do not need to convert files beforehand.
 
 ## Basic pipeline configuration
 
-When `project.autograph.ingest()` is executed, AutoGraph processes the ingested
-document corpus through three primary phases:
+`project.autograph.ingest()` runs the uploaded corpus through the following
+phases:
 
 - **Corpus Build**: Generates a single vector embedding per document, connects
   nearest-neighbor whole documents using `SIMILAR_TO` edges, applies Leiden
@@ -139,8 +129,8 @@ document corpus through three primary phases:
 - **Orchestration**: Provisions importer pods and executes distributed graph
   loading jobs into ArangoDB.
 
-You can tune key build parameters to balance extraction depth, accuracy, and
-operational throughput:
+You can tune the build parameters to trade extraction depth against build
+time:
 
 - `complexity` (default: `high`): Controls the FullGraphRAG versus VectorRAG
   strategy split across clusters. It is a `RagStrategizerComplexity` enum
@@ -162,7 +152,7 @@ entity-based multi-hop traversal queries fail due to missing entity-relationship
 graph structures.
 {{< /warning >}}
 
-`ingest()` accepts `complexity` directly and blocks until all three phases are
+`ingest()` accepts `complexity` directly and blocks until all phases are
 complete. Expect it to take 10 to 15 minutes for a corpus of about 1 MB, longer
 for larger corpora:
 
@@ -224,29 +214,22 @@ if not rag.wait_until_ready():
     raise RuntimeError("The retriever did not become ready in time")
 ```
 
-## Choose a retrieval strategy
+## Choose a search method
 
 Selecting the appropriate retrieval mode balances response speed, factual
 accuracy, and reasoning depth across different query types. You select it with
 the `query_type` parameter of `ask()`, a `QueryType` enum value imported from
 `arango_ai_sdk.models`:
 
-- [**Local search**](../../agentic-ai-suite/autorag/search-methods/local-search.md)
-  (`QueryType.LOCAL`): Focuses on entity neighborhood traversal and
-  precise local relationship lookups.
-- [**Global search**](../../agentic-ai-suite/autorag/search-methods/global-search.md)
-  (`QueryType.GLOBAL`): Synthesizes high-level thematic insights across overall
-  community summaries.
-- [**Unified search**](../../agentic-ai-suite/autorag/search-methods/unified-search.md)
-  (`QueryType.UNIFIED`, the default): Blends vector similarity search with
-  entity-relationship path traversal for balanced contextual recall, and works
-  on both FullGraphRAG and VectorRAG partitions.
-
-[**Deep search**](../../agentic-ai-suite/autorag/search-methods/deep-search.md),
-which decomposes complex multi-step questions with an LLM planner, is not
-available through the SDK yet; use the web interface or the AutoRAG HTTP API
-for it. See [Search methods](../../agentic-ai-suite/autorag/search-methods/_index.md)
-for more information.
+- [**Local Search**](../../agentic-ai-suite/autorag/search-methods/local-search.md)
+  (`QueryType.LOCAL`): Starts from the entities the question names and follows
+  their direct relationships. Use it for questions about specific entities.
+- [**Global Search**](../../agentic-ai-suite/autorag/search-methods/global-search.md)
+  (`QueryType.GLOBAL`): Answers from the community summaries that span the
+  whole graph. Use it for themes and patterns across the corpus.
+- [**Unified Search**](../../agentic-ai-suite/autorag/search-methods/unified-search.md)
+  (`QueryType.UNIFIED`, the default): Combines matching chunks and entities in
+  one fast lookup.
 
 ```python
 from arango_ai_sdk.models import QueryType

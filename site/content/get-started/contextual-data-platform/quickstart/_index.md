@@ -3,8 +3,8 @@ title: Arango Contextual Data Platform Quickstart
 menuTitle: Quickstart
 weight: 5
 description: >-
-  Install the Arango Contextual Data Platform and run your first graph-powered
-  questions with the Arango AI SDK
+  Install the Arango Contextual Data Platform and ask your first questions
+  against a Context Graph with the Arango AI SDK
 ---
 ## Prerequisites
 
@@ -59,8 +59,8 @@ curl --proto '=https' --tlsv1.2 -fsSL https://releases.license.arango.ai/release
 ```
 
 If you would rather not pipe a remote script straight into a shell, download it
-first, read it, and then run it. This is the same installation, in three steps
-instead of one:
+first, read it, and then run it. This is the same installation - download,
+review, then run:
 
 ```bash
 curl --proto '=https' --tlsv1.2 -fsSL -O https://releases.license.arango.ai/releases/plg/install.sh
@@ -83,7 +83,7 @@ let the script prompt you for it.
 Reading the script is the surest way to know what it does, but here is what to
 expect. Before it starts, it checks for `kubectl`, `helm`, and `kind`, and
 installs any that are missing, using Homebrew on macOS and verified binary
-downloads elsewhere. It then runs nine steps:
+downloads elsewhere. It then runs the following steps:
 
 1. Verifies your current Kubernetes cluster, or creates a Kind cluster named
    `arango-platform`.
@@ -174,8 +174,8 @@ the [AutoGraph Service Reference](../../../agentic-ai-suite/autograph/reference/
 documents every endpoint. Going from documents to answers that way takes more
 than a dozen calls in the right order, though: obtaining and renewing a JWT,
 storing your LLM API key as a secret, creating a project, starting the AutoGraph
-service, running the three build stages one after another while polling each
-one until it finishes, and finally deploying a retriever to query. The Arango
+service, running the build stages one after another while polling each one
+until it finishes, and finally deploying a retriever to query. The Arango
 AI SDK, the official Python client, wraps that
 whole sequence into named methods on a client object and takes care of
 authentication, waiting on long-running steps, and reconnecting to a project
@@ -236,14 +236,24 @@ started. If it has dropped, re-run
 `kubectl port-forward -n arango service/deployment-ea 8529:8529`.
 {{< /info >}}
 
-Follow these steps to connect and run your first graph query.
+The quick start walks you through connect, build, and query, with a cleanup
+step at the end.
 
 ### Connect
+
+Connecting means signing in, creating a project, storing your LLM API key,
+and starting AutoGraph.
 
 Constructing the client signs you in, so a wrong password fails here rather
 than on your first real call. Every later call carries a valid token, which
 the SDK renews silently when it expires. The client connects to the `_system`
-database by default:
+database by default.
+
+A *project* is the workspace everything else belongs to: the documents you
+upload, the Context Graph built from them, and the questions you later ask
+against it. Your LLM API key is stored once as a *secret profile* and referred
+to by ID afterwards, so the key never travels through your code again. One key
+can serve both the chat and the embedding model:
 
 ```python
 import urllib3
@@ -259,50 +269,18 @@ client = ArangoAIClient(
     password="test",
     verify=False,  # the local deployment uses a self-signed certificate
 )
-```
 
-### Create a project
-
-A project is the workspace everything else belongs to: the documents you
-upload, the Context Graph built from them, and the questions you later ask
-against it:
-
-```python
 project = client.project.create(
     project_name="quickstart",
     project_type="autograph",
 )
-```
 
-`create` returns a project handle, which is where everything project-scoped
-happens from here on. A project name can only be created once; to pick up a
-project from an earlier run, use `client.project.get(project_name="quickstart")`
-instead.
-
-### Store your LLM API key
-
-AutoGraph needs a chat model to read your documents and an embedding model to
-index them. You store the API key once as a *secret profile* and refer to it
-by ID afterwards, so the key never travels through your code again:
-
-```python
 profile = client.secret_profile.create(
     name="quickstart-openai",
     secret="YOUR_LLM_API_KEY",
     provider="openai",
 )
-```
 
-One key can serve both the chat and the embedding model; pass its
-`profile_id` twice in the next step.
-
-### Deploy AutoGraph
-
-Deploying starts the AutoGraph service for the project. The call returns as
-soon as the platform accepts the install, while the pod may still be starting,
-so wait for the service to become ready before you continue:
-
-```python
 project.autograph.deploy(
     chat_api_provider="openai",
     embedding_api_provider="openai",
@@ -317,11 +295,18 @@ if not project.autograph.wait_until_ready():
     raise RuntimeError("AutoGraph did not become ready in time")
 ```
 
+A project name can only be created once, and a project cannot be deleted yet.
+To pick up a project from an earlier run, use
+`client.project.get(project_name="quickstart")` instead of `create`.
+
+`deploy()` starts the AutoGraph service for the project. The call returns as
+soon as the platform accepts the install, while the pod may still be starting,
+so `wait_until_ready()` waits for the service before you continue.
 `fps_recovery_username` names an existing ArangoDB user with read and write
 access to the project's database; AutoGraph uses it to resume file parsing
 after a pod restart. For this local evaluation setup, `root` is fine.
 
-### Upload and build
+### Build
 
 Files are uploaded under a *scope*: the first label is the project name and
 the second is the *category*, a label you later ingest by. Save the three
@@ -361,10 +346,16 @@ for result in results:
 Now build the graph. `ingest()` runs the whole AutoGraph pipeline described
 above - Corpus Graph, per-cluster strategies, and Knowledge Graph extraction -
 and blocks until it finishes. Most steps call your LLM or embedding model, so
-expect it to take several minutes even for this small dataset:
+expect it to take several minutes even for this small dataset. The
+`on_progress` callback prints which phase is running - `build`, then
+`strategize`, then `orchestrate`. Orchestrate is the long one; repeated
+`orchestrate running` lines mean the import is still working:
 
 ```python
-result = project.autograph.ingest(categories=["physicists"])
+result = project.autograph.ingest(
+    categories=["physicists"],
+    on_progress=lambda p: print(p.step, p.status.status),
+)
 print(result.build.document_count, "documents ingested")
 ```
 
@@ -372,10 +363,11 @@ A category can only be built once. If you upload more files later, ingest
 again with `incremental=True`; running the same ingest twice without it raises
 `CategoryAlreadyBuiltError`.
 
-### Deploy a retriever
+### Query
 
-**AutoRAG** answers questions from the Context Graph, and it runs as its own
-service that you deploy with the same model settings as AutoGraph:
+Questions are answered by a retriever: **AutoRAG** runs as its own service on
+top of the Context Graph, so deploy it once, with the same model settings as
+AutoGraph, before the first question:
 
 ```python
 retriever = project.autorag.deploy(
@@ -391,8 +383,6 @@ rag = retriever.autorag
 if not rag.wait_until_ready():
     raise RuntimeError("The retriever did not become ready in time")
 ```
-
-### Query
 
 With the graph built and the retriever running, you can ask questions about
 the three biographies. `ask()` sends your question to the retriever. The
@@ -531,9 +521,12 @@ for result in client.files.upload_folder(docs, scope=["quickstart", "physicists"
     print(result.name, result.status)
 print("Upload complete. Building knowledge graph (this may take several minutes)...")
 
-# Build the knowledge graph
+# Build the knowledge graph, printing which phase is running
 
-project.autograph.ingest(categories=["physicists"])
+project.autograph.ingest(
+    categories=["physicists"],
+    on_progress=lambda p: print(p.step, p.status.status),
+)
 print("Build complete.")
 
 # Deploy the retriever that answers questions from the graph
