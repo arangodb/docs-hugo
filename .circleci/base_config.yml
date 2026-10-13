@@ -349,7 +349,8 @@ commands:
       - run:
           name: Update ArangoDB Release Version
           command: |
-            sed -i 's/version.*'<< parameters.docs-version >>'.*/version: "'<< parameters.arangodb-version >>'"/g' docs-hugo/site/data/versions.yaml
+            # The version line follows the name line, e.g. name: "4.x" / version: "4.0.0"
+            sed -i '/^ *- name: "'<< parameters.docs-version >>'"/{n;s/version: .*/version: "'<< parameters.arangodb-version >>'"/}' docs-hugo/site/data/versions.yaml
 
 
   clone-docs-and-merge:
