@@ -375,8 +375,9 @@ set it explicitly in this case. Alternatively, use the `{}` placeholder as in
 
 If you deactivate a user account by setting `active` to `false` using the
 [User Management API](../../develop/http-api/users.md), the
-[JWT session tokens](../../develop/http-api/authentication.md#jwt-user-tokens)
-that have been issued for this user account are now rejected. Requests that
+[JWT session tokens](../../develop/http-api/authentication.md#jwt-session-tokens)
+and [user tokens](../../develop/http-api/authentication.md#jwt-user-tokens) of
+this user account are now rejected. Requests that
 authenticate with such a token fail with an HTTP `401 Unauthorized` error.
 
 ### Endpoint return value changes
@@ -1276,6 +1277,21 @@ curl -uroot:v1.7b2265...71227d http://localhost:8529/_api/database
 
 Note that it is recommended to use access tokens for creating
 [JWT session tokens](../../develop/http-api/authentication.md#create-a-jwt-session-token).
+
+#### Custom expiry time for session tokens
+
+<small>Introduced in: v3.12.6</small>
+
+The `POST /_open/auth` endpoint accepts a new optional `expiryTime` attribute
+in the request body to request a session token with a lifetime (in seconds)
+different from the default of the `--server.session-timeout` startup option.
+The value needs to be within the bounds of the new
+`--auth.minimal-jwt-expiry-time` (default: `10`) and
+`--auth.maximal-jwt-expiry-time` (default: `3600`) startup options, otherwise
+the request is rejected with an HTTP `400 Bad Request` error.
+
+See [JWT session tokens](../../develop/http-api/authentication.md#jwt-session-tokens)
+for details.
 
 #### Activities API (experimental)
 
