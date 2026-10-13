@@ -43,7 +43,12 @@ project you created earlier, use `client.project.get(project_name=...)`
 instead:
 
 ```python
+import urllib3
+
 from arango_ai_sdk import ArangoAIClient
+
+# Silence the warning that verify=False otherwise triggers on every request
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 client = ArangoAIClient(
     base_url="https://localhost:8529",
@@ -292,8 +297,13 @@ the database password and the LLM API key from the `ARANGODB_PASSWORD` and
 ```python
 import os
 
+import urllib3
+
 from arango_ai_sdk import ArangoAIClient
 from arango_ai_sdk.models import QueryType, RagStrategizerComplexity
+
+# Silence the warning that verify=False otherwise triggers on every request
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 client = ArangoAIClient(
     base_url="https://localhost:8529",
