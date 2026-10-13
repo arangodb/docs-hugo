@@ -133,7 +133,7 @@ arangodb-notebook-images:
 arangodb-mlflow:
   features:
     - name: MLflow
-      link: agentic-ai-suite/private-llms/mlflow.md
+#     link: agentic-ai-suite/private-llms/mlflow.md
 arangodb-llm-host:
   features:
     - name: Triton Inference Server

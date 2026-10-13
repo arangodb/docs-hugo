@@ -247,7 +247,7 @@ and in case of the Arango Contextual Data Platform, also the Agentic AI Suite.
 
 ## Step 8: Set up object storage
 
-Features like MLflow and GraphML require an additional storage system to save
+Features like GraphML require an additional storage system to save
 model training data, for instance.
 
 The following example shows how to set up a local MinIO and integrate it with

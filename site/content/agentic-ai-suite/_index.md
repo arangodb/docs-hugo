@@ -50,8 +50,6 @@ Alongside these components, you also get the following additional features:
   development of applications that use ArangoDB as their backend.
 - **Public and private LLM support**: Use public large language models (LLMs)
   such as OpenAI or private LLMs with [Triton Inference Server](private-llms/triton-inference-server.md).  
-- [**MLflow integration**](private-llms/mlflow.md): Use the popular MLflow as a
-  model registry for private LLMs or to run machine learning experiments.
 - **Application Programming Interfaces (APIs)**: Use the underlying APIs of the
   Agentic AI Suite and build your own integrations. See the
   [API Reference](https://apiref.arango.ai/) for more details.
