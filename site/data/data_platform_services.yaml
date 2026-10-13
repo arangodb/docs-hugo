@@ -137,7 +137,7 @@ arangodb-mlflow:
 arangodb-llm-host:
   features:
     - name: Triton Inference Server
-      link: agentic-ai-suite/private-llms/triton-inference-server.md
+#     link: agentic-ai-suite/private-llms/triton-inference-server.md
 arangodb-mcp-server:
   features:
     - name: ArangoDB MCP Server

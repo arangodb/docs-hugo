@@ -48,8 +48,6 @@ Alongside these components, you also get the following additional features:
 - [**Jupyter notebooks**](notebook-servers.md): Run a Jupyter kernel in the
   Contextual Data Platform for hosting interactive notebooks for experimentation and
   development of applications that use ArangoDB as their backend.
-- **Public and private LLM support**: Use public large language models (LLMs)
-  such as OpenAI or private LLMs with [Triton Inference Server](private-llms/triton-inference-server.md).  
 - **Application Programming Interfaces (APIs)**: Use the underlying APIs of the
   Agentic AI Suite and build your own integrations. See the
   [API Reference](https://apiref.arango.ai/) for more details.
@@ -83,8 +81,8 @@ to load sample datasets into a deployment.
 
 ## Supported LLM and embedding models
 
-The services of the Agentic AI Suite work with OpenAI-compatible APIs as well as
-self-hosted models served through Triton Inference Server. The recommended setup
+The services of the Agentic AI Suite work with OpenAI-compatible APIs.
+The recommended setup
 is the `openai` provider with the OpenAI models listed below: that is the
 combination ArangoDB tests, and other endpoints can differ in behavior such as
 latency.

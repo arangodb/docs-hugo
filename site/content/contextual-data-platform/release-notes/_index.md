@@ -555,10 +555,6 @@ What's included:
   Launch integrated Jupyter notebook servers with pre-installed ArangoDB drivers
   and data science libraries for interactive experimentation.
 
-- [**Triton Inference Server**](../../agentic-ai-suite/private-llms/triton-inference-server.md):
-  Host private Large Language Models using NVIDIA Triton Inference Server for
-  secure, on-premises AI capabilities.
-
 ### Introducing the Arango Platform Suite
 
 {{< tag "Platform Suite" >}}
