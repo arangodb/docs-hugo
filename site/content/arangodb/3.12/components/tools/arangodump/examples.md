@@ -27,6 +27,13 @@ Without further startup options, _arangodump_ connects to the ArangoDB server at
 the default endpoint `http://127.0.0.1:8529` as the `root` user and prompts you
 for the password. It writes the dump into a directory named `dump`.
 
+You can also specify the output directory as a [positional argument](../../../operations/administration/configuration.md#command-line-options)
+without `--output-directory`:
+
+```
+arangodump --include-system-collections true dump
+```
+
 _arangodump_ fails if the output directory already exists. This is an
 intentional security measure to prevent you from accidentally overwriting
 previously dumped data. If you are sure that you want to overwrite the data in

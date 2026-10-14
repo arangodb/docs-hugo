@@ -38,6 +38,13 @@ you for the password. It then restores the collection structure and the
 documents from the files found in the input directory `dump`. The input
 directory must have been created by running _arangodump_ before.
 
+You can also specify the input directory as a [positional argument](../../../operations/administration/configuration.md#command-line-options)
+without `--input-directory`:
+
+```
+arangorestore --include-system-collections true dump
+```
+
 _arangorestore_ prints out its progress while running, and ends with a line
 showing some aggregate statistics:
 

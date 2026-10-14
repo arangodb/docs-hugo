@@ -10,6 +10,13 @@ _arangoimport_ command-line tool. It allows you to bulk import data records
 from a file into a database collection. Multiple files can be imported into
 the same or different collections by invoking it multiple times.
 
+You can specify the file to import with the `--file` startup option or as a
+[positional argument](../../../operations/administration/configuration.md#command-line-options):
+
+```
+arangoimport --collection users --type jsonl data.jsonl
+```
+
 {{< tip >}}
 Import files are expected to be UTF-8 encoded **without**
 [byte order mark (BOM)](https://en.wikipedia.org/wiki/Byte_order_mark).

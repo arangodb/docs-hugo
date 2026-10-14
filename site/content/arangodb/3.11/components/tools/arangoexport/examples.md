@@ -24,6 +24,13 @@ document from the collection, without a specific order.
 To export more than one collection at a time, specify multiple `--collection`
 options. The default output directory is `export`.
 
+You can also specify the output directory as a [positional argument](../../../operations/administration/configuration.md#command-line-options)
+without `--output-directory`:
+
+```
+arangoexport --collection test dump
+```
+
 When _arangoexport_ has finished, it prints out a summary line with some aggregate
 statistics about what it did, for example:
 
