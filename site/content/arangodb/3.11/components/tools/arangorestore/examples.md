@@ -10,12 +10,27 @@ ArangoDB provides the _arangorestore_ tool.
 
 ## Restore a dump
 
-To restore a dump into the `_system` database, run _arangorestore_ with the
-directory that contains the dump:
+To restore a dump including its system collections into the `_system`
+database, run _arangorestore_ with the directory that contains the dump and
+enable the `--include-system-collections` startup option:
 
 ```
-arangorestore --input-directory "dump"
+arangorestore --include-system-collections true --input-directory "dump"
 ```
+
+System collections hold data that other features depend on, for example, the
+definitions of named graphs in the `_graphs` collection. The dump needs to
+include them, which requires the same option when running _arangodump_.
+
+{{< warning >}}
+If you restore the system collections of a `_system` database dump into the
+`_system` database, the user accounts of the server are replaced with the ones
+from the dump, including their passwords. With the default `--overwrite true`,
+users that only exist on the server are removed. To keep the current user
+accounts, leave out the system collections, or select the collections to restore
+with the `--collection` option, like `--collection _graphs` in addition to your
+own collections.
+{{< /warning >}}
 
 Without further startup options, _arangorestore_ connects to the ArangoDB server
 at the default endpoint `tcp://127.0.0.1:8529` as the `root` user and prompts
@@ -147,6 +162,7 @@ The following startup options are available to adjust this behavior:
   is `true`.
 - `--include-system-collections <bool>`: Whether to include system collections
   when re-creating collections or reloading data. The default value is `false`.
+  Set it to `true` to restore data like the definitions of named graphs.
 
 For example, to (re-)create all non-system collections and load document data into them, use:
 

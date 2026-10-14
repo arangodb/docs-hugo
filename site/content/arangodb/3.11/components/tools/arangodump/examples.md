@@ -8,12 +8,20 @@ description: >-
 ---
 ## Create a dump
 
-To create a dump of all non-system collections of the `_system` database, run
-_arangodump_ with an output directory:
+To create a dump of all collections of the `_system` database, run _arangodump_
+with an output directory and enable the `--include-system-collections` startup
+option:
 
 ```
-arangodump --output-directory "dump"
+arangodump --include-system-collections true --output-directory "dump"
 ```
+
+System collections hold data that other features depend on, for example, the
+definitions of named graphs in the `_graphs` collection. Without them, you
+cannot fully restore such features. In the `_system` database, the system
+collections also include the user accounts (`_users` collection). You can
+leave out the system collections if you only want to dump your own collections,
+see [Choose the collections and data to dump](#choose-the-collections-and-data-to-dump).
 
 Without further startup options, _arangodump_ connects to the ArangoDB server at
 the default endpoint `tcp://127.0.0.1:8529` as the `root` user and prompts you
@@ -25,7 +33,7 @@ previously dumped data. If you are sure that you want to overwrite the data in
 the output directory, set the `--overwrite` startup option to `true`:
 
 ```
-arangodump --output-directory "dump" --overwrite true
+arangodump --include-system-collections true --output-directory "dump" --overwrite true
 ```
 
 When finished, _arangodump_ prints out a summary line with some aggregate
@@ -108,7 +116,8 @@ of all non-system collections. To adjust this, use the following startup options
   default is `true`. Set it to `false` to only dump the structural information.
 - `--include-system-collections <bool>`: Whether to include system collections
   in the dump. The default is `false`. **Set it to `true` if you use named
-  graphs that you want to restore.**
+  graphs or other features that store data in system collections and that you
+  want to restore.**
 
 For example, to only dump the structural information of all collections,
 including system collections, use:
