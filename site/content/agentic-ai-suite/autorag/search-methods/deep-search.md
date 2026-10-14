@@ -23,8 +23,8 @@ You can also send [`"mode": "DEEP_SEARCH"`](../parameters.md#mode) instead of
 setting `query_type` and `use_llm_planner`. The service then uses Custom
 Retriever tools when they are available, and Local Search otherwise.
 
-{{< diagram src="/images/retriever-deep-search-architecture.png" 
-           alt="Deep Search Architecture showing LLM-guided research process" >}}
+{{< diagram src="/images/retriever-deep-search-architecture.svg"
+            alt="Deep Search Architecture showing LLM-guided research process" >}}
 
 {{< info >}}
 Deep Search is also available via the
@@ -75,36 +75,58 @@ search across multiple steps.
 You can optionally provide `custom_tools` to limit which tools are available.
 If omitted, all tools are auto-loaded from the `Tools` collection.
 
+{{< diagram src="/images/custom-retriever-deep-search.svg"
+            alt="Custom Deep Search: resolve the tool list, read global context, create the plan, match tools in two passes, execute the steps in order with a completion check, and synthesize the answer; a direct path matches and runs tools when global context is empty" >}}
+
 ## How Deep Search works
 
-Both modes follow the same pipeline:
+Both modes plan and execute the search in steps. Tool matching (step 3) only
+applies to Custom Deep Search:
 
-1. **Get global context**: Fetches global context to understand what data is
-   available. If global context is empty, skips to direct tool matching.
+1. **Get global context**: Runs a Global Search over the community reports so
+   the planner knows what data is available.
 
-2. **Create execution plan and match best tool**: The LLM reads the global
-   context and the query, then creates a multi-step plan by breaking the query
-   into sub-questions. It then selects the best tool in two passes:
-   - **Pass 1**: LLM picks the best `custom_retriever` tool from available
-     tools based on tool descriptions.
-   - **Pass 2**: If no `custom_retriever` tool matches, LLM picks from
-     service-retriever tools (`local`, `global`, `unified`).
-   - If `custom_tools` is not provided, the system auto-loads all supported
-     tool types from the `Tools` collection.
+2. **Create execution plan**: The LLM reads the global context and the query,
+   then breaks the query into steps. Each step has a description, a query
+   template, and the information it is expected to find. Later steps can reuse
+   the results of earlier steps.
 
-   The selected tool is used for all steps in the plan.
+3. **Match tools**: The LLM selects tools based on their descriptions, in two
+   passes:
+   - **Pass 1**: LLM picks one or more `custom_retriever` tools.
+   - **Pass 2**: If no `custom_retriever` tool matches, LLM picks one
+     service-retriever tool (`local`, `global`, or `unified`).
+   - If `custom_tools` is not provided, the system auto-loads all
+     `custom_retriever`, `local`, `global`, and `unified` tools from the
+     `Tools` collection.
 
-3. **Execute each step**: Each step runs sequentially using the matched tool.
-   Results from earlier steps feed into later steps. If the query is fully
-   answered at any step, execution stops early.
+   The matched tools are used for all steps in the plan. If no tool matches,
+   the steps have nothing to run.
 
-4. **Synthesize final answer**: All step results are combined and sent to the
-   LLM to produce a final answer.
+4. **Execute each step**: Steps run in order. For each step, the LLM fills the
+   `{{placeholders}}` in the query template with results from earlier steps to
+   write one concrete query. The matched tools then run, in parallel if there
+   are several. A completion check follows each step:
+   - If the query is already answered, execution stops early.
+   - If the step found no results, execution continues with the next step.
+   - If a tool reports a configuration error, execution stops and the error
+     is returned.
+
+5. **Synthesize final answer**: Citations from all steps are merged by
+   `chunk_id`, each step result is summarized, and the LLM produces the final
+   answer, which can be streamed.
+
+If the global context is empty, for example because there are no communities,
+Custom Deep Search skips planning. The LLM matches tools directly against all
+tool descriptions, the matched tools run in parallel, and their results are
+summarized and synthesized into the answer. If no tool matches, the service
+answers that no relevant data was found.
 
 ## Writing good tool descriptions
 
 For Deep Search tool selection, the LLM reads each tool's `description` and
-picks the best match. Description quality directly affects which tool is chosen.
+picks the tools that match. Description quality directly affects which tools
+are chosen.
 
 Use this pattern:
 - **What this tool searches**

@@ -10,6 +10,7 @@
       </hgroup>
       {{ with .Content -}}
         {{ . }}
+        {{- partial "shortcodes/examples/page-done.html" $.Page }}
       {{ else -}}
         {{ template "generateSection" dict "section" .Page "pageVersion" $pageVersion -}}
       {{ end -}}

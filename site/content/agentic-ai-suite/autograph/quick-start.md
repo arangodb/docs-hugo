@@ -8,7 +8,7 @@ description: >-
 ---
 ## Prerequisites
 
-- **Arango Contextual Data Platform 4.0+** (ships with ArangoDB 3.12.9+).
+- An **Arango Contextual Data Platform** deployment.
 - A **project** in your target database (keeps datasets isolated).
   See [Projects](../../platform-suite/control-plane-acp/_index.md#projects).
 - **LLM and embedding API access** (OpenAI-compatible or Triton-compatible).

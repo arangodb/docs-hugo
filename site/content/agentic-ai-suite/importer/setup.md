@@ -150,8 +150,7 @@ or timeout errors, the per-job limits are too tight for your documents.
 
 ## Prerequisites
 
-- **Arango Contextual Data Platform 4.0+** (which ships with **ArangoDB
-  3.12.9** or later).
+- **Arango Contextual Data Platform**.
 - **LLM and embedding API access** (OpenAI-compatible or Triton-compatible
   endpoints).
 - **Valid JWT** for the API (`Authorization: Bearer ...`).

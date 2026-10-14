@@ -59,8 +59,8 @@ what information to provide to support so they can assist you best when needed.
 ArangoSync (master & worker) provide metrics that can be used for monitoring the ArangoSync
 solution. These metrics are available using the following HTTPS endpoints:
 
-- GET `/metrics`: Provides metrics in a format supported by Prometheus.
-- GET `/metrics.json`: Provides the same metrics in JSON format.
+- `GET /metrics`: Provides metrics in a format supported by Prometheus.
+- `GET /metrics.json`: Provides the same metrics in JSON format.
 
 Both endpoints include help information per metrics.
 
