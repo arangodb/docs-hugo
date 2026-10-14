@@ -3,7 +3,7 @@ title: Set up AutoGraph
 menuTitle: Setup
 weight: 5
 description: >-
-  Set up AutoGraph using the web interface or the HTTP REST API
+  Set up AutoGraph using the web interface or the HTTP API
   to build knowledge graphs from your enterprise documents
 ---
 AutoGraph is available in the Arango Contextual Data Platform through two
@@ -12,7 +12,7 @@ interfaces:
 - [**Web interface**](web-interface.md): A guided, step-by-step workflow
   for creating projects, uploading documents, and deploying retrieval
   services without writing code.
-- [**HTTP REST API**](./reference/_index.md): Full programmatic control
+- [**HTTP API**](./reference/_index.md): Full programmatic control
   over the AutoGraph pipeline for automation and integration into existing workflows.
 
 {{< tip >}}
@@ -29,7 +29,7 @@ samples it and converts it to Markdown. AutoGraph then embeds and clusters
 that Markdown.
 
 The File Parser is an internal data platform service installed once per environment,
-without a web interface of its own. The GraphRAG [Importer](../importer/_index.md)
+without a web interface of its own. The [Importer](../importer/_index.md)
 uses the same service when it builds the knowledge graph, so the whole AutoGraph
 pipeline accepts one consistent set of inputs:
 
@@ -58,14 +58,13 @@ content fails as a single file, and the build can still complete with
 
 ## Prerequisites
 
-- **Arango Contextual Data Platform 4.0+** (which ships with
-  **ArangoDB 3.12.9** or later)
+- **Arango Contextual Data Platform**
 - **LLM and embedding API access** (commonly OpenAI-compatible or Triton-compatible endpoints)
 - **Valid JWT** for the API (`Authorization: Bearer ...`)
 - **Platform auth** reachable from the service (for token validation and
   renewal), if your deployment uses it
 
-Before importing data, you need to create a GraphRAG project. Projects keep
+Before importing data, you need to create a project. Projects keep
 datasets and configurations isolated from each other.
 
 For detailed instructions on creating and managing projects, see the
@@ -93,8 +92,8 @@ web interface.
 For the full walkthrough, see the [Web Interface](web-interface.md) guide.
 {{< /tab >}}
 
-{{< tab "HTTP REST API" >}}
-The AutoGraph service exposes HTTP REST endpoints (port `8080`)
+{{< tab "HTTP API" >}}
+The AutoGraph service exposes HTTP endpoints (port `8080`)
 for programmatic access. The recommended call sequence is:
 
 1. **Upload files** to the

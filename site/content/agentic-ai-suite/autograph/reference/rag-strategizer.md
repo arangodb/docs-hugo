@@ -39,8 +39,8 @@ that `rags` reflects the current clusters.
 | `max_parallel_clusters` | integer | No | Limits how many clusters are analyzed concurrently. Each analysis can call the LLM. | Default: **5**. Lower it to **2–3** if you hit LLM rate limits. |
 
 {{< warning >}}
-**`full_graph_rag_strategy` has been removed.** The field is dropped silently by
-the gateway, so a client that only sends it now gets `400`
+**`full_graph_rag_strategy` has been removed.** The field is dropped silently
+during request parsing, so a client that only sends it now gets `400`
 (`complexity is required`). Replace it with `complexity`:
 
 | Old `full_graph_rag_strategy` | New `complexity` | FullGraphRAG share |

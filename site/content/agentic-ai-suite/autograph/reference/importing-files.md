@@ -86,7 +86,7 @@ while a build is in progress.
 | `files` | array | Yes | Non-empty list of file objects for this request. | Batch sizes that fit your timeout and payload limits (e.g. tens of small docs or fewer large ones per call). |
 | `files[].doc_name` | string | Yes | Filename as stored for the corpus build. Basename only; requests containing path segments or `..` are rejected with `400`. | Use real extensions (`.md`, `.pdf`, `.docx`, …) so format detection works. Example: `guide.md`. |
 | `files[].content` | string (base64) | Yes | Raw file bytes, **base64-encoded** in JSON. | Encode the entire file in a single field; the endpoint does not support chunked or resumable uploads. |
-| `files[].citable_url` | string | No | Canonical URL shown in citations, for **this direct-upload path only**. On the File Manager path, set `custom_metadata.citable_url` on the RAG input at upload time instead. The URL is preserved through the corpus build and passed to the GraphRAG Importer. Automatic citation extraction and SemanticUnits linking are not yet implemented; see [Known Limitations](error-handling.md#citation-handling). | Provide the source URL for web-sourced documents (for example, `https://docs.example.com/guide`). Omit the field for documents without a canonical web location. |
+| `files[].citable_url` | string | No | Canonical URL shown in citations, for **this direct-upload path only**. On the File Manager path, set `custom_metadata.citable_url` on the RAG input at upload time instead. The URL is preserved through the corpus build and passed to the Importer. Automatic citation extraction and SemanticUnits linking are not yet implemented; see [Known Limitations](error-handling.md#citation-handling). | Provide the source URL for web-sourced documents (for example, `https://docs.example.com/guide`). Omit the field for documents without a canonical web location. |
 | `files[].metadata` | string | No | Opaque string carried in metadata (often JSON as text). | Use for stable IDs, versions, or tags your app parses later. Omit if unused. |
 | `module` | string | No | Module label applied to **every** file in this request. See [Designing modules](../design-guide.md#designing-categories) for naming guidance. | Use a **stable** module label (`legal`, `docs_en`, …). If omitted, files receive the `default` module label during corpus build. |
 
@@ -131,14 +131,14 @@ On success:
 |-------|------|-------------|
 | `success` | boolean | `true` when the import succeeded. |
 | `message` | string | Confirmation text, including how many files were imported. |
-| `error_message` | string | Reserved for `success: false` responses from the underlying RPC. Validation failures (such as an empty `files` array) are not returned in this envelope; they surface as HTTP `400` with a gateway error body. |
+| `error_message` | string | Reserved for `success: false` responses from the underlying RPC. Validation failures (such as an empty `files` array) are not returned in this envelope; they surface as HTTP `400` with a standard JSON error body. |
 
 #### Status codes
 
 | Status code | Meaning |
 |-------------|---------|
 | `200` | Files imported successfully. |
-| `400` | Validation failure (empty `files`, invalid `doc_name`, a single file larger than the whole local staging budget, etc.). Returned as a JSON error body from the gateway, not the `success`/`message` shape. |
+| `400` | Validation failure (empty `files`, invalid `doc_name`, a single file larger than the whole local staging budget, etc.). Returned as a standard JSON error body, not the `success`/`message` shape. |
 | `401` | Authentication failed. |
 | `409` | A corpus build is already in progress. |
 | `500` | Server error. |

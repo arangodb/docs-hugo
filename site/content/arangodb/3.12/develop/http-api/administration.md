@@ -4132,7 +4132,7 @@ paths:
       deprecated: true
       description: |
         {{</* warning */>}}
-        This route should no longer be used.
+        This endpoint should no longer be used.
         It is considered as deprecated from version 3.4.0 on.
         {{</* /warning */>}}
 

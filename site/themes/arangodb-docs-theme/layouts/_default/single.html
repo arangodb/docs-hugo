@@ -8,6 +8,7 @@
         {{ with .Params.Description }}<p class="lead">{{ . | markdownify }}</p>{{ end }}
       </hgroup>
       {{ .Content | safeHTML }}
+      {{- partial "shortcodes/examples/page-done.html" . }}
       <nav class="pagination">
         {{- partial "content-footer.html" . -}}
       </nav>

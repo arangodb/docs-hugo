@@ -1,6 +1,5 @@
-<svg viewBox="0 0 1300 360"
-     xmlns="http://www.w3.org/2000/svg"
-     style="display:block;width:100%;max-width:1300px;margin:0 auto">
+<svg viewBox="0 0 1300 360" width="1300" height="360"
+     xmlns="http://www.w3.org/2000/svg">
   <style>
     .aql .pill-aai { fill: #b9f5a0; stroke: #4ade80; stroke-width: 1.5; }
     .aql .pill-ps  { fill: #ffffff; stroke: #86efac; stroke-width: 1.5; }
@@ -20,7 +19,7 @@
       <feGaussianBlur stdDeviation="2" result="blur"/>
       <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-    <marker id="aql-arrow" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+    <marker id="aql-arrow" markerWidth="10" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse">
       <polygon points="0 0,10 4,0 8" fill="#4ade80"/>
     </marker>
   </defs>
@@ -55,39 +54,39 @@
     <g class="card">
       <path d="M 1070 86 L 1070 158 A 70 14 0 0 0 1210 158 L 1210 86" class="cyl-db"/>
       <ellipse cx="1140" cy="86" rx="70" ry="14" class="cyl-db-top"/>
-      <text x="1140" y="122" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">ArangoDB</text>
-      <text x="1140" y="142" text-anchor="middle" font-family="sans-serif" font-size="10" font-style="italic" fill="#b9ff38">your data</text>
+      <text x="1140" y="130" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">ArangoDB</text>
+      <text x="1140" y="150" text-anchor="middle" font-family="sans-serif" font-size="10" font-style="italic" fill="#b9ff38">your data</text>
     </g>
 
     <g class="card">
       <path d="M 810 206 L 810 270 A 70 14 0 0 0 950 270 L 950 206" class="cyl-llm"/>
       <ellipse cx="880" cy="206" rx="70" ry="14" class="cyl-llm-top"/>
-      <text x="880" y="250" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#111827">LLM provider</text>
+      <text x="880" y="257" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#111827">LLM provider</text>
     </g>
 
-    <path d="M 180 240 L 258 240" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
+    <path d="M 180 240 L 252.2 240" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
     <rect x="190" y="218" width="68" height="16" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="0.5"/>
     <text x="224" y="230" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#14532d">plain question</text>
 
-    <path d="M 440 240 L 518 240" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
+    <path d="M 440 240 L 512.2 240" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
 
-    <path d="M 680 190 L 680 120 L 788 120" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
+    <path d="M 680 190 L 680 120 L 782.2 120" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
 
-    <path d="M 700 230 L 808 230" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
+    <path d="M 700 230 L 802.2 230" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
     <rect x="725" y="214" width="48" height="16" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="0.5"/>
     <text x="749" y="226" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#14532d">prompt</text>
 
-    <path d="M 810 258 L 702 258" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
+    <path d="M 810 258 L 707.8 258" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
     <rect x="720" y="264" width="78" height="16" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="0.5"/>
     <text x="759" y="276" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#14532d">generated AQL</text>
 
-    <path d="M 970 120 L 1068 120" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
+    <path d="M 970 120 L 1062 120" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
 
-    <path d="M 820 70 L 820 40 L 100 40 L 100 188" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
+    <path d="M 820 70 L 820 40 L 100 40 L 100 182.2" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
     <rect x="395" y="32" width="130" height="16" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="0.5"/>
     <text x="460" y="44" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#14532d">answer in plain English</text>
 
-    <path d="M 1140 172 L 1140 330 L 610 330 L 610 290" stroke="#4ade80" stroke-width="2" stroke-dasharray="4 4" fill="none" marker-end="url(#aql-arrow)"/>
+    <path d="M 1140 172 L 1140 330 L 610 330 L 610 297.8" stroke="#4ade80" stroke-width="2" stroke-dasharray="4 4" fill="none" marker-end="url(#aql-arrow)"/>
     <rect x="855" y="322" width="50" height="16" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="0.5"/>
     <text x="880" y="334" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#14532d">schema</text>
   </g>

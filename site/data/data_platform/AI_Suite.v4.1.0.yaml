@@ -1,0 +1,88 @@
+---
+
+# ArangoDB AI Suite Release v4.1.0
+
+version: 4.1.0
+date: August 2026
+
+packages:
+  arangodb-platform-ui:
+    version: v1.5.1
+  arangodb-platform-ui-server:
+    version: v1.5.1
+  arangodb-core-ui:
+    version: v1.5.0
+  arango-control-plane:
+    version: v0.0.23
+  arangodb-graph-rag:
+    version: v0.0.17
+  arangodb-graphrag-retriever:
+    version: v0.0.20
+  arangodb-graphrag-importer:
+    version: v0.0.34
+  arangodb-file-parser:
+    version: v0.1.3
+  arangodb-llm-host:
+    version: v0.0.19
+  arangodb-gral:
+    version: v1.1.13
+  arangodb-notebook-images:
+    version: v0.5.56
+  arangodb-mlflow:
+    version: v0.1.10
+  file-manager:
+    version: v0.0.22
+  arangodb-ml-api:
+    version: v1.0.16
+  arangodb-featurization-cpu:
+    version: v1.0.13
+  arangodb-training-cpu:
+    version: v1.0.12
+  arangodb-training-gpu:
+    version: v1.0.12
+  arangodb-prediction-cpu:
+    version: v1.0.15
+  arangodb-prediction-gpu:
+    version: v1.0.15
+  arango-cypher2aql:
+    version: v0.9.8
+  arangodb-autograph:
+    version: v0.0.16
+  arango-user-defined:
+    version: v0.0.7
+  arangodb-reasoner:
+    version: v0.0.10
+  arangodb-mcp-server:
+    version: v0.0.12
+  platform-monitoring-prometheus:
+    version: v0.0.8
+  platform-monitoring-grafana:
+    version: v0.0.8
+releases:
+  arangodb-platform-ui:
+    package: arangodb-platform-ui
+  arangodb-platform-ui-server:
+    package: arangodb-platform-ui-server
+  arangodb-core-ui:
+    package: arangodb-core-ui
+  arango-control-plane:
+    package: arango-control-plane
+  arangodb-mlflow:
+    package: arangodb-mlflow
+    overrides:
+      mlflow_artifact_target: file-manager
+  file-manager:
+    package: file-manager
+  arangodb-file-parser:
+    package: arangodb-file-parser
+    overrides:
+      workerPdf:
+        replicas: 3
+      workerDefault:
+        replicas: 3
+  arangodb-ml-api:
+    package: arangodb-ml-api
+  platform-monitoring-prometheus:
+    package: platform-monitoring-prometheus
+  platform-monitoring-grafana:
+    package: platform-monitoring-grafana

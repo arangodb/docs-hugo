@@ -8,7 +8,7 @@ description: >-
 ---
 The Importer builds the **Layer 3 Knowledge Graph** in your ArangoDB database:
 the documents, chunks, entities, communities, and relationships that the
-Retriever (and downstream applications) query at runtime. This page describes
+AutoRAG (and downstream applications) query at runtime. This page describes
 the collections it creates, the vector indexes it adds, the asynchronous job
 lifecycle of an import, and the operational rules to keep in mind when
 deploying the service.
@@ -222,9 +222,10 @@ recluster endpoint and how to poll its job, see
 see [Error handling](reference/error-handling.md#synchronous-http-errors).
 
 {{< info >}}
-The recluster handler raises the gRPC status `UNAVAILABLE`, which the HTTP
-gateway maps to **`HTTP 503`**. A REST caller sees `503` with the message in the
-body, and only a gRPC caller sees the `UNAVAILABLE` token itself.
+The recluster handler raises the gRPC status `UNAVAILABLE`, which the
+gRPC-to-HTTP mapping turns into **`HTTP 503`**. An HTTP caller sees `503` with
+the message in the body, and only a gRPC caller sees the `UNAVAILABLE` token
+itself.
 {{< /info >}}
 
 Terminal statuses include `service_completed`, `service_failed`,

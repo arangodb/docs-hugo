@@ -1,0 +1,17 @@
+{{- /* After the examples of a page ran, let arangoproxy remove what they exempted
+       for subsequent examples (addIgnoreCollection() etc.) but didn't remove.
+       Only for the page of the source file, not the copies of version aliases
+       (e.g. /arangodb/devel/), which reuse the responses of the same examples. The
+       content hash makes the request differ if the page changes (Hugo keeps the
+       responses of identical requests in memory). */}}
+{{- if and site.Params.useArangoproxy (.Store.Get "examplesRan") .File }}
+  {{- $pageVersion := .Store.Get "versionShort" }}
+  {{- $segment := index (split (strings.TrimPrefix "/arangodb/" .RelPermalink) "/") 0 }}
+  {{- if eq $segment $pageVersion }}
+    {{- $remote := resources.GetRemote (printf "%s/page-done" site.Params.arangoproxyUrl) (dict
+        "method" "post"
+        "body" (md5 .RawContent)
+        "headers" (dict "Page" .File.Filename "Version" $pageVersion)
+    ) }}
+  {{- end }}
+{{- end }}
