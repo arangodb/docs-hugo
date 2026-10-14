@@ -67,7 +67,7 @@ The tools support the following methods of authenticating with the server:
 | Method | Startup options |
 |:-------|:----------------|
 | Username and password or access token | `--server.username`, `--server.password` |
-| [JWT session token](../../develop/http-api/authentication.md#create-a-jwt-session-token), [user token](../../develop/http-api/authentication.md#jwt-user-tokens), or [superuser token](../../develop/http-api/authentication.md#jwt-superuser-tokens) | `--server.jwt-token` |
+| [JWT session token](../../develop/http-api/authentication.md#jwt-session-tokens), [user token](../../develop/http-api/authentication.md#jwt-user-tokens), or [superuser token](../../develop/http-api/authentication.md#jwt-superuser-tokens) | `--server.jwt-token` |
 | JWT secret of the server (to let the tool generate superuser tokens) | `--server.jwt-secret-keyfile`, `--server.ask-jwt-secret` |
 
 The JWT options cannot be combined with each other or with a username and password.
