@@ -85,13 +85,10 @@ paths:
           description: |
             If the JSON representation is malformed or mandatory data is missing
             from the request.
-        '401':
-          description: |
-            Returned if you have *No access* database access level to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have *No access* database access level to the
+            `_system` database, or *No access* server access level.
         '409':
           description: |
             Returned if a user with the same name already exists.
@@ -177,13 +174,10 @@ paths:
         '400':
           description: |
             The JSON representation is malformed or mandatory data is missing from the request
-        '401':
-          description: |
-            Returned if you have *No access* database access level to the *_system*
-            database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have *No access* database access level to the
+            `_system` database, or *No access* server access level.
         '404':
           description: |
             The specified user does not exist
@@ -268,13 +262,10 @@ paths:
         '400':
           description: |
             The JSON representation is malformed or mandatory data is missing from the request.
-        '401':
-          description: |
-            Returned if you have *No access* database access level to the *_system*
-            database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have *No access* database access level to the
+            `_system` database, or *No access* server access level.
         '404':
           description: |
             The specified user does not exist
@@ -337,13 +328,10 @@ paths:
         '202':
           description: |
             Is returned if the user was removed by the server
-        '401':
-          description: |
-            Returned if you have *No access* database access level to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have *No access* database access level to the
+            `_system` database, or *No access* server access level.
         '404':
           description: |
             The specified user does not exist
@@ -403,13 +391,10 @@ paths:
         '200':
           description: |
             The user was found.
-        '401':
-          description: |
-            Returned if you have *No access* database access level to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have *No access* database access level to the
+            `_system` database, or *No access* server access level.
         '404':
           description: |
             The user with the specified name does not exist.
@@ -471,13 +456,10 @@ paths:
         '200':
           description: |
             The users that were found.
-        '401':
-          description: |
-            Returned if you have *No access* database access level to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have *No access* database access level to the
+            `_system` database, or *No access* server access level.
       tags:
         - Users
 ```
@@ -557,13 +539,10 @@ paths:
           description: |
             If the JSON representation is malformed or mandatory data is missing
             from the request.
-        '401':
-          description: |
-            Returned if you have *No access* database access level to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have *No access* database access level to the
+            `_system` database, or *No access* server access level.
       tags:
         - Users
 ```
@@ -655,13 +634,10 @@ paths:
           description: |
             If the JSON representation is malformed or mandatory data is missing
             from the request.
-        '401':
-          description: |
-            Returned if you have *No access* database access level to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have *No access* database access level to the
+            `_system` database, or *No access* server access level.
       tags:
         - Users
 ```
@@ -899,13 +875,10 @@ paths:
         '400':
           description: |
             If the access privileges are not right etc.
-        '401':
-          description: |
-            Returned if you have *No access* database access level to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have *No access* database access level to the
+            `_system` database, or *No access* server access level.
       tags:
         - Users
 ```
@@ -992,13 +965,10 @@ paths:
         '400':
           description: |
             If the access privileges are not right etc.
-        '401':
-          description: |
-            Returned if you have *No access* database access level to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have *No access* database access level to the
+            `_system` database, or *No access* server access level.
       tags:
         - Users
 ```
@@ -1072,13 +1042,10 @@ paths:
         '400':
           description: |
             If the access privileges are not right etc.
-        '401':
-          description: |
-            Returned if you have *No access* database access level to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have *No access* database access level to the
+            `_system` database, or *No access* server access level.
       tags:
         - Users
 ```

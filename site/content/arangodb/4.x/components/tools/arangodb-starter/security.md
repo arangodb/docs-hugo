@@ -143,7 +143,8 @@ Both commands support the following options to adjust the generated token:
   ArangoDB client tools cannot renew expiring user or superuser tokens, unlike
   session tokens.
 - `--auth.paths <path>`: A request path that the token can be used for, without
-  the `/_db/<database-name>` prefix. You can specify the option multiple times.
+  the `/_arango/<api-version>` and `/_db/<database-name>` prefixes. You can
+  specify the option multiple times.
   The path must match exactly. Wildcards and prefix matching are not supported.
   Requests to other paths are rejected.
 - `--auth.fields <key>=<value>`: An additional field to set in the token, or a

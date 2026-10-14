@@ -14,7 +14,14 @@ description: >-
 
 ### Get the server version
 
+{{< api-versions "v0" "v1" >}}
+
+{{< api-version >}}
+
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/version:
   # /_admin/version is an (undocumented) alias
@@ -91,7 +98,7 @@ paths:
                     uniqueItems: true
                     items:
                       type: string
-                      enum: [v0] # TODO: Add v1 for v3.12.12
+                      enum: [v0, v1]
                   deprecatedApiVersions:
                     description: |
                       The versions of the HTTP API that are still supported by
@@ -108,7 +115,7 @@ paths:
                       `/_arango/{api-version}` prefix, or the default API version
                       if not specified.
                     type: string
-                    enum: [v0]
+                    const: v0
                   details:
                     description: |
                       An object with additional details like compile flags,
@@ -471,9 +478,475 @@ assert(response.code === 200);
 logJsonResponse(response);
 ```
 
-### Get the storage engine type
+{{< api-version >}}
 
 ```openapi
+---
+apiVersions: [v1]
+---
+paths:
+  /_db/{database-name}/_api/version:
+  # /_admin/version is an (undocumented) alias
+    get:
+    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
+      operationId: getVersion
+      description: |
+        Returns the server name and version number.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
+        - name: details
+          in: query
+          required: false
+          description: |
+            If set to `true` and if the user account you authenticate with has
+            administrate access to the `_system` database, the response contains
+            a `details` attribute with additional information about included
+            components and their versions. The attribute names and internals of
+            the `details` object may vary depending on platform and ArangoDB version.
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: |
+            is returned in all cases.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - server
+                  - license
+                  - version
+                  - apiVersions
+                  - deprecatedApiVersions
+                  - requestedApiVersion
+                properties:
+                  server:
+                    description: ''
+                    type: string
+                    const: arango
+                  license:
+                    description: |
+                      Whether this build of ArangoDB includes the non-public
+                      enterprise code. Reports `"enterprise"` for both the
+                      Community Edition and Enterprise Edition if you use the
+                      prepackaged binaries or official container images.
+                    type: string
+                    enum:
+                      - community # Only custom builds
+                      - enterprise
+                  version:
+                    description: |
+                      The server version string in the format `major.minor.sub` (e.g. `3.12.11`).
+                      The `major` and `minor` parts are numeric, and `sub` is a
+                      number that may have a version suffix starting with
+                      a hyphen minus (e.g. `3.11.14-5` or `4.0.0-devel`).
+                    type: string
+                  apiVersions:
+                    description: |
+                     The available versions of the HTTP API.
+                    type: array
+                    minItems: 1
+                    uniqueItems: true
+                    items:
+                      type: string
+                      enum: [v0, v1]
+                  deprecatedApiVersions:
+                    description: |
+                      The versions of the HTTP API that are still supported by
+                      this ArangoDB server version but should no longer be used
+                      because of their pending removal in the next major version.
+                    type: array
+                    uniqueItems: true
+                    items:
+                      type: string
+                      enum: [] # Currently no deprecated versions
+                  requestedApiVersion:
+                    description: |
+                      The HTTP API version specified for this request via the
+                      `/_arango/{api-version}` prefix, or the default API version
+                      if not specified.
+                    type: string
+                    const: v1
+                  details:
+                    description: |
+                      An object with additional details like compile flags,
+                      dependency versions, and so on.
+
+                      Only returned if the `details` query parameter is set to
+                      `true` in the request.
+                    type: object
+                    required:
+                      - architecture
+                      - arm
+                      - asan
+                      - assertions
+                      - avx
+                      - avx2
+                      - boost-version
+                      - build-date
+                      - compiler
+                      - coverage
+                      - cplusplus
+                      - curl-version
+                      - debug
+                      - endianness
+                      - failure-tests
+                      - faiss
+                      - fd-client-event-handler
+                      - fd-setsize
+                      - full-version-string
+                      - icu-version
+                      - ipo
+                      - iresearch-version
+                      - jemalloc
+                      - license
+                      - libunwind
+                      - maintainer-mode
+                      - memory-profiler
+                      - ndebug
+                      - openmp
+                      - openssl-version-compile-time
+                      - openssl-version-run-time
+                      - pic
+                      - pie
+                      - platform
+                      - reactor-type
+                      - replication2-enabled
+                      - rocksdb-version
+                      - server-version
+                      - "sizeof int"
+                      - "sizeof long"
+                      - "sizeof void*"
+                      - sse42
+                      - tsan
+                      - unaligned-access
+                      - v8-version
+                      - vpack-version
+                      - zlib-version
+                      - mode
+                      - role
+                      - host
+                    properties:
+                      architecture:
+                        description: |
+                          The CPU architecture in terms of bitness.
+                        type: string
+                        const: 64bit
+                      arm:
+                        description: |
+                          Whether the server binary has been compiled for an ARM CPU.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      asan:
+                        description: |
+                          Whether the server has been compiled with the
+                          ASAN address sanitizer enabled.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      assertions:
+                        description: |
+                          Whether the server has assertions compiled in
+                          (only in development builds).
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      avx:
+                        description: |
+                          Whether the server binary has been compiled with
+                          AVX instruction support.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      avx2:
+                        description: |
+                          Whether the server binary has been compiled with
+                          AVX2 instruction support.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      boost-version:
+                        description: |
+                          Which version of the Boost library is used.
+                        type: string
+                      build-date:
+                        description: |
+                          The date when this binary was created.
+                        type: string
+                      build-id:
+                        description: |
+                          The Git commit hash this was compiled from.
+                        type: string
+                      build-repository:
+                        description: |
+                          Reference to the Git ID this was compiled from.
+                        type: string
+                      compiler:
+                        description: |
+                          The compiler that has been used.
+                        type: string
+                      coverage:
+                        description: |
+                          Whether this build has code coverage instrumentation.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      cplusplus:
+                        description: |
+                          The C++ standards version.
+                        type: string
+                      curl-version:
+                        description: |
+                          The linked cURL version, or `"none"` if not linked.
+                        type: string
+                      debug:
+                        description: |
+                          Whether this is a debug build, `"false"` for
+                          production binaries.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      endianness:
+                        description: |
+                          The byte order of the system, detected at runtime.
+                        type: string
+                        const: little
+                      enterprise-build-repository:
+                        description: |
+                          Reference to the enterprise Git ID this was compiled from.
+                        type: string
+                      enterprise-version:
+                        description: |
+                          Only present if this is a build that includes the
+                          non-public enterprise code.
+                        type: string
+                        const: enterprise
+                      failure-tests:
+                        description: |
+                          Whether the facility to invoke fatal errors is compiled
+                          in, `"false"` for production binaries.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      faiss:
+                        description: |
+                          The FAISS library version, if linked.
+                        type: string
+                      fd-client-event-handler:
+                        description: |
+                          Which method is used to handle fd-sets, typically `poll`
+                          on Linux.
+                        type: string
+                      fd-setsize:
+                        description: |
+                          If not `poll`, the fd setsize is valid for the maximum
+                          number of file descriptors.
+                        type: string
+                      full-version-string:
+                        description: |
+                          The full version string including the build ID and
+                          the versions of major dependencies.
+                        type: string
+                      icu-version:
+                        description: |
+                          The version of the bundled ICU library.
+                        type: string
+                      ipo:
+                        description: |
+                          Whether interprocedural optimization was enabled.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      iresearch-version:
+                        description: |
+                          The ArangoSearch/IResearch library version.
+                        type: string
+                      jemalloc:
+                        description: |
+                          Whether the jemalloc memory allocator is used,
+                          typically `"true"`
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      license:
+                        description: |
+                          Whether this build of ArangoDB includes the non-public
+                          enterprise code. Reports `"enterprise"` for both the
+                          Community Edition and Enterprise Edition if you use the
+                          prepackaged binaries or official container images.
+                        type: string
+                        enum:
+                          - community # Only custom builds
+                          - enterprise
+                      libunwind:
+                        description: |
+                          Whether libunwind is linked for stack unwinding.
+                        type: string
+                      maintainer-mode:
+                        description: |
+                          Whether the server has been compiled in maintainer mode,
+                          `"false"` for production binaries.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      memory-profiler:
+                        description: |
+                          Whether the memory profiler is enabled.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      ndebug:
+                        description: |
+                          Whether NDEBUG was defined for the build.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      openmp:
+                        description: |
+                          The OpenMP version used for parallelization.
+                        type: string
+                      openssl-version-compile-time:
+                        description: |
+                          The OpenSSL version at compile time.
+                        type: string
+                      openssl-version-run-time:
+                        description: |
+                          The OpenSSL version at run time.
+                        type: string
+                      optimization-flags:
+                        description: |
+                          The compiler optimization flags used for this build.
+                        type: string
+                      oskar-build-repository:
+                        description: |
+                          Reference to the Git ID of the build environment this was
+                          compiled with.
+                        type: string
+                      pic:
+                        description: |
+                          The position-independent code setting.
+                        type: string
+                      pie:
+                        description: |
+                          The position-independent executable setting.
+                        type: string
+                      platform:
+                        description: |
+                          The operating system the server has been compiled for.
+                        type: string
+                        const: linux
+                      reactor-type:
+                        description: ''
+                        type: string
+                        const: epoll
+                      replication2-enabled:
+                        description: |
+                          Whether replication2 is enabled.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      rocksdb-version:
+                        description: |
+                          The rocksdb version this release bundles.
+                        type: string
+                      server-version:
+                        description: |
+                          The ArangoDB release version.
+                        type: string
+                      sizeof int:
+                        description: |
+                          Number of bytes for integers.
+                        type: string
+                      sizeof long:
+                        description: |
+                          Number of bytes for long integers.
+                        type: string
+                      sizeof void*:
+                        description: |
+                          Number of bytes for void pointers.
+                        type: string
+                      sse42:
+                        description: |
+                          Whether the server binary has been compiled with
+                          SSE 4.2 instruction support.
+                        type: string
+                      tsan:
+                        description: |
+                          Whether this was compiled with the thread sanitizer.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      unaligned-access:
+                        description: |
+                          Whether this system supports unaligned memory accesses.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      v8-version:
+                        description: |
+                          The bundled V8 JavaScript engine version.
+                        type: string
+                      vpack-version:
+                        description: |
+                          The version of the used VelocyPack implementation.
+                        type: string
+                      zlib-version:
+                        description: |
+                          The version of the bundled zlib compression library.
+                        type: string
+                      role:
+                        description: |
+                          The server role.
+                          - `"SINGLE"`: Standalone single server
+                          - `"PRIMARY"`: DB-Server of a cluster
+                          - `"COORDINATOR"`: Coordinator of a cluster
+                          - `"AGENT"`: Part of the cluster's Agency
+                        type: string
+                        enum: [SINGLE, PRIMARY, COORDINATOR, AGENT]
+                      host:
+                        description: |
+                          The host ID.
+                        type: string
+      tags:
+        - Administration
+```
+
+**Examples**
+
+```curl
+---
+description: |-
+  Return the version information
+name: RestVersionApiV1
+---
+var response = logCurlRequest('GET', '/_arango/v1/_api/version');
+
+assert(response.code === 200);
+
+logJsonResponse(response);
+```
+
+```curl
+---
+description: |-
+  Return the version information with details
+name: RestVersionDetailsApiV1
+---
+var response = logCurlRequest('GET', '/_arango/v1/_api/version?details=true');
+
+assert(response.code === 200);
+
+logJsonResponse(response);
+```
+
+{{< api-versions-end >}}
+
+### Get the storage engine type
+
+{{< api-versions "v0" "v1" >}}
+
+{{< api-version >}}
+
+```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/engine:
     get:
@@ -628,6 +1101,154 @@ assert(response.code === 200);
 
 logJsonResponse(response);
 ```
+
+{{< api-version >}}
+
+```openapi
+---
+apiVersions: [v1]
+---
+paths:
+  /_db/{database-name}/_api/engine:
+    get:
+      operationId: getEngine
+      description: |
+        Returns the name of the storage engine the server is configured to use,
+        the endianness of its on-disk key format, as well as the index types
+        it supports.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Successfully retrieved the storage engine information.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - name
+                  - endianness
+                  - supports
+                properties:
+                  name:
+                    description: |
+                      The name of the storage engine.
+                    type: string
+                    const: rocksdb
+                  endianness:
+                    description: |
+                      The endianness of the key format the storage engine
+                      uses on disk.
+                    type: string
+                    enum: [little, big]
+                  supports:
+                    description: |
+                      An object describing what the storage engine supports.
+                    type: object
+                    required:
+                      - indexes
+                      - aliases
+                    properties:
+                      indexes:
+                        description: |
+                          A list of the index types you can use.
+                          `vector` is only included if the
+                          `--vector-index` startup option is enabled.
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                            - primary
+                            - edge
+                            - ttl
+                            - persistent
+                            - geo
+                            - mdi
+                            - mdi-prefixed
+                            - inverted
+                            - vector
+                      aliases:
+                        description: |
+                          An object describing the alternative names you can
+                          use for certain index types.
+                        type: object
+                        required:
+                          - indexes
+                        properties:
+                          indexes:
+                            description: |
+                              The keys are the alternative index type names and
+                              the values are the index types they refer to.
+                            type: object
+                            required:
+                              - zkd
+                            properties:
+                              zkd:
+                                description: |
+                                  The `zkd` index type is an alias for `mdi`.
+                                type: string
+                                const: mdi
+        '403':
+          description: |
+            Missing read access to the given database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Administration
+```
+
+**Examples**
+
+```curl
+---
+description: |-
+  Return the active storage engine:
+name: RestEngineApiV1
+---
+var response = logCurlRequest('GET', '/_arango/v1/_api/engine');
+
+assert(response.code === 200);
+
+logJsonResponse(response);
+```
+
+{{< api-versions-end >}}
 
 ### Get the storage engine statistics
 
@@ -785,7 +1406,14 @@ paths:
 
 ### Get server status information
 
+{{< api-versions "v0" "v1" >}}
+
+{{< api-version >}}
+
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_admin/status:
     get:
@@ -1039,6 +1667,235 @@ assert(response.code === 200);
 logJsonResponse(response);
 ```
 
+{{< api-version >}}
+
+```openapi
+---
+apiVersions: [v1]
+---
+paths:
+  /_db/{database-name}/_admin/status:
+    get:
+    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
+      operationId: getStatus
+      description: |
+        Returns status information about the server.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database. If the `--server.harden` startup option is enabled,
+            administrate access to the `_system` database is required.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Status information was returned successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - server
+                  - license
+                  - version
+                  - mode
+                  - operationMode
+                  - foxxApi
+                  - host
+                  - pid
+                  - serverInfo
+                properties:
+                  server:
+                    description: ''
+                    type: string
+                    const: arango
+                  license:
+                    description: |
+                      ArangoDB Edition, either `"community"` or `"enterprise"`.
+                    type: string
+                  version:
+                    description: |
+                      The server version as a string.
+                    type: string
+                  host:
+                    description: |
+                      A host identifier defined by the `HOST` or `NODE_NAME` environment variable,
+                      or a fallback value using a machine identifier or the cluster/Agency address.
+                    type: string
+                  hostname:
+                    description: |
+                      A hostname defined by the `HOSTNAME` environment variable.
+                    type: string
+                  pid:
+                    description: |
+                      The process ID of _arangod_.
+                    type: number
+                  serverInfo:
+                    description: |
+                      Information about the server status.
+                    type: object
+                    required:
+                      - progress
+                      - role
+                      - writeOpsEnabled
+                      - readOnly
+                      - maintenance
+                    properties:
+                      progress:
+                        description: |
+                          Startup and recovery information.
+
+                          You can check for changes to determine whether progress was made between two
+                          calls, but you should not rely on specific values as they may change between
+                          ArangoDB versions. The values are only expected to change during the startup and
+                          shutdown, i.e. while `maintenance` is `true`.
+
+                          You need to start _arangod_ with the `--server.early-connections` startup option
+                          enabled to be able to query the endpoint during the startup process.
+                          If authentication is enabled, then you need to use the super-user JWT for the
+                          request because the user management is not available during the startup.
+                        type: object
+                        required:
+                          - phase
+                          - feature
+                          - recoveryTick
+                        properties:
+                          phase:
+                            description: |
+                              Name of the lifecycle phase the instance is currently in. Normally one of
+                              `"in prepare"`, `"in start"`, `"in wait"`, `"in shutdown"`, `"in stop"`,
+                              or `"in unprepare"`.
+                            type: string
+                          feature:
+                            description: |
+                              Internal name of the feature that is currently being prepared, started,
+                              stopped or unprepared.
+                            type: string
+                          recoveryTick:
+                            description: |
+                              Current recovery sequence number value, if the instance is currently recovering.
+                              If the instance is already past the recovery, this attribute will contain the
+                              last handled recovery sequence number.
+                            type: number
+                      role:
+                        description: |
+                          Either `"SINGLE"`, `"COORDINATOR"`, `"PRIMARY"` (DB-Server), or `"AGENT"`.
+                        type: string
+                      readOnly:
+                        description: |
+                          Whether writes are disabled.
+                        type: boolean
+                      maintenance:
+                        description: |
+                          Whether the maintenance mode is enabled.
+                        type: boolean
+                      persistedId:
+                        description: |
+                          The persisted ID, e. g. `"CRDN-e427b441-5087-4a9a-9983-2fb1682f3e2a"`.
+                          *Cluster only* (Agents, Coordinators, and DB-Servers).
+                        type: string
+                      rebootId:
+                        description: |
+                          The reboot ID. Changes on every restart.
+                          *Cluster only* (Agents, Coordinators, and DB-Servers).
+                        type: number
+                      state:
+                        description: |
+                          Either `"STARTUP"`, `"SERVING"`, or `"SHUTDOWN"`.
+                          *Cluster only* (Coordinators and DB-Servers).
+                        type: string
+                      address:
+                        description: |
+                          The address of the server, e.g. `tcp://[::1]:8530`.
+                          *Cluster only* (Coordinators and DB-Servers).
+                        type: string
+                      serverId:
+                        description: |
+                          The server ID, e.g. `"CRDN-e427b441-5087-4a9a-9983-2fb1682f3e2a"`.
+                          *Cluster only* (Coordinators and DB-Servers).
+                        type: string
+                  agency:
+                    description: |
+                      Information about the Agency.
+                      *Cluster only* (Coordinators and DB-Servers).
+                    type: object
+                    required:
+                      - agencyComm
+                    properties:
+                      agencyComm:
+                        description: |
+                          Information about the communication with the Agency.
+                          *Cluster only* (Coordinators and DB-Servers).
+                        type: object
+                        required:
+                          - endpoints
+                        properties:
+                          endpoints:
+                            description: |
+                              A list of possible Agency endpoints.
+                            type: array
+                            items:
+                              type: string
+                  agent:
+                    description: |
+                      Information about the Agents.
+                      *Cluster only* (Agents)
+                    type: object
+                    required:
+                      - id
+                      - leaderId
+                      - leading
+                      - endpoint
+                      - term
+                    properties:
+                      id:
+                        description: |
+                          Server ID of the queried Agent.
+                        type: string
+                      leaderId:
+                        description: |
+                          Server ID of the leading Agent.
+                        type: string
+                      leading:
+                        description: |
+                          Whether the queried Agent is the leader.
+                        type: boolean
+                      endpoint:
+                        description: |
+                          The endpoint of the queried Agent.
+                        type: string
+                      term:
+                        description: |
+                          The current term number.
+                        type: number
+      tags:
+        - Administration
+```
+
+**Examples**
+
+```curl
+---
+description: ''
+name: RestAdminStatusApiV1
+type: cluster
+---
+var url = "/_arango/v1/_admin/status";
+var response = logCurlRequest("GET", url);
+
+assert(response.code === 200);
+
+logJsonResponse(response);
+```
+
+{{< api-versions-end >}}
+
 ### Return whether or not a server is available
 
 ```openapi
@@ -1179,7 +2036,7 @@ logJsonResponse(response);
 ---
 description: |-
   Query support information from a cluster
-name: RestAdminSupportInfo
+name: RestAdminSupportInfoCluster
 type: cluster
 ---
 var url = "/_db/_system/_admin/support-info";

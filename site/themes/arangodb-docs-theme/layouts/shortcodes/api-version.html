@@ -1,0 +1,23 @@
+{{- /* Marker that closes the previous API version pane (if any) and opens the next one.
+       Takes its name from the list declared by {{< api-versions >}}. */ -}}
+{{- $group := "arangodb-api" -}}
+{{- $versions := .Page.Store.Get "apiVersions" -}}
+{{- $id := .Page.Store.Get "apiVersionsId" -}}
+{{- if not $versions -}}
+  {{- errorf "%q: api-version used outside of an {{< api-versions >}} group" .Page.Path -}}
+{{- else -}}
+  {{- $i := .Page.Store.Get "apiVersionIndex" -}}
+  {{- if ge $i (len $versions) -}}
+    {{- errorf "%q: more api-version panes than versions declared by api-versions (%v)" .Page.Path $versions -}}
+  {{- else -}}
+    {{- $v := index $versions $i -}}
+    {{- .Page.Store.Set "apiVersionIndex" (add $i 1) -}}
+    {{- if gt $i 0 }}
+    </div>
+    {{- end }}
+    <div class="tab-item{{ if eq $i 0 }} selected{{ end }}" role="tabpanel" tabindex="0"
+      id="{{ $id }}-panel-{{ $v | urlize }}"
+      aria-labelledby="{{ $id }}-tab-{{ $v | urlize }}"
+      data-tab-group="{{ $group }}" data-tab-item="{{ $v }}">
+  {{- end -}}
+{{- end -}}

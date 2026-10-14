@@ -823,13 +823,15 @@ paths:
     get:
       operationId: getReplicationClusterInventory
       description: |
-        Returns the array of collections and indexes available on the cluster.
+        Returns the collections and indexes available on the cluster.
 
-        The response will be an array of JSON objects, one for each collection.
-        Each collection contains exactly two keys, `parameters` and `indexes`.
-        This information comes from `Plan/Collections/{DB-Name}/*` in the Agency,
-        just that the `indexes` attribute there is relocated to adjust it to
-        the data format of arangodump.
+        The response is a JSON object with a `collections` array, one entry for
+        each collection. Each entry contains exactly two keys, `parameters` and
+        `indexes`. This information comes from `Plan/Collections/{DB-Name}/*` in
+        the Agency, just that the `indexes` attribute there is relocated to
+        adjust it to the data format of arangodump.
+
+        The `properties` attribute describes the database itself.
       parameters:
         - name: database-name
           in: path
