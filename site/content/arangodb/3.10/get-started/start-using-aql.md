@@ -41,6 +41,3 @@ See the respective [driver](../develop/drivers/_index.md) or
 
 See the [AQL documentation](../aql/_index.md) for the full language reference
 as well as examples.
-
-For a tutorial, sign up for the [ArangoDB University](https://university.arangodb.com/)
-to get access to the **AQL Fundamentals** course.

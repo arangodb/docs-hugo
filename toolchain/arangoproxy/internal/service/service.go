@@ -11,6 +11,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/arangosh"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/format"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
 	"gopkg.in/yaml.v3"
@@ -20,14 +21,10 @@ type CommonService struct{}
 
 var commonService = CommonService{}
 
-func (service CommonService) arangosh(name, code, filepath string, repository models.Repository, exampleChannel chan map[string]interface{}) {
-	exampleData := map[string]interface{}{
-		"name":       name,
-		"code":       code,
-		"filepath":   filepath,
-		"repository": repository,
-	}
-	exampleChannel <- exampleData
+// arangosh runs the example in the arangosh process of the repository and returns
+// the output (the examples of a repository run one at a time)
+func (service CommonService) arangosh(name, code, filepath string, repository models.Repository) string {
+	return arangosh.Run(name, code, filepath, repository)
 }
 
 func (service CommonService) saveCache(request string, response models.ExampleResponse, cacheChannel chan map[string]interface{}) {
@@ -43,18 +40,17 @@ func (service CommonService) saveCache(request string, response models.ExampleRe
 
 type JSService struct{}
 
-func (service JSService) Execute(request models.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan string) (res models.ExampleResponse) {
+func (service JSService) Execute(request models.Example, cacheChannel chan map[string]interface{}) (res models.ExampleResponse) {
 	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
 	models.Logger.Debug("[%s] Chosen repository: %s", request.Options.Name, repository.Version)
 	if err != nil {
 		responseMsg := fmt.Sprintf("A server for version %s has not been used during generation", request.Options.Version)
 		res = *models.NewExampleResponse(request.Code, responseMsg, request.Options)
+		res.NoServer = true
 		return
 	}
 
-	commonService.arangosh(request.Options.Name, request.Code, request.Options.Position, repository, exampleChannel)
-
-	arangoshResult := <-outputChannel
+	arangoshResult := commonService.arangosh(request.Options.Name, request.Code, request.Options.Position, repository)
 	res = *models.NewExampleResponse(request.Code, arangoshResult, request.Options)
 
 	commonService.saveCache(request.Base64Request, res, cacheChannel)
@@ -66,7 +62,7 @@ type CurlService struct{}
 
 var curlFormatter = format.CurlFormatter{}
 
-func (service CurlService) Execute(request models.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan string) (res models.ExampleResponse, err error) {
+func (service CurlService) Execute(request models.Example, cacheChannel chan map[string]interface{}) (res models.ExampleResponse, err error) {
 	commands := curlFormatter.FormatCommand(request.Code)
 
 	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
@@ -74,12 +70,11 @@ func (service CurlService) Execute(request models.Example, cacheChannel chan map
 	if err != nil {
 		responseMsg := fmt.Sprintf("A server for version %s has not been used during generation", request.Options.Version)
 		res = *models.NewExampleResponse(request.Code, responseMsg, request.Options)
+		res.NoServer = true
 		return
 	}
 
-	commonService.arangosh(request.Options.Name, commands, request.Options.Position, repository, exampleChannel)
-
-	arangoshResult := <-outputChannel
+	arangoshResult := commonService.arangosh(request.Options.Name, commands, request.Options.Position, repository)
 
 	curlRequest, curlOutput, err := curlFormatter.FormatCurlOutput(arangoshResult, string(request.Options.Render))
 	if err != nil {
@@ -97,7 +92,7 @@ type AQLService struct{}
 
 var AQLFormatter = format.AQLFormatter{}
 
-func (service AQLService) Execute(request models.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan string) (res models.AQLResponse) {
+func (service AQLService) Execute(request models.Example, cacheChannel chan map[string]interface{}) (res models.AQLResponse) {
 	commands := AQLFormatter.FormatRequestCode(request.Code, request.Options.BindVars)
 
 	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
@@ -105,6 +100,7 @@ func (service AQLService) Execute(request models.Example, cacheChannel chan map[
 	if err != nil {
 		responseMsg := fmt.Sprintf("A server for version %s has not been used during generation", request.Options.Version)
 		res.ExampleResponse.Input, res.ExampleResponse.Options, res.ExampleResponse.Output = request.Code, request.Options, responseMsg
+		res.NoServer = true
 		return
 	}
 
@@ -114,9 +110,7 @@ func (service AQLService) Execute(request models.Example, cacheChannel chan map[
 		commands = removeDSCmd + "\n" + createDSCmd + "\n" + commands + "\n" + removeDSCmd
 	}
 
-	commonService.arangosh(request.Options.Name, commands, request.Options.Position, repository, exampleChannel)
-
-	arangoshResult := <-outputChannel
+	arangoshResult := commonService.arangosh(request.Options.Name, commands, request.Options.Position, repository)
 
 	res.ExampleResponse.Input, res.ExampleResponse.Options = request.Code, request.Options
 
@@ -146,9 +140,9 @@ var arangoDBAPIVersionToIndex = map[string]int{
 }
 
 var arangoDBAPIVersionPrefix = map[int]string{
-	0: "",                          // v0: no prefix
-	1: "/_arango/v1",               // v1
-	2: "/_arango/experimental",     // experimental
+	0: "",                      // v0: no prefix
+	1: "/_arango/v1",           // v1
+	2: "/_arango/experimental", // experimental
 }
 
 // arangoDBVersionToAllowedIndices is populated from site/data/versions.yaml (allowedAPIVersions per version).
@@ -166,8 +160,8 @@ func arangoDBAllowedAPIVersionIndices(pageVersion string) []int {
 type OpenapiService struct{}
 
 var OpenapiFormatter = format.OpenapiFormatter{}
-var OpenapiGlobalMap map[string]interface{}      // key: "version_apiIndex" e.g. "3.12_0"
-var OpenapiServiceMap map[string]interface{}     // key: service name (e.g. "cypher2aql")
+var OpenapiGlobalMap map[string]interface{}  // key: "version_apiIndex" e.g. "3.12_0"
+var OpenapiServiceMap map[string]interface{} // key: service name (e.g. "cypher2aql")
 var OpenapiGlobalMapMutex sync.RWMutex
 var OpenapiServiceMapMutex sync.RWMutex
 var OpenapiPendingSpecs sync.WaitGroup
@@ -180,8 +174,8 @@ var OpenapiSpecErrorMutex sync.Mutex
 var OpenapiValidationError error
 var OpenapiValidationErrorMutex sync.Mutex
 var Versions map[string][]models.Version
-var openapiServicesConfig map[string]interface{} // service name -> baseInfo from openapi_services.yaml
-var arangoDBTagsByAPIIndex [3][]map[string]string            // tags for arangodb_0, arangodb_1, arangodb_2
+var openapiServicesConfig map[string]interface{}  // service name -> baseInfo from openapi_services.yaml
+var arangoDBTagsByAPIIndex [3][]map[string]string // tags for arangodb_0, arangodb_1, arangodb_2
 
 func loadTagsFile(path string) ([]map[string]string, error) {
 	data, err := os.ReadFile(path)
@@ -367,9 +361,9 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 		// Non-ArangoDB service: single spec per service
 		OpenapiPendingSpecs.Add(1)
 		globalOpenapiChannel <- map[string]interface{}{
-			"_target":      "service",
-			"serviceName":  serviceName,
-			"spec":         spec,
+			"_target":     "service",
+			"serviceName": serviceName,
+			"spec":        spec,
 		}
 		models.Logger.Debug("[ProcessOpenapiSpec] Received spec for service '%s': %s %s", serviceName, strings.ToUpper(method), path)
 		return
@@ -581,7 +575,7 @@ func (service OpenapiService) AddSpecToGlobalSpec(chnl chan map[string]interface
 		OpenapiPendingSpecs.Done()
 	}
 	if errorEncountered {
-		models.Logger.Summary("<error code=2>%s</error>", "Conflict(s) in OpenAPI specifications")
+		models.Logger.Error("OpenAPI", "", "Conflicting OpenAPI specifications", "", "See the arangoproxy log for the conflicting endpoints")
 		return fmt.Errorf("OpenAPI specification conflicts detected")
 	}
 	return nil
@@ -698,7 +692,7 @@ func (service OpenapiService) ValidateOpenapiGlobalSpec() error {
 	models.Logger.Debug("[ValidateOpenapiGlobalSpec] All specs processed. Starting validation...")
 
 	var wg sync.WaitGroup
-	models.Logger.Summary("<h2>OPENAPI</h2>")
+	models.Logger.Summary("\n## OpenAPI validation\n")
 
 	OpenapiGlobalMapMutex.RLock()
 	totalEndpoints := 0
@@ -804,8 +798,8 @@ func (service OpenapiService) ValidateArangoDBFile(version string, apiVersionInd
 
 	if err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
-			models.Logger.Summary("<error code=2>%s %s - <strong>Error %d</strong>:", version, fileName, exitError.ExitCode())
-			models.Logger.Summary("%s</error>", er.String())
+			models.Logger.Error("OpenAPI", version, fileName, "", fmt.Sprintf("swagger-cli validation failed (exit code %d):\n%s", exitError.ExitCode(), er.String()))
+			models.Logger.Summary("- %s %s ❌", version, fileName)
 		} else {
 			models.Logger.Printf("[ERROR] swagger-cli failed for %s/%s: %v\nstdout: %s\nstderr: %s", version, fileName, err, out.String(), er.String())
 		}
@@ -815,7 +809,7 @@ func (service OpenapiService) ValidateArangoDBFile(version string, apiVersionInd
 		}
 		OpenapiValidationErrorMutex.Unlock()
 	} else {
-		models.Logger.Summary("%s %s &#x2713;", version, fileName)
+		models.Logger.Summary("- %s %s ✓", version, fileName)
 	}
 	return err
 }
@@ -861,8 +855,8 @@ func (service OpenapiService) ValidateServiceFile(serviceName string, wg *sync.W
 
 	if err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
-			models.Logger.Summary("<error code=2>%s - <strong>Error %d</strong>:", serviceName, exitError.ExitCode())
-			models.Logger.Summary("%s</error>", er.String())
+			models.Logger.Error("OpenAPI", "", serviceName, "", fmt.Sprintf("swagger-cli validation failed (exit code %d):\n%s", exitError.ExitCode(), er.String()))
+			models.Logger.Summary("- %s ❌", serviceName)
 		} else {
 			models.Logger.Printf("[ERROR] swagger-cli failed for service %s: %v\nstdout: %s\nstderr: %s", serviceName, err, out.String(), er.String())
 		}
@@ -872,7 +866,7 @@ func (service OpenapiService) ValidateServiceFile(serviceName string, wg *sync.W
 		}
 		OpenapiValidationErrorMutex.Unlock()
 	} else {
-		models.Logger.Summary("%s &#x2713;", serviceName)
+		models.Logger.Summary("- %s ✓", serviceName)
 	}
 	return err
 }

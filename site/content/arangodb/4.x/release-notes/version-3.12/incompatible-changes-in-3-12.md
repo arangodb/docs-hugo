@@ -20,7 +20,7 @@ by a new ArangoDB Community License, which limits deployments to a 100 GiB on
 dataset size in production and you cannot use it for any commercial purposes,
 only internal business purposes.
 
-For details, see the [ArangoDB Community License](https://arangodb.com/community-license/).
+For details, see the [ArangoDB Community License](https://arango.ai/community-license/).
 
 ## Downgrading vector indexes
 
@@ -1262,8 +1262,9 @@ set it explicitly in this case. Alternatively, use the `{}` placeholder as in
 <small>Introduced in: v3.12.12</small>
 
 If you deactivate a user account, the
-[JWT session tokens](../../develop/http-api/authentication.md#jwt-user-tokens)
-that have been issued for this user account are now rejected. Requests that
+[JWT session tokens](../../develop/http-api/authentication.md#jwt-session-tokens)
+and [user tokens](../../develop/http-api/authentication.md#jwt-user-tokens) of
+this user account are now rejected. Requests that
 authenticate with such a token fail with an HTTP `401 Unauthorized` error.
 
 ## HTTP API

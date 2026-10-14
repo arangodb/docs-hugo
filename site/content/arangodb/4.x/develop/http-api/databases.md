@@ -20,10 +20,10 @@ All database management operations can only be accessed via the default
 
 Any operation triggered via ArangoDB's HTTP API is executed in the
 context of exactly one database. The database name is read from the first part
-of the request URI path (e.g. `/_db/mydb/...`). If the request URI does not
+of the request URL path (e.g. `/_db/mydb/...`). If the request URL does not
 contain a database name, it defaults to `/_db/_system`.
 
-To explicitly specify the database in a request, the request URI must contain
+To explicitly specify the database in a request, the request URL must contain
 the database name at the beginning of the path:
 
 ```
@@ -35,9 +35,9 @@ the resource is accessed in the context of the `mydb` database. Actual URLs in
 the context of `mydb` could look like this:
 
 ```
-http://localhost:8529/_db/mydb/_api/version
-http://localhost:8529/_db/mydb/_api/document/test/12345
-http://localhost:8529/_db/mydb/myapp/get
+http://localhost:8529/_db/mydb/_api/document/coll/12345
+http://localhost:8529/_db/mydb/_api/index/coll/987
+http://localhost:8529/_db/mydb/_api/transaction/begin
 ```
 
 {{< info >}}
@@ -395,6 +395,9 @@ var data = {
 var response = logCurlRequest('POST', url, data);
 
 db._dropDatabase(name);
+// Users are not removed together with the database
+require("@arangodb/users").remove("admin");
+require("@arangodb/users").remove("tester");
 assert(response.code === 201);
 
 logJsonResponse(response);

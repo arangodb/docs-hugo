@@ -658,16 +658,23 @@ A few obsolete endpoints related to the write-ahead log have been removed, too.
 - `GET /_admin/wal/properties`
 - `PUT /_admin/wal/properties`
 
-#### Job and version admin APIs removed
+### Job and version admin APIs removed
 
 The `/_admin/job*` endpoints as well as the `/_admin/version` endpoint have
 been removed. The identical functionality is now only available using the
 corresponding `/_api/job*` and `/_api/version` endpoints.
 
-#### Database `path` removed
+### Database `path` removed
 
 The `GET /_api/database/current` endpoint no longer includes a `path` attribute
 in responses. It always returned `"none"`.
+
+### Collections and Views cannot be referenced by ID
+
+Referencing a collection or View by its internal `id` in an endpoint path
+like `/_api/collection/357` or `/_api/view/468` is no longer supported.
+Reference the data source by its name instead, like `/_api/collection/coll`
+or `/_api/view/myView`.
 
 ## JavaScript API
 
@@ -761,8 +768,10 @@ directly (without a file). However, this is discouraged for security reasons.
 This option has now been removed. It is no longer recognized and throws an error
 if set.
 
-You can use `--server.jwt-secret-keyfile` to specify the path to a file that
-contains the JWT secret instead.
+You can use [`--server.jwt-secret-keyfile`](../../components/arangodb-server/options.md#--serverjwt-secret-keyfile)
+instead to specify the path to a file that contains the JWT secret. You can also
+use [`--server.jwt-secret-folder`](../../components/arangodb-server/options.md#--serverjwt-secret-folder)
+to specify a folder path and read secrets from multiple files.
 
 ### SSL encryption options removed and renamed
 
