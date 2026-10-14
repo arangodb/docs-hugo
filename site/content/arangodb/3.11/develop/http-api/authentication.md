@@ -122,8 +122,8 @@ your requests:
 Authorization: Bearer eyJhbGciOiJIUzI1NiI..x6EfI
 ```
 
-The tokens are signed with the JWT secret of the server.
-You can set the secret on server startup in one of the following ways:
+The server signs tokens with its active JWT secret.
+You can set the JWT secrets on server startup in one of the following ways:
 - Set [`--server.jwt-secret-keyfile`](../../components/arangodb-server/options.md#--serverjwt-secret-keyfile)
   to let the server read the JWT secret from the specified file.
 - Set [`--server.jwt-secret-folder`](../../components/arangodb-server/options.md#--serverjwt-secret-folder)
@@ -144,8 +144,8 @@ ArangoDB distinguishes the following kinds of JWTs:
 | Type | How to obtain | Authenticates as | Expiry time |
 |:-----|:--------------|:-----------------|:------------|
 | [Session token](#jwt-session-tokens) | Request it from the server with a username and password. No JWT secret is needed. | The user, with the user's permissions | Always, after one hour by default |
-| [User token](#jwt-user-tokens) | Generate and sign it yourself using the JWT secret. | The user, with the user's permissions | Optional, usually none |
-| [Superuser token](#jwt-superuser-tokens) | Generate and sign it yourself using the JWT secret. | No user, with full access including internal APIs | Optional, usually none |
+| [User token](#jwt-user-tokens) | Generate and sign it yourself using the active JWT secret. | The user, with the user's permissions | Optional, usually none |
+| [Superuser token](#jwt-superuser-tokens) | Generate and sign it yourself using the active JWT secret. | No user, with full access including internal APIs | Optional, usually none |
 
 The decoded payload of a JWT can contain the following fields (claims):
 
@@ -167,11 +167,12 @@ every token with a valid signature, and it cannot revoke individual tokens.
 A JWT is valid until one of the following happens:
 
 - It reaches its expiry time (`exp`), if it has one.
-- The server no longer has the JWT secret that the token has been signed with.
+- The server no longer has a JWT secret that can verify the token.
   If you rotate the secret using the
   [`--server.jwt-secret-folder`](../../components/arangodb-server/options.md#--serverjwt-secret-folder)
   startup option, tokens signed with a previous secret remain valid as long as
-  the folder contains that secret as a passive secret. You can
+  the folder contains that secret as a passive secret. Any of the JWT secrets
+  can verify tokens, but only the active one signs them. You can
   [hot-reload the JWT secrets](#hot-reload-jwt-secrets) without a restart.
 - For session tokens and user tokens, no active user account exists for the
   username in the token's `preferred_username` field. This is the case if the
@@ -183,7 +184,8 @@ account instance, only to the username: if you remove a user account and later
 create a new account with the same username, previously issued tokens for that
 username become valid again, regardless of the new account's password. User
 tokens and superuser tokens without an expiry time stay valid until the JWT
-secret changes, so treat them as sensitive as the JWT secret itself.
+secret that signed them is removed, so treat them as sensitive as the JWT
+secrets themselves.
 
 ### JWT session tokens
 
@@ -302,19 +304,19 @@ paths:
 
 ### JWT user tokens
 
-If you know the JWT secret, you can generate and sign a token for a user
+If you know the active JWT secret, you can generate and sign a token for a user
 account yourself. A user token authenticates as the user specified in the
 `preferred_username` field and grants the permissions of this user, the same as
 a session token.
 
 Unlike for session tokens, you decide which claims the token contains. In
 particular, a user token doesn't need an expiry time. Without one, it stays valid
-until the JWT secret changes or the user account is removed. See
+until the JWT secret that signed it is removed or the user account is removed. See
 [Validity and revocation of JWTs](#validity-and-revocation-of-jwts).
 
 {{< security >}}
-It is only possible to generate this JWT token with the knowledge of the
-JWT secret.
+Anyone who knows any of the JWT secrets of the server, active or passive, can
+generate this JWT token, because the server accepts tokens signed with either.
 {{< /security >}}
 
 You can generate a user token with the
@@ -349,8 +351,8 @@ access. Note that using superuser access for normal database operations is
 **not advised**.
 
 {{< security >}}
-It is only possible to generate this JWT token with the knowledge of the
-JWT secret.
+Anyone who knows any of the JWT secrets of the server, active or passive, can
+generate this JWT token, because the server accepts tokens signed with either.
 {{< /security >}}
 
 For your convenience it is possible to generate this token via the
@@ -360,8 +362,8 @@ Should you wish to generate the JWT token yourself with a tool of your choice,
 you need to include the correct body. The body must contain the `iss` field
 with string value `arangodb` and the `server_id` field with an arbitrary string
 identifier, but no `preferred_username` field. The `exp` field is optional.
-Without it, the token stays valid until the JWT secret changes. The following
-example body includes an expiry time:
+Without it, the token stays valid until the JWT secret that signed it is removed.
+The following example body includes an expiry time:
 
 ```json
 {
