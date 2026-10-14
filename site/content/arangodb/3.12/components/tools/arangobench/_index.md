@@ -42,7 +42,9 @@ The most important general _arangobench_ options are:
   ``` 
 
 - `--server.username` and `--server.password`: these can be used to authenticate
-  with an existing ArangoDB installation.
+  with an existing ArangoDB installation. From v3.12.13 onward, _arangobench_
+  exchanges these credentials for a JWT and renews it automatically before it
+  expires, see [Connect to an ArangoDB server](../_index.md#connect-to-an-arangodb-server).
 - `--test-case`: selects the test case to be executed by _arangobench_. A list
   of the available test cases can be retrieved by running _arangobench_ with
   the `--help` option. For detailed descriptions see [Test Cases](#test-cases).

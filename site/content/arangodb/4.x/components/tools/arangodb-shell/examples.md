@@ -17,6 +17,10 @@ command-line options:
 - `--server.endpoint <string>`: endpoint to connect to
 - `--server.username <string>`: database username
 - `--server.password <string>`: password or access token to use when connecting 
+- `--server.jwt-token <string>`: JWT to use instead of a username and password
+  (set it to `-` to be prompted for the token)
+- `--server.jwt-secret-keyfile <string>`: file with the JWT secret of the server
+  to authenticate with superuser rights instead of a username and password
 - `--server.authentication <bool>`: whether or not to use authentication
 
 For example, to connect to an ArangoDB server on IP `192.168.173.13` on port
@@ -30,6 +34,11 @@ _arangosh_ then displays a password prompt and tries to connect to the
 server after the password is entered. You can also use an access token instead
 of a password (but make sure `--server.username` is set to the same user name as
 encoded in the access token).
+
+_arangosh_ exchanges the username and password for a JWT and renews it
+automatically before it expires. From v3.12.13 onward, this also applies to
+JWT session tokens you pass via `--server.jwt-token`. For details, see
+[Connect to an ArangoDB server](../_index.md#connect-to-an-arangodb-server).
 
 {{< warning >}}
 At signs `@` in startup option arguments need to be escaped as `@@`.

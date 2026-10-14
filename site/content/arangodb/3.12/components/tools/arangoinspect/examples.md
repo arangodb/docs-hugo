@@ -39,6 +39,13 @@ arangoinspect --server.ask-jwt-secret false --server.username "root" --server.pa
 
 The password can be omitted and entered interactively.
 
+The superuser tokens that _arangoinspect_ generates from the JWT secret don't
+expire. If you authenticate with a username and password, _arangoinspect_ uses
+a JWT session token that it renews automatically before it expires. From v3.12.13
+onward, this also applies to session tokens you pass via `--server.jwt-token`.
+See [Connect to an ArangoDB server](../_index.md#connect-to-an-arangodb-server)
+for details.
+
 ## Example outputs
 
 If _arangoinspect_ succeeds to authenticate, it starts to gather information

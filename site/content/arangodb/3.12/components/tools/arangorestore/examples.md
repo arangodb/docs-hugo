@@ -8,65 +8,59 @@ description: >-
 To restore data from a dump previously created with [arangodump](../arangodump/_index.md),
 ArangoDB provides the _arangorestore_ tool.
 
-## Invoking *arangorestore*
+## Restore a dump
 
-_arangorestore_ can be invoked from the command-line as follows:
+To restore a dump into the `_system` database, run _arangorestore_ with the
+directory that contains the dump:
 
 ```
 arangorestore --input-directory "dump"
 ```
 
-This connects to an ArangoDB server (`http://127.0.0.1:8529` by default), then restores the
-collection structure and the documents from the files found in the input directory `dump`.
-Note that the input directory must have been created by running _arangodump_ before.
+Without further startup options, _arangorestore_ connects to the ArangoDB server
+at the default endpoint `http://127.0.0.1:8529` as the `root` user and prompts
+you for the password. It then restores the collection structure and the
+documents from the files found in the input directory `dump`. The input
+directory must have been created by running _arangodump_ before.
 
-_arangorestore_ connects to the `_system` database by default, using the default
-endpoint. To override the endpoint, or specify a different user, use one of the
-following startup options:
+_arangorestore_ prints out its progress while running, and ends with a line
+showing some aggregate statistics:
 
-- `--server.endpoint <string>`: Endpoint to connect to
-- `--server.username <string>`: Username
-- `--server.password <string>`: Password or access token to use
-  (omit this and you'll be prompted for the password)
-- `--server.authentication <bool>`: Whether to use authentication
+```
+Processed 2 collection(s), read 2256 byte(s) from datafiles, sent 2 batch(es)
+```
 
-If you want to connect to a different database or dump all databases you can additionally
-use the following startup options:
+## Connect and authenticate
 
-- `--server.database <string>`: Name of the database to connect to.
-  Defaults to the `_system` database.
-- `--all-databases true`: Restore multiple databases from a dump which used the same option.
+To connect to a different server or as a different user, use the following
+startup options:
 
-Note that the specified user must have access to the database(s).
- 
-The _arangorestore_ tool provides the `--create-database` option. Setting this
-option to `true` creates the target database if it does not exist. When creating the
-target database, the username and passwords passed to _arangorestore_ (in options
-`--server.username` and `--server.password`) are used to create an initial user for the
-new database.
+- `--server.endpoint <string>`: The endpoint to connect to. In a cluster,
+  specify a Coordinator.
+- `--server.username <string>`: The username.
+- `--server.password <string>`: The password or access token. If you omit it,
+  you are prompted for the password.
+- `--server.jwt-token <string>`: A JWT to authenticate with instead of a username
+  and password. Set it to `-` to be prompted for the token.
+- `--server.jwt-secret-keyfile <string>`: A file with the JWT secret of the
+  server, to authenticate with superuser rights instead of a username and password.
+- `--server.authentication <bool>`: Whether to authenticate. Set it to
+  `false` if authentication is disabled on the server.
 
-The option `--force-same-database` allows restricting _arangorestore_ operations to a
-database with the same name as in the source dump's `dump.json` file. It can thus be used
-to prevent restoring data into a "wrong" database by accident.
-
-For example, if a dump was taken from database ***A***, and the restore is attempted into 
-database ***B***, then with the `--force-same-database` option set to `true`, _arangorestore_
-aborts instantly.
-
-The `--force-same-database` option is set to `false` by default to ensure backwards-compatibility.
-
-Here's an example of reloading data to a non-standard endpoint, using a dedicated
-[database name](../../../concepts/data-structure/databases.md#database-names):
+For example, to restore a dump into a database of a server at a non-standard
+endpoint as the `backup` user:
 
 ```
 arangorestore \
   --server.endpoint http://192.168.173.13:8531 \
   --server.username backup \
   --server.database mydb \
-  --input-directory "dump" \
+  --input-directory "dump"
 ```
 
-Also, more than one endpoint can be provided, such as:
+You can specify more than one endpoint, for example, multiple Coordinators of a
+cluster. _arangorestore_ then distributes the connections of its threads across
+the endpoints:
 
 ```
 arangorestore \
@@ -77,25 +71,61 @@ arangorestore \
   --input-directory "dump"
 ```
 
-To create the target database when restoring, use a command like this:
+From v3.12.13 onward, _arangorestore_ renews JWTs automatically before they
+expire, including the token it obtains for a username and password, so that
+long-running restores don't fail with an HTTP `401 Unauthorized` error.
+For details about the authentication methods, how to avoid exposing
+credentials in the process list, and how the token renewal works, see
+[Connect to an ArangoDB server](../_index.md#connect-to-an-arangodb-server).
+
+### Required permissions
+
+The user you restore data as needs the following
+[access levels](../../../operations/administration/user-management/_index.md):
+
+- When restoring into an existing database, the user needs
+  **Administrate** / `rw` access on this database.
+- When creating a new database during the restore, the user needs
+  **Administrate** / `rw` access on the `_system` database. The user is granted
+  **Administrate** / `rw` access on the newly created database.
+
+## Choose the target database
+
+_arangorestore_ restores into the `_system` database by default. To restore into
+a different database, specify its
+[name](../../../concepts/data-structure/databases.md#database-names) with the
+`--server.database` startup option.
+
+If the target database doesn't exist yet, you can let _arangorestore_ create it
+by setting the `--create-database` startup option to `true`:
 
 ```
 arangorestore --server.username backup --server.database newdb --create-database true --input-directory "dump"
 ```
 
-In contrast to the above calls, when working with multiple databases using `--all-databases true`
-the parameter `--server.database mydb` must not be specified:
+The user that _arangorestore_ authenticates as is granted access to the new
+database. If you authenticate with a JWT superuser token or the JWT secret,
+this is the user specified with `--server.username` (`root` by default).
+Up to v3.12.12, this is also the case for JWT session and user tokens instead of the user
+the token has been issued for.
+
+To restore a dump that has been created with the `--all-databases` option of
+_arangodump_, set the `--all-databases` startup option to `true` and don't
+specify `--server.database`. You can combine it with `--create-database true`
+to create the databases that don't exist yet:
 
 ```
 arangorestore --server.username backup --all-databases true --create-database true --input-directory "dump-multiple"
 ```
 
-_arangorestore_ prints out its progress while running, and ends with a line
-showing some aggregate statistics:
+The `--force-same-database` startup option restricts _arangorestore_ operations
+to a database with the same name as in the source dump's `dump.json` file. You
+can use it to prevent restoring data into a wrong database by accident.
+For example, if a dump was taken from database ***A***, and the restore is
+attempted into database ***B***, then with the `--force-same-database` option
+set to `true`, _arangorestore_ aborts instantly. The option is `false` by default.
 
-```
-Processed 2 collection(s), read 2256 byte(s) from datafiles, sent 2 batch(es)
-```
+## Choose the collections and data to restore
 
 By default, _arangorestore_ re-creates all non-system collections found in the input
 directory and loads data into them. If the target database already contains collections
@@ -186,6 +216,39 @@ arangorestore --collection myusers --view myview --input-directory "dump"
 
 In the case of an `arangosearch` View, you must make sure that the linked collections are either
 also restored or already present on the server.
+
+## Continue an interrupted restore
+
+If a restore is interrupted, for example, because the connection to the server
+is lost or the _arangorestore_ process is terminated, you can continue it
+instead of starting over by running _arangorestore_ again with the same startup
+options and `--continue true`:
+
+```
+arangorestore --server.database mydb --input-directory "dump" --continue true
+```
+
+While restoring, _arangorestore_ records its progress in a `continue.json` file
+in the input directory (in the directory of each database if you use
+`--all-databases`). Therefore, the input directory needs to be writable.
+For each collection, the file tracks whether the collection has been created
+and up to which position in the data files the server has confirmed the
+restored documents. The file also tracks whether the Views have been created.
+
+With `--continue true`, _arangorestore_ reads this file and does the following:
+
+- It skips collections and Views that have been fully restored.
+- It doesn't drop and re-create collections that it has already created, even
+  if `--overwrite` is enabled.
+- It continues restoring the data of partially restored collections from the
+  last confirmed position. Batches of documents that were sent before the
+  interruption but not confirmed are sent again. This doesn't create duplicates
+  because restoring a document replaces an existing document with the same
+  document key.
+
+When the restore succeeds, _arangorestore_ removes the `continue.json` file.
+If you run _arangorestore_ without `--continue true`, it ignores an existing
+progress file and starts from scratch.
 
 ## Encryption
 
@@ -349,17 +412,3 @@ arangorestore --collection clonedCollection --collection prototypeCollection --s
 ...
 INFO [a66e1] {restore} Processed 2 collection(s) from 1 database(s) in 1.12 s total time. Read 0 bytes from datafiles, sent 0 data batch(es) of 0 bytes total size.
 ```
-
-## Restore into an authentication-enabled ArangoDB
-
-Of course you can restore data into a password-protected ArangoDB as well.
-However this requires certain user rights for the user used in the restore process.
-The rights are described in detail in the [Managing Users](../../../operations/administration/user-management/_index.md) chapter.
-For restore this short overview is sufficient:
-
-- When importing into an existing database, the given user needs `Administrate`
-  access on this database.
-- When creating a new database during restore, the given user needs `Administrate`
-  access on `_system`. The user is promoted to `Administrate` access on the
-  newly created database.
-

@@ -5,6 +5,37 @@ weight: 5
 description: >-
   How to create a consistent snapshot with the _arangobackup_ tool
 ---
+## Connect and authenticate
+
+Without further startup options, _arangobackup_ connects to the ArangoDB server
+at the default endpoint `tcp://127.0.0.1:8529` as the `root` user and prompts
+you for the password. To connect to a different server or as a different user,
+use the following startup options:
+
+- `--server.endpoint <string>`: The endpoint to connect to. In a cluster,
+  specify a Coordinator.
+- `--server.username <string>`: The username.
+- `--server.password <string>`: The password. If you omit it, you are prompted
+  for the password.
+- `--server.authentication <bool>`: Whether to authenticate. Set it to
+  `false` if authentication is disabled on the server.
+
+For example, to list the Hot Backups of a server at a non-standard endpoint
+as the `backup` user:
+
+```
+arangobackup list --server.endpoint tcp://192.168.173.13:8531 --server.username backup
+```
+
+The user needs **Administrate** / `rw` access to the `_system` database. If the
+server's `--backup.api-enabled` startup option is set to `jwt`, Hot Backup
+operations require a JWT superuser token, which _arangobackup_ doesn't support.
+In this case, use the [HTTP API](../../../develop/http-api/hot-backups.md) instead.
+
+For details about the authentication and how to avoid exposing credentials in
+the process list, see
+[Connect to an ArangoDB server](../_index.md#connect-to-an-arangodb-server).
+
 ## Create
 
 Hot backups are created near instantaneously. The single server as
