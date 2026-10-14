@@ -1435,7 +1435,7 @@ li > code {
     opacity: 0;
 }
 
-.copy-to-clipboard:hover > .copy-to-clipboard-button {
+pre:hover > .copy-to-clipboard-button {
     opacity: 0.7;
 }
 
@@ -2296,8 +2296,10 @@ nav.pagination .next {
 .svg-figure figcaption,
 .diagram-figure figcaption {
     font-size: 0.9em;
-    color: #666;
+    color: var(--gray-700);
     margin-top: 0.5rem;
+    text-wrap: balance;
+    font-style: italic;
 }
 
 .diagram-figure img {
@@ -2524,13 +2526,24 @@ body.image-viewer-open {
     display: none;
 }
 
+/* Keep in sync with edgeLabelBackground in theme.js so that edge labels only
+   mask the lines behind them instead of showing as boxes. */
 pre.mermaid {
     margin: 0;
+    background: #f3f4f6;
 }
 
-pre.mermaid > svg .nodeLabel,
-.image-viewer-content .nodeLabel {
+.image-viewer-content.mermaid-diagram {
+    background: #f3f4f6;
+}
+
+/* Undo Bootstrap's pre and .label styles */
+.mermaid-diagram {
     word-break: normal;
     overflow-wrap: break-word;
+}
+
+.mermaid-diagram .label {
     font-weight: normal;
+    text-shadow: none;
 }

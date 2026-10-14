@@ -27,12 +27,12 @@ so you cannot traverse from one graph to the other. Together they make up the
 
 ```mermaid
 graph TD
-  subgraph "`**Layer 1** — Categories  (defined by you)`"
+  subgraph "`**Layer 1** — Categories (defined by you)`"
     modules["`**modules**
       (vertex: one per category)`"]
   end
 
-  subgraph "`**Layer 2** — Corpus Graph  (built by AutoGraph)`"
+  subgraph "`**Layer 2** — Corpus Graph (built by AutoGraph)`"
     sources["`**sources**
       (vertex: one per document)`"]
     similarities["`**similarities**
@@ -45,7 +45,7 @@ graph TD
       (vertex: strategy profiles — added by strategizer)`"]
   end
 
-  subgraph "`**Layer 3** — Knowledge Graph  (built by Importer)`"
+  subgraph "`**Layer 3** — Knowledge Graph (built by Importer)`"
     Documents["`**Documents**
       (vertex: original documents)`"]
     Chunks["`**Chunks**
@@ -54,6 +54,8 @@ graph TD
       (vertex: extracted entities — FullGraphRAG only)`"]
     Communities["`**Communities**
       (vertex: entity clusters — FullGraphRAG only)`"]
+    SemanticUnits["`**SemanticUnits**
+      (vertex: web URLs and images — optional)`"]
     Relations["`**Relations**
       (edge: all relationships)`"]
   end
@@ -65,6 +67,7 @@ graph TD
   rags -->|orchestration| Documents
   Documents --- Chunks
   Chunks --- Entities
+  Chunks --- SemanticUnits
   Entities --- Communities
 ```
 
@@ -342,7 +345,7 @@ flowchart TD
       Confirm service status is <code>SERVING</code>`"]
 
     %% Layer 1
-    subgraph L1 ["`**Layer 1** - Categories`"]
+    subgraph L1 ["`**Layer 1** — Categories`"]
         FM["`File Manager RAG inputs
           Upload under scope
           <code>[project, category]</code>`"]
@@ -354,7 +357,7 @@ flowchart TD
     end
 
     %% Layer 2
-    subgraph L2 ["`**Layer 2** - Corpus Graph`"]
+    subgraph L2 ["`**Layer 2** — Corpus Graph`"]
 
         %% Build Pipeline
         subgraph BUILD_PIPE [Corpus Build Background Task]
@@ -411,7 +414,7 @@ flowchart TD
     end
 
     %% Layer 3
-    subgraph L3 ["`**Layer 3** - Knowledge Graph`"]
+    subgraph L3 ["`**Layer 3** — Knowledge Graph`"]
 
         subgraph ORCH_PIPE [Orchestration Background Task]
             ORCH["`<code>POST /v1/orchestrate</code>
@@ -449,8 +452,8 @@ flowchart TD
 These endpoints sit outside the sequential pipeline. You can inspect and configure
 a project at any time. Both delete endpoints are guarded against work that is
 already running and return `409` while it is: a corpus build, an orchestration,
-or a document delete for a category delete, and additionally a strategizer run
-for a project delete.
+or a document delete for both, and additionally a strategizer run for a project
+delete. A category delete also returns `409` once a project delete has started.
 
 ```mermaid
 flowchart LR
@@ -458,48 +461,49 @@ flowchart LR
     Client["Client / HTTP API"]
 
     Client -.->|inspect anytime| OVERVIEW
-    Client -.->|configure| MODELCFG
     Client -.->|maintenance| DELCAT
     Client -.->|teardown| DELPROJ
+    Client -.->|configure| MODELCFG
 
     OVERVIEW["`<code>GET /v1/projects/{project}/overview</code>
       Corpus + KG cards, categories,
       read-time staleness`"]
-    MODELCFG["`<code>PUT /v1/projects/{project}/model-config/credentials</code>
-      Chat + embedding provider, model,
-      secret profiles - validated on write`"]
     DELCAT["`<code>DELETE /v1/projects/{project}/categories/{category}</code>
       409 while a build, an orchestration,
-      or a document delete runs`"]
+      a document delete, or a project delete runs`"]
     DELPROJ["`<code>DELETE /v1/projects/{project}</code>
       Removes every project-owned resource,
       then the service tears itself down
       409 while a build, an orchestration,
       a strategizer run, or a document delete runs`"]
+    MODELCFG["`<code>PUT /v1/projects/{project}/model-config/credentials</code>
+      Chat + embedding provider, model,
+      secret profiles - validated on write`"]
 
-    L2R[("`**Layer 1-2 - Corpus Graph**
-      modules, sources, similarities,
-      domains, corpus_relations, rags`")]
-    L3R[("`**Layer 3 - Knowledge Graph**
-      {project}_kg partitions`")]
-    FMR[("`**File Manager**
-      RAG inputs`")]
-    META[("`**Project metadata**
-      provider, model, secret profile ids`")]
+    subgraph RES [Project resources]
+        L3R[("`**Layer 3 — Knowledge Graph**
+          {project}_kg partitions`")]
+        L2R[("`**Layer 1–2 — Corpus Graph**
+          modules, sources, similarities,
+          domains, corpus_relations, rags`")]
+        FMR[("`**File Manager**
+          RAG inputs`")]
+        META[("`**Project metadata**
+          provider, model, secret profile ids`")]
+    end
 
-    OVERVIEW -.->|reads| L2R
     OVERVIEW -.->|reads| L3R
+    OVERVIEW -.->|reads| L2R
     OVERVIEW -.->|reads counts| FMR
-
-    MODELCFG -->|"`validates key with provider
-      then persists`"| META
 
     DELCAT -->|1 - remove KG partitions| L3R
     DELCAT -->|2 - remove corpus graph data| L2R
     DELCAT -->|3 - delete_files true only| FMR
-    DELPROJ -->|drops graphs and collections| L3R
 
-    DELPROJ -->|drops graphs and collections| L2R
-    DELPROJ -->|delete_files true only| FMR
-    DELPROJ -->|removes the project node| META
+    DELPROJ -->|"`drops all graphs and collections,
+      removes the project node,
+      File Manager files with delete_files true only`"| RES
+
+    MODELCFG -->|"`validates key with provider
+      then persists`"| META
 ```

@@ -2914,6 +2914,22 @@ impact of this feature:
 See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-aql-queries)
 for details.
 
+### Custom session token expiry
+
+<small>Introduced in: v3.12.6</small>
+
+You can request a session token with a lifetime different from the default
+controlled by the `--server.session-timeout` startup option. To do so, specify
+the `expiryTime` attribute in seconds when creating a session token via
+`POST /_open/auth`. The value needs to be within the bounds of the following
+new startup options:
+
+- `--auth.minimal-jwt-expiry-time` (default: `10`)
+- `--auth.maximal-jwt-expiry-time` (default: `3600`)
+
+See [JWT session tokens](../../develop/http-api/authentication.md#jwt-session-tokens)
+for details.
+
 ### RocksDB upgrade
 
 <small>Introduced in: v3.12.6</small>
