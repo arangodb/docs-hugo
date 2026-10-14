@@ -6,13 +6,14 @@ description: >-
   ArangoDB ships with command-line tools like for accessing server instances
   programmatically, deploying clusters, creating backups, and importing data
 ---
-A full ArangoDB installation package contains the [ArangoDB server](../arangodb-server/_index.md)
-(_arangod_) as well as the following client tools:
+The ArangoDB server package contains the [ArangoDB server](../arangodb-server/_index.md)
+(_arangod_) and the [ArangoDB Starter](arangodb-starter/_index.md) (_arangodb_)
+for easy deployment of ArangoDB instances. The client tools are provided as a
+separate package that contains the following tools:
 
 | Executable name | Brief description |
 |-----------------|-------------------|
 | `arangosh`      | [ArangoDB shell](arangodb-shell/_index.md). A client that implements a read-eval-print loop (REPL) and provides functions to access and administrate the ArangoDB server.
-| `arangodb`      | [ArangoDB Starter](arangodb-starter/_index.md) for easy deployment of ArangoDB instances.
 | `arangodump`    | Tool to [create backups](arangodump/_index.md) of an ArangoDB database.
 | `arangorestore` | Tool to [load backups](arangorestore/_index.md) back into an ArangoDB database.
 | `arangobackup`  | Tool to [perform hot backup operations](arangobackup/_index.md) on an ArangoDB installation.
@@ -21,8 +22,9 @@ A full ArangoDB installation package contains the [ArangoDB server](../arangodb-
 | `arangovpack`   | Utility to validate and [convert VelocyPack](arangovpack/_index.md) and JSON data.
 | `arangoinspect` | [Inspection tool](arangoinspect/_index.md) that gathers server setup information.
 
-A client installation package comes without the _arangod_ server executable and
-the ArangoDB Starter.
+If you need the client tools on the same machine as the server, install both
+packages. The same applies to the container images: `arangodb/core` contains the
+server and `arangodb/client-tools` the client tools.
 
 Additional tools which are available separately:
 

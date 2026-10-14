@@ -10,8 +10,9 @@ To install ArangoDB on Linux, as a first step, please download a package from
 the official [Download](https://arango.ai/downloads/) page of the ArangoDB
 website.
 
-There are different packages available, such as _RPM_ and _Debian_ packages for
-different Linux distributions, as well as generic `tar.gz` archives.
+The packages are generic `tar.gz` archives for the x86-64 and ARM64
+architectures. There are separate packages for the server and for the
+[client tools](../../components/tools/_index.md).
 
 {{< tip >}}
 You can also use the official [Docker images](https://hub.docker.com/_/arangodb/)

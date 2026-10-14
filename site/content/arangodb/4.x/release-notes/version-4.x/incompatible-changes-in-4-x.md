@@ -21,6 +21,31 @@ their instruction set extensions for improved performance:
 For more details about the necessary CPU features, see
 [Supported platforms and architectures](../../operations/installation/_index.md#supported-platforms-and-architectures).
 
+## Separate packages for the server and the client tools
+
+The ArangoDB server and the client tools are now provided as separate packages:
+
+- The **server** package contains the ArangoDB server (_arangod_) and the
+  [ArangoDB Starter](../../components/tools/arangodb-starter/_index.md) (_arangodb_).
+- The **client tools** package contains _arangosh_, _arangodump_,
+  _arangorestore_, _arangoimport_, _arangoexport_, _arangobackup_,
+  _arangoinspect_, and _arangovpack_.
+
+Up to v3.12, the server package includes the client tools as well. If you need
+the client tools on the same machine as the server, for example, to create dumps
+or to use the ArangoDB Shell, install both packages.
+
+The same applies to the container images. The `arangodb/core` image contains
+the server and the `arangodb/client-tools` image the client tools. Up to v3.12,
+the `arangodb/enterprise` image contains both.
+
+The packages are provided as `tar.gz` archives for Linux on the x86-64 and
+ARM64 architectures. Debian and RPM packages are no longer provided.
+
+The separation together with the removal of all server-side JavaScript
+functionality (see below) strictly keeps the JavaScript engine (V8) out of the
+server, which reduces the attack surface and improves server stability.
+
 ## Built-in web interface removed
 
 The web interface served by the ArangoDB server (_arangod_), also known as
