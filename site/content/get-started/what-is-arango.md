@@ -25,21 +25,21 @@ ArangoDB, and agents and applications access the context layer through the
 
 ### Agentic AI Suite
 
-The [**Agentic AI Suite**](../agentic-ai-suite/_index.md) builds the context
+The [**Agentic AI Suite**](../contextual-data-platform/_index.md) builds the context
 graph, keeps it current, and answers questions from it.
 
-[**AutoGraph Studio**](../agentic-ai-suite/autograph/_index.md) turns enterprise
+[**AutoGraph Studio**](../contextual-data-platform/autograph/_index.md) turns enterprise
 data into a context graph and retrieves from it:
 
 - **Build**: Ingests documents as-is (PDF, Office, text, and Markdown), clusters
   them into knowledge domains, and uses a large language model (LLM) to derive
   the entity types for each domain. It then extracts entities and relationships
   into the context graph. Each domain gets the processing depth it needs: full
-  [GraphRAG](../agentic-ai-suite/autograph/concepts.md) (graph-based
+  [GraphRAG](../contextual-data-platform/autograph/concepts.md) (graph-based
   retrieval-augmented generation) for relationship-rich content, or a lighter
   VectorRAG path where similarity search is enough.
 - **Maintain**: Updates are
-  [incremental](../agentic-ai-suite/autograph/incremental-graph-updates.md).
+  [incremental](../contextual-data-platform/autograph/incremental-graph-updates.md).
   Inserting, deleting, or replacing a document reprocesses only what changed,
   and new documents join the nearest existing domain. Domains that have drifted
   since they were clustered are flagged; reclustering runs when you start it.
@@ -50,31 +50,31 @@ data into a context graph and retrieves from it:
 
 The suite also includes:
 
-- [**AQLizer**](../agentic-ai-suite/natural-language-to-aql/_index.md)
+- [**AQLizer**](../contextual-data-platform/natural-language-to-aql/_index.md)
   translates natural-language questions into AQL, so users can query across
   domains in the context graph without writing AQL first.
-- [**Ada**](../agentic-ai-suite/ada/_index.md) is an AI assistant for
+- [**Ada**](../contextual-data-platform/ada/_index.md) is an AI assistant for
   natural-language interaction and development.
-- [**Reasoner**](../agentic-ai-suite/reasoner/_index.md) analyzes and optimizes
+- [**Reasoner**](../contextual-data-platform/reasoner/_index.md) analyzes and optimizes
   AQL queries with AI-assisted reasoning.
-- [**GraphML**](../agentic-ai-suite/graphml/_index.md) applies machine learning
+- [**GraphML**](../contextual-data-platform/graphml/_index.md) applies machine learning
   to graphs for link prediction, classification, and embeddings.
-- [**Graph Analytics**](../agentic-ai-suite/graph-analytics/_index.md) runs
+- [**Graph Analytics**](../contextual-data-platform/graph-analytics/_index.md) runs
   graph algorithms such as PageRank on dedicated compute.
 
 ### Platform Suite
 
-The [**Platform Suite**](../platform-suite/_index.md) runs, secures, and manages
+The [**Platform Suite**](../contextual-data-platform/_index.md) runs, secures, and manages
 the platform on Kubernetes.
 
 - [**Kubernetes Operator**](../contextual-data-platform/architecture.md):
   deployment, scaling, upgrades, backups, and license management.
 - [**Role-based access control (RBAC)**](../contextual-data-platform/access-control/authorization.md):
   controls which users and agents can read or act on which data.
-- **Web interface**: [Graph Visualizer](../platform-suite/graph-visualizer.md)
-  and [Query Editor](../platform-suite/query-editor.md) for exploring and
+- **Web interface**: [Graph Visualizer](../contextual-data-platform/graph-visualizer.md)
+  and [Query Editor](../contextual-data-platform/query-editor.md) for exploring and
   querying the context graph.
-- [**Bring Your Own Code**](../platform-suite/container-manager/_index.md): run
+- [**Bring Your Own Code**](../contextual-data-platform/container-manager/_index.md): run
   custom services alongside the platform.
 
 ### ArangoDB
