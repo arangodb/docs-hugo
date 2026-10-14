@@ -8,12 +8,10 @@ description: >-
 ---
 ## Installation
 
-Head to [arangodb.ai/downloads/](https://arango.ai/downloads/),
-select your operating system, and download ArangoDB. You may also follow
-the instructions on how to install with a package manager, if available.
-
-If you installed a binary package under Linux, the server is
-automatically started.
+Head to [arangodb.ai/downloads/](https://arango.ai/downloads/) and download
+the `tar.gz` archives of the ArangoDB server and the client tools for Linux,
+or use the official container images (`arangodb/core` and
+`arangodb/client-tools`).
 
 For more in-depth information on how to install ArangoDB, as well as available
 startup parameters, installation in a cluster and so on, see
@@ -39,9 +37,7 @@ For a more detailed description of the interface, see [Web Interface](../compone
 The default installation contains one database `_system` and a user
 named `root`.
 
-Debian-based packages ask for a password during the installation process.
-Red-Hat based packages set a random password. For all other installation
-packages, you need to execute the following:
+To set a password for the `root` user, execute the following:
 
 ```
 shell> arango-secure-installation
