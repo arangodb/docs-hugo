@@ -743,6 +743,7 @@ body .page-container {
 /* Header Left */
 .header-block-left {
     display: flex;
+    flex: 1;
 }
 
 
@@ -894,6 +895,7 @@ body .page-container {
 .search-and-version-container {
     display: flex;
     align-items: center;
+    justify-content: center;
     z-index: 999;
     width: 60vw;
 }
@@ -901,6 +903,27 @@ body .page-container {
 @media screen and (max-width: 1024px) {
     .search-and-version-container {
         width: auto;
+    }
+}
+
+.header-external-link {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    margin-left: 16px;
+    white-space: nowrap;
+}
+
+/* Widen the search button when there is plenty of horizontal space */
+@media screen and (min-width: 1280px) {
+    .search-and-version-container .docsearch {
+        width: 100%;
+        max-width: 560px;
+    }
+
+    .search-and-version-container .DocSearch-Button {
+        width: 100%;
+        margin: 0;
     }
 }
 
@@ -1961,7 +1984,8 @@ nav.pagination .next {
 }
 
 .nav-prev:hover,
-.nav-next:hover {
+.nav-next:hover,
+.version-logo-container .link {
     border-bottom: 0;
 }
 
