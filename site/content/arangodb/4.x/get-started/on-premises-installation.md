@@ -37,17 +37,14 @@ For a more detailed description of the interface, see [Web Interface](../compone
 The default installation contains one database `_system` and a user
 named `root`.
 
-To set a password for the `root` user, execute the following:
-
-```
-shell> arango-secure-installation
-```
-
-This command asks for a root password and sets it.
+To set a password for the `root` user, see
+[Securing your installation](../operations/installation/linux/_index.md#securing-your-installation).
+If you use the container images, see
+[Choosing an authentication method](../operations/installation/docker.md#choosing-an-authentication-method).
 
 {{< warning >}}
-The password that is set for the root user during the installation of the ArangoDB
-package has **no effect** in case of deployments done with the _ArangoDB Starter_.
+The password that you set for the root user this way has **no effect** in case
+of deployments done with the _ArangoDB Starter_.
 See [Securing Starter Deployments](../operations/security/securing-starter-deployments.md) instead.
 {{< /warning >}}
 

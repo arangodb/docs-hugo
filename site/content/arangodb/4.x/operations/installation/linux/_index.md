@@ -30,14 +30,26 @@ installation steps are:
 
 ## Securing your Installation
 
-Run `arango-secure-installation` to set the password for the `root` user,
-for example:
+To set a password for the `root` user before you start the server for the
+first time, initialize the database directory with the following command. Use
+the same database directory as for starting the server afterwards:
 
 ```bash
-ARANGODB_DEFAULT_ROOT_PASSWORD=NEWPASSWORD arango-secure-installation
+ARANGODB_DEFAULT_ROOT_PASSWORD=NEWPASSWORD arangod --database.directory /path/to/data --database.init-database true
+```
+
+If you don't set the `ARANGODB_DEFAULT_ROOT_PASSWORD` environment variable, you
+are prompted for the password. The server shuts down after initializing the
+database directory.
+
+To set a new password for the `root` user of an existing database directory,
+stop the server and run the following command:
+
+```bash
+ARANGODB_DEFAULT_ROOT_PASSWORD=NEWPASSWORD arangod --database.directory /path/to/data --database.restore-admin true
 ```
 
 {{< danger >}}
-Please be aware that running `arango-secure-installation` on your ArangoDB
-server will remove all current database users but root.
+Using the `--database.restore-admin` startup option removes all database users
+but `root`.
 {{< /danger >}}
