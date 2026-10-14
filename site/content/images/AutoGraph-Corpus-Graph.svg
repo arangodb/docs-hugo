@@ -1,6 +1,5 @@
-<svg viewBox="0 0 820 460"
-     xmlns="http://www.w3.org/2000/svg"
-     style="display:block;width:100%;max-width:820px;margin:0 auto">
+<svg viewBox="0 0 820 460" width="820" height="460"
+     xmlns="http://www.w3.org/2000/svg">
   <style>
     .agcorp text { font-family: sans-serif; }
     .agcorp .vtx { fill: #b9f5a0; stroke: #4ade80; stroke-width: 1.5; }
@@ -12,7 +11,7 @@
     .agcorp .note { font-size: 11px; fill: #666; }
   </style>
   <defs>
-    <marker id="agc-arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+    <marker id="agc-arrow" markerWidth="10" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse">
       <polygon points="0 0,10 4,0 8" fill="#4ade80"/>
     </marker>
   </defs>
@@ -44,19 +43,19 @@
       <text class="vsub" x="667" y="320" text-anchor="middle">RAG config</text>
     </g>
 
-    <path d="M 410 113 L 409 270" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agc-arrow)"/>
+    <path d="M 410 113 L 409 262.3" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agc-arrow)"/>
     <rect class="ebadge" x="358" y="178" width="104" height="22" rx="11"/>
     <text class="elabel" x="410" y="193" text-anchor="middle">HAS_CLUSTER</text>
 
-    <path d="M 250 306 L 312 306" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agc-arrow)"/>
+    <path d="M 250 306 L 304.2 306" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agc-arrow)"/>
     <rect class="ebadge" x="237" y="246" width="88" height="22" rx="11"/>
     <text class="elabel" x="281" y="261" text-anchor="middle">IN_DOMAIN</text>
 
-    <path d="M 507 306 L 570 306" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agc-arrow)"/>
+    <path d="M 507 306 L 562.2 306" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agc-arrow)"/>
     <rect class="ebadge" x="491" y="246" width="96" height="22" rx="11"/>
     <text class="elabel" x="539" y="261" text-anchor="middle">INGESTED_AS</text>
 
-    <path d="M 110 270 C 100 218, 204 218, 196 268" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agc-arrow)"/>
+    <path d="M 110 270 C 100 218, 204.9 212.3, 196.9 262.3" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agc-arrow)"/>
     <rect class="ebadge" x="107" y="210" width="92" height="22" rx="11"/>
     <text class="elabel" x="153" y="225" text-anchor="middle">SIMILAR_TO</text>
 

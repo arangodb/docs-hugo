@@ -9,7 +9,7 @@ orbs:
 parameters:
   workflow:
     type: enum
-    enum: [no-op, plain-build, generate, api-docs, release, compile, generate-scheduled, commit-generated, generate-oasisctl, create-docs-images-amd64, create-docs-images-arm64]
+    enum: [no-op, plain-build, generate, release, compile, generate-scheduled, commit-generated, generate-oasisctl, create-docs-images-amd64, create-docs-images-arm64]
     default: no-op
   
   deploy-url:
@@ -24,7 +24,8 @@ parameters:
     type: string
     default: ""
 
-  version:
+  # "all" or "changed" (see EXAMPLES_SCOPE in the README), empty for the default
+  examples-scope:
     type: string
     default: ""
 
@@ -73,9 +74,6 @@ parameters:
     type: string
     default: ""
 
-  tag:
-    type: string
-    default: ""
 
 jobs:
   generate-config:
@@ -119,14 +117,15 @@ jobs:
 
             pip install pyyaml requests
 
-            # The list of branches needs to be sorted by name (based on the `name` field in versions.yaml)!
+            # Upstream references as VERSION=REF, VERSION being a name in versions.yaml
             python3 generate_config.py \
               --workflow << pipeline.parameters.workflow >> \
-              --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_x >> \
+              --arangodb-branches 3.10="<< pipeline.parameters.arangodb-3_10 >>" 3.11="<< pipeline.parameters.arangodb-3_11 >>" 3.12="<< pipeline.parameters.arangodb-3_12 >>" 4.x="<< pipeline.parameters.arangodb-4_x >>" \
               --arangodb-branch << pipeline.parameters.arangodb-branch >> \
               --release-type << pipeline.parameters.release-type >> \
               --docs-version << pipeline.parameters.docs-version >> \
-              --arangodb-version << pipeline.parameters.arangodb-version >>
+              --arangodb-version << pipeline.parameters.arangodb-version >> \
+              --generators << pipeline.parameters.generators >>
 
             echo "Generated Configuration"
       - store_artifacts:
