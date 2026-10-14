@@ -1,0 +1,36 @@
+<svg viewBox="0 0 460 420"
+     xmlns="http://www.w3.org/2000/svg"
+     style="display:block;width:100%;max-width:460px;margin:0 auto">
+  <style>
+    .asr .axlbl { font-family: sans-serif; font-size: 14px; fill: #374151; }
+    .asr .qtext { font-family: sans-serif; font-size: 12px; font-weight: bold; fill: #15803d; }
+    .asr .dtext { font-family: sans-serif; font-size: 12px; font-weight: bold; }
+    .asr .ang   { font-family: sans-serif; font-size: 15px; font-style: italic; }
+  </style>
+
+  <g class="asr">
+    <rect width="460" height="420" fill="#f3f4f6" rx="6"/>
+    <path d="M 70 340 L 354.0 340.0" stroke="#d1d5db" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <polygon points="370.0,340.0 352.0,348.5 352.0,331.5" fill="#d1d5db"/>
+    <path d="M 70 340 L 70.0 56.0" stroke="#d1d5db" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <polygon points="70.0,40.0 78.5,58.0 61.5,58.0" fill="#d1d5db"/>
+    <text x="386" y="345" class="axlbl">brown</text>
+    <text x="70" y="26" text-anchor="middle" class="axlbl">quick</text>
+    <path d="M 70 340 L 326.7 83.3" stroke="#86efac" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <polygon points="338.0,72.0 331.3,90.7 319.3,78.7" fill="#86efac"/>
+    <text x="382" y="44" text-anchor="middle" class="qtext">query:</text>
+    <text x="382" y="60" text-anchor="middle" class="qtext">quick or brown</text>
+    <path d="M 70 340 L 70.0 135.0" stroke="#2563eb" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <polygon points="70.0,124.0 75.0,137.0 65.0,137.0" fill="#2563eb"/>
+    <path d="M 70 340 L 239.0 340.0" stroke="#dc2626" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <polygon points="250.0,340.0 237.0,345.0 237.0,335.0" fill="#dc2626"/>
+    <path d="M 70 340 L 242.2 167.8" stroke="#7c3aed" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <polygon points="250.0,160.0 244.3,172.7 237.3,165.7" fill="#7c3aed"/>
+    <text x="128" y="116" text-anchor="middle" class="dtext" fill="#2563eb">document 1:</text>
+    <text x="128" y="132" text-anchor="middle" class="dtext" fill="#2563eb">quick dog</text>
+    <text x="250" y="368" text-anchor="middle" class="dtext" fill="#dc2626">document 2:</text>
+    <text x="250" y="384" text-anchor="middle" class="dtext" fill="#dc2626">brown fox</text>
+    <text x="300" y="190" text-anchor="middle" class="dtext" fill="#7c3aed">document 3:</text>
+    <text x="300" y="206" text-anchor="middle" class="dtext" fill="#7c3aed">quick brown fox</text>
+  </g>
+</svg>

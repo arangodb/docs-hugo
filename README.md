@@ -66,6 +66,49 @@ orchestrate builds. The following containers are created:
 - `docs_site` - contains Hugo and the logic to start it
 - `docs_server_<version>` - an ArangoDB single server
 - `docs_server_<version>_cluster` - an ArangoDB cluster
+- `docs_client_<version>` - the ArangoDB client tools (`arangosh` etc.), only for
+  versions with separate server and client tools images (4.x). Otherwise, the
+  client tools run in the `docs_server_<version>` container
+
+#### Update the toolchain dependencies
+
+- **Hugo**: Change `HUGO_VERSION` in
+  [`toolchain/docker/Dockerfile`](toolchain/docker/Dockerfile) to the desired
+  release of <https://github.com/gohugoio/hugo/releases> and rebuild the
+  images with the `create-docs-images-amd64` and `create-docs-images-arm64`
+  CircleCI workflows (see [CIRCLECI.md](CIRCLECI.md#toolchain-images)). Check the
+  release notes for breaking changes and test a build locally first (see below).
+- **Testing image changes locally**: The compose files and the toolchain use the
+  images by name, so build them with the official names to replace your local
+  copies. Changes to the `Dockerfile` can affect all three images (the stages
+  `hugo`, `arangoproxy`, and `toolchain`), so rebuild all of them, e.g. in the
+  `toolchain/docker` folder (use `arm64` on ARM):
+
+  ```sh
+  docker build --target hugo -t arangodb/docs-hugo:site-amd64 .
+  docker build --target arangoproxy -t arangodb/docs-hugo:arangoproxy-amd64 .
+  docker build --target toolchain -t arangodb/docs-hugo:toolchain-amd64 .
+  ```
+
+  Then run a plain build and an example generation. To go back to the published
+  images, pull them again (e.g. `docker pull arangodb/docs-hugo:site-amd64`).
+- **Go modules of arangoproxy**: arangoproxy is compiled from the source code in
+  the repository when its container starts, so updating the modules doesn't
+  require new images:
+
+  ```sh
+  cd toolchain/arangoproxy
+  go get -u ./...   # all modules, or e.g. go get -u github.com/dlclark/regexp2
+  go mod tidy
+  go mod vendor
+  go build ./... && go test ./...
+  ```
+
+  Commit the changes to `go.mod`, `go.sum`, and `vendor/`. If you raise the `go`
+  version in `go.mod`, rebuild the images to get a matching Go toolchain.
+- **Everything else** (Alpine packages, Go, yq, oasisctl) uses the latest versions
+  at the time the images are built. Rebuild the images regularly to get security
+  updates.
 
 ### Render hooks
 
@@ -173,11 +216,15 @@ Go to the `toolchain/docker/<architecture>` folder, with `<architecture>` being
 either `amd64` for x86-64 CPUs and `arm64` for 64-bit ARM CPUs (including
 Apple silicon like M1).
 
-Run the `docker compose` services using the `docker-compose.pain-build.yml` file.
+Run the `docker compose` services using the `docker-compose.plain-build.yml` file.
 
 ```sh
 docs-hugo/toolchain/docker/amd64> docker compose -f docker-compose.plain-build.yml up --exit-code-from site-frontend
 ```
+
+`--exit-code-from site-frontend` stops the arangoproxy service when the site
+service exits and returns its exit code (for static builds, see below). A live
+server runs until you press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 
 The site will be available at `http://localhost:1313`.
 
@@ -201,16 +248,169 @@ includes Google Analytics etc.
 
 **Configuration**
 
-The toolchain container needs to be set up via config file in
-[`toolchain/docker/config.yaml`](toolchain/docker/config.yaml):
+The toolchain is configured with environment variables:
 
-```yaml
-generators:   # Generators to trigger - empty string defaults to all generators
-servers:      # Array to define arangodb servers to be used by the toolchain
-  - image:    # arangodb docker image to be used, can be arangodb/enterprise-preview:... or a branch name
-    version:  # docs branch to put the generated content into
-  - ...       # Additional images and versions as needed
+- `GENERATORS`: the generators to run as a space-separated string (see below).
+  All generators run if it is empty.
+- `ARANGODB_BRANCH_{VERSION}`: the ArangoDB Docker image to use for a docs version,
+  for example, `arangodb/enterprise-preview:devel-nightly`,
+  `arangodb/core-preview:4.0-nightly`, or `arangodb/enterprise:3.12.9`
+  (Docker Hub if no registry is given, other registries like
+  `gcr.io/gcr-for-testing/arangodb/core-preview:4.0-nightly` work, too),
+  or the absolute path of a local build (see **Local builds** below).
+  It can also be a branch name of the `arangodb/arangodb` repository if CI
+  compiled it before: the toolchain then uses the cached image
+  `arangodb/docs-hugo:<version>-<arangodb commit>-<enterprise commit>` (see
+  [CIRCLECI.md](CIRCLECI.md#upstream-references)) for the commits checked out in
+  `ARANGODB_SRC_{VERSION}` (including its `enterprise` folder).
+  No server is started for a version if it is empty, and its content is not
+  regenerated.
+- `ARANGODB_SRC_{VERSION}`: the absolute path to a working copy of the
+  [`arangodb/arangodb`](https://github.com/arangodb/arangodb) repository.
+  Required for the `metrics`, `error-codes`, and `exit-codes` generators.
+  Don't use `~` for your home folder in the `.env` file or in quotes, it isn't
+  expanded there.
+- `ARANGODB_STARTER`: the absolute path of an ArangoDB Starter executable for the
+  cluster of local builds (see **Local builds** below). Optional.
+- `EXAMPLES_SCOPE`: `changed` to only run the examples of pages that have
+  changed or new examples, and to show the saved output for all other pages,
+  or `all` to run all examples. The default is `changed` for local builds and
+  `all` in CI. `OVERRIDE` implies `all`.
+- `OVERRIDE`: only save the output of the examples that match these
+  comma-separated regular expressions, whether the example code changed or not.
+  They are matched against the example name (e.g. `HttpGharialCreate`) and the
+  name of the cache entry (e.g. `HttpGharialCreate_single`). The output of other
+  new and changed examples isn't saved. A regular expression that matches no
+  example is reported as a warning.
+  Without it, only the output of new examples and of examples whose code changed
+  is saved to `site/data/<version>/cache.json`, regardless of the scope (see
+  [Saved example output and previews](CIRCLECI.md#saved-example-output-and-previews)).
+  It only applies to the current run and isn't saved to the `.env` file (see below).
+
+Substitute `{VERSION}` with the docs version in uppercase and with underscores,
+like `3_12` for 3.12 and `4_X` for 4.x. There is one setting per docs version,
+so you can use one server per version.
+
+```sh
+# Bash
+export GENERATORS="examples options optimizer"
+export ARANGODB_BRANCH_3_12="arangodb/enterprise:3.12.9"
+export ARANGODB_SRC_3_12="path/to/arangodb"
+export ARANGODB_BRANCH_4_X="arangodb/core-preview:4.0-nightly"
+export ARANGODB_SRC_4_X="path/to/arangodb2"
 ```
+
+```fish
+# Fish
+set -xg GENERATORS "examples options optimizer"
+set -xg ARANGODB_BRANCH_4_X arangodb/core-preview:4.0-nightly
+```
+
+On Windows using PowerShell, use a Unix-like path:
+
+```powershell
+$Env:ARANGODB_SRC_{VERSION} = "/Drive/path/to/arangodb"
+```
+
+A local run saves the settings to a `.env` file next to the compose file
+(e.g. `toolchain/docker/amd64/.env`), which `docker compose` reads by default.
+This means that you only need to specify the settings once. Subsequent runs use
+the saved settings unless you set the environment variables to different values.
+Set a variable to an empty string to clear a saved setting, for example, to no
+longer start a server for a version:
+
+```sh
+ARANGODB_BRANCH_3_12= docker compose up   # Bash and Fish
+```
+
+You can also edit the `.env` file directly. It isn't committed to the repository.
+
+Exceptions are `OVERRIDE`, `HUGO_URL`, `HUGO_ENV`, and `ENV`: they only apply to
+the run you set them for and aren't saved, so that, for example, `OVERRIDE=".*"`
+doesn't save the output of all examples again in every later run. Set them in
+the shell, not in the `.env` file: each run rewrites the file with the saved
+settings only, so these variables would only take effect once. Variables that
+you `export` (Bash) or `set -x` (Fish) stay set for the rest of the shell
+session, unset them afterwards (`unset OVERRIDE` or `set -e OVERRIDE`), or set
+them for a single command:
+
+```sh
+OVERRIDE=".*" docker compose up   # Bash and Fish
+```
+
+Starting with 4.x, the server (`arangod`, without V8) and the client tools
+(including `arangosh`) are in separate images, for example,
+`arangodb/core-preview:4.0-nightly` and `arangodb/client-tools-preview:4.0-nightly`.
+Only specify the server image (`core`/`core-preview`). The toolchain derives the
+matching client tools image (`client-tools`/`client-tools-preview` in the same
+registry, with the same tag; generally, a repository name `core` or `core-<suffix>`
+becomes `client-tools` or `client-tools-<suffix>`), pulls it if necessary, and runs
+`arangosh` and the other client tools in a separate container. For images that bundle the server and the client tools
+(like `arangodb/enterprise:3.12.9`), the client tools run in the server container.
+
+Images that exist locally are used as they are, otherwise the toolchain pulls
+them. To get the latest build of an image with a tag that is updated regularly,
+like the nightly images, pull it manually before running the toolchain. For
+versions with separate server and client tools images, pull both:
+
+```sh
+docker pull arangodb/core-preview:4.0-nightly
+docker pull arangodb/client-tools-preview:4.0-nightly
+```
+
+The same applies to the images of the toolchain itself
+(`arangodb/docs-hugo:toolchain-amd64`, `arangodb/docs-hugo:site-amd64`,
+`arangodb/docs-hugo:arangoproxy-amd64`, or `-arm64`). CI always pulls the latest
+images. When someone publishes new toolchain images (e.g. with a new Hugo
+version), everyone else keeps using their older local images until they pull the
+new ones. Content that relies on the changes may then fail to build locally, so
+pull the toolchain images after such updates:
+
+```sh
+docker pull arangodb/docs-hugo:toolchain-amd64
+docker pull arangodb/docs-hugo:site-amd64
+docker pull arangodb/docs-hugo:arangoproxy-amd64
+```
+
+**Local builds**
+
+Instead of an image, you can set `ARANGODB_BRANCH_{VERSION}` to the absolute path
+of a local build directory of ArangoDB, for example,
+`/path/to/arangodb/build-presets/nightly-package-x64`. The toolchain runs the
+`arangod`, `arangosh`, and other executables of this build, without creating an
+image. It uses the JavaScript files of the source tree from
+`ARANGODB_SRC_{VERSION}`, or of the working copy that contains the build
+directory if it isn't set. Its version should be the same as the one of the
+build: the JavaScript code of another patch version can be incompatible with the
+executables, and the toolchain warns about it.
+
+- Only static builds are supported, like the ones of the CMake presets except the
+  sanitizer presets (`*-tsan`, `*-alubsan`). Builds of the official build
+  container (e.g. `arangodb/ubuntubuildarangodb-devel`) work, too.
+- The version of the build needs to match the docs version and the version of the
+  source tree (major and minor version).
+- Prefer release-like presets like `nightly-package-x64` or
+  `pr-non-maintainer-x64`. Developer builds with maintainer mode and assertions
+  (e.g. the `developer-x64` preset) work, but the example output can differ from
+  release builds, so don't commit it. The toolchain warns about such builds.
+- Don't rebuild or switch branches in the source tree while the toolchain runs,
+  as the files are used directly.
+
+The executables run in containers of the toolchain image. Two executables that the
+official images include are missing in builds: the ArangoDB Starter (for the
+cluster) and `rclone-arangodb` (for hot backup uploads and downloads). The
+toolchain uses the versions that the source tree specifies (`STARTER_REV` and
+`RCLONE_*` in the `VERSIONS` file), like the official images. It downloads them
+from GitHub once (verifying the checksum of `rclone-arangodb`) and keeps them in
+the `docs_local_tools` Docker volume, so subsequent runs work offline. If a
+download fails (e.g. no internet connection), it uses another version that is
+available locally (downloaded before, or from a locally available `arangodb/core`,
+`arangodb/enterprise`, or `-preview` image) and warns about the version mismatch.
+
+To use a specific Starter executable instead, e.g. a self-compiled one, set
+`ARANGODB_STARTER` to its absolute path. Note that compiling the Starter
+requires an internet connection unless the Go modules are already cached, because
+its repository doesn't include the dependencies.
 
 **Available generators**
 
@@ -222,48 +422,6 @@ servers:      # Array to define arangodb servers to be used by the toolchain
 - `options`
 - `oasisctl`
 
-The generators entry is a space-separated string.
-
-If `metrics`, `error-codes`, or `exit-codes` is in the `generators` string,
-the following environment variable has to be exported to point to a working copy
-of the [`arangodb/arangodb`](https://github.com/arangodb/arangodb) repository:
-
-```sh
-export ARANGODB_SRC_{VERSION}=path/to/arangodb  # Bash
-set -xg ARANGODB_SRC_{VERSION} path/to/arangodb # Fish
-```
-
-Substitute `{VERSION}` with a version number like `3_12`.
-
-On Windows using PowerShell, use a Unix-like path:
-
-```powershell
-$Env:ARANGODB_SRC_{VERSION} = "/Drive/path/to/arangodb"
-```
-
-As long as `toolchain/docker/config.yaml` is unmodified and has the original
-placeholders like `generators: ${GENERATORS}`, you can also use environment
-variables to configure the build:
-
-```sh
-export GENERATORS="examples options optimizer"
-export ARANGODB_BRANCH_3_12="arangodb/enterprise:3.12.9"
-export ARANGODB_SRC_3_12="path/to/arangodb"
-export ARANGODB_BRANCH_4_X="arangodb/enterprise-preview:4.0-nightly"
-export ARANGODB_SRC_4_X="path/to/arangodb2"
-```
-
-**Configuration example**
-
-```yaml
-generators: examples options optimizer
-servers:
-  - image: arangodb/enterprise:3.12.9
-    version: "3.12"
-  - image: arangodb/enterprise-preview:4.0-nightly
-    version: "4.x"
-```
-
 **Run the toolchain**
 
 Go to the `toolchain/docker/<architecture>` folder, with `<architecture>` being
@@ -273,10 +431,19 @@ Apple silicon like M1).
 Run the `docker compose` services without specifying a file:
 
 ```sh
-docs-hugo/toolchain/docker/arm64> docker compose up --abort-on-container-exit
+docs-hugo/toolchain/docker/arm64> docker compose up
 ```
 
 The site will be available at `http://localhost:1313`
+
+To stop the toolchain, press <kbd>Ctrl</kbd>+<kbd>C</kbd> once or run
+`docker compose down` in the same folder. This also removes the containers that
+the toolchain started (servers, arangoproxy, site). If an error occurs, the
+toolchain keeps all containers running so that you can inspect them (e.g. their
+logs with `docker logs docs_server_4.x`) until you stop it. If you force-stop it, the
+containers keep running until the next toolchain run removes them. They can
+block the port of a subsequent plain build, for instance. You can remove them
+with `docker ps -aq --filter name=docs_ | xargs docker rm -f`.
 
 ## Work with the documentation content
 
@@ -1418,28 +1585,12 @@ It makes a warning show at the top of every page for that version.
    ```diff
                 python3 generate_config.py \
                   --workflow << pipeline.parameters.workflow >> \
-   -              --arangodb-branches << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> \
-   +              --arangodb-branches << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_x >> \
+   -              --arangodb-branches 3.11="<< pipeline.parameters.arangodb-3_11 >>" 3.12="<< pipeline.parameters.arangodb-3_12 >>" \
+   +              --arangodb-branches 3.11="<< pipeline.parameters.arangodb-3_11 >>" 3.12="<< pipeline.parameters.arangodb-3_12 >>" 4.x="<< pipeline.parameters.arangodb-4_x >>" \
    ```
 
-   Note that the order of the branches is important because the version information
-   is looked up based on the index number. The branches need to be ordered according
-   to a sorted list of the `name` fields as defined in the `versions.yaml`.
-   
-   Code excerpt from `generate_config.py`:
-   
-   ```py
-   versions = yaml.safe_load(open("versions.yaml", "r"))
-   versions = sorted(versions["/arangodb/"], key=lambda d: d['name'])
-   
-   def workflow_generate(config):
-       # ...
-   
-       for i in range(len(versions)):
-           version = versions[i]["name"]
-           # ...
-           branch = args.arangodb_branches[i]
-   ```
+   Each entry is `VERSION=REF`, with `VERSION` being the `name` of the version in
+   `versions.yaml`. The order doesn't matter.
 
 3. In the `toolchain/docker/amd64/docker-compose.yml` file, add an entry under
    `services.toolchain.volumes` for the new version. Simply increment the value
@@ -1454,47 +1605,20 @@ It makes a warning show at the top of every page for that version.
    for the new version. Example:
 
    ```diff
-          ARANGODB_SRC_3_11: ${ARANGODB_SRC_3_11}
-          ARANGODB_SRC_3_12: ${ARANGODB_SRC_3_12}
-   +      ARANGODB_SRC_4_X: ${ARANGODB_SRC_4_X}
-          ARANGODB_BRANCH_3_11: ${ARANGODB_BRANCH_3_11}
-          ARANGODB_BRANCH_3_12: ${ARANGODB_BRANCH_3_12}
-   +      ARANGODB_BRANCH_4_X: ${ARANGODB_BRANCH_4_X}
+          ARANGODB_SRC_3_11: ${ARANGODB_SRC_3_11:-}
+          ARANGODB_SRC_3_12: ${ARANGODB_SRC_3_12:-}
+   +      ARANGODB_SRC_4_X: ${ARANGODB_SRC_4_X:-}
+          ARANGODB_BRANCH_3_11: ${ARANGODB_BRANCH_3_11:-}
+          ARANGODB_BRANCH_3_12: ${ARANGODB_BRANCH_3_12:-}
+   +      ARANGODB_BRANCH_4_X: ${ARANGODB_BRANCH_4_X:-}
    ```
 
    The same changes are required in the
-   `toolchain/docker/arm64/docker-compose.yml` file.
+   `toolchain/docker/arm64/docker-compose.yml` and
+   `toolchain/docker/docker-compose.local.yml` files. The toolchain script reads
+   the versions from `site/data/versions.yaml`, so it doesn't need changes.
 
-4. In the `toolchain/docker/config.yaml` file, add an entry for the new version.
-   Example:
-
-   ```diff
-      - image: ${ARANGODB_BRANCH_3_12_IMAGE}
-        version: ${ARANGODB_BRANCH_3_12_VERSION}
-   +
-   +  - image: ${ARANGODB_BRANCH_4_X_IMAGE}
-   +    version: ${ARANGODB_BRANCH_4_X_VERSION}
-   ```
-
-5. In the `toolchain/scripts/toolchain.sh` file, find the code that accesses
-   environment variables with the format `$ARANGODB_BRANCH_X_XX` where `X_XX`
-   is a version number like `3_12`, so `$ARANGODB_BRANCH_3_12` for instance.
-   Duplicate the block of an existing version and adjust all version numbers.
-   Example:
-
-   ```diff
-    if [ "$ARANGODB_BRANCH_3_12" != "" ] ; then
-          export ARANGODB_BRANCH_3_12_IMAGE="$ARANGODB_BRANCH_3_12"
-          export ARANGODB_BRANCH_3_12_VERSION="3.12"
-    fi
-    
-   +if [ "$ARANGODB_BRANCH_4_X" != "" ] ; then
-   +      export ARANGODB_BRANCH_4_X_IMAGE="$ARANGODB_BRANCH_4_X"
-   +      export ARANGODB_BRANCH_4_X_VERSION="4.x"
-   +fi
-   ```
-
-6. In the `site/data` folder, create a new folder with the short version number
+4. In the `site/data` folder, create a new folder with the short version number
    as the name, e.g. `4.x`. In the new `site/data/4.x` folder, create a
    `cache.json` file with the following content:
 
@@ -1504,7 +1628,7 @@ It makes a warning show at the top of every page for that version.
 
    Add this untracked file to Git!
 
-7. Duplicate the folder of the most recent version in `site/content`, e.g.
+5. Duplicate the folder of the most recent version in `site/content`, e.g.
    the `3.12` folder, and rename the copy to the new version, e.g. `4.x`.
 
    The `menuTitle` in the front matter of the version homepage, e.g.
@@ -1547,7 +1671,7 @@ It makes a warning show at the top of every page for that version.
 
    Add the new, untracked files to Git!
 
-8. Check whether you need to add additional `aliases` in the front matter of
+6. Check whether you need to add additional `aliases` in the front matter of
    pages. This is necessary keep the switching using the version selector
    working, from renamed/moved pages in older versions to the corresponding
    pages in the newer versions.
@@ -1594,7 +1718,7 @@ It makes a warning show at the top of every page for that version.
     | Type | Name | Value |
     |:-----|:-----|:------|
     | string | `workflow` | `generate` |
-    | string | `arangodb-4_x` | Docker Hub image (e.g. `arangodb/enterprise-preview:devel-nightly`) or GitHub main repo PR link (e.g. `https://github.com/arangodb/arangodb/pull/123456`) |
+    | string | `arangodb-4_x` | Docker Hub image (e.g. `arangodb/core-preview:4.0-nightly`) or GitHub main repo PR link (e.g. `https://github.com/arangodb/arangodb/pull/123456`) |
     | string | `generators` | `examples metrics error-codes exit-codes optimizer options` |
     | string | `deploy-url` | `deploy-preview-{PR-number}` with the number of the docs PR |
     | boolean | `commit-generated` | `true` |
@@ -1798,8 +1922,16 @@ db.collection.save({ _key: "foo" });
 ~db._drop("collection");
 ```
 
-Examples need to remove the collections and Views they create. Not dropping them
-will raise an error unless they are specifically exempt:
+After each example, the toolchain automatically removes the resources that the
+example created: collections, Views, graphs, Analyzers, users, databases, and
+tasks. It also aborts running Stream Transactions, kills running AQL queries,
+and switches back to the `_system` database. The examples therefore don't need
+to clean up (but it doesn't hurt). Other changes like new indexes on existing
+collections or server settings (e.g. the read-only mode) aren't reset, so
+examples need to undo them.
+
+To use resources in subsequent examples on the same page, exempt them from the
+removal:
 
 ```js
 ~db._create("collection");
@@ -1809,27 +1941,58 @@ db.collection.save({...});
 ~addIgnoreCollection("collection");
 ```
 
-This is helpful for creating collections and Views once, using them in multiple
-examples, and finally dropping them instead of having to create and drop them
-in each example.
+This is helpful for creating collections and Views once and using them in
+multiple examples instead of creating them in each example. For other kinds of
+resources, use `addIgnoreGraph()`, `addIgnoreAnalyzer()`, `addIgnoreUser()`,
+`addIgnoreDatabase()`, and `addIgnoreTask()` with the name. A graph is also
+exempt if all of its collections are.
 
-<!-- TODO: Does Hugo guarantee to invoke the render hooks one after another,
-top to bottom of a page, and do this serially?
-
-You need to choose the names for the examples so that they are alphabetically
-sortable to have them execute in the correct order.
--->
-
-The last example of the series should undo the ignore to catch unintended leftovers:
+When all examples of a page ran, the toolchain removes the exempted resources
+of the page, so that they can't affect examples on other pages. You can end an
+exemption earlier with the corresponding `removeIgnore...()` function. The
+resource is then removed after the example:
 
 ```js
 ~removeIgnoreCollection("collection");
 ~removeIgnoreView("view");
-~db._dropView("view");
-~db._drop("collection");
 ```
 
+If an example fails because a resource doesn't exist that a previous example
+created, check whether the previous example exempts it. The log shows what the
+toolchain removed after each example.
+
 Note that a series of examples needs to be contained within a single file.
+
+Use assertions to verify that an example does what it is supposed to do,
+especially if the effect isn't visible in the output, like for operations that
+drop, remove, or change something, or for asynchronous operations that you wait
+for. A failed assertion is reported as an error with the condition:
+
+```js
+~db._create("example");
+var coll = db._collection("example");
+db._drop(coll.name());
+~assert(db._collection("example") === null);
+```
+
+When waiting for an asynchronous operation, poll in short intervals and stop
+on any final state, then assert the expected state. Otherwise, a failure leads
+to waiting until the time limit and isn't noticed:
+
+```js
+for (var count = 0; count < 150; ++count) {
+  var progress = hotbackup.uploadProgress(upload.uploadId);
+  if (progress.DBServers.SNGL.Status !== "STARTED") {
+    break;
+  }
+  internal.wait(0.1);
+}
+assert(progress.DBServers.SNGL.Status === "COMPLETED");
+```
+
+Create test data in batches (e.g. with an AQL query like
+`FOR i IN 1..10000 INSERT { value: i } INTO coll`) instead of inserting documents
+one by one, as every insert is a request to the server.
 
 If a statement is expected to fail (e.g. to demonstrate the error case), then
 this has to be indicated with a special JavaScript comment:

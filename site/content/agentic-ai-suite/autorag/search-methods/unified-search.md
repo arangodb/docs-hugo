@@ -13,8 +13,8 @@ entity relationship analysis, then intelligently selects the most relevant
 documents for LLM processing, producing a streamed natural-language response
 with clickable references to the relevant documents.
 
-{{< diagram src="/images/retriever-instant-search-architecture.svg" 
-           alt="Instant Search Architecture showing parallel retrieval flow" >}}
+{{< diagram src="/images/retriever-instant-search-architecture.svg"
+            alt="Instant Search Architecture showing parallel retrieval flow" >}}
 
 {{< info >}}
 Unified Search is also available as **Instant Search** via the
