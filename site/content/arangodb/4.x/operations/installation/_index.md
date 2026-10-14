@@ -15,9 +15,9 @@ architectures. There are separate packages for the server and for the
 [client tools](../../components/tools/_index.md).
 
 {{< tip >}}
-You can also use the official [Docker images](https://hub.docker.com/_/arangodb/)
-to run ArangoDB in containers on Linux, macOS, and Windows. For more information,
-see the [Docker](docker.md) section.
+You can also use the official Docker images (`arangodb/core` for the server and
+`arangodb/client-tools` for the client tools) to run ArangoDB in containers on
+Linux, macOS, and Windows. For more information, see the [Docker](docker.md) section.
 {{< /tip >}}
 
 If you prefer to compile ArangoDB from source, please refer to the
@@ -33,8 +33,7 @@ ArangoDB requires systems with **Little Endian** byte order.
 You can run ArangoDB on Linux directly (bare metal) or in containers.
 
 Starting with version 3.12, ArangoDB packages for Windows and macOS are not provided
-anymore. You can use the official [Docker images](https://hub.docker.com/_/arangodb/)
-instead.
+anymore. You can use the official [Docker images](docker.md) instead.
 
 {{< warning >}}
 Running production environments with Windows or macOS as the host

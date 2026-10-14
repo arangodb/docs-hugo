@@ -37,7 +37,21 @@ or to use the ArangoDB Shell, install both packages.
 
 The same applies to the container images. The `arangodb/core` image contains
 the server and the `arangodb/client-tools` image the client tools. Up to v3.12,
-the `arangodb/enterprise` image contains both.
+the `arangodb/enterprise` image contains both. Note the following changes if you
+use the server image:
+
+- The database directory in the container is `/var/lib/arangodb4` instead of
+  `/var/lib/arangodb3`. Adjust your volume mounts accordingly.
+- Files in `/docker-entrypoint-initdb.d/` are only supported if they are shell
+  scripts (`*.sh`). The server image cannot run JavaScript files with _arangosh_
+  or restore dumps with _arangorestore_ during the initialization anymore. Use
+  the client tools image for these tasks once the server is running.
+- To run the client tools against a server container, start them in a separate
+  container of the `arangodb/client-tools` image, see
+  [Install with Docker](../../operations/installation/docker.md).
+- If you use the `arangodb/arangodb-starter` image, specify an `arangodb/core`
+  image with the `--docker.image` startup option, like
+  `--docker.image=arangodb/core:4.0.0`.
 
 The packages are provided as `tar.gz` archives for Linux on the x86-64 and
 ARM64 architectures. Debian and RPM packages are no longer provided.
