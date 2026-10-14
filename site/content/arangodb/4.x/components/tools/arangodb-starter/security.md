@@ -139,15 +139,19 @@ Both commands support the following options to adjust the generated token:
   [JWT superuser token](../../../develop/http-api/authentication.md#jwt-superuser-tokens).
 - `--auth.exp <duration>`: The time after which the token expires, relative to
   the current time, like `30m` or `2h`. Supported units are `h`, `m`, and `s`
-  (default). Without this option, the token doesn't expire.
+  (default). Without this option, the token doesn't expire. Note that the
+  ArangoDB client tools cannot renew expiring user or superuser tokens, unlike
+  session tokens.
 - `--auth.paths <path>`: A request path that the token can be used for, without
   the `/_db/<database-name>` prefix. You can specify the option multiple times.
+  The path must match exactly. Wildcards and prefix matching are not supported.
   Requests to other paths are rejected.
 - `--auth.fields <key>=<value>`: An additional field to set in the token, or a
   field to override. You can specify the option multiple times.
 
-For example, to create a token for the `root` user that expires in one hour:
+For example, to create a token for the `root` user that can only be used to
+query the metrics endpoint:
 
 ```bash
-arangodb auth token --auth.jwt-secret=<secret-file> --auth.user=root --auth.exp=1h
+arangodb auth token --auth.jwt-secret=<secret-file> --auth.user=root --auth.paths=/_admin/metrics
 ```

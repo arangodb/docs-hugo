@@ -142,12 +142,14 @@ Both commands support the following options to adjust the generated token:
   (default). Without this option, the token doesn't expire.
 - `--auth.paths <path>`: A request path that the token can be used for, without
   the `/_db/<database-name>` prefix. You can specify the option multiple times.
+  The path must match exactly. Wildcards and prefix matching are not supported.
   Requests to other paths are rejected.
 - `--auth.fields <key>=<value>`: An additional field to set in the token, or a
   field to override. You can specify the option multiple times.
 
-For example, to create a token for the `root` user that expires in one hour:
+For example, to create a token for the `root` user that can only be used to
+query the metrics endpoint:
 
 ```bash
-arangodb auth token --auth.jwt-secret=<secret-file> --auth.user=root --auth.exp=1h
+arangodb auth token --auth.jwt-secret=<secret-file> --auth.user=root --auth.paths=/_admin/metrics/v2
 ```
