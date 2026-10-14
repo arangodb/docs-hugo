@@ -8,7 +8,12 @@ async function renderMermaidDiagrams() {
     if (!_mermaid) {
       let mermaidjs = await import('https://cdn.jsdelivr.net/npm/mermaid@11.14.0/dist/mermaid.esm.min.mjs');
       _mermaid = mermaidjs.default;
-      _mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+      _mermaid.initialize({
+        startOnLoad: false,
+        theme: 'neutral',
+        /* Same as the pre.mermaid background in theme.css */
+        themeVariables: { edgeLabelBackground: '#f3f4f6' },
+      });
     }
     try {
       await _mermaid.run({ nodes });
@@ -18,6 +23,8 @@ async function renderMermaidDiagrams() {
          on the page their image viewer. */
       console.warn('Mermaid rendering failed', err);
     }
+    // Lets theme.css style the diagrams also when cloned into the image viewer
+    nodes.forEach(node => node.querySelector(':scope > svg')?.classList.add('mermaid-diagram'));
     prepareZoomables();
   } catch (err) {
     console.warn('Mermaid rendering failed', err);

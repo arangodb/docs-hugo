@@ -17,7 +17,7 @@
       <figure class="svg-figure">
         {{- $svg.Content | safeHTML -}}
         {{- with $caption }}
-        <figcaption><em>{{ . | markdownify }}</em></figcaption>
+        <figcaption>{{ . | markdownify }}</figcaption>
         {{- end }}
       </figure>
     {{- else -}}
