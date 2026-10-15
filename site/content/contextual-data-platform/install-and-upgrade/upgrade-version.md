@@ -10,6 +10,12 @@ If you run a prerelease or custom version of the data platform, get in touch
 with the Arango support team to determine the upgrade strategy.
 {{< /info >}}
 
+Follow the upgrade procedure that applies for your environment:
+
+- [**Online upgrade**](#online-upgrade): Upgrade with internet access.
+- [**Offline upgrade**](#offline-upgrade): Upgrade without internet access,
+  including fully air-gapped environments.
+
 The upgrade instructions assume that the Kubernetes namespace the data platform
 uses is called `arango` and that the `ArangoDeployment` has the name
 `deployment-example`. Substitute these names as needed.
@@ -155,3 +161,113 @@ arangodb_operator_platform --namespace arango package install \
 
 You can omit the license options if you want to let the tool discover the
 license credentials from the `ArangoDeployment` automatically. 
+
+## Offline upgrade
+
+The following descriptions covers the upgrade procedure for the
+Arango Contextual Data Platform if it has no internet access, including fully
+air-gapped environments.
+
+What needs to be done in which environment is indicated by each step:
+
+- **Air-gapped system**: The offline environment.
+- **Internet-connected system**: The online environment.
+
+### Step 1: Download the upgrade files and information
+
+{{< tag "Internet-connected system" >}}
+
+In case of an upgrade on hardware without internet access, everything needed
+to upgrade the services of the data platform has to be downloaded on a system
+with internet access and needs to be transferred to the offline or air-gapped
+system.
+
+
+- You either receive a package configuration file or a pre-made package for
+  download.
+
+  A **platform package** is a zipped file that contains manifests and container
+  images of various services of the Contextual Data Platform. You can import
+  the platform package into your container registry from where Kubernetes can
+  pull the images.
+
+  A Contextual Data Platform **package configuration** is a YAML file that defines
+  the services, their versions, and configuration. You can use it to create a
+  platform package yourself by exporting from Arango's container registry.
+
+- Download the latest enterprise version of the ArangoDB Kubernetes Operator
+  `kube-arangodb` from <https://github.com/arangodb/kube-arangodb/releases/latest>.
+
+  Look for the file called `kube-arangodb-enterprise-x.x.x.tgz` (where `x.x.x`
+  is the version number). It is the operator for x86-64 CPUs.
+  You may need to click **Show all # assets** to reveal all files. 
+
+- Download the Arango Contextual Data Platform CLI tool `arangodb_operator_platform` from
+  <https://github.com/arangodb/kube-arangodb/releases/latest>.
+  It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
+  architecture, for example:
+
+  - `arangodb_operator_platform_darwin_arm64` for macOS with Apple M1 and later CPUs
+  - `arangodb_operator_platform_linux_amd64` for Linux-based systems with x86-64 CPU
+  - `arangodb_operator_platform_linux_arm64` for Linux-based systems with 64-bit ARM CPU
+  - `arangodb_operator_platform_windows_amd64` for Windows with 64-bit x86-64 CPU
+
+  It is recommended to rename the downloaded executable to
+  `arangodb_operator_platform` (with an `.exe` extension on Windows) and add it to
+  the `PATH` environment variable to make it available as a command in the system.
+
+  On Linux and macOS, you need to make the file executable. Your file manager
+  may allow that in a visual way, or you can use a command-line to run
+  `chmod +x arangodb_operator_platform`.
+
+  On macOS, you may additionally need to run `xattr -r -d com.apple.quarantine arangodb_operator_platform`
+  in a command-line to remove the flag that marks it as downloaded from the
+  internet to be able to run it.
+
+- Pull the necessary images from the internet and save them to files in order to
+  copy them to the air-gapped system.
+
+  You can use container management tool like Docker but you can also use a
+  dedicated tool like `regctl` instead. Keep in mind that you also need this tool
+  in the air-gapped environment to load the images into the container registry.
+
+  You need at least the image of the ArangoDB Kubernetes Operator
+  (`arangodb/kube-arangodb-enterprise`). If you want to use a local MinIO
+  instance for blob storage, make sure to also get this image
+  (e.g. `minio/minio:latest`). The process is the same for any image.
+
+  {{< tabs "container-management" >}}
+
+  {{< tab "Docker" >}}
+  ```sh
+  docker pull docker.io/arangodb/kube-arangodb-enterprise:1.4.3
+  docker save docker.io/arangodb/kube-arangodb-enterprise:1.4.3 -o kube-arangodb-enterprise.tar
+  ```
+  {{< /tab >}}
+
+  {{< tab "regctl" >}}
+  Download the `regctl` executables that match your systems from
+  <https://github.com/regclient/regclient/releases/>.
+
+  In the following, the assumed name of the executable is `regctl`.
+
+  On Linux and macOS, you need to make the file executable. Your file manager
+  may allow that in a visual way, or you can use a command-line to run
+  `chmod +x regctl`.
+
+  On macOS, you may additionally need to run `xattr -r -d com.apple.quarantine regctl`
+  in a command-line to remove the flag that marks it as downloaded from the
+  internet to be able to run it.
+
+  To pull the image and save it to a file as follows:
+
+<!-- TODO: Pull arangodb and k8s pause images too? -->
+
+  ```sh
+  regctl image export docker.io/arangodb/kube-arangodb-enterprise:1.4.3 kube-arangodb-enterprise.tar
+  ```
+  {{< /tab >}}
+
+  {{< /tabs >}}
+
+### Step 2:
