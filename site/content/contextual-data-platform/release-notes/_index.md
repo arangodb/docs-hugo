@@ -9,7 +9,7 @@ pageToc:
 ---
 ## v4.1.1 (October 2026)
 
-This is a maintenance release with stability fixes for AutoGraph.
+This is a maintenance release with stability and security fixes for AutoGraph.
 
 ### AutoGraph
 
@@ -21,9 +21,9 @@ This is a maintenance release with stability fixes for AutoGraph.
 - **Accurate status for long builds**: Knowledge Graph builds that take longer
   than an hour are no longer reported as timed out while they are still
   running.
-- **Clean project deletion**: Deleting a project now removes all of its
-  documents and categories, so a new project with the same name starts empty.
-  Deleting a project also no longer shows a misleading error.
+- **Clean project deletion**: Deleting a large project now correctly removes
+  all its documents and categories, so a new project with the same name starts
+  empty. Deleting a project also no longer shows a misleading error.
 
 ## v4.1.1-preview (September 2026)
 
