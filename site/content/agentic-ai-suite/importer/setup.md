@@ -105,7 +105,7 @@ The File Parser is installed once per environment as the `arangodb-file-parser`
 data platform service. Put your values in that service's `overrides` block in
 the platform package (`platform.yaml`), the same file you install the
 data platform with, and apply the configuration using
-[`arangodb_operator_platform package install`](../../contextual-data-platform/install-and-upgrade/online-setup.md#step-7-install-the-contextual-data-platform-package):
+[`arangodb_operator_platform package install`](../../contextual-data-platform/install-and-upgrade/online-setup.md#step-8-install-the-contextual-data-platform-package):
 
 ```yaml
   arangodb-file-parser:
