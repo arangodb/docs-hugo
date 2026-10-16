@@ -6,6 +6,21 @@ description: >-
   Ingest a directory of documents with AutoGraph, tune the build parameters,
   and pick the right retrieval mode for each kind of question
 ---
+Welcome to tutorial 2! This tutorial moves from a handful of sample texts to a
+real document corpus, with control over how the Context Graph is built and
+queried:
+
+- [Ingest a file corpus](#ingest-a-file-corpus): connect and upload a whole
+  directory of documents.
+- [Basic pipeline configuration](#basic-pipeline-configuration): tune the
+  build parameters to trade extraction depth against build time.
+- [Deploy a retriever](#deploy-a-retriever): start AutoRAG on top of the
+  Context Graph.
+- [Choose a search method](#choose-a-search-method): local, global, or unified
+  search, depending on the kind of question.
+- [Execute queries and verify accuracy](#execute-queries-and-verify-accuracy):
+  read the answers and check that they come from your documents.
+
 ## Prerequisites
 
 - **Completed installation**: A running Arango Contextual Data Platform instance

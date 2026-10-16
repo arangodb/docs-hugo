@@ -151,8 +151,7 @@ or timeout errors, the per-job limits are too tight for your documents.
 ## Prerequisites
 
 - **Arango Contextual Data Platform**.
-- **LLM and embedding API access** (OpenAI-compatible or Triton-compatible
-  endpoints).
+- **LLM and embedding API access** (OpenAI-compatible endpoints).
 - **Valid JWT** for the API (`Authorization: Bearer ...`).
 - A **project** in the target database. Projects keep datasets and
   configurations isolated from each other. For instructions, see the

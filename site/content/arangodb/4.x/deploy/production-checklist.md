@@ -117,16 +117,6 @@ have been performed on your production system before you go live.
   systemd service file). Typically you would use the Kubernetes operator or use
   systemd to launch the _Starter_.
 
-- **Conflict with single server**: If you installed an ArangoDB package and now
-  want to deploy with the _Starter_, make sure to stop - and disable the
-  automated start of - the ArangoDB _Single Instance_ that the package may have
-  set up automatically, e.g. on Ubuntu:
-
-  ```sh
-  service arangodb3 stop
-  update-rc.d -f arangodb3 remove
-  ```
-
 ### Cluster Configuration
 
 - **Replication configuration**: For production clusters, configure

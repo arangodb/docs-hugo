@@ -743,7 +743,7 @@ body .page-container {
 /* Header Left */
 .header-block-left {
     display: flex;
-    align-items: center;
+    flex: 1;
 }
 
 
@@ -904,6 +904,7 @@ body .page-container {
 .search-and-version-container {
     display: flex;
     align-items: center;
+    justify-content: center;
     z-index: 999;
     width: 60vw;
 }
@@ -914,15 +915,25 @@ body .page-container {
     }
 }
 
-.home-link {
-    background: url(/home.svg) no-repeat 50% 45%;
-    background-size: 80%;
-    display: block;
-    height: auto;
-    padding: 0;
-    margin-top: -3px;
-    width: 2rem;
-    height: 2rem;
+.header-external-link {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    margin-left: 16px;
+    white-space: nowrap;
+}
+
+/* Widen the search button when there is plenty of horizontal space */
+@media screen and (min-width: 1280px) {
+    .search-and-version-container .docsearch {
+        width: 100%;
+        max-width: 560px;
+    }
+
+    .search-and-version-container .DocSearch-Button {
+        width: 100%;
+        margin: 0;
+    }
 }
 
 /* Labeled "Docs home" link next to the logo (overrides the icon-only .home-link) */
@@ -2021,7 +2032,8 @@ nav.pagination .next {
 }
 
 .nav-prev:hover,
-.nav-next:hover {
+.nav-next:hover,
+.version-logo-container .link {
     border-bottom: 0;
 }
 
