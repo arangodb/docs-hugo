@@ -36,11 +36,14 @@ FOR node[, edge[, path]]
     - `edges`: An array of all edges on this path.
     - `weights`: An array of the edge weight sums at each depth of this path.
       See the `"weighted"` setting of the [`order`](#order) traversal option.
-- `IN` `min..max`: the minimal and maximal depth for the traversal:
-  - **min** (number, *optional*): edges and nodes returned by this query
-    start at the traversal depth of *min* (thus edges and nodes below it are
-    not returned). If not specified, it defaults to 1. The minimal
-    possible value is 0.
+- `IN` `min..max`: The minimal and maximal depth for the traversal.
+  Depth values of `2` or higher makes it a multi-hop traversal, and if `min` and
+  `max` differ, it's a variable depth traversal.
+  - **min** (number, *optional*): nodes and edges returned by this query
+    start at the traversal depth of *min* (thus nodes and edges below it are
+    not returned). If not specified, it defaults to `1`. The minimal
+    possible value is `0`, which emits the start node and a `null` edge before
+    emitting anything else.
   - **max** (number, *optional*): up to *max* length paths are traversed.
     If omitted, *max* defaults to *min*. Thus only the nodes and edges in
     the range of *min* are returned. *max* cannot be specified without *min*.

@@ -1,5 +1,5 @@
 ---
-title: API changes in the Arango Contextual Data Platform
+title: API changes in the data platform
 menuTitle: API changes
 weight: 10
 description: >-
@@ -19,7 +19,7 @@ across that span, not only the newest service release:
 |---------|-------------------|----------------------|
 | [AutoGraph](#autograph-v0013-to-v0016) | v0.0.12 | v0.0.16 |
 | [Importer](#importer-v0030-to-v0034) | v0.0.29 | v0.0.34 |
-| [Retriever](#retriever-v0018-to-v0020) | v0.0.17 | v0.0.20 |
+| [AutoRAG](#autorag-formerly-retriever-v0018-to-v0020) | v0.0.17 | v0.0.20 |
 | [File Manager](#file-manager-v0019-to-v0022) | v0.0.18 | v0.0.22 |
 
 ### AutoGraph (v0.0.13 to v0.0.16)
@@ -271,8 +271,8 @@ The share is applied to the ranked cluster list as
 `round(target_percentage / 100.0 * cluster_count)`, so a project with a single
 cluster gets **zero** FullGraphRAG clusters at `moderate` and below. Check the
 assigned strategies with `GET /v1/rag-strategizer/strategy` before you query: a
-VectorRAG partition has no entities and no communities, and cannot serve the
-retriever's `LOCAL`, `GLOBAL`, or `UNIFIED` modes.
+VectorRAG partition has no entities and no communities, and cannot serve
+AutoRAG's `LOCAL`, `GLOBAL`, or `UNIFIED` modes.
 
 **New request options**
 
@@ -410,12 +410,11 @@ because otherwise the configuration only takes effect on the next restart.
 **`custom` is a first-class provider**
 
 `custom` identifies any OpenAI-compatible endpoint, such as OpenRouter, Gemini,
-Azure, or a self-hosted gateway, and can be set independently for chat and
+Azure, or a self-hosted LLM gateway, and can be set independently for chat and
 embedding. `chat_api_url` and `embedding_api_url` are required with it. Unknown
 provider strings are rejected rather than silently defaulting to `openai`, and
 configurations already stored as `openai` with a non-default base URL are not
-migrated automatically. The chat side accepts `openai`, `custom`, and `triton`;
-the embedding side accepts `openai` and `custom`.
+migrated automatically.
 
 **The embedding model of a project can no longer be changed**
 
@@ -435,8 +434,8 @@ now always `false` and is retained only for backward compatibility.
 **Credential validation issues a real inference call**
 
 Validation no longer decides model support by looking the model up in the
-provider's model catalog, which produced false negatives on gateways that list
-no embedding models at all, and let a key without remaining credit pass. It
+provider's model catalog, which produced false negatives on LLM gateways that
+list no embedding models at all, and let a key without remaining credit pass. It
 issues one minimal chat completion and one single-input embeddings request
 instead. The `MODEL_INVALID` error code is gone, and failures now map to a fixed
 set of codes such as `INVALID_API_KEY`, `INSUFFICIENT_QUOTA`,
@@ -455,8 +454,8 @@ A `2xx` now means the configuration was accepted and persisted, and
 The two metadata write faults are the exception. The configuration validated but
 could not be stored, so they are server errors — `503`
 `METADATA_WRITE_TIMEOUT`, which is safe to retry, and `500`
-`METADATA_WRITE_FAILED` — and they carry the standard error envelope of the
-gateway instead of the response body above.
+`METADATA_WRITE_FAILED` — and they carry the standard JSON error envelope
+instead of the response body above.
 
 **Model-sensitive endpoints are refused until the model configuration is valid**
 
@@ -504,8 +503,8 @@ carries the per-provider LLM tracing health while tracing is enabled.
 
 **Embedding configuration keys have been renamed**
 
-AutoGraph now uses the same keys as the Importer and the Retriever. Rename them
-in your Helm values and deployment environment **before** you upgrade:
+AutoGraph now uses the same keys as the Importer and AutoRAG. Rename them in
+your Helm values and deployment environment **before** you upgrade:
 
 | Old key | New key |
 |---------|---------|
@@ -649,11 +648,11 @@ The limits the Importer enforces on concurrency, request size, chunking, images,
 and timeouts are now documented. See
 [Limits and Quotas](../../agentic-ai-suite/importer/reference/limits.md).
 
-### Retriever (v0.0.18 to v0.0.20)
+### AutoRAG, formerly Retriever (v0.0.18 to v0.0.20)
 
 {{< tag "Agentic AI Suite" >}}
 
-This release gives the Retriever a query-run history, lets you change its model
+This release gives AutoRAG a query-run history, lets you change its model
 configuration and its chat model without a restart, reports every failed query
 with a machine-readable code, and caps the size of a query.
 
@@ -678,13 +677,13 @@ The following changes require you to adjust existing clients:
 | `PUT /v1/projects/{project}/model-config/credentials` | Change the chat and embedding configuration of a running service. |
 
 For request and response details, see
-[Verify and monitor](../../agentic-ai-suite/retriever/verify-and-monitor.md) and
-[Configure LLMs](../../agentic-ai-suite/retriever/llm-configuration.md).
+[Verify and monitor](../../agentic-ai-suite/autorag/verify-and-monitor.md) and
+[Configure LLMs](../../agentic-ai-suite/autorag/llm-configuration.md).
 
 #### Query run history
 
-The Retriever records every query it serves in the `{project}_Runs` collection
-and exposes it through the `/v1/retriever-runs` endpoints. A run holds the
+AutoRAG records every query it serves in the `{project}_Runs` collection and
+exposes it through the `/v1/retriever-runs` endpoints. A run holds the
 query, the response, the query type, the model, the duration, and a snapshot of
 the configuration it ran with, and it moves from `streaming` to `complete` or
 `error`. A run that stays in `streaming` beyond the stale timeout is swept to
@@ -700,15 +699,15 @@ already deleted, is not an error: the response is HTTP `200` with
 #### Runtime model configuration
 
 `PUT /v1/projects/{project}/model-config/credentials` changes the chat and
-embedding provider, model, secret profile, and API URL of a running Retriever.
-The settings are validated, persisted in the project metadata, and applied to
-the running pod right away, so no restart or reinstall is needed.
+embedding provider, model, secret profile, and API URL of a running AutoRAG
+service. The settings are validated, persisted in the project metadata, and
+applied to the running pod right away, so no restart or reinstall is needed.
 
 - Validation issues one small chat request and one small embeddings request
   instead of looking the model up in the provider's `GET /v1/models` catalog.
-  This detects an expired key and an exhausted quota, and accepts a model that a
-  gateway serves but does not list. The `KEY_*` and `MODEL_INVALID` codes are
-  replaced by the provider's own reason and the field to fix.
+  This detects an expired key and an exhausted quota, and accepts a model that
+  an LLM gateway serves but does not list. The `KEY_*` and `MODEL_INVALID` codes
+  are replaced by the provider's own reason and the field to fix.
 - `custom` is a first-class provider for any OpenAI-compatible endpoint and can
   be set independently for chat and embedding. It requires an explicit
   `chat_api_url` or `embedding_api_url`. Unknown provider strings are rejected
@@ -743,7 +742,7 @@ per-step citations and report them in the `citation_mapping` response metadata.
 A VectorRAG partition still only serves Instant Search and chunk-searching
 Custom Retriever tools, because Global, Local, and Deep Search need the entities
 and communities that VectorRAG does not build. See
-[VectorRAG and FullGraphRAG partitions](../../agentic-ai-suite/retriever/search-methods/_index.md#vectorrag-and-fullgraphrag-partitions).
+[VectorRAG and FullGraphRAG partitions](../../agentic-ai-suite/autorag/search-methods/_index.md#vectorrag-and-fullgraphrag-partitions).
 
 #### Query status and error codes
 
@@ -779,7 +778,7 @@ permission, and model rejections are no longer retried: quota exhaustion arrives
 as a rate-limit error, so a dead key used to be retried for up to an hour. Rate
 limits, timeouts, and connection errors are still retried.
 
-See [Error handling](../../agentic-ai-suite/retriever/error-handling.md).
+See [Error handling](../../agentic-ai-suite/autorag/error-handling.md).
 
 ### File Manager (v0.0.19 to v0.0.22)
 
@@ -866,7 +865,7 @@ The upload reports per-file results and partially succeeds: `200` when every
 file was stored, `207` when at least one failed. The combined size is checked
 after the whole request body has been received, and exceeding it is a `413`.
 
-An oversized batch could previously exhaust the platform gateway's default
+An oversized batch could previously exhaust the data platform API gateway's default
 one-minute upstream timeout and answer `504` even though every file had been
 stored. The service now sets an explicit 15-minute timeout on its route, which
 starts once the request body is fully received.

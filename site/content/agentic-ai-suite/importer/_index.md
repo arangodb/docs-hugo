@@ -3,7 +3,7 @@ title: Importer Service
 menuTitle: Importer
 description: >-
   The Importer service transforms your text documents into a knowledge graph
-  stored in ArangoDB, ready for semantic search and Retriever-driven Q&A
+  stored in ArangoDB, ready for semantic search and AutoRAG-driven Q&A
 weight: 6
 ---
 ## What is the Importer?
@@ -14,7 +14,7 @@ models, extracts entities and communities (in full GraphRAG mode), writes the
 graph data, and creates vector indexes where embeddings exist.
 
 The resulting knowledge graph is the data layer your applications query with
-the [Retriever service](../retriever/) or with AQL directly.
+[AutoRAG](../autorag/) or with AQL directly.
 
 ## When to use it
 
@@ -48,7 +48,7 @@ See [Architecture](architecture.md) for the collections each mode populates.
 - [**Architecture**](architecture.md): Knowledge-graph collections, vector
   indexes, and the async-job lifecycle.
 - [**LLM Configuration**](llm-configuration.md): Configure your chat and
-  embedding providers (OpenAI-compatible APIs or Triton Inference Server).
+  embedding providers (OpenAI-compatible APIs).
 - [**Import Files**](importing-files.md): Single-file and multi-file import
   workflows with examples.
 - [**Incremental Updates**](incremental-updates.md): Rebuild the community layer

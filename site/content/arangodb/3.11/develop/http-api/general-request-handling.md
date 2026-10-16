@@ -77,7 +77,7 @@ Upgrading to HTTP 2 is supported according to the ways outlined in
 [RFC 7540 Section 3](https://tools.ietf.org/html/rfc7540#section-3),
 from non-encrypted connections as well as encrypted connections.
 
-On non-encrypted connections with `http` scheme in the URI clients may use
+On non-encrypted connections with `http` scheme in the URL clients may use
 HTTP 1.1 initially until an upgrade is performed. Upgrading the connection is
 initiated by sending a request with the `Upgrade: h2c` header and exactly one
 `HTTP2-Settings` header. The server will then respond with `101 Switching Protocols`
@@ -90,7 +90,7 @@ The server will check the first 24 octets received over the connection and compa
 it to the HTTP 2 connection preface `PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n`, as outlined
 in [Section 5](https://tools.ietf.org/html/rfc7540#section-5).
 
-On TLS encrypted connections with `https` scheme in the URI ArangoDB supports the
+On TLS encrypted connections with `https` scheme in the URL ArangoDB supports the
 ALPN extension with the `h2` protocol identifier. This means the connection may
 switch to using HTTP/2 right away after a successful TLS handshake.
 
@@ -499,13 +499,13 @@ to DB-Servers or Agency instances.
 
 <small>Introduced in: v3.10.0</small>
 
-By default, the HTTP REST interface of an _arangod_ instance is opened late
+By default, the HTTP interface of an _arangod_ instance is opened late
 during the startup sequence. The instance responds with HTTP 503
-(Service unavailable) until all REST APIs are available and usable.
+(Service unavailable) until all HTTP APIs are available and usable.
 
-You can optionally start the HTTP REST interface early in the startup sequence
+You can optionally start the HTTP interface early in the startup sequence
 by setting the `--server.early-connections` startup option to `true`.
-This configuration allows an instance to respond to a limited set of REST APIs
+This configuration allows an instance to respond to a limited set of HTTP APIs
 during the startup, even during the recovery procedure. This can be useful
 because the recovery procedure can take time proportional to the amount of data
 to be recovered.
@@ -554,7 +554,7 @@ The progress attributes can still be used to determine whether the instance has 
 progress between two calls: if `phase`, `feature`, and `recoveryTick` don't
 change, then there hasn't been progress. Note that this is only true if the
 instance is still starting up. Once the instance has fully started and has
-opened the complete REST interface, the values in the `progress` attribute are
+opened the complete HTTP interface, the values in the `progress` attribute are
 expected to not change until shutdown.
 
 Note that the `maintenance` attribute in responses to `GET /_admin/status` can

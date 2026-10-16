@@ -47,7 +47,7 @@ have been performed on your production system before you go live.
   personnel only. Implement proper authentication and authorization mechanisms.
 
 - **JWT authentication**: Enable JWT authentication for production
-  deployments. See [JWT authentication](../develop/http-api/authentication.md#jwt-user-tokens)
+  deployments. See [JWT authentication](../develop/http-api/authentication.md#bearer-token-authentication)
   for more details.
 
 - **Encryption**: Enable [Encryption at Rest](../operations/security/encryption-at-rest.md)
@@ -116,16 +116,6 @@ have been performed on your production system before you go live.
 - **Auto restart**: Ensure ArangoDB is automatically restarted (e.g. by using a
   systemd service file). Typically you would use the Kubernetes operator or use
   systemd to launch the _Starter_.
-
-- **Conflict with single server**: If you installed an ArangoDB package and now
-  want to deploy with the _Starter_, make sure to stop - and disable the
-  automated start of - the ArangoDB _Single Instance_ that the package may have
-  set up automatically, e.g. on Ubuntu:
-
-  ```sh
-  service arangodb3 stop
-  update-rc.d -f arangodb3 remove
-  ```
 
 ### Cluster Configuration
 

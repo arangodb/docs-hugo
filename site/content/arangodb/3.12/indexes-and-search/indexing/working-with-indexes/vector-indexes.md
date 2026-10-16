@@ -248,8 +248,7 @@ centroids and the quality of vector search thus degrades.
     indexes, see the [Faiss Wiki](https://github.com/facebookresearch/faiss/wiki/The-index-factory).
 
     The number of centroids that the factory string specifies needs to match the
-    `nLists` value, otherwise the training fails and the index stays
-    `"unusable"`. From v3.12.10 onward, you can use a `{}` placeholder in place
+    `nLists` value. From v3.12.10 onward, you can use a `{}` placeholder in place
     of the number to avoid this problem, like `"IVF{},SQ4"`. It is substituted
     with the number of centroids that `nLists` resolves to, per shard in cluster
     deployments:
@@ -267,9 +266,19 @@ centroids and the quality of vector search thus degrades.
     });
     ```
 
-    A factory string with a fixed number of centroids can be combined with the
-    scaling mode of `nLists`, but only if the resolved value happens to match the
-    number in the factory string.
+    From v3.12.12 onward, the factory string is validated when you create the
+    index. The index creation fails with the `ERROR_BAD_PARAMETER` (`10`) error
+    if the string cannot be parsed by the Faiss library, doesn't describe an
+    IVF index, isn't compatible with the `dimension`, or fixes a number of
+    centroids that conflicts with `nLists`. In particular, a factory string
+    with a fixed number of centroids requires you to set `nLists` to the same
+    number. You cannot combine it with the scaling mode of `nLists`, not even if
+    the scaling specification resolves to a matching number. As `nLists`
+    defaults to a scaling specification, you need to set it explicitly in this
+    case.
+
+    Up to v3.12.11, such index definitions are accepted, but the training fails
+    and the index stays `"unusable"`.
 
 ## Resource usage during index creation
 

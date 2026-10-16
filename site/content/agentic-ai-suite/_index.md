@@ -1,7 +1,7 @@
 ---
 title: Agentic AI Suite
 menuTitle: Agentic AI Suite
-weight: 2
+weight: 3
 description: >-
   A comprehensive AI solution that transforms your documents into a Context
   Graph with AutoGraph and answers questions from it with AutoRAG, applies
@@ -48,10 +48,6 @@ Alongside these components, you also get the following additional features:
 - [**Jupyter notebooks**](notebook-servers.md): Run a Jupyter kernel in the
   Contextual Data Platform for hosting interactive notebooks for experimentation and
   development of applications that use ArangoDB as their backend.
-- **Public and private LLM support**: Use public large language models (LLMs)
-  such as OpenAI or private LLMs with [Triton Inference Server](private-llms/triton-inference-server.md).  
-- [**MLflow integration**](private-llms/mlflow.md): Use the popular MLflow as a
-  model registry for private LLMs or to run machine learning experiments.
 - **Application Programming Interfaces (APIs)**: Use the underlying APIs of the
   Agentic AI Suite and build your own integrations. See the
   [API Reference](https://apiref.arango.ai/) for more details.
@@ -85,15 +81,15 @@ to load sample datasets into a deployment.
 
 ## Supported LLM and embedding models
 
-The services of the Agentic AI Suite work with OpenAI-compatible APIs as well as
-self-hosted models served through Triton Inference Server. The recommended setup
+The services of the Agentic AI Suite work with OpenAI-compatible APIs.
+The recommended setup
 is the `openai` provider with the OpenAI models listed below: that is the
 combination ArangoDB tests, and other endpoints can differ in behavior such as
 latency.
 
 You can still use any other OpenAI-compatible endpoint — OpenRouter, Google
 Gemini, Anthropic, Azure, or a corporate LLM — and run a model that is not on the
-list. In the Importer, AutoGraph, and Retriever, use the `custom` provider for
+list. In the Importer, AutoGraph, and AutoRAG, use the `custom` provider for
 these: it is the intended way to point a service at an OpenAI-compatible
 endpoint that is not the OpenAI API itself, and you should always set
 `chat_api_url` / `embedding_api_url` explicitly with it. In those three
@@ -113,7 +109,7 @@ require the Responses API (`/v1/responses`) instead; the Importer and AutoGraph
 detect this and fall back automatically.
 
 A model is listed as supported by the suite only if it works seamlessly across
-the Importer, Retriever, and AutoGraph services. Individual services may also
+the Importer, AutoRAG, and AutoGraph services. Individual services may also
 work with additional models — for the full list available to a specific
 service, see that service's own documentation (for example,
 [Importer LLM Configuration](importer/llm-configuration.md#supported-models)).

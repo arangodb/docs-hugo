@@ -26,12 +26,13 @@ deployment has internet access:
 | **Air-gapped Kubernetes** (no internet access) | Generate a license key on a separate internet-connected machine — the [License Activation portal](https://activate.license.arango.ai/) is the recommended way to do this — then apply it as a Kubernetes secret on the air-gapped cluster. | **Yes** — on the internet-connected machine only |
 
 {{< info >}}
-**Legacy deployments (pre-v3.12.6):** Arango issued a ready-made license
-key directly to customers — there were no client ID and client secret
+**Old license keys instead of license credentials**:\
+Arango issued ready-made license keys directly to customers until the time of
+the ArangoDB v3.12.6 release. There were no client ID and client secret
 credentials, and no Platform CLI tool. If Arango issued you a ready-made
 license key rather than license credentials (a client ID and client
-secret), skip the activation and generation steps and go directly to
-[Apply a license key](#apply-a-license-key).
+secret) and if this license key hasn't expired yet, skip the activation and
+generation steps and go directly to [Apply a license key](#apply-a-license-key).
 {{< /info >}}
 
 {{< info >}}
@@ -89,7 +90,7 @@ See the **Activation portal** entries in
 
 ## License methods summary
 
-- **Activate a deployment** (from v3.12.6 onward):\
+- **Activate a deployment** (from the v3.12.6 release date onward):\
   Customers receive license credentials composed of a client ID and a client secret.
   You can use the Platform CLI tool to activate deployments with these credentials,
   either one-off or continuously.
@@ -98,8 +99,8 @@ See the **Activation portal** entries in
   renew the activation weekly.
 
 - **Apply a license key**:\
-  Up to v3.12.5, customers received a license key directly and it was typically
-  valid for one year. From v3.12.6 onward, customers receive license credentials
+  Before the time of the v3.12.6 release, customers received a license key directly and it was typically
+  valid for one year. Since this release, customers receive license credentials
   instead. You can use the Platform CLI tool to generate a license key using these
   credentials, and the license key generally expires every two weeks.
 
@@ -450,7 +451,7 @@ chmod +x ./arangodb_operator_platform
 
 #### 2. Start an ArangoDB container with the CLI tool mounted
 
-Pull and run an ArangoDB Enterprise image, for example v3.12.8. Expose the
+Pull and run an ArangoDB server image, for example v4.0.0. Expose the
 default port `8529`, set a root password, and bind-mount the Platform CLI
 binary into the container at `/usr/local/bin/` so it is immediately
 available on `PATH`:
@@ -460,7 +461,7 @@ docker run -d --name arangodb \
   -p 8529:8529 \
   -e ARANGO_ROOT_PASSWORD="<root-password>" \
   -v "$(pwd)/arangodb_operator_platform:/usr/local/bin/arangodb_operator_platform:ro" \
-  arangodb/enterprise:3.12.8
+  arangodb/core:4.0.0
 ```
 
 Verify the instance is up with cURL:
@@ -505,8 +506,11 @@ are generating a license key for the deployment you expect, rather than
 trusting whatever is recorded in the inventory file:
 
 ```sh
-curl -u "root:<root-password>" http://localhost:8529/_admin/deployment/id
+wget -qO- "http://root:<root-password>@localhost:8529/_admin/deployment/id"
 ```
+
+The container image doesn't include cURL, so this uses `wget`. Special
+characters in the password need to be URL-encoded.
 
 The response looks like `{"id":"6172616e-676f-4000-0000-05c958168340"}`.
 Copy the `id` value for the next step.

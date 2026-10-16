@@ -28,7 +28,7 @@ in `category`.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate" >}}
 
-Spawn GraphRAG importer workers for the strategy profiles that are not in the
+Spawn Importer workers for the strategy profiles that are not in the
 knowledge graph yet. Called after RAG strategizer is completed.
 
 **Recommended path:** Call after a successful corpus build and strategizer run,
@@ -1028,13 +1028,6 @@ stored](../incremental-graph-updates.md#where-the-values-are-stored).
   delete, so it cannot run at the same time as these operations.
 - A reclustering that fails or is skipped does not clear `needs_reclustering`.
   Start it again once the slot is free.
-- **Triton projects cannot be reclustered, but this endpoint does not reject
-  them.** A recluster of a Triton project is accepted (`accepted: true`) but
-  fails in the background: the Importer rejects it with gRPC
-  `FAILED_PRECONDITION` before doing any work, see
-  [Reclustering](../../importer/incremental-updates.md#reclustering). The failure
-  appears in the `importerOrchestration` status slot, and `needs_reclustering`
-  stays set.
 - A partition **without entities** is a successful no-op. The job reports `0`
   communities over `0` entities and finishes, so a completed job is not evidence
   that anything was refreshed. Check `last_reclustered_at` and the
@@ -1226,7 +1219,7 @@ pick a maintenance window for them.
   [Where to read the score](../incremental-graph-updates.md#where-to-read-the-score).
 - **The reclustering was accepted but `needs_reclustering` is still `true`.**
   `accepted: true` only means the request was taken up. The partition may still
-  be running, it may have failed (a Triton project always fails here), or it may
+  be running, it may have failed, or it may
   never have got the mutation slot: reclusterings are serialized, and a partition
   that waits behind a peer gives up after about ten one-second attempts. None of
   that clears the flag. Check `last_reclustered_at` on the `rags` node to tell
@@ -1243,7 +1236,7 @@ pick a maintenance window for them.
 
 ## Next Steps
 
-- **[Retriever Setup](../../retriever/)**: Query your built knowledge graphs
+- **[AutoRAG](../../autorag/)**: Query your built knowledge graphs
 - **[Monitor Results](../../importer/verify-and-explore.md)**: Verify import success
 - **[Incremental Graph Updates](../incremental-graph-updates.md)**: When to use the `/v1/graph/*` endpoints and how the partition divergence is measured
 - **[Design Guide - Categories to partitions](../design-guide.md#how-categories-become-a-partitioned-knowledge-graph)**: How category labels flow into partition IDs

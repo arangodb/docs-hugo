@@ -129,7 +129,6 @@ label {
 input[type=date], input[type=datetime], input[type=datetime-local], input[type=email], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], input[type=week], textarea, select {
     border: 1px solid;
     border-color: inherit;
-    outline: none;
     border-radius: 3px;
     background-clip: padding-box;
     margin-bottom: 15px;
@@ -147,7 +146,6 @@ input[type="checkbox"] {
     transition: .15s;
     border-style: solid;
     border-width: 1px;
-    outline: none;
 }
 
 button {
@@ -180,7 +178,6 @@ button, input, optgroup, select, textarea {
     border: none;
     cursor: pointer;
     letter-spacing: 1px;
-    outline: none;
     position: relative;
     white-space: initial;
     -moz-transition: all 0.3s;
@@ -219,8 +216,7 @@ a {
     color: var(--gray-950);
 }
 
-a, a:hover, a:focus {
-    outline: none;
+a, a:is(:hover, :focus) {
     text-decoration: none !important;
 }
 
@@ -231,6 +227,31 @@ a, a:hover {
 a:hover {
     text-decoration: underline;
 }
+
+/* Focus ring, keyboard only. The :root prefix outranks Bootstrap's dotted inset a:focus;
+   later rules still override it. --focus-ring is re-set on dark surfaces for contrast. */
+:root {
+    --focus-ring: var(--color-avocado);
+}
+
+.main-nav {
+    --focus-ring: var(--color-electric-lime);
+}
+
+:root :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+}
+
+:root :focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Keep outline out of `transition: all`, which animates the ring's width as it appears. */
+a, .btn, input[type=submit], input[type=reset], button, input[type="checkbox"] {
+    transition-property: color, background-color, border-color, border-width, opacity, box-shadow;
+}
+
 
 small {
     font-size: 80%;
@@ -258,9 +279,7 @@ ul ul, ul ol, ol ul, ol ol {
     border-bottom: 2px solid var(--color-evergreen);
 }
 
-.link:hover,
-.link:focus,
-.link:focus-visible {
+.link:is(:hover, :focus) {
     border-bottom: 2px solid var(--color-leaf-green);
     color: var(--gray-950);
 }
@@ -275,24 +294,13 @@ ul ul, ul ol, ol ul, ol ol {
     color: var(--gray-950);
 }
 
-.link:has(code) {
-    border-bottom: 2px solid var(--color-evergreen);
-    font-size: 14px;
-    overflow: auto;
-    word-wrap: break-word;
-    margin: 0;
-    padding: 2px;
-    word-break: break-word;
-    border-radius: 0;
-    background: var(--gray-100);
-    box-shadow: none;
-    color: var(--gray-950);
-}
+/* Align bottom with parent <a> and make <code> sit on link underline */
 .link code {
-    background-color: transparent;
-    border: none !important;
+    vertical-align: text-bottom;
+    line-height: normal;
     position: relative;
-    top: -1px;
+    bottom: 1px;
+    padding-bottom: 0;
 }
 
 .link > i {
@@ -590,6 +598,13 @@ a.section-link {
     pointer-events: none;
 }
 
+/* Inset, to clear the adjacent buttons */
+.tab-nav-button:focus-visible {
+    outline-offset: -2px;
+}
+
+/* Panels are focusable. The ring is outward: an inset one would be painted over by `pre`. */
+
 /* Tabs end */
 
 /* Steps */
@@ -616,9 +631,12 @@ a.section-link {
     background-color: var(--gray-300);
 }
 
-/* No line below the last step */
+.steps .step:last-child {
+    padding-bottom: .5rem;
+}
+
 .steps .step:last-child::before {
-    display: none;
+    border-radius: 1px;
 }
 
 .steps .step-indicator {
@@ -725,6 +743,7 @@ body .page-container {
 /* Header Left */
 .header-block-left {
     display: flex;
+    flex: 1;
 }
 
 
@@ -826,7 +845,7 @@ body .page-container {
     padding-left: 10px;
 }
 
-header .logo {
+.header .logo {
     width: 219px;
     height: 45px;
     top: 8px;
@@ -839,6 +858,11 @@ header .logo {
     margin-left: 2px;
 }
 
+.header .logo a,
+.arangodb-logo-small a {
+    display: block;
+    height: 100%;
+}
 
 @media screen and (max-width: 768px) {
     .arangodb-logo-large {
@@ -871,6 +895,7 @@ header .logo {
 .search-and-version-container {
     display: flex;
     align-items: center;
+    justify-content: center;
     z-index: 999;
     width: 60vw;
 }
@@ -881,15 +906,25 @@ header .logo {
     }
 }
 
-.home-link {
-    background: url(/home.svg) no-repeat 50% 45%;
-    background-size: 80%;
-    display: block;
-    height: auto;
-    padding: 0;
-    margin-top: -3px;
-    width: 2rem;
-    height: 2rem;
+.header-external-link {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    margin-left: 16px;
+    white-space: nowrap;
+}
+
+/* Widen the search button when there is plenty of horizontal space */
+@media screen and (min-width: 1280px) {
+    .search-and-version-container .docsearch {
+        width: 100%;
+        max-width: 560px;
+    }
+
+    .search-and-version-container .DocSearch-Button {
+        width: 100%;
+        margin: 0;
+    }
 }
 
 /* end Header */
@@ -991,7 +1026,7 @@ header .logo {
     background-color: transparent;
 }
 
-.breadcrumbs > ol > li > a:hover {
+.breadcrumbs > ol > li > a:is(:hover, :focus) {
     color: var(--gray-950);
     border-bottom: 0;
 }
@@ -1347,6 +1382,9 @@ article ul li {
 .header-link {
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
+    /* Box, so the focus ring encloses the icon */
+    display: inline-block;
+    line-height: 1;
 }
 
 h2:hover .header-link,
@@ -1356,6 +1394,11 @@ h5:hover .header-link,
 h6:hover .header-link {
     filter: alpha(opacity=70);
     opacity: 0.7;
+}
+
+/* Reveal on focus, otherwise the ring would surround an invisible icon */
+.header-link:focus-visible {
+    opacity: 1;
 }
 
 .openapi-property-link {
@@ -1375,10 +1418,11 @@ code, p code {
     overflow: auto;
     word-wrap: break-word;
     margin: 0;
-    padding: 2px;
+    padding: 2px 3px;
     word-break: break-word;
     white-space: pre-wrap;
-    border-radius: 0;
+    border: 1px solid #c6c6c6;
+    border-radius: 5px;
     background: var(--gray-100);
     box-shadow: none;
     color: var(--gray-950);
@@ -1398,11 +1442,17 @@ li > code {
     padding: 4px 12px;
     margin: 4px;
     border-radius: 1px;
-    opacity: 0.7;
-    display: none;
+    /* Invisible rather than display:none, which cannot be focused */
+    display: flex;
+    opacity: 0;
 }
 
-.copy-to-clipboard-button:hover{
+pre:hover > .copy-to-clipboard-button {
+    opacity: 0.7;
+}
+
+/* After the rule above to win the specificity tie */
+.copy-to-clipboard-button:is(:hover, :focus-visible) {
     opacity: 1;
 }
 
@@ -1447,15 +1497,12 @@ pre > code {
 
 .code-long {
     max-height: calc(15 * 1.8rem);
-    overflow: hidden;
+    /* clip, not hidden: hidden is a scroll container and so gets a useless tab stop */
+    overflow: clip;
 }
 
 .code-long.expanded {
     max-height: unset;
-}
-
-.copy-to-clipboard:hover > .copy-to-clipboard-button {
-    display: flex;
 }
 
 pre > .code-show-more {
@@ -1741,7 +1788,8 @@ details[open] > summary::before {
     flex-direction: column;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    overflow: clip;
+    overflow-clip-margin: 6px;
     letter-spacing: normal;
     color: var(--fg);
     background-color: var(--bg);
@@ -1792,6 +1840,13 @@ details[open] > summary::before {
     padding: 3px;
 }
 
+.openapi-property-label {
+    color: #3c4257;
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 4px;
+}
+
 .openapi-property-type {
     color: #8792a2;
     font-size: 13px;
@@ -1820,7 +1875,8 @@ details[open] > summary::before {
 .openapi-prop > a > .fa-link {
     opacity: 0;
 }
-.openapi-prop:hover > a > .fa-link {
+.openapi-prop:is(:hover, :focus) > a > .fa-link,
+.openapi-prop > a:focus > .fa-link {
     opacity: 1;
 }
 
@@ -1860,7 +1916,6 @@ details[open] > summary::before {
     display: inline-block;
     padding: 6px 16px;
     font-size: var(--font-size-small);
-    outline: 0;
     line-height: 1;
     text-align: center;
     white-space: nowrap;
@@ -1929,7 +1984,8 @@ nav.pagination .next {
 }
 
 .nav-prev:hover,
-.nav-next:hover {
+.nav-next:hover,
+.version-logo-container .link {
     border-bottom: 0;
 }
 
@@ -1952,7 +2008,6 @@ nav.pagination .next {
     bottom: 35px;
     right: 52px;
     z-index: 99;
-    outline: none;
     background-color: white;
     color: #577138;
     cursor: pointer;
@@ -2198,10 +2253,7 @@ nav.pagination .next {
     font-weight: 400;
 }
 
-.link-nav:hover,
-.link-nav:visited,
-.link-nav:focus,
-.link-nav:focus-visible {
+.link-nav:is(:hover, .link-nav:visited, .link-nav:focus) {
     color: var(--gray-100);
 }
 
@@ -2214,10 +2266,7 @@ nav.pagination .next {
 }
 
 .link-nav-active,
-.link-nav-active:hover,
-.link-nav-active:visited,
-.link-nav-active:focus,
-.link-nav-active:focus-visible,
+.link-nav-active:is(:hover, .link-nav-active:visited, .link-nav-active:focus),
 .link-nav-active + .expand-nav,
 .nav-section:has(.link-nav-active) > .nav-section-header > .link-nav {
     color: var(--color-electric-lime);
@@ -2251,73 +2300,263 @@ nav.pagination .next {
     display: none;
 }
 
-.diagram-lightbox {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    z-index: 9999;
-    justify-content: center;
-    align-items: center;
-    cursor: zoom-out;
+.svg-figure,
+.diagram-figure {
+    margin: 2rem 0;
+    text-align: center;
 }
 
-.diagram-lightbox.active {
-    display: flex;
+.svg-figure figcaption,
+.diagram-figure figcaption {
+    font-size: 0.9em;
+    color: var(--gray-700);
+    margin-top: 0.5rem;
+    text-wrap: balance;
+    font-style: italic;
 }
 
-.diagram-lightbox img {
-    max-width: 95vw;
-    max-height: 95vh;
-    width: auto;
+.diagram-figure img {
+    max-width: 100%;
     height: auto;
-    object-fit: contain;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
 }
 
-.diagram-lightbox-close {
+/* SVGs inlined with the embed-svg shortcode keep their width and height
+   attributes as natural size but shrink to fit narrower columns.
+   The margin also overrides the svg:not(:root) margins from nucleus.css */
+.svg-figure > svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+
+[data-zoomable] {
+    cursor: zoom-in;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+[data-zoomable]:focus-visible {
+    outline: 2px solid var(--green-600);
+    outline-offset: 2px;
+}
+
+.image-zoom-hint {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    padding: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
     margin: 0;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
+    padding: 0.3rem 0.6rem;
+    transform: translateX(-100%);
     border: none;
-    border-radius: 50%;
-    font-size: 24px;
-    cursor: pointer;
+    border-radius: 0.375rem;
+    background: rgba(17, 24, 39, 0.75);
+    color: #fff;
+    font-size: 0.8rem;
+    line-height: 1;
+    cursor: zoom-in;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+}
+
+/* nucleus.css gives every inline SVG a top and left margin */
+.image-zoom-hint svg,
+.image-viewer-toolbar svg {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.image-zoom-hint svg {
+    width: 14px;
+    height: 14px;
+}
+
+.image-zoom-hint.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+@media (hover: none) {
+    .image-zoom-hint {
+        display: none;
+    }
+}
+
+.image-zoom-badge {
+    position: absolute;
+    z-index: 50;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.2s;
-}
-
-.diagram-lightbox-close:hover {
-    background: rgba(255, 255, 255, 0.3);
-}
-
-pre.mermaid {
-    height: 500px;
+    width: 2.25rem;
+    height: 2.25rem;
     margin: 0;
+    padding: 0;
+    transform: translateX(-100%);
+    border: none;
+    border-radius: 0.375rem;
+    background: rgba(17, 24, 39, 0.6);
+    color: #fff;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.image-zoom-badge[hidden] {
+    display: none;
+}
+
+.image-zoom-badge:active {
+    background: rgba(17, 24, 39, 0.85);
+}
+
+.image-zoom-badge svg {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+}
+
+body.image-viewer-open {
     overflow: hidden;
 }
 
-pre.mermaid > svg {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    /* Don't shrink SVG to the size of the diagram, avoiding clipping */
-    max-width: none !important;
+.image-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(17, 24, 39, 0.92);
+    outline: none;
 }
 
-pre.mermaid > svg .nodeLabel {
+.image-viewer[hidden] {
+    display: none;
+}
+
+.image-viewer-stage {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    touch-action: none;
+    cursor: zoom-out;
+}
+
+.image-viewer-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.image-viewer.dragging .image-viewer-content,
+.image-viewer.dragging .image-viewer-stage {
+    cursor: grabbing;
+}
+
+.image-viewer-toolbar {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.image-viewer-toolbar button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0.375rem;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Touch screens keep :hover on the last tapped button, which looks stuck */
+@media (hover: hover) {
+    .image-viewer-toolbar button:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.18);
+    }
+}
+
+.image-viewer-toolbar button:active:not(:disabled) {
+    background: rgba(255, 255, 255, 0.28);
+}
+
+.image-viewer-toolbar button:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: -2px;
+}
+
+.image-viewer-toolbar button:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.image-viewer-zoom {
+    min-width: 3.25rem;
+    color: #fff;
+    font-size: 0.85rem;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+.image-viewer-caption {
+    position: absolute;
+    left: 50%;
+    bottom: 1rem;
+    max-width: min(48rem, calc(100% - 2rem));
+    margin: 0;
+    padding: 0.4rem 0.8rem;
+    transform: translateX(-50%);
+    border-radius: 0.375rem;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.image-viewer-caption[hidden] {
+    display: none;
+}
+
+/* Keep in sync with edgeLabelBackground in theme.js so that edge labels only
+   mask the lines behind them instead of showing as boxes. */
+pre.mermaid {
+    margin: 0;
+    background: #f3f4f6;
+}
+
+.image-viewer-content.mermaid-diagram {
+    background: #f3f4f6;
+}
+
+/* Undo Bootstrap's pre and .label styles */
+.mermaid-diagram {
     word-break: normal;
     overflow-wrap: break-word;
+}
+
+.mermaid-diagram .label {
     font-weight: normal;
+    text-shadow: none;
 }

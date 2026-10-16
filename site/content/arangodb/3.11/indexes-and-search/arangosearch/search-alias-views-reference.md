@@ -26,6 +26,8 @@ index standalone or as part of a View.
 
 Certain settings of inverted indexes need to match if you want to add them to the
 same `search-alias` View, see the [restrictions](../indexing/working-with-indexes/inverted-indexes.md#restrictions).
+A `search-alias` View stores no data of its own, see the
+[Architecture overview of ArangoSearch](architecture.md).
 
 Inverted indexes can be managed as follows:
 - in the web interface, in the **COLLECTIONS** section, in the **Indexes** tab

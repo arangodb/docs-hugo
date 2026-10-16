@@ -3,12 +3,14 @@ title: File Manager HTTP API
 menuTitle: API Reference
 weight: 10
 description: >-
-  HTTP API reference for the File Manager service, covering BYOC container files,
-  RAG input files, and MLflow artifact storage
+  HTTP API reference for the File Manager service, covering BYOC container files
+  and RAG input files
 ---
-The File Manager service provides an HTTP API for managing files across three
-storage categories: BYOC (Bring Your Own Container) service files, RAG input
-files, and MLflow artifacts.
+The File Manager service provides an HTTP API for managing files across the
+following storage categories:
+
+- BYOC (Bring Your Own Container) service files
+- RAG input files
 
 **External base URL:** `https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager`
 
@@ -263,8 +265,9 @@ existing file returns `423`.
 
 ## RAG Input Files
 
-RAG input files are binary files uploaded for GraphRAG processing. They are
-database-scoped and support automatic versioning. Supported file types include
+RAG input files are binary files uploaded for AutoGraph and Importer
+processing. They are database-scoped and support automatic versioning.
+Supported file types include
 images, videos, audio, PDFs, and other binary media.
 
 Every RAG input operation is addressed either by **file** (a file identifier) or
@@ -1274,112 +1277,3 @@ counts.
 **Errors:** `400` (the scope is empty or exceeds the combined 256-character
 limit), `422` (the body or an individual scope label violates its schema),
 `500` (scope resolution or the bulk deletion failed)
-
----
-
-## MLflow Artifacts
-
-MLflow artifact endpoints provide backward-compatible artifact storage for
-MLflow experiments and runs. These endpoints are mounted at the service root
-with no path prefix.
-
-### Upload an Artifact
-
-{{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/{file_path}" >}}
-
-Uploads a file to the specified path in artifact storage.
-
-**Path parameters:**
-
-| Parameter | Description |
-|-----------|-------------|
-| `file_path` | Destination storage path for the artifact. |
-
-**Request body:** Raw binary content of the file.
-
-**Response (200):**
-
-```json
-{
-  "message": "Artifact uploaded successfully"
-}
-```
-
-**Errors:** `500` (server error)
-
----
-
-### List Artifacts
-
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/mlflow-artifacts/artifacts" >}}
-
-Lists MLflow artifacts at the specified directory path.
-
-**Query parameters:**
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `path` | string | `""` | Relative path to the artifact directory. |
-
-**Response (200):**
-
-```json
-{
-  "files": [
-    {
-      "path": "experiment-1/run-1/model.pkl",
-      "is_dir": false,
-      "file_size": 51200
-    },
-    {
-      "path": "experiment-1/run-1/artifacts",
-      "is_dir": true,
-      "file_size": null
-    }
-  ]
-}
-```
-
-**Errors:** `500` (server error)
-
----
-
-### Download an Artifact
-
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/{file_path}" >}}
-
-Downloads the content of the specified artifact file.
-
-**Path parameters:**
-
-| Parameter | Description |
-|-----------|-------------|
-| `file_path` | Path to the artifact to download. |
-
-**Response (200):** Binary file stream (`application/octet-stream`)
-
-**Errors:** `404` (artifact not found), `500` (server error)
-
----
-
-### Delete an Artifact
-
-{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/{file_path}" >}}
-
-Removes the specified file or directory and all its contents from artifact storage.
-
-**Path parameters:**
-
-| Parameter | Description |
-|-----------|-------------|
-| `file_path` | Path to the artifact or directory to delete. |
-
-**Response (200):**
-
-```json
-{
-  "message": "Artifact deleted successfully"
-}
-```
-
-**Errors:** `500` (server error)

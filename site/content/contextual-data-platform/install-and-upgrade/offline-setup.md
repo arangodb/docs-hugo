@@ -640,7 +640,7 @@ It can take a while to import everything into the container registry.
 
 {{< tag "Air-gapped system" >}}
 
-Features like MLflow and GraphML require an additional storage system to save
+Features like GraphML require an additional storage system to save
 model training data, for instance.
 
 The following example shows how to set up a local MinIO and integrate it with

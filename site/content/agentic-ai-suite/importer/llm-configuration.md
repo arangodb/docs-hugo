@@ -2,10 +2,10 @@
 title: Configure LLMs and Embedding Models for the Importer
 menuTitle: LLM Configuration
 description: >-
-  Configure OpenAI-compatible APIs or Triton Inference Server for the Importer service
+  Configure OpenAI-compatible APIs for the Importer service
 weight: 40
 ---
-The Importer service can be configured to use either Triton Inference Server or any
+The Importer service can be configured to use any
 OpenAI-compatible API. That covers the OpenAI API itself, which is the recommended
 setup, as well as any other endpoint implementing the same contract — OpenRouter,
 Gemini, Anthropic, Azure, or a private corporate LLM.
@@ -33,8 +33,7 @@ that is not on the list. Configure these with the `custom` provider and the
 `chat_api_url` / `embedding_api_url` of your endpoint, as described in
 [Using OpenAI-compatible APIs](#using-openai-compatible-apis). Models beyond the
 list below are outside ArangoDB's testing, so validate them in your own
-environment. For the models served through Triton, see
-[Using Triton Inference Server](#using-triton-inference-server).
+environment.
 
 {{% llm-models "importer" %}}
 
@@ -107,12 +106,7 @@ Where:
 - `embedding_api_key`: API key for authenticating with the embedding model service
 - `embedding_dim`: Embedding dimension used for the vector indexes. The default
   value is `512`. It must match the output dimension of the embedding model you
-  configured. On any OpenAI-compatible provider (`openai` or `custom`) you have
-  to set it yourself to match the model, including when that model is
-  `nomic-embed-text-v1`. The only case in which the Importer overrides your
-  value is `embedding_api_provider: "triton"` together with the
-  `nomic-embed-text-v1` model, where it is forced to `768`. A mismatch is hard
-  to diagnose once the indexes exist.
+  configured.
 
 {{< info >}}
 When using the official OpenAI API, the service defaults to `gpt-5.4-nano` and
@@ -137,13 +131,6 @@ value rather than omitting the key.
 You can use different OpenAI-compatible services for chat and embedding. For example, 
 you might use OpenRouter for chat and OpenAI for embeddings, depending 
 on your needs for performance, cost, or model availability.
-
-{{< info >}}
-You cannot mix Triton with OpenAI-compatible APIs: if one of
-`chat_api_provider` and `embedding_api_provider` is `"triton"`, both must be.
-You can, however, combine `"openai"` and `"custom"` freely, which is how you
-serve chat and embeddings from two different OpenAI-compatible services.
-{{< /info >}}
 
 **Example using OpenRouter for chat and OpenAI for embedding:**
 
@@ -211,55 +198,11 @@ Use the model deployment names from your Azure resource as `chat_model` and
 }
 ```
 
-## Using Triton Inference Server
-
-The first step is to install the LLM Host service with the LLM and
-embedding models of your choice. The setup will use the 
-Triton Inference Server and MLflow at the backend. 
-For more details, please refer to the [Triton Inference Server](../private-llms/triton-inference-server.md)
-and [MLflow](../private-llms/mlflow.md) documentation.
-
-Once the `llmhost` service is up-and-running, then you can start the Importer
-service using the below configuration:
-
-```json
-{
-  "env": {
-    "db_name": "your_database_name",
-    "project_name": "your_project_name",
-    "chat_api_provider": "triton",
-    "embedding_api_provider": "triton",
-    "chat_api_url": "your-arangodb-llm-host-url",
-    "embedding_api_url": "your-arangodb-llm-host-url",
-    "chat_model": "mistral-nemo-instruct",
-    "embedding_model": "nomic-embed-text-v1"
-  }
-}
-```
-
-The fields are the same as in the [example using OpenAI](#example-using-openai),
-with these differences:
-- `chat_api_provider` and `embedding_api_provider` are set to `"triton"` instead
-  of `"openai"`.
-- `chat_api_url` and `embedding_api_url` point to your ArangoDB LLM Host service.
-- No API keys or `embedding_dim` are required.
-
-{{< warning >}}
-Two features are unavailable on a Triton-only deployment, because both require
-an OpenAI-compatible endpoint:
-
-- **Image descriptions** need an OpenAI API key in `CHAT_API_KEY`. Graph
-  building still runs entirely on Triton. See
-  [Vision model requirements](semantic-units.md#vision-model-requirements).
-- **Reclustering** is rejected before any work starts. See
-  [Reclustering](incremental-updates.md#reclustering).
-{{< /warning >}}
-
 ## Token budget for chat models
 
 The Importer maps a single completion cap to OpenAI-style chat calls
 (`max_completion_tokens` for newer models that require it, `max_tokens` otherwise)
-and derives an internal prompt-packing budget that GraphRAG uses when building
+and derives an internal prompt-packing budget it uses when building
 community reports. The values are auto-detected from the chat model name, so
 common OpenAI models work without manual tuning. You can override them with the
 following environment variables (also accepted as lower-case JSON keys in the
@@ -349,16 +292,6 @@ The context-length message points at `CHAT_MAX_COMPLETION_TOKENS`,
 `CHAT_MODEL_CONTEXT_TOKENS`, and `GRAPHRAG_LLM_PROMPT_TOKEN_BUDGET` (and the
 equivalent lower-case install request keys) so you can adjust the budget without
 diving into raw logs.
-
-## Choosing the right deployment option
-
-| Feature | OpenAI-compatible APIs | Triton Inference Server |
-|---------|----------------------|------------------------|
-| **Setup Complexity** | Simple | Moderate to complex |
-| **Data Privacy** | Data sent to external services | Data stays in your infrastructure |
-| **Model Selection** | Wide variety available | Limited to self-hosted models |
-| **Maintenance** | Managed by provider | Self-managed |
-| **Best For** | Quick prototyping, public data | Air-gapped environments, sensitive data |
 
 ## Next Steps
 
