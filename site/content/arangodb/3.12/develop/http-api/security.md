@@ -55,9 +55,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
       responses:
@@ -81,7 +81,9 @@ paths:
         and then returns a summary. The JSON response is exactly as in the corresponding
         GET request.
 
-        This is a protected API and can only be executed with superuser rights.
+        This endpoint requires a
+        [superuser JWT](authentication.md#jwt-superuser-tokens). User accounts,
+        including `root`, are not sufficient.
       responses:
         '200':
           description: |
@@ -89,7 +91,7 @@ paths:
         '403':
           description: |
             This API will return HTTP 403 Forbidden if it is not called with
-            superuser rights.
+            a superuser JWT.
       tags:
         - Security
 ```
@@ -127,9 +129,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
       responses:
@@ -227,10 +229,9 @@ paths:
         [`--rocksdb.encryption-key-rotation` startup option](../../components/arangodb-server/options.md#--rocksdbencryption-key-rotation)
         is enabled.
 
-        This is a protected API and can only be executed with superuser rights,
-        which means that you need to authenticate with a
-        [superuser JWT](authentication.md#jwt-superuser-tokens). A user account
-        is not sufficient, not even the `root` user.
+        This endpoint requires a
+        [superuser JWT](authentication.md#jwt-superuser-tokens). User accounts,
+        including `root`, are not sufficient.
         This API is not available on Coordinator nodes.
       responses:
         '200':

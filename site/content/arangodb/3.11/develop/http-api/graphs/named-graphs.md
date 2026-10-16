@@ -668,8 +668,8 @@ paths:
           description: |
             Returned if your user has insufficient rights.
             In order to create a graph, you need to have at least the following privileges:
-            - `Administrate` access on the database.
-            - `Read Only` access on every collection used within this graph.
+            - `rw` access on the database.
+            - `ro` access on every collection used within this graph.
           content:
             application/json:
               schema:
@@ -1255,7 +1255,7 @@ paths:
           description: |
             Returned if your user has insufficient rights.
             In order to drop a graph, you need to have at least the following privileges:
-            - `Administrate` access on the database.
+            - `rw` access on the database.
           content:
             application/json:
               schema:
@@ -1811,8 +1811,8 @@ paths:
           description: |
             Returned if your user has insufficient rights.
             In order to modify a graph, you need to have at least the following privileges:
-            - `Administrate` access on the database.
-            - `Read Only` access on every collection used within this graph.
+            - `rw` access on the database.
+            - `ro` access on every collection used within this graph.
           content:
             application/json:
               schema:
@@ -2252,7 +2252,7 @@ paths:
           description: |
             Returned if your user has insufficient rights.
             In order to drop a vertex, you need to have at least the following privileges:
-            - `Administrate` access on the database.
+            - `rw` access on the database.
           content:
             application/json:
               schema:
@@ -2855,7 +2855,7 @@ paths:
           description: |
             Returned if your user has insufficient rights.
             In order to modify a graph, you need to have at least the following privileges:
-            - `Administrate` access on the database.
+            - `rw` access on the database.
           content:
             application/json:
               schema:
@@ -3342,7 +3342,7 @@ paths:
           description: |
             Returned if your user has insufficient rights.
             In order to drop a vertex, you need to have at least the following privileges:
-            - `Administrate` access on the database.
+            - `rw` access on the database.
           content:
             application/json:
               schema:
@@ -3756,7 +3756,7 @@ paths:
           description: |
             Returned if your user has insufficient rights.
             In order to drop a vertex, you need to have at least the following privileges:
-            - `Administrate` access on the database.
+            - `rw` access on the database.
           content:
             application/json:
               schema:
@@ -4045,7 +4045,7 @@ paths:
           description: |
             Returned if your user has insufficient rights.
             In order to insert vertices into the graph, you need to have at least the following privileges:
-            - `Read Only` access on the database.
+            - `ro` access on the database.
             - `Write` access on the given collection.
           content:
             application/json:
@@ -4315,8 +4315,8 @@ paths:
           description: |
             Returned if your user has insufficient rights.
             In order to update vertices in the graph, you need to have at least the following privileges:
-            - `Read Only` access on the database.
-            - `Read Only` access on the given collection.
+            - `ro` access on the database.
+            - `ro` access on the given collection.
           content:
             application/json:
               schema:
@@ -4757,7 +4757,7 @@ paths:
           description: |
             Returned if your user has insufficient rights.
             In order to update vertices in the graph, you need to have at least the following privileges:
-            - `Read Only` access on the database.
+            - `ro` access on the database.
             - `Write` access on the given collection.
           content:
             application/json:
@@ -5202,7 +5202,7 @@ paths:
           description: |
             Returned if your user has insufficient rights.
             In order to replace vertices in the graph, you need to have at least the following privileges:
-            - `Read Only` access on the database.
+            - `ro` access on the database.
             - `Write` access on the given collection.
           content:
             application/json:
@@ -5538,7 +5538,7 @@ paths:
           description: |
             Returned if your user has insufficient rights.
             In order to delete vertices in the graph, you need to have at least the following privileges:
-            - `Read Only` access on the database.
+            - `ro` access on the database.
             - `Write` access on the given collection.
           content:
             application/json:
@@ -5985,7 +5985,7 @@ paths:
           description: |
             Returned if your user has insufficient rights.
             In order to insert edges into the graph, you need to have at least the following privileges:
-            - `Read Only` access on the database.
+            - `ro` access on the database.
             - `Write` access on the given collection.
           content:
             application/json:
@@ -6272,8 +6272,8 @@ paths:
           description: |
             Returned if your user has insufficient rights.
             In order to update vertices in the graph, you need to have at least the following privileges:
-            - `Read Only` access on the database.
-            - `Read Only` access on the given collection.
+            - `ro` access on the database.
+            - `ro` access on the given collection.
           content:
             application/json:
               schema:
@@ -6775,7 +6775,7 @@ paths:
           description: |
             Returned if your user has insufficient rights.
             In order to update edges in the graph, you need to have at least the following privileges:
-            - `Read Only` access on the database.
+            - `ro` access on the database.
             - `Write` access on the given collection.
           content:
             application/json:
@@ -7295,7 +7295,7 @@ paths:
           description: |
             Returned if your user has insufficient rights.
             In order to replace edges in the graph, you need to have at least the following privileges:
-            - `Read Only` access on the database.
+            - `ro` access on the database.
             - `Write` access on the given collection.
           content:
             application/json:
@@ -7654,7 +7654,7 @@ paths:
           description: |
             Returned if your user has insufficient rights.
             In order to delete vertices in the graph, you need to have at least the following privileges:
-            - `Read Only` access on the database.
+            - `ro` access on the database.
             - `Write` access on the given collection.
           content:
             application/json:
