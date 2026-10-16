@@ -3,8 +3,8 @@ title: Features and Improvements in ArangoDB 4.x
 menuTitle: What's New in 4.x
 weight: 5
 description: >-
-  Faster joins in sharded clusters and SmartGraphs, spread syntax and string
-  concatenation in AQL
+  Faster joins in sharded clusters and SmartGraphs, spread syntax and easier
+  string concatenation in AQL
 ---
 ArangoDB 4.x streamlines the database core. The server (_arangod_) no longer
 executes JavaScript: [Foxx microservices](incompatible-changes-in-4-x.md#foxx-removed),
