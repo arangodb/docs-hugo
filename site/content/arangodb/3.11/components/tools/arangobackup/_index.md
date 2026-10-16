@@ -22,7 +22,9 @@ _arangobackup_ creates instantaneous and consistent
 and structures stored in ArangoDB.
 
 Hot backups rely on hard link magic performed on the database's
-persistence layer.
+persistence layer. They are stored on the server in the `backups` folder of its
+database directory, or on each DB-Server in case of a cluster. See
+[Create](examples.md#create) for details.
 
 _arangobackup_ can be used for all ArangoDB deployment modes
 (Single Instance, Active Failover, Cluster). It always creates what
