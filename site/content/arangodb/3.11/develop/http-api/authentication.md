@@ -391,13 +391,13 @@ To reload the JWT secrets of a local _arangod_ process without a restart, you
 may use the following HTTP API. A `POST` request reloads the secret, a
 `GET` request may be used to load information about the currently used secrets.
 
-### Get information about the loaded JWT secrets
+### Get the hashes of the loaded JWT secrets
 
 ```openapi
 paths:
   /_db/{database-name}/_admin/server/jwt:
     get:
-      operationId: getServerJwtSecrets
+      operationId: getServerJwtSecretHashes
       description: |
         Get information about the currently loaded secrets.
 

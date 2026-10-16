@@ -3,8 +3,8 @@ title: Audit logging and encryption HTTP APIs
 menuTitle: Security
 weight: 105
 description: >-
-  The security-related endpoints in the HTTP interface let you configure
-  audit logging, encryption at rest, and encryption in transit
+  The security-related endpoints in the HTTP interface let you inspect and
+  reload the TLS data, and inspect and rotate the encryption at rest keys
 ---
 ## Audit logging
 
@@ -96,6 +96,96 @@ paths:
 
 ## Encryption at rest
 
+### Get the encryption at rest key hashes
+
+```openapi
+paths:
+  /_db/{database-name}/_admin/server/encryption:
+    get:
+      operationId: getEncryptionAtRestKeyHashes
+      description: |
+        {{</* warning */>}}
+        The encryption at rest key rotation is an **experimental** feature,
+        and its APIs and behavior are still subject to change. 
+        {{</* /warning */>}}
+
+        Get information about the currently loaded user-supplied encryption at
+        rest keys. The keys themselves are not returned, only the SHA-256 hashes
+        of the key secrets. If you use the
+        [`--rocksdb.encryption-keyfolder`](../../components/arangodb-server/options.md#--rocksdbencryption-keyfolder)
+        startup option, there is one entry for every key file in the folder.
+
+        This endpoint is only available if the
+        [`--rocksdb.encryption-key-rotation` startup option](../../components/arangodb-server/options.md#--rocksdbencryption-key-rotation)
+        is enabled.
+
+        This API is not available on Coordinator nodes.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database. If the `--server.harden` startup option is enabled,
+            administrate access to the `_system` database is required.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Successfully retrieved the encryption at rest key information.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  result:
+                    description: |
+                      The result object.
+                    type: object
+                    required:
+                      - encryption-keys
+                    properties:
+                      encryption-keys:
+                        description: |
+                          An array of objects with the SHA-256 hashes of the key secrets.
+                          Can be empty.
+                        type: array
+                        items:
+                          type: object
+                          required:
+                            - sha256
+                          properties:
+                            sha256:
+                              type: string
+                              example: e1b85b27d6bcb05846c18e6a48f118e89f0c0587140de9fb3359f8370d0dba08
+        '403':
+          description: |
+            The endpoint has been called on a Coordinator.
+        '404':
+          description: |
+            Encryption at rest is not enabled, or the encryption key rotation is
+            disabled via the `--rocksdb.encryption-key-rotation` startup option.
+      tags:
+        - Security
+```
+
 ### Rotate the encryption at rest key
 
 ```openapi
@@ -137,7 +227,10 @@ paths:
         [`--rocksdb.encryption-key-rotation` startup option](../../components/arangodb-server/options.md#--rocksdbencryption-key-rotation)
         is enabled.
 
-        This is a protected API and can only be executed with superuser rights.
+        This is a protected API and can only be executed with superuser rights,
+        which means that you need to authenticate with a
+        [superuser JWT](authentication.md#jwt-superuser-tokens). A user account
+        is not sufficient, not even the `root` user.
         This API is not available on Coordinator nodes.
       responses:
         '200':
@@ -184,7 +277,8 @@ paths:
                               example: e1b85b27d6bcb05846c18e6a48f118e89f0c0587140de9fb3359f8370d0dba08
         '403':
           description: |
-            The endpoint needs to be called with superuser rights.
+            The endpoint has not been called with a superuser JWT, or it has been
+            called on a Coordinator.
         '404':
           description: |
             The encryption key rotation is disabled via the
