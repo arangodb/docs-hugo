@@ -178,8 +178,8 @@ but you can substitute them as follows for a schema description in terms of JSON
     - _collection name_ (dict):
       - `features` (dict): A dictionary mapping document properties to the following values:
         - `featureType` (str): The type of feature. Options include `text`,
-          `category`, `numeric`, or `label`. Set an attribute to `label` to
-          mark it as the attribute to predict. This is required for Node
+          `category`, `numeric`, or `label`. Set a single attribute to `label`
+          across `features`. This is required for Node
           Classification; without a `label` feature, you can only train Node
           Embeddings.
       - `config` (dict): Collection-level configuration settings.
