@@ -267,7 +267,7 @@ the Platform's Kubernetes services.
 
 ## Step 7: Set up object storage
 
-Features like MLflow and GraphML require an additional storage system to save
+Features like GraphML require an additional storage system to save
 model training data, for instance.
 
 The following example shows how to set up a local SeaweedFS and integrate it
