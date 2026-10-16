@@ -30,6 +30,28 @@ require("internal").load("/tmp/test.js")
 You can exit _arangosh_ using the key combination {{< kbd "Ctrl D" >}} or by
 typing `quit` and hitting {{< kbd "Return" >}}.
 
+## Skipping the connection to the server
+
+<small>Introduced in: v3.12.13</small>
+
+By default, _arangosh_ connects to the server specified by `--server.endpoint`
+on startup. You can set the `--connect` startup option to `false` to skip
+the connection, for example, to run JavaScript code that doesn't need a server
+without waiting for a connection attempt to time out:
+
+```sh
+arangosh --connect false --javascript.execute-string "print(1 + 1)"
+```
+
+The option applies to the interactive shell and `--javascript.execute-string`.
+It has no effect on `--javascript.execute`, which always connects.
+
+Without a connection, the `arango` and `db` objects are not available and you
+cannot connect to a server later in the same session.
+
+_arangoinspect_ also has this option because it is based on _arangosh_, but
+you shouldn't disable the connection as it needs a server to inspect.
+
 ## Shell Output
 
 The ArangoDB shell prints the output of the last evaluated expression

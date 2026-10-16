@@ -3434,6 +3434,21 @@ activities.get_snapshot();
  ── RestHandler: {"method":"GET","url":"/_admin/activities","handler":"ActivityRegistryRestHandler"}
 ```
 
+#### Skip the connection to the server
+
+<small>Introduced in: v3.12.13</small>
+
+The new `--connect` startup option of _arangosh_ lets you start the shell
+without connecting to a server by setting it to `false`. This is useful for
+running JavaScript code that doesn't need a server, for example, using
+`--javascript.execute-string`, without waiting for a connection attempt to time
+out if no server is reachable.
+
+_arangoinspect_ is based on _arangosh_ and thus also has the option, but it
+requires a server connection to collect information.
+
+See [ArangoDB Shell details](../../components/tools/arangodb-shell/details.md#skipping-the-connection-to-the-server).
+
 ## Internal changes
 
 ### Upgraded bundled library versions
