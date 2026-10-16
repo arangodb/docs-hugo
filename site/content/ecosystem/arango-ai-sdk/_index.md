@@ -12,7 +12,9 @@ description: >-
 [Agentic AI Suite](../../agentic-ai-suite/_index.md). It is the code-first way to
 drive an [AutoGraph](../../agentic-ai-suite/autograph/_index.md) workflow: sign
 in, create a project, store the API keys the models need, upload your documents,
-deploy the AutoGraph service, and ingest the documents into a Context Graph.
+deploy the AutoGraph service, ingest the documents into a Context Graph, and
+deploy an [AutoRAG](../../agentic-ai-suite/autorag/_index.md) retriever to ask
+questions against it.
 
 The SDK wraps the suite's wire contracts, so you never assemble a URL, set an
 authentication header, or interpret an HTTP status code.
@@ -31,10 +33,15 @@ project = client.project.create(project_name="sales", project_type="autograph")
 ```
 
 The SDK is developed continuously and grows one area at a time. It does not
-cover the entire AutoGraph flow yet. Editing strategies, deleting categories or
-files from the graph, and deploying AutoRAG retrievers are done through the
+cover the entire AutoGraph flow yet. Editing strategies and deleting categories
+or files from the graph are done through the
 [web interface](../../agentic-ai-suite/autograph/web-interface.md) or the
-[HTTP API](../../agentic-ai-suite/autograph/reference/_index.md).
+[HTTP API](../../agentic-ai-suite/autograph/reference/_index.md). On the AutoRAG
+side, the SDK asks one question per call and returns the complete answer.
+Streaming the answer, Deep Search with the LLM planner, and the Custom Retriever
+are done through the
+[AutoRAG HTTP API](../../agentic-ai-suite/autorag/executing-queries.md). The SDK
+also cannot list past query runs.
 
 ## What maps to what
 
@@ -54,11 +61,15 @@ thing:
 | Add documents to a built graph | **Update Corpus Graph** | `project.autograph.corpus_build(incremental=True)` |
 | Generate strategies | **Generate strategies** | `project.autograph.strategize()` |
 | Set the GraphRAG ↔ VectorRAG mix | **Complexity** slider | `strategize(complexity=...)` |
-| Extract entities from images | **Extract images from documents** | `strategize(extract_images_default=True)` |
+| Extract entities from images | **Extract images from documents** | `strategize(extract_images_default=True)`, with complexity `high` or `very_high` |
 | Review strategies | **Review strategies** step | `project.autograph.strategies()` (read-only) |
 | Build the Knowledge Graph | **Build Knowledge Graph** | `project.autograph.orchestrate()` |
 | Run the whole ingestion | — | `project.autograph.ingest()` |
 | Remove the service | — | `project.autograph.undeploy()` |
+| Deploy a retriever | — | `project.autorag.deploy()` |
+| Find existing retrievers | — | `project.autorag.list()`, `project.autorag.get()` |
+| Ask a question | — | `retriever.ask()` |
+| Remove a retriever | — | `retriever.undeploy()` |
 
 The mapping is not one to one. The web interface folds several steps into a
 single button, and the SDK groups operations into namespaces on a client. In the
@@ -69,6 +80,12 @@ extraction and `max_parallel_clusters`, which sets how many clusters the
 strategizer analyzes at once, are only on `strategize()`, not on `ingest()`. The
 web interface's **Parallel builds** setting for the import has no SDK
 equivalent yet.
+
+A project holds exactly one AutoGraph service but can run several AutoRAG
+retrievers, each with its own models and secret profiles. That is why
+`project.autograph` is the service itself, while `project.autorag` is a manager:
+`deploy()`, `list()`, and `get()` on it hand back a retriever object, and you
+call `ask()` and `undeploy()` on that object.
 
 ## How it relates to the rest of the platform
 
@@ -85,12 +102,16 @@ The SDK is a client for services that are documented in their own right:
 - The [File Manager](../../platform-suite/file-manager/_index.md) holds the
   uploaded documents. `client.files` puts them there, under the scope the
   ingestion later reads from.
+- [AutoRAG](../../agentic-ai-suite/autorag/_index.md) answers questions from the
+  Context Graph. `project.autorag` deploys retrievers into a project, and
+  `ask()` on a retriever sends it a question.
 
 ## Get started
 
 - [Installation](installation.md): requirements and how to install the package.
 - [Getting started](getting-started.md): a short tutorial that takes you from an
-  empty database to a Context Graph built from your documents.
-- [SDK reference documentation](https://arangoml.github.io/arango-ai-sdk/): every class, method, parameter, and
+  empty database to a Context Graph built from your documents and a retriever
+  that answers questions against it.
+- [SDK reference documentation](https://arango-ai-sdk-reference.arango.ai/): every class, method, parameter, and
   exception in the SDK.
 - [Source code](https://github.com/arangoml/arango-ai-sdk): the SDK's GitHub repository, including its changelog.
