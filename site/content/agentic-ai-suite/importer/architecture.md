@@ -222,9 +222,10 @@ recluster endpoint and how to poll its job, see
 see [Error handling](reference/error-handling.md#synchronous-http-errors).
 
 {{< info >}}
-The recluster handler raises the gRPC status `UNAVAILABLE`, which the HTTP
-gateway maps to **`HTTP 503`**. A REST caller sees `503` with the message in the
-body, and only a gRPC caller sees the `UNAVAILABLE` token itself.
+The recluster handler raises the gRPC status `UNAVAILABLE`, which the
+gRPC-to-HTTP mapping turns into **`HTTP 503`**. An HTTP caller sees `503` with
+the message in the body, and only a gRPC caller sees the `UNAVAILABLE` token
+itself.
 {{< /info >}}
 
 Terminal statuses include `service_completed`, `service_failed`,

@@ -19,8 +19,8 @@ description: >-
 
 ## Import your first document
 
-You reach the Importer through the platform API gateway on port `8529`. Every
-call includes an `Authorization: Bearer <token>` header.
+You reach the Importer through the data platform API gateway on port `8529`.
+Every call includes an `Authorization: Bearer <token>` header.
 
 {{< steps >}}
 
