@@ -100,7 +100,7 @@ VERSION_OPERATOR='1.4.5' # Use a newer version if available
 
 helm upgrade --install operator \
   --namespace arango \
-  "https://github.com/arangodb/kube-arangodb/releases/download/${VERSION_OPERATOR}/kube-arangodb-enterprise-${VERSION_OPERATOR}.tgz" \
+  "https://github.com/arangodb/kube-arangodb/releases/download/$VERSION_OPERATOR/kube-arangodb-enterprise-$VERSION_OPERATOR.tgz" \
   --set "webhooks.enabled=true" \
   --set "operator.args[0]=--deployment.feature.gateway=true" \
   --set "operator.architectures={amd64}"
@@ -176,9 +176,9 @@ kind: "ArangoDeployment"
 metadata:
   name: "deployment-example"
 spec:
-  mode: Cluster
   architecture:
     - amd64
+  mode: Cluster
   image: "arangodb/enterprise:3.12.11"
   gateway:
     enabled: true
@@ -221,8 +221,10 @@ and wait for the pods to be ready:
 ```sh
 kubectl apply --namespace arango -f deployment.yaml
 
-kubectl get pods --namespace arango --watch  # Ctrl+C to stop watching
+kubectl get pods --namespace arango --watch
 ```
+
+You can stop watching the pods with the key combination {{< kbd "Ctrl C" >}}.
 
 Given the above specification using the name `deployment-example`, you should
 eventually see pods with the following names with a status of `Running`:
@@ -377,15 +379,15 @@ kubectl apply -f ./seaweedfs.yaml
 
 Create another file to configure the storage for the Contextual Data Platform
 and call it e.g. `platform-storage.yaml`. The name of the `ArangoPlatformStorage`
-must match the name of the `ArangoDeployment`. The `allowInsecure` option is
-required because the in-cluster connection uses plain HTTP:
+(`deployment-example`) must match the name of the `ArangoDeployment`.
+The `allowInsecure` option is required because the in-cluster connection uses
+plain HTTP:
 
 ```yaml
 apiVersion: platform.arangodb.com/v1beta1
 kind: ArangoPlatformStorage
 metadata:
   name: deployment-example
-  namespace: arango
 spec:
   backend:
     s3:
@@ -399,7 +401,7 @@ spec:
 Integrate the object storage with the Contextual Data Platform by applying the file:
 
 ```sh
-kubectl apply -f ./platform-storage.yaml
+kubectl apply --namespace arango -f ./platform-storage.yaml
 ```
 
 Verify that the storage integration is ready. The `READY` column needs to show
@@ -471,6 +473,8 @@ they are all up:
 ```sh
 kubectl get pods --namespace arango --watch
 ```
+
+You can stop watching the pods with the key combination {{< kbd "Ctrl C" >}}.
 
 The first run takes several minutes because the service images are large and
 are pulled for the first time. Eventually, every pod reaches the `Running`
