@@ -177,7 +177,11 @@ but you can substitute them as follows for a schema description in terms of JSON
   - `vertexCollections` (dict): A dictionary mapping the node collection names to a configuration dictionary:
     - _collection name_ (dict):
       - `features` (dict): A dictionary mapping document properties to the following values:
-        - `featureType` (str): The type of feature. Options include `text`, `category`, `numeric`, or `label`.
+        - `featureType` (str): The type of feature. Options include `text`,
+          `category`, `numeric`, or `label`. Set a single attribute to `label`
+          across `features`. This is required for Node
+          Classification; without a `label` feature, you can only train Node
+          Embeddings.
       - `config` (dict): Collection-level configuration settings.
         - `featurePrefix` (str): Identical to global `featurePrefix` but for this collection.
         - `dimensionalityReduction` (dict): Identical to global `dimensionalityReduction` but for this collection.
@@ -414,10 +418,13 @@ The Training Service depends on a **Training Specification**:
 
 - `mlSpec` (dict): Describes the desired machine learning task, input features, and
     the attribute label to be predicted.
-  - `classification` (dict): Dictionary to describe the Node Classification Task Specification.
+  - `classification` (dict): Dictionary to describe the Node Classification
+    Task Specification. Requires a featurization job that included a `label`
+    feature.
     - `targetCollection` (str): The ArangoDB collection name that contains the prediction label.
     - `inputFeatures` (str): The name of the feature to be used as input.
-    - `labelField` (str): The name of the attribute to be predicted.
+    - `labelField` (str): The name of the featurized label attribute, as
+      returned in `label_field` by the featurization job.
     - `batchSize` (int): The number of documents to process in a single training batch. Default is `64`.
     - `dataLoadBatchSize` (int): The number of documents loaded from ArangoDB into memory in a single batch during the data loading phase. Default is `50000`.
     - `dataLoadParallelism` (int): The number of parallel processes used when loading data from ArangoDB into memory for training. Default is `10`.

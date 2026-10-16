@@ -2,7 +2,7 @@
 title: Configure LLMs and Embedding Models for AutoRAG
 menuTitle: LLM Configuration
 description: >-
-  Configure OpenAI-compatible APIs or Triton Inference Server for AutoRAG,
+  Configure OpenAI-compatible APIs for AutoRAG,
   at install time or at runtime
 weight: 20
 ---
@@ -10,7 +10,7 @@ weight: 20
 **Getting Started Path:** [Overview](./) → **Configure LLMs** → [Search Methods](search-methods/_index.md) → [Execute Queries](executing-queries.md) → [Verify](verify-and-monitor.md)
 {{< /info >}}
 
-AutoRAG can be configured to use either Triton Inference Server or any
+AutoRAG can be configured to use any
 OpenAI-compatible API. That covers the OpenAI API itself, which is the recommended
 setup, as well as any other endpoint implementing the same contract — OpenRouter,
 Gemini, Anthropic, Azure, or a private corporate LLM.
@@ -36,42 +36,35 @@ that is not on the list. Configure these with the `custom` provider and the
 `chat_api_url` / `embedding_api_url` of your endpoint, as described in
 [Using OpenAI-compatible APIs](#using-openai-compatible-apis). Models beyond the
 list below are outside ArangoDB's testing, so validate them in your own
-environment. For the models served through Triton, see
-[Using Triton Inference Server for chat and embedding](#using-triton-inference-server-for-chat-and-embedding).
+environment.
 
 {{% llm-models "retriever" %}}
 
 ## Supported Provider Combinations
 
-AutoRAG supports the following provider configurations:
+AutoRAG supports **OpenAI-compatible providers** for chat and embeddings.
 
-1. **OpenAI-compatible for chat and embeddings**: Use the OpenAI API (`openai`)
-   or any other OpenAI-compatible endpoint (`custom`) for chat and for
-   embeddings. The two values can be mixed, for example `custom` chat on
-   OpenRouter with `openai` embeddings, or `custom` for both when chat and
-   embeddings come from the same third-party endpoint such as Azure.
-2. **Triton for chat and embeddings**: Use Triton for both chat and embeddings.
+Use the OpenAI API (`openai`) or any other OpenAI-compatible endpoint (`custom`)
+for chat and for embeddings. The two values can be mixed, for example `custom`
+chat on OpenRouter with `openai` embeddings, or `custom` for both when chat and
+embeddings come from the same third-party endpoint such as Azure.
 
-{{< warning >}}
-Triton cannot be combined with an OpenAI-compatible provider: if one of
-`chat_api_provider` and `embedding_api_provider` is `"triton"`, the other must
-be as well. The service rejects any other combination with a configuration
-error.
-{{< /warning >}}
-
-**URL Defaults**: When using the `openai` provider, `chat_api_url` and `embedding_api_url` default to `"https://api.openai.com/v1"` if not specified. For the `custom` and `triton` providers, these URLs are required and must be explicitly provided.
+**URL Defaults**: When using the `openai` provider, `chat_api_url` and
+`embedding_api_url` default to `"https://api.openai.com/v1"` if not specified.
+For the `custom` provider, these URLs are required and must be explicitly provided.
 
 **Model Defaults**:
-The following default models are automatically applied when `chat_model` or `embedding_model` are not specified:
+The following default models are automatically applied when `chat_model` or
+`embedding_model` are not specified:
 
 - **OpenAI**: `gpt-5.4-nano` for chat, `text-embedding-3-small` for embeddings
-- **Triton**: `mistral-nemo-instruct` for chat, `nomic-embed-text-v1` for embeddings
 - **Custom**: no defaults. Supply `chat_model` and `embedding_model` yourself;
   the service does not fall back to an OpenAI model name for a third-party
   endpoint.
 
 {{< info >}}
-These defaults are applied automatically by the service when the corresponding model parameters are not provided.
+These defaults are applied automatically by the service when the corresponding
+model parameters are not provided.
 {{< /info >}}
 
 {{< warning >}}
@@ -123,14 +116,6 @@ For a full description of all parameters, see
 You can use different OpenAI-compatible services for chat and embedding. For example, 
 you might use OpenRouter for chat and OpenAI for embeddings, depending 
 on your needs for performance, cost, or model availability.
-
-{{< info >}}
-You cannot mix Triton with OpenAI-compatible APIs: if one of
-`chat_api_provider` and `embedding_api_provider` is `"triton"`, both must be.
-You can, however, combine `"openai"` and `"custom"`, which is how you serve
-chat and embeddings from two different OpenAI-compatible services.
-See [Supported Provider Combinations](#supported-provider-combinations) for details.
-{{< /info >}}
 
 **Example using OpenRouter for chat and OpenAI for embedding:**
 
@@ -199,36 +184,6 @@ Use the model deployment names from your Azure resource as `chat_model` and
 For a full description of all parameters, see
 [Configuration Parameters Reference](#configuration-parameters-reference).
 
-## Using Triton Inference Server for chat and embedding
-
-The first step is to install the LLM Host service with the LLM and
-embedding models of your choice. The setup will use the 
-Triton Inference Server and MLflow at the backend. 
-For more details, please refer to the [Triton Inference Server](../private-llms/triton-inference-server.md)
-and [MLflow](../private-llms/mlflow.md) documentation.
-
-Once the `llmhost` service is up-and-running, then you can start AutoRAG
-using the below configuration:
-
-```json
-{
-  "env": {
-    "db_name": "your_database_name",
-    "project_name": "your_project_name",
-    "chat_api_provider": "triton",
-    "embedding_api_provider": "triton",
-    "chat_api_url": "your-arangodb-llm-host-url",
-    "embedding_api_url": "your-arangodb-llm-host-url",
-    "chat_model": "mistral-nemo-instruct",
-    "embedding_model": "nomic-embed-text-v1",
-    "embedding_dim": "768"
-  }
-}
-```
-
-For a full description of all parameters, see
-[Configuration Parameters Reference](#configuration-parameters-reference).
-
 ## Configuration Parameters Reference
 
 The following parameters are available when configuring AutoRAG.
@@ -246,12 +201,11 @@ Provider-specific defaults and requirements are noted where applicable.
 ### Chat API parameters
 
 - `chat_api_provider` (**required**): The provider for chat/LLM services.
-  Set to `"openai"` for the OpenAI API, `"custom"` for any other
-  OpenAI-compatible API, or `"triton"` for Triton Inference Server.
+  Set to `"openai"` for the OpenAI API or `"custom"` for any other
+  OpenAI-compatible API.
 - `chat_api_url`: API endpoint URL for the chat/language model service.
   - **OpenAI**: Defaults to `https://api.openai.com/v1` if not provided.
   - **Custom**: Must be explicitly provided.
-  - **Triton**: Must be explicitly provided.
 - `chat_api_key` (**required for the `openai` and `custom` providers**): API key
   for authenticating with the chat/language model service.
 - `chat_model`: Specific language model to use for text generation and analysis.
@@ -259,27 +213,23 @@ Provider-specific defaults and requirements are noted where applicable.
   - **Custom**: Required; there is no default. The one exception is a
     `chat_api_url` containing `openrouter.ai`, which still resolves to
     `mistralai/mistral-nemo` when `chat_model` is unset — do not rely on it.
-  - **Triton**: Defaults to `mistral-nemo-instruct`.
 
 ### Embedding API parameters
 
 - `embedding_api_provider` (**required**): The provider for embedding services.
-  Set to `"openai"` for the OpenAI API, `"custom"` for any other
-  OpenAI-compatible API, or `"triton"` for Triton Inference Server.
+  Set to `"openai"` for the OpenAI API or `"custom"` for any other
+  OpenAI-compatible API.
 - `embedding_api_url`: API endpoint URL for the embedding model service.
   - **OpenAI**: Defaults to `https://api.openai.com/v1` if not provided.
   - **Custom**: Must be explicitly provided.
-  - **Triton**: Must be explicitly provided.
 - `embedding_api_key` (**required for the `openai` and `custom` providers**): API key
   for authenticating with the embedding model service.
 - `embedding_model`: Specific model to use for generating text embeddings.
   - **OpenAI**: Defaults to `text-embedding-3-small`.
   - **Custom**: Required; there is no default.
-  - **Triton**: Defaults to `nomic-embed-text-v1`.
-- `embedding_dim`: Optional embedding dimension. The default value is `512`
-  (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a
-  custom embedding model with a different dimension. It must match the
-  embedding model's output dimension.
+- `embedding_dim`: Optional embedding dimension. The default value is `512`.
+  Only set manually if using a custom embedding model with a different dimension.
+  It must match the embedding model's output dimension.
 
 {{< tip >}}
 Instead of inline API keys, you can use `chat_secret_profile_id` and
@@ -333,12 +283,11 @@ When configuring the service, ensure you:
 1. **Use only supported provider combinations** listed above.
 2. **Provide all required parameters**:
    - `chat_api_provider` and `embedding_api_provider` (both required)
-   - `chat_api_url` and `embedding_api_url` (optional for `openai` with defaults, required for `custom` and `triton`)
+   - `chat_api_url` and `embedding_api_url` (optional for `openai` with defaults, required for `custom`)
    - `chat_api_key` and `embedding_api_key` (required for the `openai` and `custom` providers)
 3. **Follow provider-specific requirements**:
    - The `openai` provider requires valid API keys
    - The `custom` provider requires valid API keys and explicit endpoint URLs
-   - The `triton` provider requires valid server URLs
 
 The service will validate your configuration and reject any unsupported combinations or missing required parameters with an error message.
 
@@ -450,9 +399,7 @@ correct. For the full list, see
 
 The endpoint accepts the same `openai` and `custom` combinations as a fresh
 install, described in
-[Supported Provider Combinations](#supported-provider-combinations). An AutoRAG
-service running on Triton cannot be updated this way; its models are set at
-install time only.
+[Supported Provider Combinations](#supported-provider-combinations).
 
 To override the chat model for a single query instead of for the whole service,
 use the [`model` query parameter](parameters.md#model).

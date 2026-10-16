@@ -48,7 +48,7 @@ See [Architecture](architecture.md) for the collections each mode populates.
 - [**Architecture**](architecture.md): Knowledge-graph collections, vector
   indexes, and the async-job lifecycle.
 - [**LLM Configuration**](llm-configuration.md): Configure your chat and
-  embedding providers (OpenAI-compatible APIs or Triton Inference Server).
+  embedding providers (OpenAI-compatible APIs).
 - [**Import Files**](importing-files.md): Single-file and multi-file import
   workflows with examples.
 - [**Incremental Updates**](incremental-updates.md): Rebuild the community layer
