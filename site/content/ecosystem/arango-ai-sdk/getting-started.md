@@ -198,8 +198,7 @@ waiting with `JobTimeoutError`, but the step keeps running on the platform.
 
 `complexity` sets what share of the clusters gets a full knowledge graph rather
 than vectors, from `very_low` (none) to `very_high` (all). The default is `high`,
-three quarters of the clusters. It is the setting the **Complexity** slider
-controls in the web interface. Pass it as
+three quarters of the clusters. Pass it as
 `complexity=RagStrategizerComplexity.very_high`, importing the enum from
 `arango_ai_sdk.models`.
 
@@ -275,11 +274,8 @@ level.` instead of raising an error.
 `ask()` also takes `response_instructions` for the style of the answer,
 `partition_ids` to limit the search to certain partitions, `show_citations`,
 `include_metadata`, and `model` to use a different chat model for one question.
-Streaming the answer, [Deep Search](../../agentic-ai-suite/autorag/search-methods/deep-search.md)
-with the LLM planner, and the [Custom Retriever](../../agentic-ai-suite/autorag/search-methods/custom-retriever.md),
-which needs custom tools that `ask()` does not take, are not available through
-the SDK. Use the [AutoRAG HTTP API](../../agentic-ai-suite/autorag/executing-queries.md)
-for those.
+Streaming the answer, Deep Search, and the Custom Retriever are not available in
+the SDK.
 
 To remove the retriever again, call `retriever.undeploy()`. It takes no
 arguments and leaves the Context Graph, the AutoGraph service, and any other
@@ -349,11 +345,9 @@ and its subclass `ServiceError` covers every error a service answered with. A
 
 ## Next steps
 
-Open the project in [AutoGraph Studio](../../agentic-ai-suite/autograph/web-interface.md)
-to explore the Context Graph. To learn more about the search methods a
-retriever offers, see [AutoRAG](../../agentic-ai-suite/autorag/_index.md).
-Editing strategies and deleting categories or files from the graph are not in
-the SDK yet; use the web interface or the
+To learn more about the search methods a retriever offers, see
+[AutoRAG](../../agentic-ai-suite/autorag/_index.md). Editing strategies and
+deleting categories or files from the graph are not in the SDK yet; use the
 [AutoGraph HTTP API](../../agentic-ai-suite/autograph/reference/_index.md).
 
 For every parameter, return value, and exception of the calls used here, see the
