@@ -182,7 +182,7 @@ detailed information about breaking changes before upgrading.
   Starting with v3.12, the native platform support for the Windows and macOS
   operating systems has been removed and ArangoDB packages for Windows and macOS
   are not provided anymore. You can use the official
-  [Docker images](https://hub.docker.com/_/arangodb/) instead, to run ArangoDB
+  [Docker images](../operations/installation/docker.md) instead, to run ArangoDB
   in Linux containers.
 
 - **Active Failover deployment mode**:\

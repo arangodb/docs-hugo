@@ -3,69 +3,57 @@ title: Manually upgrading single server deployments on Linux
 menuTitle: Single server
 weight: 5
 description: >-
-  How to upgrade a single server installation installed using package managers
+  How to upgrade a single server deployment that you started manually
 aliases:
   - ../os-specific-information/linux # 3.11 -> 3.12
 ---
-By installing the new ArangoDB package the standalone instance is automatically
-upgraded. In addition to the ArangoDB daemon (_arangod_), also the ArangoDB
-_Starter_ binary is updated. As a result, the procedure described below
-is a first step to upgrade more complex deployments such as a
-[Cluster](../../../deploy/cluster/_index.md) setup.
+To upgrade a single server that you started manually, you replace the
+ArangoDB executables with the ones of the new version, upgrade the database
+directory, and then start the server again.
 
 {{< warning >}}
 It is highly recommended to take a backup of your data before upgrading ArangoDB
 using [arangodump](../../../components/tools/arangodump/_index.md).
 {{< /warning >}}
 
-## Upgrading via APT (Ubuntu)
+## Upgrade a `.tar.gz` installation
 
-First add the repository key to _apt_:
+1. Download the server package of the new version from
+   [arango.ai/downloads/](https://arango.ai/downloads/) and extract the archive
+   in a different location than the current installation.
 
-```
-curl -OL https://download.arangodb.com/arangodb33/xUbuntu_17.04/Release.key
-sudo apt-key add - < Release.key
-```
+2. Stop the running _arangod_ process gracefully, for example, by sending it a
+   `SIGTERM` signal.
 
-Use **apt-get** to install arangodb:
+3. Upgrade the database directory by starting the new _arangod_ executable once
+   with the same startup options as before and additionally
+   [`--database.auto-upgrade true`](../../../components/arangodb-server/options.md#--databaseauto-upgrade).
+   The server upgrades the data and then shuts down:
 
-```
-echo 'deb https://download.arangodb.com/arangodb33/xUbuntu_17.04/ /' | sudo tee /etc/apt/sources.list.d/arangodb.list
-sudo apt-get install apt-transport-https
-sudo apt-get update
-sudo apt-get install arangodb3=3.3.10
-```
+   ```sh
+   /path/to/new/installation/bin/arangod --configuration /path/to/arangod.conf --database.auto-upgrade true
+   ```
 
-**Note**: The latest available version can be found in the [download section](https://arango.ai/downloads/?tab=linux&distro=ubuntu).
+4. Start the new _arangod_ executable as usual, without the
+   `--database.auto-upgrade` startup option.
 
-## Upgrading via DPKG (Ubuntu)
+After verifying that the upgraded server is working, you can remove the
+directory of the old installation.
 
-Download the corresponding file from the [download section](https://download.arangodb.com/).
+## Upgrade a Docker container
 
-Install a specific package using **dpkg**:
+1. Stop and remove the container of the old version. Your data needs to be
+   stored outside of the container, for example, in a named volume or a host
+   directory, see [Install with Docker](../../installation/docker.md).
 
-```
-$ dpkg -i arangodb3-3.3.10-1_amd64.deb
-```
+2. Upgrade the database directory by running a container of the new
+   `arangodb/core` image once with the same volume, the same environment
+   variables, and the `--database.auto-upgrade true` startup option. The
+   container stops after the upgrade:
 
-## Upgrading via YUM (CentOS)
+   ```sh
+   docker run --rm -v arangodb-data:/var/lib/arangodb4 arangodb/core:4.0.1 --database.auto-upgrade true
+   ```
 
-Use **yum** to install ArangoDB:
-
-```
-cd /etc/yum.repos.d/
-curl -OL https://download.arangodb.com/arangodb33/CentOS_7/arangodb.repo
-yum -y install arangodb3-3.3.10
-```
-
-**Note**: The latest available version can be found in the [download section](https://arango.ai/downloads/?tab=linux&distro=redhat).
-
-## Upgrading via RPM (CentOS)
-
-Download the corresponding file from the [download section](https://download.arangodb.com/).
-
-Install a specific package using **rpm**:
-
-```
-$ rpm -i arangodb3-3.3.10-1.x86_64.rpm
-```
+3. Start a container of the new image with the same volume and settings as
+   before.
