@@ -12,8 +12,8 @@ description: >-
   yet, follow the [Importer Quick Start](../importer/quick-start.md) (or the
   [AutoGraph Quick Start](../autograph/quick-start.md) for partitioned
   corpora).
-- An **LLM provider** for AutoRAG (Triton or any OpenAI-compatible
-  API). See [LLM Configuration](llm-configuration.md).
+- An **LLM provider** for AutoRAG (any OpenAI-compatible API).
+  See [LLM Configuration](llm-configuration.md).
 - A **valid JWT** (`Authorization: Bearer ...`).
 
 ## Run your first query
@@ -24,8 +24,7 @@ description: >-
 Install and start the service through the Arango Control Plane. Configure your
 LLM and embedding providers at install time by passing them in the `env` object
 of the install request body. Token streaming is available with the
-OpenAI-compatible providers, `openai` and `custom`. With `triton`, the streaming
-endpoint still works but returns the full answer as a single chunk.
+OpenAI-compatible providers, `openai` and `custom`.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragretriever" >}}
 

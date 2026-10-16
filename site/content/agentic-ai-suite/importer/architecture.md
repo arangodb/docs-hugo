@@ -229,7 +229,7 @@ itself.
 {{< /info >}}
 
 Terminal statuses include `service_completed`, `service_failed`,
-`openai_graph_build_failed`, `triton_graph_build_failed`,
+`openai_graph_build_failed`,
 `import_graph_to_adb_failed`, and `create_index_failed`. Status messages may
 include a `[rag_mode=...]` prefix or markers like `[NO_ENTITIES_WRITTEN]` or
 `[KG_VERIFICATION_INCONCLUSIVE]`; see
@@ -248,17 +248,11 @@ AutoGraph orchestration.
    terminal job status before submitting again.
 4. **Match `embedding_dim` to the deployed embedding model**. Mismatches
    cause vector-index creation to fail at runtime.
-5. **Don't mix Triton with OpenAI-compatible APIs** - if one of
-   `chat_api_provider` and `embedding_api_provider` is `triton`, both must be.
-   `openai` and `custom` can be combined freely. Reach OpenAI-compatible
-   vendors (OpenRouter, Azure, private endpoints) with the `custom` provider;
-   pointing `openai` at a non-OpenAI URL is not supported. See
-   [LLM Configuration](llm-configuration.md#using-openai-compatible-apis).
-6. **Prefer File Manager `file_id`s** for large files already on the
+5. **Prefer File Manager `file_id`s** for large files already on the
    data platform instead of inline base64 payloads.
-7. **Plan for long-running jobs**. Graph build and vector-index training can
+6. **Plan for long-running jobs**. Graph build and vector-index training can
    take tens of minutes; ensure tokens can renew (the data platform JWT lifetime
    applies).
-8. **SmartGraph constraints**: use `smart_graph_attribute="partition_id"`, a
+7. **SmartGraph constraints**: use `smart_graph_attribute="partition_id"`, a
    valid `partition_id`, and `shard_count=1` when creating a new SmartGraph.
    See [Import Files](importing-files.md#smartgraph-and-sharding) for details.
