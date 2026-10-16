@@ -181,12 +181,8 @@ directory.
 If no such file is found, the server proceeds to look for a file
 `arangod.conf` in the system configuration directory. The system configuration
 directory is platform-specific, and may be changed when compiling ArangoDB
-yourself. It may default to `/etc/arangodb` or `/usr/local/etc/arangodb`. This
-file is installed when using a package manager like rpm or dpkg. If you modify
-this file and later upgrade to a new version of ArangoDB, then the package
-manager normally warns you about the conflict. In order to avoid these warning
-for small adjustments, you can put local overrides into a file
-`arangod.conf.local`.
+yourself. It may default to `/etc/arangodb` or `/usr/local/etc/arangodb`.
+You can put local overrides into a file `arangod.conf.local`.
 {{% /comment %}}
 
 ## Suffixes for Numeric Options
