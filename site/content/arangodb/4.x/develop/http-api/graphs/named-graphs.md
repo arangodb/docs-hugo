@@ -4039,7 +4039,7 @@ paths:
             Returned if your user has insufficient rights.
             In order to insert nodes into the graph, you need to have at least the following privileges:
             - `ro` access on the database.
-            - `Write` access on the given collection.
+            - `rw` access on the given collection.
           content:
             application/json:
               schema:
@@ -4751,7 +4751,7 @@ paths:
             Returned if your user has insufficient rights.
             In order to update nodes in the graph, you need to have at least the following privileges:
             - `ro` access on the database.
-            - `Write` access on the given collection.
+            - `rw` access on the given collection.
           content:
             application/json:
               schema:
@@ -5196,7 +5196,7 @@ paths:
             Returned if your user has insufficient rights.
             In order to replace nodes in the graph, you need to have at least the following privileges:
             - `ro` access on the database.
-            - `Write` access on the given collection.
+            - `rw` access on the given collection.
           content:
             application/json:
               schema:
@@ -5532,7 +5532,7 @@ paths:
             Returned if your user has insufficient rights.
             In order to delete nodes in the graph, you need to have at least the following privileges:
             - `ro` access on the database.
-            - `Write` access on the given collection.
+            - `rw` access on the given collection.
           content:
             application/json:
               schema:
@@ -5979,7 +5979,7 @@ paths:
             Returned if your user has insufficient rights.
             In order to insert edges into the graph, you need to have at least the following privileges:
             - `ro` access on the database.
-            - `Write` access on the given collection.
+            - `rw` access on the given collection.
           content:
             application/json:
               schema:
@@ -6769,7 +6769,7 @@ paths:
             Returned if your user has insufficient rights.
             In order to update edges in the graph, you need to have at least the following privileges:
             - `ro` access on the database.
-            - `Write` access on the given collection.
+            - `rw` access on the given collection.
           content:
             application/json:
               schema:
@@ -7289,7 +7289,7 @@ paths:
             Returned if your user has insufficient rights.
             In order to replace edges in the graph, you need to have at least the following privileges:
             - `ro` access on the database.
-            - `Write` access on the given collection.
+            - `rw` access on the given collection.
           content:
             application/json:
               schema:
@@ -7648,7 +7648,7 @@ paths:
             Returned if your user has insufficient rights.
             In order to delete nodes in the graph, you need to have at least the following privileges:
             - `ro` access on the database.
-            - `Write` access on the given collection.
+            - `rw` access on the given collection.
           content:
             application/json:
               schema:

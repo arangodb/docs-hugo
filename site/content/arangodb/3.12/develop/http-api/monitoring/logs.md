@@ -35,7 +35,8 @@ paths:
         This API can be turned off via the startup option `--log.api-enabled`. In case
         the API is disabled, all requests will be responded to with HTTP 403. If the
         API is enabled, accessing it requires admin privileges, or a
-        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on the value of the `--log.api-enabled` startup option.
+        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
+        the value of the `--log.api-enabled` startup option.
       parameters:
         - name: upto
           in: query
@@ -149,7 +150,8 @@ paths:
         This API can be turned off via the startup option `--log.api-enabled`. In case
         the API is disabled, all requests will be responded to with HTTP 403. If the
         API is enabled, accessing it requires admin privileges, or a
-        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on the value of the `--log.api-enabled` startup option.
+        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
+        the value of the `--log.api-enabled` startup option.
       parameters:
         - name: upto
           in: query
@@ -295,7 +297,8 @@ paths:
         This API can be turned off via the startup option `--log.api-enabled`. In case
         the API is disabled, all requests will be responded to with HTTP 403. If the
         API is enabled, accessing it requires admin privileges, or a
-        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on the value of the `--log.api-enabled` startup option.
+        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
+        the value of the `--log.api-enabled` startup option.
       parameters:
         - name: serverId
           in: query
@@ -391,7 +394,8 @@ paths:
         This API can be turned off via the startup option `--log.api-enabled`. In case
         the API is disabled, all requests will be responded to with HTTP 403. If the
         API is enabled, accessing it requires admin privileges, or a
-        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on the value of the `--log.api-enabled` startup option.
+        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
+        the value of the `--log.api-enabled` startup option.
       parameters:
         - name: serverId
           in: query
@@ -750,7 +754,8 @@ paths:
         This API can be turned off via the startup option `--log.api-enabled`. In case
         the API is disabled, all requests will be responded to with HTTP 403. If the
         API is enabled, accessing it requires admin privileges, or a
-        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on the value of the `--log.api-enabled` startup option.
+        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
+        the value of the `--log.api-enabled` startup option.
       parameters:
         - name: serverId
           in: query
@@ -786,7 +791,8 @@ paths:
         This API can be turned off via the startup option `--log.api-enabled`. In case
         the API is disabled, all requests will be responded to with HTTP 403. If the
         API is enabled, accessing it requires admin privileges, or a
-        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on the value of the `--log.api-enabled` startup option.
+        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
+        the value of the `--log.api-enabled` startup option.
       responses:
         '200':
           description: |
@@ -822,7 +828,8 @@ paths:
         This API can be turned off via the startup option `--log.api-enabled`. In case
         the API is disabled, all requests will be responded to with HTTP 403. If the
         API is enabled, accessing it requires admin privileges, or a
-        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on the value of the `--log.api-enabled` startup option.
+        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
+        the value of the `--log.api-enabled` startup option.
       requestBody:
         content:
           application/json:
