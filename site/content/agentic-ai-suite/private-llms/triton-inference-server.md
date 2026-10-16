@@ -5,6 +5,7 @@ description: >-
   Enable the services of the Agentic AI Suite to use private LLMs via Triton
   Inference Server
 weight: 30
+draft: true
 ---
 ## Overview
 
@@ -175,7 +176,7 @@ Once deployed, the service exposes two endpoints:
 
 | Port | Protocol | Purpose |
 |------|----------|---------|
-| 8000 | HTTP/REST | Model inference, management, status |
+| 8000 | HTTP | Model inference, management, status |
 | 8001 | gRPC | High-performance binary communication |
 
 

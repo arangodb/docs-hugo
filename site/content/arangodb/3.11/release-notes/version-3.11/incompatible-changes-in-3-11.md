@@ -149,7 +149,7 @@ deployments minimal.
 ## Stricter validation of Unicode surrogate values in JSON data
 
 ArangoDB 3.11 employs a stricter validation of Unicode surrogate pairs in
-incoming JSON data, for all REST APIs.
+incoming JSON data, for all HTTP APIs.
 
 In previous versions, the following loopholes existed when validating UTF-8 
 surrogate pairs in incoming JSON data:

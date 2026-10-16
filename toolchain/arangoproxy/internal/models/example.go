@@ -10,8 +10,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/utils"
-	"github.com/dlclark/regexp2"
 	"gopkg.in/yaml.v3"
 )
 
@@ -85,9 +83,9 @@ func ParseExample(request io.Reader, headers http.Header) (Example, error) {
 	optionsYaml.SaveCache = headers.Get("Cache")
 	optionsYaml.Version = headers.Get("Version")
 
-	if Conf.Override != " " {
-		overrideRE := regexp2.MustCompile(Conf.Override, 0)
-		optionsYaml.SaveCache = strconv.FormatBool(utils.Regexp2StringHasMatch(overrideRE, optionsYaml.Name))
+	// Only the matching examples, not the new and changed ones (Cache header)
+	if OverrideActive() {
+		optionsYaml.SaveCache = strconv.FormatBool(MatchesOverride(optionsYaml.Name, optionsYaml.Name+"_"+optionsYaml.Type))
 	}
 
 	code := strings.Replace(string(decodedRequest), string(options), "", -1)
@@ -115,6 +113,9 @@ type ExampleResponse struct {
 	Output  string         `json:"output"`
 	Error   string         `json:"error"`
 	Options ExampleOptions `json:"options"`
+	// No server for the requested version was used during generation, so the
+	// example didn't run and Output only contains a notice (see service.go)
+	NoServer bool `json:"noServer,omitempty"`
 }
 
 func NewExampleResponse(input, output string, options ExampleOptions) (res *ExampleResponse) {

@@ -58,9 +58,8 @@ content fails as a single file, and the build can still complete with
 
 ## Prerequisites
 
-- **Arango Contextual Data Platform 4.0+** (which ships with
-  **ArangoDB 3.12.9** or later)
-- **LLM and embedding API access** (commonly OpenAI-compatible or Triton-compatible endpoints)
+- **Arango Contextual Data Platform**
+- **LLM and embedding API access** (commonly OpenAI-compatible endpoints)
 - **Valid JWT** for the API (`Authorization: Bearer ...`)
 - **Platform auth** reachable from the service (for token validation and
   renewal), if your deployment uses it

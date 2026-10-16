@@ -8,19 +8,19 @@ description: >-
 ---
 ## Prerequisites
 
-- **Arango Contextual Data Platform 4.0+** (ships with ArangoDB 3.12.9+).
+- An **Arango Contextual Data Platform** deployment.
 - A **project** in your target database. The project name prefixes
   the collection names, so it must follow ArangoDB naming rules.
   See [Projects](../../platform-suite/control-plane-acp/_index.md#projects).
-- **LLM and embedding API access** (OpenAI-compatible or Triton-compatible).
+- **LLM and embedding API access** (OpenAI-compatible).
 - A **valid JWT** (`Authorization: Bearer ...`).
 - A document to import (`.txt`, `.md`, `.pdf`, or a supported Office file such
   as `.docx`). See [Format support](setup.md#format-support).
 
 ## Import your first document
 
-You reach the Importer through the platform API gateway on port `8529`. Every
-call includes an `Authorization: Bearer <token>` header.
+You reach the Importer through the data platform API gateway on port `8529`.
+Every call includes an `Authorization: Bearer <token>` header.
 
 {{< steps >}}
 

@@ -18,12 +18,12 @@ All database management operations can only be accessed via the default
 
 ## Addresses of databases
 
-Any operation triggered via ArangoDB's RESTful HTTP API is executed in the
+Any operation triggered via ArangoDB's HTTP API is executed in the
 context of exactly one database. The database name is read from the first part
-of the request URI path (e.g. `/_db/mydb/...`). If the request URI does not
+of the request URL path (e.g. `/_db/mydb/...`). If the request URL does not
 contain a database name, it defaults to `/_db/_system`.
 
-To explicitly specify the database in a request, the request URI must contain
+To explicitly specify the database in a request, the request URL must contain
 the database name at the beginning of the path:
 
 ```
@@ -35,9 +35,9 @@ the resource is accessed in the context of the `mydb` database. Actual URLs in
 the context of `mydb` could look like this:
 
 ```
-http://localhost:8529/_db/mydb/_api/version
-http://localhost:8529/_db/mydb/_api/document/test/12345
-http://localhost:8529/_db/mydb/myapp/get
+http://localhost:8529/_db/mydb/_api/document/coll/12345
+http://localhost:8529/_db/mydb/_api/index/coll/987
+http://localhost:8529/_db/mydb/_api/transaction/begin
 ```
 
 {{< info >}}
@@ -132,7 +132,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -278,7 +278,7 @@ paths:
                       type: number
                 users:
                   description: |
-                    An array of user objects. The users are granted *Administrate* permissions
+                    An array of user objects. The users are granted `rw` access
                     for the new database. Users that do not exist yet are created.
                     If `users` is not specified or does not contain any users, the default user
                     `root` is used to ensure that the new database is accessible after it

@@ -271,7 +271,6 @@ The response includes a `job` object with:
 
 Terminal `current_status.status` values: `service_completed`, `service_failed`,
 `openai_graph_build_failed`, `openai_embedding_failed`,
-`triton_graph_build_failed`, `triton_embedding_failed`,
 `import_graph_to_adb_failed`, `create_index_failed`.
 
 Non-terminal examples: `graph_builder_started`, `chunking_in_progress`,

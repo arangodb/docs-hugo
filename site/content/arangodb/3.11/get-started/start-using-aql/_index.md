@@ -59,7 +59,7 @@ for examples including tagged template strings.
 
 {{< tab "cURL" >}}
 You can use a tool like [cURL](https://curl.se/) to run AQL queries from a
-command-line, directly using the HTTP REST API of ArangoDB.
+command-line, directly using the HTTP API of ArangoDB.
 
 The response bodies are generally compact JSON (without any line breaks and
 indentation). You can format them with the [jq](https://jqlang.github.io/jq/)

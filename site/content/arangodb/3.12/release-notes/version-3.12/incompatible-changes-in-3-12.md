@@ -20,7 +20,7 @@ by a new ArangoDB Community License, which limits deployments to a 100 GiB on
 dataset size in production and you cannot use it for any commercial purposes,
 only internal business purposes.
 
-For details, see the [ArangoDB Community License](https://arangodb.com/community-license/).
+For details, see the [ArangoDB Community License](https://arango.ai/community-license/).
 
 ## Downgrading vector indexes
 
@@ -1262,8 +1262,9 @@ set it explicitly in this case. Alternatively, use the `{}` placeholder as in
 <small>Introduced in: v3.12.12</small>
 
 If you deactivate a user account, the
-[JWT session tokens](../../develop/http-api/authentication.md#jwt-user-tokens)
-that have been issued for this user account are now rejected. Requests that
+[JWT session tokens](../../develop/http-api/authentication.md#jwt-session-tokens)
+and [user tokens](../../develop/http-api/authentication.md#jwt-user-tokens) of
+this user account are now rejected. Requests that
 authenticate with such a token fail with an HTTP `401 Unauthorized` error.
 
 ## `REVERSE()` AQL function correctly reverses all characters
@@ -1282,19 +1283,19 @@ Up to v3.12.12, every code point above U+FFFF is turned into two U+FFFD
 replacement characters, and everything before a U+FFFF character in the input
 is dropped.
 
-## HTTP RESTful API
+## HTTP API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
 
 The long-deprecated JavaScript-based traversal functionality has been removed
-in v3.12.0, including the REST API endpoint `/_api/traversal`.
+in v3.12.0, including the HTTP API endpoint `/_api/traversal`.
 
 The functionality provided by this API was deprecated and unmaintained since
 v3.4.0. JavaScript-based traversals have been replaced with AQL traversals in
-v2.8.0. Additionally, the JavaScript-based traversal REST API could not handle
+v2.8.0. Additionally, the JavaScript-based traversal HTTP API could not handle
 larger amounts of data and was thus very limited.
 
-Users of the `/_api/traversal` REST API should use
+Users of the `/_api/traversal` HTTP API should use
 [AQL traversal queries](../../aql/graph-queries/traversals.md) instead.
 
 ### HTTP server behavior

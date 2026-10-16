@@ -20,14 +20,14 @@ packages:
     version: v0.0.17
   arangodb-graphrag-importer:
     version: v0.0.28
-  arangodb-llm-host:
-    version: v0.0.18
+# arangodb-llm-host:
+#   version: v0.0.18
   arangodb-gral:
     version: v1.1.11
   arangodb-notebook-images:
     version: v0.5.54
-  arangodb-mlflow:
-    version: v0.1.5
+# arangodb-mlflow:
+#   version: v0.1.5
   file-manager:
     version: v0.0.17
   arangodb-ml-api:

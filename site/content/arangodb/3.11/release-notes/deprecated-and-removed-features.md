@@ -86,14 +86,14 @@ detailed information about breaking changes before upgrading.
   [Foxx guide](../develop/foxx-microservices/guides/using-node-modules.md).
 
 - **Batch Requests API**:\
-  The [batch request REST API](../develop/http-api/batch-requests.md) is deprecated and will be 
+  The [batch request HTTP API](../develop/http-api/batch-requests.md) is deprecated and will be 
   removed in a future version. Instead of using this API, please use the 
   [HTTP interface for documents](../develop/http-api/documents.md#multiple-document-operations)
   that can insert, update, replace or remove arrays of documents.
 
 - **PUT method in Cursor API**:\
-  The HTTP endpoint `PUT /_api/cursor/<cursor-id>` in the
-  [Cursor REST API](../develop/http-api/queries/aql-queries.md) is deprecated and will be
+  The HTTP API endpoint `PUT /_api/cursor/<cursor-id>` in the
+  [Cursor HTTP API](../develop/http-api/queries/aql-queries.md) is deprecated and will be
   removed in a future version. Please use the drop-in replacement
   `POST /_api/cursor/<cursor-id>` instead. The POST endpoint is functionally
   equivalent to the PUT endpoint, but does not violate idempotency requirements
@@ -117,32 +117,32 @@ detailed information about breaking changes before upgrading.
   is deprecated and highly discouraged. This functionality may be removed in
   future versions of ArangoDB.
 
-- **Old metrics REST API**:\
+- **Old metrics HTTP API**:\
   The old metrics API under `/_admin/metrics` is deprecated and replaced by
   a new one under `/_admin/metrics/v2` from version 3.8.0 on. This step was
   necessary because the old API did not follow quite a few Prometheus
   guidelines for metrics.
 
-- **Statistics REST API**:\
+- **Statistics HTTP API**:\
   The endpoints `/_admin/statistics` and `/_admin/statistics-description`
   are deprecated in favor of the new metrics API under `/_admin/metrics/v2`.
   The metrics API provides a lot more information than the statistics API, so
   it is much more useful.
 
-- **Database target version REST API**:\
+- **Database target version HTTP API**:\
   The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
   more general version API with the endpoint `GET /_api/version`. The endpoint
   is removed in ArangoDB v4.0.
 
-- **Replication logger-follow REST API**:\
+- **Replication logger-follow HTTP API**:\
   The endpoint `/_api/replication/logger-follow` is deprecated since 3.4.0 and
-  may be removed in a future version. Client applications should use the REST 
-  API endpoint `/_api/wal/tail` instead, which is available since ArangoDB 3.3.
+  may be removed in a future version. Client applications should use the HTTP API
+  endpoint `/_api/wal/tail` instead, which is available since ArangoDB 3.3.
 
 - **Loading and unloading of collections**:\
   The JavaScript functions for explicitly loading and unloading collections,
   `db.<collection-name>.load()` and `db.<collection-name>.unload()` and their
-  REST API endpoints `PUT /_api/collection/<collection-name>/load` and
+  HTTP API endpoints `PUT /_api/collection/<collection-name>/load` and
   `PUT /_api/collection/<collection-name>/unload` are deprecated in 3.8.
   There should be no need to explicitly load or unload a collection with the
   RocksDB storage engine. The load/unload functionality was useful only with
@@ -154,7 +154,7 @@ detailed information about breaking changes before upgrading.
   write [Foxx Microservices](../develop/foxx-microservices/_index.md), which allow you to define
   custom endpoints even with complex business logic.
 
-  From v3.5.0 on, the system collections `_routing` and `_modules` are not
+  From v3.5.0 onward, the system collections `_routing` and `_modules` are not
   created anymore when the `_system` database is first created (blank new data
   folder). They are not actively removed, they remain on upgrade or backup
   restoration from previous versions.

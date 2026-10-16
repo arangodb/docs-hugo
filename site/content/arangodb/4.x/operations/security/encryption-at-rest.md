@@ -46,7 +46,9 @@ The encryption feature has the following limitations:
 
 ## Encryption keys
 
-The encryption feature of ArangoDB requires a single 32-byte key per server.
+The encryption feature of ArangoDB requires a 32-byte key per server. You can
+supply multiple keys using a key folder for [key rotation](#rotating-encryption-keys),
+but any one of them is enough to start the server.
 It is recommended to use a different key for each server (when operating in a
 cluster configuration).
 
@@ -70,7 +72,16 @@ To activate encryption of your database, you need to supply an encryption key
 to the server.
 
 Make sure to pass this option the very first time you start your database.
-You cannot encrypt a database that already exists.
+You cannot encrypt a database that already exists. Once a database is
+encrypted, you need to provide a key every time you start the server.
+
+There are multiple ways of supplying the encryption key but you can only use one
+of them at a time. If you specify more than one of the
+[`--rocksdb.encryption-keyfile`](../../components/arangodb-server/options.md#--rocksdbencryption-keyfile),
+[`--rocksdb.encryption-key-generator`](../../components/arangodb-server/options.md#--rocksdbencryption-key-generator), and
+[`--rocksdb.encryption-keyfolder`](../../components/arangodb-server/options.md#--rocksdbencryption-keyfolder)
+startup options, then the server refuses to start. See [Rotating encryption keys](#rotating-encryption-keys) about supplying
+a set of keys using a folder.
 
 ### Encryption key stored in file
 
@@ -79,7 +90,10 @@ Pass the following option to _arangod_:
 ```
 $ arangod --rocksdb.encryption-keyfile=/mytmpfs/mySecretKey ...
 ```
-The file `/mytmpfs/mySecretKey` must contain the encryption key. This
+The file `/mytmpfs/mySecretKey` must contain the encryption key, which needs to
+be exactly 32 bytes long. The server reads the file as is and does not trim it,
+so a trailing newline or other whitespace makes the key invalid and the server
+refuses to start. This
 file must be secured, so that only _arangod_ can access it. You should
 also ensure that in case someone steals the hardware, they will not be
 able to read the file. For example, by encrypting `/mytmpfs` or
@@ -93,8 +107,17 @@ Pass the following option to _arangod_:
 $ arangod --rocksdb.encryption-key-generator=path-to-my-generator ...
 ```
 
-The program `path-to-my-generator` output the encryption on standard
-output and exit.
+The program `path-to-my-generator` outputs the encryption key on standard
+output and exits. The server removes leading and trailing whitespace from the
+output and ignores the exit code of the program. After trimming, the key needs
+to be exactly 32 bytes long.
+
+{{< info >}}
+The `--encryption.keyfile` and `--encryption.key-generator` startup options are
+not for encryption at rest. They are for encrypting dump files with
+_arangodump_ and _arangorestore_. See
+[Encryption of dumps](../../components/tools/arangodump/examples.md#encryption).
+{{< /info >}}
 
 ### Kubernetes encryption secret
 
@@ -104,7 +127,8 @@ See the [kube-arangodb documentation](https://arangodb.github.io/kube-arangodb/d
 
 ## Creating keys
 
-The encryption keyfile must contain 32 bytes of random data.
+The encryption keyfile must contain 32 bytes of random data, without any
+additional characters like a trailing newline.
 
 You can create it with a command line this.
 
@@ -131,16 +155,60 @@ master key can be generated from random characters if the startup option
 It is possible to change the user supplied encryption at rest key via the
 [HTTP API](../../develop/http-api/security.md#encryption-at-rest). This API
 is disabled by default, but can be turned on by setting the startup option
-`--rocksdb.encryption-key-rotation` to `true`.
+[`--rocksdb.encryption-key-rotation`](../../components/arangodb-server/options.md#--rocksdbencryption-key-rotation)
+to `true`. Rotating the key requires a
+[superuser JWT](../../develop/http-api/authentication.md#jwt-superuser-tokens).
+The API is not available on Coordinators.
 
-To enable smooth rollout of new keys you can use the new option 
-`--rocksdb.encryption-keyfolder` to provide a set of secrets.
-_arangod_ will then store the master key encrypted with the provided secrets.
+A rotation reads the user key again from the key source that the instance is
+configured with and re-encrypts the internal master key with it. It is not
+limited to a particular key source. It works with the mutually exclusive
+`--rocksdb.encryption-keyfile`, `--rocksdb.encryption-key-generator`, and
+`--rocksdb.encryption-keyfolder` startup options alike, but a key folder is
+recommended because it allows for a rollout without a risky time window:
+
+- If you use a single key file or a key generator, you need to replace the key
+  before you call the API. Until the rotation succeeds, the instance cannot be
+  restarted because the new key doesn't match the internal keystore yet.
+- If you use a key folder, the instance can be started with any one of the keys
+  in the folder, guarding against service interruptions during the rotation.
+
+To use a folder of keys, pass the following option to _arangod_:
 
 ```
 $ arangod --rocksdb.encryption-keyfolder=/mytmpfs/mySecrets ...
 ```
 
-To start an _arangod_ instance only one of the secrets needs to be correct, 
-this should guard against service interruptions during the rotation process.
+_arangod_ then stores the master key encrypted with each of the provided
+secrets, so that only one of the secrets needs to be correct in order to start
+the instance.
+
+The folder must exist and contain at least one key file. Only regular files in
+the folder are read as keys (symbolic links to regular files are followed), and
+each of them needs to contain exactly 32 bytes, without trimming.
+Hidden files (with names starting with a dot), files
+with a `.tmp` file extension, and subfolders are ignored. The files are not read
+in a defined order. If the folder contains multiple keys at the initial startup
+and you don't set `--rocksdb.encryption-gen-internal-key` to `true`, then which
+key becomes the internal master key is therefore not predictable.
+
+A rotation always uses the keys that are in the folder at the time
+you call the API. It re-encrypts the master key with every key it finds there and
+discards the internal keystore entries of keys that you removed from the folder.
+You can therefore roll out a new key like this:
+
+1. Add the new key as an additional file to the key folder.
+2. Call the key rotation API. The master key is now stored encrypted with the
+   old as well as the new key, and the instance can be started with either.
+3. Remove the old key file from the key folder.
+4. Call the key rotation API again. The master key is now only stored encrypted
+   with the new key, and the old key can no longer unlock it.
+
+{{< info >}}
+Unless you set `--rocksdb.encryption-gen-internal-key` to `true` at the initial
+startup, the internal master key is a copy of the first user-supplied key.
+Rotating the user keys only changes how the master key is encrypted in the
+internal keystore in this case. The key material that the data on disk is
+encrypted with remains the same.
+{{< /info >}}
 
