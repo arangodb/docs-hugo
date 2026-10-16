@@ -8,8 +8,7 @@ description: >-
 ---
 ## Standalone tools
 
-The following tools are independent programs that you can obtain separately.
-They have their own options for connecting to ArangoDB, if any.
+The following tools are independent programs that you can obtain separately:
 
 | Name            | Brief description |
 |-----------------|-------------------|
@@ -20,11 +19,14 @@ They have their own options for connecting to ArangoDB, if any.
 
 ## Client tools
 
-A full ArangoDB installation package contains the [ArangoDB server](../arangodb-server/_index.md)
-(_arangod_), the ArangoDB Starter, and the client tools. A client installation
-package only contains the client tools.
+The ArangoDB server package contains the [ArangoDB server](../arangodb-server/_index.md)
+(_arangod_) and the [ArangoDB Starter](arangodb-starter/_index.md) (_arangodb_)
+for easy deployment of ArangoDB instances. The client tools are provided as a
+separate package.
 
-The client tools are:
+If you need the client tools on the same machine as the server, install both
+packages. The same applies to the container images: `arangodb/core` contains the
+server and `arangodb/client-tools` the client tools.
 
 | Executable name | Brief description |
 |-----------------|-------------------|

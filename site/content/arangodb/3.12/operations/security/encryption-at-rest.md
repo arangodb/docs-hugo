@@ -156,7 +156,9 @@ It is possible to change the user supplied encryption at rest key via the
 [HTTP API](../../develop/http-api/security.md#encryption-at-rest). This API
 is disabled by default, but can be turned on by setting the startup option
 [`--rocksdb.encryption-key-rotation`](../../components/arangodb-server/options.md#--rocksdbencryption-key-rotation)
-to `true`. It requires superuser rights and is not available on Coordinators.
+to `true`. Rotating the key requires a
+[superuser JWT](../../develop/http-api/authentication.md#jwt-superuser-tokens).
+The API is not available on Coordinators.
 
 A rotation reads the user key again from the key source that the instance is
 configured with and re-encrypts the internal master key with it. It is not

@@ -17,26 +17,6 @@ for detailed information.
 
 ## Preparations
 
-The ArangoDB installation packages (e.g. for Debian or Ubuntu) set up a
-convenient standalone instance of _arangod_. During installation, this instance's
-database will be upgraded (see [`--database.auto-upgrade`](../../../components/arangodb-server/options.md#--databaseauto-upgrade))
-and the service will be (re)started.
-
-You have to make sure that your _cluster_ deployment is independent of this
-standalone instance. Specifically, make sure that the database directory as
-well as the socket used by the standalone instance provided by the package are
-separate from the ones in your _cluster_ configuration. Also, that you haven't
-modified the init script or systemd unit file for the standalone instance in way
-that it would start or stop your _cluster_ instance instead.
-
-You can read about the details on how to deploy your _cluster_ independently of the
-standalone instance in the [_cluster_ deployment preliminary](../../../deploy/cluster/deployment/_index.md).
-
-In the following, we assume that you don't use the standalone instance from the
-package but only a manually started _cluster_ instance, and we will move the
-standalone instance out of the way if necessary so you have to make as little
-changes as possible to the running _cluster_.
-
 {{< warning >}}
 It is highly recommended to take a backup of your data before upgrading ArangoDB
 using [arangodump](../../../components/tools/arangodump/_index.md).
@@ -44,45 +24,14 @@ using [arangodump](../../../components/tools/arangodump/_index.md).
 
 ### Install the new ArangoDB version binary
 
-The first step is to install the new ArangoDB package. 
+The first step is to download the server package of the new version from
+[arango.ai/downloads/](https://arango.ai/downloads/) on every machine of the
+_cluster_ and to extract the archive in a different location than the current
+installation. When the following steps ask you to run a command that has been
+used before, run the _arangod_ executable of the new installation with the same
+startup options.
 
 **Note:** you do not have to stop the _cluster_ (_arangod_) processes before upgrading it.
-
-For example, if you want to upgrade to `3.7.13` on Debian or Ubuntu, either call
-
-```
-$ apt install arangodb=3.7.13
-```
-
-(`apt-get` on older versions) if you have added the ArangoDB repository. Or
-install a specific package using
-
-```
-$ dpkg -i arangodb3-3.7.13-1_amd64.deb
-```
-
-after you have downloaded the corresponding file from
-[download.arangodb.com](https://download.arangodb.com/).
-
-#### Stop the Standalone Instance
-
-As the package will automatically start the standalone instance, you might want to
-stop it now, as otherwise this standalone instance that is started on your machine
-can create some confusion later. As you are starting the _cluster_ processes manually
-you do not need this standalone instance, and you can hence stop it:
-
-```
-$ service arangodb3 stop
-```
-
-Also, you might want to remove the standalone instance from the default
-_runlevels_ to prevent it to start on the next reboot of your machine. How this
-is done depends on your distribution and _init_ system. For example, on older Debian
-and Ubuntu systems using a SystemV-compatible _init_, you can use:
-
-```
-$ update-rc.d -f arangodb3 remove
-```
 
 ## Set supervision in maintenance mode
 

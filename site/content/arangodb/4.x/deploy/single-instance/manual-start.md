@@ -18,36 +18,47 @@ arangod --server.endpoint http://0.0.0.0:8529 \
 ## Manual Start in Docker
 
 Manually starting a stand-alone instance via Docker is basically the same as described
-in the paragraph above. 
+in the paragraph above.
 
-A bit of extra care has to be invested due to the way in which Docker isolates its network. 
-By default it fully isolates the network and by doing so an endpoint like `--server.endpoint http://0.0.0.0:8529`
-will only bind to all interfaces inside the Docker container which does not include
-any external interface on the host machine. This may be sufficient if you just want
-to access it locally but in case you want to expose it to the outside you must
-facilitate Dockers port forwarding using the `-p` command line option. Be sure to
-check the [official Docker documentation](https://docs.docker.com/engine/reference/run/).
+A bit of extra care has to be invested due to the way in which Docker isolates its
+network. An endpoint like `--server.endpoint http://0.0.0.0:8529` only binds to
+all interfaces inside the container, which does not include any external interface
+of the host machine.
 
-You can simply use the `-p` flag in Docker to make the individual processes available on the host
-machine or you could use Docker's [links](https://docs.docker.com/engine/reference/run/)
-to enable process intercommunication.
-
-An example configuration might look like this:
+To let other containers communicate with the server, for example, containers
+with the client tools or your application, create a user-defined
+[network](https://docs.docker.com/engine/network/) and attach all containers
+to it. The containers can then reach each other by their names. To also access
+the server from the host machine, for example, with cURL, publish its port
+using the `-p` option in addition:
 
 ```bash
-docker run -e ARANGO_NO_AUTH=1 -p 192.168.1.1:10000:8529 arangodb/enterprise arangod \
-  --server.endpoint http://0.0.0.0:8529\
+docker network create arangodb-net
+
+docker run -d --name arangodb --network arangodb-net -p 8529:8529 -e ARANGO_NO_AUTH=1 \
+  arangodb/core:4.0.0 arangod --server.endpoint http://0.0.0.0:8529
+
+docker run -it --rm --network arangodb-net arangodb/client-tools:4.0.0 \
+  arangosh --server.endpoint http://arangodb:8529
 ```
 
-This will start a single server within a Docker container with an isolated network. 
-Within the Docker container it will bind to all interfaces (this will be 127.0.0.1:8529
-and some internal Docker IP on port 8529). By supplying `-p 192.168.1.1:10000:8529`
-we are establishing a port forwarding from our local IP (192.168.1.1 port 10000 in
-this example) to port 8529 inside the container. 
+With the `-p` option of `docker run`, you can also choose the address and port
+of the host machine under which the server is reachable from other machines.
+Be sure to check the
+[official Docker documentation](https://docs.docker.com/engine/network/port-publishing/).
+For example:
+
+```bash
+docker run -d -e ARANGO_NO_AUTH=1 -p 192.168.1.1:10000:8529 arangodb/core:4.0.0 arangod \
+  --server.endpoint tcp://0.0.0.0:8529
+```
+
+This forwards port 10000 of the host's IP address 192.168.1.1 to port 8529
+inside the container, where the server binds to all interfaces.
 
 ### Authentication
 
-To start the official Docker container you will have to decide on an authentication
+To start a container of the `arangodb/core` image, you have to decide on an authentication
 method, otherwise the container will not start.
 
 Provide one of the arguments to Docker as an environment variable. There are three
@@ -66,10 +77,5 @@ options:
 
    Let ArangoDB generate a random root password.
        
-For an in-depth guide about Docker and ArangoDB please check the official documentation:
-[hub.docker.com/\_/arangodb/](https://hub.docker.com/_/arangodb/).
-The `arangodb` images are the "official" images built and approved by Docker.
-
-You can also use the `arangodb/enterprise` images published directly by ArangoDB.
-New releases are available here first:
-[hub.docker.com/r/arangodb/enterprise/](https://hub.docker.com/r/arangodb/enterprise/)
+For more information about the ArangoDB container images, see
+[Install with Docker](../../operations/installation/docker.md).

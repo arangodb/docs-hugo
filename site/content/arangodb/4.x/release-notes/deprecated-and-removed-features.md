@@ -123,9 +123,9 @@ detailed information about breaking changes before upgrading.
 {{< /info >}}
 
 - **Aardvark web interface**:\
-  The web interface served by the ArangoDB server (_arangod_), also known as
-  _Aardvark_, has been removed. The server executable no longer offers a
-  built-in web interface.
+  The web interface is no longer built into the ArangoDB server (_arangod_).
+  The old web interface served by _arangod_, also known as _Aardvark_, has been
+  replaced by new web interfaces that run separately from the database core:
 
   - If you use the Arango Contextual Data Platform, there is a new, integrated
     web interface also known as the platform UI.
@@ -182,7 +182,7 @@ detailed information about breaking changes before upgrading.
   Starting with v3.12, the native platform support for the Windows and macOS
   operating systems has been removed and ArangoDB packages for Windows and macOS
   are not provided anymore. You can use the official
-  [Docker images](https://hub.docker.com/_/arangodb/) instead, to run ArangoDB
+  [Docker images](../operations/installation/docker.md) instead, to run ArangoDB
   in Linux containers.
 
 - **Active Failover deployment mode**:\

@@ -451,7 +451,7 @@ chmod +x ./arangodb_operator_platform
 
 #### 2. Start an ArangoDB container with the CLI tool mounted
 
-Pull and run an ArangoDB Enterprise image, for example v3.12.8. Expose the
+Pull and run an ArangoDB server image, for example v4.0.0. Expose the
 default port `8529`, set a root password, and bind-mount the Platform CLI
 binary into the container at `/usr/local/bin/` so it is immediately
 available on `PATH`:
@@ -461,7 +461,7 @@ docker run -d --name arangodb \
   -p 8529:8529 \
   -e ARANGO_ROOT_PASSWORD="<root-password>" \
   -v "$(pwd)/arangodb_operator_platform:/usr/local/bin/arangodb_operator_platform:ro" \
-  arangodb/enterprise:3.12.8
+  arangodb/core:4.0.0
 ```
 
 Verify the instance is up with cURL:
@@ -506,8 +506,11 @@ are generating a license key for the deployment you expect, rather than
 trusting whatever is recorded in the inventory file:
 
 ```sh
-curl -u "root:<root-password>" http://localhost:8529/_admin/deployment/id
+wget -qO- "http://root:<root-password>@localhost:8529/_admin/deployment/id"
 ```
+
+The container image doesn't include cURL, so this uses `wget`. Special
+characters in the password need to be URL-encoded.
 
 The response looks like `{"id":"6172616e-676f-4000-0000-05c958168340"}`.
 Copy the `id` value for the next step.

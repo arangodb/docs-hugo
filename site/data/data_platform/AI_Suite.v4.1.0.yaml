@@ -22,14 +22,14 @@ packages:
     version: v0.0.34
   arangodb-file-parser:
     version: v0.1.3
-  arangodb-llm-host:
-    version: v0.0.19
+# arangodb-llm-host:
+#   version: v0.0.19
   arangodb-gral:
     version: v1.1.13
   arangodb-notebook-images:
     version: v0.5.56
-  arangodb-mlflow:
-    version: v0.1.10
+# arangodb-mlflow:
+#   version: v0.1.10
   file-manager:
     version: v0.0.22
   arangodb-ml-api:

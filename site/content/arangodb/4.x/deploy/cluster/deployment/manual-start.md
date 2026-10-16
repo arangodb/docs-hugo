@@ -325,22 +325,43 @@ arangod --server.authentication=false \
 Manually starting a Cluster via Docker is basically the same as described in the 
 paragraphs above. 
 
-A bit of extra care has to be invested due to the way in which Docker isolates its network. 
-By default it fully isolates the network and by doing so an endpoint like `--server.endpoint http://0.0.0.0:8530`
-will only bind to all interfaces inside the Docker container which does not include
-any external interface on the host machine. This may be sufficient if you just want
-to access it locally but in case you want to expose it to the outside you must
-facilitate Dockers port forwarding using the `-p` command line option. Be sure to
-check the [official Docker documentation](https://docs.docker.com/engine/reference/run/).
+A bit of extra care has to be invested due to the way in which Docker isolates its
+network. An endpoint like `--server.endpoint http://0.0.0.0:8530` only binds to
+all interfaces inside the container, which does not include any external interface
+of the host machine.
 
-You can simply use the `-p` flag in Docker to make the individual processes available on the host
-machine or you could use Docker's [links](https://docs.docker.com/engine/reference/run/)
-to enable process intercommunication.
+If the Cluster spans multiple machines, publish the port of each _arangod_
+process on its host machine using the `-p` option of `docker run` and use the
+host's address in `--cluster.my-address`. Be sure to check the
+[official Docker documentation](https://docs.docker.com/engine/network/port-publishing/).
 
-An example configuration might look like this:
+If all containers run on the same host machine, you can instead attach them
+to a user-defined [network](https://docs.docker.com/engine/network/) and use the
+container names in the addresses, like `--cluster.my-address tcp://dbserver1:8530`
+and `--cluster.agency-endpoint tcp://agent1:8531`. Such networks don't span
+multiple host machines, however. To also access the Cluster from the host
+machine, for example, with cURL or tools that don't run in a container, publish
+the ports of the Coordinators using the `-p` option in addition.
+
+{{< info >}}
+The servers announce the addresses you set with `--cluster.my-address` and
+`--agency.my-address` to the rest of the Cluster and to clients that discover
+the Coordinators, like drivers that query the
+[`GET /_api/cluster/endpoints`](../../../develop/http-api/cluster.md#list-all-coordinator-endpoints)
+endpoint. Container names in these addresses can
+only be resolved by containers in the same network. If clients outside of the
+network, for example, on the host machine, need to use the announced
+addresses, announce the address of the host machine and the published ports
+instead, like `--cluster.my-address tcp://192.168.1.1:8530` together with
+`-p 8530:8530`. Otherwise, connect such clients directly to the published port
+of a Coordinator and turn off Coordinator discovery.
+{{< /info >}}
+
+An example configuration for a Cluster that spans multiple machines might look
+like this:
 
 ```
-docker run -e ARANGO_NO_AUTH=1 -p 192.168.1.1:10000:8530 arangodb/enterprise arangod \
+docker run -e ARANGO_NO_AUTH=1 -p 192.168.1.1:10000:8530 arangodb/core:4.0.0 arangod \
   --server.endpoint http://0.0.0.0:8530 \
   --cluster.my-address tcp://192.168.1.1:10000 \
   --cluster.my-role DBSERVER \
@@ -360,7 +381,7 @@ your Cluster can see how this particular _DB-Server_ may be reached.
 
 ### Authentication
 
-To start the official Docker container you will have to decide on an authentication
+To start a container of the `arangodb/core` image, you have to decide on an authentication
 method, otherwise the container will not start.
 
 Provide one of the arguments to Docker as an environment variable. There are three
@@ -379,10 +400,5 @@ options:
 
    Let ArangoDB generate a random root password.
        
-For an in-depth guide about Docker and ArangoDB please check the official documentation:
-[hub.docker.com/\_/arangodb/](https://hub.docker.com/_/arangodb/).
-The `arangodb` images are the "official" images built and approved by Docker.
-
-You can also use the `arangodb/enterprise` images published directly by ArangoDB.
-New releases are available here first:
-[hub.docker.com/r/arangodb/enterprise/](https://hub.docker.com/r/arangodb/enterprise/)
+For more information about the ArangoDB container images, see
+[Install with Docker](../../../operations/installation/docker.md).
