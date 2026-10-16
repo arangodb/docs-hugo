@@ -182,7 +182,7 @@ detailed information about breaking changes before upgrading.
   Starting with v3.12, the native platform support for the Windows and macOS
   operating systems has been removed and ArangoDB packages for Windows and macOS
   are not provided anymore. You can use the official
-  [Docker images](https://hub.docker.com/_/arangodb/) instead, to run ArangoDB
+  [Docker images](../operations/installation/docker.md) instead, to run ArangoDB
   in Linux containers.
 
 - **Active Failover deployment mode**:\
@@ -393,7 +393,7 @@ detailed information about breaking changes before upgrading.
   The following _arangod_ startup options are deprecated and will be removed
   in a future version:
   - `--database.old-system-collections` (no need to use it anymore)
-  - `--server.jwt-secret` (use `--server.jwt-secret-keyfile`) 
+  - `--server.jwt-secret` (use `--server.jwt-secret-keyfile` or `--server.jwt-secret-folder`) 
   - `--arangosearch.threads` / `--arangosearch.threads-limit`
     (use the following options instead):
     - `--arangosearch.commit-threads`

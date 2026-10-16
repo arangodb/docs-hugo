@@ -161,7 +161,7 @@
   <text class="btitle" x="56" y="1004.0">Call mapping LLM</text>
   <text class="bullet" x="56" y="1027.0">•</text>
   <text class="bullet" x="66" y="1027.0">Provider-agnostic</text>
-  <text class="bullet" x="66" y="1043.0">(OpenAI / Triton)</text>
+  <text class="bullet" x="66" y="1043.0">(OpenAI-compatible APIs)</text>
   <text class="bullet" x="56" y="1062.0">•</text>
   <text class="bullet" x="66" y="1062.0">Return JSON-style points</text>
   <text class="bullet" x="66" y="1078.0">with scores</text>
