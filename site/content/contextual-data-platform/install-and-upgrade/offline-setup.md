@@ -279,7 +279,7 @@ You need to enable the gateway feature by setting `spec.gateway.enabled` and
 required by features such as GraphRAG.<!-- TODO: Default enabled 4.0.0 --> You also need to set `spec.license` to
 a secret that you will create later.
 
-Example for an ArangoDB cluster deployment using version 3.12.11 with three
+Example for an ArangoDB cluster deployment using version 3.12.12 with three
 DB-Servers and two Coordinators with the name `deployment-example`:
 
 ```yaml
@@ -291,7 +291,7 @@ spec:
   architecture:
     - amd64
   mode: Cluster
-  image: "arangodb/enterprise:3.12.11"
+  image: "arangodb/enterprise:3.12.12"
   gateway:
     enabled: true
     dynamic: true
@@ -434,7 +434,7 @@ Expected output:
 
 ```
 2026-02-05T17:03:07+01:00 INF Connecting to the server...
-2026-02-05T17:03:07+01:00 INF Discovered Arango 3.12.11 (enterprise)
+2026-02-05T17:03:07+01:00 INF Discovered Arango 3.12.12 (enterprise)
 2026-02-05T17:03:07+01:00 INF Starting executor name=server.mode thread=0
 2026-02-05T17:03:07+01:00 INF Starting executor name=server.info thread=0
 2026-02-05T17:03:07+01:00 INF Starting executor name=aql.timestamp thread=0

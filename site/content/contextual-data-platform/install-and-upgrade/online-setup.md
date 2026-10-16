@@ -167,7 +167,7 @@ required by features such as GraphRAG (from ArangoDB version 4.0.0 onward, the
 vector index feature is enabled by default). You also need to set `spec.license` to
 the secret created earlier.
 
-Example for an ArangoDB cluster deployment using version 3.12.11 with three
+Example for an ArangoDB cluster deployment using version 3.12.12 with three
 DB-Servers and two Coordinators with the name `deployment-example`:
 
 ```yaml
@@ -179,7 +179,7 @@ spec:
   architecture:
     - amd64
   mode: Cluster
-  image: "arangodb/enterprise:3.12.11"
+  image: "arangodb/enterprise:3.12.12"
   gateway:
     enabled: true
     dynamic: true

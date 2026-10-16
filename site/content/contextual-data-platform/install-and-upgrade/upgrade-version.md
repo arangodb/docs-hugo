@@ -116,7 +116,7 @@ metadata:
   name: deployment-example
   # ...
 spec:
-  image: arangodb/enterprise:3.12.11  # <-- Update here
+  image: arangodb/enterprise:3.12.12  # <-- Update here
   # ...
 ```
 
