@@ -6,6 +6,18 @@ description: >-
   Install the Arango Contextual Data Platform and ask your first questions
   against a Context Graph with the Arango AI SDK
 ---
+Welcome to tutorial 1! This page takes you from an empty machine to a working
+Context Graph that you can ask questions in natural language:
+
+- [Install the platform](#install-arango-contextual-data-platform): set up a
+  local evaluation deployment.
+- [Install the Arango AI SDK](#install-the-arango-ai-sdk): the official Python
+  to drive an AutoGraph workflow.
+- [Connect](#connect): sign in, create a project, and start AutoGraph.
+- [Build](#build): upload a few short texts and turn them into a Context Graph.
+- [Query](#query): deploy a retriever and ask questions that span all the
+  texts.
+
 ## Prerequisites
 
 - **Docker**: Docker must be installed and running.
@@ -91,7 +103,7 @@ downloads elsewhere. It then runs the following steps:
    Kubernetes secret.
 3. Installs the ArangoDB Kubernetes Operator.
 4. Deploys ArangoDB in single server mode.
-5. Sets up MinIO object storage.
+5. Sets up SeaweedFS object storage.
 6. Configures platform storage.
 7. Installs the platform, then removes the services that evaluation does not
    need: GraphML (`arangodb-ml-api`), MLflow, Grafana, and Prometheus.
@@ -182,22 +194,22 @@ authentication, waiting on long-running steps, and reconnecting to a project
 you built earlier. It is the quickest way to put the platform to work from
 your own code, and it is what the quick start below uses.
 
-The SDK requires **Python 3.12 or higher** - note that the Python shipped with
-macOS is older than that, so check your version first:
+Installing from the repository requires `git` and
+[uv](https://docs.astral.sh/uv/getting-started/installation/). The
+`make install` step uses uv to create a virtual environment in `.venv` with a
+suitable Python interpreter (the SDK requires **Python 3.12 or higher**) and
+installs the SDK into it:
 
 ```bash
-python3 --version
+git clone https://github.com/arangoml/arango-ai-sdk
+cd arango-ai-sdk
+make install
+source .venv/bin/activate
 ```
 
-Install the SDK:
-
-```bash
-pip install arango-ai-sdk
-```
-
-If `pip` reports `requires a different Python: 3.11.x not in '>=3.12'`, it is
-running under too old an interpreter. Install with a newer Python instead, for
-example `python3.12 -m pip install arango-ai-sdk`.
+The last command activates the virtual environment, so run the quick start
+below from the same shell. If `make install` fails with
+`uv: command not found`, install uv first.
 
 ## Quick Start
 
