@@ -18,9 +18,10 @@ deployment. If the value of a secret changes, you only need to update it in
 a single place.
 
 {{< tip >}}
-Services that utilize the secrets manager are, for example, the Importer and
-AutoRAG services of the Agentic AI Suite. They require a Large Language Model
-(LLM) and need to store an API key for the LLM like OpenAI.
+Services that utilize the secrets manager are, for example, AutoGraph and
+AutoRAG of the Agentic AI Suite. They require a Large Language Model (LLM) and
+embedding model and need an API key for a provider like OpenAI. See
+[Reference secrets in service requests](#reference-secrets-in-service-requests).
 {{< /tip >}}
 
 ## Encryption and access
@@ -149,3 +150,126 @@ To delete multiple secrets in a single request, use the batch delete endpoint.
 The request body must include the list of profile IDs to delete:
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets_batch/delete" >}}
+
+## Reference secrets in service requests
+
+Services don't accept the name of a secret. Instead, request fields that end
+in `_secret_profile_id` (or `_secret_profile_ids` for a list) expect the
+**profile ID** of a secret. The service resolves the profile ID to the stored
+value via the Secrets Manager. The raw API key is never part of the request.
+
+### Get the profile ID of a secret
+
+The profile ID is returned when you create a secret:
+
+```sh
+curl -H "Authorization: bearer <TOKEN>" \
+  -d '{"name":"OpenAI-API","profileType":"LLM","provider":"openai","secretData":"sk-..."}' \
+  https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets
+```
+
+```json
+{
+  "profile": {
+    "profileId": "<profile-id>",
+    "profileType": "LLM",
+    "name": "OpenAI-API",
+    "provider": "openai",
+    "secretData": "********"
+  }
+}
+```
+
+For existing secrets, list them and look up the `profileId` by `name`:
+
+```sh
+curl -H "Authorization: bearer <TOKEN>" \
+  https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets
+```
+
+```json
+{
+  "profiles": [
+    {
+      "profileId": "<profile-id>",
+      "profileType": "LLM",
+      "name": "OpenAI-API",
+      "provider": "openai"
+    }
+  ],
+  "total": 1
+}
+```
+
+### Pass the profile ID to a service
+
+The following examples use AutoGraph. Other services of the Agentic AI Suite,
+like AutoRAG, use the same `chat_secret_profile_id` and
+`embedding_secret_profile_id` field names.
+
+**Set the credentials when installing a service**
+
+Put the profile IDs into the `env` object of the install request instead of
+`chat_api_key` and `embedding_api_key`:
+
+```json
+{
+  "env": {
+    "db_name": "your_database_name",
+    "genai_project_name": "your_project_name",
+    "chat_api_provider": "openai",
+    "chat_model": "gpt-5.4-nano",
+    "chat_secret_profile_id": "<chat-profile-id>",
+    "embedding_api_provider": "openai",
+    "embedding_model_name": "text-embedding-3-small",
+    "embedding_secret_profile_id": "<embedding-profile-id>"
+  }
+}
+```
+
+You can reference the same profile ID for chat and embeddings if one API key
+covers both models.
+
+**Change the credentials of a running service**
+
+AutoGraph validates the new configuration, including a live check of the API
+key, and applies it to the running service without a restart:
+
+{{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/projects/{project}/model-config/credentials" >}}
+
+```sh
+curl -X PUT -H "Authorization: bearer <TOKEN>" -H "Content-Type: application/json" \
+  -d '{
+    "chat_api_provider": "openai",
+    "chat_model": "gpt-5.4-nano",
+    "chat_secret_profile_id": "<chat-profile-id>",
+    "embedding_api_provider": "openai",
+    "embedding_model": "text-embedding-3-small",
+    "embedding_secret_profile_id": "<embedding-profile-id>"
+  }' \
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/projects/your_project_name/model-config/credentials
+```
+
+If a profile ID is missing or cannot be resolved, the request is rejected with
+HTTP status `400` and an `error_code` such as `SECRET_PROFILE_REQUIRED`,
+`SECRET_NOT_FOUND`, or `SECRET_RESOLUTION_ERROR`.
+
+**Spread the chat load across multiple API keys**
+
+The [orchestration endpoint](../agentic-ai-suite/autograph/reference/orchestration.md)
+of AutoGraph accepts a list of chat profile IDs. The spawned Importer workers
+rotate across the keys, which helps to stay within per-key rate limits:
+
+```sh
+curl -X POST -H "Authorization: bearer <TOKEN>" -H "Content-Type: application/json" \
+  -d '{
+    "project": "your_project_name",
+    "replicas": 3,
+    "chat_secret_profile_ids": ["<chat-profile-id-1>", "<chat-profile-id-2>"],
+    "embedding_secret_profile_id": "<embedding-profile-id>"
+  }' \
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate
+```
+
+Store each API key as a separate secret to get one profile ID per key.
+The embedding credentials accept a single profile ID only.
