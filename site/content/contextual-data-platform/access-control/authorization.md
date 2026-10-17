@@ -1,21 +1,22 @@
 ---
-title: Authorization in the data platform
-menuTitle: Authorization
-weight: 10
+title: Classic authorization in the data platform
+menuTitle: Classic authorization
+weight: 15
 description: >-
-  Which permissions govern the access to the data of the core database system,
-  and how they affect the services of the Contextual Data Platform
+  How the access levels of the ArangoDB core database system govern
+  the data a user may access in deployments without RBAC
 ---
-Once a request is [authenticated](authentication.md) and it is established which
-ArangoDB user account it is made on behalf of, a permission system decides what
-this account is allowed to do.
+In deployments where [RBAC](rbac.md) is not enabled, the classic permission
+system of the ArangoDB core database system decides what an authenticated user
+may do. It is the traditional way of managing permissions in ArangoDB, based on
+access levels that you grant per user account for databases and collections.
 
 The services of the data platform do not come with a permission system of their
-own. They require every request to be authenticated, but they do not restrict
-what an authenticated user may do within a service. What does exist are the
-classic access levels of the ArangoDB core database system. They are granted per
-user account and they govern every access to the database system, including the
-accesses that data platform services perform on your behalf.
+own in this case. They require every request to be
+[authenticated](authentication.md), but they do not restrict what an
+authenticated user may do within a service. The classic access levels still
+govern every access to the database system, however, including the accesses
+that data platform services perform on your behalf.
 
 ## Access levels
 
@@ -67,7 +68,8 @@ The [Platform Suite](../../platform-suite/_index.md) and
 [Agentic AI Suite](../../agentic-ai-suite/_index.md) services store their data
 in ArangoDB and read from and write to the databases and collections you point
 them at. Where a service does so with the identity of the user who made the
-request, the access levels of that user account apply.
+request, the access levels of that user account apply, even though the services
+have no permission system of their own without RBAC.
 
 This can make an operation in a service fail although the service itself does
 not check any permissions, for instance if the account has no read access to
