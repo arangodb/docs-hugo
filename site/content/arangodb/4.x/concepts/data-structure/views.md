@@ -205,7 +205,7 @@ if err != nil {
 ```
 
 See `DatabaseView.CreateArangoSearchView()` and `DatabaseView.CreateArangoSearchAliasView()`
-in the [_go-driver_ v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseView)
+in the [_go-driver_ v3 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#DatabaseView)
 for details.
 {{< /tab >}}
 
@@ -319,8 +319,8 @@ for _, viewName := range []string{"myView", "mySearchAliasView"} {
 }
 ```
 
-See [`DatabaseView.View()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseView)
-in the _go-driver_ v2 documentation for details.
+See [`DatabaseView.View()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#DatabaseView)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -447,9 +447,9 @@ for _, viewName := range []string{"myView", "mySearchAliasView"} {
 }
 ```
 
-See [`ArangoSearchView.Properties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ArangoSearchView)
-and [`ArangoSearchViewAlias.Properties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ArangoSearchViewAlias)
-in the _go-driver_ v2 documentation for details.
+See [`ArangoSearchView.Properties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#ArangoSearchView)
+and [`ArangoSearchViewAlias.Properties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#ArangoSearchViewAlias)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -609,9 +609,9 @@ if err != nil {
 }
 ```
 
-See [`ArangoSearchView.SetProperties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ArangoSearchView)
-and [`ArangoSearchViewAlias.SetProperties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ArangoSearchViewAlias)
-in the _go-driver_ v2 documentation for details.
+See [`ArangoSearchView.SetProperties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#ArangoSearchView)
+and [`ArangoSearchViewAlias.SetProperties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#ArangoSearchViewAlias)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -732,8 +732,8 @@ for _, viewName := range []string{"myView", "mySearchAliasView"} {
 }
 ```
 
-See [`View.Remove()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#View)
-in the _go-driver_ v2 documentation for details.
+See [`View.Remove()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#View)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
