@@ -1,9 +1,10 @@
 <ol class="main-nav-ol">
-  {{- template "main-nav-tree" dict "Pages" .Site.Sections }}
+  {{- template "main-nav-tree" dict "Pages" .Site.Sections "depth" 0 }}
 </ol>
 
 {{- define "main-nav-tree" }}
   {{- $pages := .Pages }}
+  {{- $depth := .depth }}
   {{- range $page := $pages.ByWeight }}
     {{- if $page.Pages }}
       {{- /* section (with child pages) */}}
@@ -13,16 +14,21 @@
           <a class="link-nav" href="{{ .RelPermalink }}">{{ .Params.menuTitle | markdownify }}</a>
           <label class="expand-nav"><input type="checkbox"></label>
         </div>
+        {{- if eq $depth 0 }}
+          {{- with .Params.navDescription }}
+            <p class="nav-section-desc">{{ . | markdownify }}</p>
+          {{- end }}
+        {{- end }}
         {{- if $isVersioned }}
           {{- partial "version-selector.html" . }}
           {{- range $versionSection := $page.Pages }}
             <ol class="nav-ol" data-version="{{ index (split $versionSection.Path "/") 2 }}">
-              {{- template "main-nav-tree" $versionSection -}}
+              {{- template "main-nav-tree" dict "Pages" $versionSection.Pages "depth" (add $depth 1) -}}
             </ol>
           {{- end }}
         {{- else }}
           <ol class="nav-ol">
-            {{- template "main-nav-tree" $page -}}
+            {{- template "main-nav-tree" dict "Pages" $page.Pages "depth" (add $depth 1) -}}
           </ol>
         {{- end }}
       </li>
