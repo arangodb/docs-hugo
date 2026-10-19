@@ -1015,8 +1015,9 @@ The following shortcodes also exist but are rarely used:
     ~~Oasis~~, ~~ArangoDB Oasis~~, ~~ArangoDB Cloud~~, ~~ArangoGraph Insights Platform~~, or ~~ArangoGraph~~
   - _Arango Contextual Data Platform_
     and _data platform_ for short in prose that refers to it many times, but not
-     ~~Data Platform~~, ~~Arango Data Platform~~, ~~Arango AI Services Data Platform~~,
-     ~~Arango AI Suite Data Platform~~, or ~~Arango AI Data Platform~~
+    ~~platform~~ (ambiguous with Arango Managed Platform),
+    ~~Data Platform~~, ~~Arango Data Platform~~, ~~Arango AI Services Data Platform~~,
+    ~~Arango AI Suite Data Platform~~, or ~~Arango AI Data Platform~~
   - _Arango Platform Suite_ and _Arango Agentic AI Suite_, but not
     ~~AI Services~~, ~~GenAI Suite~~, or ~~AI Suite~~
   - _Arango Control Plane_, but not ~~GenAI Service~~ or ~~AI Orchestrator~~
