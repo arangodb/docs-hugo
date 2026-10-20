@@ -482,7 +482,9 @@ in the _arangojs_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Go" >}}
-The Go driver supports vector indexes from v2.2.0 onward.
+The Go driver supports vector indexes from v2.2.0 onward. The following example
+requires v2.4.0 or later. In older versions, set `NLists` using
+`utils.NewType(100)` instead.
 
 ```go
 import (
@@ -499,7 +501,7 @@ params := arangodb.VectorParams{
   DefaultNProbe: utils.NewType(1),
   Dimension: utils.NewType(544),
   Metric: utils.NewType(arangodb.VectorMetricL2),
-  NLists: utils.NewType(100),
+  NLists: arangodb.NewVectorNLists(100),
   TrainingIterations: utils.NewType(25),
 }
 
