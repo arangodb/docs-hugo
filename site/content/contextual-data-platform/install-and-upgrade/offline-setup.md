@@ -56,7 +56,7 @@ system before the setup.
   is the version number). It is the operator for x86-64 CPUs.
   You may need to click **Show all # assets** to reveal all files. 
 
-  If you want to use a local SeaweedFS instance for blob storage, also download
+  If you want to use a local SeaweedFS instance for object storage, also download
   the file called `platform-storage-x.x.x.tgz` of the same version. It is the
   Helm chart that sets up SeaweedFS.
 
@@ -95,7 +95,7 @@ system before the setup.
 
   You need at least the image of the ArangoDB Kubernetes Operator
   (`arangodb/kube-arangodb-enterprise`). If you want to use a local SeaweedFS
-  instance for blob storage, make sure to also get this image
+  instance for object storage, make sure to also get this image
   (`chrislusf/seaweedfs:4.47`). The process is the same for any image.
 
   {{< tabs "container-management" >}}
