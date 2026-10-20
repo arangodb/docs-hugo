@@ -3287,7 +3287,8 @@ and password.
 
 You can control how many seconds before the expiry a renewal is attempted with
 the [`--server.jwt-renewal-threshold`](../../components/tools/arangodump/options.md#--serverjwt-renewal-threshold)
-startup option.
+startup option. The default is `150` seconds. Note that the server only issues a
+new token if the current one expires within the next 150 seconds.
 
 See [Connect to an ArangoDB server](../../components/tools/_index.md#connect-to-an-arangodb-server)
 for details.
