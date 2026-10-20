@@ -15,7 +15,7 @@ aliases:
 - An **Arango Contextual Data Platform** deployment.
 - A **project** in your target database (keeps datasets isolated).
   See [Projects](../control-plane-acp/_index.md#projects).
-- **LLM and embedding API access** (OpenAI-compatible or Triton-compatible).
+- **LLM and embedding API access** (OpenAI-compatible).
 - A **valid JWT** for the API (`Authorization: Bearer ...`).
 
 ## Build your knowledge base

@@ -5,9 +5,8 @@ group: Deploy & operate
 description: >-
   Host and manage private large language models inside the Arango Contextual
   Data Platform with the Triton LLM Host and MLflow
-weight: 450
-aliases:
-  - /agentic-ai-suite/private-llms/
+weight: 40
+draft: true
 ---
 {{< tag "Agentic AI Suite" >}}
 

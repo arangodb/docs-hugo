@@ -27,15 +27,10 @@ AutoRAG provides two main query endpoints and a health endpoint:
 The streaming endpoint (`/v1/graphrag-query-stream`) returns responses
 as they are generated, making it ideal for real-time applications and
 interactive interfaces.
-{{< /tip >}}
 
-{{< info >}}
-The streaming endpoint accepts requests for every provider. The
-OpenAI-compatible providers, `openai` and `custom` (OpenRouter, corporate LLMs,
-and any other compatible endpoint), stream tokens as they are generated. Triton
-does not token-stream: the request still succeeds, but the full answer arrives
-as a single chunk.
-{{< /info >}}
+The OpenAI-compatible providers (OpenAI, OpenRouter, corporate LLMs, and any
+other compatible endpoint) support streaming.
+{{< /tip >}}
 
 {{< info >}}
 All endpoints require authentication. Include an `Authorization: Bearer <token>`

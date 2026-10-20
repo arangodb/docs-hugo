@@ -49,18 +49,10 @@ the bytes passing through the request at all.
 
 ## Providers
 
-- `chat_api_provider` and `embedding_api_provider` must resolve to the same
-  family: either both OpenAI-compatible (`openai`, `custom`, or one of each) or
-  both `triton`. Mixing the two families is rejected at install time. An unknown
-  provider name is rejected as well, rather than falling back to a default.
 - `custom` requires a non-empty API URL for that side (`chat_api_url` or
   `embedding_api_url`). `custom` chat additionally requires an explicit
   `chat_model`.
-- OpenAI-compatible providers require at least one API key. Triton providers
-  require an API URL.
-- **Reclustering** requires an OpenAI-compatible provider. On Triton,
-  `POST /v1/recluster` is rejected. See
-  [Reclustering](incremental-updates.md#reclustering).
+- OpenAI-compatible providers require at least one API key.
 - **Image descriptions** require an OpenAI-compatible vision endpoint. See
   [Vision model requirements](semantic-units.md#vision-model-requirements).
 

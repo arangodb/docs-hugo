@@ -17,7 +17,7 @@ Three commands answer most questions:
 # What the installer did, and where it stopped
 cat ~/.arango-install.log
 
-# Are the platform pods running?
+# Are the data platform pods running?
 kubectl get pods --namespace arango
 
 # Why is a particular pod not running?
@@ -133,7 +133,7 @@ client = ArangoAIClient(
 )
 ```
 
-Note the `https` scheme - the platform gateway does not serve plain HTTP.
+Note the `https` scheme - the data platform gateway does not serve plain HTTP.
 
 For `curl`, pass `-k` / `--insecure`:
 
@@ -152,7 +152,7 @@ before exposing the deployment beyond your machine.
 ### The build never finishes
 
 `project.autograph.ingest()` is the long step - a few minutes on the sample
-documents, longer on your own documents. It polls the platform every 30
+documents, longer on your own documents. It polls the data platform every 30
 seconds, so pass an `on_progress` callback to see each status as it arrives
 instead of watching a blank screen:
 
@@ -174,7 +174,7 @@ kubectl logs <pod-name> --namespace arango
 ### The LLM provider rejects the request
 
 Authentication and quota errors come from your LLM provider, not from the
-platform. Confirm the key is set in the environment you are actually running in:
+data platform. Confirm the key is set in the environment you are actually running in:
 
 ```bash
 echo $LLM_API_KEY

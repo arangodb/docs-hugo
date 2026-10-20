@@ -14,7 +14,8 @@ aliases:
 
 - Access to the platform with **GraphML** services enabled.
 - A database with **graph data** (node and edge collections).
-- For **Node Classification**: some labeled nodes for training.
+- For **Node Classification**: an attribute with known values on some nodes,
+  marked with **Predict this** during featurization.
   For **Node Embeddings**: no labels required.
 
 ## Train a model and predict
@@ -32,6 +33,8 @@ In the Arango Contextual Data Platform, go to **Agentic AI Suite** >
 {{< step "Featurize your graph" >}}
 Select your graph, choose the node collections and attributes to use as
 features, configure the job, and click **Begin featurization**.
+To use Node Classification later, click **Predict this** on the attribute you
+want to predict.
 {{< /step >}}
 
 {{< step "Train a model" >}}

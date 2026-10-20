@@ -203,26 +203,13 @@ call does **not** go through whatever provider builds your graph. It always goes
 to an OpenAI-compatible chat completions endpoint, so what you have to configure
 depends on your chat provider.
 
-**With `chat_api_provider` set to `openai` or `custom`**
-
 Image descriptions reuse the same client as graph building, with the same API
-key, base URL (`chat_api_url`), and connection settings. For `custom`, a
-non-empty `chat_api_url` is required, just as it is for graph building. The
-endpoint has to be able to serve a vision-capable model. If the model you select
-cannot accept image input, the call fails and the affected semantic units carry
+key, base URL (`chat_api_url`), and connection settings. With
+`chat_api_provider` set to `custom`, a non-empty `chat_api_url` is required,
+just as it is for graph building. The endpoint has to be able to serve a
+vision-capable model. If the model you select cannot accept image input, the
+call fails and the affected semantic units carry
 `description_generation: "failed"`.
-
-**With `chat_api_provider` set to `triton`**
-
-{{< warning >}}
-Triton is not used for image descriptions. They require `CHAT_API_KEY`, a
-dedicated OpenAI API key, and the call goes directly to the OpenAI API. Graph
-building continues to run entirely on Triton and does not use that key.
-
-If `CHAT_API_KEY` is not set, the Importer logs a warning when the import starts
-and skips the descriptions. Semantic units are still created for every image,
-just without a `description`.
-{{< /warning >}}
 
 ### Image description model
 

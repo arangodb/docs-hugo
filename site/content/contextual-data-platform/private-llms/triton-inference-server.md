@@ -5,8 +5,7 @@ description: >-
   Enable the services of the Agentic AI Suite to use private LLMs via Triton
   Inference Server
 weight: 30
-aliases:
-  - /agentic-ai-suite/private-llms/triton-inference-server/
+draft: true
 ---
 {{< tag "Agentic AI Suite" >}}
 

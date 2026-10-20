@@ -11,8 +11,7 @@ description: >-
 {{< tag "Agentic AI Suite" >}}
 
 The AI services of the Arango Contextual Data Platform work with
-OpenAI-compatible APIs as well as self-hosted models served through Triton
-Inference Server. The recommended setup is the `openai` provider with the
+OpenAI-compatible APIs. The recommended setup is the `openai` provider with the
 OpenAI models listed below: that is the combination ArangoDB tests, and other
 endpoints can differ in behavior such as latency.
 
@@ -57,10 +56,3 @@ The provider and model are set per service, because their parameters differ:
 
 API keys are stored once in the [Secrets Manager](secrets-manager.md) and
 selected in each service's configuration.
-
-## Private models
-
-To serve a model inside your own deployment instead of calling a public
-provider, for example for data residency or network isolation, see
-[Private LLM hosting](private-llms/_index.md). It covers the Triton LLM Host
-that serves the model and the MLflow service that acts as its model registry.

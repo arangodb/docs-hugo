@@ -88,11 +88,8 @@ Alongside these components, you also get the following additional features:
 - [**Jupyter notebooks**](notebook-servers.md): Run a Jupyter kernel in the
   Contextual Data Platform for hosting interactive notebooks for experimentation and
   development of applications that use ArangoDB as their backend.
-- **Public and private LLM support**: Use public large language models (LLMs)
-  such as OpenAI or private LLMs with [Triton Inference Server](private-llms/triton-inference-server.md).
-  See [Supported LLM providers and models](llm-models.md).
-- [**MLflow integration**](private-llms/mlflow.md): Use the popular MLflow as a
-  model registry for private LLMs or to run machine learning experiments.
+- **LLM support**: Use large language models (LLMs) through OpenAI-compatible
+  APIs. See [Supported LLM providers and models](llm-models.md).
 - **Application Programming Interfaces (APIs)**: Use the underlying APIs of the
   Agentic AI Suite and build your own integrations. See the
   [API reference](reference.md) for details.

@@ -133,11 +133,11 @@ arangodb-notebook-images:
 arangodb-mlflow:
   features:
     - name: MLflow
-      link: contextual-data-platform/private-llms/mlflow.md
+#     link: agentic-ai-suite/private-llms/mlflow.md
 arangodb-llm-host:
   features:
     - name: Triton Inference Server
-      link: contextual-data-platform/private-llms/triton-inference-server.md
+#     link: agentic-ai-suite/private-llms/triton-inference-server.md
 arangodb-mcp-server:
   features:
     - name: ArangoDB MCP Server

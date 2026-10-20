@@ -141,11 +141,6 @@ servers) and directly store them in your secret management tool.
 
 ## Rotating encryption keys
 
-{{< warning >}}
-The encryption at rest key rotation is an **experimental** feature,
-and its APIs and behavior are still subject to change. 
-{{< /warning >}}
-
 ArangoDB supports rotating the user supplied encryption at rest key.
 This is implemented via key indirection. At initial startup, the first found 
 user-supplied key is used as the internal master key. Alternatively, the internal 
@@ -156,7 +151,9 @@ It is possible to change the user supplied encryption at rest key via the
 [HTTP API](../../develop/http-api/security.md#encryption-at-rest). This API
 is disabled by default, but can be turned on by setting the startup option
 [`--rocksdb.encryption-key-rotation`](../../components/arangodb-server/options.md#--rocksdbencryption-key-rotation)
-to `true`. It requires superuser rights and is not available on Coordinators.
+to `true`. Rotating the key requires a
+[superuser JWT](../../develop/http-api/authentication.md#jwt-superuser-tokens).
+The API is not available on Coordinators.
 
 A rotation reads the user key again from the key source that the instance is
 configured with and re-encrypts the internal master key with it. It is not

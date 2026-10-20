@@ -38,8 +38,7 @@ interface for a guided experience, or the API for automation.
 ## Prerequisites
 
 - **Arango Contextual Data Platform**
-- **LLM and embedding API access** (commonly OpenAI-compatible or
-  Triton-compatible endpoints)
+- **LLM and embedding API access** (commonly OpenAI-compatible endpoints)
 - **Valid JWT** for the API (`Authorization: Bearer ...`)
 - **Platform auth** reachable from the service (for token validation and
   renewal), if your deployment uses it

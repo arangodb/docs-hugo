@@ -84,8 +84,7 @@ Before using AutoRAG, you need:
    Importer directly works too, see the note above.
 
 2. **An LLM provider** configured for AutoRAG. See
-   [LLM Configuration](llm-configuration.md) to set up Triton Inference Server
-   or any OpenAI-compatible API.
+   [LLM Configuration](llm-configuration.md) to set up any OpenAI-compatible API.
 
 ## Installation
 
@@ -99,7 +98,7 @@ For detailed instructions on installing, monitoring, and managing services, see
 ## Getting Started
 
 1. [**Configure your LLM provider**](llm-configuration.md):
-   Choose and configure either Triton or OpenAI-compatible APIs.
+   Choose and configure OpenAI-compatible APIs.
 2. [**Understand search methods**](search-methods/_index.md):
    Learn about Instant, Deep, Global, Local, and Custom search.
 3. [**Execute queries**](executing-queries.md):

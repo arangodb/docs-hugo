@@ -173,8 +173,7 @@ need its documentation in three situations:
 ### Prerequisites when you install it yourself
 
 - **Arango Contextual Data Platform**.
-- **LLM and embedding API access** (OpenAI-compatible or Triton-compatible
-  endpoints).
+- **LLM and embedding API access** (OpenAI-compatible endpoints).
 - **Valid JWT** for the API (`Authorization: Bearer ...`).
 - A **project** in the target database. Projects keep datasets and
   configurations isolated from each other. For instructions, see the
@@ -301,7 +300,7 @@ are on the [Import endpoints](import-endpoints.md#call-sequence) page.
 ## Pages in this section
 
 - [**LLM Configuration**](llm-configuration.md): Configure your chat and
-  embedding providers (OpenAI-compatible APIs or Triton Inference Server).
+  embedding providers (OpenAI-compatible APIs).
 - [**Incremental Updates**](incremental-updates.md): Rebuild the community layer
   of a partition without importing the documents again, and how documents are
   removed and replaced in the knowledge graph.

@@ -12,10 +12,10 @@ aliases:
 
 ## Prerequisites
 
-- A **Context Graph built with AutoGraph Studio**. If you do not have one
-  yet, follow the [AutoGraph Studio quick start](../autograph/quick-start.md) first.
-- An **LLM provider** for AutoRAG (Triton or any OpenAI-compatible
-  API). See [LLM Configuration](llm-configuration.md).
+- A **project with imported data**. If you haven't built a graph
+  yet, follow the [AutoGraph Quick Start](../autograph/quick-start.md).
+- An **LLM provider** for AutoRAG (any OpenAI-compatible API).
+  See [LLM Configuration](llm-configuration.md).
 - A **valid JWT** (`Authorization: Bearer ...`).
 
 ## Run your first query
@@ -26,8 +26,7 @@ aliases:
 Install and start the service through the Arango Control Plane. Configure your
 LLM and embedding providers at install time by passing them in the `env` object
 of the install request body. Token streaming is available with the
-OpenAI-compatible providers, `openai` and `custom`. With `triton`, the streaming
-endpoint still works but returns the full answer as a single chunk.
+OpenAI-compatible providers, `openai` and `custom`.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragretriever" >}}
 

@@ -225,7 +225,7 @@ For guidance on picking providers and models, see
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `project` | URL path | Yes | Has to match the project the service runs against. A mismatch returns `400` with `valid: false` and `error_code: PROJECT_MISMATCH`. |
-| `chat_api_provider` | string | **Yes** | `openai`, `triton`, or `custom` for any other OpenAI-compatible endpoint. |
+| `chat_api_provider` | string | **Yes** | `openai` or `custom` for any other OpenAI-compatible endpoint. |
 | `chat_model` | string | **Yes** | The chat model name. A model the provider does not serve is rejected with `MODEL_NOT_FOUND`. |
 | `chat_secret_profile_id` | string | **Yes** | The secret profile ID of the chat key. **Never a raw key.** |
 | `embedding_api_provider` | string | **Yes** | `openai` or `custom`. **Immutable** once saved. |
@@ -259,7 +259,7 @@ project metadata.
 | `applied` | boolean | The configuration was persisted to the project metadata. |
 | `applied_to_running_pod` | boolean | `true` means it is live immediately, without a restart. **`false` means the persisted configuration only takes effect on the next service restart.** |
 | `rebuild_required` | boolean | Always `false`. Kept for wire compatibility: no accepted update can invalidate the stored vectors. |
-| `key_status` | string | `valid`, `invalid`, `expired`, `rate_limited`, or `insufficient_quota`, or empty when unknown. For the `triton` provider, `valid` only means that a key is present. |
+| `key_status` | string | `valid`, `invalid`, `expired`, `rate_limited`, or `insufficient_quota`, or empty when unknown. |
 | `field` | string | On a failure, the request field that failed validation. |
 | `error_code` | string | On a failure, a machine-readable code such as `MODEL_NOT_FOUND`, `INVALID_API_KEY`, or `EMBEDDING_CONFIG_IMMUTABLE`. |
 | `message` | string | On a failure, a human-readable explanation. |

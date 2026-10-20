@@ -130,6 +130,8 @@ See [Incremental Graph Updates](incremental-graph-updates.md).
 - **[Concepts](concepts.md)**: Knowledge graphs, LLMs, and the GraphRAG
   approach that AutoGraph builds on.
 - **[Use Cases](use-cases.md)**: Understand the business value through real-world enterprise scenarios and how AutoGraph compares to traditional RAG.
+- **[Arango AI SDK](../../ecosystem/arango-ai-sdk/_index.md)**: Drive AutoGraph
+  from Python with the official SDK for the Agentic AI Suite.
 - **[Architecture](architecture.md)**: Explore AutoGraph's three-layer knowledge graph architecture and ArangoDB collections.
 - **[Design Guide](design-guide.md)**: Learn how to structure your data with categories, layers, and components.
 - **[Reference](reference/_index.md)**: Install the service and drive the
