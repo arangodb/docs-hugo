@@ -9,7 +9,7 @@ description: >-
 Welcome to tutorial 1! This page takes you from an empty machine to a working
 Context Graph that you can ask questions in natural language:
 
-- [Install the platform](#install-arango-contextual-data-platform): set up a
+- [Install the data platform](#install-arango-contextual-data-platform): set up a
   local evaluation deployment.
 - [Install the Arango AI SDK](#install-the-arango-ai-sdk): the official Python
   to drive an AutoGraph workflow.
@@ -47,17 +47,17 @@ Context Graph that you can ask questions in natural language:
 
 ## Install Arango Contextual Data Platform
 
-There are two ways to install the platform, and they do not give you the same
+There are two ways to install the data platform, and they do not give you the same
 deployment. Pick the one that matches what you need:
 
 | | Installation script | Manual installation |
 |:---|:---|:---|
-| **Purpose** | Local evaluation of AutoGraph and AutoRAG | Full platform deployment |
+| **Purpose** | Local evaluation of AutoGraph and AutoRAG | Full data platform deployment |
 | **Kubernetes** | Your current cluster, or a local Kind cluster it creates for you | Any cluster you control |
 | **ArangoDB** | Single server | Single server or cluster |
 | **Services** | Only what AutoGraph and AutoRAG need. GraphML, MLflow, Grafana, and Prometheus are removed | Everything in your package configuration |
 | **You run** | One command | Individual `kubectl` and `helm` commands you can review |
-| **Use it for** | Trying the platform out on your own machine | Deployments you intend to keep, including production |
+| **Use it for** | Trying the data platform out on your own machine | Deployments you intend to keep, including production |
 
 ### Option 1: Installation script (evaluation)
 
@@ -105,7 +105,7 @@ downloads elsewhere. It then runs the following steps:
 4. Deploys ArangoDB in single server mode.
 5. Sets up SeaweedFS object storage.
 6. Configures platform storage.
-7. Installs the platform, then removes the services that evaluation does not
+7. Installs the data platform, then removes the services that evaluation does not
    need: GraphML (`arangodb-ml-api`), MLflow, Grafana, and Prometheus.
 8. Waits for all pods to be ready.
 9. Starts a port-forward on port 8529 and sets the root password.
@@ -117,10 +117,10 @@ interrupted. The trap stops the port-forward it started and deletes the
 temporary files it created under `$TMPDIR`. It does not touch anything else,
 and it does not roll back the installation.
 
-### Option 2: Manual installation (full platform)
+### Option 2: Manual installation (full data platform)
 
 If you would prefer not to run an installation script at all, or you need the
-full platform rather than the evaluation subset, follow
+full data platform rather than the evaluation subset, follow
 [Online setup](../../../contextual-data-platform/install-and-upgrade/online-setup.md)
 instead. It covers the same deployment as a sequence of `kubectl` and `helm`
 commands that you can read and run one at a time, against a cluster you already
@@ -191,7 +191,7 @@ until it finishes, and finally deploying a retriever to query. The Arango
 AI SDK, the official Python client, wraps that
 whole sequence into named methods on a client object and takes care of
 authentication, waiting on long-running steps, and reconnecting to a project
-you built earlier. It is the quickest way to put the platform to work from
+you built earlier. It is the quickest way to put the data platform to work from
 your own code, and it is what the quick start below uses.
 
 Installing from the repository requires `git` and
@@ -312,7 +312,7 @@ To pick up a project from an earlier run, use
 `client.project.get(project_name="quickstart")` instead of `create`.
 
 `deploy()` starts the AutoGraph service for the project. The call returns as
-soon as the platform accepts the install, while the pod may still be starting,
+soon as the data platform accepts the install, while the pod may still be starting,
 so `wait_until_ready()` waits for the service before you continue.
 `fps_recovery_username` names an existing ArangoDB user with read and write
 access to the project's database; AutoGraph uses it to resume file parsing
