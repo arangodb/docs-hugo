@@ -42,7 +42,7 @@ in Arango Contextual Data Platform 4.1.0. See
      short description with the supported file types, a **Create project**
      button, and a **Discover more** link. Click **Create project**.
 
-     ![The AutoGraph Studio view of a database without projects](../../images/autograph-ui-studio-empty.png)
+     ![The AutoGraph Studio entry point of a database without projects](../../images/autograph-ui-studio-empty.png)
 
    - If the database has projects, they are listed in a table with their
      **Name**, **Description**, and **Actions**. Click a column header to sort,
