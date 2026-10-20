@@ -56,6 +56,10 @@ system before the setup.
   is the version number). It is the operator for x86-64 CPUs.
   You may need to click **Show all # assets** to reveal all files. 
 
+  If you want to use a local SeaweedFS instance for blob storage, also download
+  the file called `platform-storage-x.x.x.tgz` of the same version. It is the
+  Helm chart that sets up SeaweedFS.
+
 - Download the Arango Contextual Data Platform CLI tool `arangodb_operator_platform` from
   <https://github.com/arangodb/kube-arangodb/releases/latest>.
   It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
@@ -98,8 +102,8 @@ system before the setup.
 
   {{< tab "Docker" >}}
   ```sh
-  docker pull docker.io/arangodb/kube-arangodb-enterprise:1.4.5
-  docker save docker.io/arangodb/kube-arangodb-enterprise:1.4.5 -o kube-arangodb-enterprise.tar
+  docker pull docker.io/arangodb/kube-arangodb-enterprise:1.4.6
+  docker save docker.io/arangodb/kube-arangodb-enterprise:1.4.6 -o kube-arangodb-enterprise.tar
   ```
   {{< /tab >}}
 
@@ -120,7 +124,7 @@ system before the setup.
   To pull the image and save it to a file as follows:
 
   ```sh
-  regctl image export docker.io/arangodb/kube-arangodb-enterprise:1.4.5 kube-arangodb-enterprise.tar
+  regctl image export docker.io/arangodb/kube-arangodb-enterprise:1.4.6 kube-arangodb-enterprise.tar
   ```
   {{< /tab >}}
 
@@ -140,10 +144,10 @@ image you may need from there without internet access.
 ```sh
 docker load -i kube-arangodb-enterprise.tar
 
-docker tag arangodb/kube-arangodb-enterprise:1.4.5 \
-  <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.5
+docker tag arangodb/kube-arangodb-enterprise:1.4.6 \
+  <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.6
 
-docker push <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.5
+docker push <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.6
 ```
 {{< /tab >}}
 
@@ -153,7 +157,7 @@ opposed to HTTPS:
 
 ```sh
 regctl image import \
-  <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.5 \
+  <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.6 \
   kube-arangodb-enterprise.tar \
   --host "reg=<YOUR_REGISTRY_ADDRESS:5000>,tls=disabled"
 ```
@@ -205,7 +209,7 @@ Make sure to set the options as shown below to enable the gateway feature and
 machine learning feature:
 
 ```sh
-VERSION_OPERATOR='1.4.5' # Use a newer version if available
+VERSION_OPERATOR='1.4.6' # Use a newer version if available
 
 helm upgrade --install operator \
   --namespace arango \
@@ -234,13 +238,13 @@ REVISION: 1
 DESCRIPTION: Install complete
 TEST SUITE: None
 NOTES:
-You have installed Kubernetes ArangoDB Operator in version 1.4.5
+You have installed Kubernetes ArangoDB Operator in version 1.4.6
 
 To access ArangoDeployments you can use:
 
 kubectl --namespace "arango" get arangodeployments
 
-More details can be found on https://github.com/arangodb/kube-arangodb/tree/1.4.5/docs
+More details can be found on https://github.com/arangodb/kube-arangodb/tree/1.4.6/docs
 ```
 
 You may use the following commands to wait for the operator to be ready and
@@ -673,134 +677,27 @@ with the Arango Contextual Data Platform, but you can also use a remote object
 storage like S3. For the supported storage systems, see the
 [`kube-arangodb` documentation](https://arangodb.github.io/kube-arangodb/docs/platform/storage.html).
 
-SeaweedFS authenticates clients of its S3 API against a list of identities.
-Create a namespace, a secret with these identities, and a secret with the same
-credentials in the namespace of your `ArangoDeployment`, which is `arango` in
-this example. Replace `seaweedfsadmin` and `seaweedfspassword` with the
-credentials you actually want to use:
+Install SeaweedFS with the `platform-storage` Helm chart of the ArangoDB
+Kubernetes Operator. It deploys a single SeaweedFS instance with a Persistent
+Volume Claim (PVC) of five gibibytes in the namespace of your
+`ArangoDeployment`, which is `arango` in this example, generates the access
+credentials, and creates the `ArangoPlatformStorage` resource that integrates
+the object storage with the Contextual Data Platform. The value of
+`deployment.name` (`deployment-example`) must match the name of the
+`ArangoDeployment`:
 
 ```sh
-kubectl create namespace seaweedfs
-
-kubectl create secret generic seaweedfs-config --namespace seaweedfs \
-  --from-literal=s3.json='{"identities":[{"name":"admin","credentials":
-    [{"accessKey":"seaweedfsadmin","secretKey":"seaweedfspassword"}],
-    "actions":["Admin","Read","Write","List","Tagging"]}]}'
-
-kubectl create secret generic seaweedfs-credentials --namespace arango \
-  --from-literal=accessKey=seaweedfsadmin \
-  --from-literal=secretKey=seaweedfspassword
+helm install seaweedfs \
+  --namespace arango \
+  "platform-storage-$VERSION_OPERATOR.tgz" \
+  --set backend=seaweedfs \
+  --set deployment.name=deployment-example
 ```
 
-Create a file to configure the SeaweedFS service and call it e.g.
-`seaweedfs.yaml`. Example using a Persistent Volume Claim (PVC) of five
-gibibytes:
-
-```yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: seaweedfs-data-pvc
-  namespace: seaweedfs
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: seaweedfs
-  namespace: seaweedfs
-spec:
-  replicas: 1
-  strategy:
-    type: Recreate
-  selector:
-    matchLabels:
-      app: seaweedfs
-  template:
-    metadata:
-      labels:
-        app: seaweedfs
-    spec:
-      containers:
-      - name: seaweedfs
-        image: chrislusf/seaweedfs:4.47
-        command:
-          - weed
-          - server
-          - -dir=/data
-          - -ip.bind=0.0.0.0
-          - -master.volumeSizeLimitMB=1024
-          - -volume.max=0
-          - -s3
-          - -s3.port=8333
-          - -s3.config=/etc/seaweedfs/s3.json
-        ports:
-          - containerPort: 8333
-        volumeMounts:
-          - name: data
-            mountPath: /data
-          - name: s3-config
-            mountPath: /etc/seaweedfs
-            readOnly: true
-      volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: seaweedfs-data-pvc
-        - name: s3-config
-          secret:
-            secretName: seaweedfs-config
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: seaweedfs
-  namespace: seaweedfs
-spec:
-  selector:
-    app: seaweedfs
-  ports:
-    - port: 8333
-      targetPort: 8333
-```
-
-
-Set up the SeaweedFS service by applying the configuration file:
-
-```sh
-kubectl apply -f ./seaweedfs.yaml
-```
-
-Create another file to configure the storage for the Contextual Data Platform
-and call it e.g. `platform-storage.yaml`. The name of the `ArangoPlatformStorage`
-(`deployment-example`) must match the name of the `ArangoDeployment`.
-The `allowInsecure` option is required because the in-cluster connection uses
-plain HTTP:
-
-```yaml
-apiVersion: platform.arangodb.com/v1beta1
-kind: ArangoPlatformStorage
-metadata:
-  name: deployment-example
-spec:
-  backend:
-    s3:
-      bucketName: arango-platform-storage
-      credentialsSecret:
-        name: seaweedfs-credentials
-      endpoint: http://seaweedfs.seaweedfs.svc.cluster.local:8333
-      allowInsecure: true
-```
-
-Integrate the object storage with the Contextual Data Platform by applying the file:
-
-```sh
-kubectl apply --namespace arango -f ./platform-storage.yaml
-```
+You can change the size of the volume with `--set storage.size=<SIZE>`, for
+example, `--set storage.size=20Gi`, and the storage class with
+`--set storage.class=<STORAGE_CLASS>`. If you don't set a storage class, the
+default storage class of your cluster is used.
 
 Verify that the storage integration is ready. The `READY` column needs to show
 `True` before you proceed:
