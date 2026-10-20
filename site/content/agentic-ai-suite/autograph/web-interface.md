@@ -21,7 +21,7 @@ The workflow has two stages:
 1. From the left-hand sidebar, select the database where you want to create the
    project. You can switch to a different database at any time if you want to
    work elsewhere.
-2. In the left-hand sidebar, click **Agentic AI Suite**, then click
+2. In the **Agentic AI Suite** section of the left-hand sidebar, click
    **AutoGraph Studio**. You can also open the **Agentic AI Suite** overview and
    click **Run AutoGraph Studio**.
 
@@ -37,16 +37,22 @@ in Arango Contextual Data Platform 4.1.0. See
 
 ## Create an AutoGraph project
 
-1. In the **AutoGraph Studio** view, click **+ New Project**. A database without
-   any projects reports *No projects yet*.
+1. Open the **New project** dialog. What the **AutoGraph Studio** view shows
+   depends on whether the current database already has projects:
 
-   ![The AutoGraph Studio view of a database without projects](../../images/autograph-ui-studio-empty.png)
+   - If the database has no projects, AutoGraph Studio opens on a centered entry
+     point with the headline *Create your first AutoGraph Studio project*, a
+     short description with the supported file types, a **Create project**
+     button, and a **Discover more** link. Click **Create project**.
 
-   Existing projects of the current database are listed in a table with their
-   **Name**, **Description**, and **Actions**. Click a column header to sort, use
-   **Filters** to narrow the list, and click a project name to open it.
+     ![The AutoGraph Studio view of a database without projects](../../images/autograph-ui-studio-empty.png)
 
-   ![The AutoGraph Studio view listing the projects of a database](../../images/autograph-ui-projects-list.png)
+   - If the database has projects, they are listed in a table with their
+     **Name**, **Description**, and **Actions**. Click a column header to sort,
+     use **Filters** to narrow the list, and click a project name to open it.
+     Click **+ New Project** to create another project.
+
+     ![The AutoGraph Studio view listing the projects of a database](../../images/autograph-ui-projects-list.png)
 
 2. The **New project** dialog opens. Enter a **Project name** and, optionally,
    a **Description** of what this project's knowledge base is for.

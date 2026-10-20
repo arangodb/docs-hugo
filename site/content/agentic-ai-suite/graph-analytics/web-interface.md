@@ -31,7 +31,8 @@ The typical workflow follows these steps:
 ## How to access the Graph Analytics interface
 
 1. From the left-hand sidebar, select the database you want to work with.
-2. In the left-hand sidebar, click **Agentic AI Suite**, then click **Graph Analytics**.
+2. In the **Agentic AI Suite** section of the left-hand sidebar, click
+   **Graph Analytics**.
 3. The Graph Analytics Engine interface opens.
 
 ## Engine management

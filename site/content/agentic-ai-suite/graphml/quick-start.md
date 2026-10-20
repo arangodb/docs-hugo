@@ -22,8 +22,8 @@ description: >-
 {{< steps >}}
 
 {{< step "Create a project" >}}
-In the Arango Contextual Data Platform, go to **Agentic AI Suite** >
-**GraphML** and click **Add new project**.
+In the sidebar of the Arango Contextual Data Platform, click **GraphML** and
+click **Add new project**.
 {{< /step >}}
 
 {{< step "Featurize your graph" >}}
