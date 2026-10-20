@@ -968,6 +968,15 @@ and throw errors if set:
 - `--query.allow-collections-in-expressions`
 - `--rocksdb.exclusive-writes`
 
+### Read write metrics option renamed
+
+The `--server.export-read-write-metrics` startup option has been renamed to
+`--rocksdb.export-read-write-metrics`. This aligns the option category with what
+the option provides, which is additional metrics from the RocksDB storage engine.
+
+Using the new option is recommended. You can still start the server with the
+old option, which logs a warning on startup.
+
 ## Client tools
 
 ### *arangoimp* removed
