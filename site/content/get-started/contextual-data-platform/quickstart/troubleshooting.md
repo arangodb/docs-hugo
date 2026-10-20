@@ -182,7 +182,7 @@ echo $LLM_API_KEY
 
 Any OpenAI-compatible endpoint works - OpenRouter, Google Gemini, Anthropic,
 Azure, or a private corporate LLM. See
-[LLM Configuration](../../../agentic-ai-suite/autograph/llm-configuration.md) for the
+[LLM Configuration](../../../contextual-data-platform/autograph/llm-configuration.md) for the
 supported providers and models.
 
 ### Questions return nothing useful
