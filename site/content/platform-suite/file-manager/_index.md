@@ -6,11 +6,16 @@ description: >-
   View and manage container service files and RAG input files stored by the
   Arango Contextual Data Platform
 ---
-The Contextual Data Platform supports different object storage solutions for this data
-persistence, such as S3 cloud storage. This storage is used by services of
-the Agentic AI Suite for instance, such as for storing AI models and training-related
-metadata, as well as for user-uploaded RAG content. Custom services make
-use of the file manager for application code, too.
+At its core, the Contextual Data Platform uses the ArangoDB database system to
+store data as JSON documents, including text, graph relations, and
+vector embeddings. Separately from the database, the platform persists files
+such as binary large objects (blobs) and media in an object storage solution,
+such as S3 cloud storage.
+
+Services of the Agentic AI Suite use this file storage, for example, to store
+AI models and training-related metadata as well as user-uploaded RAG content.
+Custom services store their application code there, too. The File Manager lets
+you view and manage these files.
 
 ## Organizing files with scopes
 
