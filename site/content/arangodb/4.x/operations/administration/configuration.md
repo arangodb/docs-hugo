@@ -61,11 +61,11 @@ but it is optional otherwise.
 Boolean options that you want to enable do not need to be set to `true`
 explicitly. For example, `--log.role` is equivalent to `--log.role true`.
 
-Some binaries accept one unnamed argument, which means you can take a
-shortcut and leave out the `‑‑option` part and supply the value directly.
-It does not matter if you supply it as first or last argument, or between
-any of the named arguments. For _arangod_ it is the `‑‑database.directory`
-option. The following commands are identical:
+Some binaries accept one unnamed argument, also called a _positional argument_,
+which means you can take a shortcut and leave out the `‑‑option` part and
+supply the value directly. It does not matter if you supply it as first or last
+argument, or between any of the named arguments. For _arangod_ it is the
+`‑‑database.directory` option. The following commands are identical:
 
 ```
 arangod my_data_dir
@@ -75,6 +75,32 @@ arangod --database.directory=my_data_dir
 arangod --database.directory "my_data_dir"
 arangod --database.directory="my_data_dir"
 ```
+
+The positional argument corresponds to the following option of each binary:
+
+| Binary          | Positional argument |
+|:----------------|:--------------------|
+| _arangod_       | `--database.directory` |
+| _arangodump_    | `--output-directory` |
+| _arangorestore_ | `--input-directory` |
+| _arangoexport_  | `--output-directory` |
+| _arangoimport_  | `--file` |
+| _arangobackup_  | The operation to perform, like `create` or `list` (required) |
+| _arangosh_      | Any number of values that are passed to the shell or the executed script in the global `ARGUMENTS` array |
+
+If you specify both the positional argument and the corresponding named option,
+the positional argument takes precedence, except for _arangoimport_, which
+reports an error in this case.
+
+An argument that doesn't start with a hyphen is treated as the positional
+argument unless it is the value of the preceding option. For options that
+require a value, the next argument is always the value. For Boolean options,
+the next argument is only used as the value if it is `true`, `false`, `on`,
+`off`, `1`, or `0`. For example, `arangodump --overwrite dump` enables the
+`--overwrite` option and writes the dump to the `dump` directory, whereas
+`arangodump --overwrite 1` sets `--overwrite` to `1` (true) and doesn't specify
+an output directory. All arguments after a double hyphen (`--`) are treated as
+positional arguments, even if they start with a hyphen.
 
 Many options belong to a section as in `‑‑section.param`, e.g.
 `‑‑server.database`, but there can also be options without any section.
@@ -102,7 +128,7 @@ key = value
 It may look like this:
 
 ```cfg
-server.endpoint = tcp://127.0.0.1:8529
+server.endpoint = http://127.0.0.1:8529
 server.authentication = true
 ```
 
@@ -111,7 +137,7 @@ that section can be specified in a shorter form:
 
 ```cfg
 [server]
-endpoint = tcp://127.0.0.1:8529
+endpoint = http://127.0.0.1:8529
 authentication = true
 ```
 
