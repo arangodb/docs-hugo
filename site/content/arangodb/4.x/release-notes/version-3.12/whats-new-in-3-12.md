@@ -2091,6 +2091,34 @@ Furthermore, requests and responses should only be compressed when they exceed a
 certain minimum size, e.g. 250 bytes.
 {{< /info >}}
 
+### Memory limits for decompressing request bodies
+
+<small>Introduced in: v3.12.13</small>
+
+The ArangoDB server decompresses incoming request bodies that are sent with a
+`Content-Encoding: gzip`, `Content-Encoding: deflate`, or `Content-Encoding: lz4`
+HTTP header. The following startup options have been added to limit how much
+memory this can take:
+
+- `--http.max-decompressed-request-body-size`:
+  The maximum size of a single request body after decompression (in bytes).
+  The default is `536870912` (512 MiB). Requests with a body that exceeds this
+  size once decompressed are rejected with an HTTP `413 Payload Too Large` error.
+  The limit applies to the decompressed size only. The size of a request as it
+  arrives over the network is limited separately.
+
+- `--http.decompressed-request-body-global-memory-limit`:
+  The maximum combined size of all decompressed request bodies that the server
+  holds at the same time (in bytes). Each compressed request reserves its
+  decompressed size from this budget until the request is finished. Requests
+  that would exceed the budget are rejected with an HTTP `503 Service Unavailable`
+  error and can be retried later. The default is 10% of the physical memory.
+  A value of `0` disables the limit. If you set a value lower than
+  `--http.max-decompressed-request-body-size`, the latter is used as the budget.
+
+Up to v3.12.12, the maximum decompressed size is not configurable and requests
+exceeding it are rejected with an HTTP `400 Bad Request` error.
+
 ### LZ4 compression for values in the in-memory edge cache
 
 <small>Introduced in: v3.11.2</small>
