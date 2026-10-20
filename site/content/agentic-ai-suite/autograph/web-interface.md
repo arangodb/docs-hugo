@@ -22,10 +22,7 @@ The workflow has two stages:
    project. You can switch to a different database at any time if you want to
    work elsewhere.
 2. In the **Agentic AI Suite** section of the left-hand sidebar, click
-   **AutoGraph Studio**. You can also open the **Agentic AI Suite** overview and
-   click **Run AutoGraph Studio**.
-
-![The Agentic AI Suite overview with the AutoGraph Studio card](../../images/autograph-ui-suite-overview.png)
+   **AutoGraph Studio**.
 
 {{< info >}}
 This page describes how to build a knowledge graph from scratch. To keep it

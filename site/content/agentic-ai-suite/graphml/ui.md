@@ -26,8 +26,7 @@ To create a new GraphML project using the Arango Contextual Data Platform web in
 
 1. From the left-hand sidebar, select the database where you want to create the project.
 2. In the **Agentic AI Suite** section of the left-hand sidebar, click
-   **GraphML**. You can also open the **Agentic AI Suite** overview and click
-   **Run GraphML**.
+   **GraphML**.
 3. In the **GraphML projects** view, click **Add new project**.
 4. The **Create ML project** modal opens. Enter a **Name** for your machine learning project.
 5. Click the **Create project** button to finalize the creation.
