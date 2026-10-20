@@ -557,7 +557,7 @@ paths:
                                   The `zkd` index type is an alias for `mdi`.
                                 type: string
                                 const: mdi
-        '401':
+        '403':
           description: |
             Missing read access to the given database.
           content:
@@ -579,7 +579,7 @@ paths:
                     description: |
                       The HTTP response status code.
                     type: integer
-                    example: 401
+                    example: 403
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
@@ -641,9 +641,7 @@ paths:
                 type: object
         '401':
           description: |
-            The user account you authenticated with lacks read access to the
-            specified database, the credentials are wrong, or the user account
-            is inactive.
+            The credentials are wrong or the user account is inactive.
           content:
             application/json:
               schema:
@@ -674,8 +672,9 @@ paths:
                     type: string
         '403':
           description: |
-            The `--server.harden` startup option is enabled but the user account
-            you authenticated with lacks `rw` access to the `_system` database.
+            The user account you authenticate with has `none` access to the
+            specified database, or the `--server.harden` startup option is enabled
+            and the account lacks `rw` access to the `_system` database.
           content:
             application/json:
               schema:
@@ -1091,7 +1090,7 @@ logJsonResponse(response);
 ---
 description: |-
   Query support information from a cluster
-name: RestAdminSupportInfo
+name: RestAdminSupportInfoCluster
 type: cluster
 ---
 var url = "/_db/_system/_admin/support-info";
@@ -1146,11 +1145,7 @@ paths:
                 type: object
         '401':
           description: |
-            You tried to authenticate with user credentials but a superuser JWT
-            is required (`--server.options-api` set
-            to `jwt`), you lack read access to the `_system` database
-            (`--server.options-api` set to `public`), the credentials are wrong,
-            or the user account is inactive.
+            The credentials are wrong or the user account is inactive.
           content:
             application/json:
               schema:
@@ -1181,9 +1176,12 @@ paths:
                     type: string
         '403':
           description: |
-            You don't have `rw` access to the `_system` database
-            (`--server.options-api` set to `admin`) or you tried to access the
-            endpoint using a database other than `_system`.
+            You tried to authenticate with user credentials but a superuser JWT is
+            required (`--server.options-api` set to `jwt`), you have `none` access to
+            the `_system` database (`--server.options-api` set to `public`), you lack
+            `rw` access to the `_system` database (`--server.options-api` set to
+            `admin`), or you tried to access the endpoint using a database other than
+            `_system`.
           content:
             application/json:
               schema:
@@ -1329,8 +1327,7 @@ paths:
                 type: object
         '401':
           description: |
-            You tried to authenticate with user credentials but a superuser JWT
-            is required, the credentials are wrong, or the user account is inactive.
+            The credentials are wrong or the user account is inactive.
           content:
             application/json:
               schema:
@@ -1361,8 +1358,9 @@ paths:
                     type: string
         '403':
           description: |
-            You don't have `rw` access to the `_system` database or you tried
-            to access the endpoint using a database other than `_system`.
+            You tried to authenticate with user credentials but a superuser JWT is
+            required, you lack `rw` access to the `_system` database, or you tried to
+            access the endpoint using a database other than `_system`.
           content:
             application/json:
               schema:
@@ -1502,9 +1500,7 @@ paths:
                     type: number
         '401':
           description: |
-            Authentication is enabled and the user account you authenticated with
-            doesn't have at least `ro` access to the specified database, the
-            credentials are wrong, or the user account is inactive.
+            The credentials are wrong or the user account is inactive.
           content:
             application/json:
               schema:
@@ -1525,6 +1521,38 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            Authentication is enabled and the user account you authenticated
+            with doesn't have at least read access to the specified database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
@@ -1646,7 +1674,7 @@ paths:
         '200':
           description: |
             This API will return HTTP 200 if everything is ok
-        '401':
+        '403':
           description: |
             if the request was not authenticated as a user with sufficient rights
       tags:
@@ -2024,7 +2052,7 @@ paths:
                       The UUID that uniquely identifies the deployment.
                     type: string
                     format: uuid
-        '401':
+        '403':
           description: |
             The user account has insufficient permissions for the selected database.
           content:
@@ -2150,9 +2178,7 @@ paths:
                       format: uuid
         '401':
           description: |
-            Returned if authentication is enabled and the user does not have at
-            least read access to the specified database, the credentials are
-            wrong, or the user account is inactive.
+            Returned if the credentials are wrong or the user account is inactive.
           content:
             application/json:
               schema:
@@ -2183,7 +2209,8 @@ paths:
                     type: string
         '403':
           description: |
-            Returned if authentication is enabled and the user does not have
+            Returned if authentication is enabled and the user account you
+            authenticate with has `none` access to the specified database, or lacks
             `rw` access to the `_system` database.
           content:
             application/json:
@@ -2325,9 +2352,7 @@ paths:
                           type: string
         '401':
           description: |
-            Returned if authentication is enabled and the user does not have at
-            least read access to the specified database, the credentials are
-            wrong, or the user account is inactive.
+            Returned if the credentials are wrong or the user account is inactive.
           content:
             application/json:
               schema:
@@ -2358,7 +2383,8 @@ paths:
                     type: string
         '403':
           description: |
-            Returned if authentication is enabled and the user does not have
+            Returned if authentication is enabled and the user account you
+            authenticate with has `none` access to the specified database, or lacks
             `rw` access to the `_system` database.
           content:
             application/json:
@@ -2523,9 +2549,7 @@ paths:
                         format: uuid
         '401':
           description: |
-            Returned if authentication is enabled and the user does not have at
-            least read access to the specified database, the credentials are
-            wrong, or the user account is inactive.
+            Returned if the credentials are wrong or the user account is inactive.
           content:
             application/json:
               schema:
@@ -2556,7 +2580,8 @@ paths:
                     type: string
         '403':
           description: |
-            Returned if authentication is enabled and the user does not have
+            Returned if authentication is enabled and the user account you
+            authenticate with has `none` access to the specified database, or lacks
             `rw` access to the `_system` database.
           content:
             application/json:
@@ -2843,7 +2868,7 @@ paths:
         '200':
           description: |
             Compaction started successfully
-        '401':
+        '403':
           description: |
             if the request was not authenticated as a user with sufficient rights
       tags:

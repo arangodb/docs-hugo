@@ -7,8 +7,9 @@ description: >-
 ---
 {{< info >}}
 The index types `hash` and `skiplist` are aliases for the `persistent` index
-type and should no longer be used to create new indexes. The aliases are
-removed in ArangoDB v4.0.
+type and should no longer be used to create new indexes. API version 1 rejects
+them with an HTTP `400 Bad Request` error, and the aliases are removed in
+ArangoDB v4.0.
 {{< /info >}}
 
 ## Create a persistent index

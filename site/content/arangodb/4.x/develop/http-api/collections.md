@@ -5433,6 +5433,9 @@ paths:
         situations, e.g. after running lots of update/replace or remove operations,
         the disk data for a collection may contain a lot of outdated data for which the
         space shall be reclaimed. In this case the compaction operation can be used.
+
+        The user account you authenticate with needs to have at least read/write
+        access to the collection.
       parameters:
         - name: database-name
           in: path
@@ -5535,9 +5538,10 @@ paths:
                     description: |
                       A descriptive error message.
                     type: string
-        '401':
+        '403':
           description: |
-            If the request was not authenticated as a user with sufficient rights.
+            The user account you authenticate with lacks read/write access to
+            the collection.
           content:
             application/json:
               schema:
@@ -5557,7 +5561,7 @@ paths:
                     description: |
                       The HTTP response status code.
                     type: integer
-                    example: 401
+                    example: 403
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.

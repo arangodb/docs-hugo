@@ -85,10 +85,6 @@ paths:
           description: |
             If the JSON representation is malformed or mandatory data is missing
             from the request.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
             Returned if you have `none` access to the `_system` database.
@@ -177,10 +173,6 @@ paths:
         '400':
           description: |
             The JSON representation is malformed or mandatory data is missing from the request
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
             Returned if you have `none` access to the `_system` database.
@@ -268,10 +260,6 @@ paths:
         '400':
           description: |
             The JSON representation is malformed or mandatory data is missing from the request.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
             Returned if you have `none` access to the `_system` database.
@@ -337,10 +325,6 @@ paths:
         '202':
           description: |
             Is returned if the user was removed by the server
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
             Returned if you have `none` access to the `_system` database.
@@ -403,10 +387,6 @@ paths:
         '200':
           description: |
             The user was found.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
             Returned if you have `none` access to the `_system` database.
@@ -471,10 +451,6 @@ paths:
         '200':
           description: |
             The users that were found.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
             Returned if you have `none` access to the `_system` database.
@@ -558,10 +534,6 @@ paths:
           description: |
             If the JSON representation is malformed or mandatory data is missing
             from the request.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
             Returned if you have `none` access to the `_system` database.
@@ -656,10 +628,6 @@ paths:
           description: |
             If the JSON representation is malformed or mandatory data is missing
             from the request.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
             Returned if you have `none` access to the `_system` database.
@@ -904,10 +872,6 @@ paths:
         '400':
           description: |
             If the access privileges are not right etc.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
             Returned if you have `none` access to the `_system` database.
@@ -997,10 +961,6 @@ paths:
         '400':
           description: |
             If the access privileges are not right etc.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
             Returned if you have `none` access to the `_system` database.
@@ -1077,10 +1037,6 @@ paths:
         '400':
           description: |
             If the access privileges are not right etc.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
             Returned if you have `none` access to the `_system` database.
