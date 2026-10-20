@@ -154,8 +154,8 @@ paths:
           description: |
             The name of the database whose query results cache to clear.
 
-            The user account you authenticate with needs at least read access to
-            this database as well as write access to the `_system` database.
+            The user account you authenticate with needs at least `ro` access to
+            this database and `rw` access to the `_system` database.
           schema:
             type: string
       responses:
@@ -219,7 +219,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -307,7 +307,8 @@ paths:
 
         {{</* info */>}}
         You can only change the query cache properties from within the `_system`
-        database. Write access to the `_system` database is required for this.
+        database. The user account you authenticate with needs `rw` access to
+        the `_system` database.
         {{</* /info */>}}
       requestBody:
         content:

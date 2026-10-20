@@ -414,8 +414,7 @@ Azure, or a self-hosted LLM gateway, and can be set independently for chat and
 embedding. `chat_api_url` and `embedding_api_url` are required with it. Unknown
 provider strings are rejected rather than silently defaulting to `openai`, and
 configurations already stored as `openai` with a non-default base URL are not
-migrated automatically. The chat side accepts `openai`, `custom`, and `triton`;
-the embedding side accepts `openai` and `custom`.
+migrated automatically.
 
 **The embedding model of a project can no longer be changed**
 

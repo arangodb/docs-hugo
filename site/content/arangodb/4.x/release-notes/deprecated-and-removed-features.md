@@ -7,32 +7,32 @@ description: >-
 aliases:
   - ../components/tools/arangorestore/fast-cluster-restore # 3.10 -> 3.11
   - ../develop/drivers/csharp-dotnet # 3.10 -> 3.11
-  - ../components/arangodb-server/ldap # 3.11 -> 3.12
-  - ../data-science/pregel # 3.11 -> 3.12
-  - ../data-science/pregel/algorithms # 3.11 -> 3.12
-  - ../develop/http-api/pregel # 3.11 -> 3.12
+  - ../components/arangodb-server/ldap # 3.11 -> 3.11
+  - ../data-science/pregel # 3.11 -> 3.11
+  - ../data-science/pregel/algorithms # 3.11 -> 3.11
+  - ../develop/http-api/pregel # 3.11 -> 3.11
   - ../deploy/active-failover # 3.11 -> 3.12
   - ../deploy/active-failover/administration # 3.11 -> 3.12
   - ../deploy/active-failover/manual-start # 3.11 -> 3.12
   - ../deploy/active-failover/using-the-arangodb-starter # 3.11 -> 3.12
-  - ../deploy/arangosync # 3.11 -> 3.12
-  - ../deploy/arangosync/administration # 3.11 -> 3.12
-  - ../deploy/arangosync/monitoring # 3.11 -> 3.12
-  - ../deploy/arangosync/operations-and-maintenance # 3.11 -> 3.12
-  - ../deploy/arangosync/security # 3.11 -> 3.12
-  - ../deploy/arangosync/troubleshooting # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/arangodb-cluster # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.12
+  - ../deploy/arangosync # 3.11 -> 3.11
+  - ../deploy/arangosync/administration # 3.11 -> 3.11
+  - ../deploy/arangosync/monitoring # 3.11 -> 3.11
+  - ../deploy/arangosync/operations-and-maintenance # 3.11 -> 3.11
+  - ../deploy/arangosync/security # 3.11 -> 3.11
+  - ../deploy/arangosync/troubleshooting # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangodb-cluster # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.11
   - ../operations/installation/macos # 3.11 -> 3.12
   - ../operations/installation/windows # 3.11 -> 3.12
-  - ../operations/installation/compiling # 3.11 -> 3.12
-  - ../operations/installation/compiling/compile-on-debian # 3.11 -> 3.12
-  - ../operations/installation/compiling/running-custom-build # 3.11 -> 3.12
-  - ../operations/installation/compiling/compile-on-windows # 3.11 -> 3.12
-  - ../operations/installation/compiling/recompiling-jemalloc # 3.11 -> 3.12
+  - ../operations/installation/compiling # 3.11 -> 3.11
+  - ../operations/installation/compiling/compile-on-debian # 3.11 -> 3.11
+  - ../operations/installation/compiling/running-custom-build # 3.11 -> 3.11
+  - ../operations/installation/compiling/compile-on-windows # 3.11 -> 3.11
+  - ../operations/installation/compiling/recompiling-jemalloc # 3.11 -> 3.11
   - ../operations/upgrading/manual-deployments/active-failover # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/macos # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/windows # 3.11 -> 3.12
@@ -123,9 +123,9 @@ detailed information about breaking changes before upgrading.
 {{< /info >}}
 
 - **Aardvark web interface**:\
-  The web interface served by the ArangoDB server (_arangod_), also known as
-  _Aardvark_, has been removed. The server executable no longer offers a
-  built-in web interface.
+  The web interface is no longer built into the ArangoDB server (_arangod_).
+  The old web interface served by _arangod_, also known as _Aardvark_, has been
+  replaced by new web interfaces that run separately from the database core:
 
   - If you use the Arango Contextual Data Platform, there is a new, integrated
     web interface also known as the platform UI.
@@ -182,7 +182,7 @@ detailed information about breaking changes before upgrading.
   Starting with v3.12, the native platform support for the Windows and macOS
   operating systems has been removed and ArangoDB packages for Windows and macOS
   are not provided anymore. You can use the official
-  [Docker images](https://hub.docker.com/_/arangodb/) instead, to run ArangoDB
+  [Docker images](../operations/installation/docker.md) instead, to run ArangoDB
   in Linux containers.
 
 - **Active Failover deployment mode**:\

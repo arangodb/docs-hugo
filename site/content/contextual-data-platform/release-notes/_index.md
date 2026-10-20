@@ -14,21 +14,6 @@ pageToc:
 This preview release is available to selected customers as part of a Limited Release. 
 It is a maintenance release with bug fixes and security improvements.
 
-### MLflow
-
-{{< tag "Agentic AI Suite" >}}
-
-Authentication is now enforced on the route of the integrated
-[MLflow](../../agentic-ai-suite/private-llms/mlflow.md) service. As a result,
-the MLflow web interface is only available through the Arango Contextual Data
-Platform web interface, under **AI Tools**. Opening
-`https://<EXTERNAL_ENDPOINT>:8529/mlflow/` directly in a browser is no longer
-possible.
-
-Programmatic access is unchanged. The official MLflow client and other HTTP
-callers continue to use the same endpoint with a valid JWT, see
-[Programmatic access](../../agentic-ai-suite/private-llms/mlflow.md#programmatic-access).
-
 ### AutoGraph
 
 {{< tag "Agentic AI Suite" >}}
@@ -289,13 +274,6 @@ to `gpt-5.4-nano`; the
 service (AQLizer) defaults to `gpt-5.4`. [Ada](../../agentic-ai-suite/ada/_index.md) also
 adds **Anthropic**, **OpenRouter**, and **Custom Endpoint** as provider options
 alongside OpenAI.
-
-### MLflow
-
-{{< tag "Agentic AI Suite" >}}
-
-The integrated [MLflow](../../agentic-ai-suite/private-llms/mlflow.md) service
-has been upgraded to MLflow 3.x.
 
 ### License activation
 
@@ -576,14 +554,6 @@ What's included:
 - [**Jupyter Notebooks**](../../agentic-ai-suite/notebook-servers.md):
   Launch integrated Jupyter notebook servers with pre-installed ArangoDB drivers
   and data science libraries for interactive experimentation.
-
-- [**MLflow Integration**](../../agentic-ai-suite/private-llms/mlflow.md):
-  Use MLflow as a model registry for private LLMs and machine learning
-  experiment tracking.
-
-- [**Triton Inference Server**](../../agentic-ai-suite/private-llms/triton-inference-server.md):
-  Host private Large Language Models using NVIDIA Triton Inference Server for
-  secure, on-premises AI capabilities.
 
 ### Introducing the Arango Platform Suite
 

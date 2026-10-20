@@ -1048,15 +1048,6 @@ function handleDocumentClick(event) {
         return;
     }
   
-    // Homepage clicks
-    const homeLink = target.closest(".home-link");
-    if (homeLink) {
-        if (openInNew) return;
-        event.preventDefault();
-        updateHistory("/");
-        return;
-    }
- 
     // Mobile menu toggle
     if (closest('.sidebar-toggle-navigation')) {
         showSidebarHandler();

@@ -1028,13 +1028,6 @@ stored](../incremental-graph-updates.md#where-the-values-are-stored).
   delete, so it cannot run at the same time as these operations.
 - A reclustering that fails or is skipped does not clear `needs_reclustering`.
   Start it again once the slot is free.
-- **Triton projects cannot be reclustered, but this endpoint does not reject
-  them.** A recluster of a Triton project is accepted (`accepted: true`) but
-  fails in the background: the Importer rejects it with gRPC
-  `FAILED_PRECONDITION` before doing any work, see
-  [Reclustering](../../importer/incremental-updates.md#reclustering). The failure
-  appears in the `importerOrchestration` status slot, and `needs_reclustering`
-  stays set.
 - A partition **without entities** is a successful no-op. The job reports `0`
   communities over `0` entities and finishes, so a completed job is not evidence
   that anything was refreshed. Check `last_reclustered_at` and the
@@ -1226,7 +1219,7 @@ pick a maintenance window for them.
   [Where to read the score](../incremental-graph-updates.md#where-to-read-the-score).
 - **The reclustering was accepted but `needs_reclustering` is still `true`.**
   `accepted: true` only means the request was taken up. The partition may still
-  be running, it may have failed (a Triton project always fails here), or it may
+  be running, it may have failed, or it may
   never have got the mutation slot: reclusterings are serialized, and a partition
   that waits behind a peer gives up after about ten one-second attempts. None of
   that clears the flag. Check `last_reclustered_at` on the `rags` node to tell

@@ -20,7 +20,10 @@ disabled for custom Foxx apps. To toggle authentication for incoming
 requests to the internal database APIs, use the
 [`--server.authentication`](../../components/arangodb-server/options.md#--serverauthentication)
 startup option. This option is enabled by default so authentication is
-required for the database APIs.
+required for the database APIs. If you turn it off, the access requirements
+stated for the endpoints, including the need for a
+[superuser JWT](#jwt-superuser-tokens), generally don't apply. Any client that
+can reach the server has full access.
 
 {{< security >}}
 Requests using the HTTP `OPTIONS` method are answered by
@@ -489,13 +492,14 @@ paths:
         The response includes the actual access token string that you need to
         store in a secure manner. It is only shown once.
 
-        The user account you authenticate with needs to have administrate access
+        The user account you authenticate with needs to have `rw` access
         to the `_system` database if you want to create an access token for a
         different user. You can always create an access token for yourself,
         regardless of database access levels.
 
         Creating access tokens is not possible if the server is in read-only
-        mode, with the exception of the superuser (introduced in v3.12.11).
+        mode, unless you authenticate with a [superuser JWT](#jwt-superuser-tokens)
+        (introduced in v3.12.11).
       parameters:
         - name: user
           in: path
@@ -644,11 +648,11 @@ paths:
             The request is not authorized. The reason can be one of the following:
 
             - The access level of the user account you authenticated with is too
-              low for the `_system` database. It needs to be *Administrate* to
+              low for the `_system` database. It needs to be `rw` to
               manage access tokens for other users. The error number is
               `ERROR_FORBIDDEN` (`11`).
             - The server is in read-only mode, which doesn't allow to create
-              access tokens, except for the superuser. The error number is
+              access tokens, except with a superuser JWT. The error number is
               `ERROR_ARANGO_READ_ONLY` (`1004`) (introduced in v3.12.11).
           content:
             application/json:
@@ -778,7 +782,7 @@ paths:
         This only returns the access token metadata.
         The actual access token strings are only shown when creating tokens. 
 
-        The user account you authenticate with needs to have administrate access
+        The user account you authenticate with needs to have `rw` access
         to the `_system` database if you want to list the access tokens for a
         different user. You can always list your own access tokens,
         regardless of database access levels.
@@ -878,7 +882,7 @@ paths:
         '403':
           description: |
             The user's access level for the `_system` database is too low.
-            It needs to be *Administrate* to manage access tokens for other users.
+            It needs to be `rw` to manage access tokens for other users.
           content:
             application/json:
               schema:
@@ -966,13 +970,14 @@ paths:
       description: |
         Delete an access token with the specified identifier for the given user.
 
-        The user account you authenticate with needs to have administrate access
+        The user account you authenticate with needs to have `rw` access
         to the `_system` database if you want to delete an access token for a
         different user. You can always delete your own access tokens,
         regardless of database access levels.
 
         Deleting access tokens is not possible if the server is in read-only
-        mode, with the exception of the superuser (introduced in v3.12.11).
+        mode, unless you authenticate with a [superuser JWT](#jwt-superuser-tokens)
+        (introduced in v3.12.11).
       parameters:
         - name: user
           in: path
@@ -1035,11 +1040,11 @@ paths:
             The request is not authorized. The reason can be one of the following:
 
             - The access level of the user account you authenticated with is too
-              low for the `_system` database. It needs to be *Administrate* to
+              low for the `_system` database. It needs to be `rw` to
               manage access tokens for other users. The error number is
               `ERROR_FORBIDDEN` (`11`).
             - The server is in read-only mode, which doesn't allow to delete
-              access tokens, except for the superuser. The error number is
+              access tokens, except with a superuser JWT. The error number is
               `ERROR_ARANGO_READ_ONLY` (`1004`) (introduced in v3.12.11).
           content:
             application/json:
@@ -1133,18 +1138,15 @@ To reload the JWT secrets of a local _arangod_ process without a restart, you
 may use the following HTTP API. A `POST` request reloads the secret, a
 `GET` request may be used to load information about the currently used secrets.
 
-### Get information about the loaded JWT secrets
+### Get the hashes of the loaded JWT secrets
 
 ```openapi
 paths:
   /_db/{database-name}/_admin/server/jwt:
     get:
-      operationId: getServerJwtSecrets
+      operationId: getServerJwtSecretHashes
       description: |
-        Get information about the currently loaded secrets.
-
-        To utilize the API a superuser JWT token is necessary, otherwise the response
-        will be _HTTP 403 Forbidden_.
+        Get the SHA-256 hashes of the currently loaded JWT secrets.
       parameters:
         - name: database-name
           in: path
@@ -1152,9 +1154,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
       responses:
@@ -1224,8 +1226,8 @@ paths:
         It is not possible to change the locations where files are loaded from
         without restarting the process.
 
-        To utilize the API a superuser JWT token is necessary, otherwise the response
-        will be _HTTP 403 Forbidden_.
+        This endpoint requires a [superuser JWT](#jwt-superuser-tokens). User accounts,
+        including `root`, are not sufficient.
       responses:
         '200':
           description: |
