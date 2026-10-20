@@ -380,6 +380,36 @@ and [user tokens](../../develop/http-api/authentication.md#jwt-user-tokens) of
 this user account are now rejected. Requests that
 authenticate with such a token fail with an HTTP `401 Unauthorized` error.
 
+#### Per-user scoping of the query tracking API
+
+<small>Introduced in: v3.12.13</small>
+
+Listing and killing AQL queries is now limited to the queries of the user account
+you authenticate with. Previously, any user account with at least `ro` access
+to a database could list all running and slow queries of that database,
+including the query strings and bind variables of other users, and kill any of
+them.
+
+This affects the following endpoints of the
+[AQL query API](../../develop/http-api/queries/aql-queries.md#track-queries):
+
+- `GET /_api/query/current` and `GET /_api/query/slow` only return your own
+  queries.
+- `DELETE /_api/query/slow` only removes your own entries from the list of slow
+  queries.
+- `DELETE /_api/query/{query-id}` only kills your own queries. Requests to
+  kill a query of another user fail with an HTTP `403 Forbidden` error.
+
+Administrators can still list and kill the queries of all users and clear the
+entire list of slow queries. This requires `rw` access to the `_system`
+database (classic authorization) or the `coredb-admin` role (RBAC).
+Requests with a
+[superuser JWT](../../develop/http-api/authentication.md#jwt-superuser-tokens)
+are not affected.
+
+Using the `all` query parameter to target all databases remains unchanged and
+still requires a superuser JWT in the `_system` database.
+
 ### Endpoint return value changes
 
 #### Storage engine API
