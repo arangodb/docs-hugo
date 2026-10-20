@@ -97,8 +97,8 @@ the project when you continue to the next step.
    You can:
    - Use the **Search files by name** field and the **Category** dropdown to
      filter the list.
-   - Remove a single file with the cross icon, or delete a whole category with
-     the trash icon.
+   - Remove a single file or delete a whole category with the trash icon next to
+     it.
    - Repeat the upload to add more categories. Every upload opens its own
      **Name this category** dialog, and the files you already staged stay pending
      in the background. The footer counts them across all categories, for example
