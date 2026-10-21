@@ -8,6 +8,8 @@ description: >-
 ---
 ## Prerequisites
 
+- An **Arango Contextual Data Platform** deployment with a valid Agentic AI
+  Suite license.
 - A **project with imported data**. If you haven't built a graph
   yet, follow the [Importer Quick Start](../importer/quick-start.md) (or the
   [AutoGraph Quick Start](../autograph/quick-start.md) for partitioned

@@ -8,7 +8,8 @@ description: >-
 ---
 ## Prerequisites
 
-- Access to an Arango Contextual Data Platform deployment.
+- An **Arango Contextual Data Platform** deployment with a valid Agentic AI
+  Suite license.
 - An existing **graph** in ArangoDB (node and edge collections).
 - An API key or authentication token (for API access).
 
