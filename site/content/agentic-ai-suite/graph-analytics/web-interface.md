@@ -45,7 +45,8 @@ engines with their unique engine IDs and current status.
 
 ### Start a new engine
 
-1. In the right panel under **Running Engines**, click **Start New Engine**.
+1. Go to the **Start New Engine** panel on the right side of the interface,
+   above **Running Engines**.
 2. Select an **Engine Size** based on your graph data requirements:
    - **Small**: 1 GB RAM, 1 vCPU
    - **Medium**: 16 GB RAM, 4 vCPU

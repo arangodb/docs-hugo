@@ -112,8 +112,6 @@ the project when you continue to the next step.
    progress reported as *Uploading `<N>` documents…*, and the wizard continues to
    the configuration step automatically.
 
-   ![The Documents step uploading the staged documents](../../images/autograph-ui-documents-uploading.png)
-
    The categories are listed with their file counts once the upload completes.
 
    ![The Documents step with three uploaded categories](../../images/autograph-ui-documents-uploaded.png)
@@ -127,7 +125,7 @@ you name the category yourself.
 
 In the **Configure** step, choose the LLM provider used to build the Corpus
 Graph. A banner confirms what you are building from, for example
-*Building from 35 documents across 3 categories*. A callout summarizes what
+*Building from 19 documents across 3 categories*. A callout summarizes what
 clicking **Start build** does: it deploys the AutoGraph service with these
 settings and builds the Corpus Graph from your uploaded documents. When it is
 ready, the wizard finishes at your project overview, where you can generate
@@ -194,13 +192,15 @@ For more details, see [LLM Configuration](llm-configuration.md).
 The **Build** step shows the two operations it performs. For details on what
 happens during the corpus build, see [Corpus Build](reference/corpus-build.md).
 
-1. **Deploy AutoGraph service**: The service is deployed and the interface waits
-   for it to respond, showing *Checking service status…* and
-   *Service deployed — waiting for it to respond. This might take up to 10
-   minutes.* The **AutoGraph service ID** is displayed, for example
-   `arangodb-autograph-hiojb`.
+1. **Deploy AutoGraph service**: The service is deployed, showing
+   *Deploying AutoGraph service…* and a **Running** status.
 
-   ![The Build step of the AutoGraph setup wizard waiting for the service](../../images/autograph-ui-build.png)
+   ![The Build step of the AutoGraph setup wizard deploying the service](../../images/autograph-ui-build.png)
+
+   The interface then waits for the service to respond, showing
+   *Checking service status…* and *Service deployed — waiting for it to
+   respond. This might take up to 10 minutes.* The **AutoGraph service ID** is
+   displayed, for example `arangodb-autograph-wdpdd`.
 
    Wait for the confirmation message **AutoGraph service deployed**.
 
@@ -468,8 +468,9 @@ Select the retriever to see its full service ID and an **initializing** to
 
 Select a retriever from the list to open its question composer and its past
 questions, then click **New question**. A retriever that has not answered
-anything yet is listed as *No runs yet*. Past questions are marked with the mode
-they ran in.
+anything yet is listed as *No runs yet*, and one that is still starting up as
+*Run history loads once the retriever is live*. Past questions are marked with
+the mode they ran in.
 
 {{< info >}}
 Until the service is ready to answer, a panel takes the place of the composer:
@@ -533,7 +534,7 @@ trust. It has the following views:
   entities and relationships the retriever traversed to assemble it. This is
   where a GraphRAG answer differs from a plain vector search: you see the
   connections that produced the answer, not just the matching text. The view
-  counts what it holds, for example *157 entities* and *265 relationships*.
+  counts what it holds, for example *207 entities* and *227 relationships*.
 
   ![The Graph view of the Provenance panel](../../images/autograph-ui-provenance-graph.png)
 

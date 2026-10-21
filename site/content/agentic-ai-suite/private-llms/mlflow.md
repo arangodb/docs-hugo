@@ -67,13 +67,14 @@ Platform web interface:
 
 1. Sign in to the Arango Contextual Data Platform web interface with your
    platform credentials. MLflow does not have a separate login.
-2. Expand **AI Tools** in the main navigation and click **MLFlow**.
+2. In the **Other services** section of the sidebar, expand **AI Tools** and
+   click **MLFlow**.
 
 {{< security >}}
 The MLflow route requires authentication. Opening
 `https://<EXTERNAL_ENDPOINT>:8529/mlflow/` directly in your browser is no longer
-possible. Use the **AI Tools** section of the Arango Contextual Data Platform
-web interface instead.
+possible. Use the **AI Tools** entry in the sidebar of the Arango Contextual
+Data Platform web interface instead.
 {{< /security >}}
 
 ### Programmatic access

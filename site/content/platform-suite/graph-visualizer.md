@@ -47,8 +47,8 @@ supported by the Graph Visualizer.
 ### Select and load a graph
 
 1. In the Arango Contextual Data Platform web interface, select the database your
-   named graph is stored in.
-2. Click **Graphs** in the main navigation.
+   named graph is stored in from the database selector at the top of the sidebar.
+2. In the **Database related** section of the sidebar, click **Graphs**.
 3. Select a graph from the list.
 4. The viewport of the Graph Visualizer opens for exploring the graph.
 

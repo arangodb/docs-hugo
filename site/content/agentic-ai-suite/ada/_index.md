@@ -22,7 +22,8 @@ corresponding API key stored in the
 [Secrets Manager](../../platform-suite/secrets-manager.md).
 
 You access Ada from the Arango Contextual Data Platform web interface, using the
-**Ada** entry in the left sidebar. It is scoped to the
+**Ada** entry in the **Agentic AI Suite** section of the left sidebar. It is
+scoped to the
 database currently selected in the database selector at the top of the sidebar.
 The top bar shows the active database name alongside the LLM provider and model
 in use, for example `_system  openai/gpt-4.1`.

@@ -90,7 +90,7 @@ The featurization process has several configurable options, grouped into
 **Configuration** and **Advanced** settings. These are also shown in a JSON
 format on the right side of the modal for transparency.
 
-In the **Configuration** tab, you can control the overall featurization job and
+In the **Configuration** section, you can control the overall featurization job and
 how features are stored.
 - **Batch size**: The number of documents to process in a single batch.
 - **Profiles**: Add one or more profiles to specify pod configurations for the
@@ -258,6 +258,8 @@ Configure your prediction job with the following options:
   the prediction workload (e.g. `10`).
 - **Enable GPU**: Enables GPU-accelerated prediction using GPU-capable profiles
   configured for the project (e.g., `gpu-g4dn-xlarge`).
+- **Profiles**: Add one or more profiles to specify pod configurations for the
+  prediction job (e.g., `high-memory-xlarge`).
 
 ### Featurization options
 

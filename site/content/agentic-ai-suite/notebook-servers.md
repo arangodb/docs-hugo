@@ -38,8 +38,8 @@ The notebooks include the following:
 
 ## Quickstart
 
-1. In the Arango Contextual Data Platform web interface, expand **AI Tools** in the
-   main navigation and click **Notebook servers**.
+1. In the **Other services** section of the Arango Contextual Data Platform
+   sidebar, expand **AI Tools** and click **Notebook servers**.
 2. The page displays an overview of the notebook services.
    Click **New notebook server** to create a new one.
 3. After your notebook service has been deployed, you can click the ID to start
