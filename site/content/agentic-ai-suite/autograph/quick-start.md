@@ -11,7 +11,7 @@ description: >-
 - An **Arango Contextual Data Platform** deployment.
 - A **project** in your target database (keeps datasets isolated).
   See [Projects](../../platform-suite/control-plane-acp/_index.md#projects).
-- **LLM and embedding API access** (OpenAI-compatible or Triton-compatible).
+- **LLM and embedding API access** (OpenAI-compatible).
 - A **valid JWT** for the API (`Authorization: Bearer ...`).
 
 ## Build your knowledge base
@@ -79,6 +79,9 @@ First, install the AutoGraph service through the
 [Arango Control Plane](../../platform-suite/control-plane-acp/_index.md):
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/autograph" >}}
+
+For an example install request and the required keys, see
+[Deploying AutoGraph](setup.md#deploying-autograph).
 
 Then run the pipeline. Every call uses an `Authorization: Bearer <token>`
 header. Each step below links to the endpoint's full reference, and the

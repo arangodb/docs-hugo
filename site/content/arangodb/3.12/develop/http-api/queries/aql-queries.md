@@ -3002,8 +3002,8 @@ paths:
           description: |
             If set to `true`, will return the currently running queries in all databases,
             not just the selected one.
-            Using the parameter is only allowed in the `_system` database and with superuser
-            privileges.
+            Using the parameter is only allowed in the `_system` database and with a
+            [superuser JWT](../authentication.md#jwt-superuser-tokens).
           schema:
             type: boolean
             default: false
@@ -3170,8 +3170,8 @@ paths:
         '403':
           description: |
             Returned when the `all` parameter is used but the request was made
-            in a database other than `_system`, or by a user without superuser
-            privileges.
+            in a database other than `_system`, or without a
+            superuser JWT.
           content:
             application/json:
               schema:
@@ -3248,8 +3248,8 @@ paths:
           description: |
             If set to `true`, returns the slow queries from all databases, not just
             the specified one.
-            Using the parameter is only allowed in the `_system` database and with superuser
-            privileges.
+            Using the parameter is only allowed in the `_system` database and with a
+            [superuser JWT](../authentication.md#jwt-superuser-tokens).
           schema:
             type: boolean
             default: false
@@ -3408,8 +3408,8 @@ paths:
         '403':
           description: |
             Returned when the `all` parameter is used but the request was made
-            in a database other than `_system`, or by a user without superuser
-            privileges.
+            in a database other than `_system`, or without a
+            superuser JWT.
           content:
             application/json:
               schema:
@@ -3466,8 +3466,8 @@ paths:
           description: |
             If set to `true`, clears the slow query history in all databases, not just
             the specified one.
-            Using the parameter is only allowed in the `_system` database and with superuser
-            privileges.
+            Using the parameter is only allowed in the `_system` database and with a
+            [superuser JWT](../authentication.md#jwt-superuser-tokens).
           schema:
             type: boolean
             default: false
@@ -3567,8 +3567,8 @@ paths:
           description: |
             If set to `true`, attempt to kill the specified query in all databases,
             not just the selected one.
-            Using the parameter is only allowed in the `_system` database and with superuser
-            privileges.
+            Using the parameter is only allowed in the `_system` database and with a
+            [superuser JWT](../authentication.md#jwt-superuser-tokens).
           schema:
             type: boolean
             default: false
@@ -3981,7 +3981,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -4069,7 +4069,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string

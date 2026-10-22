@@ -14,8 +14,8 @@ delivers a contextual data layer (also called a context layer): a governed,
 continuously maintained context graph that AI agents and applications query for
 the entities, relationships, and sources behind an answer.
 
-The platform consists of three modules: the Agentic AI Suite, the Platform
-Suite, and ArangoDB. Every service in the platform reads and writes through
+The data platform consists of three modules: the Agentic AI Suite, the Platform
+Suite, and ArangoDB. Every service in the data platform reads and writes through
 ArangoDB, and agents and applications access the context layer through the
 [ArangoDB Query Language (AQL)](../arangodb/3.12/aql/_index.md), the
 [HTTP API](../arangodb/3.12/develop/http-api/_index.md), or the
@@ -65,7 +65,7 @@ The suite also includes:
 ### Platform Suite
 
 The [**Platform Suite**](../platform-suite/_index.md) runs, secures, and manages
-the platform on Kubernetes.
+the data platform on Kubernetes.
 
 - [**Kubernetes Operator**](../contextual-data-platform/architecture.md):
   deployment, scaling, upgrades, backups, and license management.
@@ -75,12 +75,12 @@ the platform on Kubernetes.
   and [Query Editor](../platform-suite/query-editor.md) for exploring and
   querying the context graph.
 - [**Bring Your Own Code**](../platform-suite/container-manager/_index.md): run
-  custom services alongside the platform.
+  custom services alongside the data platform.
 
 ### ArangoDB
 
 [**ArangoDB**](../arangodb/_index.md) is the multi-model database at the
-foundation of the platform. Graph, document, key-value, full-text, and vector
+foundation of the data platform. Graph, document, key-value, full-text, and vector
 data share one storage engine, one index layer, and one transaction system. A
 document, its graph edges, its full-text index entries, and its vector embedding
 are stored and updated together, so there is no second store to synchronize and
@@ -172,7 +172,7 @@ Two offers are available to try for free:
   Suite, which builds and queries a context graph for AI agents.
 
 The deciding question is simple. Will you model and query your data yourself,
-or do you want the platform to build AI-ready context for you?
+or do you want the data platform to build AI-ready context for you?
 
 | If you are building... | Choose |
 |------------------------|--------|

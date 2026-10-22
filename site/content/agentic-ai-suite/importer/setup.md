@@ -105,7 +105,7 @@ The File Parser is installed once per environment as the `arangodb-file-parser`
 data platform service. Put your values in that service's `overrides` block in
 the platform package (`platform.yaml`), the same file you install the
 data platform with, and apply the configuration using
-[`arangodb_operator_platform package install`](../../contextual-data-platform/install-and-upgrade/online-setup.md#step-7-install-the-contextual-data-platform-package):
+[`arangodb_operator_platform package install`](../../contextual-data-platform/install-and-upgrade/online-setup.md#step-8-install-the-contextual-data-platform-package):
 
 ```yaml
   arangodb-file-parser:
@@ -151,8 +151,7 @@ or timeout errors, the per-job limits are too tight for your documents.
 ## Prerequisites
 
 - **Arango Contextual Data Platform**.
-- **LLM and embedding API access** (OpenAI-compatible or Triton-compatible
-  endpoints).
+- **LLM and embedding API access** (OpenAI-compatible endpoints).
 - **Valid JWT** for the API (`Authorization: Bearer ...`).
 - A **project** in the target database. Projects keep datasets and
   configurations isolated from each other. For instructions, see the

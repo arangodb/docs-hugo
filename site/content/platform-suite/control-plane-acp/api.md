@@ -84,8 +84,9 @@ All service creation endpoints share the same `env` and `labels` fields:
 
 - **env**: Service-specific parameters as key-value pairs. The required keys
   depend on the service type; see the corresponding service documentation, such
-  as [Importer](../../agentic-ai-suite/importer/_index.md) and
-  [AutoRAG](../../agentic-ai-suite/autorag/_index.md).
+  as [Importer](../../agentic-ai-suite/importer/_index.md),
+  [AutoRAG](../../agentic-ai-suite/autorag/_index.md), and
+  [AutoGraph](../../agentic-ai-suite/autograph/setup.md#deploying-autograph).
 - **labels** (optional): Key-value pairs used to filter and identify services
   in the platform.
 - **profiles** (optional): A comma-separated string inside `env` defining
@@ -151,17 +152,14 @@ Where:
 - `embedding_model`: Specific model to use for generating text embeddings
 - `chat_api_key`: API key for authenticating with the chat/language model service
 - `embedding_api_key`: API key for authenticating with the embedding model service
-- `embedding_dim` (optional): Embedding dimension. The default value is `512`
-  (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a
-  custom embedding model with a different dimension; must match the embedding
-  model's output dimension.
+- `embedding_dim` (optional): Embedding dimension. The default value is `512`.
+  Only set manually if using a custom embedding model with a different dimension;
+  must match the embedding model's output dimension.
 
 {{< tip >}}
 Instead of inline API keys, you can use `chat_secret_profile_id` and
 `embedding_secret_profile_id` when your platform supports secret profiles for
-the Importer install. For Triton Inference Server and other deployment
-options, see the [LLM Configuration](../../agentic-ai-suite/importer/llm-configuration.md)
-documentation.
+the Importer install.
 {{< /tip >}}
 
 **Response (200):**

@@ -160,13 +160,6 @@ to consolidate, cluster, or replace.
 |-------|------|----------|-------------|
 | `partition_id` | string | Yes | The partition whose community layer is rebuilt. |
 
-{{< warning >}}
-**Triton projects cannot be reclustered.** A recluster for a project that runs on
-Triton is rejected before any work starts, with gRPC `FAILED_PRECONDITION`
-(`HTTP 400`). No job is created, so there is nothing to poll, and there is no way
-to rebuild the community layer of such a partition.
-{{< /warning >}}
-
 {{< info >}}
 **A partition without entities is a successful no-op.** The job clusters `0`
 entities into `0` communities and reports success. A terminal job is therefore
@@ -257,7 +250,6 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POST
 | An update left duplicate content in the graph | The revised file was imported instead of replaced, so it was added as another import batch next to the old version | Use [`POST /v1/graph/update`](../autograph/reference/orchestration.md#update-documents) in AutoGraph to replace a document |
 | Communities look outdated after inserts, deletions, or updates | The community layer of a `full_graphrag` partition has not been rebuilt yet | Reclustering is never automatic. Start it in AutoGraph once it reports `needs_reclustering: true`, or call `POST /v1/recluster` for that `partition_id` yourself |
 | A reclustering takes a long time and blocks other work | The LLM community reports take a while and the lock is held for the whole job | This is expected for large partitions. Avoid overlapping calls on the same replica until the recluster job is done |
-| Recluster is rejected with gRPC `FAILED_PRECONDITION` (`HTTP 400`) | The project runs on Triton | Triton projects cannot be reclustered. There is nothing to retry and no job to poll |
 | A recluster job reached a terminal state but the communities are unchanged | The partition has no entities, so the job was a no-op over `0` entities | Confirm that the partition has `Entities`. If it does not, import documents into it first |
 
 ## Next steps

@@ -47,7 +47,7 @@ the platform service status:
 | `[KG_VERIFICATION_INCONCLUSIVE]` | **Multi-file only.** Import completed but the post-import count check failed transiently. Re-running often resolves it. |
 | `[rag_mode=...]` | Informational - shows the RAG mode applied to the job. |
 | OpenAI remediation text | Mapped from the SDK exception. Covers insufficient quota, invalid key, rate limit, timeout, `5xx`, and context-length exceeded. |
-| Terminal status name | One of `service_failed`, `openai_graph_build_failed`, `triton_graph_build_failed`, `openai_embedding_failed`, `triton_embedding_failed`, `import_graph_to_adb_failed`, `create_index_failed`. |
+| Terminal status name | One of `service_failed`, `openai_graph_build_failed`, `openai_embedding_failed`, `import_graph_to_adb_failed`, `create_index_failed`. |
 
 ### Boot-time model configuration gate
 
@@ -87,7 +87,7 @@ calls are rejected until you redeploy the service with a valid configuration.
 | Image fetch blocked | Host not on the allowlist | Operator sets `IMAGE_FETCH_ALLOWED_HOSTS` |
 | Invalid `file_id` | Database name in the encoded ID doesn't match the importer's `db_name` | Regenerate `rag-input-{base64url(db:path)}` with the correct DB name |
 | A document is cited with the wrong `file_name` or `citable_url` | The partition was imported before this release, in an order other than alphabetical | Import that partition again. New imports pair the metadata correctly |
-| Semantic units exist but carry no `description` | No vision model is configured, or the call failed | Check for `description_generation: "failed"`, then see [Vision model requirements](../semantic-units.md#vision-model-requirements). On Triton, `CHAT_API_KEY` has to be set |
+| Semantic units exist but carry no `description` | No vision model is configured, or the call failed | Check for `description_generation: "failed"`, then see [Vision model requirements](../semantic-units.md#vision-model-requirements). |
 
 ## Known limitations
 
@@ -117,9 +117,6 @@ calls are rejected until you redeploy the service with a valid configuration.
 11. **Documents imported before v4.1.0 in a non-alphabetical order** can carry
     a `file_name` and `citable_url` belonging to another file in the same
     batch. Re-import the partition to correct it.
-12. **Image descriptions require an OpenAI-compatible endpoint**, even when
-    graph building runs on Triton. A Triton-only deployment without
-    `CHAT_API_KEY` creates semantic units without descriptions.
 
 ## Related references
 
