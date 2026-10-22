@@ -744,7 +744,6 @@ body .page-container {
 .header-block-left {
     display: flex;
     flex: 1;
-    align-items: center;
 }
 
 
@@ -872,15 +871,6 @@ body .page-container {
     .arangodb-logo-small {
         display: block;
     }
-    /* Keep the small logo in the flex flow so the "Docs home" link sits after
-       it instead of overlapping the absolutely-positioned icon. */
-    .version-logo-container > .arangodb-logo-small {
-        position: static;
-        transform: none;
-    }
-    .version-logo-container {
-        align-items: center;
-    }
 }
 
 .container-right {
@@ -934,45 +924,6 @@ body .page-container {
     .search-and-version-container .DocSearch-Button {
         width: 100%;
         margin: 0;
-    }
-}
-
-/* Labeled "Docs home" link next to the logo (overrides the icon-only .home-link) */
-.home-link.docs-home {
-    background: none;
-    width: auto;
-    height: auto;
-    margin: 0 0 0 16px;
-    align-self: center;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 7px 14px;
-    border-radius: 8px;
-    color: var(--color-avocado);
-    font-family: var(--font-headlines);
-    font-weight: 600;
-    font-size: 0.95rem;
-    white-space: nowrap;
-    transition: background-color 0.12s;
-}
-
-.home-link.docs-home:hover {
-    background: var(--gray-100);
-    text-decoration: none;
-}
-
-.home-link.docs-home > i {
-    color: var(--color-evergreen);
-    font-size: 1rem;
-}
-
-@media screen and (max-width: 768px) {
-    .home-link.docs-home > span {
-        display: none;
-    }
-    .home-link.docs-home {
-        padding: 7px 10px;
     }
 }
 
@@ -2344,6 +2295,315 @@ nav.pagination .next {
     margin-left: 1rem;
     position: sticky;
     top: 2rem;
+}
+
+/* Sidebar: logo, search, main navigation, and footer link.
+   It replaces the top bar on desktop; on mobile the top bar stays and the
+   hamburger opens the sidebar as an overlay. */
+.sidebar {
+    --sidebar-text: #F8FAFC;
+    --sidebar-muted: #90A1B9;
+    --sidebar-hover: #06838A;
+    --sidebar-lime: #BEFE99;
+    --focus-ring: var(--color-electric-lime);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--nav-width);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 8px;
+    background: linear-gradient(180deg, #014654 0%, #012D3A 100%);
+    z-index: 9999;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* nucleus.css gives every inline svg a top/left margin */
+.sidebar svg,
+.sidebar-expand svg {
+    margin: 0;
+}
+
+.sidebar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px 4px 2px;
+}
+
+.sidebar-logo,
+.sidebar-logo:is(:hover, :focus, :visited) {
+    border-bottom: 0;
+    display: block;
+}
+
+.sidebar-logo img {
+    display: block;
+    height: 36px;
+    width: auto;
+}
+
+.sidebar-collapse,
+.sidebar-expand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--sidebar-text, #F8FAFC);
+    letter-spacing: normal;
+}
+
+.sidebar-collapse:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Search (DocSearch renders its button into .docsearch) */
+.sidebar .docsearch {
+    flex: none;
+}
+
+.sidebar .DocSearch-Button {
+    width: 100%;
+    letter-spacing: normal;
+    font-weight: 400;
+    height: 40px;
+    margin: 0;
+    padding: 0 8px 0 10px;
+    justify-content: space-between;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.045);
+    box-shadow: none;
+}
+
+.sidebar .DocSearch-Button:is(:hover, :focus) {
+    background: rgba(255, 255, 255, 0.09);
+    box-shadow: none;
+}
+
+/* Match the placeholder colour; DocSearch's own .DocSearch-Button rules
+   would otherwise make the icon near-black (and change it on hover) */
+.sidebar .DocSearch-Button .DocSearch-Search-Icon,
+.sidebar .DocSearch-Button:is(:hover, :focus, :active) .DocSearch-Search-Icon {
+    width: 16px;
+    height: 16px;
+    color: var(--sidebar-muted);
+}
+
+.sidebar .DocSearch-Button:is(:hover, :focus, :active) .DocSearch-Button-Placeholder {
+    color: var(--sidebar-muted);
+}
+
+.sidebar .DocSearch-Button-Placeholder {
+    display: block;
+    padding-left: 8px;
+    font-size: 0.9375rem;
+    color: var(--sidebar-muted);
+}
+
+.sidebar .DocSearch-Button-Keys {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+    padding: 3px 7px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.sidebar .DocSearch-Button-Key {
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    color: var(--sidebar-lime);
+    font-family: var(--font-content), -apple-system, system-ui, sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.2;
+}
+
+/* The ⌘ glyph sits small next to the letter at the same size */
+.sidebar .DocSearch-Button-Key:first-child {
+    font-size: 1rem;
+}
+
+/* Navigation items */
+.sidebar .link-nav,
+.sidebar .link-nav:is(:hover, :visited, :focus) {
+    color: var(--sidebar-text);
+}
+
+.sidebar .link-nav,
+.sidebar .main-nav-ol > .nav-section > .nav-section-header > .link-nav {
+    padding: 0.55rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.sidebar .main-nav {
+    position: static;
+    flex: 1;
+    min-height: 0;
+    width: auto;
+    padding: 0;
+    background: transparent;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.sidebar .main-nav-ol {
+    margin-left: 0;
+}
+
+.sidebar .nav-ol {
+    margin-left: 12px;
+}
+
+.sidebar .main-nav-ol.shimmer > .nav-section > .link-nav,
+.sidebar .nav-section-header-versioned {
+    background-color: transparent;
+}
+
+/* The versioned ArangoDB header is sticky in the dark nav; on the gradient a
+   solid background would show as a highlighted row, so let it scroll instead */
+.sidebar .nav-section-header-versioned {
+    position: static;
+}
+
+.sidebar .expand-nav::after {
+    color: var(--sidebar-text);
+}
+
+.sidebar .link-nav:hover,
+.sidebar .expand-nav:hover,
+.sidebar .nav-section-header:hover > .link-nav,
+.sidebar .nav-section-header:hover > .expand-nav {
+    background-color: var(--sidebar-hover);
+}
+
+/* Selected item (page or category): lime pill; a category's chevron joins it */
+.sidebar .link-nav-active,
+.sidebar .link-nav-active + .expand-nav,
+.sidebar .link-nav-active:hover,
+.sidebar .nav-section-header:hover > .link-nav-active,
+.sidebar .nav-section-header:hover > .link-nav-active + .expand-nav {
+    background-color: var(--sidebar-lime);
+}
+
+/* The extra .nav-section prefix outranks the theme's lime-text rule for the
+   section that contains the active item */
+.sidebar .link-nav-active,
+.sidebar .link-nav-active:is(:hover, :visited, :focus),
+.sidebar .nav-section > .nav-section-header > .link-nav.link-nav-active,
+.sidebar .link-nav-active + .expand-nav::after {
+    color: #014654;
+}
+
+.sidebar .nav-section:has(.link-nav-active) > .nav-section-header > .link-nav:not(.link-nav-active) {
+    color: var(--sidebar-lime);
+}
+
+.sidebar-footer,
+.sidebar-footer:is(:hover, :visited, :focus) {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 2px 0;
+    font-weight: 600;
+    color: var(--sidebar-lime);
+}
+
+.sidebar-footer:hover {
+    text-decoration: underline;
+}
+
+/* Collapsed sidebar (desktop): slide it out and give the content the full width */
+.sidebar-expand {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 9999;
+    background: #014654;
+}
+
+.sidebar-expand:hover {
+    background: var(--sidebar-hover, #06838A);
+}
+
+@media screen and (min-width: 769px) {
+    .header {
+        display: none;
+    }
+
+    body .page-container {
+        grid-template-rows: 0 1fr;
+    }
+
+    html {
+        scroll-padding-top: 2rem;
+    }
+
+    /* Without the 64px top bar, move the sticky Contribute link and TOC up
+       by the same amount, keeping their 60px spacing */
+    .edit-page {
+        top: 36px;
+    }
+
+    .toc {
+        top: 96px;
+    }
+
+    .container-main {
+        transition: margin-left 0.2s ease-in-out;
+    }
+
+    body.sidebar-collapsed .sidebar {
+        transform: translateX(-100%);
+    }
+
+    body.sidebar-collapsed .container-main {
+        margin-left: 0;
+        padding-left: 40px;
+    }
+
+    body.sidebar-collapsed .sidebar-expand {
+        display: flex;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .sidebar {
+        display: none;
+        top: var(--topbar-height);
+        width: 100%;
+    }
+
+    .sidebar:has(.main-nav.active) {
+        display: flex;
+    }
+
+    .sidebar .main-nav {
+        display: block;
+    }
+
+    /* The top bar already shows the logo on mobile */
+    .sidebar-top {
+        display: none;
+    }
 }
 
 .none {

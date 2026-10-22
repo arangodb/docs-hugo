@@ -3,8 +3,8 @@ title: Arango Documentation
 menuTitle: Home
 weight: 1
 description: >-
-  Arango provides the trusted data foundation for the next wave of AI grounded
-  in business context. Find the fastest route to the right guide.
+  Guides, references and quick starts for the Arango data platform, AI suite
+  and database.
 ---
 <!--
 The homepage body is rendered by the dedicated layout

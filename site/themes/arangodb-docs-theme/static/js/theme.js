@@ -39,6 +39,13 @@ function showSidebarHandler() {
     document.querySelectorAll(".main-nav").forEach(el => el.classList.toggle("active"));
 }
 
+function toggleSidebarCollapsed() {
+    const collapsed = document.body.classList.toggle("sidebar-collapsed");
+    try {
+        localStorage.setItem("docs-sidebar-collapsed", collapsed ? "1" : "0");
+    } catch (e) {}
+}
+
 
 /*
 
@@ -1025,6 +1032,12 @@ function handleDocumentClick(event) {
     // Mobile menu toggle
     if (closest('.sidebar-toggle-navigation')) {
         showSidebarHandler();
+        return;
+    }
+
+    // Desktop sidebar collapse/expand
+    if (closest('.sidebar-collapse, .sidebar-expand')) {
+        toggleSidebarCollapsed();
         return;
     }
 }
