@@ -145,9 +145,9 @@ by profile ID instead of `chat_api_key` and `embedding_api_key`:
     "chat_secret_profile_id": "<chat-profile-id>",
     "embedding_api_provider": "openai",
     "embedding_api_url": "https://api.openai.com/v1",
-    "embedding_model_name": "text-embedding-3-small",
+    "embedding_model": "text-embedding-3-small",
     "embedding_secret_profile_id": "<embedding-profile-id>",
-    "embedding_dimensions": "512"
+    "embedding_dim": "512"
   }
 }
 ```

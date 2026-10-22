@@ -221,7 +221,7 @@ Put the profile IDs into the `env` object of the install request instead of
     "chat_model": "gpt-5.4-nano",
     "chat_secret_profile_id": "<chat-profile-id>",
     "embedding_api_provider": "openai",
-    "embedding_model_name": "text-embedding-3-small",
+    "embedding_model": "text-embedding-3-small",
     "embedding_secret_profile_id": "<embedding-profile-id>"
   }
 }
@@ -233,7 +233,16 @@ covers both models.
 **Change the credentials of a running service**
 
 AutoGraph validates the new configuration, including a live check of the API
-key, and applies it to the running service without a restart:
+key, and applies it to the running service without a restart.
+
+The embedding provider, model, and URL cannot be changed once they have been
+saved for a project, and AutoGraph saves the URL at startup even if you never
+set it, falling back to `https://api.openai.com/v1`. Send the same
+`embedding_api_provider`, `embedding_model`, and `embedding_api_url` values as
+before, including the URL, and only change `embedding_secret_profile_id`.
+Otherwise, the request is rejected with HTTP status `400` and the `error_code`
+`EMBEDDING_CONFIG_IMMUTABLE`. See
+[Embedding identity is immutable](../agentic-ai-suite/autograph/reference/project-operations.md#embedding-identity-is-immutable).
 
 {{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/projects/{project}/model-config/credentials" >}}
 
@@ -244,6 +253,7 @@ curl -X PUT -H "Authorization: bearer <TOKEN>" -H "Content-Type: application/jso
     "chat_model": "gpt-5.4-nano",
     "chat_secret_profile_id": "<chat-profile-id>",
     "embedding_api_provider": "openai",
+    "embedding_api_url": "https://api.openai.com/v1",
     "embedding_model": "text-embedding-3-small",
     "embedding_secret_profile_id": "<embedding-profile-id>"
   }' \
