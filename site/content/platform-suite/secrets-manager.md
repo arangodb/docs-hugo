@@ -267,8 +267,11 @@ HTTP status `400` and an `error_code` such as `SECRET_PROFILE_REQUIRED`,
 **Spread the chat load across multiple API keys**
 
 The [orchestration endpoint](../agentic-ai-suite/autograph/reference/orchestration.md)
-of AutoGraph accepts a list of chat profile IDs. The spawned Importer workers
-rotate across the keys, which helps to stay within per-key rate limits:
+of AutoGraph accepts a list of chat profile IDs. Each spawned Importer worker
+picks one of the keys at random when it starts and uses it for its whole
+lifetime. This spreads the load of multiple workers across the keys, which helps
+to stay within per-key rate limits, but the split is not guaranteed to be even:
+with few workers, several of them can end up on the same key.
 
 ```sh
 curl -X POST -H "Authorization: bearer <TOKEN>" -H "Content-Type: application/json" \
