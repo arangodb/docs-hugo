@@ -7,16 +7,32 @@
   <body>
     {{ if $isProduction }}{{ partialCached "tracking/body-start.html" . }}{{ end -}}
     <noscript>You need to enable JavaScript to use the Arango documentation.</noscript>
+    <script>try { if (localStorage.getItem("docs-sidebar-collapsed") === "1") document.body.classList.add("sidebar-collapsed"); } catch (e) {}</script>
     <section class="page-main">
       <section class="page-container">
         {{ partialCached "header.html" . -}}
-        <nav class="main-nav" aria-label="Main">
-          <ol class="main-nav-ol shimmer">
-            {{ range .Site.Sections -}}
-              <li class="nav-section"><a class="link-nav">&nbsp;</a></li>
-            {{ end -}}
-          </ol>
-        </nav>
+        <aside class="sidebar">
+          <div class="sidebar-top">
+            <a class="link sidebar-logo" href="{{ .Site.Home.RelPermalink }}"><img src="/img/arango-logo-white.svg" alt="Arango" width="154" height="40"></a>
+            <button type="button" class="sidebar-collapse" aria-label="Collapse sidebar" title="Collapse sidebar">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 2.25v12M3.333 2.25h9.334c.736 0 1.333.597 1.333 1.333v9.334c0 .736-.597 1.333-1.333 1.333H3.333A1.333 1.333 0 0 1 2 12.917V3.583c0-.736.597-1.333 1.333-1.333z" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <div class="docsearch"></div>
+          <nav class="main-nav" aria-label="Main">
+            <ol class="main-nav-ol shimmer">
+              {{ range .Site.Sections -}}
+                <li class="nav-section"><a class="link-nav">&nbsp;</a></li>
+              {{ end -}}
+            </ol>
+          </nav>
+          <a class="sidebar-footer" href="https://arango.ai" target="_blank" rel="noopener noreferrer">arango.ai
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.667 11.333l6.666-6.666M4.667 4.667h6.666v6.666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </aside>
+        <button type="button" class="sidebar-expand" aria-label="Expand sidebar" title="Expand sidebar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 2.25v12M3.333 2.25h9.334c.736 0 1.333.597 1.333 1.333v9.334c0 .736-.597 1.333-1.333 1.333H3.333A1.333 1.333 0 0 1 2 12.917V3.583c0-.736.597-1.333 1.333-1.333z" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
         <div class="container-main">
           <div class="row-main">
             {{ partial "breadcrumbs.html" . }}
