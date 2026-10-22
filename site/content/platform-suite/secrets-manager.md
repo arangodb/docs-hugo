@@ -180,7 +180,10 @@ curl -H "Authorization: bearer <TOKEN>" \
 }
 ```
 
-For existing secrets, list them and look up the `profileId` by `name`:
+For existing secrets, list them and find the `profileId` of the secret you
+need. Secret names do not have to be unique, so more than one secret can have
+the same `name`. If that is the case, tell them apart by the other fields, or
+keep the profile ID that is returned when you create a secret:
 
 ```sh
 curl -H "Authorization: bearer <TOKEN>" \
