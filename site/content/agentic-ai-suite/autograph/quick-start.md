@@ -80,6 +80,9 @@ First, install the AutoGraph service through the
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/autograph" >}}
 
+For an example install request and the required keys, see
+[Deploying AutoGraph](setup.md#deploying-autograph).
+
 Then run the pipeline. Every call uses an `Authorization: Bearer <token>`
 header. Each step below links to the endpoint's full reference, and the
 [Reference](reference/_index.md) section lists every endpoint in one table.
