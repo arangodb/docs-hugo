@@ -220,6 +220,7 @@ Put the profile IDs into the `env` object of the install request instead of
   "env": {
     "db_name": "your_database_name",
     "genai_project_name": "your_project_name",
+    "fps_recovery_username": "your_recovery_user",
     "chat_api_provider": "openai",
     "chat_model": "gpt-5.4-nano",
     "chat_secret_profile_id": "<chat-profile-id>",
