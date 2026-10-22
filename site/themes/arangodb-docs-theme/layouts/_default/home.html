@@ -81,9 +81,9 @@
 
   <h1>{{ .Title | markdownify }}</h1>
   <p class="hd-sub">{{ .Description | markdownify }}</p>
-  <button type="button" class="hd-search" id="hd-open-search" aria-label="Search the documentation">
+  <button type="button" class="hd-search" data-open-search aria-label="Search the documentation">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M14 14l-2.9-2.9M12.667 7.333A5.333 5.333 0 1 1 2 7.333a5.333 5.333 0 0 1 10.667 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span>Search in the docs</span><kbd id="hd-search-kbd">Ctrl K</kbd>
+    <span>Search in the docs</span><kbd data-search-kbd>Ctrl K</kbd>
   </button>
   {{- /* Hardcoded from the docs analytics top pages and entry pages (Sep 2026) */}}
   <div class="hd-popular">
@@ -194,24 +194,5 @@
       </nav>
     </div>
   </div>
-
-  <script>
-    (function () {
-      var trigger = document.getElementById('hd-open-search');
-      if (!trigger) return;
-      var isMac = /Mac|iPhone|iPad/.test(navigator.platform);
-      // Show the platform-appropriate shortcut (the HTML default "Ctrl K" covers non-Mac).
-      if (isMac) {
-        var kbd = document.getElementById('hd-search-kbd');
-        if (kbd) kbd.textContent = '⌘ K';
-      }
-      trigger.addEventListener('click', function () {
-        var btn = document.querySelector('.DocSearch-Button');
-        if (btn) { btn.click(); return; }
-        // Fallback: dispatch Ctrl/Cmd+K so DocSearch's global shortcut opens the modal.
-        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', code: 'KeyK', keyCode: 75, metaKey: isMac, ctrlKey: !isMac, bubbles: true }));
-      });
-    })();
-  </script>
 </article>
 {{ end -}}
