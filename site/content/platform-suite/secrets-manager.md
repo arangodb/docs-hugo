@@ -270,7 +270,9 @@ curl -X PUT -H "Authorization: bearer <TOKEN>" -H "Content-Type: application/jso
 
 If a profile ID is missing or cannot be resolved, the request is rejected with
 HTTP status `400` and an `error_code` such as `SECRET_PROFILE_REQUIRED`,
-`SECRET_NOT_FOUND`, or `SECRET_RESOLUTION_ERROR`.
+`SECRET_NOT_FOUND`, or `SECRET_RESOLUTION_ERROR`. For all request fields, the
+response, and the full list of error codes, see
+[Update Model Config Credentials](../agentic-ai-suite/autograph/reference/project-operations.md#update-model-config-credentials).
 
 **Spread the chat load across multiple API keys**
 
