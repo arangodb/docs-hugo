@@ -53,7 +53,7 @@ documents. You can upload an entire local directory with
 
 ### Connect
 
-Connect to the platform, create a project for this corpus, store your LLM API
+Connect to the data platform, create a project for this corpus, store your LLM API
 key once as a secret profile, and deploy the project's AutoGraph service with
 it. To pick up a project you created earlier, use
 `client.project.get(project_name=...)` instead of `create`. One key can serve

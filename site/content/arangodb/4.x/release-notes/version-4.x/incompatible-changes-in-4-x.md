@@ -62,9 +62,9 @@ server, which reduces the attack surface and improves server stability.
 
 ## Built-in web interface removed
 
-The web interface served by the ArangoDB server (_arangod_), also known as
-_Aardvark_, has been removed. The server executable no longer offers a
-built-in web interface.
+The web interface is no longer built into the ArangoDB server (_arangod_).
+The old web interface served by _arangod_, also known as _Aardvark_, has been
+replaced by new web interfaces that run separately from the database core:
 
 - If you use the Arango Contextual Data Platform, there is a new, integrated
   web interface also known as the platform UI.
@@ -407,7 +407,7 @@ For more information, see [String operators](../../aql/operators.md#string-opera
 
 ### New reserved keywords
 
-The following keywords are now reserved for future use:
+The following keywords are now reserved for upcoming AQL language features:
 
 - `INNER_JOIN`
 - `LEFT_JOIN`
@@ -967,6 +967,15 @@ and throw errors if set:
 - `--network.protocol`
 - `--query.allow-collections-in-expressions`
 - `--rocksdb.exclusive-writes`
+
+### Read write metrics option renamed
+
+The `--server.export-read-write-metrics` startup option has been renamed to
+`--rocksdb.export-read-write-metrics`. This aligns the option category with what
+the option provides, which is additional metrics from the RocksDB storage engine.
+
+Using the new option is recommended. You can still start the server with the
+old option, which logs a warning on startup.
 
 ## Client tools
 

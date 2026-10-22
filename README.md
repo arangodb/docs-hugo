@@ -1015,12 +1015,17 @@ The following shortcodes also exist but are rarely used:
     ~~Oasis~~, ~~ArangoDB Oasis~~, ~~ArangoDB Cloud~~, ~~ArangoGraph Insights Platform~~, or ~~ArangoGraph~~
   - _Arango Contextual Data Platform_
     and _data platform_ for short in prose that refers to it many times, but not
-     ~~Data Platform~~, ~~Arango Data Platform~~, ~~Arango AI Services Data Platform~~,
-     ~~Arango AI Suite Data Platform~~, or ~~Arango AI Data Platform~~
+    ~~platform~~ (ambiguous with Arango Managed Platform),
+    ~~Data Platform~~, ~~Arango Data Platform~~, ~~Arango AI Services Data Platform~~,
+    ~~Arango AI Suite Data Platform~~, or ~~Arango AI Data Platform~~
   - _Arango Platform Suite_ and _Arango Agentic AI Suite_, but not
     ~~AI Services~~, ~~GenAI Suite~~, or ~~AI Suite~~
   - _Arango Control Plane_, but not ~~GenAI Service~~ or ~~AI Orchestrator~~
   - _Deployment mode_ (single server, cluster, etc.), not ~~deployment type~~
+
+- Use _object storage_, not ~~blob storage~~ when referring to S3-like services,
+  as it is more precise (includes the metadata and identifier) and to avoid
+  confusion with RocksDB BLOB storage.
 
 - Use _HTTP API_, not ~~REST (HTTP) API~~ or ~~RESTful (HTTP) API~~ unless it
   truly adheres to the REST principles, especially regarding hypermedia (HATEOAS).
