@@ -2845,6 +2845,14 @@ paths:
         `PUT /_db/{database-name}/_api/query/properties` endpoint.
         If query tracking is disabled for the current database,
         an **empty list** is returned.
+
+        From v3.12.13 onward, only the queries of the user account you
+        authenticate with are returned, unless you are an administrator.
+        Administrators get the queries of all users.
+        Being an administrator means that the user account you authenticate with
+        has `rw` access to the `_system` database (classic authorization) or the
+        `coredb-admin` role (RBAC). Requests with a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens) are not restricted.
       parameters:
         - name: database-name
           in: path
@@ -3091,6 +3099,14 @@ paths:
         startup options or at runtime with the `slowQueryThreshold` and
         `slowStreamingQueryThreshold` query tracking properties of the
         `PUT /_db/{database-name}/_api/query/properties` endpoint.
+
+        From v3.12.13 onward, only the slow queries of the user account you
+        authenticate with are returned, unless you are an administrator.
+        Administrators get the slow queries of all users.
+        Being an administrator means that the user account you authenticate with
+        has `rw` access to the `_system` database (classic authorization) or the
+        `coredb-admin` role (RBAC). Requests with a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens) are not restricted.
       parameters:
         - name: database-name
           in: path
@@ -3309,6 +3325,14 @@ paths:
       operationId: clearSlowAqlQueryList
       description: |
         Clears the list of slow AQL queries for the current database.
+
+        From v3.12.13 onward, only the entries of the user account you
+        authenticate with are removed from the list, unless you are an
+        administrator. Administrators clear the entire list.
+        Being an administrator means that the user account you authenticate with
+        has `rw` access to the `_system` database (classic authorization) or the
+        `coredb-admin` role (RBAC). Requests with a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens) are not restricted.
       parameters:
         - name: database-name
           in: path
@@ -3403,6 +3427,14 @@ paths:
       description: |
         Kills a running query in the currently selected database. The query will be
         terminated at the next cancellation point.
+
+        From v3.12.13 onward, you can only kill queries of the user account you
+        authenticate with, unless you are an administrator. Administrators can
+        kill the queries of all users.
+        Being an administrator means that the user account you authenticate with
+        has `rw` access to the `_system` database (classic authorization) or the
+        `coredb-admin` role (RBAC). Requests with a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens) are not restricted.
       parameters:
         - name: database-name
           in: path
@@ -3442,6 +3474,10 @@ paths:
           description: |
             In case the `all` parameter is used but the request was made in a
             different database than `_system`, or by a non-privileged user.
+
+            Also returned if the query belongs to a different user and the user
+            account you authenticate with lacks `rw` access to the `_system`
+            database (from v3.12.13 onward).
         '404':
           description: |
             A query with the specified identifier cannot be found.
