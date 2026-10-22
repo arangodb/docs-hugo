@@ -39,6 +39,26 @@ function showSidebarHandler() {
     document.querySelectorAll(".main-nav").forEach(el => el.classList.toggle("active"));
 }
 
+// Page-level search boxes (e.g. on the home page) open the DocSearch modal.
+// They are wired here because inline scripts in loaded page content don't run.
+const isMacPlatform = /Mac|iPhone|iPad/.test(navigator.platform);
+
+function openSearch() {
+    const btn = document.querySelector(".DocSearch-Button");
+    if (btn) {
+        btn.click();
+        return;
+    }
+    // Fallback: dispatch Ctrl/Cmd+K so DocSearch's global shortcut opens the modal
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", code: "KeyK", keyCode: 75, metaKey: isMacPlatform, ctrlKey: !isMacPlatform, bubbles: true }));
+}
+
+function setSearchShortcutLabels() {
+    // The HTML default "Ctrl K" covers non-Mac platforms
+    if (!isMacPlatform) return;
+    document.querySelectorAll("[data-search-kbd]").forEach(el => el.textContent = "⌘ K");
+}
+
 function toggleSidebarCollapsed() {
     const collapsed = document.body.classList.toggle("sidebar-collapsed");
     try {
@@ -494,6 +514,7 @@ function initArticle(url) {
   linkToVersionedContent();
   updateActiveNavItem(window.location.pathname, false);
   updateVersionSelector();
+  setSearchShortcutLabels();
   renderMermaidDiagrams();
 }
 
@@ -1032,6 +1053,12 @@ function handleDocumentClick(event) {
     // Mobile menu toggle
     if (closest('.sidebar-toggle-navigation')) {
         showSidebarHandler();
+        return;
+    }
+
+    // Page-level search boxes
+    if (closest('[data-open-search]')) {
+        openSearch();
         return;
     }
 
