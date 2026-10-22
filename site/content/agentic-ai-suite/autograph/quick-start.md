@@ -8,7 +8,8 @@ description: >-
 ---
 ## Prerequisites
 
-- An **Arango Contextual Data Platform** deployment.
+- An **Arango Contextual Data Platform** deployment with a valid Agentic AI
+  Suite license.
 - A **project** in your target database (keeps datasets isolated).
   See [Projects](../../platform-suite/control-plane-acp/_index.md#projects).
 - **LLM and embedding API access** (OpenAI-compatible).

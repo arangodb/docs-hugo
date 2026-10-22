@@ -8,7 +8,8 @@ description: >-
 ---
 ## Prerequisites
 
-- An **Arango Contextual Data Platform** deployment.
+- An **Arango Contextual Data Platform** deployment with a valid Agentic AI
+  Suite license.
 - A **project** in your target database. The project name prefixes
   the collection names, so it must follow ArangoDB naming rules.
   See [Projects](../../platform-suite/control-plane-acp/_index.md#projects).
