@@ -2445,6 +2445,13 @@ nav.pagination .next {
     color: var(--sidebar-text);
 }
 
+/* The theme's global 0.4s transition on links (but not on the chevron label)
+   made the two halves of a row fade at different speeds and leave a trail */
+.sidebar .link-nav,
+.sidebar .expand-nav {
+    transition: background-color 0.1s ease, color 0.1s ease;
+}
+
 .sidebar .link-nav,
 .sidebar .main-nav-ol > .nav-section > .nav-section-header > .link-nav {
     padding: 0.55rem 0.75rem;
