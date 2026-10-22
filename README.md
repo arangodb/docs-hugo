@@ -1023,6 +1023,10 @@ The following shortcodes also exist but are rarely used:
   - _Arango Control Plane_, but not ~~GenAI Service~~ or ~~AI Orchestrator~~
   - _Deployment mode_ (single server, cluster, etc.), not ~~deployment type~~
 
+- Use _object storage_, not ~~blob storage~~ when referring to S3-like services,
+  as it is more precise (includes the metadata and identifier) and to avoid
+  confusion with RocksDB BLOB storage.
+
 - Use _HTTP API_, not ~~REST (HTTP) API~~ or ~~RESTful (HTTP) API~~ unless it
   truly adheres to the REST principles, especially regarding hypermedia (HATEOAS).
 
