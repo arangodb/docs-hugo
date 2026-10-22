@@ -236,7 +236,12 @@ covers both models.
 **Change the credentials of a running service**
 
 AutoGraph validates the new configuration, including a live check of the API
-key, and applies it to the running service without a restart.
+key, and normally applies it to the running service without a restart. A corpus
+build that is already running keeps its existing clients, and the change takes
+effect with the next build. In rare cases, the configuration is saved but
+cannot be applied in place. The request still succeeds, but the response has
+`applied_to_running_pod: false`, and the change only takes effect after the
+service restarts.
 
 The embedding provider, model, and URL cannot be changed once they have been
 saved for a project, and AutoGraph saves the URL at startup even if you never
