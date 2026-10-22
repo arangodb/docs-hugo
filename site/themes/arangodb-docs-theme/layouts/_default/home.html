@@ -3,7 +3,7 @@
 {{ $icons := "img/home/" -}}
 {{ $arrow := `<svg class="arr" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.333 8h9.334M8.667 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` | safeHTML -}}
 {{ $external := `<svg class="ext" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.667 11.333l6.666-6.666M4.667 4.667h6.666v6.666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` | safeHTML -}}
-<article class="home home-landing hd">
+<article class="home home-landing hd no-zoom">
   <style>
     .hd { --hd-ink: #0F172B; --hd-text: #1D293D; --hd-muted: #62748E; --hd-link: #00576E; --hd-soft: #F1F5F9; --hd-soft-hover: #E2E8F0; --hd-line: #E2E8F0; --hd-card-line: #D4D4D4; font-family: var(--font-content); color: var(--hd-text); }
     /* minmax(0, …) stops wide content (pill rows, card grids) from stretching the grid past the viewport */
@@ -189,7 +189,7 @@
       <div class="hd-sec"><h2 id="community">Community</h2></div>
       <nav class="hd-list community">
         <a href="https://github.com/arangodb/arangodb" target="_blank" rel="noopener">GitHub {{ $external }}</a>
-        <a href="https://discord.com/" target="_blank" rel="noopener">Discord {{ $external }}</a>
+        <a href="https://arango.ai/join-discord" target="_blank" rel="noopener">Discord {{ $external }}</a>
         <a href="https://arango.ai/resources/" target="_blank" rel="noopener">Resources {{ $external }}</a>
       </nav>
     </div>
