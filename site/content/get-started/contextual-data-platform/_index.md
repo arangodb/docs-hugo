@@ -12,12 +12,13 @@ query. AutoGraph builds the graph from your content, and AutoRAG answers
 natural-language questions from it, citing the entities, relationships, and
 sources behind each answer.
 
-This section takes you from an empty machine to a working Context Graph:
+Start with two hands-on tutorials. They take you from an empty machine to a
+working Context Graph:
 
-1. [Install](quickstart/_index.md) the data platform and the Arango AI SDK, then run
-   the quick start: build a small graph from three short texts and query it.
-   If the installation does not go as expected, see
-   [Troubleshooting the install](quickstart/troubleshooting.md).
-2. [Build with AutoGraph](build-with-autograph.md): ingest a whole directory of
-   documents, tune the build parameters, and pick the right retrieval mode for
-   each kind of question.
+1. [Tutorial 1: Install and try it out](quickstart/_index.md): install the data
+   platform and the Arango AI SDK, then build a small graph from three short
+   texts and ask questions about it. If something does not work as expected,
+   see [Troubleshooting](quickstart/troubleshooting.md).
+2. [Tutorial 2: From documents to answers](build-with-autograph.md): upload a
+   larger set of example documents, adjust the settings, and pick the best
+   search method for each kind of question.
