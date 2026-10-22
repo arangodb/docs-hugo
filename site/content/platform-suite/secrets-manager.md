@@ -281,7 +281,8 @@ of AutoGraph accepts a list of chat profile IDs. Each spawned Importer worker
 picks one of the keys at random when it starts and uses it for its whole
 lifetime. This spreads the load of multiple workers across the keys, which helps
 to stay within per-key rate limits, but the split is not guaranteed to be even:
-with few workers, several of them can end up on the same key.
+with few workers, several of them can end up on the same key, and with a
+single replica, which is the default, only one key is used.
 
 ```sh
 curl -X POST -H "Authorization: bearer <TOKEN>" -H "Content-Type: application/json" \
