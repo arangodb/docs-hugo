@@ -6,7 +6,7 @@
   {{ range .Ancestors.Reverse | append . -}}
     {{ $position = add $position 1 -}}
     <li typeof="ListItem" property="itemListElement">
-      {{ if gt $position 1 }}<i class="icon icon-fw icon-chevron-right" aria-hidden="true"></i>{{ end -}}
+      {{ if gt $position 1 }}<i class="icon icon-chevron-right breadcrumb-sep" aria-hidden="true"></i>{{ end -}}
       <a property="item" typeof="WebPage" class="link" href="{{ .RelPermalink }}">{{/* White-space control */ -}}
         <span property="name" class="breadcrumb-entry">
         {{- $splitPath := split .Path "/" -}}
