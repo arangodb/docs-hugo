@@ -14,6 +14,7 @@
     --color-evergreen: #007339;
     /* Docs redesign palette for headings and link underlines */
     --color-heading: #1D293D;
+    --color-title: #0F172B;
     --color-muted: #62748E;
     --color-link: #00576E;
     --color-link-hover: #06838A;
@@ -125,21 +126,18 @@
     --TYPOGRAPHY-BODY-TEXT: 16px;
     --TYPOGRAPHY-BOLD-TEXT: 700;
 
-    --TYPOGRAPHY-H1-SIZE: 40px;
     --TYPOGRAPHY-H2-SIZE: 32px;
     --TYPOGRAPHY-H3-SIZE: 28px;
     --TYPOGRAPHY-H4-SIZE: 24px;
     --TYPOGRAPHY-H5-SIZE: 20px;
     --TYPOGRAPHY-H6-SIZE: 18px;
 
-    --TYPOGRAPHY-H1-SIZE-SMALL: 28px;
     --TYPOGRAPHY-H2-SIZE-SMALL: 24px;
     --TYPOGRAPHY-H3-SIZE-SMALL: 22px;
     --TYPOGRAPHY-H4-SIZE-SMALL: 20px;
     --TYPOGRAPHY-H5-SIZE-SMALL: 18px;
     --TYPOGRAPHY-H6-SIZE-SMALL: 16px;
 
-    --TYPOGRAPHY-H1-HEIGHT: 48px;
     --TYPOGRAPHY-H2-HEIGHT: 40px;
     --TYPOGRAPHY-H3-HEIGHT: 30px;
     --TYPOGRAPHY-H4-HEIGHT: 26px;
@@ -1354,19 +1352,19 @@ hgroup > h1, .article-body > :is(h2, h3, h4, h5, h6) {
     overflow-wrap: break-word;
 }
 
-hgroup > h1,
-hgroup > h1 > code {
-    font-size: var(--TYPOGRAPHY-H1-SIZE);
-    margin: 40px 0 40px 0;
-    line-height: var(--TYPOGRAPHY-H1-HEIGHT);
+/* Page title and lead paragraph like on the home page */
+hgroup > h1 {
+    margin: 32px 0 12px;
+    color: var(--color-title);
+    font-size: 2.25rem;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
 }
 
 @media screen and (max-width: 768px) {
-    hgroup > h1,
-    hgroup > h1 > code {
-        font-size: var(--TYPOGRAPHY-H1-SIZE-SMALL);
-        margin: 0 0 20px 0;
-        line-height: var(--TYPOGRAPHY-H1-HEIGHT);
+    hgroup > h1 {
+        margin-top: 24px;
+        font-size: 1.75rem;
     }
 }
 
@@ -1439,12 +1437,18 @@ hgroup > h1 > code {
     }
 }
 
-.article-body > h2 > code,
-.article-body > h3 > code,
-.article-body > h4 > code,
-.article-body > h5 > code,
-.article-body > h6 > code {
+/* Plain monospace text in headings: the border and background of inline code
+   overlapped the previous line where a heading wraps */
+hgroup > h1 > code,
+.article-body > :is(h2, h3, h4, h5, h6) > code {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    color: inherit;
+    font-size: 0.9em;
     white-space: normal;
+    vertical-align: baseline;
 }
 
 @keyframes target-highlight {
@@ -1472,12 +1476,12 @@ article ul li {
 }
 
 .lead {
-    line-height: 30px;
-    font-size: 1.3rem;
-    font-family: var(--font-headlines);
-    margin-bottom: 1.5rem;
-    font-weight: 600;
-    color: var(--gray-800);
+    margin: 0 0 24px;
+    color: var(--color-muted);
+    font-family: var(--font-content);
+    font-size: 1.0625rem;
+    font-weight: 400;
+    line-height: 1.5;
 }
 
 /* Copies the link to the heading. Absolutely positioned after the last word,
@@ -1485,12 +1489,10 @@ article ul li {
 .header-link {
     position: absolute;
     display: inline-block;
-    margin-left: 0.3em;
-    /* Absolute positioning ignores vertical-align, center it on the (last) line */
+    margin-left: 0.2em;
+    /* Its own line box matches the heading's (last) line, see .header-link .icon */
     line-height: inherit;
-    margin-top: calc((1lh - 1em) / 2);
-    height: 1em;
-    font-size: 0.7em;
+    font-size: inherit;
     color: var(--color-link-hover);
     opacity: 0;
     transition: opacity 0.15s;
@@ -1499,6 +1501,12 @@ article ul li {
 :is(h2, h3, h4, h5, h6):hover .header-link,
 .header-link.tooltipped {
     opacity: 1;
+}
+
+/* Centered on the x-height of the heading */
+.header-link .icon {
+    font-size: 0.7em;
+    vertical-align: middle;
 }
 
 .header-link.tooltipped .icon {
@@ -1652,10 +1660,6 @@ pre > .code-show-more.expanded::after {
 
 
 
-h2 > code {
-    font-size: 0.8em;
-    vertical-align: 1px;
-}
 
 
 
