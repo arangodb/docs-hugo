@@ -4,7 +4,7 @@
   {{- if ge (.Page.Fragments.HeadingsMap | len) 2 }}
   <nav class="toc" aria-labelledby="toc-heading">
     <details class="toc-details" open>
-      <summary class="toc-header" id="toc-heading">On this page</summary>
+      <summary class="toc-header" id="toc-heading">On this page<span class="toc-current"></span></summary>
       <div class="TableOfContents">
         <div class="level-1"><a href="#top">{{ .Title | markdownify }}</a></div>
         {{ template "nestedHeadline" dict "headings" .Page.Fragments.Headings "level" 1 "maxLevel" .Page.Params.pageToc.maxHeadlineLevel }}
