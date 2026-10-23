@@ -2385,7 +2385,8 @@ nav.pagination > .next {
     overflow-y: auto;
     /* Room for the scrollbar, so that it doesn't cover the entries */
     scrollbar-gutter: stable;
-    padding-right: 4px;
+    /* Also clear of the scrollbar when it grows on hover */
+    padding-right: 5px;
     scrollbar-width: thin;
     scrollbar-color: rgb(248 250 252 / 0.5) transparent;
     user-select: none;
