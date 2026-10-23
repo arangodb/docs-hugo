@@ -12,7 +12,6 @@ description: >-
 
 - An **Arango Contextual Data Platform** deployment with a valid Agentic AI
   Suite license.
-- An ArangoDB instance with the **ArangoDB MCP Server** running and connected.
 - An OpenAI API key.
 
 ## Optimize your first query

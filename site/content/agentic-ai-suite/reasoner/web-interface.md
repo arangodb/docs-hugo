@@ -32,11 +32,11 @@ provider for the current database.
    [Secrets Manager](../../platform-suite/secrets-manager.md).
 2. Select an **OpenAI Model** from the dropdown.
 3. Click **Start Service**. A progress indicator shows the startup status.
-   The service starts and then waits for the MCP server connection to be
-   established. Chat input is enabled once the connection is confirmed and
+   The Reasoner and its internal MCP server start, and the Reasoner then waits
+   for the connection to the MCP server to be established. Chat input is enabled once the connection is confirmed and
    **MCP Connected** is shown in the bottom status bar.
 
-You can check the status of the service and MCP server, or restart and stop the
+You can check the status of the service and the internal MCP server, or restart and stop the
 service at any time from the **Manage Services** dialog at the bottom of the
 panel.
 
