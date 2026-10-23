@@ -1664,8 +1664,20 @@ div > .box-content-container {
     background: var(--color-evergreen);
 }
 
-.endpoint-group:hover .clipboard-copy {
+.endpoint-group:hover .clipboard-copy,
+.clipboard-copy:focus-visible {
     opacity: 1;
+}
+
+/* Without a mouse to hover, the copy buttons are always shown */
+@media (hover: none) {
+    .copy-to-clipboard-button {
+        opacity: 0.7;
+    }
+
+    .clipboard-copy {
+        opacity: 1;
+    }
 }
 
 .endpoint-method {
