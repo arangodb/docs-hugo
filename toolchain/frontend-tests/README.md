@@ -5,8 +5,11 @@ of the built documentation site, like the navigation, version selector, copy
 buttons, tabs, and image viewer. They run in Chromium, Firefox, and WebKit, on
 desktop and mobile viewports.
 
-CircleCI runs them after every build (in parallel to the deploy preview) and
-before deploying a release.
+CircleCI runs them before deploying a release, after scheduled and example
+generation builds, and after plain builds if the changes compared to `main`
+touch the theme, site configuration, static files, versions, these tests, or
+the CircleCI configuration (in parallel to the deploy preview, see
+`FRONTEND_PATHS` in `.circleci/generate_config.py`).
 
 ## Run the tests locally
 

@@ -34,10 +34,23 @@ test("long code blocks can be expanded", async ({ page }) => {
   await expect.poll(async () => (await code.boundingBox()).height).toBeGreaterThan(collapsed);
 });
 
-test("deep links to OpenAPI properties open their details", async ({ page }) => {
-  const id = "execute-a-batch-request_res_200";
-  await open(page, `/arangodb/stable/develop/http-api/batch-requests/#${id}`);
-  await expect(page.locator(`#${id}`)).toHaveAttribute("open", "");
+test.describe("deep links to OpenAPI properties", () => {
+  for (const [path, id, parents] of [
+    ["/arangodb/stable/develop/http-api/batch-requests/", "execute-a-batch-request_res_200", []],
+    // Nested property
+    ["/arangodb/stable/develop/http-api/collections/", "create-a-collection_body_keyOptions_type", ["create-a-collection_body_keyOptions"]],
+    // Array items (double underscore)
+    ["/arangodb/stable/develop/http-api/queries/aql-query-results-cache/", "list-the-entries-of-the-aql-query-results-cache_res_200__hash", ["list-the-entries-of-the-aql-query-results-cache_res_200"]],
+  ]) {
+    test(`open the property and its parents: ${id}`, async ({ page }) => {
+      await open(page, `${path}#${id}`);
+      for (const target of [...parents, id]) {
+        const details = page.locator(`[id="${target}"]`);
+        await expect(details).toHaveAttribute("open", "");
+        await expect(details.locator(":scope > summary")).not.toHaveClass(/collapsed/);
+      }
+    });
+  }
 });
 
 test.describe("deep links", () => {

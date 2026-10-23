@@ -248,7 +248,8 @@ includes Google Analytics etc.
 
 Browser tests for the functionality of the built site (navigation, version
 selector, copy buttons, etc.) are in `toolchain/frontend-tests/`. CircleCI runs
-them after builds. To run them locally, see
+them for releases, scheduled builds, and builds with frontend changes. To run
+them locally, see
 [toolchain/frontend-tests/README.md](toolchain/frontend-tests/README.md).
 
 #### Scheduled and example generation build

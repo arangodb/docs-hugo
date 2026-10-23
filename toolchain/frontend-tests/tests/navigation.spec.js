@@ -72,3 +72,67 @@ test("opens and closes the navigation on narrow screens", async ({ page, isMobil
   await nav.locator(".link-nav-active").click();
   await expect(nav).toBeHidden();
 });
+
+test("loads internal links in the content without reloading the document", async ({ page }) => {
+  await open(page, PAGE);
+  await page.evaluate(() => { window.__sameDocument = true; });
+  const heading = await page.locator("article h1").innerText();
+  const link = page.locator("article a.link[href^='/arangodb/']:not([href*='#'])").first();
+  const href = await link.getAttribute("href");
+  await link.scrollIntoViewIfNeeded();
+  await link.click();
+  await expect(page).toHaveURL(href);
+  await waitForApp(page);
+  await expect(page.locator("article h1")).not.toHaveText(heading);
+  expect(await page.evaluate(() => window.__sameDocument)).toBe(true);
+});
+
+test.describe("links with modifier keys", () => {
+  test.skip(({ isMobile }) => isMobile, "No modifier keys on touch screens");
+
+  for (const [name, modifiers] of [["Ctrl/Cmd+click opens a new tab", ["ControlOrMeta"]], ["Shift+click opens a new window", ["Shift"]]]) {
+    for (const [where, selector] of [
+      ["content", "article a.link[href^='/arangodb/']:not([href*='#'])"],
+      ["navigation", ".main-nav .link-nav-active"],
+    ]) {
+      test(`${name} (${where})`, async ({ page, context }) => {
+        await open(page, PAGE);
+        const link = page.locator(selector).first();
+        const href = await link.getAttribute("href");
+        await link.scrollIntoViewIfNeeded();
+        const [opened] = await Promise.all([context.waitForEvent("page"), link.click({ modifiers })]);
+        await expect(opened).toHaveURL(href);
+        // The current page stays as it is
+        await expect(page).toHaveURL(PAGE);
+      });
+    }
+  }
+});
+
+test("collapses expanded navigation sections except for the path to the current page", async ({ page }) => {
+  await open(page, PAGE);
+  await showNav(page);
+  // Expand a section that doesn't contain the current page
+  const other = page.locator(".main-nav .nav-section:not(:has(.link-nav-active)) > .nav-section-header:has(.expand-nav)").first();
+  await other.locator(".expand-nav").click();
+  await expect(other.locator("input")).toBeChecked();
+  // Navigate to another page with the navigation
+  const next = page.locator(".main-nav .link-nav-active").locator("xpath=ancestor::li[contains(@class, 'nav-leaf')]/following-sibling::li[1]//a[contains(@class, 'link-nav')]").first();
+  const href = await next.getAttribute("href");
+  await next.click();
+  await waitForApp(page);
+  await expect(page).toHaveURL(href);
+  await showNav(page);
+  await expect(other.locator("input")).not.toBeChecked();
+  // Exactly the sections containing the current page are expanded
+  const expanded = await page.evaluate(() => {
+    const checked = [...document.querySelectorAll(".main-nav .expand-nav > input:checked")].map(i => i.closest(".nav-section"));
+    const active = document.querySelector(".main-nav .link-nav-active");
+    const path = [];
+    for (let s = active.closest(".nav-section"); s; s = s.parentElement.closest(".nav-section")) path.push(s);
+    // A section's own link counts too: a section page expands its children
+    return { checked: checked.length, onPath: checked.filter(s => path.includes(s)).length, pathLength: path.length };
+  });
+  expect(expanded.onPath).toBe(expanded.checked);
+  expect(expanded.checked).toBe(expanded.pathLength);
+});
