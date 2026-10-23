@@ -78,8 +78,7 @@ The login screen asks for the following:
 4. **Select a database**: the database you want to start in. Only the databases
    your account has access to are listed in the dropdown menu. You can quickly
    switch between databases later.
-5. Click **Log in** to get to the **Home** screen of the
-   Arango Contextual Data Platform web interface.
+5. Click **Log in** to open the Arango Contextual Data Platform web interface.
 
 What you can see and do in the database system is limited by the permissions of
 the user account you logged in with, see

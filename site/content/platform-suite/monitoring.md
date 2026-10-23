@@ -28,8 +28,8 @@ additional configuration.
 
 You can access the monitoring dashboards from the Arango Contextual Data Platform web interface:
 
-1. Navigate to the **Monitoring** section in the main navigation menu.
-2. Select either **Grafana** or **Prometheus** from the sidebar.
+1. In the **Other services** section of the sidebar, expand **Monitoring**.
+2. Click **Grafana** or **Prometheus**.
 3. The selected monitoring dashboard loads in an embedded view within the
    Arango Contextual Data Platform interface.
 

@@ -12,8 +12,7 @@ or by providing a Docker image URL.
 ## Access the Container Manager
 
 1. Log in to the Arango Contextual Data Platform web interface.
-2. Go to **Control Panel** in the main navigation sidebar and then
-   click **Container Manager**.
+2. In the **Admin** section of the sidebar, click **Container Manager**.
 3. The Container Manager opens with two tabs:
    - **Packages**: For deploying services from code packages and managing
      uploaded packages.
@@ -33,7 +32,7 @@ See [Package Your Code](package-code/) for instructions.
 1. Select the **Packages** tab.
 2. In the **Deploy new Service** panel, drag and drop your `.tar.gz` file
    into the upload area, or click to browse and select your file.
-3. Enter a **File name** for your service
+3. Enter a **Name** for your service
    (e.g., `ml-prediction-service`).
 4. Specify a **Version** using semantic versioning (e.g., `1.0.0`, `2.1.3`).
    This allows you to maintain multiple versions of the same service.
@@ -55,7 +54,7 @@ See [Package Your Code](package-code/) for instructions.
 To deploy a new version of an existing service:
 
 1. Follow the steps in [Deploy Service from a Code Package](#deploy-service-from-a-code-package).
-2. Use the same **File name** as the existing service.
+2. Use the same **Name** as the existing service.
 3. Provide a new **Version** number (e.g., increment from `1.0.0` to `1.1.0`).
 4. Upload the updated service package.
 5. Click **Deploy Service**.

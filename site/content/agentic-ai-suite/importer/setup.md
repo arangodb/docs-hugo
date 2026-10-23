@@ -190,7 +190,7 @@ documentation.
 The web interface lets you configure and run the Importer through a guided
 workflow.
 
-1. Navigate to **Agentic AI Suite** > **AutoGraph Studio** in the sidebar.
+1. Click **AutoGraph Studio** in the **Agentic AI Suite** section of the sidebar.
 2. Create a new project and upload your documents into categories.
 3. Configure your LLM provider, embedding, and multimodal models.
 4. Start the build and inspect the resulting graph.

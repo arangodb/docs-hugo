@@ -31,7 +31,8 @@ The typical workflow follows these steps:
 ## How to access the Graph Analytics interface
 
 1. From the left-hand sidebar, select the database you want to work with.
-2. In the left-hand sidebar, click **Agentic AI Suite**, then click **Graph Analytics**.
+2. In the **Agentic AI Suite** section of the left-hand sidebar, click
+   **Graph Analytics**.
 3. The Graph Analytics Engine interface opens.
 
 ## Engine management
@@ -44,7 +45,8 @@ engines with their unique engine IDs and current status.
 
 ### Start a new engine
 
-1. In the right panel under **Running Engines**, click **Start New Engine**.
+1. Go to the **Start New Engine** panel on the right side of the interface,
+   above **Running Engines**.
 2. Select an **Engine Size** based on your graph data requirements:
    - **Small**: 1 GB RAM, 1 vCPU
    - **Medium**: 16 GB RAM, 4 vCPU

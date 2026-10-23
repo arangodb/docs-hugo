@@ -40,8 +40,8 @@ The Agentic AI Suite is composed of the following major components:
 
 Most components have an intuitive graphical user interface integrated into the
 Arango Contextual Data Platform web interface, guiding you through the process.
-In the left-hand sidebar, **Agentic AI Suite** groups **AutoGraph Studio**,
-**Graph Analytics**, and **GraphML**.
+In the left-hand sidebar, **AutoGraph Studio**, **Graph Analytics**, and
+**GraphML** are listed as separate entries in the **Agentic AI Suite** section.
 
 Alongside these components, you also get the following additional features:
 

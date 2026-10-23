@@ -23,9 +23,9 @@ description: >-
 {{< steps >}}
 
 {{< step "Create a project" >}}
-In the sidebar, open **Agentic AI Suite** > **AutoGraph Studio** and create a
-project. A project is an isolated workspace: you keep one set of related
-documents per project and their data stays separate from everything else.
+In the sidebar, click **AutoGraph Studio** and create a project. A project is
+an isolated workspace: you keep one set of related documents per project and
+their data stays separate from everything else.
 {{< /step >}}
 
 {{< step "Upload the documents you want answers from" >}}

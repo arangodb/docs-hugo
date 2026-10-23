@@ -25,8 +25,8 @@ board with four columns, one for each phase:
 To create a new GraphML project using the Arango Contextual Data Platform web interface, follow these steps:
 
 1. From the left-hand sidebar, select the database where you want to create the project.
-2. In the left-hand sidebar, click **Agentic AI Suite**, then click **GraphML**.
-   You can also open the **Agentic AI Suite** overview and click **Run GraphML**.
+2. In the **Agentic AI Suite** section of the left-hand sidebar, click
+   **GraphML**.
 3. In the **GraphML projects** view, click **Add new project**.
 4. The **Create ML project** modal opens. Enter a **Name** for your machine learning project.
 5. Click the **Create project** button to finalize the creation.
@@ -90,7 +90,7 @@ The featurization process has several configurable options, grouped into
 **Configuration** and **Advanced** settings. These are also shown in a JSON
 format on the right side of the modal for transparency.
 
-In the **Configuration** tab, you can control the overall featurization job and
+In the **Configuration** section, you can control the overall featurization job and
 how features are stored.
 - **Batch size**: The number of documents to process in a single batch.
 - **Profiles**: Add one or more profiles to specify pod configurations for the
@@ -258,6 +258,8 @@ Configure your prediction job with the following options:
   the prediction workload (e.g. `10`).
 - **Enable GPU**: Enables GPU-accelerated prediction using GPU-capable profiles
   configured for the project (e.g., `gpu-g4dn-xlarge`).
+- **Profiles**: Add one or more profiles to specify pod configurations for the
+  prediction job (e.g., `high-memory-xlarge`).
 
 ### Featurization options
 

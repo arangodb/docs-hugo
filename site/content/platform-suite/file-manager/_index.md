@@ -57,21 +57,20 @@ metadata relates to file versions.
 
 ## Web interface
 
-The **File Manager Service** page lets you manage container service files and RAG
-input files from a single place.
+The **File Manager** page lets you manage uploaded packages and RAG input files
+from a single place.
 
 ### View files
 
 1. Log in to the Arango Contextual Data Platform web interface.
-2. Go to **Control Panel** in the main navigation sidebar and then
-   click **File Manager**.
+2. In the **Admin** section of the sidebar, click **File Manager**.
 3. Select the desired tab. The number of files in each tab is shown in
    parentheses next to the tab name:
-   - **Container Services**: Files uploaded for container service deployments,
-     grouped by service name. The table columns are **Service Name**,
+   - **Uploaded Packages**: Files uploaded for container service deployments,
+     grouped by package name. The table columns are **Package Name**,
      **Version**, **Language**, **Storage Location**, **Size**, **Status**, and
-     **Actions**. Services with multiple versions show the version count and
-     combined size below the service name. Click the expand arrow next to a
+     **Actions**. Packages with multiple versions show the version count and
+     combined size below the package name. Click the expand arrow next to a
      version to see its individual details.
    - **RAG Input Files**: Files uploaded for AutoGraph and Importer processing.
      Use the **Database** dropdown above the table to filter files by database.
@@ -91,7 +90,7 @@ running service. Files marked as **In use** cannot be deleted.
 
 A **File Deletion Policy** info box is displayed at the bottom of the page:
 
-- **Container Services**: Can only be deleted if not currently used by a running
+- **Uploaded Packages**: Can only be deleted if not currently used by a running
   service.
 - **RAG Input**: Can only be deleted if not currently in use by any service in
   the system.
@@ -99,8 +98,7 @@ A **File Deletion Policy** info box is displayed at the bottom of the page:
 To delete a file:
 
 1. Log in to the Arango Contextual Data Platform web interface.
-2. Go to **Control Panel** in the main navigation sidebar and then
-   click **File Manager**.
+2. In the **Admin** section of the sidebar, click **File Manager**.
 3. Go to the tab containing the file you want to delete.
 4. In the row of the desired item, click the delete icon ({{< icon "delete" >}})
    in the **Actions** column and confirm by clicking **Delete**.
