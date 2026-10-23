@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for arangosearch Views
+title: arangosearch View HTTP API
 menuTitle: '`arangosearch` Views'
 weight: 10
 description: >-
@@ -40,7 +40,7 @@ paths:
                   type: string
                 type:
                   description: |
-                    The type of the View. Must be equal to `"arangosearch"`.
+                    The type of the View. Needs to be set to `"arangosearch"`.
                     This option is immutable.
                   type: string
                   example: arangosearch
@@ -116,6 +116,8 @@ paths:
                   default: lz4
                 primarySortCache:
                   description: |
+                    <small>Introduced in: v3.9.6, v3.10.2</small>
+
                     If you enable this option, then the primary sort columns are always cached in
                     memory. This can improve the
                     performance of queries that utilize the primary sort order. Otherwise, these
@@ -124,30 +126,38 @@ paths:
 
                     This option is immutable.
 
-                    See the `--arangosearch.columns-cache-limit` startup option to control the
-                    memory consumption of this cache. You can reduce the memory usage of the column
-                    cache in cluster deployments by only using the cache for leader shards, see the
-                    `--arangosearch.columns-cache-only-leader` startup option.
+                    See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                    to control the memory consumption of this cache. You can
+                    reduce the memory usage of the column cache in cluster
+                    deployments by only using the cache for leader shards, see the
+                    [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                    (introduced in v3.10.6).
                   type: boolean
                 primaryKeyCache:
                   description: |
-                    If you enable this option, then the primary key columns are always cached in
-                    memory (introduced in v3.9.6). This can improve the
+                    <small>Introduced in: v3.9.6, v3.10.2</small>
+
+                    If you enable this option, then the primary key columns are
+                    always cached in memory. This can improve the
                     performance of queries that return many documents. Otherwise, these values are
                     memory-mapped and it is up to the operating system to load them from disk into
                     memory and to evict them from memory.
 
                     This option is immutable.
 
-                    See the `--arangosearch.columns-cache-limit` startup option to control the
-                    memory consumption of this cache. You can reduce the memory usage of the column
-                    cache in cluster deployments by only using the cache for leader shards, see the
-                    `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
+                    See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                    to control the memory consumption of this cache. You can
+                    reduce the memory usage of the column cache in cluster
+                    deployments by only using the cache for leader shards, see the
+                    [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                    (introduced in v3.10.6).
                   type: boolean
                 optimizeTopK:
                   description: |
+                    <small>Introduced in: v3.12.0</small>
+
                     An array of strings defining sort expressions that you want to optimize.
-                    This is also known as _WAND optimization_ (introduced in v3.12.0).
+                    This is also known as _WAND optimization_.
 
                     This option is immutable.
 
@@ -230,15 +240,19 @@ paths:
                         default: lz4
                       cache:
                         description: |
+                          <small>Introduced in: v3.9.5, v3.10.2</small>
+
                           Whether to always cache stored values in memory.
                           This can improve the query performance if stored values are involved.
                           Otherwise, these values are memory-mapped and it is up to the operating system
                           to load them from disk into memory and to evict them from memory.
 
-                          See the `--arangosearch.columns-cache-limit` startup option to control the
-                          memory consumption of this cache. You can reduce the memory usage of the
-                          column cache in cluster deployments by only using the cache for leader shards,
-                          see the `--arangosearch.columns-cache-only-leader` startup option.
+                          See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                          to control the memory consumption of this cache. You can
+                          reduce the memory usage of the column cache in cluster
+                          deployments by only using the cache for leader shards, see the
+                          [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                          (introduced in v3.10.6).
                         type: boolean
                         default: false
                 cleanupIntervalStep:
@@ -252,13 +266,7 @@ paths:
                     inserts/deletes), a higher value impacts performance without any added
                     benefits.
 
-                    _Background:_
-                      With every "commit" or "consolidate" operation, a new state of the View's
-                      internal data structures is created on disk.
-                      Old states/snapshots are released once there are no longer any users
-                      remaining.
-                      However, the files for the released states/snapshots are left on disk, and
-                      only removed by "cleanup" operation.
+                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/architecture.md#cleanup).
                   type: integer
                   default: 2
                 commitIntervalMsec:
@@ -271,17 +279,7 @@ paths:
                     few inserts/updates because of synchronous locking, and it wastes disk space for
                     each commit call.
 
-                    _Background:_
-                      For data retrieval, ArangoSearch follows the concept of
-                      "eventually-consistent", i.e. eventually all the data in ArangoDB will be
-                      matched by corresponding query expressions.
-                      The concept of ArangoSearch "commit" operations is introduced to
-                      control the upper-bound on the time until document addition/removals are
-                      actually reflected by corresponding query expressions.
-                      Once a "commit" operation is complete, all documents added/removed prior to
-                      the start of the "commit" operation will be reflected by queries invoked in
-                      subsequent ArangoDB transactions, in-progress ArangoDB transactions will
-                      still continue to return a repeatable-read state.
+                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/architecture.md#writing-and-commits).
                   type: integer
                   default: 1000
                 consolidationIntervalMsec:
@@ -295,33 +293,22 @@ paths:
                     impacts performance due to no segment candidates being available for
                     consolidation.
 
-                    _Background:_
-                      For data modification, ArangoSearch follows the concept of a
-                      "versioned data store". Thus old versions of data may be removed once there
-                      are no longer any users of the old data. The frequency of the cleanup and
-                      compaction operations are governed by `consolidationIntervalMsec` and the
-                      candidates for compaction are selected via `consolidationPolicy`.
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
                   type: integer
                   default: 5000
                 consolidationPolicy:
                   description: |
                     The consolidation policy to apply for selecting which segments should be merged.
 
-                    - If the `tier` type is used, then the `maxSkewThreshold`,
-                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                    - If the `tier` type is used, then the `maxSkewThreshold` and `minDeletionRatio`
+                      properties are available (from v3.12.7 onward), respectively the `segments*`
+                      and `minScore` properties (up to v3.12.6).
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
-                    _Background:_
-                      With each ArangoDB transaction that inserts documents, one or more
-                      ArangoSearch-internal segments get created.
-                      Similarly, for removed documents, the segments that contain such documents
-                      have these documents marked as 'deleted'.
-                      Over time, this approach causes a lot of small and sparse segments to be
-                      created.
-                      A "consolidation" operation selects one or more segments and copies all of
-                      their valid documents into a single new segment, thereby allowing the
-                      search algorithm to perform more optimally and for extra file handles to be
-                      released once old segments are no longer used.
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
+
+                    To inspect the segment layout, see the
+                    [ArangoSearch statistics HTTP API](../monitoring/arangosearch-statistics.md).
                   type: object
                   required:
                     - type
@@ -331,9 +318,10 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: consolidate based on segment byte size skew and live
-                          document count as dictated by the customization attributes. 
-                        - `"bytes_accum"`: consolidate if and only if
+                        - `"tier"`: Consolidate based on segment byte size skew and the number
+                          of entries that are not marked as deleted, as dictated by the
+                          customization attributes.
+                        - `"bytes_accum"`: Consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                           i.e. the sum of all candidate segment byte size is less than the total
                           segment byte size multiplied by the `{threshold}`.
@@ -349,7 +337,7 @@ paths:
                       maximum: 1.0
                     segmentsBytesFloor:
                       description: |
-                        This option is only available up to v3.12.6:
+                        <small>Removed in: v3.12.7</small>
 
                         Defines the value (in bytes) to treat all smaller segments
                         as equal for consolidation selection.
@@ -362,7 +350,7 @@ paths:
                       default: 8589934592
                     segmentsMax:
                       description: |
-                        This option is only available up to v3.12.6:
+                        <small>Removed in: v3.12.7</small>
 
                         The maximum number of segments that are evaluated as
                         candidates for consolidation.
@@ -370,7 +358,7 @@ paths:
                       default: 200
                     segmentsMin:
                       description: |
-                        This option is only available up to v3.12.6:
+                        <small>Removed in: v3.12.7</small>
 
                         The minimum number of segments that are
                         evaluated as candidates for consolidation
@@ -378,14 +366,14 @@ paths:
                       default: 50
                     minScore:
                       description: |
-                        This option is only available up to v3.12.6:
+                        <small>Removed in: v3.12.7</small>
 
                         Filter out consolidation candidates with a score less than this.
                       type: integer
                       default: 0
                     maxSkewThreshold:
                       description: |
-                        This option is available from v3.12.7 onward:
+                        <small>Introduced in: v3.12.7</small>
 
                         The skew describes how much segment files vary in file size. It is a number
                         between `0.0` and `1.0` and is calculated by dividing the largest file size
@@ -414,25 +402,27 @@ paths:
                       default: 0.4
                     minDeletionRatio:
                       description: |
-                        This option is available from v3.12.7 onward:
+                        <small>Introduced in: v3.12.7</small>
 
                         The `minDeletionRatio` represents the minimum required deletion ratio
                         in one or more segments to perform a cleanup of those segments.
                         It is a number between `0.0` and `1.0`.
 
-                        The deletion ratio is the percentage of deleted documents across one or
-                        more segment files and is calculated by dividing the number of deleted
-                        documents by the total number of documents in a segment or a group of
-                        segments. For example, if there is a segment with 1000 documents of which
-                        300 are deleted and another segment with 1000 documents of which 700 are
-                        deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+                        The deletion ratio is the percentage of index entries marked
+                        as deleted across one or more segment files and is calculated
+                        by dividing the number of deleted entries by the total number
+                        of entries in a segment or a group of segments. For example,
+                        if there is a segment with 1000 entries of which 300 are
+                        deleted and another segment with 1000 entries of which 700 are
+                        deleted, the deletion ratio is `0.5` (50%, calculated as `1000
+                        / 2000`).
 
                         The `minDeletionRatio` threshold must be carefully selected. A smaller
-                        value leads to earlier cleanup of deleted documents from segments and
+                        value leads to earlier cleanup of deleted entries from segments and
                         thus reclamation of disk space but it generates a higher write load.
                         A very large value lowers the write amplification but at the same time
                         the system can be left with a large number of segment files with a high
-                        percentage of deleted documents that occupy disk space unnecessarily.
+                        percentage of deleted entries that occupy disk space unnecessarily.
 
                         During cleanup, the segment files are first arranged in decreasing
                         order of their individual deletion ratios. Then the largest subset of
@@ -549,16 +539,22 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary sort columns are always cached in memory.
                     type: boolean
                   primaryKeyCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary key columns are always cached in memory.
                     type: boolean
                   optimizeTopK:
                     description: |
+                      <small>Introduced in: v3.12.0</small>
+
                       An array of strings defining sort expressions that can be optimized.
-                      This is also known as _WAND optimization_ (introduced in v3.12.0).
+                      This is also known as _WAND optimization_.
                     type: array
                     items:
                       type: string
@@ -590,6 +586,8 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
+                            <small>Introduced in: v3.9.5, v3.10.2</small>
+
                             Whether stored values are always cached in memory.
                           type: boolean
                   cleanupIntervalStep:
@@ -612,8 +610,9 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `maxSkewThreshold`,
-                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold` and `minDeletionRatio`
+                        properties are available (from v3.12.7 onward), respectively the `segments*`
+                        and `minScore` properties (up to v3.12.6).
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -622,9 +621,10 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size skew and live
-                            document count as dictated by the customization attributes.
-                          - `"bytes_accum"`: consolidate if and only if
+                          - `"tier"`: Consolidate based on segment byte size skew and the number
+                            of entries that are not marked as deleted, as dictated by the
+                            customization attributes.
+                          - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
@@ -638,7 +638,7 @@ paths:
                         maximum: 1.0
                       segmentsBytesFloor:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           Defines the value (in bytes) to treat all smaller segments
                           as equal for consolidation selection.
@@ -649,27 +649,27 @@ paths:
                         type: integer
                       segmentsMax:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           The maximum number of segments that are evaluated as
                           candidates for consolidation.
                         type: integer
                       segmentsMin:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           The minimum number of segments that are
                           evaluated as candidates for consolidation
                         type: integer
                       minScore:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           Filter out consolidation candidates with a score less than this.
                         type: integer
                       maxSkewThreshold:
                         description: |
-                          This option is available from v3.12.7 onward:
+                          <small>Introduced in: v3.12.7</small>
 
                           The skew describes how much segment files vary in file size. It is a number
                           between `0.0` and `1.0` and is calculated by dividing the largest file size
@@ -697,25 +697,27 @@ paths:
                         maximum: 1.0
                       minDeletionRatio:
                         description: |
-                          This option is available from v3.12.7 onward:
+                          <small>Introduced in: v3.12.7</small>
 
                           The `minDeletionRatio` represents the minimum required deletion ratio
                           in one or more segments to perform a cleanup of those segments.
                           It is a number between `0.0` and `1.0`.
 
-                          The deletion ratio is the percentage of deleted documents across one or
-                          more segment files and is calculated by dividing the number of deleted
-                          documents by the total number of documents in a segment or a group of
-                          segments. For example, if there is a segment with 1000 documents of which
-                          300 are deleted and another segment with 1000 documents of which 700 are
-                          deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+                          The deletion ratio is the percentage of index entries marked
+                          as deleted across one or more segment files and is
+                          calculated by dividing the number of deleted entries by the
+                          total number of entries in a segment or a group of segments.
+                          For example, if there is a segment with 1000 entries of
+                          which 300 are deleted and another segment with 1000 entries
+                          of which 700 are deleted, the deletion ratio is `0.5` (50%,
+                          calculated as `1000 / 2000`).
 
                           The `minDeletionRatio` threshold must be carefully selected. A smaller
-                          value leads to earlier cleanup of deleted documents from segments and
+                          value leads to earlier cleanup of deleted entries from segments and
                           thus reclamation of disk space but it generates a higher write load.
                           A very large value lowers the write amplification but at the same time
                           the system can be left with a large number of segment files with a high
-                          percentage of deleted documents that occupy disk space unnecessarily.
+                          percentage of deleted entries that occupy disk space unnecessarily.
 
                           During cleanup, the segment files are first arranged in decreasing
                           order of their individual deletion ratios. Then the largest subset of
@@ -1087,16 +1089,22 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary sort columns are always cached in memory.
                     type: boolean
                   primaryKeyCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary key columns are always cached in memory.
                     type: boolean
                   optimizeTopK:
                     description: |
+                      <small>Introduced in: v3.12.0</small>
+
                       An array of strings defining sort expressions that can be optimized.
-                      This is also known as _WAND optimization_ (introduced in v3.12.0).
+                      This is also known as _WAND optimization_.
                     type: array
                     items:
                       type: string
@@ -1128,6 +1136,8 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
+                            <small>Introduced in: v3.9.5, v3.10.2</small>
+
                             Whether stored values are always cached in memory.
                           type: boolean
                   cleanupIntervalStep:
@@ -1150,8 +1160,9 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `maxSkewThreshold`,
-                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold` and `minDeletionRatio`
+                        properties are available (from v3.12.7 onward), respectively the `segments*`
+                        and `minScore` properties (up to v3.12.6).
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -1160,9 +1171,10 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size skew and live
-                            document count as dictated by the customization attributes.
-                          - `"bytes_accum"`: consolidate if and only if
+                          - `"tier"`: Consolidate based on segment byte size skew and the number
+                            of entries that are not marked as deleted, as dictated by the
+                            customization attributes.
+                          - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
@@ -1176,7 +1188,7 @@ paths:
                         maximum: 1.0
                       segmentsBytesFloor:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           Defines the value (in bytes) to treat all smaller segments
                           as equal for consolidation selection.
@@ -1187,27 +1199,27 @@ paths:
                         type: integer
                       segmentsMax:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           The maximum number of segments that are evaluated as
                           candidates for consolidation.
                         type: integer
                       segmentsMin:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           The minimum number of segments that are
                           evaluated as candidates for consolidation
                         type: integer
                       minScore:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           Filter out consolidation candidates with a score less than this.
                         type: integer
                       maxSkewThreshold:
                         description: |
-                          This option is available from v3.12.7 onward:
+                          <small>Introduced in: v3.12.7</small>
 
                           The skew describes how much segment files vary in file size. It is a number
                           between `0.0` and `1.0` and is calculated by dividing the largest file size
@@ -1235,25 +1247,27 @@ paths:
                         maximum: 1.0
                       minDeletionRatio:
                         description: |
-                          This option is available from v3.12.7 onward:
+                          <small>Introduced in: v3.12.7</small>
 
                           The `minDeletionRatio` represents the minimum required deletion ratio
                           in one or more segments to perform a cleanup of those segments.
                           It is a number between `0.0` and `1.0`.
 
-                          The deletion ratio is the percentage of deleted documents across one or
-                          more segment files and is calculated by dividing the number of deleted
-                          documents by the total number of documents in a segment or a group of
-                          segments. For example, if there is a segment with 1000 documents of which
-                          300 are deleted and another segment with 1000 documents of which 700 are
-                          deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+                          The deletion ratio is the percentage of index entries marked
+                          as deleted across one or more segment files and is
+                          calculated by dividing the number of deleted entries by the
+                          total number of entries in a segment or a group of segments.
+                          For example, if there is a segment with 1000 entries of
+                          which 300 are deleted and another segment with 1000 entries
+                          of which 700 are deleted, the deletion ratio is `0.5` (50%,
+                          calculated as `1000 / 2000`).
 
                           The `minDeletionRatio` threshold must be carefully selected. A smaller
-                          value leads to earlier cleanup of deleted documents from segments and
+                          value leads to earlier cleanup of deleted entries from segments and
                           thus reclamation of disk space but it generates a higher write load.
                           A very large value lowers the write amplification but at the same time
                           the system can be left with a large number of segment files with a high
-                          percentage of deleted documents that occupy disk space unnecessarily.
+                          percentage of deleted entries that occupy disk space unnecessarily.
 
                           During cleanup, the segment files are first arranged in decreasing
                           order of their individual deletion ratios. Then the largest subset of
@@ -1548,13 +1562,7 @@ paths:
                     inserts/deletes), a higher value impacts performance without any added
                     benefits.
 
-                    _Background:_
-                      With every "commit" or "consolidate" operation, a new state of the View's
-                      internal data structures is created on disk.
-                      Old states/snapshots are released once there are no longer any users
-                      remaining.
-                      However, the files for the released states/snapshots are left on disk, and
-                      only removed by "cleanup" operation.
+                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/architecture.md#cleanup).
                   type: integer
                   default: 2
                 commitIntervalMsec:
@@ -1567,17 +1575,7 @@ paths:
                     few inserts/updates because of synchronous locking, and it wastes disk space for
                     each commit call.
 
-                    _Background:_
-                      For data retrieval, ArangoSearch follows the concept of
-                      "eventually-consistent", i.e. eventually all the data in ArangoDB will be
-                      matched by corresponding query expressions.
-                      The concept of ArangoSearch "commit" operations is introduced to
-                      control the upper-bound on the time until document addition/removals are
-                      actually reflected by corresponding query expressions.
-                      Once a "commit" operation is complete, all documents added/removed prior to
-                      the start of the "commit" operation will be reflected by queries invoked in
-                      subsequent ArangoDB transactions, in-progress ArangoDB transactions will
-                      still continue to return a repeatable-read state.
+                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/architecture.md#writing-and-commits).
                   type: integer
                   default: 1000
                 consolidationIntervalMsec:
@@ -1591,33 +1589,22 @@ paths:
                     impacts performance due to no segment candidates being available for
                     consolidation.
 
-                    _Background:_
-                      For data modification, ArangoSearch follows the concept of a
-                      "versioned data store". Thus old versions of data may be removed once there
-                      are no longer any users of the old data. The frequency of the cleanup and
-                      compaction operations are governed by `consolidationIntervalMsec` and the
-                      candidates for compaction are selected via `consolidationPolicy`.
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
                   type: integer
                   default: 5000
                 consolidationPolicy:
                   description: |
                     The consolidation policy to apply for selecting which segments should be merged.
 
-                    - If the `tier` type is used, then the `maxSkewThreshold`,
-                    `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                    - If the `tier` type is used, then the `maxSkewThreshold` and `minDeletionRatio`
+                      properties are available (from v3.12.7 onward), respectively the `segments*`
+                      and `minScore` properties (up to v3.12.6).
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
-                    _Background:_
-                      With each ArangoDB transaction that inserts documents, one or more
-                      ArangoSearch-internal segments get created.
-                      Similarly, for removed documents, the segments that contain such documents
-                      have these documents marked as 'deleted'.
-                      Over time, this approach causes a lot of small and sparse segments to be
-                      created.
-                      A "consolidation" operation selects one or more segments and copies all of
-                      their valid documents into a single new segment, thereby allowing the
-                      search algorithm to perform more optimally and for extra file handles to be
-                      released once old segments are no longer used.
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
+
+                    To inspect the segment layout, see the
+                    [ArangoSearch statistics HTTP API](../monitoring/arangosearch-statistics.md).
                   type: object
                   required:
                     - type
@@ -1627,9 +1614,10 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: consolidate based on segment byte size skew and live
-                          document count as dictated by the customization attributes. 
-                        - `"bytes_accum"`: consolidate if and only if
+                        - `"tier"`: Consolidate based on segment byte size skew and the number
+                          of entries that are not marked as deleted, as dictated by the
+                          customization attributes.
+                        - `"bytes_accum"`: Consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                           i.e. the sum of all candidate segment byte size is less than the total
                           segment byte size multiplied by the `{threshold}`.
@@ -1645,7 +1633,7 @@ paths:
                       maximum: 1.0
                     segmentsBytesFloor:
                       description: |
-                        This option is only available up to v3.12.6:
+                        <small>Removed in: v3.12.7</small>
 
                         Defines the value (in bytes) to treat all smaller segments
                         as equal for consolidation selection.
@@ -1658,7 +1646,7 @@ paths:
                       default: 8589934592
                     segmentsMax:
                       description: |
-                        This option is only available up to v3.12.6:
+                        <small>Removed in: v3.12.7</small>
 
                         The maximum number of segments that are evaluated as
                         candidates for consolidation.
@@ -1666,7 +1654,7 @@ paths:
                       default: 200
                     segmentsMin:
                       description: |
-                        This option is only available up to v3.12.6:
+                        <small>Removed in: v3.12.7</small>
 
                         The minimum number of segments that are
                         evaluated as candidates for consolidation
@@ -1674,14 +1662,14 @@ paths:
                       default: 50
                     minScore:
                       description: |
-                        This option is only available up to v3.12.6:
+                        <small>Removed in: v3.12.7</small>
 
                         Filter out consolidation candidates with a score less than this.
                       type: integer
                       default: 0
                     maxSkewThreshold:
                       description: |
-                        This option is available from v3.12.7 onward:
+                        <small>Introduced in: v3.12.7</small>
 
                         The skew describes how much segment files vary in file size. It is a number
                         between `0.0` and `1.0` and is calculated by dividing the largest file size
@@ -1710,25 +1698,27 @@ paths:
                       default: 0.4
                     minDeletionRatio:
                       description: |
-                        This option is available from v3.12.7 onward:
+                        <small>Introduced in: v3.12.7</small>
 
                         The `minDeletionRatio` represents the minimum required deletion ratio
                         in one or more segments to perform a cleanup of those segments.
                         It is a number between `0.0` and `1.0`.
 
-                        The deletion ratio is the percentage of deleted documents across one or
-                        more segment files and is calculated by dividing the number of deleted
-                        documents by the total number of documents in a segment or a group of
-                        segments. For example, if there is a segment with 1000 documents of which
-                        300 are deleted and another segment with 1000 documents of which 700 are
-                        deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+                        The deletion ratio is the percentage of index entries marked
+                        as deleted across one or more segment files and is calculated
+                        by dividing the number of deleted entries by the total number
+                        of entries in a segment or a group of segments. For example,
+                        if there is a segment with 1000 entries of which 300 are
+                        deleted and another segment with 1000 entries of which 700 are
+                        deleted, the deletion ratio is `0.5` (50%, calculated as `1000
+                        / 2000`).
 
                         The `minDeletionRatio` threshold must be carefully selected. A smaller
-                        value leads to earlier cleanup of deleted documents from segments and
+                        value leads to earlier cleanup of deleted entries from segments and
                         thus reclamation of disk space but it generates a higher write load.
                         A very large value lowers the write amplification but at the same time
                         the system can be left with a large number of segment files with a high
-                        percentage of deleted documents that occupy disk space unnecessarily.
+                        percentage of deleted entries that occupy disk space unnecessarily.
 
                         During cleanup, the segment files are first arranged in decreasing
                         order of their individual deletion ratios. Then the largest subset of
@@ -1823,16 +1813,22 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary sort columns are always cached in memory.
                     type: boolean
                   primaryKeyCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary key columns are always cached in memory.
                     type: boolean
                   optimizeTopK:
                     description: |
+                      <small>Introduced in: v3.12.0</small>
+
                       An array of strings defining sort expressions that can be optimized.
-                      This is also known as _WAND optimization_ (introduced in v3.12.0).
+                      This is also known as _WAND optimization_.
                     type: array
                     items:
                       type: string
@@ -1864,6 +1860,8 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
+                            <small>Introduced in: v3.9.5, v3.10.2</small>
+
                             Whether stored values are always cached in memory.
                           type: boolean
                   cleanupIntervalStep:
@@ -1886,8 +1884,9 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `maxSkewThreshold`,
-                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold` and `minDeletionRatio`
+                        properties are available (from v3.12.7 onward), respectively the `segments*`
+                        and `minScore` properties (up to v3.12.6).
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -1896,9 +1895,10 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size skew and live
-                            document count as dictated by the customization attributes.
-                          - `"bytes_accum"`: consolidate if and only if
+                          - `"tier"`: Consolidate based on segment byte size skew and the number
+                            of entries that are not marked as deleted, as dictated by the
+                            customization attributes.
+                          - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
@@ -1912,7 +1912,7 @@ paths:
                         maximum: 1.0
                       segmentsBytesFloor:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           Defines the value (in bytes) to treat all smaller segments
                           as equal for consolidation selection.
@@ -1923,27 +1923,27 @@ paths:
                         type: integer
                       segmentsMax:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           The maximum number of segments that are evaluated as
                           candidates for consolidation.
                         type: integer
                       segmentsMin:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           The minimum number of segments that are
                           evaluated as candidates for consolidation
                         type: integer
                       minScore:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           Filter out consolidation candidates with a score less than this.
                         type: integer
                       maxSkewThreshold:
                         description: |
-                          This option is available from v3.12.7 onward:
+                          <small>Introduced in: v3.12.7</small>
 
                           The skew describes how much segment files vary in file size. It is a number
                           between `0.0` and `1.0` and is calculated by dividing the largest file size
@@ -1971,25 +1971,27 @@ paths:
                         maximum: 1.0
                       minDeletionRatio:
                         description: |
-                          This option is available from v3.12.7 onward:
+                          <small>Introduced in: v3.12.7</small>
 
                           The `minDeletionRatio` represents the minimum required deletion ratio
                           in one or more segments to perform a cleanup of those segments.
                           It is a number between `0.0` and `1.0`.
 
-                          The deletion ratio is the percentage of deleted documents across one or
-                          more segment files and is calculated by dividing the number of deleted
-                          documents by the total number of documents in a segment or a group of
-                          segments. For example, if there is a segment with 1000 documents of which
-                          300 are deleted and another segment with 1000 documents of which 700 are
-                          deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+                          The deletion ratio is the percentage of index entries marked
+                          as deleted across one or more segment files and is
+                          calculated by dividing the number of deleted entries by the
+                          total number of entries in a segment or a group of segments.
+                          For example, if there is a segment with 1000 entries of
+                          which 300 are deleted and another segment with 1000 entries
+                          of which 700 are deleted, the deletion ratio is `0.5` (50%,
+                          calculated as `1000 / 2000`).
 
                           The `minDeletionRatio` threshold must be carefully selected. A smaller
-                          value leads to earlier cleanup of deleted documents from segments and
+                          value leads to earlier cleanup of deleted entries from segments and
                           thus reclamation of disk space but it generates a higher write load.
                           A very large value lowers the write amplification but at the same time
                           the system can be left with a large number of segment files with a high
-                          percentage of deleted documents that occupy disk space unnecessarily.
+                          percentage of deleted entries that occupy disk space unnecessarily.
 
                           During cleanup, the segment files are first arranged in decreasing
                           order of their individual deletion ratios. Then the largest subset of
@@ -2194,13 +2196,7 @@ paths:
                     inserts/deletes), a higher value impacts performance without any added
                     benefits.
 
-                    _Background:_
-                      With every "commit" or "consolidate" operation, a new state of the View's
-                      internal data structures is created on disk.
-                      Old states/snapshots are released once there are no longer any users
-                      remaining.
-                      However, the files for the released states/snapshots are left on disk, and
-                      only removed by "cleanup" operation.
+                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/architecture.md#cleanup).
                   type: integer
                 commitIntervalMsec:
                   description: |
@@ -2212,17 +2208,7 @@ paths:
                     few inserts/updates because of synchronous locking, and it wastes disk space for
                     each commit call.
 
-                    _Background:_
-                      For data retrieval, ArangoSearch follows the concept of
-                      "eventually-consistent", i.e. eventually all the data in ArangoDB will be
-                      matched by corresponding query expressions.
-                      The concept of ArangoSearch "commit" operations is introduced to
-                      control the upper-bound on the time until document addition/removals are
-                      actually reflected by corresponding query expressions.
-                      Once a "commit" operation is complete, all documents added/removed prior to
-                      the start of the "commit" operation will be reflected by queries invoked in
-                      subsequent ArangoDB transactions, in-progress ArangoDB transactions will
-                      still continue to return a repeatable-read state.
+                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/architecture.md#writing-and-commits).
                   type: integer
                 consolidationIntervalMsec:
                   description: |
@@ -2235,32 +2221,21 @@ paths:
                     impacts performance due to no segment candidates being available for
                     consolidation.
 
-                    _Background:_
-                      For data modification, ArangoSearch follows the concept of a
-                      "versioned data store". Thus old versions of data may be removed once there
-                      are no longer any users of the old data. The frequency of the cleanup and
-                      compaction operations are governed by `consolidationIntervalMsec` and the
-                      candidates for compaction are selected via `consolidationPolicy`.
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
                   type: integer
                 consolidationPolicy:
                   description: |
                     The consolidation policy to apply for selecting which segments should be merged.
 
-                    - If the `tier` type is used, then the `maxSkewThreshold`,
-                    `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                    - If the `tier` type is used, then the `maxSkewThreshold` and `minDeletionRatio`
+                      properties are available (from v3.12.7 onward), respectively the `segments*`
+                      and `minScore` properties (up to v3.12.6).
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
-                    _Background:_
-                      With each ArangoDB transaction that inserts documents, one or more
-                      ArangoSearch-internal segments get created.
-                      Similarly, for removed documents, the segments that contain such documents
-                      have these documents marked as 'deleted'.
-                      Over time, this approach causes a lot of small and sparse segments to be
-                      created.
-                      A "consolidation" operation selects one or more segments and copies all of
-                      their valid documents into a single new segment, thereby allowing the
-                      search algorithm to perform more optimally and for extra file handles to be
-                      released once old segments are no longer used.
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
+
+                    To inspect the segment layout, see the
+                    [ArangoSearch statistics HTTP API](../monitoring/arangosearch-statistics.md).
                   type: object
                   required:
                     - type
@@ -2270,9 +2245,10 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: consolidate based on segment byte size skew and live
-                          document count as dictated by the customization attributes. 
-                        - `"bytes_accum"`: consolidate if and only if
+                        - `"tier"`: Consolidate based on segment byte size skew and the number
+                          of entries that are not marked as deleted, as dictated by the
+                          customization attributes.
+                        - `"bytes_accum"`: Consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                           i.e. the sum of all candidate segment byte size is less than the total
                           segment byte size multiplied by the `{threshold}`.
@@ -2287,7 +2263,7 @@ paths:
                       maximum: 1.0
                     segmentsBytesFloor:
                       description: |
-                        This option is only available up to v3.12.6:
+                        <small>Removed in: v3.12.7</small>
 
                         Defines the value (in bytes) to treat all smaller segments
                         as equal for consolidation selection.
@@ -2300,7 +2276,7 @@ paths:
                       default: 8589934592
                     segmentsMax:
                       description: |
-                        This option is only available up to v3.12.6:
+                        <small>Removed in: v3.12.7</small>
 
                         The maximum number of segments that are evaluated as
                         candidates for consolidation.
@@ -2308,7 +2284,7 @@ paths:
                       default: 200
                     segmentsMin:
                       description: |
-                        This option is only available up to v3.12.6:
+                        <small>Removed in: v3.12.7</small>
 
                         The minimum number of segments that are
                         evaluated as candidates for consolidation
@@ -2316,14 +2292,14 @@ paths:
                       default: 50
                     minScore:
                       description: |
-                        This option is only available up to v3.12.6:
+                        <small>Removed in: v3.12.7</small>
 
                         Filter out consolidation candidates with a score less than this.
                       type: integer
                       default: 0
                     maxSkewThreshold:
                       description: |
-                        This option is available from v3.12.7 onward:
+                        <small>Introduced in: v3.12.7</small>
 
                         The skew describes how much segment files vary in file size. It is a number
                         between `0.0` and `1.0` and is calculated by dividing the largest file size
@@ -2352,25 +2328,27 @@ paths:
                       default: 0.4
                     minDeletionRatio:
                       description: |
-                        This option is available from v3.12.7 onward:
+                        <small>Introduced in: v3.12.7</small>
 
                         The `minDeletionRatio` represents the minimum required deletion ratio
                         in one or more segments to perform a cleanup of those segments.
                         It is a number between `0.0` and `1.0`.
 
-                        The deletion ratio is the percentage of deleted documents across one or
-                        more segment files and is calculated by dividing the number of deleted
-                        documents by the total number of documents in a segment or a group of
-                        segments. For example, if there is a segment with 1000 documents of which
-                        300 are deleted and another segment with 1000 documents of which 700 are
-                        deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+                        The deletion ratio is the percentage of index entries marked
+                        as deleted across one or more segment files and is calculated
+                        by dividing the number of deleted entries by the total number
+                        of entries in a segment or a group of segments. For example,
+                        if there is a segment with 1000 entries of which 300 are
+                        deleted and another segment with 1000 entries of which 700 are
+                        deleted, the deletion ratio is `0.5` (50%, calculated as `1000
+                        / 2000`).
 
                         The `minDeletionRatio` threshold must be carefully selected. A smaller
-                        value leads to earlier cleanup of deleted documents from segments and
+                        value leads to earlier cleanup of deleted entries from segments and
                         thus reclamation of disk space but it generates a higher write load.
                         A very large value lowers the write amplification but at the same time
                         the system can be left with a large number of segment files with a high
-                        percentage of deleted documents that occupy disk space unnecessarily.
+                        percentage of deleted entries that occupy disk space unnecessarily.
 
                         During cleanup, the segment files are first arranged in decreasing
                         order of their individual deletion ratios. Then the largest subset of
@@ -2465,16 +2443,22 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary sort columns are always cached in memory.
                     type: boolean
                   primaryKeyCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary key columns are always cached in memory.
                     type: boolean
                   optimizeTopK:
                     description: |
+                      <small>Introduced in: v3.12.0</small>
+
                       An array of strings defining sort expressions that can be optimized.
-                      This is also known as _WAND optimization_ (introduced in v3.12.0).
+                      This is also known as _WAND optimization_.
                     type: array
                     items:
                       type: string
@@ -2506,6 +2490,8 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
+                            <small>Introduced in: v3.9.5, v3.10.2</small>
+
                             Whether stored values are always cached in memory.
                           type: boolean
                   cleanupIntervalStep:
@@ -2528,8 +2514,9 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `maxSkewThreshold`,
-                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold` and `minDeletionRatio`
+                        properties are available (from v3.12.7 onward), respectively the `segments*`
+                        and `minScore` properties (up to v3.12.6).
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -2538,9 +2525,10 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size skew and live
-                            document count as dictated by the customization attributes.
-                          - `"bytes_accum"`: consolidate if and only if
+                          - `"tier"`: Consolidate based on segment byte size skew and the number
+                            of entries that are not marked as deleted, as dictated by the
+                            customization attributes.
+                          - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
@@ -2554,7 +2542,7 @@ paths:
                         maximum: 1.0
                       segmentsBytesFloor:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           Defines the value (in bytes) to treat all smaller segments
                           as equal for consolidation selection.
@@ -2565,27 +2553,27 @@ paths:
                         type: integer
                       segmentsMax:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           The maximum number of segments that are evaluated as
                           candidates for consolidation.
                         type: integer
                       segmentsMin:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           The minimum number of segments that are
                           evaluated as candidates for consolidation
                         type: integer
                       minScore:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           Filter out consolidation candidates with a score less than this.
                         type: integer
                       maxSkewThreshold:
                         description: |
-                          This option is available from v3.12.7 onward:
+                          <small>Introduced in: v3.12.7</small>
 
                           The skew describes how much segment files vary in file size. It is a number
                           between `0.0` and `1.0` and is calculated by dividing the largest file size
@@ -2613,25 +2601,27 @@ paths:
                         maximum: 1.0
                       minDeletionRatio:
                         description: |
-                          This option is available from v3.12.7 onward:
+                          <small>Introduced in: v3.12.7</small>
 
                           The `minDeletionRatio` represents the minimum required deletion ratio
                           in one or more segments to perform a cleanup of those segments.
                           It is a number between `0.0` and `1.0`.
 
-                          The deletion ratio is the percentage of deleted documents across one or
-                          more segment files and is calculated by dividing the number of deleted
-                          documents by the total number of documents in a segment or a group of
-                          segments. For example, if there is a segment with 1000 documents of which
-                          300 are deleted and another segment with 1000 documents of which 700 are
-                          deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+                          The deletion ratio is the percentage of index entries marked
+                          as deleted across one or more segment files and is
+                          calculated by dividing the number of deleted entries by the
+                          total number of entries in a segment or a group of segments.
+                          For example, if there is a segment with 1000 entries of
+                          which 300 are deleted and another segment with 1000 entries
+                          of which 700 are deleted, the deletion ratio is `0.5` (50%,
+                          calculated as `1000 / 2000`).
 
                           The `minDeletionRatio` threshold must be carefully selected. A smaller
-                          value leads to earlier cleanup of deleted documents from segments and
+                          value leads to earlier cleanup of deleted entries from segments and
                           thus reclamation of disk space but it generates a higher write load.
                           A very large value lowers the write amplification but at the same time
                           the system can be left with a large number of segment files with a high
-                          percentage of deleted documents that occupy disk space unnecessarily.
+                          percentage of deleted entries that occupy disk space unnecessarily.
 
                           During cleanup, the segment files are first arranged in decreasing
                           order of their individual deletion ratios. Then the largest subset of
@@ -2898,16 +2888,22 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary sort columns are always cached in memory.
                     type: boolean
                   primaryKeyCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary key columns are always cached in memory.
                     type: boolean
                   optimizeTopK:
                     description: |
+                      <small>Introduced in: v3.12.0</small>
+
                       An array of strings defining sort expressions that can be optimized.
-                      This is also known as _WAND optimization_ (introduced in v3.12.0).
+                      This is also known as _WAND optimization_.
                     type: array
                     items:
                       type: string
@@ -2939,6 +2935,8 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
+                            <small>Introduced in: v3.9.5, v3.10.2</small>
+
                             Whether stored values are always cached in memory.
                           type: boolean
                   cleanupIntervalStep:
@@ -2961,8 +2959,9 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `maxSkewThreshold`,
-                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold` and `minDeletionRatio`
+                        properties are available (from v3.12.7 onward), respectively the `segments*`
+                        and `minScore` properties (up to v3.12.6).
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -2971,9 +2970,10 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size skew and live
-                            document count as dictated by the customization attributes.
-                          - `"bytes_accum"`: consolidate if and only if
+                          - `"tier"`: Consolidate based on segment byte size skew and the number
+                            of entries that are not marked as deleted, as dictated by the
+                            customization attributes.
+                          - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
@@ -2987,7 +2987,7 @@ paths:
                         maximum: 1.0
                       segmentsBytesFloor:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           Defines the value (in bytes) to treat all smaller segments
                           as equal for consolidation selection.
@@ -2998,27 +2998,27 @@ paths:
                         type: integer
                       segmentsMax:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           The maximum number of segments that are evaluated as
                           candidates for consolidation.
                         type: integer
                       segmentsMin:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           The minimum number of segments that are
                           evaluated as candidates for consolidation
                         type: integer
                       minScore:
                         description: |
-                          This option is only available up to v3.12.6:
+                          <small>Removed in: v3.12.7</small>
 
                           Filter out consolidation candidates with a score less than this.
                         type: integer
                       maxSkewThreshold:
                         description: |
-                          This option is available from v3.12.7 onward:
+                          <small>Introduced in: v3.12.7</small>
 
                           The skew describes how much segment files vary in file size. It is a number
                           between `0.0` and `1.0` and is calculated by dividing the largest file size
@@ -3046,25 +3046,27 @@ paths:
                         maximum: 1.0
                       minDeletionRatio:
                         description: |
-                          This option is available from v3.12.7 onward:
+                          <small>Introduced in: v3.12.7</small>
 
                           The `minDeletionRatio` represents the minimum required deletion ratio
                           in one or more segments to perform a cleanup of those segments.
                           It is a number between `0.0` and `1.0`.
 
-                          The deletion ratio is the percentage of deleted documents across one or
-                          more segment files and is calculated by dividing the number of deleted
-                          documents by the total number of documents in a segment or a group of
-                          segments. For example, if there is a segment with 1000 documents of which
-                          300 are deleted and another segment with 1000 documents of which 700 are
-                          deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+                          The deletion ratio is the percentage of index entries marked
+                          as deleted across one or more segment files and is
+                          calculated by dividing the number of deleted entries by the
+                          total number of entries in a segment or a group of segments.
+                          For example, if there is a segment with 1000 entries of
+                          which 300 are deleted and another segment with 1000 entries
+                          of which 700 are deleted, the deletion ratio is `0.5` (50%,
+                          calculated as `1000 / 2000`).
 
                           The `minDeletionRatio` threshold must be carefully selected. A smaller
-                          value leads to earlier cleanup of deleted documents from segments and
+                          value leads to earlier cleanup of deleted entries from segments and
                           thus reclamation of disk space but it generates a higher write load.
                           A very large value lowers the write amplification but at the same time
                           the system can be left with a large number of segment files with a high
-                          percentage of deleted documents that occupy disk space unnecessarily.
+                          percentage of deleted entries that occupy disk space unnecessarily.
 
                           During cleanup, the segment files are first arranged in decreasing
                           order of their individual deletion ratios. Then the largest subset of

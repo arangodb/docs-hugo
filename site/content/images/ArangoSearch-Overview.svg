@@ -1,0 +1,112 @@
+<svg viewBox="0 0 1020 470"
+     xmlns="http://www.w3.org/2000/svg"
+     style="display:block;width:100%;max-width:1020px;margin:0 auto">
+  <style>
+    .aso .src   { fill: #ffffff; stroke: #86efac; stroke-width: 1.5; }
+    .aso .proc  { fill: #b9f5a0; stroke: #4ade80; stroke-width: 1.5; }
+    .aso .step  { fill: #ecfccb; stroke: #86efac; stroke-width: 1.5; }
+    .aso .cyl   { fill: #0b2e1e; stroke: #22c55e; stroke-width: 2; }
+    .aso .cylt  { fill: #134d2e; stroke: #22c55e; stroke-width: 2; }
+    .aso .icon  { fill: none; stroke: #14532d; stroke-width: 2; }
+    .aso .t14   { font-family: sans-serif; font-size: 14px; font-weight: bold; fill: #14532d; }
+    .aso .t14d  { font-family: sans-serif; font-size: 14px; font-weight: bold; fill: #0b2e1e; }
+    .aso .t13w  { font-family: sans-serif; font-size: 13px; font-weight: bold; fill: #ffffff; }
+    .aso .t10   { font-family: sans-serif; font-size: 10px; font-style: italic; fill: #14532d; }
+    .aso .t10d  { font-family: sans-serif; font-size: 10px; font-style: italic; fill: #0b2e1e; }
+    .aso .t10y  { font-family: sans-serif; font-size: 10px; font-style: italic; fill: #b9ff38; }
+    .aso .flow  { font-family: sans-serif; font-size: 11px; font-weight: bold; fill: #15803d; }
+    .aso .lane  { font-family: sans-serif; font-size: 12px; font-weight: bold; fill: #14532d; }
+    .aso .card:hover .src  { fill: #dcfce7; stroke: #22c55e; }
+    .aso .card:hover .proc { fill: #ffffff; stroke: #22c55e; }
+    .aso .card:hover .step { fill: #d9f99d; stroke: #22c55e; }
+    .aso .card:hover .cyl  { fill: #134d2e; stroke: #b9ff38; }
+    .aso .card:hover .cylt { fill: #1a5e38; stroke: #b9ff38; }
+  </style>
+
+  <g class="aso">
+    <rect width="1020" height="470" fill="#f3f4f6" rx="6"/>
+
+    <rect x="20" y="24" width="980" height="180" rx="14" fill="#ffffff" fill-opacity="0.55"
+          stroke="#86efac" stroke-width="1" stroke-dasharray="4 3"/>
+    <text x="44" y="48" class="lane">INDEXING</text>
+
+    <path d="M 214 122 L 246 122" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="256,122 245,117.5 245,126.5" fill="#4ade80"/>
+    <path d="M 458 122 L 490 122" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="500,122 489,117.5 489,126.5" fill="#4ade80"/>
+
+    <g class="card">
+      <rect x="44" y="80" width="170" height="84" rx="12" class="src"/>
+      <text x="129" y="116" text-anchor="middle" class="t14">Collections</text>
+      <text x="129" y="138" text-anchor="middle" class="t10">Your JSON documents</text>
+    </g>
+
+    <g class="card">
+      <rect x="256" y="80" width="202" height="84" rx="12" class="proc"/>
+      <text x="357" y="110" text-anchor="middle" class="t14d">Analyzers</text>
+      <text x="357" y="130" text-anchor="middle" class="t10d">Normalize values and</text>
+      <text x="357" y="144" text-anchor="middle" class="t10d">Tokenize text</text>
+    </g>
+
+    <g class="card">
+      <path d="M 500 88 L 500 160 A 120 15 0 0 0 740 160 L 740 88" class="cyl"/>
+      <ellipse cx="620" cy="88" rx="120" ry="15" class="cylt"/>
+      <text x="620" y="132" text-anchor="middle" class="t13w">ArangoSearch index</text>
+      <text x="620" y="152" text-anchor="middle" class="t10y">An arangosearch View or inverted indexes</text>
+    </g>
+
+    <text x="778" y="108" class="t10">Updated in the background,</text>
+    <text x="778" y="124" class="t10">so the index is</text>
+    <text x="778" y="140" class="t10">eventually consistent</text>
+
+    <rect x="20" y="228" width="980" height="222" rx="14" fill="#ffffff" fill-opacity="0.55"
+          stroke="#86efac" stroke-width="1" stroke-dasharray="4 3"/>
+    <text x="44" y="252" class="lane">QUERYING</text>
+
+    <path d="M 178 332 L 218 332" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="228,332 217,327.5 217,336.5" fill="#4ade80"/>
+    <text x="203" y="322" text-anchor="middle" class="flow">Query</text>
+    <path d="M 470 332 L 496 332" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="506,332 495,327.5 495,336.5" fill="#4ade80"/>
+    <path d="M 636 332 L 660 332" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="670,332 659,327.5 659,336.5" fill="#4ade80"/>
+    <path d="M 800 332 L 824 332" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="834,332 823,327.5 823,336.5" fill="#4ade80"/>
+
+    <g class="card">
+      <rect x="44" y="280" width="134" height="104" rx="12" class="src"/>
+      <circle cx="111" cy="312" r="12" class="icon"/>
+      <path d="M 88 348 A 23 18 0 0 1 134 348" class="icon"/>
+      <text x="111" y="372" text-anchor="middle" class="t10">User or application</text>
+    </g>
+
+    <g class="card">
+      <path d="M 230 300 L 230 364 A 120 14 0 0 0 470 364 L 470 300" class="cyl"/>
+      <ellipse cx="350" cy="300" rx="120" ry="14" class="cylt"/>
+      <text x="350" y="340" text-anchor="middle" class="t13w">ArangoSearch index</text>
+      <text x="350" y="358" text-anchor="middle" class="t10y">The same index, read by the query</text>
+    </g>
+
+    <g class="card">
+      <rect x="508" y="296" width="128" height="72" rx="12" class="step"/>
+      <text x="572" y="326" text-anchor="middle" class="t14">Filter</text>
+      <text x="572" y="346" text-anchor="middle" class="t10">SEARCH or FILTER</text>
+    </g>
+    <g class="card">
+      <rect x="672" y="296" width="128" height="72" rx="12" class="step"/>
+      <text x="736" y="326" text-anchor="middle" class="t14">Rank</text>
+      <text x="736" y="346" text-anchor="middle" class="t10">BM25, TF-IDF</text>
+    </g>
+    <g class="card">
+      <rect x="836" y="296" width="128" height="72" rx="12" class="step"/>
+      <text x="900" y="326" text-anchor="middle" class="t14">Sort</text>
+      <text x="900" y="346" text-anchor="middle" class="t10">Best matches first</text>
+    </g>
+
+    <text x="736" y="386" text-anchor="middle" class="t10">Only when querying a View</text>
+
+    <path d="M 900 368 L 900 416 L 111 416 L 111 395" stroke="#4ade80" stroke-width="2" fill="none" stroke-dasharray="5 3"/>
+    <polygon points="111,384 106.5,395 115.5,395" fill="#4ade80"/>
+    <text x="505" y="408" text-anchor="middle" class="flow">Matching documents, best first</text>
+  </g>
+</svg>

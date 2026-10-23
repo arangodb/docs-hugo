@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for JavaScript Transactions
+title: JavaScript Transaction HTTP API
 menuTitle: JavaScript Transactions
 weight: 10
 description: >-
@@ -30,6 +30,9 @@ refer to [Transactions](../../transactions/_index.md).
 ## Execute a JavaScript Transaction
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/transaction:
     post:
@@ -135,7 +138,7 @@ paths:
                     side, with late binding. It is thus critical that the code specified in
                     `action` properly sets up all the variables it needs.
                     If the code specified in `action` ends with a return statement, the
-                    value returned is also returned by the REST API in the `result`
+                    value returned is also returned by the HTTP API in the `result`
                     attribute if the transaction committed successfully.
                   type: string
                 waitForSync:

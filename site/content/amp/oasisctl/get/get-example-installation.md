@@ -1,7 +1,8 @@
 ---
-title: Get Example Installation with `oasisctl`
+title: Get Example Installation with _oasisctl_
 menuTitle: Get Example Installation
 weight: 9
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get a single example dataset installation

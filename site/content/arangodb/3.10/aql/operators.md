@@ -98,10 +98,11 @@ expressions as specified in the documentation for the AQL function
 
 Most comparison operators also exist as an *array variant*. In the array variant,
 a `==`, `!=`, `>`, `>=`, `<`, `<=`, `IN`, or `NOT IN` operator is prefixed with
-an `ALL`, `ANY`, or `NONE` keyword. This changes the operator's behavior to
-compare the individual array elements of the left-hand argument to the right-hand
-argument. Depending on the quantifying keyword, all, any, or none of these
-comparisons need to be satisfied to evaluate to `true` overall.
+an `ALL`, `ANY`, `NONE`, or `AT LEAST (<expression>)` keyword. This changes the
+operator's behavior to compare the individual array elements of the left-hand
+argument to the right-hand argument. Depending on the quantifying keyword, all,
+any, none, or at least the specified number of these comparisons need to be
+satisfied to evaluate to `true` overall.
 
 You can also combine one of the supported comparison operators with the special
 `AT LEAST (<expression>)` operator to require an arbitrary number of elements

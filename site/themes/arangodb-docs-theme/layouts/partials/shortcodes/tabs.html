@@ -2,12 +2,20 @@
 {{ $tabs := .tabs | default slice -}}
 {{ $groupid := .groupid | default "default" -}}
 {{ with $context -}}
+{{ $n := add (int ($context.Page.Store.Get "tabPanelCount")) 1 -}}
+{{ $context.Page.Store.Set "tabPanelCount" $n -}}
+{{ $id := printf "tabs-%d" $n -}}
 <div class="tab-panel">
   <div class="tab-content">
-    <div class="tab-nav">
+    <div class="tab-nav" role="tablist" aria-label="{{ replace $groupid "-" " " | humanize }}">
     {{ range $idx, $tab := $tabs -}}
       {{ if ne .name "" -}}
-        <button data-tab-group="{{ $groupid }}" data-tab-item="{{ .name }}" class="tab-nav-button
+        <button type="button" role="tab"
+          id="{{ $id }}-tab-{{ $idx }}"
+          aria-controls="{{ $id }}-panel-{{ $idx }}"
+          aria-selected="{{ if eq $idx 0 }}true{{ else }}false{{ end }}"
+          tabindex="{{ if eq $idx 0 }}0{{ else }}-1{{ end }}"
+          data-tab-group="{{ $groupid }}" data-tab-item="{{ .name }}" class="tab-nav-button
           {{- cond (eq $idx 0) " selected" ""}}">
           <span>{{ .name | markdownify }}</span>
         </button>
@@ -15,7 +23,9 @@
     {{ end -}}
     </div>
     {{ range $idx, $tab := $tabs -}}
-    <div data-tab-item="{{ .name }}" data-tab-group="{{ $groupid }}" class="tab-item
+    <div data-tab-item="{{ .name }}" data-tab-group="{{ $groupid }}"
+      {{ with .name }}role="tabpanel" tabindex="0" id="{{ $id }}-panel-{{ $idx }}" aria-labelledby="{{ $id }}-tab-{{ $idx }}"{{ end }}
+      class="tab-item
       {{ cond (eq $idx 0) " selected" "" }}">
       {{ .content | $context.Page.RenderString -}}
     </div>

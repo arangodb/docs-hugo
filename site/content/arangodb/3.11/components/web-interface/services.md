@@ -2,7 +2,8 @@
 title: Services
 menuTitle: Services
 weight: 35
-description: ''
+description: >-
+  The screen for Foxx apps in the ArangoDB web interface
 ---
 The services section displays all installed Foxx applications. You can create new services
 or go into a detailed view of a chosen service.
@@ -32,7 +33,7 @@ There are four view categories:
   - Displays name, short description, license, version, mode (production, development)
   - Offers a button to go to the services interface (if available)
 
-2. Api:
+2. API:
  - Display API as SwaggerUI
  - Display API as RAW JSON
 

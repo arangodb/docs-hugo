@@ -10,6 +10,12 @@ The following list shows in detail which features have been added or improved in
 ArangoDB 3.11. ArangoDB 3.11 also contains several bug fixes that are not listed
 here.
 
+{{< info >}}
+**Long-term support**: Changes that are marked as introduced in `3.11.14-x`
+(with `x` indicating a hotfix version) are only available to customers with a
+contract for 3.11 long-term support (LTS) for OEM / embedded use cases.
+{{< /info >}}
+
 ## ArangoSearch
 
 ### Late materialization improvements
@@ -631,8 +637,7 @@ Please be aware that dumps containing extended names cannot be restored
 into older versions that only support the traditional naming constraints. In a
 cluster setup, it is required to use the same naming constraints for all
 Coordinators and DB-Servers of the cluster. Otherwise, the startup is
-refused. In DC2DC setups, it is also required to use the same naming constraints
-for both datacenters to avoid incompatibilities.
+refused.
 
 Also see:
 - [Collection names](../../concepts/data-structure/collections.md#collection-names)
@@ -1158,12 +1163,8 @@ const historyStatus = pregel.history(execution);
 pregel.removeHistory();
 ```
 
-See [Distributed Iterative Graph Processing (Pregel)](../../data-science/pregel/_index.md#get-persisted-execution-statistics)
-for details.
-
 You can also use the newly added HTTP endpoints with the
 `/_api/control_pregel/history` route.
-See [Pregel HTTP API](../../develop/http-api/pregel.md) for details.
 
 You can still use the old interfaces (the `pregel.status()` method as well as
 the `GET /_api/control_pregel` and `GET /_api/control_pregel/{id}` endpoints).
@@ -1297,8 +1298,8 @@ The following system metrics have been added:
 
 | Label | Description |
 |:------|:------------|
-| `arangodb_file_descriptors_limit` | System limit for the number of open files for the arangod process. |
-| `arangodb_file_descriptors_current` | Number of file descriptors currently opened by the arangod process. |
+| `arangodb_file_descriptors_limit` | System limit for the number of open files for the _arangod_ process. |
+| `arangodb_file_descriptors_current` | Number of file descriptors currently opened by the _arangod_ process. |
 
 ### More instant Hot Backups
 
@@ -1420,6 +1421,19 @@ means you may find more results than before.
 
 Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
 
+### Adjustable Stream Transaction size
+
+<small>Introduced in: v3.11.14-4</small>
+
+The previously fixed limit of 128 MiB for [Stream Transactions](../../develop/transactions/stream-transactions.md)
+can now be configured with the new `--transaction.streaming-max-transaction-size`
+startup option. The default value remains 128 MiB.
+
+When beginning a Stream Transaction, you can now specify a `maxTransactionSize`
+for that particular transaction. The default value as well as the maximum value
+are defined by the `--transaction.streaming-max-transaction-size` startup option.
+See [HTTP interface for Stream Transactions](../../develop/http-api/transactions/stream-transactions.md#begin-a-stream-transaction).
+
 ## Client tools
 
 ### arangodump
@@ -1507,3 +1521,25 @@ Upgraded Rclone to version 1.62.2, compiled with Go version 1.24.13 and
 updated dependencies.
 
 Upgraded OpenSSL to version 3.5.5.
+
+---
+
+<small>Introduced in: v3.11.14-4</small>
+
+Upgraded ArangoDB Starter to version 0.18.24.
+
+Upgraded Rclone to version 1.73.5, compiled with Go version 1.25.10 and
+updated dependencies.
+
+Upgraded OpenSSL to version 3.5.6.
+
+---
+
+<small>Introduced in: v3.11.14-5</small>
+
+Upgraded ArangoDB Starter to version 0.18.28.
+
+Upgraded Rclone to version 1.75.0, compiled with Go version 1.25.12 and
+updated dependencies.
+
+Upgraded OpenSSL to version 3.5.7.

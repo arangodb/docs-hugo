@@ -1,10 +1,10 @@
 ---
-title: HTTP interface for user-defined AQL functions
+title: User-defined AQL functions HTTP API
 menuTitle: User-defined AQL functions
 weight: 15
 description: >-
-  The HTTP API for user-defined functions (UDFs) lets you add, delete, and list
-  registered AQL extensions
+  You can add, delete, and list user-defined functions (UDFs) with the
+  HTTP interface
 ---
 AQL user functions are a means to extend the functionality
 of ArangoDB's query language (AQL) with user-defined JavaScript code.
@@ -23,6 +23,9 @@ User-defined AQL functions are deprecated and the feature is removed in ArangoDB
 ## Create a user-defined AQL function
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/aqlfunction:
     post:
@@ -186,6 +189,9 @@ logJsonResponse(response);
 ## Remove a user-defined AQL function
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/aqlfunction/{name}:
     delete:
@@ -358,6 +364,9 @@ logJsonResponse(response);
 ## List the registered user-defined AQL functions
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/aqlfunction:
     get:

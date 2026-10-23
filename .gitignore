@@ -7,7 +7,9 @@ node_modules/
 /.vs
 *.log
 
+/site/.hugo_build.lock
 /site/data/*/api-docs.json
+/site/data/*/*openapi.json
 /site/public/
 /site/resources/
 /migration-tools/scripts/*/*.tar.gz
@@ -15,9 +17,14 @@ node_modules/
 /migration-tools/migration/*.txt
 /migration-tools/scripts/urls.json
 /toolchain/arangoproxy/cmd/arangoproxy
-/toolchain/docker/config.yaml
-/toolchain/arangoproxy/cmd/configs/local.yaml
+/toolchain/docker/.env
+/toolchain/docker/*/.env
+/toolchain/arangoproxy/cmd/configs/generated.yaml
 /summary.md
+/report.md
+/report-issues.tsv
 
 # Local Netlify folder
 .netlify
+
+.claude/

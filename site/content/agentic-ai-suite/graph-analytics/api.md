@@ -1,139 +1,69 @@
 ---
 title: HTTP API for Graph Analytics Engines
-menuTitle: HTTP API
+menuTitle: API Reference
 weight: 20
 description: >-
   Use the HTTP APIs to programmatically manage Graph Analytics Engines,
   load data, run algorithms, and store results
 ---
-
 ## Workflow
 
-The following lists outlines how you can use Graph Analytics Engines (GAEs).
+The following list outlines how you can use Graph Analytics Engines (GAEs).
 How to perform the steps is detailed in the subsequent sections.
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
 1. Determine the approximate size of the data that you will load into the GAE
    and ensure the machine to run the engine on has sufficient memory. The data as well as the
    temporarily needed space for computations and results needs to fit in memory.
-2. [Start a `graphanalytics` service](#start-a-graphanalytics-service) via the AI service
+2. [Start a `graphanalytics` service](#start-a-graphanalytics-service) via the ACP service
    that manages various Platform components for graph intelligence and machine learning.
    It only takes a few seconds until the engine service can be used. The engine
-   runs adjacent to the pods of the ArangoDB Core.
-3. [Load graph data](#load-data) from the ArangoDB Core into the engine. You can load
+   runs adjacent to the pods of the ArangoDB core.
+3. [Load graph data](#load-data) from the ArangoDB core into the engine. You can load
    named graphs or sets of node and edge collections. This loads the edge
    information and a configurable subset of the node attributes.
 4. [Run graph algorithms](#run-algorithms) on the data. You only need to load the data once per
    engine and can then run various algorithms with different settings.
-5. [Write the computation results back](#store-job-results) to the ArangoDB Core.
-6. [Stop the engine service](#stop-a-graphanalytics-service) once you are done.
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-{{< info >}}
-Before you can use Graph Analytics Engines, you need to request the feature
-via __Request help__ in the Arango Managed Platform (AMP) dashboard for a deployment.
-
-The deployment needs to use **AWS** as the cloud provider.
-
-Single server deployments using ArangoDB version 3.11 are not supported.
-{{< /info >}}
-
-1. Determine the approximate size of the data that you will load into the GAE
-   to select an engine size with sufficient memory. The data as well as the
-   temporarily needed space for computations and results needs to fit in memory.
-2. Deploy an engine of the desired size and of type `gral`. It only takes a few
-   seconds until the engine can be used. The engine runs adjacent to a particular
-   AMP deployment.
-3. Load graph data from ArangoDB into the engine. You can load named graphs or
-   sets of node and edge collections. This loads the edge information and a
-   configurable subset of the node attributes.
-4. Run graph algorithms on the data. You only need to load the data once per
-   engine and can then run various algorithms with different settings.
-5. Write the computation results back to ArangoDB.
-6. Delete the engine once you are done.
-{{< /tab >}}
-
-{{< /tabs >}}
+5. [Check the progress of the job](#get-a-job) that runs the algorithm. The job
+   is done when its `progress` is equal to its `total`, which needs to be the
+   case before you can store the computation results.
+6. [Write the computation results](#store-job-results) to a dedicated collection
+   in the ArangoDB core.
+7. [Stop the engine service](#stop-a-graphanalytics-service) once you are done.
 
 ## Authentication
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
 You can use any of the available authentication methods the Contextual Data Platform
-supports to start and stop `graphanalytics` services via the AI service as
+supports to start and stop `graphanalytics` services via the ACP service as
 well as to authenticate requests to the [Engine API](#engine-api).
 
 - HTTP Basic Authentication
 - Access tokens
 - JWT session tokens
 <!-- TODO
+- JWT superuser tokens?
 - Single Sign-On (SSO)
 -->
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-The [Management API](#management-api) for deploying and deleting engines requires
-an AMP **API key**. See
-[Generating an API Key](../../amp/api/get-started.md#generating-an-api-key)
-on how to create one.
-
-You then need to generate an **access token** using the API key. See
-[Authenticating with oasisctl](../../amp/api/get-started.md#authenticating-with-oasisctl)
-on how to do so using `oasisctl login`.
-
-The [Engine API](#engine-api) uses one of two authentication methods, depending
-on the [__auto login to database UI__](../../amp/deployments/_index.md#auto-login-to-database-ui)
-setting in AMP:
-- **Enabled**: You can use an AMP access token created with an API key
-  (see above), allowing you to use one token for both the Management API and
-  the Engine API.
-- **Disabled**: You need use a JWT user token created from ArangoDB credentials.
-  These session tokens need to be renewed every hour by default. See
-  [HTTP API Authentication](../../arangodb/3.12/develop/http-api/authentication.md#jwt-user-tokens)
-  for details.
-{{< /tab >}}
-
-{{< /tabs >}}
 
 {{< info >}}
-Note that all cURL examples use placeholder values that you should replace with your actual values:
-- **Contextual Data Platform**: `data-platform.example.org` (platform endpoint), `tqcge` (service ID).
-- **AMP**: `abcdef123456.arangodb.cloud` (deployment endpoint), `zYxWvU9876` (engine ID).
+Note that all cURL examples use placeholder values that you should replace
+with your actual values: `data-platform.example.org` (platform endpoint) and
+`tqcge` (service ID).
 {{< /info >}}
 
 ## Start and stop Graph Analytics Engines
 
-The interface for managing the engines depends on the environment you use:
-
-- **Contextual Data Platform**: [AI service](#ai-service)
-- **Arango Managed Platform (AMP)**: [Management API](#management-api)
-
-### AI service
-
-{{< tag "Contextual Data Platform" >}}
-
-{{< info >}}
-This section covers managing Graph Analytics Engines on the
-**Arango Contextual Data Platform**.
-
-If you're using **Arango Managed Platform (AMP)**, skip to the [Management API](#management-api) section instead.
-{{< /info >}}
-
-GAEs are deployed and deleted via the [Arango Control Plane (ACP) service](../../platform-suite/control-plane-acp.md)
+GAEs are deployed and deleted via the [Arango Control Plane (ACP) service](../../platform-suite/control-plane-acp/_index.md)
 in the Contextual Data Platform.
 
 If you use cURL, you need to use the `-k` / `--insecure` option for requests
-if the Platform deployment uses a self-signed certificate (default).
+if the data platform deployment uses a self-signed certificate (default).
 
-#### Start a `graphanalytics` service
+### Start a `graphanalytics` service
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphanalytics" >}}
 
-Start a GAE via the AI service with an empty request body. This returns a **SERVICE_ID** that you will need to construct the Engine API URL in the next section.
+Start a GAE via the ACP service with an empty request body. This returns a
+`serviceId` that you need to construct the Engine API URL in the next section.
 
 ```bash
 # Set your Contextual Data Platform endpoint
@@ -145,44 +75,47 @@ ADB_TOKEN=$(curl -sSk -X POST \
   "https://$EXTERNAL_ENDPOINT:8529/_open/auth" | jq -r .jwt)
 
 # Start the Graph Analytics service
-Service=$(curl -sSk -H "Authorization: bearer $ADB_TOKEN" \
+SERVICE=$(curl -sSk -H "Authorization: bearer $ADB_TOKEN" \
   -X POST "https://$EXTERNAL_ENDPOINT:8529/_platform/acp/v1/graphanalytics")
 
-# Extract the service ID (needed for Engine API URL construction)
-ServiceID=$(echo "$Service" | jq -r ".serviceInfo.serviceId")
+# Extract the trailing segment of the serviceId (needed for Engine API URL construction)
+SERVICE_ID=$(echo "$SERVICE" | jq ".serviceInfo.serviceId")
 
-if [[ "$ServiceID" == "null" ]]; then 
+if [[ "$SERVICE_ID" == "null" ]]; then 
   echo "Error starting Graph Analytics Engine"
 else
+  SERVICE_ID_POSTFIX=$(echo "$SERVICE_ID" | jq -r 'split("-") | last')
   echo "Graph Analytics service started successfully"
-  echo "Service ID: $ServiceID"
-  echo "Save this Service ID for constructing the Engine API URL"
+  echo "serviceIdPostfix: $SERVICE_ID_POSTFIX"
+  echo "Save the postfix for constructing the Engine API URL"
 fi
 
-echo "$Service" | jq
+echo "$SERVICE" | jq
 ```
 
 **Example response:**
 ```json
 {
   "serviceInfo": {
-    "serviceId": "tqcge",
+    "serviceId": "arangodb-gral-tqcge",
     "description": "Install complete",
     "status": "DEPLOYED",
-    "namespace": "arangodb"
+    "namespace": "arango",
+    "managingEntity": "ACP"
   }
 }
 ```
 
 {{< info >}}
-Save the `serviceId` from the response. You will use it to construct the Engine API URL for running graph analytics operations.
+Save the trailing segment of the `serviceId` from the response (here: `tqcge`).
+You need it to construct the Engine API URL for running graph analytics operations.
 {{< /info >}}
 
-#### List the services
+### List the services
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services" >}}
 
-You can list all running services managed by the AI service, including the
+You can list all running services managed by the ACP service, including the
 `graphanalytics` services:
 
 ```bash
@@ -190,167 +123,29 @@ curl -sSk -H "Authorization: bearer <ADB_TOKEN>" \
   -X POST "https://data-platform.example.org:8529/_platform/acp/v1/list_services" | jq
 ```
 
-#### Stop a `graphanalytics` service
+### Stop a `graphanalytics` service
 
-{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{SERVICE_ID}" >}}
+{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{serviceId}" >}}
 
-Delete the desired engine via the AI service using the service ID:
+Delete the desired engine via the ACP service using the `serviceId`:
 
 ```bash
 curl -sSk -H "Authorization: bearer <ADB_TOKEN>" \
-  -X DELETE "https://data-platform.example.org:8529/_platform/acp/v1/service/tqcge" | jq
-```
-
-### Management API
-
-{{< tag "AMP" >}}
-
-{{< info >}}
-This section covers managing Graph Analytics Engines on the **Arango Managed Platform (AMP)**.
-
-If you are using the **Contextual Data Platform**, use the [AI service](#ai-service) instead.
-{{< /info >}}
-
-GAEs are deployed and deleted with the Management API for graph analytics on the
-Arango Managed Platform (AMP). You can also list the available engine sizes and
-get information about deployed engines.
-
-**Management API URL structure:**
-
-{{< endpoint "" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/api/graphanalytics/v1/" >}}
-
-Where:
-- `<APPLICATION_ENDPOINT>` is your deployment endpoint from the AMP dashboard (e.g., `abcdef123456.arangodb.cloud`)
-- The port is always `:8829` for the Management API
-
-**Authentication:**
-
-All requests require an AMP access token in the Authorization header:
-
-```
-Authorization: bearer <ARANGO_GRAPH_TOKEN>
-```
-
-You can create an AMP access token with [`oasisctl login`](../../amp/oasisctl/login.md). Save it in a
-variable to ease scripting. Note that this should be the token string only and
-not include quote marks. The following examples assume Bash as the shell and
-that the `curl` and `jq` commands are available.
-
-```bash
-ARANGO_GRAPH_TOKEN="$(oasisctl login --key-id "<AG_KEY_ID>" --key-secret "<AG_KEY_SECRET>")"
-```
-
-Example with cURL that uses the token variable:
-
-```bash
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" \
-  "https://abcdef123456.arangodb.cloud:8829/graph-analytics/api/graphanalytics/v1/api-version"
-```
-
-Request and response payloads are JSON-encoded in the management API.
-
-#### Get the API version
-
-{{< endpoint "GET" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/api/graphanalytics/v1/api-version" >}}
-
-Example to retrieve the version information of the Management API:
-
-```bash
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" \
-  "https://abcdef123456.arangodb.cloud:8829/graph-analytics/api/graphanalytics/v1/api-version"
-```
-
-#### List engine sizes
-
-{{< endpoint "GET" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/api/graphanalytics/v1/enginesizes" >}}
-
-List the available engine sizes, which is a combination of the number of cores
-and the size of the RAM, starting at 1 CPU and 4 GiB of memory (`e4`).
-
-```bash
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" \
-  "https://abcdef123456.arangodb.cloud:8829/graph-analytics/api/graphanalytics/v1/enginesizes"
-```
-
-#### List engine types
-
-{{< endpoint "GET" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/api/graphanalytics/v1/enginetypes" >}}
-
-List the available engine types. The only type supported for GAE workloads is
-called `gral`.
-
-```bash
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" \
-  "https://abcdef123456.arangodb.cloud:8829/graph-analytics/api/graphanalytics/v1/enginetypes"
-```
-
-#### Deploy an engine
-
-{{< endpoint "POST" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/api/graphanalytics/v1/engines" >}}
-
-Set up a GAE adjacent to the AMP deployment, for example, using an
-engine size of `e4`.
-
-The engine ID is returned in the `id` attribute.
-
-```bash
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" \
-  -X POST \
-  -d '{"type_id":"gral","size_id":"e4"}' \
-  "https://abcdef123456.arangodb.cloud:8829/graph-analytics/api/graphanalytics/v1/engines"
-```
-
-#### List all engines
-
-{{< endpoint "GET" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/api/graphanalytics/v1/engines" >}}
-
-List all deployed GAEs of a AMP deployment.
-
-The engine IDs are in the `id` attributes.
-
-```bash
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" \
-  "https://abcdef123456.arangodb.cloud:8829/graph-analytics/api/graphanalytics/v1/engines"
-```
-
-#### Get an engine
-
-{{< endpoint "GET" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/api/graphanalytics/v1/engines/{ENGINE_ID}" >}}
-
-List the detailed information about a specific GAE.
-
-```bash
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" \
-  "https://abcdef123456.arangodb.cloud:8829/graph-analytics/api/graphanalytics/v1/engines/zYxWvU9876"
-```
-
-#### Delete an engine
-
-{{< endpoint "DELETE" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/api/graphanalytics/v1/engines/{ENGINE_ID}" >}}
-
-Delete a no longer needed GAE, freeing any data it holds in memory.
-
-```bash
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" \
-  -X DELETE \
-  "https://abcdef123456.arangodb.cloud:8829/graph-analytics/api/graphanalytics/v1/engines/zYxWvU9876"
+  -X DELETE "https://data-platform.example.org:8529/_platform/acp/v1/service/arangodb-gral-tqcge" | jq
 ```
 
 ## Engine API
 
-The Engine API lets you load data, run algorithms, and manage results. Both platforms use the same API endpoints but with different URL structures.
+The Engine API lets you load data, run algorithms, and manage results.
 
-The Engine API URL is constructed from multiple parts depending on your platform.
+The Engine API URL is constructed from multiple parts:
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
-
-{{< endpoint "" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/" >}}
+{{< endpoint "" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/" >}}
 
 Where:
 - `<EXTERNAL_ENDPOINT>`: Your Contextual Data Platform endpoint (e.g., `data-platform.example.org`)
-- `<SERVICE_ID>`: From the [AI service response](#start-a-graphanalytics-service) when you started the service
+- `:serviceIdPostfix`: From the [ACP service response](#start-a-graphanalytics-service)
+   when you started the service (the `serviceId` segment after the last hyphen)
 
 **Example:**
 
@@ -373,10 +168,10 @@ For convenience, you can store the Engine API base URL in a variable:
 EXTERNAL_ENDPOINT="data-platform.example.org"
 
 # Service ID from when you started the service
-SERVICE_ID="tqcge"
+SERVICE_ID_POSTFIX="tqcge"
 
 # Construct the Engine API base URL
-ENGINE_URL="https://$EXTERNAL_ENDPOINT:8529/gral/$SERVICE_ID"
+ENGINE_URL="https://$EXTERNAL_ENDPOINT:8529/gral/$SERVICE_ID_POSTFIX"
 ```
 
 This makes subsequent requests shorter and easier to manage. Alternatively, you can use the full URL directly in each request.
@@ -387,55 +182,10 @@ This makes subsequent requests shorter and easier to manage. Alternatively, you 
 curl -sSk -H "Authorization: bearer $ADB_TOKEN" "$ENGINE_URL/v1/jobs"
 ```
 
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-
-{{< endpoint "" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/engines/{ENGINE_ID}/v1/" >}}
-
-Where:
-- `<APPLICATION_ENDPOINT>`: The endpoint of your deployment holding the graph data you want to analyze 
-- `<ENGINE_ID>`: From the [Management API response](#deploy-an-engine) when you deployed the engine.
-  If you can't remember the engine ID, you can [list all engines](#list-all-engines).
-
-**Example:**
-
-```
-https://123456abcdef.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/pagerank
-```
-For convenience, you can store the Engine API base URL in a variable:
-
-```bash
-# Your AMP deployment endpoint (without port)
-APPLICATION_ENDPOINT="123456abcdef.arangodb.cloud"
-
-# Engine ID from when you deployed the engine
-ENGINE_ID="zYxWvU9876"
-
-# Construct the Engine API base URL
-ENGINE_URL="https://$APPLICATION_ENDPOINT:8829/graph-analytics/engines/$ENGINE_ID"
-```
-
-This makes subsequent requests shorter and easier to manage. Alternatively, you can use the full URL directly in each request.
-
-**Verify the connection:**
-
-```bash
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$ENGINE_URL/v1/jobs"
-```
-
-{{< /tab >}}
-
-{{< /tabs >}}
-
-{{< tip >}}
-Both platforms use the same Engine API operations and algorithms (`/v1/loaddata`, `/v1/pagerank`, etc.), but you reach them through different URL structures.
-{{< /tip >}}
-
 {{< info >}}
-For brevity, the above examples use `<ENGINE_URL>` as a placeholder. You can either:
+For brevity, the following examples use `<ENGINE_URL>` as a placeholder. You can either:
 - Set it as a variable (recommended for multiple requests) as shown above, or
-- Replace it with the full URL for your platform in each request.
+- Replace it with the full URL in each request.
 {{< /info >}}
 
 ### Authentication
@@ -445,10 +195,6 @@ Authenticate Engine API requests using a bearer token in the HTTP header:
 ```
 Authorization: bearer <TOKEN>
 ```
-
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
 
 You can save the token in a variable to ease scripting. Note that this should be
 the token string only and not include quote marks. The following examples assume
@@ -460,8 +206,8 @@ Bash as the shell and that the `curl` and `jq` commands are available.
 # Platform endpoint (from previous section)
 EXTERNAL_ENDPOINT="data-platform.example.org"
 
-# Service ID from when you started the service
-SERVICE_ID="tqcge"
+# Trailing segment of the serviceId from when you started the service (after last hyphen)
+SERVICE_ID_POSTFIX="tqcge"
 
 # Get authentication token
 ADB_TOKEN=$(curl -sSk -X POST \
@@ -469,47 +215,16 @@ ADB_TOKEN=$(curl -sSk -X POST \
   "https://$EXTERNAL_ENDPOINT:8529/_open/auth" | jq -r '.jwt')
 
 # Example: Use token to verify connection
-curl -sSk -H "Authorization: bearer $ADB_TOKEN" "https://$EXTERNAL_ENDPOINT:8529/gral/$SERVICE_ID/v1/jobs"
+curl -sSk -H "Authorization: bearer $ADB_TOKEN" "https://$EXTERNAL_ENDPOINT:8529/gral/$SERVICE_ID_POSTFIX/v1/jobs"
 ```
-
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-
-The authentication method depends on the [**Auto login to database UI**](../../amp/deployments/_index.md#auto-login-to-database-ui) setting:
-
-- If **Auto login to database UI** is enabled for the AMP deployment, this can
-  be the same access token as used for the management API.
-- If it is disabled, use an ArangoDB session token (JWT user token) instead.
-
-You can save the token in a variable to ease scripting. Note that this should
-be the token string only and not include quote marks. The following examples
-assume Bash as the shell and that the `curl` and `jq` commands are available.
-
-An example of authenticating a request using cURL and a session token:
-
-```bash
-APPLICATION_ENDPOINT="123456abcdef.arangodb.cloud"
-
-# Engine ID from when you deployed the engine
-ENGINE_ID="zYxWvU9876"
-
-ARANGO_GRAPH_TOKEN=$(curl -X POST -d "{\"username\":\"<ADB_USER>\",\"password\":\"<ADB_PASS>\"}" "https://$APPLICATION_ENDPOINT:8529/_open/auth" | jq -r '.jwt')
-
-# Example: Use token to verify connection
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "https://$APPLICATION_ENDPOINT:8829/graph-analytics/engines/$ENGINE_ID/v1/jobs"
-```
-
-{{< /tab >}}
-
-{{< /tabs >}}
 
 All requests to the engine API start jobs, each representing an operation.
 You can check the progress of operations and check if errors occurred.
 You can submit jobs concurrently and they also run concurrently.
 
 You can find the API reference documentation with detailed descriptions of the
-request and response data structures at <https://arangodb.github.io/graph-analytics>.
+request and response data structures at
+<https://apiref.arango.ai/#gral>.
 
 Request and response payloads are JSON-encoded in the engine API.
 
@@ -519,11 +234,7 @@ Import graph data from a database of the ArangoDB deployment. You can import
 named graphs as well as sets of node and edge collections (see
 [Managed and unmanaged graphs](../../arangodb/3.12/graphs/_index.md#managed-and-unmanaged-graphs)).
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
-
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/loaddata" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/loaddata" >}}
 
 **Example:**
 
@@ -531,32 +242,139 @@ named graphs as well as sets of node and edge collections (see
 curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d '{"database":"_system","graph_name":"connectedComponentsGraph"}' "https://data-platform.example.org:8529/gral/tqcge/v1/loaddata"
 ```
 
-{{< /tab >}}
+Parameters:
+- `database` (string, required): The database to load the graph from.
+- `graph_name` (string, optional): The name of a named graph to load. Required
+  if `vertex_collections` and `edge_collections` are not specified.
+- `vertex_collections` (array of strings, optional): Vertex collections to load.
+  Required together with `edge_collections` if `graph_name` is not specified.
+- `edge_collections` (array of strings, optional): Edge collections to load.
+  Required together with `vertex_collections` if `graph_name` is not specified.
+- `vertex_attributes` (array of strings, optional): The names of vertex
+  attributes to load. Only the specified attributes are loaded into memory.
+  If omitted or empty, only the graph topology is loaded without any vertex
+  attributes.
+- `parallelism` (integer, optional): The number of parallel threads to use for
+  loading data (default: `4`).
+- `batch_size` (integer, optional): The number of documents per batch
+  (default: `400000`).
 
-{{< tab "Arango Managed Platform (AMP)" >}}
+The response contains a `job_id` and `graph_id`. Use the `job_id` to track the
+loading progress via the [Jobs API](#get-a-job).
 
-{{< endpoint "POST" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/engines/{ENGINE_ID}/v1/loaddata" >}}
+**Example with vertex collections, edge collections, and vertex attributes:**
+
+```bash
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST \
+  -d '{
+    "database": "_system",
+    "vertex_collections": ["persons"],
+    "edge_collections": ["knows"],
+    "vertex_attributes": ["name", "age"],
+    "parallelism": 8,
+    "batch_size": 100000
+  }' \
+  "https://data-platform.example.org:8529/gral/tqcge/v1/loaddata"
+```
+
+### Load data using AQL queries
+
+Import graph data using custom AQL queries. This gives you full control over
+which data to load, including the ability to filter, transform, or traverse the
+graph during loading. Each AQL query must return documents containing `vertices`
+and/or `edges` arrays.
+
+Queries are organized into **phases**, where each phase is a set of queries
+that run in parallel. You can have multiple phases (query groups), and they are
+executed sequentially, where each phase completes before the next begins. This
+lets you order dependencies, for example, loading vertices in the first phase
+and edges in the second.
+
+Each query must return documents with the following format:
+
+```json
+{"vertices": [{"_id": "collection/key", ...}], "edges": [{"_from": "coll/a", "_to": "coll/b", ...}]}
+```
+
+Vertices require the `_id` field. Edges require the `_from` and `_to` fields.
+A single query can return both vertices and edges at the same time,
+for example, when using AQL traversals.
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/loaddataaql" >}}
 
 **Example:**
 
 ```bash
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -XPOST -d '{"database":"_system","graph_name":"connectedComponentsGraph"}' "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/loaddata"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST \
+  -d '{
+    "database": "_system",
+    "vertex_attributes": [
+      {"name": "name", "data_type": "String"},
+      {"name": "age", "data_type": "U64"}
+    ],
+    "edge_attributes": [
+      {"name": "weight", "data_type": "F64"}
+    ],
+    "phases": [
+      {"queries": [{"query": "FOR v IN @@V RETURN {vertices: [{_id: v._id, name: v.name, age: v.age}]}", "bind_vars": {"@V": "myVertices"}}]},
+      {"queries": [{"query": "FOR e IN @@E RETURN {edges: [{_from: e._from, _to: e._to, weight: e.weight}]}", "bind_vars": {"@E": "myEdges"}}]}
+    ]
+  }' \
+  "https://data-platform.example.org:8529/gral/tqcge/v1/loaddataaql"
 ```
 
-{{< /tab >}}
+Parameters:
+- `database` (string, required): The database to run the queries against.
+- `phases` (array, required): A list of query groups, executed sequentially.
+  Each group contains a `queries` array of AQL queries that run in parallel.
+  Each query object has:
+  - `query` (string): The AQL query string.
+  - `bind_vars` (object): Bind parameters as key-value pairs.
+- `vertex_attributes` (array, optional): A list of vertex attributes to load,
+  each with a `name` (string) and `data_type` (one of `Bool`, `String`, `U64`,
+  `I64`, `F64`, `JSON`).
+- `edge_attributes` (array, optional): A list of edge attributes to load, with
+  the same structure as `vertex_attributes`.
+- `batch_size` (integer, optional): The number of documents per batch
+  (default: `400000`).
 
-{{< /tabs >}}
+{{< info >}}
+If a value does not match the specified data type, the engine attempts automatic
+coercion (e.g., numeric string to integer, float to integer via rounding). If
+coercion fails, a type-specific default value is used (e.g., `0` for integers,
+`""` for strings) and processing continues.
+{{< /info >}}
 
+The response contains a `job_id` and `graph_id`. Use the `job_id` to track the
+loading progress via the [Jobs API](#get-a-job). The loading job reports a total
+of `2` progress steps: `1` after all vertices have been processed, and `2` when
+all edges are processed and the graph is ready.
+
+**Example using a graph traversal (single-phase load):**
+
+```bash
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST \
+  -d '{
+    "database": "_system",
+    "vertex_attributes": [
+      {"name": "name", "data_type": "String"},
+      {"name": "age", "data_type": "U64"}
+    ],
+    "edge_attributes": [
+      {"name": "weight", "data_type": "F64"}
+    ],
+    "phases": [
+      {"queries": [{"query": "FOR v, e IN 0..3 OUTBOUND \"V/0\" @@edgeCollection RETURN {vertices: [v], edges: e ? [e] : []}", "bind_vars": {"@edgeCollection": "myEdges"}}]}
+    ]
+  }' \
+  "https://data-platform.example.org:8529/gral/tqcge/v1/loaddataaql"
+```
 
 ### Run algorithms
 
 #### PageRank
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
-
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/pagerank" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/pagerank" >}}
 
 **Example:**
 
@@ -564,22 +382,6 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -XPOST -d '{"database":"_sys
 GRAPH_ID="234"
 curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"damping_factor\":0.85,\"maximum_supersteps\":500,\"seeding_attribute\":\"seed_attr\"}" "https://data-platform.example.org:8529/gral/tqcge/v1/pagerank"
 ```
-
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-
-{{< endpoint "POST" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/engines/{ENGINE_ID}/v1/pagerank" >}}
-
-**Example:**
-
-```bash
-GRAPH_ID="234"
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"damping_factor\":0.85,\"maximum_supersteps\":500,\"seeding_attribute\":\"seed_attr\"}" "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/pagerank"
-```
-{{< /tab >}}
-
-{{< /tabs >}}
 
 PageRank is a well known algorithm to rank nodes in a graph: the more
 important a node, the higher rank it gets. It goes back to L. Page and S. Brin's
@@ -641,11 +443,7 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 
 #### Weakly Connected Components (WCC)
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
-
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/wcc" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/wcc" >}}
 
 **Example:**
 
@@ -653,23 +451,6 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 GRAPH_ID="234"
 curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID}" "https://data-platform.example.org:8529/gral/tqcge/v1/wcc"
 ```
-
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-
-{{< endpoint "POST" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/engines/{ENGINE_ID}/v1/wcc" >}}
-
-**Example:**
-
-```bash
-GRAPH_ID="234"
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID}" "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/wcc"
-```
-
-{{< /tab >}}
-
-{{< /tabs >}}
 
 The weakly connected component algorithm partitions a graph into maximal groups
 of nodes, so that within a group, all nodes are reachable from each node
@@ -688,11 +469,7 @@ obtain different IDs.
 
 #### Strongly Connected Components (SCC)
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
-
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/scc" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/scc" >}}
 
 **Example:**
 
@@ -700,23 +477,6 @@ obtain different IDs.
 GRAPH_ID="234"
 curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID}" "https://data-platform.example.org:8529/gral/tqcge/v1/scc"
 ```
-
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-
-{{< endpoint "POST" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/engines/{ENGINE_ID}/v1/scc" >}}
-
-**Example:**
-
-```bash
-GRAPH_ID="234"
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID}" "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/scc"
-```
-
-{{< /tab >}}
-
-{{< /tabs >}}
 
 The strongly connected components algorithm partitions a graph into maximal
 groups of nodes, so that within a group, all nodes are reachable from each
@@ -752,11 +512,7 @@ available, which should be equally usable for most use cases.
 
 ##### Betweenness Centrality 
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
-
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/betweennesscentrality" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/betweennesscentrality" >}}
 
 **Example:**
 
@@ -764,23 +520,6 @@ available, which should be equally usable for most use cases.
 GRAPH_ID="234"
 curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"k\":0,\"undirected\":false,\"normalized\":true}" "https://data-platform.example.org:8529/gral/tqcge/v1/betweennesscentrality"
 ```
-
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-
-{{< endpoint "POST" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/engines/{ENGINE_ID}/v1/betweennesscentrality" >}}
-
-**Example:**
-
-```bash
-GRAPH_ID="234"
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"k\":0,\"undirected\":false,\"normalized\":true}" "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/betweennesscentrality"
-```
-
-{{< /tab >}}
-
-{{< /tabs >}}
 
 A relatively expensive algorithm with complexity `O(V*E)` where `V` is the
 number of nodes and `E` is the number of edges in the graph.
@@ -835,11 +574,7 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 
 ##### LineRank
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
-
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/linerank" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/linerank" >}}
 
 **Example:**
 
@@ -847,23 +582,6 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 GRAPH_ID="234"
 curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"damping_factor\":0.0000001,\"maximum_supersteps\":500}" "https://data-platform.example.org:8529/gral/tqcge/v1/linerank"
 ```
-
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-
-{{< endpoint "POST" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/engines/{ENGINE_ID}/v1/linerank" >}}
-
-**Example:**
-
-```bash
-GRAPH_ID="234"
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"damping_factor\":0.0000001,\"maximum_supersteps\":500}" "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/linerank"
-```
-
-{{< /tab >}}
-
-{{< /tabs >}}
 
 Another common measure is the [*betweenness* centrality](https://en.wikipedia.org/wiki/Betweenness_centrality):
 It measures the number of times a node is part of shortest paths between any
@@ -904,11 +622,7 @@ based on common location, interests, occupation, etc.
 
 ##### Label Propagation
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
-
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/labelpropagation" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/labelpropagation" >}}
 
 **Example:**
 
@@ -916,23 +630,6 @@ based on common location, interests, occupation, etc.
 GRAPH_ID="234"
 curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"start_label_attribute\":\"start_attr\",\"synchronous\":false,\"random_tiebreak\":false,\"maximum_supersteps\":500}" "https://data-platform.example.org:8529/gral/tqcge/v1/labelpropagation"
 ```
-
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-
-{{< endpoint "POST" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/engines/{ENGINE_ID}/v1/labelpropagation" >}}
-
-**Example:**
-
-```bash
-GRAPH_ID="234"
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"start_label_attribute\":\"start_attr\",\"synchronous\":false,\"random_tiebreak\":false,\"maximum_supersteps\":500}" "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/labelpropagation"
-```
-
-{{< /tab >}}
-
-{{< /tabs >}}
 
 [*Label Propagation*](https://arxiv.org/pdf/0709.2938) can be used to implement
 community detection on large graphs.
@@ -983,11 +680,7 @@ The result is a community ID for each node.
 
 ##### Attribute Propagation
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
-
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/attributepropagation" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/attributepropagation" >}}
 
 **Example:**
 
@@ -995,23 +688,6 @@ The result is a community ID for each node.
 GRAPH_ID="234"
 curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"start_label_attribute\":\"start_attr\",\"synchronous\":false,\"backwards\":false,\"maximum_supersteps\":500}" "https://data-platform.example.org:8529/gral/tqcge/v1/attributepropagation"
 ```
-
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-
-{{< endpoint "POST" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/engines/{ENGINE_ID}/v1/attributepropagation" >}}
-
-**Example:**
-
-```bash
-GRAPH_ID="234"
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"start_label_attribute\":\"start_attr\",\"synchronous\":false,\"backwards\":false,\"maximum_supersteps\":500}" "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/attributepropagation"
-```
-
-{{< /tab >}}
-
-{{< /tabs >}}
 
 The attribute propagation algorithm can be used to implement community detection.
 It works similar to the label propagation algorithm, but every node additionally
@@ -1081,11 +757,7 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 
 ### Store job results
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
-
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/storeresults" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/storeresults" >}}
 
 **Example:**
 
@@ -1094,25 +766,14 @@ JOB_ID="123"
 curl -H "Authorization: bearer $ADB_TOKEN" -X POST -d "{\"database\":\"_system\",\"target_collection\":\"coll\",\"job_ids\":[$JOB_ID],\"attribute_names\":[\"attr\"]}" "https://data-platform.example.org:8529/gral/tqcge/v1/storeresults"
 ```
 
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-
-{{< endpoint "POST" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/engines/{ENGINE_ID}/v1/storeresults" >}}
-
-**Example:**
-
-```bash
-JOB_ID="123"
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -X POST -d "{\"database\":\"_system\",\"target_collection\":\"coll\",\"job_ids\":[$JOB_ID],\"attribute_names\":[\"attr\"]}" "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/storeresults"
-```
-
-{{< /tab >}}
-
-{{< /tabs >}}
-
 You need to specify to which ArangoDB `database` and `target_collection` to save
 the results to. They need to exist already.
+
+Whereas an engine can load data from multiple collections, it writes the results
+to a single `target_collection` only and never updates the source documents.
+Use a dedicated collection for the results. It is considerably faster to create
+new documents that only hold the computed attributes than to update existing
+documents, and you can join the results with your source data at query time.
 
 You also need to specify a list of `job_ids` with one or more jobs that have run
 graph algorithms.
@@ -1134,11 +795,7 @@ Parameters:
 
 ### List all jobs
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
-
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/jobs" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/jobs" >}}
 
 **Example:**
 
@@ -1146,31 +803,11 @@ Parameters:
 curl -H "Authorization: bearer $ADB_TOKEN" "https://data-platform.example.org:8529/gral/tqcge/v1/jobs"
 ```
 
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-
-{{< endpoint "GET" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/engines/{ENGINE_ID}/v1/jobs" >}}
-
-**Example:**
-
-```bash
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/jobs"
-```
-
-{{< /tab >}}
-
-{{< /tabs >}}
-
 List all active and finished jobs.
 
 ### Get a job
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
-
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/jobs/{JOB_ID}" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/jobs/{JOB_ID}" >}}
 
 **Example:**
 
@@ -1179,32 +816,11 @@ JOB_ID="123"
 curl -H "Authorization: bearer $ADB_TOKEN" "https://data-platform.example.org:8529/gral/tqcge/v1/jobs/$JOB_ID"
 ```
 
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-
-{{< endpoint "GET" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/engines/{ENGINE_ID}/v1/jobs/{JOB_ID}" >}}
-
-**Example:**
-
-```bash
-JOB_ID="123"
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/jobs/$JOB_ID"
-```
-
-{{< /tab >}}
-
-{{< /tabs >}}
-
 Get detailed information about a specific job.
 
 ### Delete a job
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
-
-{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/jobs/{JOB_ID}" >}}
+{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/jobs/{JOB_ID}" >}}
 
 **Example:**
 
@@ -1213,32 +829,11 @@ JOB_ID="123"
 curl -H "Authorization: bearer $ADB_TOKEN" -X DELETE "https://data-platform.example.org:8529/gral/tqcge/v1/jobs/$JOB_ID"
 ```
 
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-
-{{< endpoint "DELETE" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/engines/{ENGINE_ID}/v1/jobs/{JOB_ID}" >}}
-
-**Example:**
-
-```bash
-JOB_ID="123"
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -X DELETE "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/jobs/$JOB_ID"
-```
-
-{{< /tab >}}
-
-{{< /tabs >}}
-
 Delete a specific job.
 
 ### List all graphs
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
-
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/graphs" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/graphs" >}}
 
 **Example:**
 
@@ -1246,31 +841,11 @@ Delete a specific job.
 curl -H "Authorization: bearer $ADB_TOKEN" "https://data-platform.example.org:8529/gral/tqcge/v1/graphs"
 ```
 
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-
-{{< endpoint "GET" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/engines/{ENGINE_ID}/v1/graphs" >}}
-
-**Example:**
-
-```bash
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/graphs"
-```
-
-{{< /tab >}}
-
-{{< /tabs >}}
-
 List all loaded sets of graph data that reside in the memory of the engine node.
 
 ### Get a graph
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
-
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/graphs/{GRAPH_ID}" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/graphs/{GRAPH_ID}" >}}
 
 **Example:**
 
@@ -1279,32 +854,11 @@ GRAPH_ID="234"
 curl -H "Authorization: bearer $ADB_TOKEN" "https://data-platform.example.org:8529/gral/tqcge/v1/graphs/$GRAPH_ID"
 ```
 
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-
-{{< endpoint "GET" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/engines/{ENGINE_ID}/v1/graphs/{GRAPH_ID}" >}}
-
-**Example:**
-
-```bash
-GRAPH_ID="234"
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/graphs/$GRAPH_ID"
-```
-
-{{< /tab >}}
-
-{{< /tabs >}}
-
 Get detailed information about a specific set of graph data.
 
 ### Delete a graph
 
-{{< tabs "platforms" >}}
-
-{{< tab "Contextual Data Platform" >}}
-
-{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/graphs/{GRAPH_ID}" >}}
+{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/graphs/{GRAPH_ID}" >}}
 
 **Example:**
 
@@ -1312,23 +866,6 @@ Get detailed information about a specific set of graph data.
 GRAPH_ID="234"
 curl -H "Authorization: bearer $ADB_TOKEN" -X DELETE "https://data-platform.example.org:8529/gral/tqcge/v1/graphs/$GRAPH_ID"
 ```
-
-{{< /tab >}}
-
-{{< tab "Arango Managed Platform (AMP)" >}}
-
-{{< endpoint "DELETE" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/engines/{ENGINE_ID}/v1/graphs/{GRAPH_ID}" >}}
-
-**Example:**
-
-```bash
-GRAPH_ID="234"
-curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -X DELETE "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/graphs/$GRAPH_ID"
-```
-
-{{< /tab >}}
-
-{{< /tabs >}}
 
 Delete a specific set of graph data, removing it from the memory of the engine node.
 

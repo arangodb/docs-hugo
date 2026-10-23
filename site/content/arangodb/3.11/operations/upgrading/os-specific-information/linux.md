@@ -11,12 +11,11 @@ By installing the new ArangoDB package the standalone instance is automatically
 upgraded. In addition to the ArangoDB daemon (_arangod_), also the ArangoDB
 _Starter_ binary is updated. As a result, the procedure described below
 is a first step to upgrade more complex deployments such as a
-[Cluster](../../../deploy/cluster/_index.md) or an
-[Active Failover](../../../deploy/active-failover/_index.md) setup.
+[Cluster](../../../deploy/cluster/_index.md) setup.
 
 {{< warning >}}
 It is highly recommended to take a backup of your data before upgrading ArangoDB
-using [_arangodump_](../../../components/tools/arangodump/_index.md).
+using [arangodump](../../../components/tools/arangodump/_index.md).
 {{< /warning >}}
 
 ## Upgrading via APT (Ubuntu)

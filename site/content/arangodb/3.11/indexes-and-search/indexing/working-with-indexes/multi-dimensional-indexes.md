@@ -114,9 +114,9 @@ Thus our query would be:
 
 ```aql
 FOR app IN appointments
-    FILTER f <= app.from
-    FILTER app.to <= t
-    RETURN app
+  FILTER f <= app.from
+  FILTER app.to <= t
+  RETURN app
 ```
 
 ### Finding all appointments that intersect a time range

@@ -1,7 +1,8 @@
 ---
-title: Get Provider with `oasisctl`
+title: Get Provider with _oasisctl_
 menuTitle: Get Provider
-weight: 27
+weight: 26
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get a provider the authenticated user has access to

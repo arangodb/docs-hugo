@@ -6,7 +6,13 @@ description: >-
   A summary of the changes to the HTTP API and other interfaces that are relevant
   for developers, like maintainers of drivers and integrations for ArangoDB
 ---
-## HTTP RESTful API
+{{< info >}}
+**Long-term support**: Changes that are marked as introduced in `3.11.14-x`
+(with `x` indicating a hotfix version) are only available to customers with a
+contract for 3.11 long-term support (LTS) for OEM / embedded use cases.
+{{< /info >}}
+
+## HTTP API
 
 ### Behavior changes
 
@@ -45,8 +51,7 @@ Please be aware that dumps containing extended names cannot be restored
 into older versions that only support the traditional naming constraints. In a
 cluster setup, it is required to use the same naming constraints for all
 Coordinators and DB-Servers of the cluster. Otherwise, the startup is
-refused. In DC2DC setups, it is also required to use the same naming
-constraints for both datacenters to avoid incompatibilities.
+refused.
 
 Also see:
 - [Collection names](../../concepts/data-structure/collections.md#collection-names)
@@ -56,7 +61,7 @@ Also see:
 #### Stricter validation of Unicode surrogate values in JSON data
 
 ArangoDB 3.11 employs a stricter validation of Unicode surrogate pairs in
-incoming JSON data, for all REST APIs.
+incoming JSON data, for all HTTP APIs.
 
 In previous versions, the following loopholes existed when validating UTF-8 
 surrogate pairs in incoming JSON data:
@@ -326,11 +331,20 @@ for this reason if your deployment is at or above the configured maximum. Exampl
 }
 ```
 
+#### VelocyStream protocol unsupported
+
+ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is not
+supported in 3.11 OEM LTS.
+
+VelocyPack remains as ArangoDB's binary storage format and you can continue to
+use it in transport over the HTTP protocol, as well as use JSON over the
+HTTP protocol.
+
 ### Endpoint return value changes
 
 <small>Introduced in: v3.8.8, v3.9.4, v3.10.1</small>
 
-Changed the encoding of revision IDs returned by the below listed REST APIs:
+Changed the encoding of revision IDs returned by the below listed HTTP APIs:
 
 - `GET /_api/collection/<collection-name>/revision`: The revision ID was
   previously returned as numeric value, and now it is returned as
@@ -414,7 +428,7 @@ startup option to `enabled-per-shard` to make DB-Servers collect per-shard
 usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
 usage metrics per shard and per user whenever a shard is accessed.
 
-For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-usage-metrics)
+For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-the-usage-metrics)
 and [Monitoring per collection/database/user](../version-3.11/whats-new-in-3-11.md#monitoring-per-collectiondatabaseuser).
 
 ### Endpoints augmented
@@ -790,11 +804,33 @@ following two new statistics in the `stats` attribute of the response now:
 The `GET /_api/query/rules` endpoint now includes a `description` attribute for
 every optimizer rule that briefly explains what it does.
 
+#### Adjustable Stream Transaction size
+
+<small>Introduced in: v3.11.14-4</small>
+
+The previously fixed limit of 128 MiB for [Stream Transactions](../../develop/transactions/stream-transactions.md)
+can now be configured with the new `--transaction.streaming-max-transaction-size`
+startup option. The default value remains 128 MiB.
+
+When beginning a Stream Transaction, you can now specify a `maxTransactionSize`
+for that particular transaction. The default value as well as the maximum value
+are defined by the `--transaction.streaming-max-transaction-size` startup option.
+See [HTTP interface for Stream Transactions](../../develop/http-api/transactions/stream-transactions.md#begin-a-stream-transaction).
+
 ### Endpoints deprecated
+
+#### Target version endpoint
 
 The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
 more general version API with the endpoint `GET /_api/version`.
 The endpoint is removed in ArangoDB v4.0.
+
+#### Pregel API
+
+<small>Deprecated in: v3.11.14-1</small>
+
+The `/_api/control_pregel/*` endpoints are unsupported in the 3.11 OEM LTS version
+(v3.11.14-1 and later) and removed in v3.12.0 as Pregel graph processing is no longer supported.
 
 ## JavaScript API
 

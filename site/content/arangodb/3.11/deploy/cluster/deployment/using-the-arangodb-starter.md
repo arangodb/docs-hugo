@@ -2,7 +2,8 @@
 title: Create an ArangoDB cluster Using the ArangoDB Starter
 menuTitle: Using the ArangoDB Starter
 weight: 10
-description: ''
+description: >-
+  How to start an ArangoDB cluster in a convenient and managed fashion
 ---
 This section describes how to start a Cluster using the [_Starter_](../../../components/tools/arangodb-starter/_index.md)
 tool (the `arangodb` executable).
@@ -101,7 +102,7 @@ If two or more of the `arangodb` instances run on the same machine,
 you have to use the `--starter.data-dir` option to let each use a different
 directory.
 
-The Starter tries to find the ArangoDB executable (`arangod`) and the
+The Starter tries to find the ArangoDB executable (_arangod_) and the
 other installation files automatically. If this fails, use the
 `--server.arangod` and `--server.js-dir` options to manually point it to them.
 
@@ -131,7 +132,7 @@ The leader Starter is chosen as follows:
   If a Starter is the first in this sorted list, it becomes the leader.
 - In all other cases, the Starter becomes a follower.
 
-Note: Once the bootstrap phase is over (all `arangod` processes have started and
+Note: Once the bootstrap phase is over (all _arangod_ processes have started and
 are running), the bootstrap phase ends and the Starters use the ArangoDB Agency
 to elect a leader for the runtime phase.
 
@@ -193,7 +194,7 @@ You can get a free evaluation license key by visiting:
 
 [arangodb.ai/downloads/](https://arango.ai/downloads/)
 
-**TLS verified Docker services**
+**TLS-verified Docker services**
 
 Oftentimes, one needs to harden Docker services using client certificate 
 and TLS verification. The Docker API allows subsequently only certified access.

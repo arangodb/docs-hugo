@@ -1,7 +1,8 @@
 ---
-title: Update Policy Delete with `oasisctl`
+title: Update Policy Delete with _oasisctl_
 menuTitle: Update Policy Delete
-weight: 20
+weight: 19
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete from a policy

@@ -179,7 +179,7 @@ Audit logging has been added, see [Auditing](../../operations/security/audit-log
 
 ## Client tools
 
-Added option `--skip-lines` for arangoimp.
+Added option `--skip-lines` for _arangoimp_.
 This allows skipping the first few lines from the import file in case the CSV or TSV
 import are used and some initial lines should be skipped from the input.
 

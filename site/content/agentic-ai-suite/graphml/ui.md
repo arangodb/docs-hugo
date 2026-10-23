@@ -1,5 +1,5 @@
 ---
-title: How to use GraphML in the Arango Contextual Data Platform web interface
+title: How to use GraphML in the web interface
 menuTitle: Web Interface
 weight: 10
 description: >-
@@ -25,7 +25,8 @@ board with four columns, one for each phase:
 To create a new GraphML project using the Arango Contextual Data Platform web interface, follow these steps:
 
 1. From the left-hand sidebar, select the database where you want to create the project.
-2. In the left-hand sidebar, click **AI Suite** and then click **Run GraphML**.
+2. In the left-hand sidebar, click **Agentic AI Suite**, then click **GraphML**.
+   You can also open the **Agentic AI Suite** overview and click **Run GraphML**.
 3. In the **GraphML projects** view, click **Add new project**.
 4. The **Create ML project** modal opens. Enter a **Name** for your machine learning project.
 5. Click the **Create project** button to finalize the creation.
@@ -59,6 +60,21 @@ In the featurization modal, configure your job as follows:
 2. **Select Vertex Collection(s)**: Pick the node collection(s) that you want to include for feature extraction.
 3. **Select Attributes**: Choose the attributes from your node collection to
   convert into machine-understandable features. Attributes cannot be used if their values are lists or arrays.
+4. **Mark the attribute to predict** (optional): To train a Node
+   Classification model later, click **Predict this** on the attribute that
+   holds the class you want to predict, such as `genre`. This sets the
+   attribute's feature type to `label`.
+
+{{< info >}}
+Your choice in step 4 decides which training jobs you can run:
+
+- **With a label** (an attribute marked with **Predict this**): You can train
+  both **Node Classification** and **Node Embeddings** models.
+- **Without a label**: You can only train **Node Embeddings** models.
+
+To run Node Classification on a project you featurized without a label, start
+a new featurization job and mark an attribute with **Predict this**.
+{{< /info >}}
 
 {{< info >}}
 A metagraph is basically just the configured subset of a graph (the node and
@@ -131,10 +147,17 @@ In the training configuration form, select the type of model you want to train
 from the **Select a type of training job** dropdown menu: **Node Classification**
 or **Node Embeddings**.
 
+**Node Classification** is only available if you marked an attribute with
+**Predict this** during featurization. Otherwise, only **Node Embeddings** is
+available.
+
 ### Node classification
 
 Node Classification is used to categorize the nodes in your graph based on their
 features and structural connections within the graph.
+
+**Prerequisite:** An attribute marked with **Predict this** (feature type
+`label`) during featurization.
 
 **Use cases include:**
 - Entity categorization (e.g. movies into genres, users into segments)

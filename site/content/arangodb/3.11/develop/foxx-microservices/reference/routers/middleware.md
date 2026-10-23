@@ -2,7 +2,9 @@
 title: Foxx Middleware
 menuTitle: Middleware
 weight: 10
-description: ''
+description: >-
+  Middleware functions can manipulate the request and response objects before
+  and after a route is invoked
 ---
 Middleware in Foxx refers to functions that can be mounted like routes and can
 manipulate the request and response objects before and after the route itself

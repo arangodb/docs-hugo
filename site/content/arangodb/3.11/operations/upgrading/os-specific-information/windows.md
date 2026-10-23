@@ -20,7 +20,7 @@ specific situation.
 
 {{< warning >}}
 It is highly recommended to take a backup of your data before upgrading ArangoDB
-using [_arangodump_](../../../components/tools/arangodump/_index.md).
+using [arangodump](../../../components/tools/arangodump/_index.md).
 {{< /warning >}}
 
 ## Upgrading via the Installer

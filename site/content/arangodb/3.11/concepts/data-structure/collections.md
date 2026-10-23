@@ -95,8 +95,7 @@ Please be aware that dumps containing extended names cannot be restored
 into older versions that only support the traditional naming constraints. In a
 cluster setup, it is required to use the same naming constraints for all
 Coordinators and DB-Servers of the cluster. Otherwise, the startup is
-refused. In DC2DC setups, it is also required to use the same naming constraints
-for both datacenters to avoid incompatibilities.
+refused.
 {{< /warning >}}
 
 You can rename collections (except in cluster deployments). This changes the
@@ -394,6 +393,7 @@ in the _python-arango_ documentation for details.
 name: arangosh_list_collections
 description: ''
 ---
+~db._useDatabase("_system");
 ~db._createDatabase("mydb");
 ~db._useDatabase("mydb");
 ~db._create("products");

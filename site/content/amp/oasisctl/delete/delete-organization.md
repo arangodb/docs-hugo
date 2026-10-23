@@ -1,7 +1,8 @@
 ---
-title: Delete Organization with `oasisctl`
+title: Delete Organization with _oasisctl_
 menuTitle: Delete Organization
-weight: 18
+weight: 17
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete an organization the authenticated user has access to

@@ -1,7 +1,8 @@
 ---
-title: Update with `oasisctl`
+title: Update with _oasisctl_
 menuTitle: Update
 weight: 28
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Update resources
@@ -31,7 +32,6 @@ oasisctl update [flags]
 * [oasisctl update group](update-group.md)	 - Update a group the authenticated user has access to
 * [oasisctl update ipallowlist](update-ipallowlist.md)	 - Update an IP allowlist the authenticated user has access to
 * [oasisctl update metrics](update-metrics.md)	 - Update metrics resources
-* [oasisctl update notebook](update-notebook.md)	 - Update notebook
 * [oasisctl update organization](update-organization.md)	 - Update an organization the authenticated user has access to
 * [oasisctl update policy](update-policy.md)	 - Update a policy
 * [oasisctl update private](update-private.md)	 - Update private resources

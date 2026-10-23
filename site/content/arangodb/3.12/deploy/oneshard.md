@@ -94,6 +94,8 @@ with the extra option `{ sharding: "single" }`. As done in the following
 example:
 
 ```js
+arangosh> db._useDatabase("_system");
+
 arangosh> db._createDatabase("oneShardDB", { sharding: "single" } )
 
 arangosh> db._useDatabase("oneShardDB")
@@ -155,13 +157,13 @@ option itself can be used as well in a flexibly sharded database.
 
 ### Running Queries
 
-For this arangosh example, first insert a few documents into a collection,
+For this _arangosh_ example, first insert a few documents into a collection,
 then create a query and explain it to inspect the execution plan.
 
 ```js
 arangosh@oneShardDB> for (let i = 0; i < 10000; i++) { db.example.insert({ "value" : i }); }
 
-arangosh@oneShardDB> q = "FOR doc IN @@collection FILTER doc.value % 2 == 0 SORT doc.value ASC LIMIT 10 RETURN doc";
+arangosh@oneShardDB> var q = "FOR doc IN @@collection FILTER doc.value % 2 == 0 SORT doc.value ASC LIMIT 10 RETURN doc";
 
 arangosh@oneShardDB> db._explain(q, { "@collection" : "example" })
 
@@ -200,6 +202,8 @@ transferred to the Coordinator. In case you do the same with a collection
 that consists of several shards, you get a different result:
 
 ```js
+arangosh> db._useDatabase("_system");
+
 arangosh> db._createDatabase("shardedDB")
 
 arangosh> db._useDatabase("shardedDB")

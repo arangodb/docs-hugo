@@ -6,7 +6,7 @@ description: >-
   A summary of the changes to the HTTP API and other interfaces that are relevant
   for developers, like maintainers of drivers and integrations for ArangoDB
 ---
-## HTTP RESTful API
+## HTTP API
 
 ### Behavior changes
 
@@ -102,6 +102,10 @@ A `replace-entries-with-object-iteration` rule has been added in v3.12.3.
 A `use-index-for-collect` and a `use-vector-index` rule have been added in v3.12.4.
 
 A `push-filter-into-enumerate-near` rule has been added in v3.12.7.
+
+A `materialize-for-enumerate-near` rule has been added in v3.12.10.
+
+A `replace-any-eq-with-in` rule has been added in v3.12.10.
 
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
@@ -228,6 +232,154 @@ unused since v3.12.0 and has now been removed. The `/_admin/log/level` endpoints
 no longer include this log topic in responses and attempts to set the log level
 for this topic are ignored.
 
+#### Permission checks for Stream Transactions in cluster
+
+<small>Introduced in: v3.12.10-1</small>
+
+Operations that you execute as part of a
+[Stream Transaction](../../develop/http-api/transactions/stream-transactions.md)
+by setting the `x-arango-trx-id` header now explicitly check whether you have
+the required
+[collection access level](../../operations/administration/user-management/_index.md#actions-and-access-levels).
+This closes a gap in cluster deployments for collections that are not declared
+in the `collections` attribute when beginning the transaction. It affects the
+following operations:
+
+- All operations of the [Document API](../../develop/http-api/documents.md)
+- Getting the document count and truncating a collection via the
+  [Collection API](../../develop/http-api/collections.md)
+
+If you don't have the required access level for the collection, these requests
+now fail with an HTTP `403 Forbidden` error and the `ERROR_FORBIDDEN` (`11`)
+error number. Previously, Coordinators didn't check the access level for
+undeclared collections:
+
+- Write operations failed with an HTTP `400 Bad Request` error and the
+  `ERROR_TRANSACTION_UNREGISTERED_COLLECTION` (`1652`) error number.
+- Reading a single document by key as well as getting the document count
+  succeeded.
+
+Single servers are unaffected. They check the access level when they add an
+undeclared collection to a running transaction and therefore already reject
+such requests with an HTTP `403 Forbidden` error. Operations outside of
+Stream Transactions as well as AQL queries are unaffected, too.
+
+#### Access token lifetime
+
+<small>Introduced in: v3.12.10-1</small>
+
+When requesting a personal access token via the
+[`POST /_api/token/{user}` endpoint](../../develop/http-api/authentication.md#access-tokens),
+the server may not honor the requested `valid_until` timestamp and issue the
+access token with a shorter validity. The maximum lifetime (in seconds) is
+controlled by the new `--auth.maximal-access-token-expiry-time` _arangod_
+startup option. The default is `604800` (1 week).
+
+#### Refactored authorization system
+
+<small>Introduced in: v3.12.11</small>
+
+The authorization system has been refactored to support
+[Role-Based Access Control (RBAC)](whats-new-in-3-12.md#external-service-for-rbac).
+The following behavior changes are side effects of this refactoring. They
+specifically apply to the classic authorization system, so when not using RBAC.
+
+Note that enabling RBAC changes the behavior more significantly because
+different permissions are needed, and the API under RBAC is designed to not
+disclose whether a resource exists if a user has no permission to access it.
+
+##### Error number for write operations in read-only mode
+
+Nearly every endpoint that writes something refuses to perform the operation if
+the server is in read-only mode. For those that require write access to a
+collection, the HTTP status code remains `403 Forbidden`, but the reported error
+number has intentionally been changed from `ERROR_FORBIDDEN` (`11`) to
+`ERROR_ARANGO_READ_ONLY` (`1004`).
+
+This only affects requests where the user account you authenticate with actually
+**has** read/write access to the collection but the read-only mode prevents the
+write. If the access level is insufficient, the error number remains `11`.
+The superuser is not restricted by the read-only mode.
+
+##### Access token management in read-only mode
+
+The following endpoints for managing
+[access tokens](../../develop/http-api/authentication.md#access-tokens) now
+respect the read-only mode of the server:
+
+- `POST /_api/token/{user}`
+- `DELETE /_api/token/{user}/{token-id}`
+
+Up to v3.12.10, they allowed creating and deleting access tokens even if the
+server was in read-only mode, provided that the user account you authenticate
+with has read/write access to the `_system` database. Now, such requests fail
+with an HTTP `403 Forbidden` error and the `ERROR_ARANGO_READ_ONLY` (`1004`)
+error number. The superuser can still create and delete access tokens in
+read-only mode.
+
+##### Permission checks for the AQL query results cache API
+
+The following endpoints of the
+[AQL query results cache API](../../develop/http-api/queries/aql-query-results-cache.md)
+now require at least read access to the `_system` database, in addition to the
+read access to the specified database that was already required before:
+
+- `PUT /_api/query-cache/properties`
+- `DELETE /_api/query-cache`
+
+Up to v3.12.10, they didn't check the access level for the `_system` database.
+If you don't have the required access level, these requests now fail with an
+HTTP `403 Forbidden` error.
+
+##### Error response for inaccessible databases in the Activities API
+
+If the user account you authenticate with has no access to the database you
+target with the experimental
+[`GET /_arango/experimental/_admin/activities` endpoint](../../develop/http-api/monitoring/activities.md),
+the request now fails with an HTTP `404 Not Found` error and the
+`ERROR_ARANGO_DATABASE_NOT_FOUND` (`1228`) error number. Up to v3.12.10, the
+request failed with an HTTP `401 Unauthorized` error and the `ERROR_FORBIDDEN`
+(`11`) error number.
+
+#### Validation of vector index factory strings
+
+<small>Introduced in: v3.12.12</small>
+
+The optional `factory` string of
+[vector indexes](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#vector-index-properties)
+is now validated when you create the index. Requests to
+[create a vector index](../../develop/http-api/indexes/vector.md) fail with an
+HTTP `400 Bad Request` error and the `ERROR_BAD_PARAMETER` (`10`) error number
+in the following cases:
+
+- The factory string cannot be parsed by the Faiss library.
+- It doesn't describe an inverted file (IVF) index.
+- It isn't compatible with the `dimension`.
+- It fixes a number of centroids that conflicts with the `nLists` value.
+
+Up to v3.12.11, such index definitions are accepted. The problem only surfaces
+during the training of the index, leaving behind an index with a
+`trainingState` of `"unusable"`.
+
+A consequence of the stricter validation is that a factory string with a fixed
+number of centroids like `"IVF100,Flat"` now requires you to set `nLists` to the
+same number. You cannot combine it with a scaling specification for `nLists`
+anymore, not even if the specification resolves to a matching number. As
+`nLists` defaults to a scaling specification from v3.12.10 onward, you need to
+set it explicitly in this case. Alternatively, use the `{}` placeholder as in
+`"IVF{},Flat"` to let the number of centroids be substituted.
+
+#### Sessions of deactivated user accounts
+
+<small>Introduced in: v3.12.12</small>
+
+If you deactivate a user account by setting `active` to `false` using the
+[User Management API](../../develop/http-api/users.md), the
+[JWT session tokens](../../develop/http-api/authentication.md#jwt-session-tokens)
+and [user tokens](../../develop/http-api/authentication.md#jwt-user-tokens) of
+this user account are now rejected. Requests that
+authenticate with such a token fail with an HTTP `401 Unauthorized` error.
+
 ### Endpoint return value changes
 
 #### Storage engine API
@@ -323,7 +475,7 @@ startup option to `enabled-per-shard` to make DB-Servers collect per-shard
 usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
 usage metrics per shard and per user whenever a shard is accessed.
 
-For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-usage-metrics)
+For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-the-usage-metrics)
 and [Monitoring per collection/database/user](../version-3.12/whats-new-in-3-12.md#monitoring-per-collectiondatabaseuser).
 
 #### Reset log levels
@@ -429,6 +581,46 @@ A new activities API has been added as an observability feature.
 See the [HTTP interface for server activities](../../develop/http-api/monitoring/activities.md)
 for details.
 
+#### Activities of all servers (experimental)
+
+<small>Introduced in: v3.12.10</small>
+
+A new `GET /_arango/experimental/_admin/activities/all` endpoint has been added.
+You can call it on a Coordinator to get the activities of every server of a
+cluster deployment, grouped by server ID. The activities are returned in an
+`activities_per_server` object.
+
+See [Get the activities of all servers](../../develop/http-api/monitoring/activities.md#get-the-activities-of-all-servers-experimental)
+for details.
+
+#### ArangoSearch statistics API (experimental)
+
+<small>Introduced in: v3.12.11</small>
+
+A new ArangoSearch statistics API has been added as an observability feature
+for inspecting the index segments of `arangosearch` Views and inverted indexes.
+It reports the number of segments and files a data store is made up of, its
+size, as well as the document counts and deletion ratios overall and per
+segment. This lets you see how much of a data store is occupied by documents
+that are marked as deleted and whether the background consolidation keeps up
+with the write load.
+
+---
+
+<small>Introduced in: v3.12.12</small>
+
+The endpoint reports the statistics of **all** ArangoSearch data stores of the
+database. The statistics are now returned in an `indexes` array, with the number
+of data stores in a `numIndexes` attribute, and every data store is identified
+by the new `indexName`, `indexType`, and `collection` attributes.
+
+In v3.12.11, the statistics of a single, arbitrary data store were returned as a
+flat object, and an empty object if the database had no `arangosearch` View and
+no inverted index.
+
+See the [HTTP interface for ArangoSearch statistics](../../develop/http-api/monitoring/arangosearch-statistics.md)
+for details.
+
 ### Endpoints augmented
 
 #### View API
@@ -522,6 +714,15 @@ Two new statistics are included in the response when you execute an AQL query:
 }
 ```
 
+##### `searchParallelism` statistic
+
+<small>Introduced in: v3.12.9</small>
+
+The cursor API now returns an additional statistic under `extra.stats`:
+
+- `searchParallelism` (integer):
+  The number of threads used by ArangoSearch for this query.
+
 #### Query API
 
 <small>Introduced in: v3.12.2</small>
@@ -608,6 +809,130 @@ curl "http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
 
 A new `vector` index type has been added.
 See [HTTP interface for vector indexes](../../develop/http-api/indexes/vector.md)
+for details.
+
+---
+
+<small>Introduced in: v3.12.9</small>
+
+Vector indexes now have two new attributes in success responses:
+- `trainingState` (string): Possible values:
+  - `"unusable"`
+  - `"training"`
+  - `"ingesting"`
+  - `"ready"`
+- `errorMessage` (string):
+  Only present if there is a problem with the index/training.
+
+Furthermore, a new error code `ERROR_QUERY_VECTOR_INDEX_NOT_READY` with the
+number `1555` has been added. It is thrown if a query tries to use a
+vector index that hasn't been trained yet.
+
+You can now create a vector index first and
+then populate the collection with vector data. However, it is still recommended
+to load the data first and then create the index to ensure that all documents
+participate in the training process as the training is only executed once.
+The training is triggered automatically if the vector index hasn't been trained
+yet and the number of documents to index exceeds the threshold of
+`nLists` documents. If `sparse` is set to `true`, documents without the
+vector embedding field are not counted toward this threshold.
+Check the `trainingState` to see if the
+index is `"ready"` and `errorMessage` for the reason if it's not.
+
+---
+
+<small>Introduced in: v3.12.10</small>
+
+A new option to let you configure how many vectors per centroid to include in
+the random sample used for training the index has been added. You can set
+`numberOfDocsPerCentroid` in the `params` object to change the default of `100`.
+
+Up to v3.12.9, this is not configurable and a fixed value of `256` per centroid
+is used instead.
+
+---
+
+<small>Introduced in: v3.12.10</small>
+
+The `nLists` attribute of the `params` object is optional now and it accepts an
+object with a scaling specification in addition to a number. The scaling
+specification lets ArangoDB compute the number of Voronoi cells respectively
+centroids from the document count at training time, per shard in cluster
+deployments. It has the following attributes:
+
+- `strategy` (string): The only available value is `"autoSqrt"`, which computes
+  `max(minNLists, multiplier * sqrt(N))` where `N` is the number of documents.
+- `multiplier` (number): The factor for the `autoSqrt` strategy.
+- `minNLists` (number): The lower bound for the computed number of centroids.
+- `tiers` (array of objects, _optional_): Fixed numbers of centroids for large
+  document counts, each with a `threshold` and a `fixedValue` attribute.
+
+If you specify `nLists` as an object, you need to set `strategy`, `multiplier`,
+and `minNLists`. If you don't specify `nLists` at all, a scaling specification
+with the `autoSqrt` strategy, a `multiplier` of `4`, a `minNLists` of `2`, and
+three tiers (`1000000` → `16384`, `10000000` → `65536`, `300000000` → `131072`)
+is used.
+
+Success responses report `nLists` the same way it was specified, that is, either
+as a number or as an object.
+
+Furthermore, the `factory` attribute of the `params` object accepts a `{}`
+placeholder in place of the number of centroids now, like `"IVF{}_HNSW32,SQ8"`.
+It is substituted with the number of centroids that `nLists` resolves to.
+Success responses report the factory string as specified, including the
+placeholder.
+
+---
+
+<small>Introduced in: v3.12.10</small>
+
+The `GET /_api/index?collection=<collection-name>&withHidden=true` endpoint now
+reports per-shard details for vector indexes in a `shards` attribute. The keys
+are the shard names, and every value is an object with the following attributes:
+
+- `trainingState` (string): The training state of this shard's index.
+- `error` (string): The training error of this shard's index, or an empty string.
+- `resolvedNLists` (number): The number of centroids this shard's index has
+  actually been trained with. If a fixed `nLists` value is configured, it
+  matches this value. If a scaling specification is configured, it is the value
+  computed from the document count at training time.
+
+In single server deployments, the collection name is used as the shard key,
+mirroring the cluster format. The top-level `trainingState` is the
+least-progressed state across all shards.
+
+---
+
+<small>Introduced in: v3.12.10</small>
+
+Creating a vector index with `inBackground` set to `false` blocks until the
+index training has finished. If the training fails permanently, for example,
+because there is not enough training data, the index is created nevertheless
+but cannot be used for queries.
+
+Up to v3.12.9, the `POST /_api/index` request failed with an error in this case,
+like `ERROR_QUERY_VECTOR_INDEX_NOT_READY` (`1555`) or the underlying error such
+as `ERROR_RESOURCE_LIMIT` (`32`). From v3.12.10 onward, the request succeeds with
+an HTTP `201 Created` response that reports the `trainingState` as `"unusable"`
+and the reason for the failed training in the `errorMessage` attribute:
+
+```json
+{
+  "id": "coll/68",
+  "name": "vector_l2",
+  "type": "vector",
+  "isNewlyCreated": true,
+  "trainingState": "unusable",
+  "errorMessage": "not enough training data for vector index",
+  "code": 201,
+  "error": false
+}
+```
+
+Errors that are not related to the training outcome, like a timeout while
+waiting for the index or a server shutdown, are still reported as errors.
+
+See the [`inBackground` option of vector indexes](../../develop/http-api/indexes/vector.md)
 for details.
 
 ##### Changed consolidation defaults for inverted indexes
@@ -823,6 +1148,38 @@ activities feature:
 - `arangodb_activities_total`
 - `arangodb_activities_existing`
 
+---
+
+<small>Introduced in: v3.12.9</small>
+
+The following new metrics have been added for better visibility of the current
+state of the vector indexes:
+
+- `arangodb_vector_index_ingestion_duration`
+- `arangodb_vector_index_training_duration`
+- `arangodb_vector_index_training_ongoing`
+- `arangodb_vector_index_unusable`
+
+---
+
+<small>Introduced in: v3.12.10</small>
+
+The following new metric has been added for tracking how often particular
+HTTP status codes are used in server responses:
+
+- `arangodb_http_response_code_total`
+
+---
+
+<small>Introduced in: v3.12.11</small>
+
+The following new metrics have been added for monitoring how long requests to
+the Role-Based Access Control (RBAC) service take and what the health of the
+cluster servers is:
+
+- `arangodb_rbac_request_duration`
+- `arangodb_server_health`
+
 #### Stream Transactions API
 
 <small>Introduced in: v3.12.1</small>
@@ -921,6 +1278,46 @@ curl -uroot:v1.7b2265...71227d http://localhost:8529/_api/database
 Note that it is recommended to use access tokens for creating
 [JWT session tokens](../../develop/http-api/authentication.md#create-a-jwt-session-token).
 
+#### Custom expiry time for session tokens
+
+<small>Introduced in: v3.12.6</small>
+
+The `POST /_open/auth` endpoint accepts a new optional `expiryTime` attribute
+in the request body to request a session token with a lifetime (in seconds)
+different from the default of the `--server.session-timeout` startup option.
+The value needs to be within the bounds of the new
+`--auth.minimal-jwt-expiry-time` (default: `10`) and
+`--auth.maximal-jwt-expiry-time` (default: `3600`) startup options, otherwise
+the request is rejected with an HTTP `400 Bad Request` error.
+
+See [JWT session tokens](../../develop/http-api/authentication.md#jwt-session-tokens)
+for details.
+
+#### Activities API (experimental)
+
+##### Threads of an activity
+
+<small>Introduced in: v3.12.10</small>
+
+The activity objects returned by the
+`GET /_arango/experimental/_admin/activities` endpoint have a new `threads`
+attribute. It lists the threads which currently execute the activity, each with
+the identifier of the light-weight process (`LWPID`) and the thread `name`.
+The list is empty for activities that no thread claims, like background
+maintenance activities.
+
+##### ArangoSearch consolidation activities
+
+<small>Introduced in: v3.12.11</small>
+
+The `GET /_arango/experimental/_admin/activities` endpoint now also reports the
+background consolidation of `arangosearch` View and inverted index data.
+Such activities have the type `ArangoSearchConsolidation` and their `data`
+object lists the index segments that are being merged.
+
+See [ArangoSearch consolidation activities](../../develop/http-api/monitoring/activities.md#arangosearchconsolidation)
+for details.
+
 ### Endpoints deprecated
 
 #### JavaScript Transactions API
@@ -932,23 +1329,17 @@ are unaffected.
 
 ### Endpoints removed
 
-#### Database target version API
-
-The `GET /_admin/database/target-version` endpoint has been removed in favor of the
-more general version API with the endpoint `GET /_api/version`. 
-The endpoint was deprecated since v3.11.3 and it is removed in ArangoDB v4.0.
-
 #### JavaScript-based traversal using `/_api/traversal`
 
 The long-deprecated JavaScript-based traversal functionality has been removed
-in v3.12.0, including the REST API endpoint `/_api/traversal`.
+in v3.12.0, including the HTTP API endpoint `/_api/traversal`.
 
 The functionality provided by this API was deprecated and unmaintained since
 v3.4.0. JavaScript-based traversals have been replaced with AQL traversals in
-v2.8.0. Additionally, the JavaScript-based traversal REST API could not handle
+v2.8.0. Additionally, the JavaScript-based traversal HTTP API could not handle
 larger amounts of data and was thus very limited.
 
-Users of the `/_api/traversal` REST API should use
+Users of the `/_api/traversal` HTTP API should use
 [AQL traversal queries](../../aql/graph-queries/traversals.md) instead.
 
 #### Pregel API
@@ -967,6 +1358,28 @@ HTTP request was deprecated in v3.8.0 and has now been removed.
 To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
+
+#### Obsolete replication APIs
+
+<small>Removed in: v3.12.10</small>
+
+The following endpoints related to replication functionality that is no longer
+used have been removed:
+
+- `GET /_api/replication/applier-config`
+- `PUT /_api/replication/applier-config`
+- `PUT /_api/replication/applier-start`
+- `PUT /_api/replication/applier-stop`
+- `GET /_api/replication/applier-state`
+- `GET /_api/replication/applier-state-all`
+- `PUT /_api/replication/make-follower`
+- `GET /_api/replication/logger-follow`
+- `GET /_api/replication/logger-first-tick`
+- `GET /_api/replication/logger-tick-ranges`
+- `GET /_api/replication/logger-last`
+- `GET /_api/replication/server-id`
+- `PUT /_api/replication/server-id`
+- `PUT /_api/replication/sync`
 
 ## JavaScript API
 
@@ -1044,7 +1457,7 @@ The option defaults to `false` so that fast locking is tried.
 See the [JavaScript API](../../develop/transactions/stream-transactions.md#javascript-api)
 for details.
 
-#### Query plan cache module
+### Query plan cache module
 
 <small>Introduced in: v3.12.4</small>
 
@@ -1053,3 +1466,47 @@ and clear (`.clear()`) the AQL execution plan cache in the JavaScript API.
 
 See [The execution plan cache for AQL queries](../../aql/execution-and-performance/caching-query-plans.md#interfaces)
 for details.
+
+### Stricter JavaScript security defaults
+
+<small>Introduced in: v3.12.9</small>
+
+Up to v3.12.8, the default access for server-side JavaScript code like Foxx,
+user-defined AQL functions (UDFs), and JavaScript Transactions was to **allow**
+everything. This included reading and writing arbitrary files, accessing
+environment variables, reading startup configuration values, and making outbound
+HTTP requests from within the server process.
+
+From v3.12.9 onward, each of the following _arangod_ startup options now
+defaults to **disallow** access to the respective resource unless configured
+otherwise, as if the given allowlist was set to `'^$'`:
+
+- `--javascript.files-allowlist`
+- `--javascript.environment-variables-allowlist`
+- `--javascript.startup-options-allowlist`
+- `--javascript.endpoints-allowlist`
+
+If you set denylist startup options, access is granted for everything except
+what matches the denylist of the respective resource, overwriting the default
+of disallowing everything:
+
+- `--javascript.environment-variables-denylist`
+- `--javascript.startup-options-denylist`
+- `--javascript.endpoints-denylist`
+
+Up to v3.12.9, file access is exclusively controlled by
+`--javascript.files-allowlist` with no corresponding denylist. A
+`--javascript.files-denylist` option was added in v3.12.10.
+
+### JavaScript files denylist
+
+<small>Introduced in: v3.12.10</small>
+
+A `--javascript.files-denylist` startup option has been added to complement the
+existing `--javascript.files-allowlist`. It lets you forbid access to specific
+filesystem paths from client-side and server-side JavaScript, mirroring the allow/deny
+pairs already available for endpoints, environment variables, and startup options.
+File access is now controlled by both lists: a path must match the allowlist and
+must not match the denylist. The denylist is empty by default, so existing
+configurations are unaffected.
+

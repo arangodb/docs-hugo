@@ -1,7 +1,8 @@
 ---
-title: Get Organization Email Domain Restrictions with `oasisctl`
+title: Get Organization Email Domain Restrictions with _oasisctl_
 menuTitle: Get Organization Email Domain Restrictions
-weight: 20
+weight: 19
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get which email domain restrictions are placed on accessing a specific organization

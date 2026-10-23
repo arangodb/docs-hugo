@@ -1,13 +1,13 @@
 ---
 title: Feature list of the ArangoDB core database system
-menuTitle: Core Database
+menuTitle: Feature list
 weight: 5
 description: >-
   All features of the ArangoDB database system, available in both the
   Community Edition and Enterprise Edition
 aliases:
-  - community-edition # 3.11 -> 3.12
-  - enterprise-edition # 3.11 -> 3.12
+  - community-edition # 3.11 -> 3.11
+  - enterprise-edition # 3.11 -> 3.11
 ---
 {{< info >}}
 Feature parity between the Community Edition and the Enterprise Edition is
@@ -63,7 +63,7 @@ available from v3.12.5 onward. See
   Run ArangoDB on Linux using the production-ready packages for the x86-64
   architecture and 64-bit ARM chips, on bare metal or in containers.
   Develop and test with ArangoDB on Windows, macOS, and Linux using the official
-  ArangoDB Docker images.
+  ArangoDB container images.
 
 ## Scalability & High Availability
 
@@ -117,8 +117,8 @@ available from v3.12.5 onward. See
   match up documents from different collections, allowing normalized data models.
 
 - **Advanced Path-Finding with Multiple Algorithms**:
-  Graphs can be [traversed](../aql/graph-queries/traversals-explained.md) with AQL
-  in outbound, inbound, or both directions to retrieve direct and indirect
+  Multi-hop [graph traversal](../aql/graph-queries/traversals-explained.md) with
+  AQL in outbound, inbound, or both directions to retrieve direct and indirect
   neighbor nodes using a fixed or variable depth.
   The [traversal order](../aql/graph-queries/traversals.md) can be
   depth-first, breadth-first, or in order of increasing edge weights
@@ -203,15 +203,15 @@ available from v3.12.5 onward. See
 ## Performance
 
 - [**SmartGraphs**](../graphs/smartgraphs/_index.md):
-  Value-based sharding of large graph datasets for better data locality when
-  traversing graphs.
+  Value-based sharding of large graph datasets for excellent data locality when
+  querying graphs.
 
 - [**EnterpriseGraphs**](../graphs/enterprisegraphs/_index.md):
-  A specialized version of SmartGraphs, with an automatic sharding key selection.
+  Hash-based sharding that keeps the edges of graphs next to their connected nodes.
 
-- [**SmartGraphs using SatelliteCollections**](../graphs/smartgraphs/_index.md):
+- [**SmartGraphs using SatelliteCollections**](../graphs/smartgraphs/_index.md#smartgraphs-using-satellitecollections):
   Collections replicated on all cluster nodes can be combined with graphs
-  sharded by document attributes to enable more local execution of graph queries.
+  sharded by values to enable more local execution of graph queries.
 
 - [**SatelliteGraphs**](../graphs/satellitegraphs/_index.md):
   Graphs replicated on all cluster nodes to execute graph traversals locally.

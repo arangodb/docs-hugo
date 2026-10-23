@@ -71,7 +71,7 @@ specify whether you want to follow edges in the direction they are defined in
 direction (**any**). This means that you do not need to create an opposing edge
 for every edge that you want to be able to follow in both directions.
 
-Aside from basic graph traversal, ArangoDB offers
+Aside from multi-hop graph traversal, ArangoDB offers
 [graph algorithms](../graphs/_index.md#supported-graph-algorithms) to find one
 or multiple shortest paths between two nodes and can return a specified amount
 of paths between two nodes in order of increasing length.
@@ -82,8 +82,3 @@ traversals using ad-hoc sets of node and edge collections. These are called
 **named graphs** and use the interfaces for named graphs, which ensure graph
 consistency. For example, removing a node removes all connected edges, too.
 Low-level operations can still cause dangling edges, nonetheless.
-
-<!--
-- [Graphs in data modeling - is the emperor naked?](https://medium.com/@neunhoef/graphs-in-data-modeling-is-the-emperor-naked-2e65e2744413#.x0a5z66ji)
-- [Index Free Adjacency or Hybrid Indexes for Graph Databases](https://www.arangodb.com/2016/04/index-free-adjacency-hybrid-indexes-graph-databases/)
--->

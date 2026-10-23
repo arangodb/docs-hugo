@@ -1,5 +1,5 @@
 {{ $pathMap := dict -}}
-{{ range $page := .Site.AllPages -}}
+{{ range $page := .Site.Pages -}}
   {{ $pagePath := $page.Path -}}
   {{ if $pagePath -}}
     {{ $pagePathNoExt := $pagePath -}}

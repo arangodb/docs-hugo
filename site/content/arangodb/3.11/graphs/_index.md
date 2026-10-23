@@ -20,7 +20,7 @@ any kind.
 For example, you can represent people by nodes and their friendships by
 relations. This lets you form a graph that is a social network in this case.
 
-![Mary - is friend of - John](../../../images/data-model-graph-relation-concrete.png)
+![Mary - is friend of - John](../../../images/data-model-graph-relation-concrete.svg)
 
 The specific terms to refer to nodes and relations in a graph vary depending
 on the field or context, but they are conceptually the same. In computer science
@@ -28,14 +28,15 @@ and mathematics, the terms **vertices** (singular: vertex) and **edges** are
 commonly used to refer to nodes and relations, respectively. In information
 science and data analysis, they are referred to as _entities_ and _connection_.
 In social sciences, they are often called _actors_ and _ties_ or _links_.
-They may also be called _points_ and _arcs_.
+They may also be called _points_ and _arcs_ or _circles_  and _arrows_ based on
+how they are typically represented visually.
 
 Using graphs with vertices to represent things and edges to define how they
 relate to one another is a very expressive data model. It lets you represent
 a wide variety of information in a compact and intuitive way. It lets you model
 complex relationships and interactions of basically everything.
 
-![Mary - bought - Book, is friend of - John](../../../images/data-model-graph-relations.png)
+![Four nodes with properties: Person nodes Mary and John, a Book node Arango, and an Author node Sara. Mary isFriendOf John since 2019, Mary bought Arango, John rated Arango with 5 stars, and Sara wrote Arango in 2024](../../../images/data-model-graph-relations.svg)
 
 Graphs are commonly directed (_digraphs_), which means that each edge goes from
 one vertex to another vertex in a specific direction. This lets you model
@@ -48,11 +49,6 @@ hand, _Mary_ may subscribe to what _John_ posts online, but this does not
 automatically make _John_ a subscriber of _Mary_'s posts. It is an asymmetrical
 relationship in graph terms. These two types of graphs have different properties
 and different algorithms exist to analyze the data.
-
-{{< info >}}
-New to graphs? [Take our free graph course for freshers](https://www.arangodb.com/arangodb-graph-course/)
-and get from zero knowledge to advanced query techniques.
-{{< /info >}}
 
 ## Graph model
 
@@ -126,18 +122,6 @@ In queries, you can define in which directions the edge relations may be followe
 - [All Shortest Paths](../aql/graph-queries/all-shortest-paths.md)
 - [k Shortest Paths](../aql/graph-queries/k-shortest-paths.md)
 - [k Paths](../aql/graph-queries/k-paths.md)
-- [Distributed Iterative Graph Processing (Pregel)](../data-science/pregel/_index.md)
-  - Page Rank
-  - Seeded Page Rank
-  - Single-Source Shortest Path (SSSP)
-  - Connected Components
-  - Weakly Connected Components (WCC)
-  - Strongly Connected Components (SCC)
-  - Hyperlink-Induced Topic Search (HITS)
-  - Effective Closeness Vertex Centrality
-  - LineRank Vertex Centrality
-  - Label Propagation Community Detection
-  - Speaker-Listener Label Propagation (SLPA) Community Detection
 
 ## Managed and unmanaged graphs
 
@@ -221,7 +205,7 @@ suboptimal query performance due to random data distribution.
 General graphs are the easiest way to get started, no special configuration required.
 {{< /tip >}}
 
-![General Graph Random Distribution](../../../images/general-graph-distribution.png)
+![General Graph Random Distribution](../../../images/general-graph-distribution.svg)
 
 #### When to use SmartGraphs
 
@@ -236,7 +220,7 @@ scenarios, use SmartGraphs. Organize your data efficiently using the
 `smartGraphAttribute`.
 {{< /tip >}}
 
-![SmartGraph Distribution](../../../images/smartgraph-distribution.png)
+![SmartGraph Distribution](../../../images/smartgraph-distribution.svg)
 
 #### When to use EnterpriseGraphs
 
@@ -250,7 +234,7 @@ If you need improved query execution without manual data distribution, consider
 using EnterpriseGraphs.
 {{< /tip >}}
 
-![EnterpriseGraph Distribution](../../../images/enterprisegraph-distribution.png)
+![EnterpriseGraph Distribution](../../../images/enterprisegraph-distribution.svg)
 
 #### When to use SatelliteGraphs
 
@@ -337,7 +321,7 @@ with `_from` pointing to `Users/John` and `_to` pointing to
 attributes to qualify the relation further, like the permissions of **John** in
 this group, the date when John joined the group, and so on.
 
-![User in group example](../../../images/graph_user_in_group.png)
+![The document John in the Users collection linked by an UsersInGroups edge to the document BowlingGroupHappyPin in the Groups collection](../../../images/graph_user_in_group.svg)
 
 As a rule of thumb, if you use documents and their attributes in a sentence,
 nouns would typically be vertices, and the verbs the edges.
@@ -412,15 +396,15 @@ For example data that you can use for learning graphs, see
 {{% comment %}}
 ## Query graphs
 
-Explain traversal, pattern matching, shortest paths, pregel
+Explain traversal, pattern matching, shortest paths
 direction, depth, order, conditions, weights?
 combine with geo, search, ...
 {{% /comment %}}
 
 ## Back up and restore graph
 
-For backups of your graph data, you can use [_arangodump_](../components/tools/arangodump/_index.md)
-to create the backup, and [_arangorestore_](../components/tools/arangorestore/_index.md) to
+For backups of your graph data, you can use [arangodump](../components/tools/arangodump/_index.md)
+to create the backup, and [arangorestore](../components/tools/arangorestore/_index.md) to
 restore a backup. However, note the following:
 
 - You need to include the `_graphs` system collection if you want to back up

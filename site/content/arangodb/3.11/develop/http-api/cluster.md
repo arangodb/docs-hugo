@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for clusters
+title: Cluster HTTP API
 menuTitle: Cluster
 weight: 115
 description: >-
@@ -74,6 +74,7 @@ paths:
             - `ShortName`: A string representing the shortname of the server, e.g. `"Coordinator0001"`.
             - `Timestamp`: ISO 8601 timestamp specifying the last heartbeat received. (deprecated)
             - `Host`: An optional string, specifying the host machine if known.
+            - `SyncTime`: ISO 8601 timestamp of the last sync time reported by the node.
 
             **Coordinators** only
             - `AdvertisedEndpoint`: A string representing the advertised endpoint, if set. (e.g. external IP address or load balancer, optional)
@@ -534,8 +535,8 @@ curl -X PUT https://<endpoint>:<port>/_admin/cluster/rebalance -d '{"version":1}
 ```
 
 You need admin rights, so you should use the user `root` or another user
-with write permissions on the `_system` database. Alternatively, you can
-use a header with a valid JWT token (for superuser access).
+with `rw` access to the `_system` database. Alternatively, you can
+use a [superuser JWT](authentication.md#jwt-superuser-tokens).
 
 {{< info >}}
 Note that this API call only triggers the rebalancing operation, the API

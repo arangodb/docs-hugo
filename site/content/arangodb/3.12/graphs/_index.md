@@ -15,12 +15,12 @@ causal relationships, flows of information, energy, and material, interactions a
 transactions, dependency and hierarchy, as well as similarity and relatedness of
 any kind.
 
-![An arrow labeled as "Edge" pointing from one circle to another, both labeled "Node"](../../../images/data-model-graph-relation-abstract-edge.png)
+![An arrow labeled as "Edge" pointing from one circle to another, both labeled "Node"](../../../images/data-model-graph-relation-abstract-edge.svg)
 
 For example, you can represent people by nodes and their friendships by
 edges. This lets you form a graph that is a social network in this case.
 
-![Two circles labeled "Mary" and "John", with an arrow labeled "isFriendOf" pointing from "Mary" to "John"](../../../images/data-model-graph-relation-concrete.png)
+![Two circles labeled "Mary" and "John", with an arrow labeled "isFriendOf" pointing from "Mary" to "John"](../../../images/data-model-graph-relation-concrete.svg)
 
 The specific terms to refer to nodes and edges in a graph vary depending
 on the field or context, but they are conceptually the same. In computer science
@@ -40,7 +40,7 @@ relate to one another is a very expressive data model. It lets you represent
 a wide variety of information in a compact and intuitive way. It lets you model
 complex relationships and interactions of basically everything.
 
-![Three circles labeled "Mary", "Book", and "John", with an arrow labeled "bought" from "Mary" to "Book" and an arrow labeled "isFriendOf" from "Mary" to "John"](../../../images/data-model-graph-relations.png)
+![Four nodes with properties: Person nodes Mary and John, a Book node Arango, and an Author node Sara. Mary isFriendOf John since 2019, Mary bought Arango, John rated Arango with 5 stars, and Sara wrote Arango in 2024](../../../images/data-model-graph-relations.svg)
 
 Graphs are commonly directed (_digraphs_), which means that each edge goes from
 one node to another node in a specific direction. This lets you model
@@ -53,11 +53,6 @@ hand, _Mary_ may subscribe to what _John_ posts online, but this does not
 automatically make _John_ a subscriber of _Mary_'s posts. It is an asymmetrical
 relationship in graph terms. These two types of graphs have different properties
 and different algorithms exist to analyze the data.
-
-{{< info >}}
-New to graphs? [Take our free graph course for freshers](https://www.arangodb.com/arangodb-graph-course/)
-and get from zero knowledge to advanced query techniques.
-{{< /info >}}
 
 ## Graph model
 
@@ -213,7 +208,7 @@ suboptimal query performance due to random data distribution.
 General graphs are the easiest way to get started, no special configuration required.
 {{< /tip >}}
 
-![General Graph Random Distribution](../../../images/general-graph-distribution.png)
+![General Graph Random Distribution](../../../images/general-graph-distribution.svg)
 
 #### When to use SmartGraphs
 
@@ -228,7 +223,7 @@ scenarios, use SmartGraphs. Organize your data efficiently using the
 `smartGraphAttribute`.
 {{< /tip >}}
 
-![SmartGraph Distribution](../../../images/smartgraph-distribution.png)
+![SmartGraph Distribution](../../../images/smartgraph-distribution.svg)
 
 #### When to use EnterpriseGraphs
 
@@ -242,7 +237,7 @@ If you need improved query execution without manual data distribution, consider
 using EnterpriseGraphs.
 {{< /tip >}}
 
-![EnterpriseGraph Distribution](../../../images/enterprisegraph-distribution.png)
+![EnterpriseGraph Distribution](../../../images/enterprisegraph-distribution.svg)
 
 #### When to use SatelliteGraphs
 
@@ -329,7 +324,7 @@ with `_from` pointing to `Users/John` and `_to` pointing to
 attributes to qualify the relation further, like the permissions of **John** in
 this group, the date when John joined the group, and so on.
 
-![User in group example](../../../images/graph_user_in_group.png)
+![The document John in the Users collection linked by an UsersInGroups edge to the document BowlingGroupHappyPin in the Groups collection](../../../images/graph_user_in_group.svg)
 
 As a rule of thumb, if you use documents and their attributes in a sentence,
 nouns would typically be nodes, and the verbs the edges.
@@ -411,8 +406,8 @@ combine with geo, search, ...
 
 ## Back up and restore graph
 
-For backups of your graph data, you can use [_arangodump_](../components/tools/arangodump/_index.md)
-to create the backup, and [_arangorestore_](../components/tools/arangorestore/_index.md) to
+For backups of your graph data, you can use [arangodump](../components/tools/arangodump/_index.md)
+to create the backup, and [arangorestore](../components/tools/arangorestore/_index.md) to
 restore a backup. However, note the following:
 
 - You need to include the `_graphs` system collection if you want to back up

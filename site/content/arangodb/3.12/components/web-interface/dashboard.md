@@ -2,7 +2,8 @@
 title: Dashboard
 menuTitle: Dashboard
 weight: 5
-description: ''
+description: >-
+  The home screen of the ArangoDB web interface
 ---
 The **Dashboard** section provides statistics which are polled regularly from the
 ArangoDB server.

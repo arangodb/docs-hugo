@@ -65,8 +65,8 @@ Also see [What's New in 3.11](../release-notes/version-3.11/whats-new-in-3-11.md
 
 **Enterprise Edition**
 
-- [**EnterpriseGraphs**](../graphs/enterprisegraphs/_index.md): A new specialized version of
-  SmartGraphs, with an automatic sharding key selection.
+- [**EnterpriseGraphs**](../graphs/enterprisegraphs/_index.md):
+  Hash-based sharding that keeps the edges of graphs next to their connected vertices.
 
 - [**Search highlighting**](../indexes-and-search/arangosearch/search-highlighting.md):
   Get the substring positions of matched terms, phrases, or _n_-grams.
@@ -269,7 +269,7 @@ Also see [What's New in 3.6](../release-notes/version-3.6/whats-new-in-3-6.md).
   index to utilize.
 
 - [**Data Masking**](../components/tools/arangodump/maskings.md):
-  arangodump provides a convenient way to extract production data but mask
+  _arangodump_ provides a convenient way to extract production data but mask
   critical information that should not be visible.
 
 **Enterprise Edition**
@@ -336,7 +336,7 @@ Also see [What's New in 3.4](../release-notes/version-3.4/whats-new-in-3-4.md).
 
 **Enterprise Edition**
 
-- [**Datacenter-to-Datacenter Replication**](../deploy/arangosync/deployment/_index.md):
+- **Datacenter-to-Datacenter Replication**:
   Replicate the entire structure and content of an ArangoDB cluster
   asynchronously to another cluster in a different datacenter with ArangoSync.
   Multi-datacenter support means you can fallback to a replica of your cluster
@@ -369,7 +369,7 @@ Also see [What's New in 3.3](../release-notes/version-3.3/whats-new-in-3-3.md).
   as much data in ArangoDB as you can fit on your disk. Plus, you can enjoy
   performance boosts on writes by having only document-level locks.
 
-- [**Pregel**](../data-science/pregel/_index.md):
+- **Pregel**:
   We implemented distributed graph processing with Pregel to discover hidden
   patterns, identify communities and perform in-depth analytics of large graph
   data sets.
@@ -382,7 +382,7 @@ Also see [What's New in 3.3](../release-notes/version-3.3/whats-new-in-3-3.md).
 
 **Enterprise Edition**
 
-- [**LDAP integration**](../components/arangodb-server/ldap.md): Users and permissions
+- **LDAP integration**: Users and permissions
   can be managed from outside ArangoDB with an LDAP server in different
   authentication configurations.
 

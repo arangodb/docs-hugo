@@ -2,7 +2,7 @@
 {{- if not $pageVersion }}
   {{- $pageVersion = (partialCached "version-short.html" .Page.RelPermalink .Page.RelPermalink) }}
 {{- end }}
-{{- $dataFolderByVersion := index site.Data $pageVersion }}
+{{- $dataFolderByVersion := index hugo.Data $pageVersion }}
 {{- $data := index $dataFolderByVersion "errors" }}
 {{- $basePage := .Page.RelPermalink }}
 {{- range $data }}

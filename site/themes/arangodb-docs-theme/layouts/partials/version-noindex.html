@@ -1,0 +1,10 @@
+{{- $path := . }}
+{{- $splitPath := split $path "/" }}
+{{- $noindex := false }}
+{{- if and (ge ($splitPath | len) 3) (eq (index $splitPath 1) "arangodb") }}
+  {{- $coreVersion := index $splitPath 2 }}
+  {{- if ne $coreVersion "" }}
+    {{- $noindex = partialCached "version-noindex-map.html" $coreVersion $coreVersion }}
+  {{- end }}
+{{- end }}
+{{- return $noindex -}}

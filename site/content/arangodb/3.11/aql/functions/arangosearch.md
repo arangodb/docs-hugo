@@ -453,6 +453,10 @@ FOR doc IN viewName
 Match documents with an approximate Jaccard similarity of at least the
 `threshold`, approximated with the specified `minhash` Analyzer.
 
+You can use the Jaccard similarity approximation with MinHash for efficient
+entity resolution, such as for finding duplicate records, based on how many
+common elements they have.
+
 To only compute the MinHash signatures, see the
 [`MINHASH()` Miscellaneous function](miscellaneous.md#minhash).
 
@@ -619,8 +623,7 @@ enabled. The `PHRASE()` function will otherwise not find anything.
     prefix is carried out, using the matches as candidates. The Levenshtein /
     Damerau-Levenshtein distance is then computed for each candidate using the
     remainders of the strings. This option can improve performance in cases where
-    there is a known common prefix. The default value is an empty string
-    (introduced in v3.7.13, v3.8.1).
+    there is a known common prefix. The default value is an empty string.
 - `{STARTS_WITH: [prefix]}`: see [`STARTS_WITH()`](#starts_with).
   Array brackets are optional
 - `{TERM: [token]}`: equal to `token` but without Analyzer tokenization.
@@ -929,7 +932,7 @@ if you want to calculate the edit distance of two strings.
   **prefix needs to be removed from `target`** (see
   [example](#example-matching-with-prefix-search)). This option can improve
   performance in cases where there is a known common prefix. The default value
-  is an empty string (introduced in v3.7.13, v3.8.1).
+  is an empty string.
 
 #### Example: Matching with and without transpositions
 
@@ -1012,9 +1015,9 @@ context:
   escaped to `\\` unless the value is wrapped in double quotes and already
   escaped properly)
 - `\\` in bind variables (_JSON_ view mode) and queries in the web interface
-- `\\` in bind variables in arangosh
-- `\\\\` in queries in arangosh
-- Double the amount compared to arangosh in shells that use backslashes for
+- `\\` in bind variables in _arangosh_
+- `\\\\` in queries in _arangosh_
+- Double the amount compared to _arangosh_ in shells that use backslashes for
 escaping (`\\\\` in bind variables and `\\\\\\\\` in queries)
 {{< /info >}}
 
@@ -1058,8 +1061,6 @@ be used in conjunction with ArangoSearch.
 
 ### GEO_CONTAINS()
 
-<small>Introduced in: v3.8.0</small>
-
 `GEO_CONTAINS(geoJsonA, geoJsonB) → bool`
 
 Checks whether the [GeoJSON object](geo.md#geojson) `geoJsonA`
@@ -1074,8 +1075,6 @@ fully contains `geoJsonB` (every point in B is also in A).
 
 ### GEO_DISTANCE()
 
-<small>Introduced in: v3.8.0</small>
-
 `GEO_DISTANCE(geoJsonA, geoJsonB) → distance`
 
 Return the distance between two [GeoJSON objects](geo.md#geojson),
@@ -1089,8 +1088,6 @@ measured from the `centroid` of each shape.
   the two objects on the reference ellipsoid
 
 ### GEO_IN_RANGE()
-
-<small>Introduced in: v3.8.0</small>
 
 `GEO_IN_RANGE(geoJsonA, geoJsonB, low, high, includeLow, includeHigh) → bool`
 
@@ -1113,8 +1110,6 @@ each shape.
 - returns **bool** (bool): whether the evaluated distance lies within the range
 
 ### GEO_INTERSECTS()
-
-<small>Introduced in: v3.8.0</small>
 
 `GEO_INTERSECTS(geoJsonA, geoJsonB) → bool`
 

@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for clusters
+title: Cluster HTTP API
 menuTitle: Cluster
 weight: 115
 description: >-
@@ -15,11 +15,21 @@ setting of the [`--cluster.api-jwt-policy` startup option](../../components/aran
 ### Get the statistics of a DB-Server
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_admin/cluster/statistics:
     get:
       operationId: getClusterStatistics
+      deprecated: true
       description: |
+        {{</* warning */>}}
+        This endpoint is deprecated and removed in ArangoDB v4.0.
+        Use `GET /_admin/metrics` instead, which provides the data exposed by
+        this API and a lot more.
+        {{</* /warning */>}}
+
         Queries the statistics of the given DB-Server
       parameters:
         - name: DBserver
@@ -535,8 +545,8 @@ curl -X PUT https://<endpoint>:<port>/_admin/cluster/rebalance -d '{"version":1}
 ```
 
 You need admin rights, so you should use the user `root` or another user
-with write permissions on the `_system` database. Alternatively, you can
-use a header with a valid JWT token (for superuser access).
+with `rw` access to the `_system` database. Alternatively, you can
+use a [superuser JWT](authentication.md#jwt-superuser-tokens).
 
 {{< info >}}
 Note that this API call only triggers the rebalancing operation, the API

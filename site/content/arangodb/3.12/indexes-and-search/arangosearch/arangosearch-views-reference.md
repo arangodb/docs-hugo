@@ -2,7 +2,9 @@
 title: '`arangosearch` Views Reference'
 menuTitle: '`arangosearch` Views Reference'
 weight: 85
-description: ''
+description: >-
+  Overview of the `arangosearch` View properties you can set when creating,
+  modifying, or linking collections to a View
 ---
 `arangosearch` Views enable sophisticated information retrieval queries such as
 full-text search for unstructured or semi-structured data over documents from
@@ -350,15 +352,6 @@ During view modification the following directives apply:
 
   Example: `["BM25(@doc) DESC", "TFIDF(@doc, true) DESC"]`
 
-An inverted index is the heart of `arangosearch` Views.
-The index consists of several independent segments and the index **segment**
-itself is meant to be treated as a standalone index. **Commit** is meant to be
-treated as the procedure of accumulating processed data creating new index
-segments. **Consolidation** is meant to be treated as the procedure of joining
-multiple index segments into a bigger one and removing garbage documents (e.g.
-deleted from a collection). **Cleanup** is meant to be treated as the procedure
-of removing unused segments after release of internal resources.
-
 - **cleanupIntervalStep** (_optional_; type: `integer`; default: `2`; to
   disable use: `0`)
 
@@ -369,11 +362,7 @@ of removing unused segments after release of internal resources.
   rarely merge segments (i.e. few inserts/deletes). A higher value impacts
   performance without any added benefits.
 
-  > With every **commit** or **consolidate** operation a new state of the view
-  > internal data-structures is created on disk. Old states/snapshots are
-  > released once there are no longer any users remaining. However, the files
-  > for the released states/snapshots are left on disk, and only removed by
-  > "cleanup" operation.
+  Also see [ArangoSearch cleanup](architecture.md#cleanup).
 
 - **commitIntervalMsec** (_optional_; type: `integer`; default: `1000`;
   to disable use: `0`)
@@ -387,16 +376,7 @@ of removing unused segments after release of internal resources.
   few inserts/updates because of synchronous locking, and it wastes disk space for
   each commit call.
 
-  > For data retrieval `arangosearch` Views follow the concept of
-  > "eventually-consistent", i.e. eventually all the data in ArangoDB is
-  > matched by corresponding query expressions.
-  > The concept of `arangosearch` View "commit" operation is introduced to
-  > control the upper-bound on the time until document addition/removals are
-  > actually reflected by corresponding query expressions.
-  > Once a "commit" operation is complete, all documents added/removed prior to
-  > the start of the "commit" operation are reflected by queries invoked in
-  > subsequent ArangoDB transactions. In-progress ArangoDB transactions
-  > still continue to return a repeatable-read state.
+  Also see [ArangoSearch commits](architecture.md#writing-and-commits).
 
 - **consolidationIntervalMsec** (_optional_; type: `integer`; default: `5000`;
   to disable use: `0`)
@@ -410,21 +390,13 @@ of removing unused segments after release of internal resources.
   impacts performance due to no segment candidates available for
   consolidation.
 
-  > For data modification `arangosearch` Views follow the concept of a
-  > "versioned data store". Thus old versions of data may be removed once there
-  > are no longer any users of the old data. The frequency of the cleanup and
-  > compaction operations are governed by `consolidationIntervalMsec` and the
-  > candidates for compaction are selected via `consolidationPolicy`.
-
-ArangoSearch performs operations in its index based on numerous writer
-objects that are mapped to processed segments. In order to control memory that
-is used by these writers (in terms of "writers pool") one can use
-`writebuffer*` properties of a view.
+  Also see [ArangoSearch consolidation](architecture.md#removals-and-consolidation).
 
 - **writebufferIdle** (_optional_; type: `integer`; default: `64`;
   to disable use: `0`; _immutable_)
 
   Maximum number of writers (segments) cached in the pool.
+  Also see [ArangoSearch write buffers](architecture.md#write-buffers).
 
 - **writebufferActive** (_optional_; type: `integer`; default: `0`;
   to disable use: `0`; _immutable_)
@@ -443,16 +415,7 @@ is used by these writers (in terms of "writers pool") one can use
 - **consolidationPolicy** (_optional_; type: `object`; default: `{}`)
 
   The consolidation policy to apply for selecting data store segment merge
-  candidates.
-
-  > With each ArangoDB transaction that inserts documents, one or more
-  > ArangoSearch internal segments gets created. Similarly, for removed
-  > documents the segments containing such documents have these documents
-  > marked as "deleted". Over time, this approach causes a lot of small and
-  > sparse segments to be created. A **consolidation** operation selects one or
-  > more segments and copies all of their valid documents into a single new
-  > segment, thereby allowing the search algorithm to perform more optimally and
-  > for extra file handles to be released once old segments are no longer used.
+  candidates. Also see [ArangoSearch consolidation](architecture.md#removals-and-consolidation).
 
   - **type** (_optional_; type: `string`; default: `"tier"`)
 
@@ -462,7 +425,8 @@ is used by these writers (in terms of "writers pool") one can use
 
     - `"bytes_accum"`: Consolidation is performed based on current memory
       consumption of segments and `threshold` property value.
-    - `"tier"`: consolidate based on segment byte size skew and live document count
+    - `"tier"`: Consolidate based on segment byte size skew and the number of
+      entries that are not marked as deleted
       as dictated by the customization attributes.
 
     {{< warning >}}
@@ -485,13 +449,13 @@ is used by these writers (in terms of "writers pool") one can use
 
   - **segmentsMin** (_optional_; type: `integer`; default: `50`)
 
-    This option is only available up to v3.12.6:
+    <small>Removed in: v3.12.7</small>
 
     The minimum number of segments that are evaluated as candidates for consolidation.
 
   - **segmentsMax** (_optional_; type: `integer`; default: `200`)
 
-    This option is only available up to v3.12.6:
+    <small>Removed in: v3.12.7</small>
 
     The maximum number of segments that are evaluated as candidates for consolidation.
 
@@ -501,20 +465,20 @@ is used by these writers (in terms of "writers pool") one can use
 
   - **segmentsBytesFloor** (_optional_; type: `integer`; default: `25165824`)
 
-    This option is only available up to v3.12.6:
+    <small>Removed in: v3.12.7</small>
 
     Defines the value (in bytes) to treat all smaller segments as equal for consolidation
     selection.
 
   - **minScore** (_optional_; type: `integer`; default: `0`)
 
-    This option is only available up to v3.12.6:
+    <small>Removed in: v3.12.7</small>
 
     Filter out consolidation candidates with a score less than this.
 
   - **maxSkewThreshold** (_optional_; type: `number`; default: `0.4`)
 
-    This option is available from v3.12.7 onward:
+    <small>Introduced in: v3.12.7</small>
 
     The skew describes how much segment files vary in file size. It is a number
     between `0.0` and `1.0` and is calculated by dividing the largest file size
@@ -540,25 +504,25 @@ is used by these writers (in terms of "writers pool") one can use
 
   - **minDeletionRatio** (_optional_; type: `number`; default: `0.5`)
 
-    This option is available from v3.12.7 onward:
+    <small>Introduced in: v3.12.7</small>
 
     The `minDeletionRatio` represents the minimum required deletion ratio
     in one or more segments to perform a cleanup of those segments.
     It is a number between `0.0` and `1.0`.
 
-    The deletion ratio is the percentage of deleted documents across one or
-    more segment files and is calculated by dividing the number of deleted
-    documents by the total number of documents in a segment or a group of
-    segments. For example, if there is a segment with 1000 documents of which
-    300 are deleted and another segment with 1000 documents of which 700 are
+    The deletion ratio is the percentage of index entries marked as deleted
+    across one or more segment files and is calculated by dividing the number of
+    deleted entries by the total number of entries in a segment or a group of
+    segments. For example, if there is a segment with 1000 entries of which
+    300 are deleted and another segment with 1000 entries of which 700 are
     deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
 
     The `minDeletionRatio` threshold must be carefully selected. A smaller
-    value leads to earlier cleanup of deleted documents from segments and
+    value leads to earlier cleanup of deleted entries from segments and
     thus reclamation of disk space but it generates a higher write load.
     A very large value lowers the write amplification but at the same time
     the system can be left with a large number of segment files with a high
-    percentage of deleted documents that occupy disk space unnecessarily.
+    percentage of deleted entries that occupy disk space unnecessarily.
 
     During cleanup, the segment files are first arranged in decreasing
     order of their individual deletion ratios. Then the largest subset of

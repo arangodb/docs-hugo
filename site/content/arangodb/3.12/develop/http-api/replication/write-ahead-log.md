@@ -1,23 +1,25 @@
 ---
-title: HTTP interface for WAL access
+title: WAL (Write-Ahead Log) HTTP API
 menuTitle: Write-Ahead Log
 weight: 25
-description: ''
+description: >-
+  The WAL access HTTP interface provides access to the server's write-ahead log to
+  facilitate faster and more reliable asynchronous replication
 ---
 The WAL Access API is used to facilitate faster and
 more reliable asynchronous replication. The API offers access to the 
 write-ahead log or operations log of the ArangoDB server. As a public
-API, it is only supported to access these REST endpoints on a single-server
+API, it is only supported to access these HTTP endpoints on a single-server
 instance. While these APIs are also available on DB-Server instances, accessing them
 as a user is not supported. This API replaces some of the APIs in `/_api/replication`.
 
-{% comment -%}
+{{< comment >}}
 Since the removal of AF, DC2DC, and Leader/Follower replication, the only async
 replication remaining is used to initialize new DB-Servers for clusters
 (snapshot transfer / SynchronizeShard) - and this is done using the below endpoints.
 They can also be used for testing cluster replication code without running a
 full cluster and can thus not be removed until Replication 1 is gone.
-{% endcomment -%}
+{{< /comment >}}
 
 ## Get the tick ranges available in the WAL
 
@@ -43,7 +45,7 @@ paths:
           example: _system
           description: |
             The name of a database. The user account you authenticate with needs
-            at least read access to this database and administrate access to the
+            at least `ro` access to this database and `rw` access to the
             `_system` database.
           schema:
             type: string
@@ -107,7 +109,7 @@ paths:
           example: _system
           description: |
             The name of a database. The user account you authenticate with needs
-            at least read access to this database and administrate access to the
+            at least `ro` access to this database and `rw` access to the
             `_system` database.
           schema:
             type: string
@@ -260,7 +262,7 @@ paths:
           example: _system
           description: |
             The name of a database. The user account you authenticate with needs
-            at least read access to this database and administrate access to the
+            at least `ro` access to this database and `rw` access to the
             `_system` database.
           schema:
             type: string

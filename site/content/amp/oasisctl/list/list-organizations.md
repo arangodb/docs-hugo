@@ -1,7 +1,8 @@
 ---
-title: List Organizations with `oasisctl`
+title: List Organizations with _oasisctl_
 menuTitle: List Organizations
-weight: 32
+weight: 30
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List all organizations the authenticated user is a member of

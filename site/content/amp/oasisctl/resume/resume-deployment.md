@@ -1,7 +1,8 @@
 ---
-title: Resume Deployment with `oasisctl`
+title: Resume Deployment with _oasisctl_
 menuTitle: Resume Deployment
 weight: 1
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Resume a paused deployment the authenticated user has access to

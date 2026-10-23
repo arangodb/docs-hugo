@@ -1,7 +1,8 @@
 ---
-title: Get Organization with `oasisctl`
+title: Get Organization with _oasisctl_
 menuTitle: Get Organization
-weight: 15
+weight: 14
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get an organization the authenticated user is a member of

@@ -1,5 +1,5 @@
 ---
-title: X.509 Certificates in the Arango Managed Platform (AMP)
+title: X.509 Certificates in AMP
 menuTitle: X.509 Certificates
 weight: 5
 description: >-
@@ -46,10 +46,6 @@ browser does not trust the digital certificate.
 Each AMP deployment is accessible on different port numbers:
 - default port `8529`, `443`
 - high port `18529`
-
-Each AMP Notebook is accessible on different port numbers:
-- default port `8840`, `443`
-- high port `18840`
 
 Metrics are accessible on different port numbers:
 - default port `8829`, `443`

@@ -180,35 +180,47 @@ The output of `TO_STRING()` has also changed for arrays and objects as follows:
 
 - arrays are now converted into their JSON-stringify equivalents, e.g.
 
-  - `[ ]` is now converted to `[]`
-  - `[ 1, 2, 3 ]` is now converted to `[1,2,3]`
-  - `[ "test", 1, 2 ] is now converted to `["test",1,2]`
+  - `[ ]` is now converted to `"[]"`
+  - `[ 1, 2, 3 ]` is now converted to `"[1,2,3]"`
+  - `[ "test", 1, 2 ]` is now converted to `"[\"test\",1,2]"`
    
   Previous versions of ArangoDB converted arrays with no members into the
   empty string, and non-empty arrays into a comma-separated list of member
-  values, without the surrounding angular brackets. Additionally, string
+  values, without the surrounding square brackets. Additionally, string
   array members were not enclosed in quotes in the result string:
 
-  - `[ ]` was converted to ``
-  - `[ 1, 2, 3 ]` was converted to `1,2,3`
-  - `[ "test", 1, 2 ] was converted to `test,1,2`
+  - `[ ]` was converted to `""`
+  - `[ 1, 2, 3 ]` was converted to `"1,2,3"`
+  - `[ "test", 1, 2 ]` was converted to `"test,1,2"`
   
 - objects are now converted to their JSON-stringify equivalents, e.g.
 
-  - `{ }` is converted to `{}`
-  - `{ a: 1, b: 2 }` is converted to `{"a":1,"b":2}`
-  - `{ "test" : "foobar" }` is converted to `{"test":"foobar"}`
+  - `{ }` is converted to `"{}"`
+  - `{ a: 1, b: 2 }` is converted to `"{\"a\":1,\"b\":2}"`
+  - `{ test: "foobar" }` is converted to `"{\"test\":\"foobar\"}"`
     
   Previous versions of ArangoDB always converted objects into the string
-  `[object Object]`  
+  `"[object Object]"`.
 
 This change also affects other parts in AQL that used `TO_STRING()` to implicitly
 cast operands to strings. It also affects the AQL functions `CONCAT()` and 
 `CONCAT_SEPARATOR()` which treated array values differently. Previous versions
-of ArangoDB automatically flattened array values in the first level of the array, 
-e.g. `CONCAT([1, 2, 3, [ 4, 5, 6 ]])` produced `1,2,3,4,5,6`. Now this will produce
-`[1,2,3,[4,5,6]]`. To flatten array members on the top level, you can now use
-the more explicit `CONCAT(FLATTEN([1, 2, 3, [4, 5, 6]], 1))`.
+of ArangoDB used the old `TO_STRING()` behavior and automatically flattened
+array values in the first level of each passed array.
+
+Now, there is no automatic flattening of arrays and arrays are cast using the
+new `TO_STRING()` behavior. If you pass an array as the sole parameter, its
+members get concatenated - which is equivalent to the previous flattening of
+one array level:
+
+| Expression | Result before v3.0 | Result from v3.0 onward |
+|------------|--------------------|-------------------------|
+| `CONCAT([1, 2, 3, [4, 5, 6]])` | `"1234,5,6"` | `"123[4,5,6]"` |
+| `CONCAT([1, 2, 3, [4, 5, 6]], [7, 8])` | `"1234,5,678"` | `"[1,2,3,[4,5,6]][7,8]"` |
+
+You can use `FLATTEN()` if you want to manually flatten one or multiple levels
+of an array, like `CONCAT(FLATTEN([1, 2, [3, 4, [5, 6]]], 2))` to flatten the
+array to `[1, 2, 3, 4, 5, 6]` and then concatenating it to `"123456"`.
 
 ### Arithmetic operators
 
@@ -219,7 +231,7 @@ Some examples of the changed behavior:
 
 - `"foo" + 1` produces `1` now. In previous versions this produced `null`.
 - `[ 1, 2 ] + 1` produces `1`. In previous versions this produced `null`.
-- `1 + "foo" + 1´ produces `2` now. In previous version this produced `1`.
+- `1 + "foo" + 1` produces `2` now. In previous version this produced `1`.
 
 ### Attribute names and parameters
 

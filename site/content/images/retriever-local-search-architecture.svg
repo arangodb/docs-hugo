@@ -1,0 +1,244 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1837" width="900" height="1837" role="img" aria-labelledby="ls-title ls-desc">
+  <title id="ls-title">Local Search architecture</title>
+  <desc id="ls-desc">A local query flows through three stages: entity retrieval with hybrid lexical and semantic search and a semantic-only fallback, graph expansion around the anchor entities, and local graph context assembly.</desc>
+  <style>
+    text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2937; }
+    .frame { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1.5; }
+    .ftitle { font-size: 15px; font-weight: 700; fill: #334155; }
+    .box { stroke-width: 2; }
+    .btitle { font-size: 13.5px; font-weight: 700; }
+    .bullet { font-size: 12.5px; }
+    .edge { fill: none; stroke: #64748b; stroke-width: 1.75; }
+    .elabel { font-size: 11px; fill: #475569; }
+    .lbg-page { fill: #ffffff; }
+    .lbg-frame { fill: #f8fafc; }
+  </style>
+  <defs>
+    <marker id="ls-arrow" markerWidth="10" markerHeight="8" refX="0.4" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,4 L0,8 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="900" height="1837" fill="#ffffff"/>
+  <rect class="frame" x="16" y="96.0" width="868" height="640.0" rx="10"/>
+  <text class="ftitle" x="450.0" y="124.0" text-anchor="middle">1. Entity Retrieval (Hybrid + Fallback)</text>
+  <rect class="frame" x="16" y="796.0" width="868" height="550.0" rx="10"/>
+  <text class="ftitle" x="450.0" y="824.0" text-anchor="middle">2. Graph Expansion Around Anchor Entities</text>
+  <rect class="frame" x="16" y="1406.0" width="868" height="413.0" rx="10"/>
+  <text class="ftitle" x="450.0" y="1434.0" text-anchor="middle">3. Local Graph Context Assembly</text>
+  <rect class="box" x="47.0" y="20" width="200" height="40" rx="20" fill="#dbeafe" stroke="#1d4ed8"/>
+  <text class="btitle" x="147.0" y="45" text-anchor="middle">Local Query (text)</text>
+  <path class="edge" d="M147.0,60.0 L147,232.5" marker-end="url(#ls-arrow)"/>
+  <text class="elabel" x="157.0" y="82.0">user input text</text>
+  <path class="edge" d="M250.0,283.0 L290.5,283.0 Q298.5,283.0 298.5,275.0 L298.5,213.5 Q298.5,205.5 306.5,205.5 L336,205.5" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M250.0,283.0 L290.5,283.0 Q298.5,283.0 298.5,291.0 L298.5,352.5 Q298.5,360.5 306.5,360.5 L336,360.5" marker-end="url(#ls-arrow)"/>
+  <rect class="lbg-frame" x="275.2" y="235.2" width="46.6" height="18" rx="3"/>
+  <text class="elabel" x="298.5" y="248.2" text-anchor="middle">encode</text>
+  <rect class="lbg-frame" x="275.2" y="312.8" width="46.6" height="18" rx="3"/>
+  <text class="elabel" x="298.5" y="325.8" text-anchor="middle">encode</text>
+  <path class="edge" d="M553.0,205.5 L593.5,205.5 Q601.5,205.5 601.5,213.5 L601.5,275.0 Q601.5,283.0 609.5,283.0 L639,283" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M553.0,360.5 L593.5,360.5 Q601.5,360.5 601.5,352.5 L601.5,291.0 Q601.5,283.0 609.5,283.0 L639,283" marker-end="url(#ls-arrow)"/>
+  <rect class="lbg-frame" x="553.8" y="235.2" width="95.4" height="18" rx="3"/>
+  <text class="elabel" x="601.5" y="248.2" text-anchor="middle">lexical scores</text>
+  <rect class="lbg-frame" x="550.8" y="312.8" width="101.5" height="18" rx="3"/>
+  <text class="elabel" x="601.5" y="325.8" text-anchor="middle">semantic scores</text>
+  <path class="edge" d="M753.0,352.0 L753.0,444.0 Q753.0,452.0 745.0,452.0 L155.0,452.0 Q147.0,452.0 147.0,460.0 L147,473" marker-end="url(#ls-arrow)"/>
+  <rect class="lbg-frame" x="411.4" y="443.0" width="77.1" height="18" rx="3"/>
+  <text class="elabel" x="450.0" y="456.0" text-anchor="middle">top-K fused</text>
+  <path class="edge" d="M250.0,543.0 L639,543" marker-end="url(#ls-arrow)"/>
+  <rect class="lbg-frame" x="393.1" y="534.0" width="113.7" height="18" rx="3"/>
+  <text class="elabel" x="450.0" y="547.0" text-anchor="middle">anchors available</text>
+  <path class="edge" d="M147.0,602.0 L147.0,636.5 Q147.0,644.5 155.0,644.5 L336,644.5" marker-end="url(#ls-arrow)"/>
+  <rect class="lbg-frame" x="207.1" y="635.5" width="119.8" height="18" rx="3"/>
+  <text class="elabel" x="267.0" y="648.5" text-anchor="middle">no anchors / error</text>
+  <path class="edge" d="M553.0,644.5 L692.0,644.5 Q700.0,644.5 700.0,636.5 L700,613" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M806.0,602.0 L806.0,846.0"/>
+  <path class="edge" d="M138.0,846.0 L806.0,846.0"/>
+  <path class="edge" d="M138.0,846.0 L138,883" marker-end="url(#ls-arrow)"/>
+  <rect class="lbg-frame" x="96.4" y="861.0" width="83.2" height="18" rx="3"/>
+  <text class="elabel" x="138.0" y="874.0" text-anchor="middle">MENTIONED_IN</text>
+  <path class="edge" d="M138.0,1082.0 L138.0,1130.0"/>
+  <rect class="lbg-frame" x="93.3" y="1097.0" width="89.3" height="18" rx="3"/>
+  <text class="elabel" x="138.0" y="1110.0" text-anchor="middle">attach chunks</text>
+  <path class="edge" d="M346.0,846.0 L346,883" marker-end="url(#ls-arrow)"/>
+  <rect class="lbg-frame" x="304.4" y="861.0" width="83.2" height="18" rx="3"/>
+  <text class="elabel" x="346.0" y="874.0" text-anchor="middle">IN_COMMUNITY</text>
+  <path class="edge" d="M346.0,1082.0 L346.0,1130.0"/>
+  <rect class="lbg-frame" x="292.2" y="1097.0" width="107.6" height="18" rx="3"/>
+  <text class="elabel" x="346.0" y="1110.0" text-anchor="middle">attach summaries</text>
+  <path class="edge" d="M554.0,846.0 L554,883" marker-end="url(#ls-arrow)"/>
+  <rect class="lbg-frame" x="494.1" y="861.0" width="119.8" height="18" rx="3"/>
+  <text class="elabel" x="554.0" y="874.0" text-anchor="middle">RELATION → outside</text>
+  <path class="edge" d="M554.0,1082.0 L554.0,1130.0"/>
+  <rect class="lbg-frame" x="506.3" y="1097.0" width="95.4" height="18" rx="3"/>
+  <text class="elabel" x="554.0" y="1110.0" text-anchor="middle">attach outside</text>
+  <path class="edge" d="M762.0,846.0 L762,883" marker-end="url(#ls-arrow)"/>
+  <rect class="lbg-frame" x="705.1" y="861.0" width="113.7" height="18" rx="3"/>
+  <text class="elabel" x="762.0" y="874.0" text-anchor="middle">RELATION → inside</text>
+  <path class="edge" d="M762.0,1082.0 L762.0,1130.0"/>
+  <rect class="lbg-frame" x="717.4" y="1097.0" width="89.3" height="18" rx="3"/>
+  <text class="elabel" x="762.0" y="1110.0" text-anchor="middle">attach inside</text>
+  <path class="edge" d="M138.0,1130.0 L762.0,1130.0"/>
+  <path class="edge" d="M450.0,1130.0 L450,1151" marker-end="url(#ls-arrow)"/>
+  <path class="edge" d="M450.0,1322.0 L450.0,1368.0 Q450.0,1376.0 442.0,1376.0 L155.0,1376.0 Q147.0,1376.0 147.0,1384.0 L147,1445" marker-end="url(#ls-arrow)"/>
+  <rect class="lbg-page" x="263.0" y="1367.0" width="71.0" height="18" rx="3"/>
+  <text class="elabel" x="298.5" y="1380.0" text-anchor="middle">all chunks</text>
+  <path class="edge" d="M250.0,1542.5 L336,1542.5" marker-end="url(#ls-arrow)"/>
+  <text class="elabel" x="298.5" y="1534.5" text-anchor="middle">unique chunks</text>
+  <path class="edge" d="M553.0,1542.5 L639,1542.5" marker-end="url(#ls-arrow)"/>
+  <text class="elabel" x="601.5" y="1534.5" text-anchor="middle">citations</text>
+  <path class="edge" d="M753.0,1629.0 L753.0,1653.0 Q753.0,1661.0 745.0,1661.0 L155.0,1661.0 Q147.0,1661.0 147.0,1669.0 L147,1682" marker-end="url(#ls-arrow)"/>
+  <rect class="lbg-frame" x="405.4" y="1652.0" width="89.3" height="18" rx="3"/>
+  <text class="elabel" x="450.0" y="1665.0" text-anchor="middle">final context</text>
+  <rect class="box" x="44" y="243.5" width="206" height="79.0" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <text class="btitle" x="56" y="270.5">Convert query into</text>
+  <text class="btitle" x="56" y="287.5">vector (embeddings)</text>
+  <text class="btitle" x="56" y="304.5">representation</text>
+  <rect class="box" x="347" y="146.0" width="206" height="119.0" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <text class="btitle" x="359" y="173.0">Lexical search on</text>
+  <text class="btitle" x="359" y="190.0">entities</text>
+  <text class="bullet" x="359" y="213.0">•</text>
+  <text class="bullet" x="369" y="213.0">Match words in names</text>
+  <text class="bullet" x="369" y="229.0">and descriptions</text>
+  <text class="bullet" x="359" y="248.0">•</text>
+  <text class="bullet" x="369" y="248.0">Rank by text relevance</text>
+  <rect class="box" x="347" y="301.0" width="206" height="119.0" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <text class="btitle" x="359" y="328.0">Semantic search on</text>
+  <text class="btitle" x="359" y="345.0">entities</text>
+  <text class="bullet" x="359" y="368.0">•</text>
+  <text class="bullet" x="369" y="368.0">Compare query vector</text>
+  <text class="bullet" x="369" y="384.0">with entity vectors</text>
+  <text class="bullet" x="359" y="403.0">•</text>
+  <text class="bullet" x="369" y="403.0">Rank by similarity</text>
+  <rect class="box" x="650" y="214.0" width="206" height="138.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="662" y="241.0">Combine lexical and</text>
+  <text class="btitle" x="662" y="258.0">semantic rankings</text>
+  <text class="bullet" x="662" y="281.0">•</text>
+  <text class="bullet" x="672" y="281.0">Merge lists</text>
+  <text class="bullet" x="662" y="300.0">•</text>
+  <text class="bullet" x="672" y="300.0">Compute fused rank</text>
+  <text class="bullet" x="662" y="319.0">•</text>
+  <text class="bullet" x="672" y="319.0">Keep top-K entities as</text>
+  <text class="bullet" x="672" y="335.0">anchors</text>
+  <rect class="box" x="44" y="484.0" width="206" height="118.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="56" y="511.0">Hybrid result check</text>
+  <text class="bullet" x="56" y="534.0">•</text>
+  <text class="bullet" x="66" y="534.0">If anchors found →</text>
+  <text class="bullet" x="66" y="550.0">continue</text>
+  <text class="bullet" x="56" y="569.0">•</text>
+  <text class="bullet" x="66" y="569.0">If none or error →</text>
+  <text class="bullet" x="66" y="585.0">use fallback</text>
+  <rect class="box" x="650" y="484.0" width="206" height="118.0" rx="8" fill="#fce7f3" stroke="#be185d"/>
+  <text class="btitle" x="662" y="511.0">Anchor entities</text>
+  <text class="bullet" x="662" y="534.0">•</text>
+  <text class="bullet" x="672" y="534.0">Final selected entity</text>
+  <text class="bullet" x="672" y="550.0">nodes</text>
+  <text class="bullet" x="662" y="569.0">•</text>
+  <text class="bullet" x="672" y="569.0">Used as starting points</text>
+  <text class="bullet" x="672" y="585.0">in graph</text>
+  <rect class="box" x="347" y="577.0" width="206" height="135.0" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <text class="btitle" x="359" y="604.0">Fallback: semantic-only</text>
+  <text class="btitle" x="359" y="621.0">search</text>
+  <text class="bullet" x="359" y="644.0">•</text>
+  <text class="bullet" x="369" y="644.0">Rank entities by</text>
+  <text class="bullet" x="369" y="660.0">similarity only</text>
+  <text class="bullet" x="359" y="679.0">•</text>
+  <text class="bullet" x="369" y="679.0">Keep top-K entities as</text>
+  <text class="bullet" x="369" y="695.0">anchors</text>
+  <rect class="box" x="44" y="894.0" width="188" height="188.0" rx="8" fill="#fce7f3" stroke="#be185d"/>
+  <text class="btitle" x="56" y="921.0">Related text chunks</text>
+  <text class="bullet" x="56" y="944.0">•</text>
+  <text class="bullet" x="66" y="944.0">Follow &#x27;MENTIONED_IN&#x27;</text>
+  <text class="bullet" x="66" y="960.0">links from anchors</text>
+  <text class="bullet" x="56" y="979.0">•</text>
+  <text class="bullet" x="66" y="979.0">Count how often each</text>
+  <text class="bullet" x="66" y="995.0">chunk is linked</text>
+  <text class="bullet" x="56" y="1014.0">•</text>
+  <text class="bullet" x="66" y="1014.0">Sort by frequency,</text>
+  <text class="bullet" x="66" y="1030.0">keep top-N</text>
+  <text class="bullet" x="56" y="1049.0">•</text>
+  <text class="bullet" x="66" y="1049.0">Attach content and</text>
+  <text class="bullet" x="66" y="1065.0">basic metadata</text>
+  <rect class="box" x="252" y="894.0" width="188" height="188.0" rx="8" fill="#fce7f3" stroke="#be185d"/>
+  <text class="btitle" x="264" y="938.5">Community summaries</text>
+  <text class="bullet" x="264" y="961.5">•</text>
+  <text class="bullet" x="274" y="961.5">Follow &#x27;IN_COMMUNITY&#x27;</text>
+  <text class="bullet" x="274" y="977.5">links from anchors</text>
+  <text class="bullet" x="264" y="996.5">•</text>
+  <text class="bullet" x="274" y="996.5">Sort by level and</text>
+  <text class="bullet" x="274" y="1012.5">occurrence</text>
+  <text class="bullet" x="264" y="1031.5">•</text>
+  <text class="bullet" x="274" y="1031.5">Keep top-M summaries</text>
+  <text class="bullet" x="274" y="1047.5">with metadata</text>
+  <rect class="box" x="460" y="894.0" width="188" height="188.0" rx="8" fill="#ffedd5" stroke="#c2410c"/>
+  <text class="btitle" x="472" y="930.5">Outside relations</text>
+  <text class="bullet" x="472" y="953.5">•</text>
+  <text class="bullet" x="482" y="953.5">Edges connecting</text>
+  <text class="bullet" x="482" y="969.5">anchors to non-anchor</text>
+  <text class="bullet" x="482" y="985.5">entities</text>
+  <text class="bullet" x="472" y="1004.5">•</text>
+  <text class="bullet" x="482" y="1004.5">Include related entity</text>
+  <text class="bullet" x="482" y="1020.5">name and weights</text>
+  <text class="bullet" x="472" y="1039.5">•</text>
+  <text class="bullet" x="482" y="1039.5">Sort and limit by</text>
+  <text class="bullet" x="482" y="1055.5">importance</text>
+  <rect class="box" x="668" y="894.0" width="188" height="188.0" rx="8" fill="#ffedd5" stroke="#c2410c"/>
+  <text class="btitle" x="680" y="938.5">Inside relations</text>
+  <text class="bullet" x="680" y="961.5">•</text>
+  <text class="bullet" x="690" y="961.5">Edges between anchors</text>
+  <text class="bullet" x="690" y="977.5">themselves</text>
+  <text class="bullet" x="680" y="996.5">•</text>
+  <text class="bullet" x="690" y="996.5">Include related anchor</text>
+  <text class="bullet" x="690" y="1012.5">name and weights</text>
+  <text class="bullet" x="680" y="1031.5">•</text>
+  <text class="bullet" x="690" y="1031.5">Sort and limit by</text>
+  <text class="bullet" x="690" y="1047.5">importance</text>
+  <rect class="box" x="240" y="1162.0" width="420" height="160.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="252" y="1189.0">Per-entity graph bundles</text>
+  <text class="bullet" x="252" y="1206.0">For each anchor:</text>
+  <text class="bullet" x="252" y="1229.0">•</text>
+  <text class="bullet" x="262" y="1229.0">Entity description</text>
+  <text class="bullet" x="252" y="1248.0">•</text>
+  <text class="bullet" x="262" y="1248.0">Selected chunks</text>
+  <text class="bullet" x="252" y="1267.0">•</text>
+  <text class="bullet" x="262" y="1267.0">Selected community summaries</text>
+  <text class="bullet" x="252" y="1286.0">•</text>
+  <text class="bullet" x="262" y="1286.0">Inside and outside relations</text>
+  <text class="bullet" x="252" y="1305.0">•</text>
+  <text class="bullet" x="262" y="1305.0">Core metadata</text>
+  <rect class="box" x="44" y="1456.0" width="206" height="173.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="56" y="1510.0">Deduplicate chunks</text>
+  <text class="btitle" x="56" y="1527.0">across all entities</text>
+  <text class="bullet" x="56" y="1550.0">•</text>
+  <text class="bullet" x="66" y="1550.0">Track chunk identifiers</text>
+  <text class="bullet" x="56" y="1569.0">•</text>
+  <text class="bullet" x="66" y="1569.0">Keep first occurrence</text>
+  <text class="bullet" x="66" y="1585.0">only</text>
+  <rect class="box" x="347" y="1456.0" width="206" height="173.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="359" y="1510.5">Create citation mapping</text>
+  <text class="bullet" x="359" y="1533.5">•</text>
+  <text class="bullet" x="369" y="1533.5">Assign citation numbers</text>
+  <text class="bullet" x="369" y="1549.5">to unique chunks</text>
+  <text class="bullet" x="359" y="1568.5">•</text>
+  <text class="bullet" x="369" y="1568.5">Store URL and short</text>
+  <text class="bullet" x="369" y="1584.5">preview text</text>
+  <rect class="box" x="650" y="1456.0" width="206" height="173.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="662" y="1483.0">Format local graph</text>
+  <text class="btitle" x="662" y="1500.0">context</text>
+  <text class="bullet" x="662" y="1523.0">•</text>
+  <text class="bullet" x="672" y="1523.0">Group by entity</text>
+  <text class="bullet" x="662" y="1542.0">•</text>
+  <text class="bullet" x="672" y="1542.0">List chunks with</text>
+  <text class="bullet" x="672" y="1558.0">citations</text>
+  <text class="bullet" x="662" y="1577.0">•</text>
+  <text class="bullet" x="672" y="1577.0">List community summaries</text>
+  <text class="bullet" x="662" y="1596.0">•</text>
+  <text class="bullet" x="672" y="1596.0">List inside/outside</text>
+  <text class="bullet" x="672" y="1612.0">relations</text>
+  <rect class="box" x="44" y="1693.0" width="206" height="102.0" rx="8" fill="#ccfbf1" stroke="#0f766e"/>
+  <text class="btitle" x="56" y="1720.0">Local graph context</text>
+  <text class="bullet" x="56" y="1743.0">•</text>
+  <text class="bullet" x="66" y="1743.0">Compact, entity-centric</text>
+  <text class="bullet" x="66" y="1759.0">view</text>
+  <text class="bullet" x="56" y="1778.0">•</text>
+  <text class="bullet" x="66" y="1778.0">Final answer generation</text>
+</svg>

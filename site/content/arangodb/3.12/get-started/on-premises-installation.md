@@ -21,7 +21,7 @@ startup parameters, installation in a cluster and so on, see
 [Deploy](../deploy/_index.md).
 
 <!--
-The web interface will become available shortly after you started `arangod`.
+The web interface will become available shortly after you started _arangod_.
 
 By default, authentication is enabled. The default user is `root`.
 Depending on the installation method used, the installation process either
@@ -48,14 +48,16 @@ The default installation contains one database `_system` and a user
 named `root`.
 
 Debian-based packages ask for a password during the installation process.
-Red-Hat based packages set a random password. For all other installation
-packages, you need to execute the following:
+Red-Hat based packages set a random password. You can change the password with the
+following command, which asks for a new root password and sets it:
 
 ```
 shell> arango-secure-installation
 ```
 
-This command asks for a root password and sets it.
+If you use the `tar.gz` archives, see
+[Securing your installation](../operations/installation/linux/_index.md#targz-archives)
+instead.
 
 {{< warning >}}
 The password that is set for the root user during the installation of the ArangoDB
@@ -75,9 +77,10 @@ You should create a database for your application together with a
 user that has access rights to this database. See
 [Managing Users](../operations/administration/user-management/_index.md).
 
-Use the *arangosh* to create a new database and user.
+Use the _arangosh_ to create a new database and user.
 
 ```js
+arangosh> db._useDatabase("_system");
 arangosh> db._createDatabase("example");
 arangosh> var users = require("@arangodb/users");
 arangosh> users.save("root@example", "password");

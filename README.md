@@ -66,6 +66,49 @@ orchestrate builds. The following containers are created:
 - `docs_site` - contains Hugo and the logic to start it
 - `docs_server_<version>` - an ArangoDB single server
 - `docs_server_<version>_cluster` - an ArangoDB cluster
+- `docs_client_<version>` - the ArangoDB client tools (`arangosh` etc.), only for
+  versions with separate server and client tools images (4.x). Otherwise, the
+  client tools run in the `docs_server_<version>` container
+
+#### Update the toolchain dependencies
+
+- **Hugo**: Change `HUGO_VERSION` in
+  [`toolchain/docker/Dockerfile`](toolchain/docker/Dockerfile) to the desired
+  release of <https://github.com/gohugoio/hugo/releases> and rebuild the
+  images with the `create-docs-images-amd64` and `create-docs-images-arm64`
+  CircleCI workflows (see [CIRCLECI.md](CIRCLECI.md#toolchain-images)). Check the
+  release notes for breaking changes and test a build locally first (see below).
+- **Testing image changes locally**: The compose files and the toolchain use the
+  images by name, so build them with the official names to replace your local
+  copies. Changes to the `Dockerfile` can affect all three images (the stages
+  `hugo`, `arangoproxy`, and `toolchain`), so rebuild all of them, e.g. in the
+  `toolchain/docker` folder (use `arm64` on ARM):
+
+  ```sh
+  docker build --target hugo -t arangodb/docs-hugo:site-amd64 .
+  docker build --target arangoproxy -t arangodb/docs-hugo:arangoproxy-amd64 .
+  docker build --target toolchain -t arangodb/docs-hugo:toolchain-amd64 .
+  ```
+
+  Then run a plain build and an example generation. To go back to the published
+  images, pull them again (e.g. `docker pull arangodb/docs-hugo:site-amd64`).
+- **Go modules of arangoproxy**: arangoproxy is compiled from the source code in
+  the repository when its container starts, so updating the modules doesn't
+  require new images:
+
+  ```sh
+  cd toolchain/arangoproxy
+  go get -u ./...   # all modules, or e.g. go get -u github.com/dlclark/regexp2
+  go mod tidy
+  go mod vendor
+  go build ./... && go test ./...
+  ```
+
+  Commit the changes to `go.mod`, `go.sum`, and `vendor/`. If you raise the `go`
+  version in `go.mod`, rebuild the images to get a matching Go toolchain.
+- **Everything else** (Alpine packages, Go, yq, oasisctl) uses the latest versions
+  at the time the images are built. Rebuild the images regularly to get security
+  updates.
 
 ### Render hooks
 
@@ -119,8 +162,11 @@ place the output into the rendered documentation, for example.
 
   - `` ```js `` for arangosh / JavaScript API examples
   - `` ```aql `` for AQL query examples
-  - `` ```openapi `` for REST HTTP API descriptions
-  - `` ```curl `` for REST HTTP API examples
+  - `` ```openapi `` for HTTP API descriptions
+  - `` ```curl `` for HTTP API examples
+
+  There is also a `` ```mermaid `` codeblock for [Diagrams](#diagrams) that does
+  not involve _arangoproxy_ at all.
 
 The hooks trigger a `POST` call to the dedicated _arangoproxy_ endpoint
 (`/js`, `/aql`, `/curl`, `openapi`) with the entire codeblock as request body.
@@ -141,7 +187,7 @@ The following build workflows exist:
 
   Build docs without re-generating examples (using a committed cache file).
 
-  Includes the assembly of the REST HTTP API descriptions (OpenAPI) with
+  Includes the assembly of the HTTP API descriptions (OpenAPI) with
   validation at each run. `` ```curl `` examples require a different workflow.
 
   You may need to specify upstream branches.
@@ -170,11 +216,15 @@ Go to the `toolchain/docker/<architecture>` folder, with `<architecture>` being
 either `amd64` for x86-64 CPUs and `arm64` for 64-bit ARM CPUs (including
 Apple silicon like M1).
 
-Run the `docker compose` services using the `docker-compose.pain-build.yml` file.
+Run the `docker compose` services using the `docker-compose.plain-build.yml` file.
 
 ```sh
-docs-hugo/toolchain/docker/amd64> docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
+docs-hugo/toolchain/docker/amd64> docker compose -f docker-compose.plain-build.yml up --exit-code-from site-frontend
 ```
+
+`--exit-code-from site-frontend` stops the arangoproxy service when the site
+service exits and returns its exit code (for static builds, see below). A live
+server runs until you press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 
 The site will be available at `http://localhost:1313`.
 
@@ -190,19 +240,177 @@ $Env:ENV='static'  # PowerShell
 
 The output files will be written to `site/public/`.
 
+You can additionally set the `HUGO_URL` environment variable to
+`https://docs.arango.ai/` to create a production-like build that
+includes Google Analytics etc.
+
 #### Scheduled and example generation build
 
 **Configuration**
 
-The toolchain container needs to be set up via config file in `toolchain/docker/config.yaml`:
+The toolchain is configured with environment variables:
 
-```yaml
-generators:   # Generators to trigger - empty string defaults to all generators
-servers:      # Array to define arangodb servers to be used by the toolchain
-  - image:    # arangodb docker image to be used, can be arangodb/enterprise-preview:... or a branch name
-    version:  # docs branch to put the generated content into
-  - ...       # Additional images and versions as needed
+- `GENERATORS`: the generators to run as a space-separated string (see below).
+  All generators run if it is empty.
+- `ARANGODB_BRANCH_{VERSION}`: the ArangoDB Docker image to use for a docs version,
+  for example, `arangodb/enterprise-preview:devel-nightly`,
+  `arangodb/core-preview:4.0-nightly`, or `arangodb/enterprise:3.12.9`
+  (Docker Hub if no registry is given, other registries like
+  `gcr.io/gcr-for-testing/arangodb/core-preview:4.0-nightly` work, too),
+  or the absolute path of a local build (see **Local builds** below).
+  It can also be a branch name of the `arangodb/arangodb` repository if CI
+  compiled it before: the toolchain then uses the cached image
+  `arangodb/docs-hugo:<version>-<arangodb commit>-<enterprise commit>` (see
+  [CIRCLECI.md](CIRCLECI.md#upstream-references)) for the commits checked out in
+  `ARANGODB_SRC_{VERSION}` (including its `enterprise` folder).
+  No server is started for a version if it is empty, and its content is not
+  regenerated.
+- `ARANGODB_SRC_{VERSION}`: the absolute path to a working copy of the
+  [`arangodb/arangodb`](https://github.com/arangodb/arangodb) repository.
+  Required for the `metrics`, `error-codes`, and `exit-codes` generators.
+  Don't use `~` for your home folder in the `.env` file or in quotes, it isn't
+  expanded there.
+- `ARANGODB_STARTER`: the absolute path of an ArangoDB Starter executable for the
+  cluster of local builds (see **Local builds** below). Optional.
+- `EXAMPLES_SCOPE`: `changed` to only run the examples of pages that have
+  changed or new examples, and to show the saved output for all other pages,
+  or `all` to run all examples. The default is `changed` for local builds and
+  `all` in CI. `OVERRIDE` implies `all`.
+- `OVERRIDE`: only save the output of the examples that match these
+  comma-separated regular expressions, whether the example code changed or not.
+  They are matched against the example name (e.g. `HttpGharialCreate`) and the
+  name of the cache entry (e.g. `HttpGharialCreate_single`). The output of other
+  new and changed examples isn't saved. A regular expression that matches no
+  example is reported as a warning.
+  Without it, only the output of new examples and of examples whose code changed
+  is saved to `site/data/<version>/cache.json`, regardless of the scope (see
+  [Saved example output and previews](CIRCLECI.md#saved-example-output-and-previews)).
+  It only applies to the current run and isn't saved to the `.env` file (see below).
+
+Substitute `{VERSION}` with the docs version in uppercase and with underscores,
+like `3_12` for 3.12 and `4_X` for 4.x. There is one setting per docs version,
+so you can use one server per version.
+
+```sh
+# Bash
+export GENERATORS="examples options optimizer"
+export ARANGODB_BRANCH_3_12="arangodb/enterprise:3.12.9"
+export ARANGODB_SRC_3_12="path/to/arangodb"
+export ARANGODB_BRANCH_4_X="arangodb/core-preview:4.0-nightly"
+export ARANGODB_SRC_4_X="path/to/arangodb2"
 ```
+
+```fish
+# Fish
+set -xg GENERATORS "examples options optimizer"
+set -xg ARANGODB_BRANCH_4_X arangodb/core-preview:4.0-nightly
+```
+
+On Windows using PowerShell, use a Unix-like path:
+
+```powershell
+$Env:ARANGODB_SRC_{VERSION} = "/Drive/path/to/arangodb"
+```
+
+A local run saves the settings to a `.env` file next to the compose file
+(e.g. `toolchain/docker/amd64/.env`), which `docker compose` reads by default.
+This means that you only need to specify the settings once. Subsequent runs use
+the saved settings unless you set the environment variables to different values.
+Set a variable to an empty string to clear a saved setting, for example, to no
+longer start a server for a version:
+
+```sh
+ARANGODB_BRANCH_3_12= docker compose up   # Bash and Fish
+```
+
+You can also edit the `.env` file directly. It isn't committed to the repository.
+
+Exceptions are `OVERRIDE`, `HUGO_URL`, `HUGO_ENV`, and `ENV`: they only apply to
+the run you set them for and aren't saved, so that, for example, `OVERRIDE=".*"`
+doesn't save the output of all examples again in every later run. Set them in
+the shell, not in the `.env` file: each run rewrites the file with the saved
+settings only, so these variables would only take effect once. Variables that
+you `export` (Bash) or `set -x` (Fish) stay set for the rest of the shell
+session, unset them afterwards (`unset OVERRIDE` or `set -e OVERRIDE`), or set
+them for a single command:
+
+```sh
+OVERRIDE=".*" docker compose up   # Bash and Fish
+```
+
+Starting with 4.x, the server (`arangod`, without V8) and the client tools
+(including `arangosh`) are in separate images, for example,
+`arangodb/core-preview:4.0-nightly` and `arangodb/client-tools-preview:4.0-nightly`.
+Only specify the server image (`core`/`core-preview`). The toolchain derives the
+matching client tools image (`client-tools`/`client-tools-preview` in the same
+registry, with the same tag; generally, a repository name `core` or `core-<suffix>`
+becomes `client-tools` or `client-tools-<suffix>`), pulls it if necessary, and runs
+`arangosh` and the other client tools in a separate container. For images that bundle the server and the client tools
+(like `arangodb/enterprise:3.12.9`), the client tools run in the server container.
+
+Images that exist locally are used as they are, otherwise the toolchain pulls
+them. To get the latest build of an image with a tag that is updated regularly,
+like the nightly images, pull it manually before running the toolchain. For
+versions with separate server and client tools images, pull both:
+
+```sh
+docker pull arangodb/core-preview:4.0-nightly
+docker pull arangodb/client-tools-preview:4.0-nightly
+```
+
+The same applies to the images of the toolchain itself
+(`arangodb/docs-hugo:toolchain-amd64`, `arangodb/docs-hugo:site-amd64`,
+`arangodb/docs-hugo:arangoproxy-amd64`, or `-arm64`). CI always pulls the latest
+images. When someone publishes new toolchain images (e.g. with a new Hugo
+version), everyone else keeps using their older local images until they pull the
+new ones. Content that relies on the changes may then fail to build locally, so
+pull the toolchain images after such updates:
+
+```sh
+docker pull arangodb/docs-hugo:toolchain-amd64
+docker pull arangodb/docs-hugo:site-amd64
+docker pull arangodb/docs-hugo:arangoproxy-amd64
+```
+
+**Local builds**
+
+Instead of an image, you can set `ARANGODB_BRANCH_{VERSION}` to the absolute path
+of a local build directory of ArangoDB, for example,
+`/path/to/arangodb/build-presets/nightly-package-x64`. The toolchain runs the
+`arangod`, `arangosh`, and other executables of this build, without creating an
+image. It uses the JavaScript files of the source tree from
+`ARANGODB_SRC_{VERSION}`, or of the working copy that contains the build
+directory if it isn't set. Its version should be the same as the one of the
+build: the JavaScript code of another patch version can be incompatible with the
+executables, and the toolchain warns about it.
+
+- Only static builds are supported, like the ones of the CMake presets except the
+  sanitizer presets (`*-tsan`, `*-alubsan`). Builds of the official build
+  container (e.g. `arangodb/ubuntubuildarangodb-devel`) work, too.
+- The version of the build needs to match the docs version and the version of the
+  source tree (major and minor version).
+- Prefer release-like presets like `nightly-package-x64` or
+  `pr-non-maintainer-x64`. Developer builds with maintainer mode and assertions
+  (e.g. the `developer-x64` preset) work, but the example output can differ from
+  release builds, so don't commit it. The toolchain warns about such builds.
+- Don't rebuild or switch branches in the source tree while the toolchain runs,
+  as the files are used directly.
+
+The executables run in containers of the toolchain image. Two executables that the
+official images include are missing in builds: the ArangoDB Starter (for the
+cluster) and `rclone-arangodb` (for hot backup uploads and downloads). The
+toolchain uses the versions that the source tree specifies (`STARTER_REV` and
+`RCLONE_*` in the `VERSIONS` file), like the official images. It downloads them
+from GitHub once (verifying the checksum of `rclone-arangodb`) and keeps them in
+the `docs_local_tools` Docker volume, so subsequent runs work offline. If a
+download fails (e.g. no internet connection), it uses another version that is
+available locally (downloaded before, or from a locally available `arangodb/core`,
+`arangodb/enterprise`, or `-preview` image) and warns about the version mismatch.
+
+To use a specific Starter executable instead, e.g. a self-compiled one, set
+`ARANGODB_STARTER` to its absolute path. Note that compiling the Starter
+requires an internet connection unless the Go modules are already cached, because
+its repository doesn't include the dependencies.
 
 **Available generators**
 
@@ -214,34 +422,6 @@ servers:      # Array to define arangodb servers to be used by the toolchain
 - `options`
 - `oasisctl`
 
-The generators entry is a space-separated string.
-
-If `metrics`, `error-codes`, or `exit-coddes` is in the `generators` string,
-the following environment variable has to be exported:
-
-```sh
-export ARANGODB_SRC_{VERSION}=path/to/arangodb/source
-```
-
-Substitute `{VERSION}` with a version number like `3_11`.
-
-On Windows using PowerShell, use a Unix-like path:
-
-```powershell
-$Env:ARANGODB_SRC_3_11 = "/Drive/path/to/arangodb"
-```
-
-**Configuration example**
-
-```yaml
-generators: examples oasisctl options optimizer
-servers:
-  - image: arangodb/enterprise-preview:3.11-nightly
-    version: "3.11"
-  - image: arangodb/enterprise-preview:devel-nightly
-    version: "3.12"
-```
-
 **Run the toolchain**
 
 Go to the `toolchain/docker/<architecture>` folder, with `<architecture>` being
@@ -251,10 +431,19 @@ Apple silicon like M1).
 Run the `docker compose` services without specifying a file:
 
 ```sh
-docs-hugo/toolchain/docker/arm64> docker compose up --abort-on-container-exit
+docs-hugo/toolchain/docker/arm64> docker compose up
 ```
 
 The site will be available at `http://localhost:1313`
+
+To stop the toolchain, press <kbd>Ctrl</kbd>+<kbd>C</kbd> once or run
+`docker compose down` in the same folder. This also removes the containers that
+the toolchain started (servers, arangoproxy, site). If an error occurs, the
+toolchain keeps all containers running so that you can inspect them (e.g. their
+logs with `docker logs docs_server_4.x`) until you stop it. If you force-stop it, the
+containers keep running until the next toolchain run removes them. They can
+block the port of a subsequent plain build, for instance. You can remove them
+with `docker ps -aq --filter name=docs_ | xargs docker rm -f`.
 
 ## Work with the documentation content
 
@@ -263,7 +452,7 @@ The site will be available at `http://localhost:1313`
 In the `site/content` directory, the directories `3.10`, `3.11` etc. represent
 the individual ArangoDB versions and their documentation. There is only one
 maintained version of the documentation for every minor and major version (3.12,
-4.0, etc.) but not for every patch release (e.g. 3.12.1).
+4.x, etc.) but not for every patch release (e.g. 3.12.1).
 
 Having a folder per version has the advantage that all versions can be built at
 once, but the drawback of Git cherry-picking not being available and therefore
@@ -275,7 +464,9 @@ requiring to manually apply changes to different versions as necessary.
   - `content/` - The Markdown source files in version folders as well as a
     shared folder for images
   - `data/` - Contains JSON and YAML files for the documentation versions,
-    the OpenAPI tag list, the example cache, etc.
+    the OpenAPI tag lists, the example cache, etc. See
+    [OpenAPI configuration and code block options](#openapi-configuration-and-code-block-options)
+    for `versions.yaml` (e.g. `allowedAPIVersions`) and `openapi_services.yaml`.
   - `public/` - Default output directory for the generated site (not committed)
   - `resources/` - Holds the various cached resources that are generated by Hugo
     when using `hugo serve`
@@ -342,7 +533,7 @@ paths:
     post:
       description: |
         {{</* warning */>}}
-        Admonition inside of REST HTTP API description.
+        Admonition inside of HTTP API description.
         {{</* /warning */>}}
         ...
 ```
@@ -386,13 +577,13 @@ ArangoDB.
 {{< tabs "startup-options" >}}
 
 {{< tab "Command-line" >}}
-Start `arangod` with the startup option `--log.level startup=trace`.
+Start _arangod_ with the startup option `--log.level startup=trace`.
 {{< /tab >}}
 
 {{< tab "Configuration file" >}}
 Include the following startup option setting in your `arangod.conf`:
 
-```conf
+```cfg
 [log]
 level = startup=trace
 ```
@@ -432,6 +623,39 @@ Available attributes:
 - `class`: CSS classes to apply
 - `style`: CSS inline styles to apply
 
+##### Image compression
+
+When adding or updating images, the files should be reduced in size as much as
+possible before merging to the main branch. This helps to keep the Git history
+small and images load faster over the internet.
+
+[Squoosh](https://squoosh.app/) is a web app to easily re-compress images with
+various options to reduce the file size.
+
+- It runs the compression locally in your browser.
+- You can visually inspect how the options affect the output quality.
+
+There is a modified version that adds batch processing so you can apply the same
+compression to multiple files in one go:
+
+<https://squoosh-multiple-export.vercel.app>
+
+1. Open the web app and drop one or multiple image files.
+2. Adjust the options in the bottom-right panel (see below).
+3. Check that the compression doesn't cause too strong visual artifacts like
+   color banding, color shifts, hard-to-read text, and so on. You can switch
+   between input images using the dropdown menu at the bottom center.
+4. Click the **Download All # Files** button below the options panel to
+   download them all at once.
+5. The file names are preserved, so you can paste the re-compressed files over
+   the original files to replace them.
+
+Suggested options:
+
+- **Reduce palette**, typically `64` colors is enough for screenshots.
+- **Dithering**, can be left at `1` to make up for the reduced color palette.
+- **OxiPNG** as the compressor (if the input is also PNG)
+
 #### Icons
 
 If a web interface uses icons, especially as buttons without labels, use
@@ -450,6 +674,125 @@ They are referenced by file name (without extension) in the shortcode.
 
 SVG icon files should not define the attributes `width`, `height`, `aria-hidden`,
 and `focusable` on the `<svg>` tag.
+
+#### Embedded SVGs
+
+To embed an SVG inline (so its text, shapes, and links remain part of the page
+DOM and stay clickable), use the `embed-svg` shortcode:
+
+```markdown
+{{< embed-svg "Platform-Architecture" >}}
+```
+
+```markdown
+{{< embed-svg "Platform-Architecture" "Click a component to learn more." >}}
+```
+
+Positional parameters:
+
+1. The SVG file name **without extension**, resolved against `site/content/images/`.
+   For `{{< embed-svg "Platform-Architecture" >}}`, the toolchain reads
+   `site/content/images/Platform-Architecture.svg`.
+2. An optional caption rendered below the figure. Markdown is supported.
+   Defaults to `Click a component to learn more.` Pass an empty string (`""`)
+   to suppress the default text.
+
+Unlike the `image` shortcode (which emits an `<img>` tag), `embed-svg` inlines
+the file contents with `readFile` and `safeHTML`, which means:
+
+- Links inside the SVG are clickable in the rendered page.
+- Text inside the SVG is selectable and indexable.
+- CSS classes set on SVG elements can be styled from the theme stylesheet.
+
+The build fails with an `errorf` if the named SVG cannot be found.
+
+##### Adding clickable links to an SVG
+
+Links live inside the SVG file itself, not in the shortcode call. To make a
+shape or label clickable, wrap it in an SVG `<a>` element with an `xlink:href`
+attribute:
+
+```xml
+<a class="card-link" xlink:href="/arangodb/4.x/develop/http-api/">
+  <rect x="340" y="145" width="220" height="72" rx="10" class="node" .../>
+  <text x="450" y="174" ...>Envoy</text>
+</a>
+```
+
+To change where an existing block links to, open the SVG under
+`site/content/images/`, find the `<a ... xlink:href="...">` that wraps the
+block, and edit the `xlink:href` value.
+
+Conventions used in the existing diagrams:
+
+- Internal docs links use an absolute path, e.g. `/arangodb/4.x/deploy/cluster/`
+  or `/platform-suite/container-manager/`.
+- External links use a full URL and add `target="_blank"`, e.g.
+  `<a xlink:href="https://kubernetes.io/" target="_blank">`.
+- Use `class="card-link"` on the `<a>` tag so the link picks up the shared
+  hover styling defined in the theme.
+
+#### Diagrams
+
+For flowcharts and similar schematics that you want to maintain as text instead
+of as an image file, use a fenced `mermaid` codeblock:
+
+````markdown
+```mermaid
+flowchart LR
+  A([Start]) --> B["Do the work"] --> C([Done])
+```
+````
+
+For the available diagram types and their syntax, see the
+[Mermaid documentation](https://mermaid.js.org/intro/).
+
+Unlike the other codeblock render hooks, `mermaid` blocks are not sent to
+_arangoproxy_. The hook only wraps the block in a `<pre class="mermaid">`
+element, and `theme.js` renders it in the browser using the Mermaid version
+pinned there. A diagram with a syntax error therefore does not fail the build.
+Mermaid draws an error graphic in place of the diagram and logs a warning to the
+browser console instead, so always check diagrams in the preview.
+
+Each diagram is rendered into a box of a fixed height and can be panned and
+zoomed:
+
+- Drag the diagram to pan it. Dragging continues while the pointer is outside
+  the box, but a diagram cannot be moved out of view entirely.
+- Use the mouse wheel or the `+` and `-` buttons to zoom, and `RESET` to fit the
+  diagram into the box again.
+
+The relevant files are the hook
+`site/themes/arangodb-docs-theme/layouts/_default/_markup/render-codeblock-mermaid.html`,
+the rendering and pan/zoom setup in `static/js/theme.js`, and the `pre.mermaid`
+rules in `static/css/theme.css`.
+
+Labels in Mermaid are plain text by default, so `["**Execute**"]` renders the
+asterisks literally. To use Markdown in a label, wrap the label text in
+backticks inside the quotes:
+
+````markdown
+```mermaid
+flowchart TD
+  A([Request received]) --> B["`**Execute**
+    Runs query by calling
+    <code>POST /_api/cursor</code>`"]
+```
+````
+
+In such a label, a line break in the source becomes a line break in the label
+and the indentation of continuation lines is stripped. Two subsequent line
+breaks are an exception: they wrap the text like a single line break but keep the
+indentation, because Mermaid starts a new paragraph (rendered without any extra
+spacing) instead of continuing the current one.
+
+Plain labels support line breaks in the source as well, but keep the indentation
+of continuation lines as a leading space, and two subsequent line breaks create
+an empty line. `<br>` works in both kinds of labels. The `\n` escape sequence
+only works in plain labels — a Markdown label renders it literally.
+
+For inline code, use `<code>`. You cannot use backticks in a Markdown label as
+that is a syntax error.
 
 #### Keyboard shortcuts
 
@@ -477,6 +820,52 @@ Read about ArangoDB's features for analytics.
 
 {{< /cards >}}
 ```
+
+#### Steps
+
+To lay out a sequence of instructions as a numbered, visually separated list,
+use the `steps` shortcode with a nested `step` shortcode for each step:
+
+````markdown
+{{< steps >}}
+
+{{< step title="Install the package" >}}
+Download and install the package for your platform.
+{{< /step >}}
+
+{{< step title="Start the server" >}}
+Run the following command:
+
+```sh
+arangod --server.endpoint tcp://0.0.0.0:8529
+```
+{{< /step >}}
+
+{{< /steps >}}
+````
+
+Each `step` is automatically numbered in the order it appears. The content
+between the `step` tags can be any Markdown, including code blocks, admonitions,
+and other shortcodes.
+
+Available parameters for the `step` shortcode:
+
+- `title`: the title of the step, which can also be passed as the first
+  positional parameter. Supports inline Markdown.
+- `icon`: an optional icon to display instead of the step number, referenced by
+  file name like the [`icon` shortcode](#icons) (e.g. `icon="download"`). The
+  name must consist of lowercase letters, digits, and hyphens only.
+- `id`: an optional `id` attribute for the step's HTML element so you can link to
+  a specific step with an anchor, e.g. `id="start-the-server"`.
+
+Available parameter for the `steps` shortcode:
+
+- `titleSize`: the HTML element to use for the step titles. Defaults to `p`
+  (a styled paragraph). Set it to a heading level from `h2` to `h6` if the step
+  titles should be semantic headings, e.g. `{{< steps titleSize="h3" >}}`.
+
+The build fails with an error if an invalid `titleSize` (anything other than
+`p` or `h2` to `h6`) or an invalid `icon` name is used.
 
 #### Comments
 
@@ -532,13 +921,17 @@ The following shortcodes also exist but are rarely used:
   rules from a JSON source file.
 
 - `{{% program-options name="arangod" %}}` renders the startup options of a
-  component like the ArangoDB server (`arangod`) or shell (`arangosh`).
+  component like the ArangoDB server (_arangod_) or shell (_arangosh_).
 
 - `{{% error-codes %}}` renders the ArangoDB server error codes and their meaning.
 
 - `{{% exit-codes %}}` renders the ArangoDB client and server exit codes and their meaning.
 
 - `{{% metrics %}}` renders the list of ArangoDB server metrics.
+
+- `{{% service-versions %}}` renders the service versions that every release of
+  the Arango Contextual Data Platform bundles, see
+  [Add a Contextual Data Platform release](#add-a-contextual-data-platform-release).
 
 ### Content Guidelines
 
@@ -599,6 +992,7 @@ The following shortcodes also exist but are rarely used:
   or after the language, and use the following languages in favor of the ones in
   parentheses for consistency:
 
+  - `` ```cfg `` (instead of `` ```conf `` or `` ```ini ``)
   - `` ```py `` (instead of `` ```python ``)
   - `` ```yaml `` (instead of `` ```yml ``)
   - `` ```sh `` (instead of `` ```shell ``)
@@ -619,16 +1013,52 @@ The following shortcodes also exist but are rarely used:
   - _Agent_, _Agency_ (uppercase A)
   - _Arango Managed Platform (AMP)_ and _AMP_ for short, but not
     ~~Oasis~~, ~~ArangoDB Oasis~~, ~~ArangoDB Cloud~~, ~~ArangoGraph Insights Platform~~, or ~~ArangoGraph~~
-  - _Arango Contextual Data Platform_, but not
-     ~~Arango Data Platform~~, ~~Arango AI Services Data Platform~~,
-     ~~Arango AI Suite Data Platform~~, or ~~Arango AI Data Platform~~
+  - _Arango Contextual Data Platform_
+    and _data platform_ for short in prose that refers to it many times, but not
+    ~~platform~~ (ambiguous with Arango Managed Platform),
+    ~~Data Platform~~, ~~Arango Data Platform~~, ~~Arango AI Services Data Platform~~,
+    ~~Arango AI Suite Data Platform~~, or ~~Arango AI Data Platform~~
   - _Arango Platform Suite_ and _Arango Agentic AI Suite_, but not
     ~~AI Services~~, ~~GenAI Suite~~, or ~~AI Suite~~
   - _Arango Control Plane_, but not ~~GenAI Service~~ or ~~AI Orchestrator~~
   - _Deployment mode_ (single server, cluster, etc.), not ~~deployment type~~
 
+- Use _object storage_, not ~~blob storage~~ when referring to S3-like services,
+  as it is more precise (includes the metadata and identifier) and to avoid
+  confusion with RocksDB BLOB storage.
+
+- Use _HTTP API_, not ~~REST (HTTP) API~~ or ~~RESTful (HTTP) API~~ unless it
+  truly adheres to the REST principles, especially regarding hypermedia (HATEOAS).
+
 - Never capitalize the names of executables or code values, e.g. write
   _arangosh_ instead of _Arangosh_.
+
+- When referring to programs by their executable names, like the server or
+  client-tool binaries, make the name italic using underscores, e.g. `_arangod_`
+  or `_oasisctl_`. In headlines, use asterisks, e.g. `*oasisctl*` and `*arangod*`,
+  because underscores would affect the generated fragment IDs.
+
+  Exceptions: Don't make it italic in the following cases:
+
+  -  In the `menuTitle` front matter \
+    `menuTitle: Get started with oasisctl` but `title: Get started with _oasisctl_`
+
+  - If it's the full label of a link \
+    `[oasisctl](...)` but `[The _oasisctl_ reference](...)`
+
+  - If it's the only text of a headline \
+    `### arangodump` but `### Create backups with *arangodump*`
+
+  - If it specifically refers to the file on disk or is a command to run
+    (use inline code instead) \
+    `` The ArangoDB server executable is named `arangod` ``
+
+  - Inside of code including comments \
+    `const aql = require('@arangodb').aql; // not needed in arangosh`
+
+  Don't write the name as inline code, e.g. `` `oasisctl` ``, unless the user
+  is supposed to run it as a command or if it's specifically used as a
+  code value or file name.
 
 - Do not write TODOs right into the content and avoid using
   `<!-- HTML comments -->`. Use `{{< comment >}}...{{< /comment >}}` instead.
@@ -660,69 +1090,180 @@ See [Named Graphs](#named-graphs)
 
 ### Version Remarks
 
-The main page about a new feature should indicate the version the feature was
-added in, as shown below:
+If features are added or removed in the middle of a release series, use version
+remarks to point this out.
 
-```markdown
----
-title: New feature
-...
----
-<small>Introduced in: v3.12.0</small>
+This is not necessary for the first release of a series as this is expected and
+the changes are described in detail in the release notes. However, if a
+significant change sits inside content that otherwise still applies to the
+previous release series, a version remark can be helpful.
 
-...
-```
+If features are deprecated, this should be pointed out with a version remark
+regardless of the version, including the first release of a series.
 
-Similarly, the remark should be added if only a section is added to an existing
-page, as shown below:
+Examples:
 
-```markdown
-## Existing feature
+- **v3.12.0**: A new feature can be added to the docs **without** version remark.
+- **v3.12.1**: A new feature should have a version remark so that users on
+  v3.12.0 know that it's not available in their version (v3.12 release series).
+- **v4.0.0**: A removed feature has the description removed from the content.
+  You can learn about the removal from the release notes, and in case of a
+  larger feature, also from the _Deprecated and removed features_ page.
+- **v4.1.0**: A removed feature has the description still present in the content
+  for users on older v4.x.x versions (v4.x release series). A version remark needs
+  be added to let users know that it can't be used from v4.1.0 onward anymore.
+- **v5.0.0**: A feature deprecated in v5.0.0 is still available and usable.
+  It needs a version remark to inform users that it shouldn't be used anymore.
+  The feature will be removed in a future version (e.g. v6.0.0).
 
-...
+**Implied versions and multiple versions**
 
-### New feature section
-
-<small>Introduced in: v3.12.0</small>
-
-...
-```
-
-The value `v3.12.0` implies that all later versions also have this feature
-(3.12.1, 3.12.2, etc., as well as 4.0.0 and later). If this is not the case,
-then also mention the other relevant versions. For example, if a feature is
-added to 3.11.5 and 3.12.2, then write the following in the 3.12 documentation:
+The value `v3.12.1` implies that all later versions also have this feature
+(v3.12.2, v3.12.3, and so on, as well as v4.0.0 and later). If this is not the
+case, then also mention the other relevant versions. For example, if a feature is
+added to v3.11.5 and v3.12.2, then write the following in the 3.12 documentation:
 
 ```markdown
 <small>Introduced in: v3.11.5, v3.12.2</small>
 ```
 
-All later documentation versions should use a copy of the content, as thus the
-4.0 documentation would contain the same.
+All later documentation versions generally use a copy of the content, therefore
+the 4.x documentation would contain the same.
 
 In the 3.11 documentation, only mention versions up to this documentation version
 (excluding 3.12 and later in this example), pretending no later version exists
 to be consistent with the rest of the 3.11 documentation and to avoid additional
-maintenance burdens:
+maintenance burden:
 
 ```markdown
 <small>Introduced in: v3.11.5</small>
 ```
 
-New options in the JavaScript and HTTP APIs are covered by the release notes,
-but if new options are added mid-release (not in the `x.x.0` release but a later
-bugfix version), then this should be pointed out as follows:
+**Remark styles**
 
-```markdown
-- `existingOption` (number, _optional_): ...
-- `newOption` (string, _optional_): ... (introduced in v3.11.5, v3.12.2).
-```
+The style and formatting of a version remark depends on whether it is applicable
+to an entire page or section, a single option/parameter, or just a single
+paragraph/sentence.
 
-You may also add a remark if an existing feature or option is significantly
-extended by a new (sub-)option in a `x.x.0` release.
+- **Page scope**: The main page about a new feature should indicate the version
+  the feature was added in, as shown below.
 
-While version remarks are mostly `Introduced in: ...`, you can also mark
-deprecated features in the same manner with `Deprecated in: ...`.
+  ```markdown
+  ---
+  title: New feature
+  ...
+  ---
+  <small>Introduced in: v3.12.1</small>
+
+  ...
+  ```
+
+- **Section scope**: If there is an existing page and you add a section about a
+  new (sub-)feature to it, add the version remark as shown below.
+
+  ```markdown
+  ## Existing feature
+
+  ...
+
+  ### New feature section
+
+  <small>Introduced in: v3.12.1</small>
+
+  ...
+  ```
+
+- **Option/parameter scope**: New options and response fields in the JavaScript
+  and HTTP APIs are covered by the release notes, but if new attributes are
+  added mid release series, then this should be pointed out.
+
+  You may also add a remark if an existing feature or option is significantly
+  extended by a new (sub-)option in the first release of a series, specifically
+  if it sits inside content that otherwise still applies to the previous release
+  series. This is to indicate that the availability of the feature as a whole
+  differs from the availability of the later added sub-feature. This is rarely
+  the case, however.
+
+  If an attribute of type object is added, its sub-attributes don't need a
+  separate version remark - they inherit it.
+
+  If the same attribute is described in multiple request and response schemas of
+  a page, add the version remark to every copy. Readers typically jump to a
+  specific endpoint rather than reading the page top to bottom.
+
+  If a version remark applies to the entire description of an option, then use
+  the following style, even if it's a single sentence:
+
+  ```markdown
+  newOption:
+    description: |
+      <small>Introduced in: v3.11.5, v3.12.2</small>
+
+      ...
+  ```
+
+  If the version remark only applies to single sentence of a larger text, a
+  single enum value, or similar, you can use a more compact version remark.
+  You may use a list for this:
+
+  ```markdown
+  newOption:
+    description: |
+      ...
+
+      - Option A ...
+      - Option B ... (introduced in v3.11.5 and v3.12.2).
+  ```
+
+  In case the behavior is significantly changed between versions, you may
+  describe the before and after in detail stating the versions and no version
+  remark as described above. This is a good option if a whole paragraph is
+  needed to explain the differences.
+
+  ```markdown
+  newOption:
+    description: |
+      ...
+
+      In versions up to v3.12.5, ...
+
+      From version 3.12.6 onward, ...
+  ```
+
+**Remark types**
+
+While version remarks are mostly used for newly added features, you can also
+mark deprecated features in the same manner. The same goes for removals,
+although they are rare mid release series.
+
+- `Introduced in: ...` / `(introduced in ...)`
+- `Deprecated in: ...` / `(deprecated in ...)`
+- `Removed in: ...` / `(removed in ...)`
+
+**When to remove version remarks**
+
+The documentation content between subsequent ArangoDB versions is largely the
+same and copied when creating the folder for the next release series. Therefore,
+version remarks get copied over as well. They can generally remain in the
+content (except if the first release of a series removes a feature or option,
+then the version remark is deleted along with the page or description).
+
+When an old, unsupported version is removed from the documentation, then version
+remarks mentioning this or older versions should be removed from the remaining
+content. If there are multiple mentioned versions but at least one of them is
+still present in the documentation, then the version remark should remain as-is
+until all mentioned versions are removed.
+
+Examples:
+- When deleting 3.10 from the docs, version remarks like `(introduced in v3.10.2)`
+  should be removed from the 3.11+ content.
+- When deleting 3.10 from the docs, version remarks like
+  `(introduced in v3.9.6 and v3.10.2)` should be removed because 3.9 is already
+  deleted and 3.10 is being deleted.
+- When deleting 3.10 from the docs, version remarks like
+  `(introduced in v3.10.6 and v3.11.1)` should **not** be removed or modified
+  because 3.11 is still present and changing the remark would distort the
+  original information.
 
 ### Environment remarks
 
@@ -849,18 +1390,63 @@ weight: 42 # controls navigation position within the current section (low to hig
 
 Add the actual content formatted in Markdown syntax below the front matter.
 
-### Rename a page or section
+### Rename or move a page or section
+
+There are two options for setting up redirects when renaming or moving content:
+
+- **Netlify redirects**: Server-side, testable in Netlify deploy previews.
+  Use for unversioned content as well as when removing versioned content.
+- **Hugo aliases**: Client-side, can be tested locally. Use only when
+  renaming/moving versioned content to keep the version switcher working locally.
+
+Note that turning a page `topic.md` into a section `topic/_index.md` (in
+order to add child pages) does not affect the resulting URL (`/topic/`) and
+does therefore not require a redirect!
 
 Netlify supports server-side redirects configured with a text file
 ([documentation](https://docs.netlify.com/routing/redirects/#syntax-for-the-redirects-file)).
 This is helpful when renaming folders with many subfolders and files because
 there is support for splatting and placeholders (but not regular expressions). See
 [Redirect options](https://docs.netlify.com/routing/redirects/redirect-options/)
-for details. The configuration file is `site/static/_redirects`.
+for details.
 
-Otherwise, the following steps are necessary for moving content:
+The configuration file is [`site/static/_redirects`](site/static/_redirects).
+The general format is `/old/url/ /new/url/ 301`, where `301` is for a permanent
+redirect and `302` for a temporary one. Use `302` until the redirects have been
+tested, then change them to `301` - this avoids caching issues (browser, CDN)
+should it be necessary to fix some of the redirects.
+
+Netlify redirects are preferable for SEO because search engines are more likely to
+update links in their indexes if they get a server-side `301 Permanent Redirect`
+HTTP status code, and it also works better when using e.g. cURL
+(`curl -L ...` to automatically follow redirects).
+
+Where Netlify redirects don't work is when you run the docs toolchain locally.
+This is generally not an issue because they can be tested using the automatic
+deploy previews, and you can only hit the redirects if you manually enter the
+old URLs. There is one exception, however: the **version selector**. If you
+switch between versions of a page, you can get a `404 Not Found` when running
+the docs toolchain locally, while in the Netlify deploy previews, you get
+redirected. This is because the version selector merely substitutes the version
+in the current URL and we hope that this page exists.
+
+To ensure a working version selector locally, which can be helpful when
+reviewing content, the rule is to use Hugo aliases when moving or renaming
+versioned pages (i.e. `/arangodb/<version>/...`). This is possible in addition
+to or instead of Netlify redirects. Netlify's server-side `301` redirects are
+better for search engines, but it only redirects if there is no file for a given
+URL. Hugo aliases create client-redirect files. To make Netlify redirect anyway,
+write an exclamation mark after the `301` in `_redirects`, like so:
+
+```
+/arangodb/4.x/old-feature/  /arangodb/4.x/deprecated-and-removed-features/  301!
+```
+
+The following steps are necessary for moving/renaming versioned content:
 1. Rename file or folder
-2. Set up `aliases` via the front matter as needed
+2. Set up `aliases` via the front matter as needed - consider all version
+   switcher actions, like switching from an older version to any of the newer,
+   renamed/moved versions, and possibly vice versa!
 3. Adjust `weight` of pages in the front matter if necessary
 4. Update cross-references in all of the content to use the new file path
 
@@ -881,6 +1467,16 @@ aliases:
 
 Don't forget to update any references to the old file in the content to the new
 path.
+
+Also don't forget to check whether an alias needs to be added for the opposite
+direction so that you can switch between old and new versions without getting
+a `404` error:
+
+| File                           | Alias      |
+|--------------------------------|------------|
+| `/arangodb/3.11/old-name.md`   | `new-name` |
+| `/arangodb/3.12/new-name.md`   | `old-name` |
+| `/arangodb/stable/new-name.md` | `old-name` |
 
 If you move a file from one folder to another, from `old/file.md` to `new/file.md`
 for instance, use a relative path as shown below:
@@ -960,9 +1556,9 @@ It makes a warning show at the top of every page for that version.
    want to add. Example:
 
    ```diff
-   +- name: "4.0"
+   +- name: "4.x"
    +  version: "4.0.0"
-   +  alias: "4.0"
+   +  alias: "4.x"
    +  deprecated: false
    +
     - name: "3.12"
@@ -981,7 +1577,7 @@ It makes a warning show at the top of every page for that version.
         type: string
         default: "undefined"
    +
-   +  arangodb-4_0:
+   +  arangodb-4_x:
    +    type: string
    +    default: "undefined"
    ```
@@ -994,9 +1590,12 @@ It makes a warning show at the top of every page for that version.
    ```diff
                 python3 generate_config.py \
                   --workflow << pipeline.parameters.workflow >> \
-   -              --arangodb-branches << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> \
-   +              --arangodb-branches << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_0 >> \
+   -              --arangodb-branches 3.11="<< pipeline.parameters.arangodb-3_11 >>" 3.12="<< pipeline.parameters.arangodb-3_12 >>" \
+   +              --arangodb-branches 3.11="<< pipeline.parameters.arangodb-3_11 >>" 3.12="<< pipeline.parameters.arangodb-3_12 >>" 4.x="<< pipeline.parameters.arangodb-4_x >>" \
    ```
+
+   Each entry is `VERSION=REF`, with `VERSION` being the `name` of the version in
+   `versions.yaml`. The order doesn't matter.
 
 3. In the `toolchain/docker/amd64/docker-compose.yml` file, add an entry under
    `services.toolchain.volumes` for the new version. Simply increment the value
@@ -1004,55 +1603,28 @@ It makes a warning show at the top of every page for that version.
 
    ```diff
           - ${ARANGODB_SRC_3_12:-/tmp/2}:/tmp/3.12
-   +      - ${ARANGODB_SRC_4_0:-/tmp/3}:/tmp/4.0
+   +      - ${ARANGODB_SRC_4_X:-/tmp/3}:/tmp/4.x
    ```
 
    Under `services.toolchain.environment`, you need to add two different entries
    for the new version. Example:
 
    ```diff
-          ARANGODB_SRC_3_11: ${ARANGODB_SRC_3_11}
-          ARANGODB_SRC_3_12: ${ARANGODB_SRC_3_12}
-   +      ARANGODB_SRC_4_0: ${ARANGODB_SRC_4_0}
-          ARANGODB_BRANCH_3_11: ${ARANGODB_BRANCH_3_11}
-          ARANGODB_BRANCH_3_12: ${ARANGODB_BRANCH_3_12}
-   +      ARANGODB_BRANCH_4_0: ${ARANGODB_BRANCH_4_0}
+          ARANGODB_SRC_3_11: ${ARANGODB_SRC_3_11:-}
+          ARANGODB_SRC_3_12: ${ARANGODB_SRC_3_12:-}
+   +      ARANGODB_SRC_4_X: ${ARANGODB_SRC_4_X:-}
+          ARANGODB_BRANCH_3_11: ${ARANGODB_BRANCH_3_11:-}
+          ARANGODB_BRANCH_3_12: ${ARANGODB_BRANCH_3_12:-}
+   +      ARANGODB_BRANCH_4_X: ${ARANGODB_BRANCH_4_X:-}
    ```
 
    The same changes are required in the
-   `toolchain/docker/arm64/docker-compose.yml` file.
+   `toolchain/docker/arm64/docker-compose.yml` and
+   `toolchain/docker/docker-compose.local.yml` files. The toolchain script reads
+   the versions from `site/data/versions.yaml`, so it doesn't need changes.
 
-4. In the `toolchain/docker/config.yaml` file, add an entry for the new version.
-   Example:
-
-   ```diff
-      - image: ${ARANGODB_BRANCH_3_12_IMAGE}
-        version: ${ARANGODB_BRANCH_3_12_VERSION}
-   +
-   +  - image: ${ARANGODB_BRANCH_4_0_IMAGE}
-   +    version: ${ARANGODB_BRANCH_4_0_VERSION}
-   ```
-
-5. In the `toolchain/scripts/toolchain.sh` file, find the code that accesses
-   environment variables with the format `$ARANGODB_BRANCH_X_XX` where `X_XX`
-   is a version number like `3_12`, so `$ARANGODB_BRANCH_3_12` for instance.
-   Duplicate the block of an existing version and adjust all version numbers.
-   Example:
-
-   ```diff
-    if [ "$ARANGODB_BRANCH_3_12" != "" ] ; then
-          export ARANGODB_BRANCH_3_12_IMAGE="$ARANGODB_BRANCH_3_12"
-          export ARANGODB_BRANCH_3_12_VERSION="3.12"
-    fi
-    
-   +if [ "$ARANGODB_BRANCH_4_0" != "" ] ; then
-   +      export ARANGODB_BRANCH_4_0_IMAGE="$ARANGODB_BRANCH_4_0"
-   +      export ARANGODB_BRANCH_4_0_VERSION="4.0"
-   +fi
-   ```
-
-6. In the `site/data` folder, create a new folder with the short version number
-   as the name, e.g. `4.0`. In the new `site/data/4.0` folder, create a
+4. In the `site/data` folder, create a new folder with the short version number
+   as the name, e.g. `4.x`. In the new `site/data/4.x` folder, create a
    `cache.json` file with the following content:
 
    ```json
@@ -1061,21 +1633,21 @@ It makes a warning show at the top of every page for that version.
 
    Add this untracked file to Git!
 
-7. Duplicate the folder of the most recent version in `site/content`, e.g.
-   the `3.12` folder, and rename the copy to the new version, e.g. `4.0`.
+5. Duplicate the folder of the most recent version in `site/content`, e.g.
+   the `3.12` folder, and rename the copy to the new version, e.g. `4.x`.
 
    The `menuTitle` in the front matter of the version homepage, e.g.
-   `site/content/4.0/_index.md`, needs to adjusted to the new version,
-   like `menuTitle: '4.0'`.
+   `site/content/4.x/_index.md`, needs to adjusted to the new version,
+   like `menuTitle: '4.x'`.
 
-   In the folder for release notes, e.g. `site/content/4.0/release-notes/`,
+   In the folder for release notes, e.g. `site/content/4.x/release-notes/`,
    duplicate the folder of the most recent version, e.g. `version-3.12`, and
-   rename it, e.g. to `version-4.0`. In this folder, rename the files to replace
+   rename it, e.g. to `version-4.x`. In this folder, rename the files to replace
    the old with the new version number, e.g. `api-changes-in-3-12.md` to
-   `api-changes-in-4-0.md` and so on.
+   `api-changes-in-4-x.md` and so on.
    
    In the `_index.md` file in the folder, e.g.
-   `site/content/4.0/release-notes/version-4.0/_index.md`, you need to replace
+   `site/content/4.x/release-notes/version-4.x/_index.md`, you need to replace
    the version numbers in the front matter and links. You also need to adjust
    the `weight` in the front matter. Decrement the value by one to make the new
    version appear before the existing versions, but make sure that it is greater
@@ -1086,67 +1658,80 @@ It makes a warning show at the top of every page for that version.
    commonly used across different versions in the release notes. Adjust the
    version numbers in the front matter and content.
 
-   Search the entire version folder, e.g. `site/content/4.0/`, for links that
+   Search the entire version folder, e.g. `site/content/4.x/`, for links that
    are meant to point to the release notes of the own version, but which are
    still pointing to the version the content has been copied from. For example,
-   if you duplicated the `3.12` folder, search the `4.0` folder for
+   if you duplicated the `3.12` folder, search the `4.x` folder for
    `version-3.12/`. You should find links to `version-3.12/known-issues-in-3-12.md`
-   that need to be updated to `version-4.0/known-issues-in-4-0.md`.
+   that need to be updated to `version-4.x/known-issues-in-4-x.md`.
 
-   In the release notes root file, e.g. `site/content/4.0/release-notes/_index.md`,
+   In the release notes root file, e.g. `site/content/4.x/release-notes/_index.md`,
    add the links for the new version following the existing pattern. Do this
    after updating the links to the known issues so that you don't accidentally
    change the 3.12 link in the release notes root file.
 
    In the _Highlights by Version_ page, e.g.
-   `site/content/4.0/introduction/features/highlights-by-version.md`, add a
+   `site/content/4.x/introduction/features/highlights-by-version.md`, add a
    section for the new version including a link to the release notes.
 
    Add the new, untracked files to Git!
 
-8. In the `PULL_REQUEST_TEMPLATE.md` file, add a new line for the new version.
+6. Check whether you need to add additional `aliases` in the front matter of
+   pages. This is necessary keep the switching using the version selector
+   working, from renamed/moved pages in older versions to the corresponding
+   pages in the newer versions.
+
+   ```diff
+    aliases:
+      - ../arangodb/3.12/data-science/arangographml
+      - ../arangodb/stable/data-science/arangographml
+   +  - ../arangodb/4.x/data-science/arangographml
+   +  - ../arangodb/devel/data-science/arangographml
+   ```
+
+9. In the `PULL_REQUEST_TEMPLATE.md` file, add a new line for the new version.
    Example:
 
    ```diff
     - 3.12: 
-   +- 4.0: 
+   +- 4.x: 
    ```
 
    Stage all changes and commit them. Open a pull request (PR) on GitHub. You only
-   need to specify a Docker image or PR link for `- 4.0: ` if you plan to use
+   need to specify a Docker image or PR link for `- 4.x: ` if you plan to use
    the `/generate` or `/generate-commit` command to re-generate the examples.
    If you follow the next step, the example generation is run manually along
    with some other generators, so using the commands shouldn't be necessary.
 
    Expect the plain build to fail for the time being because of missing data files.
 
-9. You can use CircleCI to initially generate the data files for the new version,
-   like the startup option dumps. You can also populate the example cache at the
-   same time.
+10. You can use CircleCI to initially generate the data files for the new version,
+    like the startup option dumps. You can also populate the example cache at the
+    same time.
 
-   Before you continue, make sure there are no conflicts in the PR with the
-   `main` branch. The CircleCI workflow will otherwise create a merge commit
-   favoring the `main` branch (in order to update the cache file but also
-   affecting other files), and this can cause e.g. the `versions.yaml` file to
-   get reverted in case of a conflict. The toolchain would then be unaware of
-   the newly added version.   
+    Before you continue, make sure there are no conflicts in the PR with the
+    `main` branch. The CircleCI workflow will otherwise create a merge commit
+    favoring the `main` branch (in order to update the cache file but also
+    affecting other files), and this can cause e.g. the `versions.yaml` file to
+    get reverted in case of a conflict. The toolchain would then be unaware of
+    the newly added version.   
    
-   In CircleCI at <https://app.circleci.com/pipelines/github/arangodb/docs-hugo>,
-   select the branch of your PR and click **Trigger Pipeline**.
-   Enter the parameters similar to this example:
+    In CircleCI at <https://app.circleci.com/pipelines/github/arangodb/docs-hugo>,
+    select the branch of your PR and click **Trigger Pipeline**.
+    Enter the parameters similar to this example:
 
-   | Type | Name | Value |
-   |:-----|:-----|:------|
-   | string | `workflow` | `generate` |
-   | string | `arangodb-4_0` | Docker Hub image (e.g. `arangodb/enterprise-preview:devel-nightly`) or GitHub main repo PR link (e.g. `https://github.com/arangodb/arangodb/pull/123456`) |
-   | string | `generators` | `examples metrics error-codes exit-codes optimizer options` |
-   | string | `deploy-url` | `deploy-preview-{PR-number}` with the number of the docs PR |
-   | boolean | `commit-generated` | `true` |
+    | Type | Name | Value |
+    |:-----|:-----|:------|
+    | string | `workflow` | `generate` |
+    | string | `arangodb-4_x` | Docker Hub image (e.g. `arangodb/core-preview:4.0-nightly`) or GitHub main repo PR link (e.g. `https://github.com/arangodb/arangodb/pull/123456`) |
+    | string | `generators` | `examples metrics error-codes exit-codes optimizer options` |
+    | string | `deploy-url` | `deploy-preview-{PR-number}` with the number of the docs PR |
+    | boolean | `commit-generated` | `true` |
 
-   Approve the workflow in CircleCI. After a successful run, you should see a
-   commit in the docs PR with the updated data files, as well as an updated
-   example cache file. The plain build should no longer fail and provide you
-   with a Netlify preview.
+    Approve the workflow in CircleCI. After a successful run, you should see a
+    commit in the docs PR with the updated data files, as well as an updated
+    example cache file. The plain build should no longer fail and provide you
+    with a Netlify preview.
 
 ### Remove a version
 
@@ -1159,20 +1744,28 @@ For example, if the current stable version is 3.11 and the devel version is 3.12
 the `site/data/versions.yaml` file may look like this:
 
 ```yaml
-- name: "4.0"
-  version: "4.0.0"
-  alias: "4.0"
-  deprecated: false
+/arangodb/:
 
-- name: "3.12"
-  version: "3.12.0"
-  alias: "devel"
-  deprecated: false
+  - name: "4.x"
+    version: "4.0.0"
+    alias: "4.x"
+    deprecated: false
+    inDevelopment: true
+    allowedAPIVersions: [v1, experimental]
 
-- name: "3.11"
-  version: "3.11.4"
-  alias: "stable"
-  deprecated: false
+  - name: "3.12"
+    version: "3.12.9"
+    alias: "devel"
+    deprecated: false
+    inDevelopment: true
+    allowedAPIVersions: [v0, experimental]
+
+  - name: "3.11"
+    version: "3.11.14"
+    alias: "stable"
+    deprecated: false
+    inDevelopment: false
+    allowedAPIVersions: [v0]
 ```
 
 To make 3.12 the new stable version, you need to set `alias` to `"stable"` for
@@ -1181,25 +1774,93 @@ documentation sense), the `alias` value of the former stable version needs to be
 changed. In this example, it is the 3.11 entry where you need to change `alias`
 to the version `name`, which is `"3.11"` in this case. Finally, you need to
 re-assign the `"devel"` alias to the version that comes after the new stable
-version. In this example, you need to adjust the `alias` of the 4.0 entry.
-The final configuration would then look lik this:
+version. In this example, you need to adjust the `alias` of the 4.x entry.
+
+The work-in-progress versions of the ArangoDB documentation need to have
+`inDevelopment` set to `true`. Make sure to change it to `false` for the former
+devel version when it becomes the new stable version.
+
+The final configuration would then look like this:
 
 ```yaml
-- name: "4.0"
-  version: "4.0.0"
-  alias: "devel"   # was "4.0"
-  deprecated: false
+/arangodb/:
 
-- name: "3.12"
-  version: "3.12.0"
-  alias: "stable"  # was "devel"
-  deprecated: false
+  - name: "4.x"
+    version: "4.0.0"
+    alias: "devel" # was "4.x"
+    deprecated: false
+    inDevelopment: true
+    allowedAPIVersions: [v1, experimental]
 
-- name: "3.11"
-  version: "3.11.4"
-  alias: "3.11"    # was "stable"
-  deprecated: false
+  - name: "3.12"
+    version: "3.12.9"
+    alias: "stable" # was "devel"
+    deprecated: false
+    inDevelopment: false # was true
+    allowedAPIVersions: [v0, experimental]
+
+  - name: "3.11"
+    version: "3.11.14"
+    alias: "3.11" # was "stable"
+    deprecated: false
+    inDevelopment: false
+    allowedAPIVersions: [v0]
 ```
+
+### Add a Contextual Data Platform release
+
+The [Service versions](site/content/contextual-data-platform/release-notes/service-versions.md)
+page lists the version of every Platform Suite and Agentic AI Suite service that
+each release of the Arango Contextual Data Platform bundles. It is generated by
+the `{{% service-versions %}}` shortcode from two data sources, so adding a
+release means adding a data file, not editing the page.
+
+1. Download the platform configuration of the release from
+   <https://github.com/arangodb/arangodb-platform-config/releases/> and save it
+   to `site/data/data_platform/` under its original name, e.g.
+   `AI_Suite.v4.1.0.yaml`. The file name is not interpreted, but keeping it
+   makes it obvious which release a file describes.
+
+2. Add a `date` key to the file by hand. The configuration files do not carry a
+   release date, but the headline needs one, and the build fails with an error
+   naming the file if the key is missing:
+
+   ```diff
+    version: 4.1.0
+   +date: August 2026
+   ```
+
+   Use the same month and year as the corresponding headline in
+   [What's new in the data platform](site/content/contextual-data-platform/release-notes/_index.md)
+   (respectively what the GitHub Release indicates for the platform config).
+   Leave the rest of the file untouched: only the `version`, `date`, and
+   `packages` keys are read, and the unused keys are harmless.
+
+3. Map any new package to the feature it implements in
+   [`site/data/data_platform_services.yaml`](site/data/data_platform_services.yaml). Every
+   entry has a `features` list, because one package can ship several features
+   that the documentation describes separately:
+
+   ```yaml
+   arango-control-plane:
+     features:
+       - name: Arango Control Plane (ACP)
+         link: platform-suite/control-plane-acp/_index.md
+       - name: Secrets Manager
+         link: platform-suite/secrets-manager.md
+   ```
+
+   The `link` is relative to the content root (`site/content/`) and optional.
+   The shortcode rewrites it to a path relative to the page it renders into, so
+   that the emitted Markdown links are checked like any other link.
+
+   A package that is missing from the mapping is still listed, but its Features
+   cell stays empty and the build warns about it, naming the package and the
+   page (it fails instead if `failOnBrokenLinks` is set).
+
+Releases are sorted by their `version` key, newest first, and the rows of each
+table by the first feature of the package, so the order of the files and of the
+keys inside them does not matter.
 
 ### Add a new arangosh example
 
@@ -1266,8 +1927,16 @@ db.collection.save({ _key: "foo" });
 ~db._drop("collection");
 ```
 
-Examples need to remove the collections and Views they create. Not dropping them
-will raise an error unless they are specifically exempt:
+After each example, the toolchain automatically removes the resources that the
+example created: collections, Views, graphs, Analyzers, users, databases, and
+tasks. It also aborts running Stream Transactions, kills running AQL queries,
+and switches back to the `_system` database. The examples therefore don't need
+to clean up (but it doesn't hurt). Other changes like new indexes on existing
+collections or server settings (e.g. the read-only mode) aren't reset, so
+examples need to undo them.
+
+To use resources in subsequent examples on the same page, exempt them from the
+removal:
 
 ```js
 ~db._create("collection");
@@ -1277,27 +1946,58 @@ db.collection.save({...});
 ~addIgnoreCollection("collection");
 ```
 
-This is helpful for creating collections and Views once, using them in multiple
-examples, and finally dropping them instead of having to create and drop them
-in each example.
+This is helpful for creating collections and Views once and using them in
+multiple examples instead of creating them in each example. For other kinds of
+resources, use `addIgnoreGraph()`, `addIgnoreAnalyzer()`, `addIgnoreUser()`,
+`addIgnoreDatabase()`, and `addIgnoreTask()` with the name. A graph is also
+exempt if all of its collections are.
 
-<!-- TODO: Does Hugo guarantee to invoke the render hooks one after another,
-top to bottom of a page, and do this serially?
-
-You need to choose the names for the examples so that they are alphabetically
-sortable to have them execute in the correct order.
--->
-
-The last example of the series should undo the ignore to catch unintended leftovers:
+When all examples of a page ran, the toolchain removes the exempted resources
+of the page, so that they can't affect examples on other pages. You can end an
+exemption earlier with the corresponding `removeIgnore...()` function. The
+resource is then removed after the example:
 
 ```js
 ~removeIgnoreCollection("collection");
 ~removeIgnoreView("view");
-~db._dropView("view");
-~db._drop("collection");
 ```
 
+If an example fails because a resource doesn't exist that a previous example
+created, check whether the previous example exempts it. The log shows what the
+toolchain removed after each example.
+
 Note that a series of examples needs to be contained within a single file.
+
+Use assertions to verify that an example does what it is supposed to do,
+especially if the effect isn't visible in the output, like for operations that
+drop, remove, or change something, or for asynchronous operations that you wait
+for. A failed assertion is reported as an error with the condition:
+
+```js
+~db._create("example");
+var coll = db._collection("example");
+db._drop(coll.name());
+~assert(db._collection("example") === null);
+```
+
+When waiting for an asynchronous operation, poll in short intervals and stop
+on any final state, then assert the expected state. Otherwise, a failure leads
+to waiting until the time limit and isn't noticed:
+
+```js
+for (var count = 0; count < 150; ++count) {
+  var progress = hotbackup.uploadProgress(upload.uploadId);
+  if (progress.DBServers.SNGL.Status !== "STARTED") {
+    break;
+  }
+  internal.wait(0.1);
+}
+assert(progress.DBServers.SNGL.Status === "COMPLETED");
+```
+
+Create test data in batches (e.g. with an AQL query like
+`FOR i IN 1..10000 INSERT { value: i } INTO coll`) instead of inserting documents
+one by one, as every insert is a request to the server.
 
 If a statement is expected to fail (e.g. to demonstrate the error case), then
 this has to be indicated with a special JavaScript comment:
@@ -1396,7 +2096,7 @@ FOR doc IN @@coll
 
 ### Add a new OpenAPI endpoint description
 
-Used to describe an HTTP REST API endpoint using the
+Used to describe an HTTP API endpoint using the
 [OpenAPI Specification](https://spec.openapis.org/oas/latest.html) standard in
 version 3.1.0.
 
@@ -1434,13 +2134,158 @@ paths:
 ```
 ````
 
-Only define a single tag in `tags` as this is used to categorize the endpoints.
-See the [`openapi_tags.yaml`](site/data/openapi_tags.yaml) file for the available
-categories, or add new ones if necessary.
+Only define a **single tag** in `tags` as this is used to categorize the endpoints.
 
-The REST HTTP API endpoint descriptions are rendered in the documentation, but
-_arangoproxy_ also converts the YAML to JSON and assembles a single `api-docs.json`
-file. This file is needed by the web interface for _Swagger UI_.
+The tag descriptions live in [`site/data/openapi_tags/`](site/data/openapi_tags/)
+and are merged into the `openapi.json` files (see below). For the ArangoDB
+HTTP API, the files are stored as:
+
+- `arangodb_0.yaml` (API v0)
+- `arangodb_1.yaml` (API v1)
+- `arangodb_2.yaml` (experimental API)
+
+For other services, use `site/data/openapi_tags/<Service-Name>.yaml`
+if you need tags.
+
+The HTTP API endpoint descriptions are rendered in the documentation, but
+_arangoproxy_ also converts the YAML to JSON and assembles full OpenAPI
+specifications when creating a [static build](#plain-build). These are saved to
+disk under `site/data/<version>/` for the ArangoDB API, so one folder per ArangoDB
+version and with one or more files depending on the supported API versions:
+- `0-openapi.json` (API v0)
+- `1-openapi.json` (API v1)
+- `2-openapi.json` (experimental API)
+
+These files are checked into the `OpenAPI` folder in the
+[`arangodb/arangodb`](https://github.com/arangodb/arangodb/tree/devel/OpenAPI)
+repository at the moment, to be used for serving requests like
+`/_arango/<API-Version>/openapi.json` (from v3.12.8 onward).
+Such a JSON file is also needed by the web interface for _Swagger UI_.
+
+For ArangoDB endpoints, you can define what API versions they are available
+in using front matter at the beginning of `openapi` code blocks:
+
+````yaml
+### Get the service README
+
+```openapi
+---
+apiVersions: [v0]
+---
+paths:
+  /_api/foxx/readme:
+    ...
+````
+
+A value of `[v0]` for the `apiVersions` option will add the endpoint only to
+`0-openapi.json`. The experimental API uses the next available number, hence
+`2-openapi.json`.
+
+````yaml
+## Get the activities (experimental)
+
+```openapi
+---
+apiVersions: [experimental]
+---
+paths:
+  /_db/{database-name}/_admin/activities:
+    ...
+````
+
+Endpoint paths are automatically prefixed for ArangoDB as follows:
+- No prefix for API v0
+- `/_arango/v1` for API v1
+- `/_arango/experimental` for the experimental API
+
+To write OpenAPI descriptions for something other than ArangoDB, use the
+`service` front matter option. This writes the OpenAPI specification to
+`site/data/<service>/openapi.json`:
+
+````yaml
+### Deploy an `arango-cypher2aql` service
+
+```openapi
+---
+service: cypher2aql
+---
+paths:
+  /_platform/acp/v1/service:
+    ...
+````
+
+The default front matter values allow you to omit the front matter block
+entirely in many cases. The defaults are:
+- `service: arangodb`
+- `apiVersions: [v0]` for ArangoDB 3.10
+- `apiVersions: [v0]` for ArangoDB 3.11
+- `apiVersions: [v0, v1]` for ArangoDB 3.12
+- `apiVersions: [v1]` for ArangoDB 4.x
+
+### Configure the OpenAPI metadata and API versions
+
+**`site/data/versions.yaml`**
+
+For each ArangoDB documentation version, you can set `allowedAPIVersions` to
+declare which API versions (v0, v1, experimental) are valid for that version.
+_arangoproxy_ uses this to know which OpenAPI files to expect per version
+(e.g. `0-openapi.json`, `1-openapi.json`, `2-openapi.json` under
+`site/data/<version>/`). Example:
+
+```yaml
+- name: "4.x"
+  version: "4.0.0"
+  allowedAPIVersions: [v1, experimental]
+- name: "3.12"
+  version: "3.12.7"
+  allowedAPIVersions: [v0, v1, experimental]
+- name: "3.11"
+  version: "3.11.14"
+  allowedAPIVersions: [v0]
+```
+
+Allowed values are `v0`, `v1`, and `experimental`. If you add a new docs version,
+set `allowedAPIVersions` accordingly; omitting it means the toolchain falls back
+to allowing all indices for that version.
+
+**`site/data/openapi_services.yaml`**
+
+This file defines base metadata per OpenAPI service (`title`, `summary`, `contact`,
+`externalDocs`, and for non-ArangoDB services also `version`). _arangoproxy_
+merges this with the per-version OpenAPI content. For ArangoDB (`service: arangodb`),
+`version` and `license` are computed in Go from `versions.yaml` and the API
+version index; for other services, all fields are read from this file. Example:
+
+```yaml
+arangodb:
+  title: ArangoDB Core API
+  summary: The HTTP API of the ArangoDB graph database system
+  contact:
+    name: ArangoDB Inc.
+    url: https://arango.ai
+  externalDocs:
+    description: ArangoDB Documentation
+    url: https://docs.arango.ai/arangodb/
+
+cypher2aql:
+  title: Cypher to AQL Translation Service API
+  version: "1.0.0"
+  # ...
+```
+
+**Add new API versions or change the toolchain behavior**
+
+To adjust the rendering of prefixes for <https://docs.arango.ai> and the
+handling of front matter such as `apiVersions`, see
+[`render-codeblock-openapi.html`](site/themes/arangodb-docs-theme/layouts/_default/_markup/render-codeblock-openapi.html).
+
+To adjust the OpenAPI processing and how the `*openapi.json` files are written,
+see [`service.go`](toolchain/arangoproxy/internal/service/service.go).
+
+If a new API version is added to ArangoDB, both need to adjusted to handle it,
+and you also need to update `allowedAPIVersions` fields for affected versions in
+[`versions.yaml`](site/data/versions.yaml), as well as add a new file with the
+OpenAPI tags (`site/data/openapi_tags/arangodb_#.yaml`).
 
 ### Add a new cURL example
 

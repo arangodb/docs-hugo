@@ -1,11 +1,12 @@
 ---
-title: Managing Users in the ArangoDB Shell
+title: Managing Users in the ArangoDB Shell (_arangosh_)
 menuTitle: In arangosh
 weight: 5
 description: >-
   The `@arangodb/users` module exposes a JavaScript API to manage user accounts
+  and access levels
 ---
-Connect with `arangosh` to the server or a Coordinator respectively.
+Connect with _arangosh_ to the server or a Coordinator respectively.
 The module `@arangodb/users` exposes a JavaScript API to manage user accounts.
 
 Please note, that for backward compatibility the server access levels
@@ -22,7 +23,7 @@ database and collection access levels is discouraged.
 
 **Example**
 
-Start *arangosh* and require the users module. Use it to create a new user:
+Start _arangosh_ and require the users module. Use it to create a new user:
 
 ```js
 arangosh --server.endpoint tcp://127.0.0.1:8529 ...
@@ -39,7 +40,7 @@ ArangoShell's history. To avoid that, either disable the history
 (`--console.history false`) or use a dynamically created password, e.g.:
 
 ```js
-> passwd = require('internal').genRandomAlphaNumbers(20);
+> var passwd = require('internal').genRandomAlphaNumbers(20);
 > users.save('JohnSmith', passwd);
 ```
 
@@ -51,7 +52,7 @@ user too. Otherwise one will be able to connect with the default `root` user
 and its empty password. The following commands change the `root` user's password:
 
 ```js
-> passwd = require('internal').genRandomAlphaNumbers(20);
+> var passwd = require('internal').genRandomAlphaNumbers(20);
 > require('@arangodb/users').update('root', passwd);
 ```
 
@@ -59,6 +60,7 @@ Back to our user account *JohnSmith*. Let us create a new database
 and grant him access to it with `grantDatabase()`:
 
 ```js
+> db._useDatabase('_system');
 > db._createDatabase('testdb');
 > users.grantDatabase('JohnSmith', 'testdb', 'rw');
 ```
@@ -75,7 +77,7 @@ access level applies.
 {{< /info >}}
 
 Before we can grant *JohnSmith* access to a collection, we first have to
-connect to the new database and create a collection. Disconnect `arangosh`
+connect to the new database and create a collection. Disconnect _arangosh_
 by pressing Ctrl+C twice. Then reconnect, but to the database we created:
 
 ```js
@@ -143,6 +145,7 @@ to grant the access rights for one or more databases using
 name: USER_02_saveUser
 description: ''
 ---
+~addIgnoreUser("my-user");
 require('@arangodb/users').save('my-user', 'my-secret-password');
 ```
 
@@ -281,6 +284,7 @@ name: USER_07_removeUser
 description: ''
 ---
 require("@arangodb/users").remove("my-user");
+~assert(!require("@arangodb/users").exists("my-user"));
 ~require('@arangodb/users').save('my-user', 'my-secret-password');
 ```
 
@@ -359,5 +363,9 @@ name: USER_05_permission
 description: ''
 ---
 ~require("@arangodb/users").grantDatabase("my-user", "testdb");
-require("@arangodb/users").permission("my-user", "testdb");
+const users = require("@arangodb/users");
+users.permission("my-user", "testdb");
+users.permission("my-user", "testdb", "_graphs");
+~users.remove("my-user");
+~removeIgnoreUser("my-user");
 ```

@@ -34,7 +34,7 @@ activities.get_snapshot();
 ```
 
 ```
- ── RestHandler: {"method":"POST","url":"/_api/cursor","handler":"RestCursorHandler"}
-    └── AQLQuery: {"query":"RETURN SLEEP(@seconds)"}
  ── RestHandler: {"method":"GET","url":"/_admin/activities","handler":"ActivityRegistryRestHandler"}
+ ── RestHandler: {"method":"POST","url":"/_api/cursor","handler":"RestCursorHandler"}
+    └── AqlQuery: {"queryId":0,"startTime":22023.926836231,"database":"_system","user":"","queryString":"RETURN SLEEP(50)", ... }
 ```

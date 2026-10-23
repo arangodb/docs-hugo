@@ -1,7 +1,8 @@
 ---
-title: Get Audit Log Events with `oasisctl`
+title: Get Audit Log Events with _oasisctl_
 menuTitle: Get Audit Log Events
 weight: 3
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get auditlog events

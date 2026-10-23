@@ -25,7 +25,7 @@ cluster.
 
 On a single server, create [SmartGraphs](management.md) or
 [SatelliteGraphs](../satellitegraphs/management.md) graphs by using
-`arangosh` as usual. Then you can set all the cluster-relevant properties of
+_arangosh_ as usual. Then you can set all the cluster-relevant properties of
 graphs and collections:
 
 - `numberOfShards`
@@ -37,7 +37,7 @@ graphs and collections:
 - `shardingStrategy`
 
 After that, you can [dump](../../components/tools/arangodump/examples.md) the graphs with
-`arangodump` as usual.
+_arangodump_ as usual.
 
 [Restore](../../components/tools/arangorestore/examples.md) the dumped data into a running
 ArangoDB cluster. As a result, all cluster relevant properties are restored

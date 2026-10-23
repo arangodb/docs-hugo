@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for Hot Backups
+title: Hot Backups HTTP API
 menuTitle: Hot Backups
 weight: 120
 description: >-
@@ -201,18 +201,20 @@ body = {
 // will work again:
 var startTime = require("internal").time();
 var failureSeen = false;
-while (require("internal").time() - startTime < 10) {
+while (require("internal").time() - startTime < 30) {
   try {
     // GET can throw exceptions
     var r = internal.arango.GET("/_api/version");
     if (r.error === true) {
       failureSeen = true;
-    } else {
-      if (failureSeen) {
-        break;
-      }
+    } else if (failureSeen) {
+      // Reconnected after the restart: stop as soon as a request succeeds.
+      break;
     }
   } catch(err) {
+    // An exception means the connection dropped, i.e. the restart is underway.
+    // Count it as the failure we must observe before accepting a later success.
+    failureSeen = true;
   }
   require("internal").wait(0.1);
 }
@@ -607,16 +609,17 @@ var backup = hotbackup.create();
 var upload = hotbackup.upload(backup.id, "local://tmp/backups",
                               {local:{type:"local"}});
 // Wait until upload complete:
-for (var count = 0; count < 30; ++count) {
+for (var count = 0; count < 150; ++count) {
   var progress = hotbackup.uploadProgress(upload.uploadId);
   try {
-    if (progress.DBServers.SNGL.Status === "COMPLETED") {
+    if (progress.DBServers.SNGL.Status !== "STARTED") {
       break;
     }
   } catch(e) {
   }
-  internal.wait(0.5);
+  internal.wait(0.1);
 }
+assert(progress.DBServers.SNGL.Status === "COMPLETED");
 hotbackup.delete(backup.id);
 var url = "/_admin/backup/download";
 body = {"id" : backup.id,
@@ -663,16 +666,17 @@ var body = {"id" : backup.id,
 var upload = hotbackup.upload(backup.id, "local://tmp/backups",
                               {local:{type:"local"}});
 // Wait until upload complete:
-for (var count = 0; count < 30; ++count) {
+for (var count = 0; count < 150; ++count) {
   var progress = hotbackup.uploadProgress(upload.uploadId);
   try {
-    if (progress.DBServers.SNGL.Status === "COMPLETED") {
+    if (progress.DBServers.SNGL.Status !== "STARTED") {
       break;
     }
   } catch(e) {
   }
-  internal.wait(0.5);
+  internal.wait(0.1);
 }
+assert(progress.DBServers.SNGL.Status === "COMPLETED");
 hotbackup.delete(backup.id);
 var download = hotbackup.download(backup.id, "local://tmp/backups",
                                   {local:{type:"local"}});

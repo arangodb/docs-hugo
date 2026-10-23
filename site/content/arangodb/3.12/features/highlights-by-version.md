@@ -8,7 +8,7 @@ description: >-
 ## Version 3.12
 
 {{< info >}}
-From version 3.12.5 onward, the prepackaged binaries and official Docker images
+From version 3.12.5 onward, the prepackaged binaries and official container images
 of the Community Edition include all features of the Enterprise Edition.
 See [ArangoDB Editions](_index.md#arangodb-editions) for details.
 {{< /info >}}
@@ -33,7 +33,7 @@ See [ArangoDB Editions](_index.md#arangodb-editions) for details.
   than the currently stored one when updating or replacing documents.
 
 - [**Improved dump performance**](../release-notes/version-3.12/whats-new-in-3-12.md#improved-dump-performance-and-size)
-  Create logical backups faster with arangodump thanks to parallel dumping at
+  Create logical backups faster with _arangodump_ thanks to parallel dumping at
   the shard level, as well as transfer compression and file splitting.
 
 - [**Request and response compression**](../release-notes/version-3.12/whats-new-in-3-12.md#transparent-compression-of-requests-and-responses-between-arangodb-servers-and-client-tools)
@@ -113,8 +113,8 @@ Also see [What's New in 3.11](../release-notes/version-3.11/whats-new-in-3-11.md
 
 **Enterprise Edition**
 
-- [**EnterpriseGraphs**](../graphs/enterprisegraphs/_index.md): A new specialized version of
-  SmartGraphs, with an automatic sharding key selection.
+- [**EnterpriseGraphs**](../graphs/enterprisegraphs/_index.md):
+  Hash-based sharding that keeps the edges of graphs next to their connected nodes.
 
 - [**Search highlighting**](../indexes-and-search/arangosearch/search-highlighting.md):
   Get the substring positions of matched terms, phrases, or _n_-grams.
@@ -317,7 +317,7 @@ Also see [What's New in 3.6](../release-notes/version-3.6/whats-new-in-3-6.md).
   index to utilize.
 
 - [**Data Masking**](../components/tools/arangodump/maskings.md):
-  arangodump provides a convenient way to extract production data but mask
+  _arangodump_ provides a convenient way to extract production data but mask
   critical information that should not be visible.
 
 **Enterprise Edition**

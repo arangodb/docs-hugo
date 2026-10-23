@@ -13,51 +13,6 @@
   description: |
     Number of currently existing activities.
 
-- name: arangodb_activities_existing_thread_registries
-  introducedIn: "3.12.8"
-  help: |
-    Number of currently existing activity thread registries.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - dbserver
-    - coordinator
-    - agent
-  description: |
-    Number of currently existing activity thread registries. One thread registry is created when the first activity is created on a thread. The registry lives at least as long as long as the thread itself but also at least as long as the last activity inside it - therefore it can exist longer than the thread itself.
-
-- name: arangodb_activities_ready_for_deletion
-  introducedIn: "3.12.8"
-  help: |
-    Number of currently existing activities that wait for their garbage collection.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - dbserver
-    - coordinator
-    - agent
-  description: |
-    Number of currently existing activities that wait for their garbage collection.
-
-- name: arangodb_activities_thread_registries_total
-  introducedIn: "3.12.8"
-  help: |
-    Total number of threads that started activities since database process start.
-  unit: number
-  type: counter
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - dbserver
-    - coordinator
-    - agent
-  description: |
-    Total number of threads that started activities since database process start. It can be higher than the total number of threads if a thread was restarted at some point.
-
 - name: arangodb_activities_total
   introducedIn: "3.12.8"
   help: |
@@ -2302,6 +2257,27 @@
     Note that your mileage may vary according to available resources as well
     as to complexity of the requests the client sends.
 
+- name: arangodb_http_response_code_total
+  introducedIn: "3.12.10"
+  help: |
+    Total number of HTTP responses by response code.
+  unit: number
+  type: counter
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+    - single
+  description: |
+    This counter reflects the total number of HTTP responses by response code
+    which have hit this particular instance of `arangod`. Note that this counter
+    is ever growing during the lifetime of the `arangod` process. However,
+    when the process is restarted, it starts from scratch. In the Grafana
+    dashboards, it is usually visualized as a rate per second, averaged
+    with a sliding window of a minute.
+
 - name: arangodb_index_estimates_memory_usage
   introducedIn: "3.12.0"
   help: |
@@ -3473,6 +3449,30 @@
     - single
   description: |
     This figure contains the size of the virtual memory the process is using.
+
+- name: arangodb_rbac_request_duration
+  introducedIn: "3.12.11"
+  help: |
+    Duration of requests to the external RBAC authorization service in microseconds.
+  unit: microseconds
+  type: histogram
+  category: Connectivity
+  complexity: medium
+  exposedBy:
+    - coordinator
+    - single
+  description: |
+    Histogram of the time spent on a single `evaluate-token-many` request to the
+    external RBAC authorization service, in microseconds. This covers serializing
+    the request body, the round trip to the authorization service, and parsing the
+    response. The buckets start at 10 microseconds and double up to about 21
+    seconds, because the authorization service is typically a sidecar reachable
+    over the loopback interface. The metric is only exposed if an external RBAC
+    service is configured.
+  troubleshoot: |
+    Counts in the high buckets mean that permission checks are slow, which directly
+    adds latency to every incoming request that requires an authorization decision.
+    Check the health of the authorization service and the network path to it.
 
 - name: arangodb_read_transactions_total
   introducedIn: "3.8.2"
@@ -5873,6 +5873,44 @@
     Amount of memory in bytes that is used for writing to an inverted index of
     a collection or index of a View (`arangosearch` View link).
 
+- name: arangodb_server_health
+  introducedIn: "3.12.11"
+  help: |
+    Cluster server health status (0=FAILED, 1=BAD, 2=GOOD).
+  unit: number
+  type: gauge
+  category: Health
+  complexity: simple
+  exposedBy:
+    - coordinator
+  description: |
+    Reports the Agency Supervision health of every known cluster server
+    (Coordinators and DB-Servers). Values are `0` (FAILED),
+    `1` (BAD), and `2` (GOOD).
+  
+    Metric-specific labels identify the *target* server whose health is
+    reported:
+  
+    - `target_server`: unique server id (for example `PRMR-...` / `CRDN-...`)
+    - `target_shortname`: human-readable short name from
+      `Target/MapUniqueToShortID` (for example `DBServer0001`)  
+  
+    Exporter identity (the Coordinator being scraped) continues to come from
+    the global Prometheus labels `shortname` and `role`. Those must not be
+    confused with `target_shortname`.
+  
+    Agents do not export this metric: AgencyCache / ClusterInfo server-list
+    sync is not started for Agents, and Coordinators are the intended scrape
+    targets for the cluster-wide health view.
+  threshold: |
+    Persistently BAD or FAILED servers indicate heartbeat / connectivity
+    problems or servers that Supervision has failed. Investigate Agency
+    Supervision health and server logs.
+  troubleshoot: |
+    Confirm the Coordinator still sees the server in `Current/ServersKnown`
+    and `Supervision/Health`. Missing `target_shortname` usually means the
+    short-name mapping in `Target/MapUniqueToShortID` is not yet available.
+
 - name: arangodb_server_statistics_cpu_cgroup_version
   introducedIn: "3.12.7"
   help: |
@@ -6711,6 +6749,74 @@
     This is the minimum number of concurrent V8 contexts. This is limited
     by a server option. V8 contexts are created and destroyed as needed
     but there are never fewer than the limit shown in this metric.
+
+- name: arangodb_vector_index_ingestion_duration
+  introducedIn: "3.12.9"
+  help: |
+    Duration of vector index ingestion in seconds.
+  unit: seconds
+  type: histogram
+  category: VectorIndex
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - single
+  description: |
+    Histogram of wall-clock durations in seconds of vector index ingestion
+    phases. During ingestion, existing documents are backfilled into the
+    newly trained vector index. Each completed ingestion phase contributes
+    one measurement. The histogram also exposes the number of events and
+    the total sum of all measurements.
+
+- name: arangodb_vector_index_training_duration
+  introducedIn: "3.12.9"
+  help: |
+    Duration of vector index training seconds.
+  unit: seconds
+  type: histogram
+  category: VectorIndex
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - single
+  description: |
+    Histogram of wall-clock durations in seconds of vector index training
+    phases. Each completed training phase contributes one measurement.
+    The histogram also exposes the number of events and the total sum of
+    all measurements.
+
+- name: arangodb_vector_index_training_ongoing
+  introducedIn: "3.12.9"
+  help: |
+    Number of vector index trainings currently ongoing.
+  unit: number
+  type: gauge
+  category: VectorIndex
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - single
+  description: |
+    Current number of vector index training operations in progress on
+    this DB-Server. The value increases when a training phase starts and
+    decreases when it completes or fails. Counts both leader and
+    follower shards.
+
+- name: arangodb_vector_index_unusable
+  introducedIn: "3.12.9"
+  help: |
+    Number of unusable vector indexes on this DBServer.
+  unit: number
+  type: gauge
+  category: VectorIndex
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - single
+  description: |
+    Current number of vector indexes on this DB-Server that are not yet
+    usable, counting both leader and follower shards. An unusable index
+    has not accumulated enough documents to begin its training phase.
 
 - name: arangodb_vocbase_shards_read_only_by_write_concern
   introducedIn: "3.12.1"

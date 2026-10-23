@@ -25,9 +25,10 @@ are supported by the AQL language constructs for graph querying. These construct
 make full use of optimizations and therefore best performance is to be expected:
 
 - [AQL Traversals](traversals.md) to follow edges connected to a start vertex,
-  up to a variable depth. It can be combined with AQL filter conditions.
+  with multiple hops up to a configured, optionally variable depth. It can be
+  combined with AQL filter conditions.
 
-- [AQL Shortest Path](shortest-path.md) to find one shortest path
+- [AQL Shortest Path](shortest-path.md) to find one shortest (or lightest) path
   between two given documents.
 
 - [AQL All Shortest Paths](all-shortest-paths.md) to find all shortest
@@ -40,8 +41,3 @@ make full use of optimizations and therefore best performance is to be expected:
 
 These types of queries are only useful if you use edge collections and/or graphs in
 your data model.
-
-{{< info >}}
-New to graphs? [Take our free graph course for freshers](https://www.arangodb.com/arangodb-graph-course/)
-and get from zero knowledge to advanced query techniques.
-{{< /info >}}

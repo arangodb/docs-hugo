@@ -1,7 +1,8 @@
 ---
-title: Get Self with `oasisctl`
+title: Get Self with _oasisctl_
 menuTitle: Get Self
-weight: 30
+weight: 29
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get information about the authenticated user

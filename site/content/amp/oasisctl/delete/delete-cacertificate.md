@@ -1,7 +1,8 @@
 ---
-title: Delete CA Certificate with `oasisctl`
+title: Delete CA Certificate with _oasisctl_
 menuTitle: Delete CA Certificate
 weight: 8
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete a CA certificate the authenticated user has access to

@@ -26,7 +26,7 @@ startup parameters, installation in a cluster and so on, see
 [Deploy](../deploy/_index.md).
 
 <!--
-The web interface will become available shortly after you started `arangod`.
+The web interface will become available shortly after you started _arangod_.
 
 By default, authentication is enabled. The default user is `root`.
 Depending on the installation method used, the installation process either
@@ -54,14 +54,16 @@ named `root`.
 
 Debian-based packages and the Windows installer ask for a
 password during the installation process. Red-Hat based packages
-set a random password. For all other installation packages, you need to
-execute the following:
+set a random password. You can change the password with the
+following command, which asks for a new root password and sets it:
 
 ```
 shell> arango-secure-installation
 ```
 
-This commands asks for a root password and sets it.
+If you use the `tar.gz` archives, see
+[Securing your installation](../operations/installation/linux/_index.md#targz-archives)
+instead.
 
 {{< warning >}}
 The password that is set for the root user during the installation of the ArangoDB
@@ -72,7 +74,7 @@ See [Securing Starter Deployments](../operations/security/securing-starter-deplo
 <!-- NOT ON-PREMISES SPECIFIC!
 Authentication
 
-ArangoDB allows to restrict access to databases to certain users. All
+ArangoDB allows you to restrict access to databases to certain users. All
 users of the system database are considered administrators. During
 installation a default user *root* is created, which has access to
 all databases.
@@ -81,9 +83,10 @@ You should create a database for your application together with a
 user that has access rights to this database. See
 [Managing Users](../operations/administration/user-management/_index.md).
 
-Use the *arangosh* to create a new database and user.
+Use the _arangosh_ to create a new database and user.
 
 ```js
+arangosh> db._useDatabase("_system");
 arangosh> db._createDatabase("example");
 arangosh> var users = require("@arangodb/users");
 arangosh> users.save("root@example", "password");

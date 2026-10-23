@@ -2,7 +2,9 @@
 title: Making requests in Foxx
 menuTitle: Making requests
 weight: 65
-description: ''
+description: >-
+  Use the `@arangodb/request` module to make synchronous HTTP requests from
+  your Foxx service
 ---
 ArangoDB is primarily a database, so Foxx doesn't offer the same level of
 network access as more general-purpose JavaScript environments like Node.js.

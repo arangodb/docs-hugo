@@ -1,6 +1,6 @@
 {{- $versionNameOrAlias := . }}
 {{- $versionsMap := dict }}
-{{- $versions := index site.Data.versions "/arangodb/" }}
+{{- $versions := index hugo.Data.versions "/arangodb/" }}
 {{- range $i, $version := $versions }}
   {{- $versionsMap = merge $versionsMap (dict
     $version.name $version.name

@@ -29,8 +29,8 @@ and get up and running again in case of serious problems.
 Creating backups of your data before an ArangoDB upgrade is also a best practice.
 
 {{< warning >}}
-Making use of a high availability deployment mode of ArangoDB, like Active Failover,
-Cluster or Datacenter-to-Datacenter Replication, does not remove the need of
+Using high-availability deployment modes of ArangoDB
+does not remove the need to
 taking frequent backups, which are recommended also when using such deployment modes.
 {{< /warning >}}
 
@@ -41,7 +41,7 @@ by making a raw copy of the ArangoDB data directory.
 
 Such backups are extremely fast as they only involve file copying.
 
-If ArangoDB runs in Active Failover or Cluster mode, it is necessary
+If ArangoDB runs in Cluster mode, it is necessary
 to copy the data directories of all the involved processes (_Agents_, _Coordinators_ and
 _DB-Servers_).
 
@@ -58,15 +58,15 @@ in conjunction to the backup coming from another backup method.
 ## Logical Backups
 
 Logical backups can be created and restored with the tools
-[_arangodump_](../components/tools/arangodump/_index.md) and
-[_arangorestore_](../components/tools/arangorestore/_index.md).
+[arangodump](../components/tools/arangodump/_index.md) and
+[arangorestore](../components/tools/arangorestore/_index.md).
 
 ## Hot Backups
 
 {{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 Hot backup and restore associated operations can be performed with the
-[_arangobackup_](../components/tools/arangobackup/_index.md) client tool and the
+[arangobackup](../components/tools/arangobackup/_index.md) client tool and the
 [Hot Backup HTTP API](../develop/http-api/hot-backups.md).
 
 Many operations cannot afford downtimes and thus require administrators and
@@ -227,19 +227,6 @@ not be suited for.
   It must be ensured that for the hot backup no such changes are made to the
   cluster's inventory, as this could lead to inconsistent hot backups.
 
-- **Active Failover Special Limitations**
-
-  When restoring hot backups in Active Failover setups, it is necessary to
-  prevent that a non-restored follower becomes leader by temporarily setting
-  the maintenance mode:
-
-  1. `curl -X PUT <endpoint>/_admin/cluster/maintenance -d'"on"'`
-  2. Restore the Hot Backup
-  3. `curl -X PUT <endpoint>/_admin/cluster/maintenance -d'"off"'`
-
-  Substitute `<endpoint>` with the actual endpoint of the **leader**
-  single server instance.
-
 - **Restoring from a different version**
 
   Hot backups share the same limitations with respect to different versions
@@ -254,8 +241,8 @@ not be suited for.
 
 - **Identical Topology**
 
-  Unlike dumps created with [_arangodump_](../components/tools/arangodump/_index.md) and restored
-  with [_arangorestore_](../components/tools/arangorestore/_index.md),
+  Unlike dumps created with [arangodump](../components/tools/arangodump/_index.md) and restored
+  with [arangorestore](../components/tools/arangorestore/_index.md),
   hot backups can only be restored to the same type and structure of deployment.
   This means that one cannot restore a 3-node ArangoDB cluster's hot backup to
   any other deployment than another 3-node ArangoDB cluster of the same version.
@@ -290,7 +277,7 @@ not be suited for.
 
   Especially in the cluster, the result of these successively longer tries to
   obtain the global transaction lock might become visible in periods of apparent
-  dead time. Locks might be obtained on some machines and and not on others, so
+  dead time. Locks might be obtained on some machines and not on others, so
   that the process has to be retried over and over. Every unsuccessful try would
   then lead to the release of all partial locks.
 
@@ -324,21 +311,6 @@ not be suited for.
 
   Such an encrypted backup can only be restored to an instance using the
   same encryption key.
-
-- **Replication and Hot Backup**
-
-  Hot backups are not automatically replicated between instances. This is
-  true for both the Active Failover setup with 2 (or more) single servers
-  and for the Datacenter-to-Datacenter Replication between clusters.
-  Simply take hot backups on all instances.
-
-  {{< info >}}
-  The DC2DC replication needs to be stopped before restoring a Hot Backup.
-  
-  1. Stop the DC2DC synchronization with `arangosync stop sync ...`.
-  2. Restore the Hot Backup.
-  3. Restart the DC2DC synchronization with `arangosync configure sync ...`.
-  {{< /info >}}
 
 - **Known Issues**
 

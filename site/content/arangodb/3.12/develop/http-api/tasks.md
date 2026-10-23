@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for tasks
+title: Task HTTP API
 menuTitle: Tasks
 weight: 85
 description: >-
-  The HTTP API for tasks lets you manage the periodic or timed execution of
+  The HTTP interface for tasks lets you manage the periodic or timed execution of
   server-side JavaScript code
 ---
 {{< warning >}}
@@ -13,6 +13,9 @@ The tasks feature is deprecated and removed in ArangoDB v4.0.
 ## List all tasks
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/tasks:
     get:
@@ -27,7 +30,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -111,6 +114,9 @@ logJsonResponse(response);
 ## Get a task
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/tasks/{id}:
     get:
@@ -125,7 +131,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -208,7 +214,7 @@ var response = logCurlRequest('GET', url + "/testTask");
 
 assert(response.code === 200);
 logJsonResponse(response);
-
+~internal.arango.DELETE("/_api/tasks/testTask");
 ```
 
 ```curl
@@ -228,6 +234,9 @@ logJsonResponse(response);
 ## Create a task
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/tasks:
     post:
@@ -364,6 +373,9 @@ curlRequest('DELETE', url + response.parsedBody.id);
 ## Create a task with ID
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/tasks/{id}:
     put:
@@ -511,6 +523,9 @@ curlRequest('DELETE', url + 'sampleTask');
 ## Delete a task
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/tasks/{id}:
     delete:
@@ -525,7 +540,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has administrate access
+            as the user account you authenticate with has `rw` access
             to this database.
           schema:
             type: string

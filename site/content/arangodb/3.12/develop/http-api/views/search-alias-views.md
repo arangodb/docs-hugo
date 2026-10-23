@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for search-alias Views
+title: search-alias View HTTP API
 menuTitle: '`search-alias` Views'
 weight: 5
 description: >-
-  The HTTP API for Views lets you manage `search-alias` Views, including adding
+  The HTTP interface for Views lets you manage `search-alias` Views, including adding
   and removing inverted indexes
 ---
 ## Create a search-alias View
@@ -40,7 +40,7 @@ paths:
                   type: string
                 type:
                   description: |
-                    The type of the View. Must be equal to `"search-alias"`.
+                    The type of the View. Needs to be set to `"search-alias"`.
                     This option is immutable.
                   type: string
                   example: search-alias

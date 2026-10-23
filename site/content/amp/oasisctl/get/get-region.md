@@ -1,7 +1,8 @@
 ---
-title: Get Region with `oasisctl`
+title: Get Region with _oasisctl_
 menuTitle: Get Region
-weight: 28
+weight: 27
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get a region the authenticated user has access to

@@ -2,7 +2,6 @@
 title: Recommended Resources
 menuTitle: '3.12'
 weight: 97
-layout: default
 ---
 {{< cloudbanner >}}
 

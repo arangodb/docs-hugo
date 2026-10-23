@@ -1,0 +1,27 @@
+{{ $svgName := .Get 0 -}}
+{{ if not $svgName -}}
+  {{ errorf "Missing required SVG name argument in '%v'" .Page.File.Path -}}
+{{ else -}}
+  {{ $caption := .Get 1 | default "" -}}
+  {{ $ok := true -}}
+  {{ range (split $svgName "/") -}}
+    {{ if not (findRE "^[A-Za-z0-9_-]+$" .) -}}
+      {{ errorf "Invalid path segment '%v' in SVG name '%v' for '%v' (allowed per segment: alphanumerics, dash, underscore)" . $svgName $.Page.File.Path -}}
+      {{ $ok = false -}}
+    {{ end -}}
+  {{ end -}}
+  {{ if $ok -}}
+    {{ $svgPath := printf "images/%s.svg" $svgName -}}
+    {{ $svg := resources.Get $svgPath -}}
+    {{ if $svg -}}
+      <figure class="svg-figure">
+        {{- $svg.Content | safeHTML -}}
+        {{- with $caption }}
+        <figcaption>{{ . | markdownify }}</figcaption>
+        {{- end }}
+      </figure>
+    {{- else -}}
+      {{ errorf "File '%v' not found for '%v'" $svgPath .Page.File.Path -}}
+    {{- end }}
+  {{ end -}}
+{{ end -}}

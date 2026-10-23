@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for server statistics
+title: Statistics HTTP API
 menuTitle: Statistics
 weight: 10
 description: >-
@@ -9,6 +9,9 @@ description: >-
 ## Get the statistics
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_admin/statistics:
     get:
@@ -18,8 +21,8 @@ paths:
         {{</* warning */>}}
         This endpoint should no longer be used. It is deprecated from
         version 3.8.0 onward and removed in ArangoDB v4.0.
-        Use `/_admin/metrics` instead, which provides the data exposed by this API
-        and a lot more.
+        Use `GET /_admin/metrics` instead, which provides the data exposed by
+        this API and a lot more.
         {{</* /warning */>}}
 
         Returns the statistics information. The returned object contains the
@@ -51,9 +54,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
       responses:
@@ -540,6 +543,9 @@ logJsonResponse(response);
 ## Get the statistics description
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_admin/statistics-description:
     get:
@@ -549,7 +555,7 @@ paths:
         {{</* warning */>}}
         This endpoint should no longer be used. It is deprecated from
         version 3.8.0 onward and removed in ArangoDB v4.0.
-        Use `/_admin/metrics` instead, which provides the data exposed by the
+        Use `GET /_admin/metrics` instead, which provides the data exposed by the
         statistics API and a lot more.
         {{</* /warning */>}}
 
@@ -579,9 +585,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
       responses:

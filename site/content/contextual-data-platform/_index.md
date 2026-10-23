@@ -1,7 +1,7 @@
 ---
-title: The Arango Contextual Data Platform (v4.0)
+title: Arango Contextual Data Platform
 menuTitle: Arango Contextual Data Platform
-weight: 1
+weight: 2
 description: >-
   The Arango Contextual Data Platform provides entity-aware retrieval,
   graph-based reasoning, temporal state management, and platform-level
@@ -14,6 +14,9 @@ cloud, or use as a managed service - [Arango Managed Platform (AMP)](../amp/_ind
 It is built on a modern, cloud-native foundation designed for enterprise
 scalability and reliability.
 
+To install the platform and run your first graph-powered questions, see
+[Get started with the Contextual Data Platform](../get-started/contextual-data-platform/_index.md).
+
 ## Architecture
 
 The Arango Contextual Data Platform is a layered architecture that combines
@@ -23,16 +26,17 @@ powerful components into a unified solution. It always includes the
 The [ArangoDB](../arangodb/_index.md) multi-model database system is the
 foundation for it all.
 
-{{< image src="../images/Arango-Contextual-Data-Platform-All.svg" alt="Product layers and features of the Arango Contextual Data Platform" style="display: block; margin: 2rem auto;" >}}
+{{< embed-svg "Arango-Contextual-Data-Platform-Overview" >}}
 
-The Contextual Data Platform is a [**Kubernetes-native**](kubernetes.md) technical infrastructure that
-acts as the umbrella for hosting the entire Arango offering of products.
-Built from the ground up for cloud-native orchestration, the platform leverages
-the power of Kubernetes to make it easy to deploy, scale, and operate the core
-ArangoDB database system along with additional services and AI solutions for
-GraphRAG, graph machine learning, data explorations, and more. You can
-run it on-premises or in the cloud yourself on top of Kubernetes to access all
-of the platform features with enterprise-grade automation and reliability.
+The Contextual Data Platform is a [**Kubernetes-native**](architecture.md)
+technical infrastructure that acts as the umbrella for hosting the entire Arango
+offering of products. Built from the ground up for cloud-native orchestration,
+the platform leverages the power of Kubernetes to make it easy to deploy, scale,
+and operate the core ArangoDB database system along with additional services and
+AI solutions for graph-based retrieval-augmented generation (GraphRAG), graph
+machine learning, data explorations, and more. You can run it on-premises or in
+the cloud yourself on top of Kubernetes to access all of the platform features
+with enterprise-grade automation and reliability.
 
 ## Platform components
 
@@ -45,7 +49,7 @@ used for container orchestration, automated deployment, scaling, and
 management. The official ArangoDB Kubernetes Operator (`kube-arangodb`) is
 leveraged to deliver enterprise-grade database management, automation,
 scalability, high availability, and operational excellence. Read more about
-the the platform's [Kubernetes-native architecture](kubernetes.md).
+the platform's [Kubernetes-native architecture](architecture.md).
 
 The following list gives you a high-level overview of the Contextual Data Platform.
 Follow the links for a more details explanation of each component.
@@ -61,6 +65,6 @@ Follow the links for a more details explanation of each component.
   data platform. It includes a **unified web interface** with a
   **Graph Visualizer** and an advanced **Query Editor**.
 
-  - [**ArangoDB Enterprise Edition**](arangodb.md):\
+- [**ArangoDB Enterprise Edition**](arangodb.md):\
   The multi-model database system acts as the solid foundation for all your
   graph, document, key-value, search, and vector needs.

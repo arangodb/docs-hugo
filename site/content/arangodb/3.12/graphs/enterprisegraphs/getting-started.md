@@ -17,15 +17,15 @@ You can define any `_key` value on nodes, including existing ones.
 ## Migrating to EnterpriseGraphs
 
 If you want to switch from General Graphs to EnterpriseGraphs, you can
-bring data from existing collections using the command-line tools `arangoexport`
-and `arangoimport`.
+bring data from existing collections using the command-line tools _arangoexport_
+and _arangoimport_.
 
-`arangoexport` allows you to export collections to formats like `JSON`, `JSONL`, or `CSV`.
+_arangoexport_ allows you to export collections to formats like `JSON`, `JSONL`, or `CSV`.
 For this particular case, it is recommended to export data to `JSONL` format.
 Once the data is exported, you need to exclude
 the `_key` values from edges. The `enterprise-graph` module does not allow
 custom `_key` values on edges. This is necessary for the initial data replication
-when using `arangoimport` because these values are immutable.
+when using _arangoimport_ because these values are immutable.
 
 ### Migration by Example
 
@@ -38,7 +38,7 @@ corresponding edge collection.
 **Export `general-graph` data**
 
 The first step is to export the raw data of those
-collections using `arangoexport`:
+collections using _arangoexport_:
 
 ```sh
 arangoexport --type jsonl --collection  old_nodes --output-directory docOutput --overwrite true

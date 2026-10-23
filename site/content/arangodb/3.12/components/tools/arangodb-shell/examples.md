@@ -2,7 +2,8 @@
 title: _arangosh_ Examples
 menuTitle: Examples
 weight: 5
-description: ''
+description: >-
+  How to connect to a server and use the ArangoDB Shell
 ---
 ## Connecting to a server
 
@@ -72,8 +73,10 @@ can use the `db._useDatabase()` command in _arangosh_:
 name: shellUseDB
 description: ''
 ---
+db._useDatabase("_system");
 db._createDatabase("myapp");
 db._useDatabase("myapp");
+
 db._useDatabase("_system");
 db._dropDatabase("myapp");
 ```

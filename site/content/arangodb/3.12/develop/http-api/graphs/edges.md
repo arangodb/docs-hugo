@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for edges
+title: Edge HTTP API
 menuTitle: Edges
 weight: 10
 description: >-
-  The Edge API lets you retrieve the connected edges of a single node,
+  The edge HTTP interface lets you retrieve the connected edges of a single node,
   optionally restricted to incoming or outgoing edges
 # Undocumented on purpose:
 #   POST /_api/edges/{coll}  (internal)

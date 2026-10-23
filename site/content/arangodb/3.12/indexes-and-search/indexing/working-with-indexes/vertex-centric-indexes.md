@@ -68,7 +68,7 @@ as the first field.
 
 For example, if you want to create a vertex-centric index on the `type` attribute
 that supports traversing in the `OUTBOUND` direction, you would create the index
-in the following way:
+over `["_from", "type"]` in the following way:
 
 ```js
 ---
@@ -80,9 +80,12 @@ db.edgeCollection.ensureIndex({ type: "persistent", fields: [ "_from", "type" ] 
 ~db._drop("edgeCollection");
 ```
 
-If you want to create a vertex-centric index on multi-dimensional data in the
-`x` and `y` attributes with a `type` attribute as prefix and support traversing
-in the `INBOUND` direction, you would create an index as follows:
+For the `INBOUND` direction, you would create the index over `["_to", "type"]`.
+
+If you want to create a vertex-centric index on multi-dimensional data stored in
+the `x` and `y` attributes, with a `type` attribute as the prefix and you want
+to support traversing in the `INBOUND` direction, you would create the index
+over `["x", "y"]` and set the prefix to `["_to", "type"]` as follows:
 
 ```js
 ---
@@ -98,6 +101,8 @@ db.edgeCollection.ensureIndex({
 });
 ~db._drop("edgeCollection");
 ```
+
+For the `OUTBOUND` direction, you would set the prefix to `["_from", "type"]`.
 
 All options that are supported by persistent or multi-dimensional indexes are
 supported by the vertex-centric index as well.

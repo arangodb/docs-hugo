@@ -80,6 +80,7 @@ require("@arangodb/users").remove(username);
 Alternatively, you can specify user data directly. For example:
 
 ```js
+db._useDatabase("_system");
 db._createDatabase("newDB", {}, [{ username: "newUser", passwd: "123456", active: true}])
 ```
 
@@ -91,10 +92,10 @@ Note that the database specified by `name` must already exist.
 Changing the database might be disallowed in some contexts, for example,
 in server-side actions (including Foxx).
 
-When performing this command from arangosh, the current credentials (username
+When performing this command from _arangosh_, the current credentials (username
 and password) will be re-used. These credentials might not be valid to
-connect to the database specified by `name`. Additionally, the database
-only be accessed from certain endpoints only. In this case, switching the
+connect to the database specified by `name`. Additionally, the database can
+be accessed from certain endpoints only. In this case, switching the
 database might not work, and the connection / session should be closed and
 restarted with different username and password credentials and/or
 endpoint data.
@@ -697,7 +698,6 @@ description: ''
 ~db._create("example");
 var coll = db._collection("example");
 db._drop(coll);
-~db._drop("example");
 ```
 
 Drops a collection identified by name:
@@ -1042,11 +1042,10 @@ Creates a new View and returns a [_view_ object](view-object.md).
 same name may already exist in the current database. For information about the
 naming constraints for Views, see [View names](../../../concepts/data-structure/views.md#view-names).
 
-`type` must be the string `"arangosearch"`, as it is currently the only
-supported View type.
+`type` must be the string `"arangosearch"` or `"search-alias"`.
 
 `properties` is an optional object containing View configuration specific
-to each View-type.
+to each View type:
 - [`arangosearch` View definition](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-definitionmodification)
 - [`search-alias` View definition](../../../indexes-and-search/arangosearch/search-alias-views-reference.md#view-definition)
 
@@ -1275,14 +1274,19 @@ require("@arangodb").db._version();
 
 {{< tag "arangosh" >}}
 
-Returns the current license.
+Returns information about the current license.
 
-See [`db._getLicense()`](../../../operations/administration/license-management.md#check-the-current-license).
+Also see [Check the license](../../../operations/administration/license-management.md#check-the-license).
 
-### `db._setLicense(licenseString)`
+### `db._setLicense(licenseString[, force])`
 
 {{< tag "arangosh" >}}
 
 Sets a license.
 
-See [`db._setLicense()`](../../../operations/administration/license-management.md#active-a-license).
+- `licenseString` (string): The Base64-encoded license string.
+- `force` (boolean, _optional_): Whether to change the license even if it expires
+  sooner than the current one. Default: `false`.
+
+Also see [Apply a license key](../../../operations/administration/license-management.md#apply-a-license-key).
+

@@ -7,35 +7,37 @@ description: >-
 aliases:
   - ../components/tools/arangorestore/fast-cluster-restore # 3.10 -> 3.11
   - ../develop/drivers/csharp-dotnet # 3.10 -> 3.11
-  - ../components/arangodb-server/ldap # 3.11 -> 3.12
-  - ../data-science/pregel # 3.11 -> 3.12
-  - ../data-science/pregel/algorithms # 3.11 -> 3.12
-  - ../develop/http-api/pregel # 3.11 -> 3.12
+  - ../components/arangodb-server/ldap # 3.11 -> 3.11
+  - ../data-science/pregel # 3.11 -> 3.11
+  - ../data-science/pregel/algorithms # 3.11 -> 3.11
+  - ../develop/http-api/pregel # 3.11 -> 3.11
   - ../deploy/active-failover # 3.11 -> 3.12
   - ../deploy/active-failover/administration # 3.11 -> 3.12
   - ../deploy/active-failover/manual-start # 3.11 -> 3.12
   - ../deploy/active-failover/using-the-arangodb-starter # 3.11 -> 3.12
-  - ../deploy/arangosync # 3.11 -> 3.12
-  - ../deploy/arangosync/administration # 3.11 -> 3.12
-  - ../deploy/arangosync/monitoring # 3.11 -> 3.12
-  - ../deploy/arangosync/operations-and-maintenance # 3.11 -> 3.12
-  - ../deploy/arangosync/security # 3.11 -> 3.12
-  - ../deploy/arangosync/troubleshooting # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/arangodb-cluster # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.12
+  - ../deploy/arangosync # 3.11 -> 3.11
+  - ../deploy/arangosync/administration # 3.11 -> 3.11
+  - ../deploy/arangosync/monitoring # 3.11 -> 3.11
+  - ../deploy/arangosync/operations-and-maintenance # 3.11 -> 3.11
+  - ../deploy/arangosync/security # 3.11 -> 3.11
+  - ../deploy/arangosync/troubleshooting # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangodb-cluster # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.11
   - ../operations/installation/macos # 3.11 -> 3.12
   - ../operations/installation/windows # 3.11 -> 3.12
-  - ../operations/installation/compiling # 3.11 -> 3.12
-  - ../operations/installation/compiling/compile-on-debian # 3.11 -> 3.12
-  - ../operations/installation/compiling/running-custom-build # 3.11 -> 3.12
-  - ../operations/installation/compiling/compile-on-windows # 3.11 -> 3.12
-  - ../operations/installation/compiling/recompiling-jemalloc # 3.11 -> 3.12
+  - ../operations/installation/compiling # 3.11 -> 3.11
+  - ../operations/installation/compiling/compile-on-debian # 3.11 -> 3.11
+  - ../operations/installation/compiling/running-custom-build # 3.11 -> 3.11
+  - ../operations/installation/compiling/compile-on-windows # 3.11 -> 3.11
+  - ../operations/installation/compiling/recompiling-jemalloc # 3.11 -> 3.11
   - ../operations/upgrading/manual-deployments/active-failover # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/macos # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/windows # 3.11 -> 3.12
+  - ../develop/http-api/replication/replication-applier # 3.12 -> 3.12
+  - ../develop/http-api/replication/other-replication-commands # 3.12 -> 3.12
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -99,6 +101,28 @@ detailed information about breaking changes before upgrading.
   All other graph features including AQL graph traversals and path finding
   algorithms are unaffected.
 
+- **JavaScript Transactions**:\
+  Submitting single-request transactions that leverage ArangoDB's JavaScript API
+  to run complex operations is deprecated since v3.12.0 and no longer supported
+  from ArangoDB 4.0 onward.
+
+  For rather simple transactions, you might be able to use [AQL queries](../aql/_index.md)
+  instead. Subqueries and the ternary operator are useful tools for this.
+  You can read from multiple collections as well as write to multiple collections,
+  but you cannot perform reads after writes for a given collection.
+  
+  To port more complex transactions, you may use
+  [Stream Transactions](../develop/transactions/stream-transactions.md).
+  The main operations they support are document CRUD and AQL queries. Unlike
+  with JavaScript Transactions, you can start a Stream Transaction, then issue
+  individual operations, and eventually decide whether to abort or commit the
+  transaction with all its operations. You can therefore put logic on the
+  client-side if it's too complex to port to AQL.
+
+- **Telemetrics**:\
+  ArangoDB gathered anonymous information on its usage and feature utilization
+  since v3.11.0 unless disabled. Telemetrics have been removed in v3.12.10.
+
 - **Cloud Migration Tool**:\
   The `arangosync-migration` tool to move from on-premises to the cloud is not
   available anymore.
@@ -129,9 +153,10 @@ detailed information about breaking changes before upgrading.
   documentation. OneShard databases in clusters are a better alternative.
 
 - **Skiplist and hash indexes**:\
-  Skiplist and hash indexes have been deprecated in 3.9 and will be removed in a 
-  future version of ArangoDB. Currently, they are an alias for a
-  [persistent index](../indexes-and-search/indexing/basics.md#persistent-index).
+  Skiplist and hash indexes have been deprecated in 3.9 and are removed in
+  ArangoDB v4.0. They were merely aliases for the
+  [`persistent` index type](../indexes-and-search/indexing/basics.md#persistent-index)
+  with the RocksDB storage engine.
 
 - **Bundled NPM modules**:\
   The bundled NPM modules `aqb`, `chai`, `dedent`, `error-stack-parser`,
@@ -142,14 +167,14 @@ detailed information about breaking changes before upgrading.
   [Foxx guide](../develop/foxx-microservices/guides/using-node-modules.md).
 
 - **Batch Requests API**:\
-  The [batch request REST API](../develop/http-api/batch-requests.md) was deprecated
+  The [batch request HTTP API](../develop/http-api/batch-requests.md) was deprecated
   in v3.8.0 and has been removed in v3.12.3. Instead of using this API, please use the
   [HTTP interface for documents](../develop/http-api/documents.md#multiple-document-operations)
   that can insert, update, replace or remove arrays of documents.
 
 - **PUT method in Cursor API**:\
-  The HTTP endpoint `PUT /_api/cursor/<cursor-id>` in the
-  [Cursor REST API](../develop/http-api/queries/aql-queries.md) is deprecated and will be
+  The HTTP API endpoint `PUT /_api/cursor/<cursor-id>` in the
+  [Cursor HTTP API](../develop/http-api/queries/aql-queries.md) is deprecated and will be
   removed in a future version. Please use the drop-in replacement
   `POST /_api/cursor/<cursor-id>` instead. The POST endpoint is functionally
   equivalent to the PUT endpoint, but does not violate idempotency requirements
@@ -160,9 +185,9 @@ detailed information about breaking changes before upgrading.
   It is recommended to use [ArangoSearch](../indexes-and-search/arangosearch/_index.md) for advanced full-text search capabilities.
 
 - **Simple Queries**:\
-  Idiomatic interface in arangosh to perform trivial queries.
+  Idiomatic interface in _arangosh_ to perform trivial queries.
   They are superseded by [AQL queries](../aql/_index.md), which can also
-  be run in arangosh. AQL is a language on its own and way more powerful than
+  be run in _arangosh_. AQL is a language on its own and way more powerful than
   *Simple Queries* could ever be. In fact, the (still supported) *Simple Queries*
   are translated internally to AQL, then the AQL query is optimized and run
   against the database in recent versions, because of better performance and
@@ -173,35 +198,45 @@ detailed information about breaking changes before upgrading.
   is deprecated and highly discouraged. This functionality may be removed in
   future versions of ArangoDB.
 
-- **Old metrics REST API**:\
+- **Old metrics HTTP API**:\
   The old metrics API under `/_admin/metrics` is deprecated and replaced by
   a new one under `/_admin/metrics/v2` from version 3.8.0 on. This step was
   necessary because the old API did not follow quite a few Prometheus
   guidelines for metrics.
 
-- **Statistics REST API**:\
-  The endpoints `/_admin/statistics` and `/_admin/statistics-description`
-  are deprecated in favor of the new metrics API under `/_admin/metrics/v2`.
-  The metrics API provides a lot more information than the statistics API, so
-  it is much more useful.
+- **Statistics HTTP API**:\
+  The endpoints `/_admin/statistics`, `/_admin/statistics-description`,
+  `/_admin/cluster/nodeStatistics`, and `/_admin/cluster/statistics`
+  are deprecated and removed in ArangoDB 4.0 in favor of the new metrics API
+  with the endpoint `GET /_admin/metrics`.
+  The metrics API provides a lot more information than the statistics endpoints,
+  so it is much more useful and uses the standard Prometheus format.
 
-- **Database target version REST API**:\
+- **Database target version HTTP API**:\
   The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
   more general version API with the endpoint `GET /_api/version`. The endpoint
   is removed in ArangoDB v4.0.
 
-- **Replication logger-follow REST API**:\
+- **Replication logger-follow HTTP API**:\
   The endpoint `/_api/replication/logger-follow` is deprecated since 3.4.0 and
-  may be removed in a future version. Client applications should use the REST 
-  API endpoint `/_api/wal/tail` instead, which is available since ArangoDB 3.3.
+  removed in ArangoDB v3.12.10. Client applications should use the HTTP API
+  endpoint `/_api/wal/tail` instead, which is available since ArangoDB v3.3.
+
+- **Replication HTTP API**:\
+  Various endpoints related to asynchronous replication like the global applier
+  have been removed in ArangoDB v3.12.10. These endpoints provided the low-level
+  mechanisms for the user-managed Leader/Follower Replication and the
+  Agency-managed Active Failover deployment modes, both for single servers.
+
+  See [API changes in ArangoDB 3.12](version-3.12/api-changes-in-3-12.md#obsolete-replication-apis)
+  for details.
 
 - **Loading and unloading of collections**:\
   The JavaScript functions for explicitly loading and unloading collections,
   `db.<collection-name>.load()` and `db.<collection-name>.unload()` and their
-  REST API endpoints `PUT /_api/collection/<collection-name>/load` and
-  `PUT /_api/collection/<collection-name>/unload` are deprecated in 3.8.
-  There should be no need to explicitly load or unload a collection with the
-  RocksDB storage engine. The load/unload functionality was useful only with
+  HTTP API endpoints `PUT /_api/collection/<collection-name>/load` and
+  `PUT /_api/collection/<collection-name>/unload` were deprecated in 3.8 and are
+  removed in ArangoDB v4.0. The load/unload functionality was only useful with
   the MMFiles storage engine, which is not available anymore since 3.7.
 
 - **Actions**:\
@@ -210,14 +245,14 @@ detailed information about breaking changes before upgrading.
   write [Foxx Microservices](../develop/foxx-microservices/_index.md), which allow you to define
   custom endpoints even with complex business logic.
 
-  From v3.5.0 on, the system collections `_routing` and `_modules` are not
+  From v3.5.0 onward, the system collections `_routing` and `_modules` are not
   created anymore when the `_system` database is first created (blank new data
   folder). They are not actively removed, they remain on upgrade or backup
   restoration from previous versions.
 
-- **Outdated AQL functions**:\
-  The following AQL functions are deprecated and
-  their usage is discouraged:
+- **Legacy geo-spatial AQL functions**:\
+  The following AQL functions are deprecated since v3.4.0 and removed in
+  ArangoDB v4.0:
   - `IS_IN_POLYGON`
   - `NEAR`
   - `WITHIN`
@@ -282,14 +317,11 @@ detailed information about breaking changes before upgrading.
   prevent unknown startup option errors.
 
 - **arangoimp** executable:\
-  ArangoDB release packages install an executable named
-  _arangoimp_ as an alias for the _arangoimport_ executable. This is done to 
-  provide compatibility with older releases, in which _arangoimport_ did not
-  yet exist and was named _arangoimp_. The renaming was actually carried out in
-  the codebase in December 2017. Using the _arangoimp_ executable is deprecated,
-  and it is always favorable to use _arangoimport_ instead. 
-  While the _arangoimport_ executable will remain, the _arangoimp_ alias will be 
-  removed in a future version of ArangoDB.
+  The _arangoimport_ client tool was originally named _arangoimp_.
+  ArangoDB release packages and container images up to v3.12 include the
+  _arangoimp_ executable or symlink as an alias for _arangoimport_.
+  From ArangoDB v4.0, _arangoimp_ is no longer included and you need to use
+  _arangoimport_.
 
 - **HTTP and JavaScript traversal APIs**:\
   The HTTP traversal API as well as the

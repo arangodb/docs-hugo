@@ -2,7 +2,9 @@
 title: Limitations of ArangoDB cluster deployments
 menuTitle: Limitations
 weight: 15
-description: ''
+description: >-
+  You can scale ArangoDB clusters to hundred of nodes but the number of shards
+  should be reasonable
 ---
 ArangoDB has no built-in limitations to horizontal scalability. The
 central resilient _Agency_ will easily sustain hundreds of _DB-Servers_

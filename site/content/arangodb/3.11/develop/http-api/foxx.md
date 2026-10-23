@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for Foxx
+title: Foxx HTTP API
 menuTitle: Foxx
 weight: 75
 description: >-
-  The HTTP API for Foxx allows you to manipulate Foxx microservices installed in
+  The HTTP interface for Foxx allows you to manipulate Foxx microservices installed in
   a database
 ---
 For more information on Foxx and its JavaScript APIs see the

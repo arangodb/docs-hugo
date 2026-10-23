@@ -1,8 +1,9 @@
 ---
-title: HTTP interface for geo-spatial indexes
+title: Geo-spatial index HTTP API
 menuTitle: Geo-Spatial
 weight: 25
-description: ''
+description: >-
+  HTTP interface reference for creating indexes of type `geo`
 ---
 ## Create a geo-spatial index
 
@@ -45,7 +46,7 @@ paths:
               properties:
                 type:
                   description: |
-                    Must be equal to `"geo"`.
+                    Needs to be set to `"geo"`.
                   type: string
                   example: geo
                 name:
