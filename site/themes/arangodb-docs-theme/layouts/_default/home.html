@@ -7,10 +7,8 @@
   <style>
     .hd { --hd-ink: #0F172B; --hd-text: #1D293D; --hd-muted: #62748E; --hd-link: #00576E; --hd-soft: #F1F5F9; --hd-soft-hover: #E2E8F0; --hd-line: #E2E8F0; --hd-card-line: #D4D4D4; font-family: var(--font-content); color: var(--hd-text); }
     /* minmax(0, …) stops wide content (pill rows, card grids) from stretching the grid past the viewport */
-    .row-main:has(article.hd) { max-width: 1240px; grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); }
-    article.hd { grid-column: article-start / toc-end; max-width: 1068px; width: auto; margin: 0 56px; padding: 44px 0 80px; }
-    article.hd ~ .toc-container { display: none; }
-    @media screen and (max-width: 768px) { article.hd { margin: 0; padding: 24px 16px 60px; min-width: 0; } .hd h1 { font-size: 1.75rem; } }
+    article.hd { max-width: 1068px; margin: 0 8px; padding: 44px 0 80px; }
+    @media screen and (max-width: 768px) { article.hd { margin: 0; padding: 24px 0 60px; min-width: 0; } .hd h1 { font-size: 1.75rem; } }
 
     /* Reset the theme's underlined .link style inside the homepage */
     .hd a.link, .hd a.link:visited, .hd a.link:is(:hover, :focus) { border-bottom: 0; }

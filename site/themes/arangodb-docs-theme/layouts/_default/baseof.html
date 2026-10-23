@@ -35,14 +35,11 @@
         </button>
         <div class="container-main">
           <div class="row-main">
-            {{ partial "breadcrumbs.html" . }}
             {{ block "main" . }}{{ end -}}
-            {{ partial "toc.html" . -}}
           </div>
         </div>
       </section>
     </section>
-    {{ partialCached "back-to-top.html" . -}}
     {{ partialCached "search.html" . -}}
   </body>
 </html>

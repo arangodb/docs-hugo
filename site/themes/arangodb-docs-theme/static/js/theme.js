@@ -515,6 +515,8 @@ function initArticle(url) {
   updateActiveNavItem(window.location.pathname, false);
   updateVersionSelector();
   setSearchShortcutLabels();
+  initToc();
+  observeBackToTop();
   renderMermaidDiagrams();
 }
 
@@ -540,6 +542,17 @@ window.addEventListener("hashchange", function () {
 
 */
 
+// The table of contents is a column from this width, and collapsible below the page title otherwise
+const TOC_COLUMN_QUERY = "(min-width: 1280px)";
+
+function initToc() {
+  const details = document.querySelector(".toc-details");
+  if (details) details.open = window.matchMedia(TOC_COLUMN_QUERY).matches;
+  tocHiglighter();
+}
+
+window.matchMedia(TOC_COLUMN_QUERY).addEventListener("change", initToc);
+
 function getAllAnchors() {
     let tocIds = [];
     let headlineIds = [];
@@ -548,53 +561,51 @@ function getAllAnchors() {
     document.querySelector("article").querySelectorAll("h2,h3,h4,h5,h6").forEach(a => { if (tocIds.indexOf(a.id) !== -1) { headlineIds.push(a); } });
     return headlineIds;
 }
-function removeActiveFromAllAnchors() {
-  var anchors = getAllAnchors();
-  anchors.forEach(anchor => {
-      var heading = anchor.getAttribute('id')
-      let oldHRef = document.querySelector('.TableOfContents a[href="#' + heading + '"]');
-      oldHRef.parentElement.classList.remove('is-active');
-  });
-}
+
+// Marks the last heading scrolled past (or the page title above the first one)
 function tocHiglighter() {
-  // only do this is screen width > 768px
-  if (window.innerWidth <= 768) return;
-  var anchors = getAllAnchors();
-
-  var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-  anchors.forEach(anchor => {
-    const rect = anchor.getBoundingClientRect();
-    const top = rect.top;
-    const id = anchor.id;
-    const currentHighlighted = document.querySelector('.TableOfContents .is-active a');
-    const currentHighlightedHref = currentHighlighted ? currentHighlighted.getAttribute('href') : null;
-    if (top < 240 && currentHighlightedHref !== '#' + id) {
-      removeActiveFromAllAnchors();
-      const highlightedHref = document.querySelector('.TableOfContents a[href="#' + id + '"]');
-      highlightedHref.parentElement.classList.add('is-active');
-      //highlightedHref.parentElement.scrollIntoView({behavior: "smooth", block: "nearest" });
-    }
-  });
-}
-
-function throttle(callback, limit) {
-  var waiting = false;
-  return function () {
-    if (!waiting) {
-      callback.apply(this, arguments);
-      waiting = true;
-      setTimeout(function () {
-        waiting = false;
-      }, limit);
-    }
+  const toc = document.querySelector(".TableOfContents");
+  if (!toc || !window.matchMedia(TOC_COLUMN_QUERY).matches) return;
+  const threshold = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) + 16;
+  let current = toc.querySelector(".level-1");
+  for (const heading of getAllAnchors()) {
+    if (heading.getBoundingClientRect().top > threshold) break;
+    current = toc.querySelector('a[href="#' + CSS.escape(heading.id) + '"]').parentElement;
+  }
+  if (!current || current.classList.contains("is-active")) return;
+  toc.querySelectorAll(".is-active").forEach(el => el.classList.remove("is-active"));
+  current.classList.add("is-active");
+  // Keep it in view if the table of contents scrolls
+  const container = toc.closest(".toc");
+  const box = current.getBoundingClientRect();
+  const view = container.getBoundingClientRect();
+  if (box.top < view.top || box.bottom > view.bottom) {
+    container.scrollTop += box.top - view.top - view.height / 2;
   }
 }
 
-window.addEventListener('scroll', throttle(function() {
-  tocHiglighter();
-  backToTopButton();
-}, 250));
+// Calls at most once per limit, and once more at the end, so the last scroll position counts
+function throttle(callback, limit) {
+  var waiting = false;
+  var pending = null;
+  return function () {
+    if (waiting) {
+      pending = [this, arguments];
+      return;
+    }
+    callback.apply(this, arguments);
+    waiting = true;
+    setTimeout(function () {
+      waiting = false;
+      if (pending) {
+        callback.apply(pending[0], pending[1]);
+        pending = null;
+      }
+    }, limit);
+  }
+}
+
+window.addEventListener('scroll', throttle(tocHiglighter, 150));
 
 /*
     Tabs
@@ -800,12 +811,17 @@ function addShowMoreButton(parentElem) {
 
 */
 
-function backToTopButton() {
-    if (window.scrollY > 100) {
-        document.querySelector(".back-to-top").classList.remove("hidden");
-    } else {
-        document.querySelector(".back-to-top").classList.add("hidden");
-    }
+// Back to top is shown once the page title is scrolled out of view
+let backToTopObserver;
+function observeBackToTop() {
+  if (backToTopObserver) backToTopObserver.disconnect();
+  const button = document.querySelector(".back-to-top");
+  const title = document.querySelector("article hgroup");
+  if (!button || !title) return;
+  backToTopObserver = new IntersectionObserver(([entry]) => {
+    button.classList.toggle("hidden", entry.isIntersecting || entry.boundingClientRect.top > 0);
+  });
+  backToTopObserver.observe(title);
 }
 
 const goToTop = (event) => {
@@ -943,6 +959,12 @@ function handleDocumentClick(event) {
     const closest = (selector) => target.closest(selector);
 
     if (target.classList.contains("expand-nav")) return;
+
+    // The table of contents can only be collapsed below the page title, not in the column
+    if (closest(".toc-details > summary") && window.matchMedia(TOC_COLUMN_QUERY).matches) {
+        event.preventDefault();
+        return;
+    }
 
     // Allow browser default for non-primary buttons (middle/right) and modifier clicks
     // (Ctrl/Cmd = new tab, Shift = new window, Alt = download/new tab depending on browser)

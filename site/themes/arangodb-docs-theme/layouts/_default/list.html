@@ -2,21 +2,28 @@
   {{ with .Page -}}
     {{ $pageVersion := .Page.Store.Get "version" -}}
     <article class="default">
-      {{ partial "deprecated.html" . -}}
-      {{ partial "in-development.html" . -}}
+      {{ partial "breadcrumbs.html" . -}}
+      <div class="article-notices">
+        {{- partial "deprecated.html" . -}}
+        {{- partial "in-development.html" . -}}
+      </div>
       <hgroup>
         <h1>{{ .Title | markdownify }}</h1>
         {{ with .Params.Description }}<p class="lead">{{ . | markdownify }}</p>{{ end }}
       </hgroup>
+      {{ partial "toc.html" . -}}
+      <div class="article-body">
       {{ with .Content -}}
         {{ . }}
         {{- partial "shortcodes/examples/page-done.html" $.Page }}
       {{ else -}}
         {{ template "generateSection" dict "section" .Page "pageVersion" $pageVersion -}}
       {{ end -}}
-      <nav class="pagination">
+      </div>
+      <nav class="pagination" aria-label="Previous and next page">
         {{- partial "content-footer.html" . -}}
       </nav>
+      {{ partial "page-footer.html" . -}}
     </article>
   {{- end -}}
 {{ end -}}
