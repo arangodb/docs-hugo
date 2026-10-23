@@ -102,7 +102,8 @@ function isSameDocumentUrl(urlPath) {
 
 /**
  * Same-document navigation to a fragment via location.hash so CSS :target updates (pushState does not).
- * If the URL already matches (including hash), clears the fragment first so :target can re-apply.
+ * If the URL already matches (including hash), only scrolls to the fragment again, like the browser
+ * does, without adding a history entry.
  * Returns true if handled; caller should not pushState or scroll.
  */
 function navigateSameDocumentFragment(urlPath) {
@@ -116,8 +117,9 @@ function navigateSameDocumentFragment(urlPath) {
       return false;
     }
     if (historyUrlMatchesCurrent(u.href)) {
-      var base = window.location.pathname + window.location.search;
-      window.history.replaceState(window.history.state, document.title, base);
+      scrollToFragment();
+      flashTarget();
+      return true;
     }
     window.location.hash = hash;
     return true;
@@ -126,26 +128,81 @@ function navigateSameDocumentFragment(urlPath) {
   }
 }
 
+/*
+ * Scroll positions per history entry: going back or forward to another page
+ * restores where the reader left it, to another fragment of the same page jumps
+ * to its heading. The browser would restore the position before loadPage() has
+ * swapped in the content, so this is done manually after the swap.
+ */
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
+
+function historyState() {
+  return history.state && typeof history.state === "object" ? history.state : {};
+}
+
+function saveScrollPosition() {
+  // While loadPage() fetches the page of a new history entry, the old page is still shown
+  if (docKeyWithoutHash(window.location.href) !== docsLastFetchedDocKey) return;
+  try {
+    history.replaceState({ ...historyState(), scrollY: Math.round(window.scrollY) }, document.title);
+  } catch (e) {
+    // Browsers limit the rate of history changes
+  }
+}
+
+// Debounced, replaceState() calls are rate-limited (Safari throws after 100 in 30 seconds).
+// Saved continuously because popstate only fires after leaving the entry.
+let saveScrollPositionTimer;
+window.addEventListener("scroll", () => {
+  clearTimeout(saveScrollPositionTimer);
+  saveScrollPositionTimer = setTimeout(saveScrollPosition, 200);
+}, { passive: true });
+
+// Also for the back/forward cache and reloads
+window.addEventListener("pagehide", saveScrollPosition);
+
+/** Returns true if a saved scroll position was restored. */
+function restoreScrollPosition() {
+  const scrollY = historyState().scrollY;
+  if (typeof scrollY !== "number") return false;
+  window.scrollTo(window.scrollX, scrollY);
+  return true;
+}
+
 function updateHistory(urlPath) {
   //console.log("updateHistory: " + urlPath);
-  if (!urlPath || historyUrlMatchesCurrent(urlPath)) {
+  if (!urlPath) {
     return;
   }
+  if (historyUrlMatchesCurrent(urlPath)) {
+    // Like the browser, a link to the current fragment scrolls to it again
+    // (after scrolling elsewhere), without a new history entry
+    if (location.hash.length > 1) {
+      scrollToFragment();
+      flashTarget();
+    }
+    return;
+  }
+
+  clearTimeout(saveScrollPositionTimer);
+  saveScrollPosition();
 
   // Same page, different fragment only: avoid fetch + synthetic popstate (~1s on slow networks).
   if (isSameDocumentUrl(urlPath)) {
     if (navigateSameDocumentFragment(urlPath)) {
       return;
     }
-    window.history.pushState("navchange", "Arango Documentation", urlPath);
+    window.history.pushState({}, "Arango Documentation", urlPath);
     scrollToFragment();
     return;
   }
 
-  window.history.pushState("navchange", "Arango Documentation", urlPath);
+  window.history.pushState({}, "Arango Documentation", urlPath);
   //if (!urlPath.startsWith("#")) trackPageView(document.title, urlPath);
 
-  var popStateEvent = new PopStateEvent('popstate', { state: "navchange" });
+  var popStateEvent = new PopStateEvent('popstate', { state: {} });
   window.dispatchEvent(popStateEvent);
 }
 
@@ -159,7 +216,7 @@ function replaceHistory(urlPath) {
     return false;
   }
 
-  window.history.replaceState("navchange", "Arango Documentation", urlPath);
+  window.history.replaceState(historyState(), "Arango Documentation", urlPath);
   return true;
 }
 
@@ -272,7 +329,10 @@ function loadPage(target) {
 
   var requestedKey = docKeyWithoutHash(href);
   if (docsLastFetchedDocKey !== null && requestedKey !== null && requestedKey === docsLastFetchedDocKey) {
-    scrollToFragment();
+    // Same page: back or forward to a fragment jumps to its heading again
+    if (location.hash || !restoreScrollPosition()) {
+      scrollToFragment();
+    }
     return;
   }
 
@@ -326,8 +386,10 @@ function loadPage(target) {
       docsLastFetchedDocKey = docKeyWithoutHash(href);
       // Collapse code blocks, restore tabs etc. first, they move the target
       initArticle(href);
-      scrollToFragment();
-      flashTarget();
+      if (!restoreScrollPosition()) {
+        scrollToFragment();
+        flashTarget();
+      }
       if (window.setupDocSearch) {
         window.setupDocSearch(getSelectedVersion());
       }
@@ -1038,7 +1100,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Use replaceState (not pushState) to avoid duplicate URL in stack and breaking
     // the forward list when combined with alias resolution
     if (document.body.hasChildNodes()) {
-      window.history.replaceState("popstate", "Arango Documentation", window.location.href);
+      window.history.replaceState(historyState(), "Arango Documentation", window.location.href);
     }
 
     const currentVersion = getVersionFromURL();
@@ -1055,8 +1117,12 @@ document.addEventListener("DOMContentLoaded", () => {
       // browser's scroll to the fragment, which can then land in the wrong spot.
       docsLastFetchedDocKey = docKeyWithoutHash(window.location.href);
       initArticle(window.location.href);
-      scrollToFragment();
-      flashTarget();
+      // A saved position means a reload, or a return after the page was evicted
+      // from the back/forward cache
+      if (!restoreScrollPosition()) {
+        scrollToFragment();
+        flashTarget();
+      }
       if (window.setupDocSearch) {
         window.setupDocSearch(getSelectedVersion());
       }
