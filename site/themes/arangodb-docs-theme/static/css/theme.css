@@ -1191,21 +1191,33 @@ article.default > * {
         align-items: flex-start;
     }
 
-    /* The edit link and the table of contents */
+    /* The table of contents, leaving room for the edit link and back to top */
     .aside-sticky {
         position: sticky;
         top: 0;
         display: flex;
         flex-direction: column;
         align-self: stretch;
-        max-height: calc(100vh - 96px);
+        max-height: calc(100vh - 136px);
     }
 
     .toc {
         min-height: 0;
-        margin-top: 16px;
+        margin-top: 24px;
         overflow-y: auto;
         scrollbar-width: thin;
+    }
+
+    /* Edit link and back to top below it, at the bottom of the viewport */
+    .aside-bottom {
+        position: sticky;
+        bottom: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin-top: auto;
+        padding-top: 16px;
     }
 
     /* Not collapsible in the column */
@@ -1237,18 +1249,14 @@ article.default > * {
         font-weight: 500;
     }
 
-    .back-to-top {
-        position: sticky;
-        bottom: 32px;
-        margin-top: auto;
-    }
 }
 
 @media screen and (max-width: 1279px) {
     /* The sticky bar needs the article as its containing block, and the edit
        link moves to the end of the article */
     .article-aside,
-    .aside-sticky {
+    .aside-sticky,
+    .aside-bottom {
         display: contents;
     }
 
@@ -1300,6 +1308,8 @@ article.default > * {
     .toc-entries {
         max-height: 60vh;
         overflow-y: auto;
+        /* Scrolling past the end doesn't scroll the page (which closes it) */
+        overscroll-behavior: contain;
         padding: 8px 0;
     }
 
@@ -2116,7 +2126,6 @@ nav.pagination > .next {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    margin: 24px 0 0;
     border-bottom: 0;
     color: var(--color-muted);
     font-size: 14px;
@@ -2133,6 +2142,12 @@ nav.pagination > .next {
     .edit-page {
         align-self: flex-start;
         margin-top: 16px;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .edit-page {
+        margin: 0;
     }
 }
 
@@ -2370,6 +2385,7 @@ nav.pagination > .next {
     overflow-y: auto;
     /* Room for the scrollbar, so that it doesn't cover the entries */
     scrollbar-gutter: stable;
+    padding-right: 4px;
     scrollbar-width: thin;
     scrollbar-color: rgb(248 250 252 / 0.5) transparent;
     user-select: none;
@@ -2568,6 +2584,16 @@ nav.pagination > .next {
 .version-selector {
     position: relative;
     margin: 4px 0 0 23px;
+}
+
+/* Continues the guide line of the entries below */
+.version-selector::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    left: -9px;
+    border-left: 1px solid var(--sidebar-line);
 }
 
 .version-selector-button {
