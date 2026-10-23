@@ -286,9 +286,10 @@ ul ul, ul ol, ol ul, ol ol {
     border-bottom: 2px solid var(--color-link);
 }
 
-.link:is(:hover, :focus) {
+.link:is(:hover, :focus),
+.link:is(:hover, :focus) > p {
     border-bottom: 2px solid var(--color-link-hover);
-    color: var(--gray-950);
+    color: var(--color-link);
 }
 
 .link > * {
@@ -527,6 +528,10 @@ a.section-link {
     overflow: hidden;
     font-size: 1.3rem;
     color: var(--gray-950);
+}
+
+.card-link:is(:hover, :focus) .card-title {
+    color: var(--color-link);
 }
 
 .card-body {

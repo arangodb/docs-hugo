@@ -21,7 +21,7 @@
     .hd .arr { flex: none; }
 
     /* Intro */
-    .hd h1 { font-family: var(--font-content); font-size: 2.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -.5px; color: var(--hd-ink); margin: 0 0 12px; }
+    .hd h1 { font-family: var(--font-content); font-size: 2.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -.5px; color: var(--color-link); margin: 0 0 12px; }
     .hd-sub { font-size: 1.0625rem; line-height: 1.5; color: var(--hd-muted); margin: 0 0 14px; }
     .hd-search { display: flex; align-items: center; gap: 8px; width: 100%; height: 36px; margin: 0; padding: 0 8px 0 10px; background: #fff; border: 1px solid var(--hd-line); border-radius: 6px; cursor: text; text-align: left; letter-spacing: normal; font-weight: 400; transition: .12s; }
     .hd-search:hover { border-color: #90A1B9; }
@@ -31,16 +31,19 @@
     .hd-popular { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; }
     .hd-popular .lbl { font-size: .875rem; color: var(--hd-muted); margin-right: 2px; }
     .hd-popular a { font-size: .9375rem; color: var(--hd-text); background: var(--hd-soft); border-radius: 999px; padding: 8px 16px; line-height: 1.2; }
-    .hd-popular a:hover { background: var(--hd-soft-hover); color: var(--hd-ink); }
+    .hd-popular a:hover { background: var(--hd-soft-hover); }
 
     /* Text links match the content pages: dark text, teal underline that lightens on hover.
        !important beats the theme's global text-decoration: none !important on links. */
-    .hd-sec a.more, .hd-start .cta, .hd-card h3 a, .hd-list.community a { color: var(--hd-text); text-decoration: underline 2px var(--color-link) !important; text-underline-offset: 4px; }
-    .hd-sec a.more:is(:hover, :focus), .hd-start:is(:hover, :focus) .cta, .hd-card h3 a:is(:hover, :focus), .hd-list.community a:is(:hover, :focus) { color: var(--hd-ink); text-decoration-color: var(--color-link-hover) !important; }
+    .hd-sec a.more, .hd-list.community a, .hd-list .t { color: var(--gray-950); text-decoration: underline 2px var(--color-link) !important; text-underline-offset: 4px; }
+    .hd-sec a.more:is(:hover, :focus), .hd-list.community a:is(:hover, :focus), .hd-list a:is(:hover, :focus) .t { color: var(--color-link); text-decoration-color: var(--color-link-hover) !important; }
+    /* Cards, tiles and pills skip the underline; their text still turns teal on hover */
+    .hd-start .cta, .hd-card h3 a, .hd-popular a, .hd-tags a { color: var(--gray-950); }
+    .hd-start:is(:hover, :focus) .cta, .hd-card h3 a:is(:hover, :focus), .hd-popular a:is(:hover, :focus), .hd-tags a:is(:hover, :focus) { color: var(--color-link); }
 
     /* Section heads */
     .hd-sec { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 48px 0 16px; }
-    .hd-sec h2 { font-family: var(--font-content); font-size: 1.375rem; font-weight: 600; letter-spacing: -.2px; color: var(--hd-text); margin: 0; scroll-margin-top: 110px; }
+    .hd-sec h2 { font-family: var(--font-content); font-size: 1.375rem; font-weight: 600; letter-spacing: -.2px; color: var(--color-link); margin: 0; scroll-margin-top: 110px; }
     .hd-sec a.more { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: .9375rem; white-space: nowrap; }
 
     .hd-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
@@ -65,7 +68,7 @@
     .hd-card p { margin: 0 0 12px; font-size: .9375rem; line-height: 1.45; color: var(--hd-muted); }
     .hd-tags { display: flex; flex-wrap: wrap; gap: 6px 8px; }
     .hd-tags a { font-size: .8125rem; line-height: 1.2; color: var(--hd-text); background: var(--hd-soft); border-radius: 999px; padding: 5px 10px; }
-    .hd-tags a:hover { background: var(--hd-soft-hover); color: var(--hd-ink); }
+    .hd-tags a:hover { background: var(--hd-soft-hover); }
 
     /* What's new + Community */
     .hd-bottom { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); column-gap: 48px; margin-top: 16px; }
@@ -74,7 +77,6 @@
     .hd .hd-list a { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 8px 0; border-bottom: 1px solid var(--hd-line); font-size: .9375rem; color: var(--hd-text); }
     .hd .nw { white-space: nowrap; }
     .hd-list a .arr { margin-left: auto; color: var(--hd-link); }
-    .hd-list a:hover { color: var(--hd-link); }
     .hd-badge { font-size: .8125rem; font-weight: 500; color: #fff; background: var(--hd-link); border-radius: 999px; padding: 4px 8px; line-height: 1.2; }
     .hd-list.community a { font-weight: 600; gap: 6px; }
   </style>
@@ -180,9 +182,9 @@
       <nav class="hd-list">
         {{- $versions := index hugo.Data.versions "/arangodb/" }}
         {{- $stableVersion := (index (where $versions "alias" "stable") 0).name }}
-        <a class="link" data-unversioned href="{{ (print $stable "release-notes/") | relURL }}">ArangoDB {{ $stableVersion }} release notes <span class="hd-badge">Stable</span>{{ $arrow }}</a>
-        <a class="link" href="{{ "contextual-data-platform/release-notes/" | relURL }}">Contextual Data Platform release notes{{ $arrow }}</a>
-        <a class="link" href="{{ "ecosystem/arango-ai-sdk/" | relURL }}">Arango AI SDK <span class="hd-badge">New</span>{{ $arrow }}</a>
+        <a class="link" data-unversioned href="{{ (print $stable "release-notes/") | relURL }}"><span class="t">ArangoDB {{ $stableVersion }} release notes</span> <span class="hd-badge">Stable</span>{{ $arrow }}</a>
+        <a class="link" href="{{ "contextual-data-platform/release-notes/" | relURL }}"><span class="t">Contextual Data Platform release notes</span>{{ $arrow }}</a>
+        <a class="link" href="{{ "ecosystem/arango-ai-sdk/" | relURL }}"><span class="t">Arango AI SDK</span> <span class="hd-badge">New</span>{{ $arrow }}</a>
       </nav>
     </div>
     <div>
