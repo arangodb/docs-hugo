@@ -356,15 +356,25 @@ kbd {
 /* Images */
 
 
+/* Images keep their natural size, scaled down to fit. No width: auto here, it
+   would override the width and height attributes that let browsers reserve
+   the space before an image has loaded. */
 img {
     opacity: 1;
     transition: opacity 0.5s;
     height: auto !important;
-    width: auto;
     max-height: 100%;
 }
 
+/* SVGs without an intrinsic size fill the available width, like without
+   width and height attributes */
+img.img-fill {
+    width: 100%;
+}
+
 .inline-img {
+    /* The padding comes on top of the size from the width attribute */
+    box-sizing: content-box;
     float: right;
     padding: 0 20px;
     margin-bottom: 20px;
@@ -1664,8 +1674,20 @@ div > .box-content-container {
     background: var(--color-evergreen);
 }
 
-.endpoint-group:hover .clipboard-copy {
+.endpoint-group:hover .clipboard-copy,
+.clipboard-copy:focus-visible {
     opacity: 1;
+}
+
+/* Without a mouse to hover, the copy buttons are always shown */
+@media (hover: none) {
+    .copy-to-clipboard-button {
+        opacity: 0.7;
+    }
+
+    .clipboard-copy {
+        opacity: 1;
+    }
 }
 
 .endpoint-method {
