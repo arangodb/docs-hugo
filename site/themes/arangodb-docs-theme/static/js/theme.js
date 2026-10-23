@@ -31,8 +31,20 @@ async function renderMermaidDiagrams() {
   }
 }
 
+// Expands or collapses a navigation section (the button announces the state)
+function setSectionExpanded(section, expanded) {
+    section.classList.toggle("expanded", expanded);
+    const button = section.querySelector(":scope > .nav-section-header > .expand-nav, :scope > .nav-section-sticky > .nav-section-header > .expand-nav");
+    if (button) button.setAttribute("aria-expanded", expanded);
+}
+
 function closeAllEntries() {
-    document.querySelectorAll(".main-nav-ol .expand-nav > input:checked").forEach(el => el.checked = false);
+    document.querySelectorAll(".main-nav .nav-section.expanded").forEach(section => setSectionExpanded(section, false));
+}
+
+// Expands the sections containing the current page (or its closest section)
+function expandCurrentPath() {
+    document.querySelectorAll(".main-nav .nav-section:is(:has(.link-nav-active), .nav-section-current)").forEach(section => setSectionExpanded(section, true));
 }
 
 function showSidebarHandler() {
@@ -385,50 +397,110 @@ function getSelectedVersion() {
 function updateActiveNavItem(pathname, scrollIntoView) {
   // Remove all existing active states
   document.querySelectorAll(".link-nav-active").forEach(el => el.classList.remove("link-nav-active"));
-  
+  document.querySelectorAll(".nav-section-current").forEach(el => el.classList.remove("nav-section-current"));
+
   // Collapse all sections first
-  document.querySelectorAll(".main-nav-ol .expand-nav > input:checked").forEach(el => el.checked = false);
-  
+  closeAllEntries();
+
   // Find and activate the new item
-  const activeItem = document.querySelector(`.link-nav[href="${pathname}"]`);
+  const activeItem = document.querySelector(`.main-nav .link-nav[href="${pathname}"]`);
   if (activeItem) {
     activeItem.classList.add("link-nav-active");
-    // Expand all parent sections
-    document.querySelectorAll(".nav-section:has(.link-nav-active) > .nav-section-header > .expand-nav > input").forEach(el => el.checked = true);
-
-    if (scrollIntoView) {
-      activeItem.scrollIntoView({ behavior: "auto", block: "center" });
+    // A section's own page also shows its subpages
+    const ownSection = activeItem.parentElement.classList.contains("nav-section-header") && activeItem.closest(".nav-section");
+    if (ownSection) setSectionExpanded(ownSection, true);
+  } else {
+    // Pages without an entry, like the home pages of the ArangoDB versions:
+    // the section with the longest matching path contains the current page
+    const parts = pathname.split("/").filter(Boolean);
+    for (let i = parts.length - 1; i > 0; i--) {
+      const link = document.querySelector(`.main-nav .nav-section-header > .link-nav[href="/${parts.slice(0, i).join("/")}/"]`);
+      if (link) {
+        link.closest(".nav-section").classList.add("nav-section-current");
+        break;
+      }
     }
   }
+  expandCurrentPath();
+
+  if (activeItem && scrollIntoView) {
+    activeItem.scrollIntoView({ behavior: "auto", block: "center" });
+  }
+}
+
+/*
+ * Version selector: a disclosure menu of links to the same page in the other
+ * versions (or their home pages on unversioned pages).
+ */
+
+// Shows the version in the selector and its navigation, in the document or the fetched navigation
+function showVersion(root, version) {
+  const versionInfo = getVersionInfo(version);
+  const selector = root.querySelector(".version-selector");
+  if (!versionInfo || !selector) return;
+
+  const label = versionInfo.name + (versionInfo.label ? " " + versionInfo.label : "")
+    + (versionInfo.name != versionInfo.alias ? " (" + versionInfo.alias + ")" : "");
+  selector.querySelector(".version-selector-label").textContent = label;
+
+  const pathname = window.location.pathname;
+  const corePath = "/arangodb/";
+  const rest = pathname.startsWith(corePath) && getVersionFromURL() ? pathname.slice(pathname.indexOf("/", corePath.length)) : "/";
+  selector.querySelectorAll(".version-menu-item").forEach(item => {
+    item.setAttribute("href", corePath + item.dataset.version + rest);
+    if (item.dataset.version == versionInfo.alias) item.setAttribute("aria-current", "true");
+    else item.removeAttribute("aria-current");
+  });
+
+  selector.closest(".nav-section").querySelectorAll(":scope > .nav-ol").forEach(navList => {
+    navList.classList.toggle("selected-version", navList.dataset.version == version);
+  });
 }
 
 function updateVersionSelector() {
   const currentVersion = getVersionFromURL();
-  if (!currentVersion) return;
-  
-  const versionInfo = getVersionInfo(currentVersion);
-  if (!versionInfo) return;
-  
-  const versionSelector = document.querySelector(".version-selector");
-  if (!versionSelector) return;
-  
-  // Update the selector value
-  if (versionSelector.querySelector(`option[value="${versionInfo.alias}"]`)) {
-    versionSelector.value = versionInfo.alias;
-  }
-  
-  // Update which version's navigation list is visible
-  versionSelector.closest(".nav-section").querySelectorAll(":scope > .nav-ol").forEach(navList => {
-    if (navList.dataset.version == currentVersion) {
-      navList.classList.add("selected-version");
-    } else {
-      navList.classList.remove("selected-version");
-    }
-  });
-  
-  // Update localStorage
+  // Unversioned pages link to the home pages of the versions, for the stored version
+  showVersion(document, currentVersion || getSelectedVersion());
+  if (!currentVersion || !getVersionInfo(currentVersion)) return;
   localStorage.setItem('docs-version', currentVersion);
 }
+
+function setVersionMenuOpen(open) {
+  const button = document.querySelector(".version-selector-button");
+  const menu = document.querySelector(".version-menu");
+  if (!button || !menu) return;
+  button.setAttribute("aria-expanded", open);
+  menu.hidden = !open;
+}
+
+function switchVersion(version) {
+  localStorage.setItem('docs-version', version); // TODO: handle multiple
+  if (window.setupDocSearch) {
+    window.setupDocSearch(version);
+  }
+  showVersion(document, version);
+
+  const currentPath = window.location.pathname;
+  const corePath = "/arangodb/";
+  if (currentPath.startsWith(corePath) && currentPath !== corePath) {
+    const idx = currentPath.indexOf("/", corePath.length);
+    const newPath = window.location.origin + corePath + version + currentPath.slice(idx) + window.location.hash;
+    updateHistory(newPath);
+    loadPage(newPath);
+  } else {
+    // Potentially update links to versioned content on unversioned page
+    linkToVersionedContent();
+  }
+}
+
+document.addEventListener("keydown", event => {
+  if (event.key !== "Escape") return;
+  const button = document.querySelector(".version-selector-button[aria-expanded=true]");
+  if (button) {
+    setVersionMenuOpen(false);
+    button.focus();
+  }
+});
 
 async function loadNav() {
   const mainNavPlaceholder = document.querySelector(".main-nav");
@@ -453,27 +525,7 @@ async function loadNav() {
     }
 
     // TODO: Support multiple versions
-    const selectedVersion = getSelectedVersion();
-    const versionInfo = getVersionInfo(selectedVersion);
-    if (versionInfo) {
-      const selectedVersionAlias = versionInfo.alias;
-      const versionSelector = mainNavContent.querySelector(".version-selector");
-      if (versionSelector && versionSelector.querySelector(`option[value="${selectedVersionAlias}"]`)) {
-        versionSelector.value = selectedVersionAlias;
-        
-        versionSelector.parentElement.querySelectorAll(":scope > .nav-ol").forEach(navList => {
-          if (navList.dataset.version == selectedVersion) {
-            navList.classList.add("selected-version");
-          } else {  
-            navList.classList.remove("selected-version");
-          }
-        });
-      } else {
-        console.log("Selected/stored version not available in version selector");
-      }
-    } else {
-      console.log("Selected version not found in version info");
-    }
+    showVersion(mainNavContent, getSelectedVersion());
 
     mainNavPlaceholder.replaceChildren(mainNavContent);
     observeScrollFade(mainNavPlaceholder);
@@ -588,6 +640,10 @@ function closeTocDropdown() {
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") closeTocDropdown();
 });
+
+// Like other popovers, it closes when the page scrolls (not its own entries,
+// which scroll separately). Jumping to an entry closes it anyway.
+window.addEventListener("scroll", closeTocDropdown, { passive: true });
 
 window.matchMedia(TOC_COLUMN_QUERY).addEventListener("change", initToc);
 
@@ -993,47 +1049,26 @@ function linkToVersionedContent() {
   }
 }
 
-function handleDocumentChange(event) {
-  const target = event.target;
-  if (target.classList.contains("version-selector")) {
-    const selectedVersion = target.value;
-    const currentPath = window.location.pathname;
-    //const versionedPath = target.dataset.path;
-
-    localStorage.setItem('docs-version', selectedVersion); // TODO: handle multiple
-    if (window.setupDocSearch) {
-      window.setupDocSearch(selectedVersion);
-    }
-    target.closest(".nav-section").querySelectorAll(":scope > .nav-ol").forEach(
-      el => {
-        if (el.dataset.version == selectedVersion) {
-          el.classList.add("selected-version");
-        } else {
-          el.classList.remove("selected-version");
-        }
-      }
-    );
-
-    const corePath = "/arangodb/";
-    if (currentPath.startsWith(corePath) && currentPath !== corePath) {
-      const idx = currentPath.indexOf("/", corePath.length);
-      const newPath = window.location.origin + corePath + selectedVersion + currentPath.slice(idx) + window.location.hash;
-      //console.log("handleDocumentChange: " + newPath);
-      updateHistory(newPath);
-      loadPage(newPath);
-    } else {
-      // Potentially update links to versioned content on unversioned page
-      linkToVersionedContent();
-    }
-  }
-}
-
 // Central click handler using event delegation
 function handleDocumentClick(event) {
     const target = event.target;
     const closest = (selector) => target.closest(selector);
 
-    if (target.classList.contains("expand-nav")) return;
+    // Navigation sections
+    const expandButton = closest(".expand-nav");
+    if (expandButton) {
+        const section = expandButton.closest(".nav-section");
+        setSectionExpanded(section, !section.classList.contains("expanded"));
+        return;
+    }
+
+    // Version selector
+    if (closest(".version-selector-button")) {
+        setVersionMenuOpen(closest(".version-selector-button").getAttribute("aria-expanded") != "true");
+        return;
+    }
+    const versionItem = closest(".version-menu-item");
+    if (!versionItem) setVersionMenuOpen(false);
 
     // The table of contents can only be collapsed below the page title, not in the column
     if (closest(".toc-details > summary") && window.matchMedia(TOC_COLUMN_QUERY).matches) {
@@ -1057,6 +1092,15 @@ function handleDocumentClick(event) {
     // (Ctrl/Cmd = new tab, Shift = new window, Alt = download/new tab depending on browser)
     const openInNew = event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey;
   
+    // Versions open in a new tab or window like other links
+    if (versionItem) {
+        if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        setVersionMenuOpen(false);
+        switchVersion(versionItem.dataset.version);
+        return;
+    }
+
     // Menu link clicks
     const navLink = target.closest(".link-nav");
     if (navLink) {
@@ -1065,10 +1109,11 @@ function handleDocumentClick(event) {
         navLink.closest(".main-nav").classList.remove("active");
         document.querySelectorAll(".link-nav-active").forEach(el => el.classList.remove("link-nav-active"));
         navLink.classList.add("link-nav-active");
+        document.querySelectorAll(".nav-section-current").forEach(el => el.classList.remove("nav-section-current"));
         closeAllEntries();
-        document.querySelectorAll(".nav-section:has(.link-nav-active) > .nav-section-header > .expand-nav > input").forEach(el => el.checked = true);
+        expandCurrentPath();
         if (navLink.parentElement.classList.contains("nav-section-header")) {
-          navLink.parentElement.querySelector(".expand-nav > input").checked = true;
+          setSectionExpanded(navLink.closest(".nav-section"), true);
         }
         const href = navLink.getAttribute("href");
         if (href) {
@@ -1198,7 +1243,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add central click handler to document
     document.addEventListener("click", handleDocumentClick);
-    document.addEventListener("change", handleDocumentChange);
     document.addEventListener("keydown", handleTabKeydown);
 
     var isMobile = window.innerWidth <= 768;
