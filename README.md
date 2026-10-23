@@ -244,6 +244,13 @@ You can additionally set the `HUGO_URL` environment variable to
 `https://docs.arango.ai/` to create a production-like build that
 includes Google Analytics etc.
 
+#### Frontend tests
+
+Browser tests for the functionality of the built site (navigation, version
+selector, copy buttons, etc.) are in `toolchain/frontend-tests/`. CircleCI runs
+them after builds. To run them locally, see
+[toolchain/frontend-tests/README.md](toolchain/frontend-tests/README.md).
+
 #### Scheduled and example generation build
 
 **Configuration**

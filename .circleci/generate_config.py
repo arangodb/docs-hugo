@@ -196,6 +196,7 @@ def workflow_generate(config):
     }
     jobs.append(generateJob)
     jobs.append(deployJob)
+    jobs.append(frontendTestsJob(args.workflow))
 
     # Approval only if ArangoDB is compiled (takes long and is costly). The webhook
     # only lets members of the arangodb organization trigger the generate workflow.
@@ -210,6 +211,14 @@ def workflow_generate(config):
         remove_attach_workspace(config)
 
     return config
+
+
+def frontendTestsJob(buildJob):
+    return {
+        "frontend-tests": {
+            "requires": [buildJob]
+        }
+    }
 
 
 # The generate job attaches the workspace of the compile jobs, which fails if there
@@ -266,6 +275,7 @@ def workflow_generate_scheduled(config):
     }
 
     jobs.append(generateJob)
+    jobs.append(frontendTestsJob(args.workflow))
 
 
 def workflow_release_arangodb(config):
