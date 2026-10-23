@@ -52,7 +52,8 @@
     --nav-width: 300px;
 
     --content-width: 800px;
-    --toc-width: clamp(220px, 20vw, 400px);
+    --toc-min-width: 220px;
+    --toc-max-width: 600px;
     --toc-gap: 48px;
     --page-gutter: 48px;
     --page-gutter-narrow: 20px;
@@ -194,7 +195,7 @@
 
 :root {
     --icon-arrow-up: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 7-7 7 7'/%3E%3Cpath d='M12 19V5'/%3E%3C/svg%3E");
-    --icon-arrow-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E");
+    --icon-arrow-up-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 7h10v10'/%3E%3Cpath d='M7 17 17 7'/%3E%3C/svg%3E");
     --icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
     --icon-chevron-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     --icon-chevron-left: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m15 18-6-6 6-6'/%3E%3C/svg%3E");
@@ -203,7 +204,6 @@
     --icon-circle-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='m9 12 2 2 4-4'/%3E%3C/svg%3E");
     --icon-circle-x: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='m15 9-6 6'/%3E%3Cpath d='m9 9 6 6'/%3E%3C/svg%3E");
     --icon-copy: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='14' height='14' x='8' y='8' rx='2' ry='2'/%3E%3Cpath d='M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2'/%3E%3C/svg%3E");
-    --icon-external-link: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 3h6v6'/%3E%3Cpath d='M10 14 21 3'/%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3E%3C/svg%3E");
     --icon-github: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4'/%3E%3Cpath d='M9 18c-4.51 2-5-2-7-2'/%3E%3C/svg%3E");
     --icon-info: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 16v-4'/%3E%3Cpath d='M12 8h.01'/%3E%3C/svg%3E");
     --icon-link: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/%3E%3Cpath d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/%3E%3C/svg%3E");
@@ -249,13 +249,12 @@ details > summary::before,
 }
 
 .icon-arrow-up { --icon: var(--icon-arrow-up); }
-.icon-arrow-right { --icon: var(--icon-arrow-right); }
+.icon-arrow-up-right { --icon: var(--icon-arrow-up-right); }
 .icon-check { --icon: var(--icon-check); }
 .icon-chevron-left { --icon: var(--icon-chevron-left); }
 .icon-chevron-right { --icon: var(--icon-chevron-right); }
 .icon-circle-check { --icon: var(--icon-circle-check); }
 .icon-circle-x { --icon: var(--icon-circle-x); }
-.icon-external-link { --icon: var(--icon-external-link); }
 .icon-github { --icon: var(--icon-github); }
 .icon-info { --icon: var(--icon-info); }
 .icon-link { --icon: var(--icon-link); }
@@ -672,7 +671,7 @@ table.fixed code {
 
 .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
     gap: 16px;
     margin: 24px 0;
 }
@@ -730,8 +729,11 @@ svg a.card-link {
     width: 48px;
 }
 
-.card-title .icon {
-    margin-left: 6px;
+/* The arrow is a background in the padding of the last line, so that it
+   can't wrap to a line of its own */
+.card-title-text {
+    padding-right: 22px;
+    background: no-repeat right 0.2em / 16px 16px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231d293d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E");
 }
 
 .card-body {
@@ -920,35 +922,37 @@ body .page-container {
     background-color: var(--CONTENT-BACKGROUND-COLOR);
 }
 
+/* Narrow screens: everything below each other in the document order */
 article.default {
-    display: grid;
-    grid-template-columns: minmax(0, var(--content-width));
-    grid-template-areas: "crumbs" "notices" "header" "aside" "body" "pager" "footer";
     min-height: 600px;
+    max-width: var(--content-width);
 }
 
-article.default > .breadcrumbs { grid-area: crumbs; }
-article.default > .article-notices { grid-area: notices; }
-article.default > hgroup { grid-area: header; }
-article.default > .article-aside { grid-area: aside; }
-article.default > .article-body { grid-area: body; min-width: 0; }
-article.default > .pagination { grid-area: pager; }
-article.default > .page-footer { grid-area: footer; }
-
 @media screen and (min-width: 1280px) {
+    /* The content grows to its full width first, the aside gets the rest */
     article.default {
-        grid-template-columns: minmax(0, var(--content-width)) var(--toc-width);
+        display: grid;
+        max-width: calc(var(--content-width) + var(--toc-gap) + var(--toc-max-width));
+        grid-template-columns: minmax(0, var(--content-width)) minmax(var(--toc-min-width), 1fr);
         grid-template-areas:
-            "crumbs aside"
+            "crumbs edit"
             "notices aside"
             "header aside"
             "body aside"
-            "pager aside"
-            "footer aside";
+            "pager aside";
         /* Without a flexible row, a tall aside would stretch the rows above the content */
-        grid-template-rows: auto auto auto 1fr auto auto;
+        grid-template-rows: auto auto auto 1fr auto;
         column-gap: var(--toc-gap);
+        padding-bottom: 48px;
     }
+
+    article.default > .breadcrumbs { grid-area: crumbs; }
+    article.default > .article-notices { grid-area: notices; }
+    article.default > hgroup { grid-area: header; }
+    article.default > .article-aside { grid-area: aside; }
+    article.default > .article-body { grid-area: body; min-width: 0; }
+    article.default > .pagination { grid-area: pager; }
+    article.default > .edit-page { grid-area: edit; }
 }
 
 @media screen and (max-width: 768px) {
@@ -959,6 +963,11 @@ article.default > .page-footer { grid-area: footer; }
     .container-main {
         margin-left: 0;
         padding: 0 var(--page-gutter-narrow);
+    }
+
+    /* The navigation covers the content, which shouldn't scroll behind it */
+    body:has(.main-nav.active) {
+        overflow: hidden;
     }
 }
 
@@ -1051,27 +1060,42 @@ article.default > .page-footer { grid-area: footer; }
 
 
 
-/* Aside: table of contents and back to top */
+/* Aside: table of contents and back to top
+
+   From 1280px, the aside is a column: the table of contents sticks to the
+   top, back to top to the bottom of the viewport. Below, the table of
+   contents is a sticky bar with the current section, which opens the entries
+   over the content. */
 
 .toc-header {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0;
     font-size: 14px;
     font-weight: 600;
     line-height: 20px;
     color: var(--color-heading);
-    margin: 0;
 }
 
-.TableOfContents {
-    margin: 8px 0 0;
-    /* The single line along the entries, the current one is marked on it */
-    border-left: 1px solid var(--gray-300);
+/* "On this page" stays on one line, the current section is shortened */
+.toc-header {
+    white-space: nowrap;
+}
+
+.toc-current {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-muted);
+    font-weight: 400;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .TableOfContents a {
     display: block;
-    margin-left: -1px;
     padding: 4px 12px;
-    border-left: 2px solid transparent;
     color: var(--color-muted);
     font-size: 14px;
     font-weight: 400;
@@ -1089,12 +1113,6 @@ article.default > .page-footer { grid-area: footer; }
 .TableOfContents .level-5 > a { padding-left: 48px; }
 .TableOfContents .level-6 > a { padding-left: 60px; }
 
-.TableOfContents .is-active > a {
-    border-left-color: var(--color-link);
-    color: var(--color-heading);
-    font-weight: 500;
-}
-
 /* Plain monospace text in the list, breaking long names only where needed */
 .TableOfContents code {
     padding: 0;
@@ -1106,6 +1124,11 @@ article.default > .page-footer { grid-area: footer; }
     word-break: normal;
     overflow-wrap: anywhere;
     vertical-align: baseline;
+}
+
+/* Fades out the last visible entries if there are more to scroll to */
+.toc-scroll-more {
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 48px), transparent);
 }
 
 .back-to-top {
@@ -1123,26 +1146,32 @@ article.default > .page-footer { grid-area: footer; }
     font-weight: 500;
     line-height: 20px;
     letter-spacing: normal;
-    transition-property: background-color;
-    transition-duration: 0.1s;
+    transition: opacity 0.2s ease-out, visibility 0.2s, background-color 0.1s;
 }
 
 .back-to-top:hover {
     background: var(--gray-100);
 }
 
+/* Fades out while the page title is in view */
 .back-to-top.hidden {
-    display: none;
+    display: inline-flex;
+    opacity: 0;
+    visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .back-to-top {
+        transition: none;
+    }
 }
 
 @media screen and (min-width: 1280px) {
-    /* The aside spans the article: the table of contents sticks to the top,
-       back to top to the bottom of the viewport */
     .article-aside {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        padding-top: 24px;
+        padding-top: 16px;
     }
 
     .toc {
@@ -1159,8 +1188,26 @@ article.default > .page-footer { grid-area: footer; }
         cursor: default;
     }
 
-    .toc-details > summary::before {
+    .toc-details > summary::before,
+    .toc-current {
         display: none;
+    }
+
+    .TableOfContents {
+        margin-top: 8px;
+        /* The single line along the entries, the current one is marked on it */
+        border-left: 1px solid var(--gray-300);
+    }
+
+    .TableOfContents a {
+        margin-left: -1px;
+        border-left: 2px solid transparent;
+    }
+
+    .TableOfContents .is-active > a {
+        border-left-color: var(--color-link);
+        color: var(--color-heading);
+        font-weight: 500;
     }
 
     .back-to-top {
@@ -1171,22 +1218,54 @@ article.default > .page-footer { grid-area: footer; }
 }
 
 @media screen and (max-width: 1279px) {
-    /* Collapsible below the page title */
+    /* The sticky bar needs the article as its containing block */
+    .article-aside {
+        display: contents;
+    }
+
+    .toc {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        margin: 0 calc(-1 * var(--page-gutter)) 24px;
+        padding: 8px var(--page-gutter);
+        border-bottom: 1px solid var(--gray-300);
+        background: var(--CONTENT-BACKGROUND-COLOR);
+    }
+
     .toc-details {
-        margin: 0 0 24px;
-        padding: 8px 12px;
-        border: 1px solid var(--gray-300);
-        border-radius: 8px;
-        background: var(--neutral-white);
+        position: relative;
     }
 
     .toc-details > summary {
         margin: 0;
+        padding: 4px 0;
         font-size: 14px;
     }
 
-    .toc-details[open] > .TableOfContents {
-        margin-bottom: 4px;
+    .toc-details > summary::before {
+        align-self: center;
+        margin: 0;
+    }
+
+    /* The entries open over the content */
+    .toc-details > .TableOfContents {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        right: 0;
+        max-height: 60vh;
+        overflow-y: auto;
+        padding: 8px 0;
+        border: 1px solid var(--gray-300);
+        border-radius: 8px;
+        background: var(--neutral-white);
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    .TableOfContents .is-active > a {
+        color: var(--color-heading);
+        font-weight: 500;
     }
 
     .back-to-top {
@@ -1195,6 +1274,21 @@ article.default > .page-footer { grid-area: footer; }
         bottom: 16px;
         z-index: 99;
         box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    /* Room for the floating back to top button */
+    article.default {
+        padding-bottom: 72px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .toc {
+        top: var(--topbar-height);
+        margin-left: calc(-1 * var(--page-gutter-narrow));
+        margin-right: calc(-1 * var(--page-gutter-narrow));
+        padding-left: var(--page-gutter-narrow);
+        padding-right: var(--page-gutter-narrow);
     }
 }
 
@@ -1963,36 +2057,35 @@ nav.pagination > .next {
     text-decoration: underline !important;
 }
 
-/* Page footer */
+/* Edit link, above the table of contents in the column */
 
-.page-footer {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-top: 32px;
-    padding: 16px 0 48px;
-    border-top: 1px solid var(--gray-200);
-    font-size: 14px;
-}
-
-.page-footer-edit,
-.page-footer-edit:is(:visited, :hover, :focus) {
+.edit-page,
+.edit-page:is(:visited, :hover, :focus) {
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    margin: 24px 0 0;
     border-bottom: 0;
     color: var(--color-muted);
+    font-size: 14px;
     font-weight: 500;
+    line-height: 24px;
 }
 
-.page-footer-edit:hover {
+.edit-page:hover {
     color: var(--color-heading);
 }
 
+@media screen and (min-width: 1280px) {
+    .edit-page {
+        justify-self: start;
+        padding-left: 14px;
+    }
+}
+
 @media screen and (max-width: 1279px) {
-    /* Room for the floating back to top button */
-    .page-footer {
-        padding-bottom: 72px;
+    .edit-page {
+        margin-top: 16px;
     }
 }
 
@@ -2483,7 +2576,8 @@ nav.pagination > .next {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 4px 2px 0;
+    /* Aligned with the text of the navigation entries */
+    padding: 4px 0.75rem 0;
     font-weight: 600;
     color: var(--sidebar-lime);
 }

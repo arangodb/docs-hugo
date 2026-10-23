@@ -1,6 +1,5 @@
-{{- /* Page footer, the right half is left free for the back to top button on narrow screens */ -}}
-<footer class="page-footer">
-  <a class="page-footer-edit" target="_blank" rel="noopener noreferrer"
+{{- /* Above the table of contents in the column, otherwise below the previous and next links */ -}}
+<a class="edit-page" target="_blank" rel="noopener noreferrer"
   href="https://github.com/arangodb/docs-hugo/edit/main/site/content/
   {{- with .File }}
     {{- $path := .Path }}
@@ -14,5 +13,4 @@
     {{- end }}
     {{- $path }}
   {{- end }}">
-    <i class="icon icon-pencil" aria-hidden="true"></i>Edit on GitHub</a>
-</footer>
+  <i class="icon icon-pencil" aria-hidden="true"></i>Edit on GitHub</a>
