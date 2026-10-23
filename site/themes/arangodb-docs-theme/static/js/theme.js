@@ -780,8 +780,10 @@ function hideEmptyOpenapiDiv() {
       for (var i = 0; i < fields.length; i++) {
         field = fields.slice(0, i+1).join("_")
         var el = document.getElementById(method+"_"+field);
+        if (!el) continue;
         el.setAttribute("open", "")
-        el.childNodes[0].classList.remove("collapsed")
+        // The first child node is whitespace, not the <summary>
+        el.querySelector(":scope > summary")?.classList.remove("collapsed")
       }
     }
     element.scrollIntoView();
@@ -1155,7 +1157,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const ZOOMABLE_SELECTOR = 'article img, article .svg-figure > svg, article pre.mermaid > svg';
 /* Images rendered smaller than this are treated as inline icons. */
-const ZOOMABLE_MIN_SIZE = 48;
+// Smaller illustrations, like icons, are shown as they are. The Enlarge hint alone is about this wide.
+const ZOOMABLE_MIN_SIZE = 100;
 /* How much of the illustration has to stay inside the overlay while panning, in pixels. */
 const VIEWER_PAN_GUTTER = 80;
 /* Pointer movement in pixels below which a press counts as a click, not a drag. */
@@ -1195,8 +1198,12 @@ function prepareZoomables() {
       el.addEventListener('load', prepareZoomables, { once: true });
       return;
     }
+    // Content box, the padding of floated icons doesn't make them bigger
     let rect = el.getBoundingClientRect();
-    if (rect.width && rect.width < ZOOMABLE_MIN_SIZE && rect.height < ZOOMABLE_MIN_SIZE) return;
+    let style = getComputedStyle(el);
+    let width = rect.width - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+    let height = rect.height - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+    if (rect.width && width < ZOOMABLE_MIN_SIZE && height < ZOOMABLE_MIN_SIZE) return;
     el.setAttribute('data-zoomable', '');
     el.setAttribute('tabindex', '0');
     if (!el.querySelector('a')) {
