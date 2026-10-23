@@ -1,4 +1,4 @@
-const { test, expect, open, waitForApp } = require("./fixtures");
+const { test, expect, open, waitForApp, isExpanded, IS_EXPANDED } = require("./fixtures");
 
 const PAGE = "/arangodb/stable/aql/fundamentals/subqueries/";
 
@@ -19,7 +19,10 @@ test("highlights the current page in the navigation and expands its parents", as
   await expect(active).toHaveAttribute("href", PAGE);
   await expect(active).toBeVisible();
   // Every section containing the page is expanded
-  const collapsedParents = await page.locator(".nav-section:has(.link-nav-active) > .nav-section-header input:not(:checked)").count();
+  const collapsedParents = await page.evaluate(isExpandedSrc => {
+    const isExpanded = new Function("return " + isExpandedSrc)();
+    return [...document.querySelectorAll(".main-nav .nav-section:has(.link-nav-active)")].filter(s => !isExpanded(s)).length;
+  }, IS_EXPANDED);
   expect(collapsedParents).toBe(0);
 });
 
@@ -113,9 +116,9 @@ test("collapses expanded navigation sections except for the path to the current 
   await open(page, PAGE);
   await showNav(page);
   // Expand a section that doesn't contain the current page
-  const other = page.locator(".main-nav .nav-section:not(:has(.link-nav-active)) > .nav-section-header:has(.expand-nav)").first();
-  await other.locator(".expand-nav").click();
-  await expect(other.locator("input")).toBeChecked();
+  const other = page.locator(".main-nav .nav-section:not(:has(.link-nav-active)):has(> .nav-section-header > .expand-nav)").first();
+  await other.locator(":scope > .nav-section-header > .expand-nav").click();
+  await expect.poll(() => isExpanded(other)).toBe(true);
   // Navigate to another page with the navigation
   const next = page.locator(".main-nav .link-nav-active").locator("xpath=ancestor::li[contains(@class, 'nav-leaf')]/following-sibling::li[1]//a[contains(@class, 'link-nav')]").first();
   const href = await next.getAttribute("href");
@@ -123,16 +126,17 @@ test("collapses expanded navigation sections except for the path to the current 
   await waitForApp(page);
   await expect(page).toHaveURL(href);
   await showNav(page);
-  await expect(other.locator("input")).not.toBeChecked();
+  await expect.poll(() => isExpanded(other)).toBe(false);
   // Exactly the sections containing the current page are expanded
-  const expanded = await page.evaluate(() => {
-    const checked = [...document.querySelectorAll(".main-nav .expand-nav > input:checked")].map(i => i.closest(".nav-section"));
+  const expanded = await page.evaluate(isExpandedSrc => {
+    const isExpanded = new Function("return " + isExpandedSrc)();
+    const checked = [...document.querySelectorAll(".main-nav .nav-section")].filter(isExpanded);
     const active = document.querySelector(".main-nav .link-nav-active");
     const path = [];
     for (let s = active.closest(".nav-section"); s; s = s.parentElement.closest(".nav-section")) path.push(s);
     // A section's own link counts too: a section page expands its children
     return { checked: checked.length, onPath: checked.filter(s => path.includes(s)).length, pathLength: path.length };
-  });
+  }, IS_EXPANDED);
   expect(expanded.onPath).toBe(expanded.checked);
   expect(expanded.checked).toBe(expanded.pathLength);
 });

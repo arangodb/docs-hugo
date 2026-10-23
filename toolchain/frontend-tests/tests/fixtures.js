@@ -44,4 +44,51 @@ async function matchesMedia(page, query) {
   return page.evaluate(q => matchMedia(q).matches, query);
 }
 
-module.exports = { test, expect: base.expect, waitForApp, open, copied, matchesMedia };
+/*
+ * Navigation helpers that work with both the old markup (checkbox in a label,
+ * <select> for the version) and the new one (buttons with aria-expanded, a
+ * disclosure menu of version links).
+ */
+
+// Whether a .nav-section element is expanded (in the page context)
+const IS_EXPANDED = "el => el.classList.contains('expanded') || !!el.querySelector(':scope > .nav-section-header input:checked')";
+
+/** Whether the navigation section (locator of a .nav-section) is expanded. */
+async function isExpanded(section) {
+  return section.evaluate(new Function("return " + IS_EXPANDED)());
+}
+
+/** The header of the ArangoDB section with the version selector. */
+function versionedHeader(page) {
+  return page.locator(".main-nav :is(.nav-section-header-versioned, .nav-section-sticky > .nav-section-header)");
+}
+
+/** The control that shows the selected version (select or menu button). */
+function versionControl(page) {
+  return page.locator(".main-nav :is(select.version-selector, .version-selector-button)");
+}
+
+/** The selected version (alias). */
+async function selectedVersion(page) {
+  return page.evaluate(() => {
+    const select = document.querySelector(".main-nav select.version-selector");
+    if (select) return select.value;
+    return document.querySelector(".main-nav .version-menu-item[aria-current]")?.dataset.version;
+  });
+}
+
+/** Choose a version (alias) with the version selector. */
+async function chooseVersion(page, version) {
+  const select = page.locator(".main-nav select.version-selector");
+  if (await select.count()) {
+    await select.selectOption(version);
+  } else {
+    await page.locator(".main-nav .version-selector-button").click();
+    await page.locator(`.main-nav .version-menu-item[data-version="${version}"]`).click();
+  }
+}
+
+module.exports = {
+  test, expect: base.expect, waitForApp, open, copied, matchesMedia,
+  isExpanded, IS_EXPANDED, versionedHeader, versionControl, selectedVersion, chooseVersion,
+};
