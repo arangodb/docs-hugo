@@ -13,7 +13,6 @@
     --color-slate-blue: #4f6d8b;
     --color-evergreen: #007339;
     /* Docs redesign palette for headings and link underlines */
-    --color-heading-ink: #0F172B;
     --color-heading: #1D293D;
     --color-muted: #62748E;
     --color-link: #00576E;
@@ -1262,7 +1261,7 @@ article.notfound {
 }
 
 hgroup > h1, article > h2, article > h3, article > h4, article > h5, article > h6 {
-    color: var(--color-heading);
+    color: var(--color-link);
     font-family: var(--font-headlines);
     font-weight: var(--TYPOGRAPHY-BOLD-TEXT);
     overflow-wrap: break-word;
@@ -1270,7 +1269,6 @@ hgroup > h1, article > h2, article > h3, article > h4, article > h5, article > h
 
 hgroup > h1,
 hgroup > h1 > code {
-    color: var(--color-heading-ink);
     font-size: var(--TYPOGRAPHY-H1-SIZE);
     margin: 40px 0 40px 0;
     line-height: var(--TYPOGRAPHY-H1-HEIGHT);
