@@ -29,18 +29,19 @@
       {{- /* section (with child pages) */}}
       <li class="nav-section">
         {{- $isVersioned := eq $page.RelPermalink "/arangodb/" }}
-        <div class="nav-section-header{{ if $isVersioned }} nav-section-header-versioned{{ end }}">
-          <a class="link-nav" href="{{ .RelPermalink }}">{{ .Params.menuTitle | markdownify }}</a>
-          <label class="expand-nav"><input type="checkbox"></label>
-        </div>
         {{- if $isVersioned }}
-          {{- partial "version-selector.html" . }}
+          {{- /* The section and the version selector stick to the top together */}}
+          <div class="nav-section-sticky">
+            {{- template "nav-section-header" $page }}
+            {{- partial "version-selector.html" . }}
+          </div>
           {{- range $versionSection := $page.Pages }}
             <ol class="nav-ol" data-version="{{ index (split $versionSection.Path "/") 2 }}">
               {{- template "main-nav-tree" $versionSection -}}
             </ol>
           {{- end }}
         {{- else }}
+          {{- template "nav-section-header" $page }}
           <ol class="nav-ol">
             {{- template "main-nav-tree" $page -}}
           </ol>
@@ -56,4 +57,12 @@
   {{- if and (gt $grouped 0) (gt $ungrouped 0) }}
     {{- errorf "Section %s mixes pages with and without a navigation `group`: either set `group` on every page of the section or on none" $section }}
   {{- end }}
+{{- end }}
+
+{{- define "nav-section-header" }}
+  <div class="nav-section-header">
+    <a class="link-nav" href="{{ .RelPermalink }}">{{ .Params.menuTitle | markdownify }}</a>
+    {{- /* aria-expanded is set by theme.js */}}
+    <button type="button" class="expand-nav" aria-expanded="false" aria-label="Subpages"></button>
+  </div>
 {{- end }}
