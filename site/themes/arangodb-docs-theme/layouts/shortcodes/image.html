@@ -12,15 +12,15 @@
 {{- $path := path.Join $file.Dir $src }}
 {{- $img := resources.Get $path }}
 {{- if $img -}}
+{{- $size := partial "image-size.html" $img }}
+{{- if $size.fill }}
+  {{- $class = trim (printf "%s img-fill" $class) " " }}
+{{- end }}
 <img alt="{{ $alt }}" src="{{ $img.RelPermalink }}"
   {{- with $class }} class="{{ . }}"{{ end }}
   {{- with $style }} style="{{ . | safeCSS }}"{{ end }}
-  {{- if (eq $img.MediaType.SubType "svg") }}
-    {{- /* TODO: Determine intrinsic size? */}}
-  {{- else }}
-    {{- with $img.Width }} width="{{ . }}"{{ end }}
-    {{- with $img.Height }} height="{{ . }}"{{ end }}
-  {{- end }}>
+  {{- with $size.width }} width="{{ . }}"{{ end }}
+  {{- with $size.height }} height="{{ . }}"{{ end }}>
 {{- else }}
   {{- errorf "Broken image reference '%v' found in %v" $src $file.Path }}
 {{- end }}

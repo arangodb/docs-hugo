@@ -4,9 +4,11 @@
 {{- $path := path.Join .Page.File.Dir .Destination }}
 {{- $img := resources.Get $path }}
 {{- if $img -}}
+  {{- $size := partial "image-size.html" $img -}}
   <img alt="{{ .Text }}" src="{{ $img.RelPermalink }}"
-  {{- with $img.Width }} width="{{ . }}"{{ end }}
-  {{- with $img.Height }} height="{{ . }}"{{ end }}>
+  {{- if $size.fill }} class="img-fill"{{ end }}
+  {{- with $size.width }} width="{{ . }}"{{ end }}
+  {{- with $size.height }} height="{{ . }}"{{ end }}>
 {{- else }}
   {{- errorf "Broken image reference '%v' found in %v" .Destination .Page.File.Path }}
 {{- end }}

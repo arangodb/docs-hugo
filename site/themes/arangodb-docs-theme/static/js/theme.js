@@ -324,8 +324,9 @@ function loadPage(target) {
       }
       replaceArticle(href, newDoc);
       docsLastFetchedDocKey = docKeyWithoutHash(href);
-      scrollToFragment();
+      // Collapse code blocks, restore tabs etc. first, they move the target
       initArticle(href);
+      scrollToFragment();
       flashTarget();
       if (window.setupDocSearch) {
         window.setupDocSearch(getSelectedVersion());
@@ -1045,7 +1046,21 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem('docs-version', currentVersion);
     }
 
-    loadPage(window.location.href)
+    if (document.querySelector(".row-main:empty")) {
+      // 404.html has no content of its own, loadPage() shows the not found page
+      loadPage(window.location.href);
+    } else {
+      // Initialize the server-rendered article in place. Fetching and swapping it
+      // again would reset the images to zero height (until decoded) and undo the
+      // browser's scroll to the fragment, which can then land in the wrong spot.
+      docsLastFetchedDocKey = docKeyWithoutHash(window.location.href);
+      initArticle(window.location.href);
+      scrollToFragment();
+      flashTarget();
+      if (window.setupDocSearch) {
+        window.setupDocSearch(getSelectedVersion());
+      }
+    }
 
     // Add central click handler to document
     document.addEventListener("click", handleDocumentClick);

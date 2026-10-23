@@ -356,15 +356,25 @@ kbd {
 /* Images */
 
 
+/* Images keep their natural size, scaled down to fit. No width: auto here, it
+   would override the width and height attributes that let browsers reserve
+   the space before an image has loaded. */
 img {
     opacity: 1;
     transition: opacity 0.5s;
     height: auto !important;
-    width: auto;
     max-height: 100%;
 }
 
+/* SVGs without an intrinsic size fill the available width, like without
+   width and height attributes */
+img.img-fill {
+    width: 100%;
+}
+
 .inline-img {
+    /* The padding comes on top of the size from the width attribute */
+    box-sizing: content-box;
     float: right;
     padding: 0 20px;
     margin-bottom: 20px;
