@@ -15,6 +15,7 @@
     /* Docs redesign palette for headings and link underlines */
     --color-heading-ink: #0F172B;
     --color-heading: #1D293D;
+    --color-muted: #62748E;
     --color-link: #00576E;
     --color-link-hover: #06838A;
     --color-teal-ink: #014654;
@@ -1178,21 +1179,27 @@ body .page-container {
 
 .breadcrumbs > ol > li > a {
     font-size: 1rem;
-    font-weight: 500;
-    color: var(--gray-700);
-    border-bottom: 0;
+    font-weight: 400;
+    color: var(--color-muted);
+    border-bottom: 1px solid transparent;
     background-color: transparent;
+    transition: color 0.1s, border-color 0.1s;
 }
 
+.breadcrumbs > ol > li:last-child > a {
+    color: var(--color-heading);
+}
+
+/* The theme forces text-decoration: none on links, so underline with a border */
 .breadcrumbs > ol > li > a:is(:hover, :focus) {
-    color: var(--gray-950);
-    border-bottom: 0;
+    color: var(--color-heading);
+    border-bottom: 1px solid var(--color-heading);
 }
 
-.breadcrumbs > ol > li > i {
-    margin: 0 2px;
-    color: var(--gray-700);
-    font-size: 14px;
+.breadcrumbs .breadcrumb-sep {
+    margin: 0 10px;
+    vertical-align: -2px;
+    color: var(--color-muted);
 }
 
 /* end Breadcrumbs row */
