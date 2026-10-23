@@ -5,8 +5,11 @@
 {{- $img := resources.Get $path }}
 {{- if $img -}}
   {{- $size := partial "image-size.html" $img -}}
+  {{- /* Screenshots get a border, see img.img-border */ -}}
+  {{- $class := cond (in (slice "png" "jpeg" "gif" "webp") $img.MediaType.SubType) "img-border" "" }}
+  {{- if $size.fill }}{{ $class = trim (printf "%s img-fill" $class) " " }}{{ end }}
   <img alt="{{ .Text }}" src="{{ $img.RelPermalink }}"
-  {{- if $size.fill }} class="img-fill"{{ end }}
+  {{- with $class }} class="{{ . }}"{{ end }}
   {{- with $size.width }} width="{{ . }}"{{ end }}
   {{- with $size.height }} height="{{ . }}"{{ end }}>
 {{- else }}
