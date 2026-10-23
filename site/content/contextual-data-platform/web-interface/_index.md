@@ -4,7 +4,7 @@ menuTitle: Web Interface
 weight: 15
 description: >-
   A tour of the unified web interface of the Contextual Data Platform: the
-  sidebar, the database selector, the account area with the version number,
+  sidebar, the database selector, the sidebar footer with the version number,
   and the workspace where you do your work
 ---
 The Arango Contextual Data Platform comes with a unified web interface that
@@ -35,7 +35,7 @@ an ArangoDB user account.
    notebook servers and MLflow, and the **Monitoring** dashboards.
 6. **Admin**: Manage **Databases**, **Secrets**, the **File Manager**, and the
    **Container Manager**.
-7. **Account area**: The user you are logged in as, the ArangoDB version, and
+7. **Sidebar footer**: The user you are logged in as, the ArangoDB version, and
    the logout button.
 8. **Workspace**: The main area where the selected view opens.
 
@@ -58,8 +58,8 @@ belongs to.
   may change before it becomes generally available.
 - If the sidebar is taller than your browser window, scroll it to reach the
   sections further down, such as **Admin**.
-- Click {{< image src="../../images/platform-ui-icons/collapse.png" alt="Sidebar toggle" style="width: 24px; margin: 0; vertical-align: middle;" >}}
-  next to the Arango logo to collapse or expand the sidebar.
+- Click the icon next to the Arango logo ({{< icon "platform-ui/panel-left" >}})
+  to collapse or expand the sidebar.
 
 The entries you see can differ depending on the components installed in your
 deployment.
@@ -72,21 +72,22 @@ Most of what you do in the web interface happens in the context of a single
 database. The database selector under the **Database related** heading shows
 the database you are working in, for example, `_system`.
 
-To switch to another database, click the selector
-({{< image src="../../images/platform-ui-icons/db-switch.png" alt="Database selector" style="width: 24px; margin: 0; vertical-align: middle;" >}})
-and choose a database from the list. Only the databases your user account has
+To switch to another database, click the selector, which shows the name of the
+current database followed by an up-and-down arrow icon
+({{< icon "platform-ui/chevrons-up-down" >}}), and choose a database from the
+list. Only the databases your user account has
 access to are listed. The views below the selector, such as the
 **Query Editor** and **Graphs**, then show the data of the newly selected
 database.
 
 To create or delete databases, go to **Admin** > **Databases**.
 
-## Account area
+## Sidebar footer
 
-The bottom-left corner of the sidebar shows who you are logged in as and which
+The footer at the bottom of the sidebar shows who you are logged in as and which
 version of ArangoDB you are connected to.
 
-![The account area in the bottom-left corner of the sidebar with numbered callouts](../../images/data-platform-ui-account-area.png)
+![The sidebar footer at the bottom of the sidebar with numbered callouts](../../images/data-platform-ui-sidebar-footer.png)
 
 1. **Avatar**: Represents your user account.
 2. **Username**: The ArangoDB user account you logged in with, for example,
@@ -94,12 +95,12 @@ version of ArangoDB you are connected to.
    [permissions](../access-control/authorization.md) of this account.
 3. **Version number**: The version of the **ArangoDB** core database system,
    for example, `v3.12.11`.
-4. **Log out**
-   ({{< image src="../../images/platform-ui-icons/logout.png" alt="Log out" style="width: 24px; margin: 0; vertical-align: middle;" >}}):
-   Ends your session and takes you back to the login screen.
+4. **Log out**: The icon on the right-hand side of the footer
+   ({{< icon "platform-ui/log-out" >}}). Ends your session and takes you back
+   to the login screen.
 
 {{< info >}}
-The version number in the account area is the version of the ArangoDB
+The version number in the sidebar footer is the version of the ArangoDB
 database system that the data platform runs on, **not** the version of the
 Contextual Data Platform itself. The data platform and ArangoDB are versioned
 independently. The web interface doesn't show the data platform version.
@@ -120,6 +121,3 @@ right of the sidebar. Views follow a common structure:
   **Maintenance** on the **Dashboard**.
 - The **content** of the view, often a list of items you can open, filter, and
   act on.
-
-The same controls show up across all views. Learn how lists, dialogs,
-notifications, and wizards work in [Common controls](common-controls.md).
