@@ -1,17 +1,25 @@
 {{- /* The article's aside: the table of contents (in a column on wide screens,
   collapsible below the page title otherwise) and the back to top button */ -}}
 <aside class="article-aside">
-  {{- if ge (.Page.Fragments.HeadingsMap | len) 2 }}
-  <nav class="toc" aria-labelledby="toc-heading">
-    <details class="toc-details" open>
-      <summary class="toc-header" id="toc-heading">On this page<span class="toc-current"></span></summary>
-      <div class="TableOfContents">
-        <div class="level-1"><a href="#top">{{ .Title | markdownify }}</a></div>
-        {{ template "nestedHeadline" dict "headings" .Page.Fragments.Headings "level" 1 "maxLevel" .Page.Params.pageToc.maxHeadlineLevel }}
-      </div>
-    </details>
-  </nav>
-  {{- end }}
+  {{- /* The edit link and table of contents stick to the top together */}}
+  <div class="aside-sticky">
+    {{ partial "edit-link.html" . }}
+    {{- if ge (.Page.Fragments.HeadingsMap | len) 2 }}
+    <nav class="toc" aria-labelledby="toc-heading">
+      <details class="toc-details" open>
+        <summary class="toc-header" id="toc-heading">On this page<span class="toc-current"></span></summary>
+        <div class="TableOfContents">
+          {{- /* Scrolls inside the box of the dropdown on narrow screens */}}
+          <div class="toc-entries">
+            {{- /* The content before the first heading, links to the top */}}
+            <div class="level-2"><a href="#top">Overview</a></div>
+            {{ template "nestedHeadline" dict "headings" .Page.Fragments.Headings "level" 1 "maxLevel" .Page.Params.pageToc.maxHeadlineLevel }}
+          </div>
+        </div>
+      </details>
+    </nav>
+    {{- end }}
+  </div>
   {{ partial "back-to-top.html" . }}
 </aside>
 
