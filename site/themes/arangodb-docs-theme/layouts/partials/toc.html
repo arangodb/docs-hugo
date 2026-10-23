@@ -1,9 +1,8 @@
 {{- /* The article's aside: the table of contents (in a column on wide screens,
   collapsible below the page title otherwise) and the back to top button */ -}}
 <aside class="article-aside">
-  {{- /* The edit link and table of contents stick to the top together */}}
+  {{- /* The table of contents sticks to the top, the edit link and back to top to the bottom */}}
   <div class="aside-sticky">
-    {{ partial "edit-link.html" . }}
     {{- if ge (.Page.Fragments.HeadingsMap | len) 2 }}
     <nav class="toc" aria-labelledby="toc-heading">
       <details class="toc-details" open>
@@ -20,7 +19,10 @@
     </nav>
     {{- end }}
   </div>
-  {{ partial "back-to-top.html" . }}
+  <div class="aside-bottom">
+    {{ partial "edit-link.html" . }}
+    {{ partial "back-to-top.html" . }}
+  </div>
 </aside>
 
 {{ define "nestedHeadline" -}}
