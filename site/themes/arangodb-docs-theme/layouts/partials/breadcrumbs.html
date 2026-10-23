@@ -13,9 +13,7 @@
         {{ if and (hasPrefix .Path "/arangodb/") (eq ($splitPath | len) 3) -}}
           {{ $coreVersion := index $splitPath 2 -}}
           {{ template "getVersionLong" dict "coreVersion" $coreVersion -}}
-        {{ else if .IsHome -}}
-          Start page
-        {{- else -}}
+        {{ else -}}
           {{ .Params.menuTitle | markdownify -}}
         {{ end -}}
         </span>
