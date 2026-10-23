@@ -547,9 +547,38 @@ const TOC_COLUMN_QUERY = "(min-width: 1280px)";
 
 function initToc() {
   const details = document.querySelector(".toc-details");
-  if (details) details.open = window.matchMedia(TOC_COLUMN_QUERY).matches;
+  if (!details) return;
+  // Always open in the column, a closed bar with the current section otherwise
+  details.open = window.matchMedia(TOC_COLUMN_QUERY).matches;
+  document.querySelectorAll(".toc, .TableOfContents").forEach(el => {
+    el.addEventListener("scroll", updateTocFade, { passive: true });
+  });
+  details.addEventListener("toggle", updateTocFade);
   tocHiglighter();
+  updateTocFade();
 }
+
+// Fades out the end of the table of contents if there are more entries to scroll to
+function updateTocFade() {
+  // The column or the dropdown, whichever scrolls in the current layout
+  document.querySelectorAll(".toc, .TableOfContents").forEach(el => {
+    const scrolls = /auto|scroll/.test(getComputedStyle(el).overflowY);
+    el.classList.toggle("toc-scroll-more", scrolls && el.scrollHeight - el.scrollTop - el.clientHeight > 1);
+  });
+}
+
+window.addEventListener("resize", throttle(updateTocFade, 150));
+
+function closeTocDropdown() {
+  const details = document.querySelector(".toc-details");
+  if (details && details.open && !window.matchMedia(TOC_COLUMN_QUERY).matches) {
+    details.open = false;
+  }
+}
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeTocDropdown();
+});
 
 window.matchMedia(TOC_COLUMN_QUERY).addEventListener("change", initToc);
 
@@ -565,7 +594,7 @@ function getAllAnchors() {
 // Marks the last heading scrolled past (or the page title above the first one)
 function tocHiglighter() {
   const toc = document.querySelector(".TableOfContents");
-  if (!toc || !window.matchMedia(TOC_COLUMN_QUERY).matches) return;
+  if (!toc) return;
   const threshold = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) + 16;
   let current = toc.querySelector(".level-1");
   for (const heading of getAllAnchors()) {
@@ -575,6 +604,10 @@ function tocHiglighter() {
   if (!current || current.classList.contains("is-active")) return;
   toc.querySelectorAll(".is-active").forEach(el => el.classList.remove("is-active"));
   current.classList.add("is-active");
+  // The bar on narrow screens shows the current section (nothing above the first one)
+  const label = document.querySelector(".toc-current");
+  if (label) label.textContent = current.classList.contains("level-1") ? "" : current.textContent.trim();
+  if (!window.matchMedia(TOC_COLUMN_QUERY).matches) return;
   // Keep it in view if the table of contents scrolls
   const container = toc.closest(".toc");
   const box = current.getBoundingClientRect();
@@ -968,6 +1001,11 @@ function handleDocumentClick(event) {
     if (closest(".toc-details > summary") && window.matchMedia(TOC_COLUMN_QUERY).matches) {
         event.preventDefault();
         return;
+    }
+
+    // Choosing an entry or clicking elsewhere closes the dropdown on narrow screens
+    if (!closest(".toc-details") || closest(".TableOfContents a")) {
+        closeTocDropdown();
     }
 
     // Allow browser default for non-primary buttons (middle/right) and modifier clicks

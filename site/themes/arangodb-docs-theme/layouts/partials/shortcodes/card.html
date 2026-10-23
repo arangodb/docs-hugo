@@ -15,7 +15,7 @@
   <div class="card">
     <div class="card-title">
       {{- with $image }}<img class="card-icon" src="{{ .RelPermalink }}" alt="" width="48" height="48">{{ end -}}
-      <span>{{ $title }}<i class="icon icon-arrow-right" aria-hidden="true"></i></span>
+      <span class="card-title-text">{{ $title }}</span>
     </div>
     <div class="card-body">
       <p>{{ $content }}</p>
