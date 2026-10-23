@@ -61,7 +61,7 @@ test.describe("endpoint copy button", () => {
 
 test("heading links copy the link to the section", async ({ page }) => {
   await open(page, CODE_PAGE);
-  const heading = page.locator("article > h2").first();
+  const heading = page.locator("article h2:has(.header-link)").first();
   const id = await heading.getAttribute("id");
   await heading.scrollIntoViewIfNeeded();
   await heading.hover();
