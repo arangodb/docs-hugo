@@ -68,6 +68,8 @@
     @media screen and (max-width: 900px) { .hd-bottom { grid-template-columns: 1fr; } }
     .hd-list { display: flex; flex-direction: column; }
     .hd .hd-list a { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 8px 0; border-bottom: 1px solid var(--hd-line); font-size: .9375rem; color: var(--hd-text); }
+    /* Keep the separator on hover, the .link reset above would remove it */
+    .hd .hd-list a:is(:hover, :focus) { border-bottom: 1px solid var(--hd-line); }
     .hd .nw { white-space: nowrap; }
     .hd-list a .arr { margin-left: auto; color: var(--hd-link); }
     .hd-list a:hover { color: var(--hd-link); }

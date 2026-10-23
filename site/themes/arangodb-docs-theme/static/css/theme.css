@@ -581,6 +581,15 @@ img {
     vertical-align: middle;
 }
 
+/* Raster images, mostly screenshots, often have a light background up to the
+   edge. The border is outside the image size so that it isn't scaled. */
+img.img-border {
+    box-sizing: content-box;
+    max-width: calc(100% - 2px);
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+}
+
 .inline-img {
     float: right;
     padding: 0 20px;
@@ -1352,26 +1361,41 @@ article ul li {
     color: var(--gray-800);
 }
 
+/* Copies the link to the heading. Absolutely positioned after the last word,
+   so that it never wraps to a line of its own. */
 .header-link {
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-    /* Box, so the focus ring encloses the icon */
+    position: absolute;
     display: inline-block;
+    margin-left: 0.3em;
+    /* Absolute positioning ignores vertical-align, center it on the line */
+    margin-top: 0.25em;
+    /* Box, so the focus ring encloses the icon */
     line-height: 1;
+    font-size: 0.7em;
+    color: var(--color-link-hover);
+    opacity: 0;
+    transition: opacity 0.15s;
 }
 
-h2:hover .header-link,
-h3:hover .header-link,
-h4:hover .header-link,
-h5:hover .header-link,
-h6:hover .header-link {
-    filter: alpha(opacity=70);
-    opacity: 0.7;
+:is(h2, h3, h4, h5, h6):hover .header-link,
+.header-link.tooltipped {
+    opacity: 1;
+}
+
+.header-link.tooltipped .icon {
+    --icon: var(--icon-check);
 }
 
 /* Reveal on focus, otherwise the ring would surround an invisible icon */
 .header-link:focus-visible {
     opacity: 1;
+}
+
+/* Without hover, a faint icon shows that headings can be linked */
+@media (hover: none) {
+    .header-link {
+        opacity: 0.4;
+    }
 }
 
 .openapi-property-link {
@@ -1406,52 +1430,61 @@ li > code {
     white-space: pre-wrap;
 }
 
-.copy-to-clipboard-button {
+/* Outline buttons in code blocks (copy, show more) */
+.copy-to-clipboard-button,
+pre > .code-show-more {
     position: absolute;
-    align-items: center;
-    justify-content: center;
-    right: 0;
-    cursor: pointer;
-    background: var(--gray-200);
-    padding: 4px 12px;
-    margin: 4px;
-    border-radius: 1px;
-    /* Invisible rather than display:none, which cannot be focused */
     display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 0;
+    margin: 0;
+    padding: 4px 10px;
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    background: var(--neutral-white);
+    color: var(--color-heading);
+    font-family: var(--font-content);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: normal;
+    transition-property: opacity, background-color;
+    transition-duration: 0.1s;
+}
+
+.copy-to-clipboard-button:hover,
+pre > .code-show-more:hover {
+    background: var(--gray-100);
+}
+
+.copy-to-clipboard-button {
+    top: 8px;
+    right: 8px;
+    /* Invisible rather than display:none, which cannot be focused */
     opacity: 0;
 }
 
-pre:hover > .copy-to-clipboard-button {
-    opacity: 0.7;
-}
-
-/* After the rule above to win the specificity tie */
-.copy-to-clipboard-button:is(:hover, :focus-visible) {
+pre:hover > .copy-to-clipboard-button,
+.copy-to-clipboard-button:focus-visible,
+.copy-to-clipboard-button.tooltipped {
     opacity: 1;
 }
 
 .copy-to-clipboard-button::before {
     --icon: var(--icon-copy);
-    color: var(--color-teal-ink);
 }
 
 .copy-to-clipboard-button.tooltipped::before {
     --icon: var(--icon-check);
 }
 
-.copy-to-clipboard-button::after{
-    content: 'Copy';
-    font-family: var(--font-content);
-    padding: 0 5px;
-    font-weight: bold;
-    color: var(--color-teal-ink);
+.copy-to-clipboard-button::after {
+    content: "Copy";
 }
-.copy-to-clipboard-button.tooltipped::after{
-    content: 'Copied';
-    font-family: var(--font-content);
-    padding: 0 5px;
-    font-weight: bold;
-    color: var(--color-teal-ink);
+
+.copy-to-clipboard-button.tooltipped::after {
+    content: "Copied";
 }
 
 pre > code {
@@ -1477,23 +1510,8 @@ pre > code {
 }
 
 pre > .code-show-more {
-    font-size: 1rem;
-    background: var(--gray-200);
-    font-family: var(--font-content);
-    padding: 5px 5px;
-    font-weight: 500;
-    opacity: 0.7;
-    width: 160px;
-    color: var(--color-teal-ink);
-    margin: 0 auto;
-    position: absolute;
-    bottom: 12px;
-    right: 10px;
-    letter-spacing: 0;
-}
-
-pre > .code-show-more:hover{
-    opacity: 1;
+    bottom: 8px;
+    right: 8px;
 }
 
 pre > .code-show-more::before {
@@ -1505,13 +1523,11 @@ pre > .code-show-more.expanded::before {
 }
 
 pre > .code-show-more::after {
-    content: "Show More";
-    padding: 0 8px;
-
+    content: "Show more";
 }
 
 pre > .code-show-more.expanded::after {
-    content: "Show Less"
+    content: "Show less";
 }
 /* end Codeblocks */
 
@@ -1707,7 +1723,7 @@ summary {
 }
 
 summary:hover, summary:focus-visible {
-    color: #005580;
+    color: var(--color-link);
 }
 
 summary::-webkit-details-marker {
@@ -1722,12 +1738,19 @@ details > summary::before {
     --icon: var(--icon-chevron-right);
     margin-right: 0.5rem;
     vertical-align: middle;
-    font-size: 12px;
-    color: grey;
+    font-size: 14px;
+    color: var(--color-muted);
+    transition: rotate 0.15s ease-out;
 }
 
 details[open] > summary::before {
     rotate: 90deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    details > summary::before {
+        transition: none;
+    }
 }
 
 /* */

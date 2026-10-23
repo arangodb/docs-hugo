@@ -837,7 +837,11 @@ function copyURI(evt) {
     const href = link.getAttribute("href");
     const url = new URL(href, window.location.href).href;
 
-    navigator.clipboard.writeText(url).then(() => {}, () => {
+    navigator.clipboard.writeText(url).then(() => {
+      // CSS shows a checkmark
+      link.classList.add("tooltipped");
+      setTimeout(() => link.classList.remove("tooltipped"), 1500);
+    }, () => {
       console.log("clipboard copy failed");
     });
 
