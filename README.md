@@ -246,10 +246,47 @@ includes Google Analytics etc.
 
 #### Frontend tests
 
-Browser tests for the functionality of the built site (navigation, version
-selector, copy buttons, etc.) are in `toolchain/frontend-tests/`. CircleCI runs
-them for releases, scheduled builds, and builds with frontend changes. To run
-them locally, see
+Browser tests with [Playwright](https://playwright.dev/) check the
+functionality of the built site, like the navigation, version selector, copy
+buttons, tabs, and image viewer, in Chromium, Firefox, and WebKit on desktop and
+mobile viewports. They are in `toolchain/frontend-tests/`.
+
+CircleCI runs them before deploying a release, after scheduled and example
+generation builds, and after plain builds if the changes compared to `main`
+touch the theme, site configuration, static files, versions, the tests, or the
+CircleCI configuration (in parallel to the deploy preview).
+
+To run them locally, create a static build first (see [Plain build](#plain-build)
+with `ENV=static`) so that `site/public/` exists. Then install the dependencies
+and browsers once, and run the tests:
+
+```sh
+cd toolchain/frontend-tests
+npm ci
+npx playwright install chromium firefox   # add webkit if your system supports it
+npx playwright test --project chromium --project mobile-chromium --project firefox
+```
+
+The tests serve `site/public/` themselves. You can test another build with
+`SITE_DIR=path/to/public` or a deployed site, like a deploy preview, with
+`BASE_URL`:
+
+```sh
+BASE_URL=https://deploy-preview-1234--docs-hugo.netlify.app npx playwright test
+```
+
+To run all browsers including WebKit, which doesn't run natively on every Linux
+distribution, use the same Docker image as CircleCI. Arguments are passed to
+`playwright test`:
+
+```sh
+toolchain/frontend-tests/run-in-docker.sh
+toolchain/frontend-tests/run-in-docker.sh --project webkit -g "version selector"
+```
+
+After a run, `npm run report` opens the report with screenshots and traces of
+failed tests, and `npx playwright test --ui` lets you run and debug tests
+interactively. For writing tests and updating Playwright, see
 [toolchain/frontend-tests/README.md](toolchain/frontend-tests/README.md).
 
 #### Scheduled and example generation build
