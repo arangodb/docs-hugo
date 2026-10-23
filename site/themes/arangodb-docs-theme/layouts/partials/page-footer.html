@@ -1,0 +1,18 @@
+{{- /* Page footer, the right half is left free for the back to top button on narrow screens */ -}}
+<footer class="page-footer">
+  <a class="page-footer-edit" target="_blank" rel="noopener noreferrer"
+  href="https://github.com/arangodb/docs-hugo/edit/main/site/content/
+  {{- with .File }}
+    {{- $path := .Path }}
+    {{- if and (strings.HasPrefix $path "arangodb/") (ne $path "arangodb/_index.md") }}
+      {{- $splitPath := split $path "/" }}
+      {{- $versionAlias := index $splitPath 1 }}
+      {{- if or (eq $versionAlias "stable") (eq $versionAlias "devel") }}
+        {{- $versionName := (index (where (index hugo.Data.versions "/arangodb/") "alias" $versionAlias) 0).name }}
+        {{- $path = $path | replaceRE (printf "^arangodb/%s/" $versionAlias) (printf "arangodb/%s/" $versionName) }}
+      {{- end }}
+    {{- end }}
+    {{- $path }}
+  {{- end }}">
+    <i class="icon icon-pencil" aria-hidden="true"></i>Edit on GitHub</a>
+</footer>
