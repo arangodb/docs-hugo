@@ -12,6 +12,13 @@
     --color-mist: #f4f4f4;
     --color-slate-blue: #4f6d8b;
     --color-evergreen: #007339;
+    /* Docs redesign palette for headings and link underlines */
+    --color-heading-ink: #0F172B;
+    --color-heading: #1D293D;
+    --color-link: #00576E;
+    --color-link-hover: #06838A;
+    --color-teal-ink: #014654;
+    --color-lime: #BEFE99;
 
     --neutral-black: #000000;
     --neutral-gray-darkest: #323b40;
@@ -153,7 +160,7 @@ button {
 }
 
 select {
-    border: 1px solid #567138;
+    border: 1px solid var(--color-link);
     border-radius: 40px;
 }
 
@@ -198,7 +205,7 @@ button {
 }
 
 button.green {
-    background-color: var(--color-avocado);
+    background-color: var(--color-teal-ink);
 }
 
 button.grey {
@@ -231,11 +238,11 @@ a:hover {
 /* Focus ring, keyboard only. The :root prefix outranks Bootstrap's dotted inset a:focus;
    later rules still override it. --focus-ring is re-set on dark surfaces for contrast. */
 :root {
-    --focus-ring: var(--color-avocado);
+    --focus-ring: var(--color-teal-ink);
 }
 
 .main-nav {
-    --focus-ring: var(--color-electric-lime);
+    --focus-ring: var(--color-lime);
 }
 
 :root :focus-visible {
@@ -276,11 +283,11 @@ ul ul, ul ol, ol ul, ol ol {
 .link,
 .link:visited {
     text-decoration: none;
-    border-bottom: 2px solid var(--color-evergreen);
+    border-bottom: 2px solid var(--color-link);
 }
 
 .link:is(:hover, :focus) {
-    border-bottom: 2px solid var(--color-leaf-green);
+    border-bottom: 2px solid var(--color-link-hover);
     color: var(--gray-950);
 }
 
@@ -290,7 +297,7 @@ ul ul, ul ol, ol ul, ol ol {
 }
 
 .link > p {
-    border-bottom: 2px solid var(--color-evergreen);
+    border-bottom: 2px solid var(--color-link);
     color: var(--gray-950);
 }
 
@@ -577,7 +584,7 @@ a.section-link {
     overflow: hidden;
     text-overflow: ellipsis;
     transition-duration: 0s;
-    color: var(--color-avocado);
+    color: var(--color-teal-ink);
     padding: 12px 16px;
 }
 
@@ -591,7 +598,7 @@ a.section-link {
     right: 0;
     bottom: 0;
     height: 2px;
-    background-color: var(--color-avocado)
+    background-color: var(--color-teal-ink)
 }
 
 .tab-nav-button > span {
@@ -720,7 +727,7 @@ body .page-container {
     height: 64px;
     padding: 16px;
     display: flex;
-    color: var(--green-700);
+    color: var(--color-teal-ink);
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
@@ -1248,7 +1255,7 @@ article.notfound {
 }
 
 hgroup > h1, article > h2, article > h3, article > h4, article > h5, article > h6 {
-    color: var(--color-avocado);
+    color: var(--color-heading);
     font-family: var(--font-headlines);
     font-weight: var(--TYPOGRAPHY-BOLD-TEXT);
     overflow-wrap: break-word;
@@ -1256,6 +1263,7 @@ hgroup > h1, article > h2, article > h3, article > h4, article > h5, article > h
 
 hgroup > h1,
 hgroup > h1 > code {
+    color: var(--color-heading-ink);
     font-size: var(--TYPOGRAPHY-H1-SIZE);
     margin: 40px 0 40px 0;
     line-height: var(--TYPOGRAPHY-H1-HEIGHT);
@@ -1349,7 +1357,7 @@ article > h6 > code {
 
 @keyframes target-highlight {
     from {
-        background-color: var(--color-electric-lime);
+        background-color: var(--color-lime);
     }
     to {
         background-color: transparent;
@@ -1460,14 +1468,14 @@ pre:hover > .copy-to-clipboard-button {
     font-family: "Font Awesome 5 Free";
     content: "\f0c5";
     font-weight: 900;
-    color: var(--green-700);
+    color: var(--color-teal-ink);
 }
 
 .copy-to-clipboard-button.tooltipped::before {
     font-family: "Font Awesome 5 Free";
     content: "\f00c";
     font-weight: 900;
-    color: var(--green-700);
+    color: var(--color-teal-ink);
 }
 
 .copy-to-clipboard-button::after{
@@ -1475,14 +1483,14 @@ pre:hover > .copy-to-clipboard-button {
     font-family: var(--font-content);
     padding: 0 5px;
     font-weight: bold;
-    color: var(--green-700);
+    color: var(--color-teal-ink);
 }
 .copy-to-clipboard-button.tooltipped::after{
     content: 'Copied';
     font-family: var(--font-content);
     padding: 0 5px;
     font-weight: bold;
-    color: var(--green-700);
+    color: var(--color-teal-ink);
 }
 
 pre > code {
@@ -1513,7 +1521,7 @@ pre > .code-show-more {
     font-weight: 500;
     opacity: 0.7;
     width: 160px;
-    color: var(--green-950);
+    color: var(--color-teal-ink);
     margin: 0 auto;
     position: absolute;
     bottom: 12px;
@@ -1626,7 +1634,7 @@ div > .box-content-container {
     display: inline-block;
     padding: 0.2rem 0.8rem;
     border-radius: 0.25rem;
-    background: var(--color-electric-lime);
+    background: var(--color-lime);
     color: #0d0c0c;
     line-height: 21px;
     font-size: 1em;
@@ -1641,7 +1649,7 @@ div > .box-content-container {
    
 .clipboard-copy {
     color: var(--neutral-white);
-    background: var(--color-avocado);
+    background: var(--color-teal-ink);
     border-radius: .25rem;
     margin: 0;
     margin-left: auto;
@@ -1661,7 +1669,7 @@ div > .box-content-container {
 }
 
 .clipboard-copy:hover {
-    background: var(--color-evergreen);
+    background: var(--color-link);
 }
 
 .endpoint-group:hover .clipboard-copy {
@@ -1782,7 +1790,7 @@ details[open] > summary::before {
     --font-size-mono: 13px;
     --font-size-regular: 14px;
     --dialog-z-index: 1000;
-    --focus-shadow: 0 0 0 1px transparent, 0 0 0 3px rgba(125, 201, 3, 0.4);
+    --focus-shadow: 0 0 0 1px transparent, 0 0 0 3px rgba(6, 131, 138, 0.4);
 
     display: flex;
     flex-direction: column;
@@ -2009,10 +2017,10 @@ nav.pagination .next {
     right: 52px;
     z-index: 99;
     background-color: white;
-    color: #577138;
+    color: var(--color-link);
     cursor: pointer;
     /* padding: 20px; */
-    border: 1px solid #577138;
+    border: 1px solid var(--color-link);
     border-radius: 40px;
     font-size: 18px;
 }
@@ -2078,7 +2086,7 @@ nav.pagination .next {
     padding: 20px 0;
     border-radius: 4px;
     margin-bottom: 36px;
-    background: linear-gradient(40deg, var(--color-avocado) 50%, var(--color-evergreen));
+    background: linear-gradient(40deg, var(--color-teal-ink) 50%, var(--color-link));
     background-position: center;
     color: var(--gray-50)
 }
@@ -2270,11 +2278,11 @@ nav.pagination .next {
 .link-nav-active:is(:hover, .link-nav-active:visited, .link-nav-active:focus),
 .link-nav-active + .expand-nav,
 .nav-section:has(.link-nav-active) > .nav-section-header > .link-nav {
-    color: var(--color-electric-lime);
+    color: var(--color-lime);
 }
 
 .link-nav:focus-visible {
-    outline: 2px solid var(--color-electric-lime);
+    outline: 2px solid var(--color-lime);
     outline-offset: 2px;
 }
 
@@ -2305,7 +2313,7 @@ nav.pagination .next {
     --sidebar-muted: #90A1B9;
     --sidebar-hover: #06838A;
     --sidebar-lime: #BEFE99;
-    --focus-ring: var(--color-electric-lime);
+    --focus-ring: var(--color-lime);
     position: fixed;
     top: 0;
     left: 0;
@@ -2656,7 +2664,7 @@ nav.pagination .next {
 }
 
 [data-zoomable]:focus-visible {
-    outline: 2px solid var(--green-600);
+    outline: 2px solid var(--color-link);
     outline-offset: 2px;
 }
 
