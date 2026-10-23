@@ -1,0 +1,200 @@
+{{ define "main" -}}
+{{ $stable := "arangodb/stable/" -}}
+{{ $icons := "img/home/" -}}
+{{ $arrow := `<svg class="arr" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.333 8h9.334M8.667 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` | safeHTML -}}
+{{ $external := `<svg class="ext" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.667 11.333l6.666-6.666M4.667 4.667h6.666v6.666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` | safeHTML -}}
+<article class="home home-landing hd no-zoom">
+  <style>
+    .hd { --hd-ink: #0F172B; --hd-text: #1D293D; --hd-muted: #62748E; --hd-link: #00576E; --hd-soft: #F1F5F9; --hd-soft-hover: #E2E8F0; --hd-line: #E2E8F0; --hd-card-line: #D4D4D4; font-family: var(--font-content); color: var(--hd-text); }
+    /* minmax(0, …) stops wide content (pill rows, card grids) from stretching the grid past the viewport */
+    .row-main:has(article.hd) { max-width: 1240px; grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); }
+    article.hd { grid-column: article-start / toc-end; max-width: 1068px; width: auto; margin: 0 56px; padding: 44px 0 80px; }
+    article.hd ~ .toc-container { display: none; }
+    @media screen and (max-width: 768px) { article.hd { margin: 0; padding: 24px 16px 60px; min-width: 0; } .hd h1 { font-size: 1.75rem; } }
+
+    /* Reset the theme's underlined .link style inside the homepage */
+    .hd a.link, .hd a.link:visited, .hd a.link:is(:hover, :focus) { border-bottom: 0; }
+    .hd a { font-weight: inherit; transition: .12s; }
+    .hd a:hover { text-decoration: none; }
+    /* nucleus.css gives every inline svg a top/left margin */
+    .hd svg { margin: 0; }
+    .hd .arr { flex: none; }
+
+    /* Intro */
+    .hd h1 { font-family: var(--font-content); font-size: 2.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -.5px; color: var(--color-link); margin: 0 0 12px; }
+    .hd-sub { font-size: 1.0625rem; line-height: 1.5; color: var(--hd-muted); margin: 0 0 14px; }
+    .hd-search { display: flex; align-items: center; gap: 8px; width: 100%; height: 36px; margin: 0; padding: 0 8px 0 10px; background: #fff; border: 1px solid var(--hd-line); border-radius: 6px; cursor: text; text-align: left; letter-spacing: normal; font-weight: 400; transition: .12s; }
+    .hd-search:hover { border-color: #90A1B9; }
+    .hd-search svg { color: var(--hd-muted); flex: none; }
+    .hd-search span { flex: 1; color: var(--hd-muted); font-size: .9375rem; }
+    .hd-search kbd { font-family: var(--font-content); font-size: .6875rem; color: var(--hd-muted); background: var(--hd-soft); border: 0; border-radius: 4px; padding: 2px 5px; box-shadow: none; }
+    .hd-popular { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; }
+    .hd-popular .lbl { font-size: .875rem; color: var(--hd-muted); margin-right: 2px; }
+    .hd-popular a { font-size: .9375rem; color: var(--hd-text); background: var(--hd-soft); border-radius: 999px; padding: 8px 16px; line-height: 1.2; }
+    .hd-popular a:hover { background: var(--hd-soft-hover); }
+
+    /* Text links match the content pages: dark text, teal underline that lightens on hover.
+       !important beats the theme's global text-decoration: none !important on links. */
+    .hd-sec a.more, .hd-list.community a, .hd-list .t { color: var(--gray-950); text-decoration: underline 2px var(--color-link) !important; text-underline-offset: 4px; }
+    .hd-sec a.more:is(:hover, :focus), .hd-list.community a:is(:hover, :focus), .hd-list a:is(:hover, :focus) .t { color: var(--color-link); text-decoration-color: var(--color-link-hover) !important; }
+    /* Cards, tiles and pills skip the underline; their text still turns teal on hover */
+    .hd-start .cta, .hd-card h3 a, .hd-popular a, .hd-tags a { color: var(--gray-950); }
+    .hd-start:is(:hover, :focus) .cta, .hd-card h3 a:is(:hover, :focus), .hd-popular a:is(:hover, :focus), .hd-tags a:is(:hover, :focus) { color: var(--color-link); }
+
+    /* Section heads */
+    .hd-sec { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 48px 0 16px; }
+    .hd-sec h2 { font-family: var(--font-content); font-size: 1.375rem; font-weight: 600; letter-spacing: -.2px; color: var(--color-link); margin: 0; scroll-margin-top: 110px; }
+    .hd-sec a.more { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: .9375rem; white-space: nowrap; }
+
+    .hd-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    @media screen and (max-width: 1100px) { .hd-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media screen and (max-width: 700px) { .hd-grid { grid-template-columns: 1fr; } }
+
+    /* Get started tiles */
+    .hd-start { display: flex; flex-direction: column; background: var(--hd-soft); border-radius: 8px; padding: 20px; color: var(--hd-text); }
+    .hd-start:hover { background: var(--hd-soft-hover); }
+    .hd-start .top { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+    .hd-start .top img { width: 48px; height: 48px; flex: none; }
+    .hd-start strong { font-size: 1.0625rem; font-weight: 600; color: var(--hd-text); }
+    .hd-start .d { font-size: .9375rem; color: var(--hd-muted); margin-bottom: 10px; }
+    .hd-start .cta { display: inline-flex; align-items: center; gap: 6px; font-size: .9375rem; font-weight: 600; }
+
+    /* Browse cards: the heading and every balloon are separate links */
+    .hd-card { background: #fff; border: 1px solid var(--hd-card-line); border-radius: 6px; padding: 20px; transition: box-shadow .12s; }
+    .hd-card:hover { box-shadow: 0 6px 18px rgba(15,23,43,.07); }
+    .hd-card h3 { display: flex; align-items: center; gap: 16px; margin: 0 0 18px; font-family: var(--font-content); font-size: 1.0625rem; font-weight: 600; line-height: 1.3; }
+    .hd-card h3 img { width: 48px; height: 48px; flex: none; }
+    .hd-card h3 a .arr { vertical-align: -3px; margin-left: 6px; }
+    .hd-card p { margin: 0 0 12px; font-size: .9375rem; line-height: 1.45; color: var(--hd-muted); }
+    .hd-tags { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+    .hd-tags a { font-size: .8125rem; line-height: 1.2; color: var(--hd-text); background: var(--hd-soft); border-radius: 999px; padding: 5px 10px; }
+    .hd-tags a:hover { background: var(--hd-soft-hover); }
+
+    /* What's new + Community */
+    .hd-bottom { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); column-gap: 48px; margin-top: 16px; }
+    @media screen and (max-width: 900px) { .hd-bottom { grid-template-columns: 1fr; } }
+    .hd-list { display: flex; flex-direction: column; }
+    .hd .hd-list a { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 8px 0; border-bottom: 1px solid var(--hd-line); font-size: .9375rem; color: var(--hd-text); }
+    .hd .nw { white-space: nowrap; }
+    .hd-list a .arr { margin-left: auto; color: var(--hd-link); }
+    .hd-badge { font-size: .8125rem; font-weight: 500; color: #fff; background: var(--hd-link); border-radius: 999px; padding: 4px 8px; line-height: 1.2; }
+    .hd-list.community a { font-weight: 600; gap: 6px; }
+  </style>
+
+  <h1>{{ .Title | markdownify }}</h1>
+  <p class="hd-sub">{{ .Description | markdownify }}</p>
+  <button type="button" class="hd-search" data-open-search aria-label="Search the documentation">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M14 14l-2.9-2.9M12.667 7.333A5.333 5.333 0 1 1 2 7.333a5.333 5.333 0 0 1 10.667 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Search in the docs</span><kbd data-search-kbd>Ctrl K</kbd>
+  </button>
+  {{- /* Hardcoded from the docs analytics top pages and entry pages (Sep 2026) */}}
+  <div class="hd-popular">
+    <span class="lbl">Popular searches</span>
+    <a class="link" href="{{ (print $stable "aql/fundamentals/") | relURL }}">AQL fundamentals</a>
+    <a class="link" href="{{ (print $stable "aql/functions/") | relURL }}">AQL functions</a>
+    <a class="link" href="{{ (print $stable "aql/graph-queries/traversals/") | relURL }}">Graph traversals</a>
+    <a class="link" href="{{ "platform-suite/graph-visualizer/" | relURL }}">Graph Visualizer</a>
+    <a class="link" href="{{ "ecosystem/drivers/python/" | relURL }}">Python driver</a>
+    <a class="link" href="{{ "ecosystem/drivers/java/" | relURL }}">Java driver</a>
+  </div>
+
+  <div class="hd-sec"><h2 id="get-started">Get started in minutes</h2><a class="more link" href="{{ "get-started/" | relURL }}">All Get started guides{{ $arrow }}</a></div>
+  <section class="hd-grid">
+    <a class="hd-start link" href="{{ "get-started/what-is-arango/" | relURL }}">
+      <span class="top"><img src="{{ (print $icons "start-what-is.svg") | relURL }}" alt=""><strong>What is Arango?</strong></span>
+      <span class="d">How the products fit together</span>
+      <span class="cta">Read the overview{{ $arrow }}</span>
+    </a>
+    <a class="hd-start link" href="{{ "get-started/contextual-data-platform/" | relURL }}">
+      <span class="top"><img src="{{ (print $icons "start-platform.svg") | relURL }}" alt=""><strong>Contextual Data Platform</strong></span>
+      <span class="d">About 10 minutes</span>
+      <span class="cta">Install the platform{{ $arrow }}</span>
+    </a>
+    <a class="hd-start link" href="{{ "get-started/arangodb/" | relURL }}">
+      <span class="top"><img src="{{ (print $icons "start-arangodb.svg") | relURL }}" alt=""><strong>ArangoDB</strong></span>
+      <span class="d">About 2 minutes in Docker</span>
+      <span class="cta">Run ArangoDB{{ $arrow }}</span>
+    </a>
+  </section>
+
+  <div class="hd-sec"><h2 id="browse">Browse the documentation</h2></div>
+  <section class="hd-grid">
+    <div class="hd-card">
+      <h3><img src="{{ (print $icons "graph.svg") | relURL }}" alt=""><a class="link" href="{{ "agentic-ai-suite/autograph/" | relURL }}">AutoGraph{{ $arrow }}</a></h3>
+      <p>Turn documents into a knowledge graph and keep it current as your content changes.</p>
+      <div class="hd-tags">
+        <a class="link" href="{{ "agentic-ai-suite/autograph/quick-start/" | relURL }}">Quick start</a>
+        <a class="link" href="{{ "agentic-ai-suite/autograph/web-interface/" | relURL }}">Web interface</a>
+        <a class="link" href="{{ "agentic-ai-suite/autograph/incremental-graph-updates/" | relURL }}">Incremental updates</a>
+      </div>
+    </div>
+    <div class="hd-card">
+      <h3><img src="{{ (print $icons "sparkles.svg") | relURL }}" alt=""><a class="link" href="{{ "agentic-ai-suite/autorag/" | relURL }}">AutoRAG{{ $arrow }}</a></h3>
+      <p>Retrieve graph-grounded context and answer questions over your knowledge graph.</p>
+      <div class="hd-tags">
+        <a class="link" href="{{ "agentic-ai-suite/autorag/quick-start/" | relURL }}">Quick start</a>
+        <a class="link" href="{{ "agentic-ai-suite/autorag/search-methods/" | relURL }}">Search methods</a>
+        <a class="link" href="{{ "agentic-ai-suite/autorag/executing-queries/" | relURL }}">Execute queries</a>
+      </div>
+    </div>
+    <div class="hd-card">
+      <h3><img src="{{ (print $icons "assistant.svg") | relURL }}" alt=""><a class="link" href="{{ "agentic-ai-suite/natural-language-to-aql/" | relURL }}">Natural Language to <span class="nw">AQL{{ $arrow }}</span></a></h3>
+      <p>Ask questions of your data in plain language and get AQL queries and answers.</p>
+      <div class="hd-tags">
+        <a class="link" href="{{ "agentic-ai-suite/natural-language-to-aql/quick-start/" | relURL }}">Quick start</a>
+        <a class="link" href="{{ "agentic-ai-suite/natural-language-to-aql/web-interface/" | relURL }}">Web interface</a>
+      </div>
+    </div>
+    <div class="hd-card">
+      <h3><img src="{{ (print $icons "analytics.svg") | relURL }}" alt=""><a class="link" href="{{ "agentic-ai-suite/graphml/" | relURL }}">GraphML &amp; Graph <span class="nw">Analytics{{ $arrow }}</span></a></h3>
+      <p>Train models and run analytics on graph structure.</p>
+      <div class="hd-tags">
+        <a class="link" href="{{ "agentic-ai-suite/graphml/quick-start/" | relURL }}">GraphML quick start</a>
+        <a class="link" href="{{ "agentic-ai-suite/graphml/ui/" | relURL }}">GraphML web interface</a>
+        <a class="link" href="{{ "agentic-ai-suite/graph-analytics/quick-start/" | relURL }}">Graph Analytics quick start</a>
+        <a class="link" href="{{ "agentic-ai-suite/graph-analytics/web-interface/" | relURL }}">Graph Analytics web interface</a>
+      </div>
+    </div>
+    <div class="hd-card">
+      <h3><img src="{{ (print $icons "database.svg") | relURL }}" alt=""><a class="link" href="{{ (print $stable) | relURL }}">ArangoDB core{{ $arrow }}</a></h3>
+      <p>The multi-model database and its query language.</p>
+      <div class="hd-tags">
+        <a class="link" href="{{ (print $stable "aql/") | relURL }}">AQL</a>
+        <a class="link" href="{{ (print $stable "graphs/") | relURL }}">Graphs</a>
+        <a class="link" href="{{ (print $stable "indexes-and-search/") | relURL }}">Indexes and search</a>
+        <a class="link" href="{{ (print $stable "develop/http-api/") | relURL }}">HTTP API</a>
+      </div>
+    </div>
+    <div class="hd-card">
+      <h3><img src="{{ (print $icons "layers.svg") | relURL }}" alt=""><a class="link" href="{{ "ecosystem/" | relURL }}">Ecosystem{{ $arrow }}</a></h3>
+      <p>Connect your applications with the AI SDK, official drivers, and integrations.</p>
+      <div class="hd-tags">
+        <a class="link" href="{{ "ecosystem/arango-ai-sdk/" | relURL }}">AI SDK</a>
+        <a class="link" href="{{ "ecosystem/drivers/" | relURL }}">Drivers</a>
+        <a class="link" href="{{ "ecosystem/integrations/" | relURL }}">Integrations</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="hd-bottom">
+    <div>
+      <div class="hd-sec"><h2 id="whats-new">What's new</h2></div>
+      <nav class="hd-list">
+        {{- $versions := index hugo.Data.versions "/arangodb/" }}
+        {{- $stableVersion := (index (where $versions "alias" "stable") 0).name }}
+        <a class="link" data-unversioned href="{{ (print $stable "release-notes/") | relURL }}"><span class="t">ArangoDB {{ $stableVersion }} release notes</span> <span class="hd-badge">Stable</span>{{ $arrow }}</a>
+        <a class="link" href="{{ "contextual-data-platform/release-notes/" | relURL }}"><span class="t">Contextual Data Platform release notes</span>{{ $arrow }}</a>
+        <a class="link" href="{{ "ecosystem/arango-ai-sdk/" | relURL }}"><span class="t">Arango AI SDK</span> <span class="hd-badge">New</span>{{ $arrow }}</a>
+      </nav>
+    </div>
+    <div>
+      <div class="hd-sec"><h2 id="community">Community</h2></div>
+      <nav class="hd-list community">
+        <a href="https://github.com/arangodb/arangodb" target="_blank" rel="noopener">GitHub{{ $external }}</a>
+        <a href="https://arango.ai/join-discord" target="_blank" rel="noopener">Discord{{ $external }}</a>
+        <a href="https://arango.ai/resources/" target="_blank" rel="noopener">Resources{{ $external }}</a>
+      </nav>
+    </div>
+  </div>
+</article>
+{{ end -}}

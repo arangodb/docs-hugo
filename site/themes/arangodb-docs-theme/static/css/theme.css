@@ -12,6 +12,13 @@
     --color-mist: #f4f4f4;
     --color-slate-blue: #4f6d8b;
     --color-evergreen: #007339;
+    /* Docs redesign palette for headings and link underlines */
+    --color-heading: #1D293D;
+    --color-muted: #62748E;
+    --color-link: #00576E;
+    --color-link-hover: #06838A;
+    --color-teal-ink: #014654;
+    --color-lime: #BEFE99;
 
     --neutral-black: #000000;
     --neutral-gray-darkest: #323b40;
@@ -153,7 +160,7 @@ button {
 }
 
 select {
-    border: 1px solid #567138;
+    border: 1px solid var(--color-link);
     border-radius: 40px;
 }
 
@@ -198,7 +205,7 @@ button {
 }
 
 button.green {
-    background-color: var(--color-avocado);
+    background-color: var(--color-teal-ink);
 }
 
 button.grey {
@@ -231,11 +238,11 @@ a:hover {
 /* Focus ring, keyboard only. The :root prefix outranks Bootstrap's dotted inset a:focus;
    later rules still override it. --focus-ring is re-set on dark surfaces for contrast. */
 :root {
-    --focus-ring: var(--color-avocado);
+    --focus-ring: var(--color-teal-ink);
 }
 
 .main-nav {
-    --focus-ring: var(--color-electric-lime);
+    --focus-ring: var(--color-lime);
 }
 
 :root :focus-visible {
@@ -276,12 +283,13 @@ ul ul, ul ol, ol ul, ol ol {
 .link,
 .link:visited {
     text-decoration: none;
-    border-bottom: 2px solid var(--color-evergreen);
+    border-bottom: 2px solid var(--color-link);
 }
 
-.link:is(:hover, :focus) {
-    border-bottom: 2px solid var(--color-leaf-green);
-    color: var(--gray-950);
+.link:is(:hover, :focus),
+.link:is(:hover, :focus) > p {
+    border-bottom: 2px solid var(--color-link-hover);
+    color: var(--color-link);
 }
 
 .link > * {
@@ -290,7 +298,7 @@ ul ul, ul ol, ol ul, ol ol {
 }
 
 .link > p {
-    border-bottom: 2px solid var(--color-evergreen);
+    border-bottom: 2px solid var(--color-link);
     color: var(--gray-950);
 }
 
@@ -522,6 +530,10 @@ a.section-link {
     color: var(--gray-950);
 }
 
+.card-link:is(:hover, :focus) .card-title {
+    color: var(--color-link);
+}
+
 .card-body {
     font-size: 16px;
     line-height: 22px;
@@ -577,7 +589,7 @@ a.section-link {
     overflow: hidden;
     text-overflow: ellipsis;
     transition-duration: 0s;
-    color: var(--color-avocado);
+    color: var(--color-teal-ink);
     padding: 12px 16px;
 }
 
@@ -591,7 +603,7 @@ a.section-link {
     right: 0;
     bottom: 0;
     height: 2px;
-    background-color: var(--color-avocado)
+    background-color: var(--color-teal-ink)
 }
 
 .tab-nav-button > span {
@@ -720,7 +732,7 @@ body .page-container {
     height: 64px;
     padding: 16px;
     display: flex;
-    color: var(--green-700);
+    color: var(--color-teal-ink);
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
@@ -1020,21 +1032,27 @@ body .page-container {
 
 .breadcrumbs > ol > li > a {
     font-size: 1rem;
-    font-weight: 500;
-    color: var(--gray-700);
-    border-bottom: 0;
+    font-weight: 400;
+    color: var(--color-muted);
+    border-bottom: 1px solid transparent;
     background-color: transparent;
+    transition: color 0.1s, border-color 0.1s;
 }
 
+.breadcrumbs > ol > li:last-child > a {
+    color: var(--color-heading);
+}
+
+/* The theme forces text-decoration: none on links, so underline with a border */
 .breadcrumbs > ol > li > a:is(:hover, :focus) {
-    color: var(--gray-950);
-    border-bottom: 0;
+    color: var(--color-heading);
+    border-bottom: 1px solid var(--color-heading);
 }
 
-.breadcrumbs > ol > li > i {
-    margin: 0 2px;
-    color: var(--gray-700);
-    font-size: 14px;
+.breadcrumbs .breadcrumb-sep {
+    margin: 0 10px;
+    vertical-align: -2px;
+    color: var(--color-muted);
 }
 
 /* end Breadcrumbs row */
@@ -1248,7 +1266,7 @@ article.notfound {
 }
 
 hgroup > h1, article > h2, article > h3, article > h4, article > h5, article > h6 {
-    color: var(--color-avocado);
+    color: var(--color-link);
     font-family: var(--font-headlines);
     font-weight: var(--TYPOGRAPHY-BOLD-TEXT);
     overflow-wrap: break-word;
@@ -1349,7 +1367,7 @@ article > h6 > code {
 
 @keyframes target-highlight {
     from {
-        background-color: var(--color-electric-lime);
+        background-color: var(--color-lime);
     }
     to {
         background-color: transparent;
@@ -1460,14 +1478,14 @@ pre:hover > .copy-to-clipboard-button {
     font-family: "Font Awesome 5 Free";
     content: "\f0c5";
     font-weight: 900;
-    color: var(--green-700);
+    color: var(--color-teal-ink);
 }
 
 .copy-to-clipboard-button.tooltipped::before {
     font-family: "Font Awesome 5 Free";
     content: "\f00c";
     font-weight: 900;
-    color: var(--green-700);
+    color: var(--color-teal-ink);
 }
 
 .copy-to-clipboard-button::after{
@@ -1475,14 +1493,14 @@ pre:hover > .copy-to-clipboard-button {
     font-family: var(--font-content);
     padding: 0 5px;
     font-weight: bold;
-    color: var(--green-700);
+    color: var(--color-teal-ink);
 }
 .copy-to-clipboard-button.tooltipped::after{
     content: 'Copied';
     font-family: var(--font-content);
     padding: 0 5px;
     font-weight: bold;
-    color: var(--green-700);
+    color: var(--color-teal-ink);
 }
 
 pre > code {
@@ -1513,7 +1531,7 @@ pre > .code-show-more {
     font-weight: 500;
     opacity: 0.7;
     width: 160px;
-    color: var(--green-950);
+    color: var(--color-teal-ink);
     margin: 0 auto;
     position: absolute;
     bottom: 12px;
@@ -1626,7 +1644,7 @@ div > .box-content-container {
     display: inline-block;
     padding: 0.2rem 0.8rem;
     border-radius: 0.25rem;
-    background: var(--color-electric-lime);
+    background: var(--color-lime);
     color: #0d0c0c;
     line-height: 21px;
     font-size: 1em;
@@ -1641,7 +1659,7 @@ div > .box-content-container {
    
 .clipboard-copy {
     color: var(--neutral-white);
-    background: var(--color-avocado);
+    background: var(--color-teal-ink);
     border-radius: .25rem;
     margin: 0;
     margin-left: auto;
@@ -1661,7 +1679,7 @@ div > .box-content-container {
 }
 
 .clipboard-copy:hover {
-    background: var(--color-evergreen);
+    background: var(--color-link);
 }
 
 .endpoint-group:hover .clipboard-copy {
@@ -1782,7 +1800,7 @@ details[open] > summary::before {
     --font-size-mono: 13px;
     --font-size-regular: 14px;
     --dialog-z-index: 1000;
-    --focus-shadow: 0 0 0 1px transparent, 0 0 0 3px rgba(125, 201, 3, 0.4);
+    --focus-shadow: 0 0 0 1px transparent, 0 0 0 3px rgba(6, 131, 138, 0.4);
 
     display: flex;
     flex-direction: column;
@@ -2009,10 +2027,10 @@ nav.pagination .next {
     right: 52px;
     z-index: 99;
     background-color: white;
-    color: #577138;
+    color: var(--color-link);
     cursor: pointer;
     /* padding: 20px; */
-    border: 1px solid #577138;
+    border: 1px solid var(--color-link);
     border-radius: 40px;
     font-size: 18px;
 }
@@ -2078,7 +2096,7 @@ nav.pagination .next {
     padding: 20px 0;
     border-radius: 4px;
     margin-bottom: 36px;
-    background: linear-gradient(40deg, var(--color-avocado) 50%, var(--color-evergreen));
+    background: linear-gradient(40deg, var(--color-teal-ink) 50%, var(--color-link));
     background-position: center;
     color: var(--gray-50)
 }
@@ -2270,11 +2288,11 @@ nav.pagination .next {
 .link-nav-active:is(:hover, .link-nav-active:visited, .link-nav-active:focus),
 .link-nav-active + .expand-nav,
 .nav-section:has(.link-nav-active) > .nav-section-header > .link-nav {
-    color: var(--color-electric-lime);
+    color: var(--color-lime);
 }
 
 .link-nav:focus-visible {
-    outline: 2px solid var(--color-electric-lime);
+    outline: 2px solid var(--color-lime);
     outline-offset: 2px;
 }
 
@@ -2295,6 +2313,322 @@ nav.pagination .next {
     margin-left: 1rem;
     position: sticky;
     top: 2rem;
+}
+
+/* Sidebar: logo, search, main navigation, and footer link.
+   It replaces the top bar on desktop; on mobile the top bar stays and the
+   hamburger opens the sidebar as an overlay. */
+.sidebar {
+    --sidebar-text: #F8FAFC;
+    --sidebar-muted: #90A1B9;
+    --sidebar-hover: #06838A;
+    --sidebar-lime: #BEFE99;
+    --focus-ring: var(--color-lime);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--nav-width);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 8px;
+    background: linear-gradient(180deg, #014654 0%, #012D3A 100%);
+    z-index: 9999;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* nucleus.css gives every inline svg a top/left margin */
+.sidebar svg,
+.sidebar-expand svg {
+    margin: 0;
+}
+
+.sidebar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px 4px 2px;
+}
+
+.sidebar-logo,
+.sidebar-logo:is(:hover, :focus, :visited) {
+    border-bottom: 0;
+    display: block;
+}
+
+.sidebar-logo img {
+    display: block;
+    height: 36px;
+    width: auto;
+}
+
+.sidebar-collapse,
+.sidebar-expand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--sidebar-text, #F8FAFC);
+    letter-spacing: normal;
+}
+
+.sidebar-collapse:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Search (DocSearch renders its button into .docsearch) */
+.sidebar .docsearch {
+    flex: none;
+}
+
+.sidebar .DocSearch-Button {
+    width: 100%;
+    letter-spacing: normal;
+    font-weight: 400;
+    height: 40px;
+    margin: 0;
+    padding: 0 8px 0 10px;
+    justify-content: space-between;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.045);
+    box-shadow: none;
+}
+
+.sidebar .DocSearch-Button:is(:hover, :focus) {
+    background: rgba(255, 255, 255, 0.09);
+    box-shadow: none;
+}
+
+/* Match the placeholder colour; DocSearch's own .DocSearch-Button rules
+   would otherwise make the icon near-black (and change it on hover) */
+.sidebar .DocSearch-Button .DocSearch-Search-Icon,
+.sidebar .DocSearch-Button:is(:hover, :focus, :active) .DocSearch-Search-Icon {
+    width: 16px;
+    height: 16px;
+    color: var(--sidebar-muted);
+}
+
+.sidebar .DocSearch-Button:is(:hover, :focus, :active) .DocSearch-Button-Placeholder {
+    color: var(--sidebar-muted);
+}
+
+.sidebar .DocSearch-Button-Placeholder {
+    display: block;
+    padding-left: 8px;
+    font-size: 0.9375rem;
+    color: var(--sidebar-muted);
+}
+
+.sidebar .DocSearch-Button-Keys {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+    padding: 3px 7px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.sidebar .DocSearch-Button-Key {
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    color: var(--sidebar-lime);
+    font-family: var(--font-content), -apple-system, system-ui, sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.2;
+}
+
+/* The ⌘ glyph sits small next to the letter at the same size */
+.sidebar .DocSearch-Button-Key:first-child {
+    font-size: 1rem;
+}
+
+/* Navigation items */
+.sidebar .link-nav,
+.sidebar .link-nav:is(:hover, :visited, :focus) {
+    color: var(--sidebar-text);
+}
+
+/* The theme's global 0.4s transition on links (but not on the chevron label)
+   made the two halves of a row fade at different speeds and leave a trail */
+.sidebar .link-nav,
+.sidebar .expand-nav {
+    transition: background-color 0.1s ease, color 0.1s ease;
+}
+
+.sidebar .link-nav,
+.sidebar .main-nav-ol > .nav-section > .nav-section-header > .link-nav {
+    padding: 0.55rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.sidebar .main-nav {
+    position: static;
+    flex: 1;
+    min-height: 0;
+    width: auto;
+    padding: 0;
+    background: transparent;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.sidebar .main-nav-ol {
+    margin-left: 0;
+}
+
+.sidebar .nav-ol {
+    margin-left: 12px;
+}
+
+.sidebar .main-nav-ol.shimmer > .nav-section > .link-nav,
+.sidebar .nav-section-header-versioned {
+    background-color: transparent;
+}
+
+/* The versioned ArangoDB header is sticky in the dark nav; on the gradient a
+   solid background would show as a highlighted row, so let it scroll instead */
+.sidebar .nav-section-header-versioned {
+    position: static;
+}
+
+.sidebar .expand-nav::after {
+    color: var(--sidebar-text);
+}
+
+.sidebar .link-nav:hover,
+.sidebar .expand-nav:hover,
+.sidebar .nav-section-header:hover > .link-nav,
+.sidebar .nav-section-header:hover > .expand-nav {
+    background-color: var(--sidebar-hover);
+}
+
+/* Selected item (page or category): lime pill; a category's chevron joins it */
+.sidebar .link-nav-active,
+.sidebar .link-nav-active + .expand-nav,
+.sidebar .link-nav-active:hover,
+.sidebar .nav-section-header:hover > .link-nav-active,
+.sidebar .nav-section-header:hover > .link-nav-active + .expand-nav {
+    background-color: var(--sidebar-lime);
+}
+
+/* The extra .nav-section prefix outranks the theme's lime-text rule for the
+   section that contains the active item */
+.sidebar .link-nav-active,
+.sidebar .link-nav-active:is(:hover, :visited, :focus),
+.sidebar .nav-section > .nav-section-header > .link-nav.link-nav-active,
+.sidebar .link-nav-active + .expand-nav::after {
+    color: #014654;
+}
+
+.sidebar .nav-section:has(.link-nav-active) > .nav-section-header > .link-nav:not(.link-nav-active) {
+    color: var(--sidebar-lime);
+}
+
+.sidebar-footer,
+.sidebar-footer:is(:hover, :visited, :focus) {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 2px 0;
+    font-weight: 600;
+    color: var(--sidebar-lime);
+}
+
+.sidebar-footer:hover {
+    text-decoration: underline;
+}
+
+/* Collapsed sidebar (desktop): slide it out and give the content the full width */
+.sidebar-expand {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 9999;
+    background: #014654;
+}
+
+.sidebar-expand:hover {
+    background: var(--sidebar-hover, #06838A);
+}
+
+@media screen and (min-width: 769px) {
+    .header {
+        display: none;
+    }
+
+    body .page-container {
+        grid-template-rows: 0 1fr;
+    }
+
+    html {
+        scroll-padding-top: 2rem;
+    }
+
+    /* Without the 64px top bar, move the sticky Contribute link and TOC up
+       by the same amount, keeping their 60px spacing */
+    .edit-page {
+        top: 36px;
+    }
+
+    .toc {
+        top: 96px;
+    }
+
+    .container-main {
+        transition: margin-left 0.2s ease-in-out;
+    }
+
+    body.sidebar-collapsed .sidebar {
+        transform: translateX(-100%);
+    }
+
+    body.sidebar-collapsed .container-main {
+        margin-left: 0;
+        padding-left: 40px;
+    }
+
+    body.sidebar-collapsed .sidebar-expand {
+        display: flex;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .sidebar {
+        display: none;
+        top: var(--topbar-height);
+        width: 100%;
+    }
+
+    .sidebar:has(.main-nav.active) {
+        display: flex;
+    }
+
+    .sidebar .main-nav {
+        display: block;
+    }
+
+    /* The top bar already shows the logo on mobile */
+    .sidebar-top {
+        display: none;
+    }
 }
 
 .none {
@@ -2340,7 +2674,7 @@ nav.pagination .next {
 }
 
 [data-zoomable]:focus-visible {
-    outline: 2px solid var(--green-600);
+    outline: 2px solid var(--color-link);
     outline-offset: 2px;
 }
 
