@@ -476,6 +476,7 @@ async function loadNav() {
     }
 
     mainNavPlaceholder.replaceChildren(mainNavContent);
+    observeScrollFade(mainNavPlaceholder);
     
     // Set initial active state
     updateActiveNavItem(window.location.pathname, true);
@@ -550,24 +551,32 @@ function initToc() {
   if (!details) return;
   // Always open in the column, a closed bar with the current section otherwise
   details.open = window.matchMedia(TOC_COLUMN_QUERY).matches;
-  document.querySelectorAll(".toc, .TableOfContents").forEach(el => {
-    el.addEventListener("scroll", updateTocFade, { passive: true });
-  });
-  details.addEventListener("toggle", updateTocFade);
+  // The column or the dropdown entries, whichever scrolls in the current layout
+  document.querySelectorAll(".toc, .toc-entries").forEach(observeScrollFade);
+  tocTarget = location.hash.slice(1) || null;
   tocHiglighter();
-  updateTocFade();
 }
 
-// Fades out the end of the table of contents if there are more entries to scroll to
-function updateTocFade() {
-  // The column or the dropdown, whichever scrolls in the current layout
-  document.querySelectorAll(".toc, .TableOfContents").forEach(el => {
-    const scrolls = /auto|scroll/.test(getComputedStyle(el).overflowY);
-    el.classList.toggle("toc-scroll-more", scrolls && el.scrollHeight - el.scrollTop - el.clientHeight > 1);
-  });
+/*
+ * Fades out the end of a scroll container while there is more to scroll to,
+ * by toggling the scroll-fade class (on the navigation and table of contents).
+ */
+const scrollFadeObserver = new ResizeObserver(entries => entries.forEach(e => updateScrollFade(e.target)));
+
+function observeScrollFade(el) {
+  if (el.dataset.scrollFade) return;
+  el.dataset.scrollFade = "observed";
+  el.addEventListener("scroll", () => updateScrollFade(el), { passive: true });
+  scrollFadeObserver.observe(el);
+  // Also when the content changes size, like expanded navigation sections
+  for (const child of el.children) scrollFadeObserver.observe(child);
+  updateScrollFade(el);
 }
 
-window.addEventListener("resize", throttle(updateTocFade, 150));
+function updateScrollFade(el) {
+  const scrolls = /auto|scroll/.test(getComputedStyle(el).overflowY);
+  el.classList.toggle("scroll-fade", scrolls && el.scrollHeight - el.scrollTop - el.clientHeight > 1);
+}
 
 function closeTocDropdown() {
   const details = document.querySelector(".toc-details");
@@ -582,6 +591,16 @@ document.addEventListener("keydown", event => {
 
 window.matchMedia(TOC_COLUMN_QUERY).addEventListener("change", initToc);
 
+// The heading jumped to (link or deep link). It stays the current one until it
+// is scrolled out of view, even if the page can't scroll far enough for it to
+// reach the top, like short sections at the end.
+let tocTarget = null;
+
+window.addEventListener("hashchange", () => {
+  tocTarget = location.hash.slice(1) || null;
+  tocHiglighter();
+});
+
 function getAllAnchors() {
     let tocIds = [];
     let headlineIds = [];
@@ -591,33 +610,52 @@ function getAllAnchors() {
     return headlineIds;
 }
 
-// Marks the last heading scrolled past (or the page title above the first one)
+/*
+ * Marks the current section in the table of contents: the heading jumped to
+ * while it is in view, otherwise the last heading scrolled past, or Overview
+ * above the first one. At the end of the page, the last heading in view.
+ */
 function tocHiglighter() {
   const toc = document.querySelector(".TableOfContents");
   if (!toc) return;
+  const headings = getAllAnchors();
   const threshold = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) + 16;
-  let current = toc.querySelector(".level-1");
-  for (const heading of getAllAnchors()) {
-    if (heading.getBoundingClientRect().top > threshold) break;
-    current = toc.querySelector('a[href="#' + CSS.escape(heading.id) + '"]').parentElement;
+  let current = null;
+
+  const target = tocTarget && document.getElementById(tocTarget);
+  if (target && headings.includes(target)) {
+    const top = target.getBoundingClientRect().top;
+    if (top >= 0 && top < window.innerHeight) current = target;
+    else tocTarget = null;
   }
-  if (!current || current.classList.contains("is-active")) return;
+  if (!current) {
+    const atEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    for (const heading of headings) {
+      const top = heading.getBoundingClientRect().top;
+      if (top <= threshold || (atEnd && top < window.innerHeight)) current = heading;
+      else break;
+    }
+  }
+
+  const entry = current
+    ? toc.querySelector('a[href="#' + CSS.escape(current.id) + '"]').parentElement
+    : toc.querySelector('a[href="#top"]').parentElement;
+  if (entry.classList.contains("is-active")) return;
   toc.querySelectorAll(".is-active").forEach(el => el.classList.remove("is-active"));
-  current.classList.add("is-active");
-  // The bar on narrow screens shows the current section (nothing above the first one)
+  entry.classList.add("is-active");
+  // The bar on narrow screens shows the current section
   const label = document.querySelector(".toc-current");
-  if (label) label.textContent = current.classList.contains("level-1") ? "" : current.textContent.trim();
+  if (label) label.textContent = entry.textContent.trim();
   if (!window.matchMedia(TOC_COLUMN_QUERY).matches) return;
   // Keep it in view if the table of contents scrolls
   const container = toc.closest(".toc");
-  const box = current.getBoundingClientRect();
+  const box = entry.getBoundingClientRect();
   const view = container.getBoundingClientRect();
   if (box.top < view.top || box.bottom > view.bottom) {
     container.scrollTop += box.top - view.top - view.height / 2;
   }
 }
 
-// Calls at most once per limit, and once more at the end, so the last scroll position counts
 function throttle(callback, limit) {
   var waiting = false;
   var pending = null;
@@ -1006,6 +1044,13 @@ function handleDocumentClick(event) {
     // Choosing an entry or clicking elsewhere closes the dropdown on narrow screens
     if (!closest(".toc-details") || closest(".TableOfContents a")) {
         closeTocDropdown();
+    }
+
+    // Also for the fragment that is already in the URL (no hashchange)
+    const tocLink = closest(".TableOfContents a");
+    if (tocLink) {
+        tocTarget = tocLink.getAttribute("href").slice(1);
+        setTimeout(tocHiglighter);
     }
 
     // Allow browser default for non-primary buttons (middle/right) and modifier clicks

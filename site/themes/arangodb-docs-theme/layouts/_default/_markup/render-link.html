@@ -54,8 +54,7 @@
 
 <a href="{{ $permalink | safeURL }}"
   {{- with .Title }} title="{{ . }}"{{ end }}
-  {{- if $isRemote }} target="_blank" rel="noopener noreferrer"{{ end }} class="link">
+  {{- if $isRemote }} target="_blank" rel="noopener noreferrer"{{ end }} class="link{{ if $isRemote }} link-external{{ end }}">
   {{- .Text | safeHTML -}}
 </a>
-{{- if $isRemote }}&nbsp;<i class="icon icon-arrow-up-right" aria-hidden="true"></i>{{ end }}
 {{- /* whitespace control */ -}}

@@ -515,6 +515,14 @@ ul ul, ul ol, ol ul, ol ol {
     padding-bottom: 0;
 }
 
+/* External links: the arrow is a background in the padding, part of the link
+   (and its underline) and unable to wrap to a line of its own */
+.link-external {
+    padding-right: 1.1em;
+    background: no-repeat right 0.15em center / 0.85em url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231d293d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 7h10v10'/%3E%3Cpath d='M7 17 17 7'/%3E%3C/svg%3E");
+    print-color-adjust: exact;
+}
+
 .link > i {
     color: var(--gray-950);
     text-decoration: none;
@@ -922,10 +930,17 @@ body .page-container {
     background-color: var(--CONTENT-BACKGROUND-COLOR);
 }
 
-/* Narrow screens: everything below each other in the document order */
+/* Narrow screens: everything below each other in the document order,
+   except for the edit link at the end */
 article.default {
+    display: flex;
+    flex-direction: column;
     min-height: 600px;
     max-width: var(--content-width);
+}
+
+article.default > * {
+    min-width: 0;
 }
 
 @media screen and (min-width: 1280px) {
@@ -935,7 +950,7 @@ article.default {
         max-width: calc(var(--content-width) + var(--toc-gap) + var(--toc-max-width));
         grid-template-columns: minmax(0, var(--content-width)) minmax(var(--toc-min-width), 1fr);
         grid-template-areas:
-            "crumbs edit"
+            "crumbs aside"
             "notices aside"
             "header aside"
             "body aside"
@@ -952,7 +967,6 @@ article.default {
     article.default > .article-aside { grid-area: aside; }
     article.default > .article-body { grid-area: body; min-width: 0; }
     article.default > .pagination { grid-area: pager; }
-    article.default > .edit-page { grid-area: edit; }
 }
 
 @media screen and (max-width: 768px) {
@@ -1032,8 +1046,13 @@ article.default {
     display: inline;
 }
 
+.breadcrumbs > ol {
+    font-size: 14px;
+    line-height: 20px;
+}
+
 .breadcrumbs > ol > li > a {
-    font-size: 1rem;
+    font-size: 14px;
     font-weight: 400;
     color: var(--color-muted);
     border-bottom: 1px solid transparent;
@@ -1052,8 +1071,9 @@ article.default {
 }
 
 .breadcrumbs .breadcrumb-sep {
-    margin: 0 10px;
-    vertical-align: -2px;
+    font-size: 16px;
+    margin: 0 8px;
+    vertical-align: -3px;
     color: var(--color-muted);
 }
 
@@ -1125,8 +1145,8 @@ article.default {
     vertical-align: baseline;
 }
 
-/* Fades out the last visible entries if there are more to scroll to */
-.toc-scroll-more {
+/* Fades out the end of a scroll container if there is more to scroll to */
+.scroll-fade {
     mask-image: linear-gradient(to bottom, #000 calc(100% - 48px), transparent);
 }
 
@@ -1170,21 +1190,30 @@ article.default {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        padding-top: 16px;
+    }
+
+    /* The edit link and the table of contents */
+    .aside-sticky {
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        align-self: stretch;
+        max-height: calc(100vh - 96px);
     }
 
     .toc {
-        position: sticky;
-        top: 32px;
-        align-self: stretch;
-        max-height: calc(100vh - 128px);
+        min-height: 0;
+        margin-top: 16px;
         overflow-y: auto;
         scrollbar-width: thin;
     }
 
     /* Not collapsible in the column */
-    .toc-details > summary {
+    .toc-details > summary,
+    .toc-details > summary:hover {
         cursor: default;
+        color: var(--color-heading);
     }
 
     .toc-details > summary::before,
@@ -1217,28 +1246,38 @@ article.default {
 }
 
 @media screen and (max-width: 1279px) {
-    /* The sticky bar needs the article as its containing block */
-    .article-aside {
+    /* The sticky bar needs the article as its containing block, and the edit
+       link moves to the end of the article */
+    .article-aside,
+    .aside-sticky {
         display: contents;
     }
 
+    .edit-page {
+        order: 1;
+    }
+
+    /* The page background above the box hides the content scrolling behind it */
     .toc {
         position: sticky;
         top: 0;
         z-index: 20;
-        margin: 0 calc(-1 * var(--page-gutter)) 24px;
-        padding: 8px var(--page-gutter);
-        border-bottom: 1px solid var(--gray-300);
+        margin-bottom: 16px;
+        padding-top: 8px;
         background: var(--CONTENT-BACKGROUND-COLOR);
     }
 
     .toc-details {
         position: relative;
+        padding: 0 12px;
+        border: 1px solid var(--gray-300);
+        border-radius: 8px;
+        background: var(--neutral-white);
     }
 
     .toc-details > summary {
         margin: 0;
-        padding: 4px 0;
+        padding: 8px 0;
         font-size: 14px;
     }
 
@@ -1247,19 +1286,22 @@ article.default {
         margin: 0;
     }
 
-    /* The entries open over the content */
+    /* The entries open over the content, scrolling inside the box */
     .toc-details > .TableOfContents {
         position: absolute;
-        top: calc(100% + 8px);
-        left: 0;
-        right: 0;
-        max-height: 60vh;
-        overflow-y: auto;
-        padding: 8px 0;
+        top: calc(100% + 4px);
+        left: -1px;
+        right: -1px;
         border: 1px solid var(--gray-300);
         border-radius: 8px;
         background: var(--neutral-white);
         box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    .toc-entries {
+        max-height: 60vh;
+        overflow-y: auto;
+        padding: 8px 0;
     }
 
     .TableOfContents .is-active > a {
@@ -1279,15 +1321,20 @@ article.default {
     article.default {
         padding-bottom: 72px;
     }
+
+    /* Headings jumped to aren't hidden behind the sticky bar */
+    html:has(.toc) {
+        scroll-padding-top: calc(2rem + 56px);
+    }
 }
 
 @media screen and (max-width: 768px) {
     .toc {
         top: var(--topbar-height);
-        margin-left: calc(-1 * var(--page-gutter-narrow));
-        margin-right: calc(-1 * var(--page-gutter-narrow));
-        padding-left: var(--page-gutter-narrow);
-        padding-right: var(--page-gutter-narrow);
+    }
+
+    html:has(.toc) {
+        scroll-padding-top: calc(var(--topbar-height) + 72px);
     }
 }
 
@@ -1439,10 +1486,10 @@ article ul li {
     position: absolute;
     display: inline-block;
     margin-left: 0.3em;
-    /* Absolute positioning ignores vertical-align, center it on the line */
-    margin-top: 0.25em;
-    /* Box, so the focus ring encloses the icon */
-    line-height: 1;
+    /* Absolute positioning ignores vertical-align, center it on the (last) line */
+    line-height: inherit;
+    margin-top: calc((1lh - 1em) / 2);
+    height: 1em;
     font-size: 0.7em;
     color: var(--color-link-hover);
     opacity: 0;
@@ -2089,22 +2136,17 @@ nav.pagination > .next {
     color: var(--color-muted);
     font-size: 14px;
     font-weight: 500;
-    line-height: 24px;
+    /* Level with the breadcrumbs */
+    line-height: 20px;
 }
 
 .edit-page:hover {
     color: var(--color-heading);
 }
 
-@media screen and (min-width: 1280px) {
-    .edit-page {
-        justify-self: start;
-        padding-left: 14px;
-    }
-}
-
 @media screen and (max-width: 1279px) {
     .edit-page {
+        align-self: flex-start;
         margin-top: 16px;
     }
 }
@@ -2593,11 +2635,13 @@ nav.pagination > .next {
 .sidebar-footer,
 .sidebar-footer:is(:hover, :visited, :focus) {
     flex: none;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     gap: 6px;
-    /* Aligned with the text of the navigation entries */
-    padding: 4px 0.75rem 0;
+    /* Aligned with the text of the navigation entries, below a separator like in the web UI */
+    margin: 0 -8px;
+    padding: 12px calc(0.75rem + 8px) 0;
+    border-top: 1px solid #ffffff19;
     font-weight: 600;
     color: var(--sidebar-lime);
 }
