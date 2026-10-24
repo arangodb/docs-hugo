@@ -850,8 +850,16 @@ svg a.card-link {
     padding-bottom: .5rem;
 }
 
-.steps .step:last-child::before {
-    border-radius: 1px;
+/* A dot ends the line, centered on it */
+.steps .step:last-child::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    bottom: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--gray-300);
 }
 
 .steps .step-indicator {
