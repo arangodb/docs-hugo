@@ -1198,7 +1198,8 @@ article.default > * {
         display: flex;
         flex-direction: column;
         align-self: stretch;
-        max-height: calc(100vh - 160px);
+        /* Leaves room for the edit link and back to top (90px) and a gap */
+        max-height: calc(100vh - 118px);
     }
 
     .toc {
@@ -1213,7 +1214,7 @@ article.default > * {
        the article. Without left or right, it stays in the column. */
     .aside-bottom {
         position: fixed;
-        bottom: 48px;
+        bottom: 24px;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
