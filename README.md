@@ -810,16 +810,19 @@ To prominently link to other content, you may use cards:
 ```markdown
 {{< cards >}}
 
-{{% card title="Graphs" link="graphs/" icon="/images/file.png" %}}
+{{% card title="Graphs" link="graphs/" %}}
 Learn everything about graphs.
 {{% /card %}}
 
-{{% card title="Data science" link="data-science/" icon="/images/file.png" %}}
+{{% card title="Data science" link="data-science/" icon="graph.svg" %}}
 Read about ArangoDB's features for analytics.
 {{% /card %}}
 
 {{< /cards >}}
 ```
+
+The cards are shown in as many columns as fit. The optional `icon` is the file
+name of an image in `site/content/images/`, shown at 48 × 48 pixels.
 
 #### Steps
 

@@ -7,10 +7,8 @@
   <style>
     .hd { --hd-ink: #0F172B; --hd-text: #1D293D; --hd-muted: #62748E; --hd-link: #00576E; --hd-soft: #F1F5F9; --hd-soft-hover: #E2E8F0; --hd-line: #E2E8F0; --hd-card-line: #D4D4D4; font-family: var(--font-content); color: var(--hd-text); }
     /* minmax(0, …) stops wide content (pill rows, card grids) from stretching the grid past the viewport */
-    .row-main:has(article.hd) { max-width: 1240px; grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); }
-    article.hd { grid-column: article-start / toc-end; max-width: 1068px; width: auto; margin: 0 56px; padding: 44px 0 80px; }
-    article.hd ~ .toc-container { display: none; }
-    @media screen and (max-width: 768px) { article.hd { margin: 0; padding: 24px 16px 60px; min-width: 0; } .hd h1 { font-size: 1.75rem; } }
+    article.hd { max-width: 1068px; margin: 0 8px; padding: 44px 0 80px; }
+    @media screen and (max-width: 768px) { article.hd { margin: 0; padding: 24px 0 60px; min-width: 0; } .hd h1 { font-size: 1.75rem; } }
 
     /* Reset the theme's underlined .link style inside the homepage */
     .hd a.link, .hd a.link:visited, .hd a.link:is(:hover, :focus) { border-bottom: 0; }
@@ -19,7 +17,7 @@
     .hd .arr { flex: none; }
 
     /* Intro */
-    .hd h1 { font-family: var(--font-content); font-size: 2.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -.5px; color: var(--hd-ink); margin: 0 0 12px; }
+    .hd h1 { font-family: var(--font-headlines); font-size: 2.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -.5px; color: var(--color-link); margin: 0 0 12px; }
     .hd-sub { font-size: 1.0625rem; line-height: 1.5; color: var(--hd-muted); margin: 0 0 14px; }
     .hd-search { display: flex; align-items: center; gap: 8px; width: 100%; height: 36px; margin: 0; padding: 0 8px 0 10px; background: #fff; border: 1px solid var(--hd-line); border-radius: 6px; cursor: text; text-align: left; letter-spacing: normal; font-weight: 400; transition: .12s; }
     .hd-search:hover { border-color: #90A1B9; }
@@ -55,8 +53,6 @@
     .hd-start .cta { display: inline-flex; align-items: center; gap: 6px; font-size: .9375rem; font-weight: 600; }
 
     /* Browse cards: the heading and every balloon are separate links */
-    .hd-card { background: #fff; border: 1px solid var(--hd-card-line); border-radius: 6px; padding: 20px; transition: box-shadow .12s; }
-    .hd-card:hover { box-shadow: 0 6px 18px rgba(15,23,43,.07); }
     .hd-card h3 { display: flex; align-items: center; gap: 16px; margin: 0 0 18px; font-family: var(--font-content); font-size: 1.0625rem; font-weight: 600; line-height: 1.3; }
     .hd-card h3 img { width: 48px; height: 48px; flex: none; }
     .hd-card h3 a .arr { vertical-align: -3px; margin-left: 6px; }
@@ -70,6 +66,8 @@
     @media screen and (max-width: 900px) { .hd-bottom { grid-template-columns: 1fr; } }
     .hd-list { display: flex; flex-direction: column; }
     .hd .hd-list a { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 8px 0; border-bottom: 1px solid var(--hd-line); font-size: .9375rem; color: var(--hd-text); }
+    /* Keep the separator on hover, the .link reset above would remove it */
+    .hd .hd-list a:is(:hover, :focus) { border-bottom: 1px solid var(--hd-line); }
     .hd .nw { white-space: nowrap; }
     .hd-list a .arr { margin-left: auto; color: var(--hd-link); }
     .hd-list a:hover { color: var(--hd-link); }
@@ -115,7 +113,7 @@
 
   <div class="hd-sec"><h2 id="browse">Browse the documentation</h2></div>
   <section class="hd-grid">
-    <div class="hd-card">
+    <div class="hd-card card">
       <h3><img src="{{ (print $icons "graph.svg") | relURL }}" alt=""><a class="link" href="{{ "agentic-ai-suite/autograph/" | relURL }}">AutoGraph{{ $arrow }}</a></h3>
       <p>Turn documents into a knowledge graph and keep it current as your content changes.</p>
       <div class="hd-tags">
@@ -124,7 +122,7 @@
         <a class="link" href="{{ "agentic-ai-suite/autograph/incremental-graph-updates/" | relURL }}">Incremental updates</a>
       </div>
     </div>
-    <div class="hd-card">
+    <div class="hd-card card">
       <h3><img src="{{ (print $icons "sparkles.svg") | relURL }}" alt=""><a class="link" href="{{ "agentic-ai-suite/autorag/" | relURL }}">AutoRAG{{ $arrow }}</a></h3>
       <p>Retrieve graph-grounded context and answer questions over your knowledge graph.</p>
       <div class="hd-tags">
@@ -133,7 +131,7 @@
         <a class="link" href="{{ "agentic-ai-suite/autorag/executing-queries/" | relURL }}">Execute queries</a>
       </div>
     </div>
-    <div class="hd-card">
+    <div class="hd-card card">
       <h3><img src="{{ (print $icons "assistant.svg") | relURL }}" alt=""><a class="link" href="{{ "agentic-ai-suite/natural-language-to-aql/" | relURL }}">Natural Language to <span class="nw">AQL{{ $arrow }}</span></a></h3>
       <p>Ask questions of your data in plain language and get AQL queries and answers.</p>
       <div class="hd-tags">
@@ -141,7 +139,7 @@
         <a class="link" href="{{ "agentic-ai-suite/natural-language-to-aql/web-interface/" | relURL }}">Web interface</a>
       </div>
     </div>
-    <div class="hd-card">
+    <div class="hd-card card">
       <h3><img src="{{ (print $icons "analytics.svg") | relURL }}" alt=""><a class="link" href="{{ "agentic-ai-suite/graphml/" | relURL }}">GraphML &amp; Graph <span class="nw">Analytics{{ $arrow }}</span></a></h3>
       <p>Train models and run analytics on graph structure.</p>
       <div class="hd-tags">
@@ -151,7 +149,7 @@
         <a class="link" href="{{ "agentic-ai-suite/graph-analytics/web-interface/" | relURL }}">Graph Analytics web interface</a>
       </div>
     </div>
-    <div class="hd-card">
+    <div class="hd-card card">
       <h3><img src="{{ (print $icons "database.svg") | relURL }}" alt=""><a class="link" href="{{ (print $stable) | relURL }}">ArangoDB core{{ $arrow }}</a></h3>
       <p>The multi-model database and its query language.</p>
       <div class="hd-tags">
@@ -161,7 +159,7 @@
         <a class="link" href="{{ (print $stable "develop/http-api/") | relURL }}">HTTP API</a>
       </div>
     </div>
-    <div class="hd-card">
+    <div class="hd-card card">
       <h3><img src="{{ (print $icons "layers.svg") | relURL }}" alt=""><a class="link" href="{{ "ecosystem/" | relURL }}">Ecosystem{{ $arrow }}</a></h3>
       <p>Connect your applications with the AI SDK, official drivers, and integrations.</p>
       <div class="hd-tags">

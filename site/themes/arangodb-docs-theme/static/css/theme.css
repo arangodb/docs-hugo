@@ -49,7 +49,14 @@
     --padding-8: 64px;
     
     --topbar-height: 64px;
-    --nav-width: 300px;
+    --nav-width: 260px;
+
+    --content-width: 800px;
+    --toc-min-width: 220px;
+    --toc-max-width: 600px;
+    --toc-gap: 48px;
+    --page-gutter: 48px;
+    --page-gutter-narrow: 20px;
 
     --green-50: #e3f2e0;
     --green-100: #dcebd9;
@@ -118,21 +125,18 @@
     --TYPOGRAPHY-BODY-TEXT: 16px;
     --TYPOGRAPHY-BOLD-TEXT: 700;
 
-    --TYPOGRAPHY-H1-SIZE: 40px;
     --TYPOGRAPHY-H2-SIZE: 32px;
     --TYPOGRAPHY-H3-SIZE: 28px;
     --TYPOGRAPHY-H4-SIZE: 24px;
     --TYPOGRAPHY-H5-SIZE: 20px;
     --TYPOGRAPHY-H6-SIZE: 18px;
 
-    --TYPOGRAPHY-H1-SIZE-SMALL: 28px;
     --TYPOGRAPHY-H2-SIZE-SMALL: 24px;
     --TYPOGRAPHY-H3-SIZE-SMALL: 22px;
     --TYPOGRAPHY-H4-SIZE-SMALL: 20px;
     --TYPOGRAPHY-H5-SIZE-SMALL: 18px;
     --TYPOGRAPHY-H6-SIZE-SMALL: 16px;
 
-    --TYPOGRAPHY-H1-HEIGHT: 48px;
     --TYPOGRAPHY-H2-HEIGHT: 40px;
     --TYPOGRAPHY-H3-HEIGHT: 30px;
     --TYPOGRAPHY-H4-HEIGHT: 26px;
@@ -188,18 +192,20 @@
 
 :root {
     --icon-arrow-up: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 7-7 7 7'/%3E%3Cpath d='M12 19V5'/%3E%3C/svg%3E");
+    --icon-arrow-up-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 7h10v10'/%3E%3Cpath d='M7 17 17 7'/%3E%3C/svg%3E");
     --icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
     --icon-chevron-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     --icon-chevron-left: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m15 18-6-6 6-6'/%3E%3C/svg%3E");
     --icon-chevron-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E");
     --icon-chevron-up: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m18 15-6-6-6 6'/%3E%3C/svg%3E");
+    --icon-chevrons-up-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 15 5 5 5-5'/%3E%3Cpath d='m7 9 5-5 5 5'/%3E%3C/svg%3E");
     --icon-circle-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='m9 12 2 2 4-4'/%3E%3C/svg%3E");
     --icon-circle-x: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='m15 9-6 6'/%3E%3Cpath d='m9 9 6 6'/%3E%3C/svg%3E");
     --icon-copy: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='14' height='14' x='8' y='8' rx='2' ry='2'/%3E%3Cpath d='M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2'/%3E%3C/svg%3E");
-    --icon-external-link: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 3h6v6'/%3E%3Cpath d='M10 14 21 3'/%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3E%3C/svg%3E");
     --icon-github: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4'/%3E%3Cpath d='M9 18c-4.51 2-5-2-7-2'/%3E%3C/svg%3E");
     --icon-info: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 16v-4'/%3E%3Cpath d='M12 8h.01'/%3E%3C/svg%3E");
     --icon-link: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/%3E%3Cpath d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/%3E%3C/svg%3E");
+    --icon-pencil: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z'/%3E%3Cpath d='m15 5 4 4'/%3E%3C/svg%3E");
     --icon-shield-alert: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z'/%3E%3Cpath d='M12 8v4'/%3E%3Cpath d='M12 16h.01'/%3E%3C/svg%3E");
     --icon-triangle-alert: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3'/%3E%3Cpath d='M12 9v4'/%3E%3Cpath d='M12 17h.01'/%3E%3C/svg%3E");
 }
@@ -241,15 +247,17 @@ details > summary::before,
 }
 
 .icon-arrow-up { --icon: var(--icon-arrow-up); }
+.icon-arrow-up-right { --icon: var(--icon-arrow-up-right); }
 .icon-check { --icon: var(--icon-check); }
 .icon-chevron-left { --icon: var(--icon-chevron-left); }
 .icon-chevron-right { --icon: var(--icon-chevron-right); }
+.icon-chevrons-up-down { --icon: var(--icon-chevrons-up-down); }
 .icon-circle-check { --icon: var(--icon-circle-check); }
 .icon-circle-x { --icon: var(--icon-circle-x); }
-.icon-external-link { --icon: var(--icon-external-link); }
 .icon-github { --icon: var(--icon-github); }
 .icon-info { --icon: var(--icon-info); }
 .icon-link { --icon: var(--icon-link); }
+.icon-pencil { --icon: var(--icon-pencil); }
 .icon-shield-alert { --icon: var(--icon-shield-alert); }
 .icon-triangle-alert { --icon: var(--icon-triangle-alert); }
 
@@ -506,6 +514,14 @@ ul ul, ul ol, ol ul, ol ol {
     padding-bottom: 0;
 }
 
+/* External links: the arrow is a background in the padding, part of the link
+   (and its underline) and unable to wrap to a line of its own */
+.link-external {
+    padding-right: 1.1em;
+    background: no-repeat right 0.15em center / 0.85em url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231d293d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 7h10v10'/%3E%3Cpath d='M7 17 17 7'/%3E%3C/svg%3E");
+    print-color-adjust: exact;
+}
+
 .link > i {
     color: var(--gray-950);
     text-decoration: none;
@@ -571,6 +587,15 @@ img {
     max-width: 100%;
     max-height: 100%;
     vertical-align: middle;
+}
+
+/* Raster images, mostly screenshots, often have a light background up to the
+   edge. The border is outside the image size so that it isn't scaled. */
+img.img-border {
+    box-sizing: content-box;
+    max-width: calc(100% - 2px);
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
 }
 
 .inline-img {
@@ -648,105 +673,85 @@ table.fixed code {
 
 /* end Content-specific utility classes */
 
-/* Cards */
+/* Cards, shared by the home page and the overviews of sections (which are
+   entirely clickable). As many columns as fit, cards are at least 240px wide. */
+
 .cards {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
     gap: 16px;
+    margin: 24px 0;
 }
-/* 
-.cards a:hover {
-    text-decoration: none;
-} */
 
 .card {
-    padding: 18px;
-    display: flex;
-    min-height: 10px;
-    flex-direction: column;
-    position: relative;
-    color: #202951;
-    height: 100%;
-    color: var(--gray-950);
-    border: none;
-    box-shadow: 0 0 0 2px var(--gray-200),4px 4px 10px rgba(17,18,19,.15);
-    background-color: white;
-    border-radius: 3px 3px 0 0;
+    padding: 20px;
+    border: 1px solid #d4d4d4;
+    border-radius: 6px;
+    background: var(--neutral-white);
+    color: var(--color-heading);
+    transition: box-shadow 0.12s;
 }
 
-/* .card:hover {
-    box-shadow: rgb(149 157 165 / 20%) 0 8px 24px;
-} */
+.card:hover,
+.card-link:is(:hover, :focus-visible) > .card {
+    box-shadow: 0 6px 18px rgb(15 23 43 / 0.07);
+}
 
 .cards > a.card-link {
+    display: block;
     border-bottom: 0;
+}
+
+.card-link > .card {
+    height: 100%;
 }
 
 svg a.card-link {
     cursor: pointer;
 }
 
-@media screen and (max-width: 768px) {
-    .cards {
-        grid-template-columns: 1fr;
-    }
+.card-title {
+    margin: 0 0 8px;
+    font-family: var(--font-content);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-decoration: underline 2px var(--color-link);
+    text-underline-offset: 4px;
 }
 
-a.section-link {
-    padding: 24px;
+.card-link:is(:hover, :focus-visible) .card-title {
+    text-decoration-color: var(--color-link-hover);
+}
+
+.card-title:has(.card-icon) {
     display: flex;
-    margin-top: 0;
-    min-height: 10px;
-    flex-direction: column;
-    position: relative;
-    color: #202951;
-    border: 1px solid #d7dee4!important;
-    border-radius: 8px;
-    height: 100%;
-    transition: .125s;
-}
-
-.card-head {
-    z-index: 2;
-    margin-bottom: 10px;
-    min-height: 40px;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
 }
 
 .card-icon {
-    width: 30px;
-    object-fit: contain;
-    float: right;
-    margin-left: 10px;
+    flex: none;
+    width: 48px;
 }
 
-.card-title {
-    font-family: var(--font-headlines);
-    font-weight: 600;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    font-size: 1.3rem;
-    color: var(--gray-950);
+/* The arrow is a background in the padding of the last line, so that it
+   can't wrap to a line of its own */
+.card-title-text {
+    padding-right: 22px;
+    background: no-repeat right 0.2em / 16px 16px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231d293d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E");
 }
 
 .card-body {
-    font-size: 16px;
-    line-height: 22px;
-    word-wrap: break-word;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    position: relative;
-    z-index: 2;
+    color: var(--color-muted);
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.45;
 }
 
 .card-body > p {
-    margin: unset;
-    color: #001E2B;
-    line-height: 28px;
-    color: #001E2B;
-    font-weight: 400;
+    margin: 0;
 }
 /* end Cards */
 
@@ -906,278 +911,147 @@ a.section-link {
 
 /* Steps end */
 
-/* Body */
+/* Page layout
 
-body .page-main {
-    position: relative;
-}
+   The sidebar is fixed on the left (on narrow screens, the top bar opens it as
+   an overlay). The article is a grid: breadcrumbs, page title, the aside with
+   the table of contents, the content, previous/next links, and the page footer.
+   From 1280px, the aside is a column on the right, otherwise it follows the
+   page title. */
 
 body .page-container {
-    display: grid;
-    grid-template-areas:
-        'header header'
-        'sidenav contents'
-        'sidenav footer';
-    grid-template-columns: minmax(0, auto) 4fr;
-    grid-template-rows: 4rem 1fr;
     background: var(--CONTENT-BACKGROUND-COLOR);
 }
 
-
-/* HEADER */
-
-.header {
-    height: 64px;
-    padding: 16px;
-    display: flex;
-    color: var(--color-teal-ink);
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: row;
-    margin-top: 0 !important;
-    grid-area: header;
-    grid-row-start: header;
-    grid-column-start: header;
-    grid-row-end: header;
-    grid-column-end: header;
-    transition: top 0.2s ease-in-out;
-    width: 100%;
-    border-bottom: 1px solid var(--gray-300);
-    z-index: 1001;
-    position: fixed;
-    min-height: 0;
-    background: var(--HEADER-BACKGROUND-COLOR);
-    top: 0;
+.container-main {
+    margin-left: var(--nav-width);
+    padding: 0 var(--page-gutter);
+    background-color: var(--CONTENT-BACKGROUND-COLOR);
 }
 
-/* Header Left */
-.header-block-left {
+/* Narrow screens: everything below each other in the document order,
+   except for the edit link at the end */
+article.default {
     display: flex;
-    flex: 1;
+    flex-direction: column;
+    min-height: 600px;
+    max-width: var(--content-width);
 }
 
+article.default > * {
+    min-width: 0;
+}
 
-.mobile-menu-toggle {
-    display: none;
+@media screen and (min-width: 1280px) {
+    /* The content grows to its full width first, the aside gets the rest */
+    article.default {
+        display: grid;
+        max-width: calc(var(--content-width) + var(--toc-gap) + var(--toc-max-width));
+        grid-template-columns: minmax(0, var(--content-width)) minmax(var(--toc-min-width), 1fr);
+        grid-template-areas:
+            "crumbs aside"
+            "notices aside"
+            "header aside"
+            "body aside"
+            "pager aside";
+        /* Without a flexible row, a tall aside would stretch the rows above the content */
+        grid-template-rows: auto auto auto 1fr auto;
+        column-gap: var(--toc-gap);
+        padding-bottom: 48px;
+    }
+
+    article.default > .breadcrumbs { grid-area: crumbs; }
+    article.default > .article-notices { grid-area: notices; }
+    article.default > hgroup { grid-area: header; }
+    article.default > .article-aside { grid-area: aside; }
+    article.default > .article-body { grid-area: body; min-width: 0; }
+    article.default > .pagination { grid-area: pager; }
 }
 
 @media screen and (max-width: 768px) {
-    .mobile-menu-toggle {
-        display: block;
+    body .page-container {
+        padding-top: var(--topbar-height);
+    }
+
+    .container-main {
+        margin-left: 0;
+        padding: 0 var(--page-gutter-narrow);
+    }
+
+    /* The navigation covers the content, which shouldn't scroll behind it */
+    body:has(.main-nav.active) {
+        overflow: hidden;
     }
 }
 
-.mobile-menu-toggle > .sidebar-toggle-navigation {
+/* Top bar, only on narrow screens (the sidebar has the logo otherwise) */
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    height: var(--topbar-height);
+    padding: 0 16px 0 4px;
+    border-bottom: 1px solid var(--gray-300);
+    background: var(--HEADER-BACKGROUND-COLOR);
+}
+
+.header-block-left {
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-toggle-navigation {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: none;
-    padding: 0;
-    color: var(--gray-950);
-    height: 64px;
+    width: 48px;
+    height: 48px;
     margin: 0;
-    width: 56px;
+    padding: 0;
+    background: none;
+    color: var(--gray-950);
 }
 
-.mobile-menu-toggle > .sidebar-toggle-navigation > svg {
+.sidebar-toggle-navigation > svg {
     font-size: 1.1rem;
 }
 
-
-.version-logo-container {
-    display: flex;
-    flex-direction: row;
-}
-
-.version-logo-container > .arangodb-logo-small {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.logo-container {
-    z-index: 1001;
-    position: relative;
-    height: 64px;
-    align-items: center;
-    padding-left: 10px;
-}
-
-.header .logo {
-    width: 219px;
-    height: 45px;
-    top: 8px;
-    position: relative;
-}
-
-.arangodb-logo-small {
-    display: none;
-    height: 42px;
-    margin-left: 2px;
-}
-
-.header .logo a,
-.arangodb-logo-small a {
+.header-logo,
+.header-logo:is(:hover, :focus, :visited) {
     display: block;
-    height: 100%;
+    border-bottom: 0;
 }
 
-@media screen and (max-width: 768px) {
-    .arangodb-logo-large {
-        display: none;
-    }
-    .arangodb-logo-small {
-        display: block;
-    }
+/* By width, image heights are always auto */
+.header-logo img {
+    display: block;
+    width: 154px;
 }
 
-.container-right {
-    box-sizing: border-box;
-    margin: 0;
-    min-width: 0;
-    margin-right: 40px;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -ms-flex-negative: 0;
-    flex-shrink: 0;
-}
-
-
-/* Header Center/Right */
-.search-and-version-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-    width: 60vw;
-}
-
-@media screen and (max-width: 1024px) {
-    .search-and-version-container {
-        width: auto;
-    }
-}
-
-.header-external-link {
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
-    margin-left: 16px;
-    white-space: nowrap;
-}
-
-/* Widen the search button when there is plenty of horizontal space */
-@media screen and (min-width: 1280px) {
-    .search-and-version-container .docsearch {
-        width: 100%;
-        max-width: 560px;
-    }
-
-    .search-and-version-container .DocSearch-Button {
-        width: 100%;
-        margin: 0;
-    }
-}
-
-/* end Header */
-
-.main-nav.active {
-    width: 300px;
-}
-
-@media screen and (max-width: 768px) {
-    .main-nav-ol {
-        opacity: 0;
-    }
-    
-    .main-nav.active .main-nav-ol {
-        opacity: 1;
-    }
-    
-    .main-nav.active {
-        width: 100%;
-        display: block;
-    }
-}
-
-
-.content-wrapper {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    overflow: hidden;
-    z-index: 400;
-    position: relative;
-}
-
-/* Main Article */
-.container-main {
-    max-width: 100%;
-    grid-area: contents;
-    background-color: var(--CONTENT-BACKGROUND-COLOR);
-    margin-left: 300px;
-}
-
-@media screen and (max-width: 768px) {
-    .container-main {
-        margin-left: 0;
-    }
-}
-
-.row-main {
-    display: grid;
-    grid-template-areas:
-        'breadcrumbs breadcrumbs'
-        'article toc'
-        'footer footer';
-    grid-template-columns: 3fr 1fr;
-
-    grid-template-rows: auto 1fr;
-}
-
-@media screen and (max-width: 768px) {
-    .row-main {
-        grid-template-areas:
-        'breadcrumbs breadcrumbs'
-        'toc toc'
-        'article article'
-        'footer footer';
-    }
-}
-
-/* Breadcrumbs row */
-.breadcrumbs {
-    grid-area: breadcrumbs;
-    margin-top: 1rem;
-}
+/* Breadcrumbs */
 
 .breadcrumbs > ol {
-    margin-left: 80px;
-    margin-bottom: 0;
+    margin: 24px 0 0;
+    padding: 0;
 }
-
-@media screen and (max-width: 768px)
-{
-    .breadcrumbs > ol {
-        margin: 0;
-        padding: 0 20px
-    }
-}
-
 
 .breadcrumbs > ol > li {
     padding: 0;
     display: inline;
 }
 
+.breadcrumbs > ol {
+    font-size: 14px;
+    line-height: 20px;
+}
+
 .breadcrumbs > ol > li > a {
-    font-size: 1rem;
+    font-size: 14px;
     font-weight: 400;
     color: var(--color-muted);
     border-bottom: 1px solid transparent;
@@ -1197,317 +1071,397 @@ body .page-container {
 
 .breadcrumbs .breadcrumb-sep {
     font-size: 16px;
-    margin: 0 10px;
-    vertical-align: -2px;
+    margin: 0 8px;
+    vertical-align: -3px;
     color: var(--color-muted);
 }
 
-/* end Breadcrumbs row */
 
 
-/* Table of contents */
+/* Aside: table of contents and back to top
 
-.edit-page {
-    text-transform: uppercase;
-    display: block;
-    height: 50px;
-    padding: 0 15px 0 20px;
-    border-bottom: none;
-    color: #ccc;
-    text-transform: uppercase;
-    line-height: 50px;
-    box-shadow: none!important;
-    font-size: 14px;
-    transition: 0.5s;
-    position: sticky;
-    top: 100px;
-}
-
-.edit-page:hover {
-    text-decoration: none;
-    color: #444;
-    background: 0 0;
-    border-bottom: 0;
-}
-
-.edit-page-label {
-    margin-left: 10px;
-}
-
-@media screen and (max-width: 480px) {
-    .edit-page {
-        margin-right: 0;
-        right: 0vw;
-    }
-    .edit-page-label {
-        display: none;
-    }
-}
-
-.toc-container {
-    grid-area: toc;
-    font-size: 15px;
-}
-
-@media screen and (max-width: 768px) {
-    .toc-container .toc {
-        top: 0;
-        position: relative;
-        margin: 0;
-        width: auto;
-        height: auto;
-        padding: 20px;
-        max-width: 100%;
-    }
-    .edit-page {
-        position: relative;
-        top: 0;
-    }
-}
-
-.toc {
-    height: 78vh;
-    overflow: auto;
-    top: 160px;
-    right: 0;
-    width: 20vw;
-    max-width: 300px;
-    position: sticky;
-    padding-left: 20px
-}
-.toc::-webkit-scrollbar {
-    width: 6px;
-}
-.toc::-webkit-scrollbar-track {
-    background: #fafafa;
-}
-.toc::-webkit-scrollbar-thumb {
-    background-color: #b6acac;
-    border-radius: 20px;
-    border: 1px solid #b6acac;
-}
-
-.toc a, .toc a > * {
-    white-space: normal;
-    word-break: break-word;
-}
+   From 1280px, the aside is a column: the table of contents sticks to the
+   top, back to top to the bottom of the viewport. Below, the table of
+   contents is a sticky bar with the current section, which opens the entries
+   over the content. */
 
 .toc-header {
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 0;
-    margin-bottom: 16px;
-}
-
-.toc-header > p {
-    line-height: 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
     margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--color-heading);
 }
 
-.toc-content {
-    margin-bottom: 30px;
+/* "On this page" stays on one line, the current section is shortened */
+.toc-header {
+    white-space: nowrap;
 }
 
-.TableOfContents {
-    margin-right: 1rem;
-}
-
-.TableOfContents > div {
-    margin-bottom: 8px;
-}
-
-.TableOfContents ul {
-    list-style: none;
-    margin: 0;
+.toc-current {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-muted);
+    font-weight: 400;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .TableOfContents a {
-    display: inline-block;
-    padding: 0.25rem 0.5rem;
-    text-decoration: none;
-    color: var(--TOC-ENTRY-COLOR);
-    font-size: 16px;
+    display: block;
+    padding: 4px 12px;
+    color: var(--color-muted);
+    font-size: 14px;
     font-weight: 400;
+    line-height: 20px;
+    overflow-wrap: break-word;
+    transition: color 0.1s;
 }
 
 .TableOfContents a:hover {
-    border-bottom: none;
+    color: var(--color-heading);
 }
 
-.TableOfContents .level-3 > a {
-    padding-left: 1.25rem;
+.TableOfContents .level-3 > a { padding-left: 24px; }
+.TableOfContents .level-4 > a { padding-left: 36px; }
+.TableOfContents .level-5 > a { padding-left: 48px; }
+.TableOfContents .level-6 > a { padding-left: 60px; }
+
+/* Plain monospace text in the list, breaking long names only where needed */
+.TableOfContents code {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font-size: 13px;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: anywhere;
+    vertical-align: baseline;
 }
 
-.TableOfContents .level-4 > a {
-    padding-left: 2rem;
+/* Fades out the end of a scroll container if there is more to scroll to */
+.scroll-fade {
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 48px), transparent);
 }
 
-.TableOfContents .level-5 > a {
-    padding-left: 2.75rem;
-}
-.TableOfContents .level-6 > a {
-    padding-left: 3.5rem;
-}
-
-.TableOfContents .is-active > a {
-    color: #222222;
-}
-
-.TableOfContents .level-1:hover,
-.TableOfContents .level-2:hover,
-.TableOfContents .level-3:hover,
-.TableOfContents .level-4:hover, 
-.TableOfContents .level-5:hover,
-.TableOfContents .level-6:hover {
-    font-weight: bold;
-    --tw-bg-opacity: 0.2;
-    background-color: var(--gray-100);
-    border-radius: 4px;
+.back-to-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 0;
+    margin: 0;
+    padding: 6px 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    background: var(--neutral-white);
+    color: var(--color-heading);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: normal;
+    transition: opacity 0.2s ease-out, visibility 0.2s, background-color 0.1s;
 }
 
-.TableOfContents .is-active {
-    font-weight: bold;
-    background-color: var(--gray-200);
-    border-radius: 4px;
+.back-to-top:hover {
+    background: var(--gray-100);
 }
 
-.TableOfContents .is-active:hover {
-    background-color: var(--gray-200);
+/* Fades out while the page title is in view */
+.back-to-top.hidden {
+    display: inline-flex;
+    opacity: 0;
+    visibility: hidden;
 }
-.TableOfContents a {
-    width: 100%;
-}
-/* end Table of contents */
 
-.row-main {
-    max-width: 1200px;
+@media (prefers-reduced-motion: reduce) {
+    .back-to-top {
+        transition: none;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .article-aside {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    /* The table of contents, leaving room for the edit link and back to top */
+    .aside-sticky {
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        align-self: stretch;
+        /* Leaves room for the edit link and back to top (90px) and a gap */
+        max-height: calc(100vh - 118px);
+    }
+
+    .toc {
+        min-height: 0;
+        margin-top: 24px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+    }
+
+    /* Edit link and back to top below it, at the bottom of the viewport */
+    /* Always at the same place at the bottom of the viewport, whatever follows
+       the article. Without left or right, it stays in the column. */
+    .aside-bottom {
+        position: fixed;
+        bottom: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    /* Not collapsible in the column */
+    .toc-details > summary,
+    .toc-details > summary:hover {
+        cursor: default;
+        color: var(--color-heading);
+    }
+
+    .toc-details > summary::before,
+    .toc-current {
+        display: none;
+    }
+
+    .TableOfContents {
+        margin-top: 8px;
+        /* The single line along the entries, the current one is marked on it */
+        border-left: 1px solid var(--gray-300);
+    }
+
+    .TableOfContents a {
+        margin-left: -1px;
+        border-left: 2px solid transparent;
+    }
+
+    .TableOfContents .is-active > a {
+        border-left-color: var(--color-link);
+        color: var(--color-heading);
+        font-weight: 500;
+    }
+
+}
+
+@media screen and (max-width: 1279px) {
+    /* The sticky bar needs the article as its containing block, and the edit
+       link moves to the end of the article */
+    .article-aside,
+    .aside-sticky,
+    .aside-bottom {
+        display: contents;
+    }
+
+    .edit-page {
+        order: 1;
+    }
+
+    /* The page background above the box hides the content scrolling behind it */
+    .toc {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        margin-bottom: 16px;
+        padding-top: 8px;
+        background: var(--CONTENT-BACKGROUND-COLOR);
+    }
+
+    .toc-details {
+        position: relative;
+        padding: 0 12px;
+        border: 1px solid var(--gray-300);
+        border-radius: 8px;
+        background: var(--neutral-white);
+    }
+
+    .toc-details > summary {
+        margin: 0;
+        padding: 8px 0;
+        font-size: 14px;
+    }
+
+    .toc-details > summary::before {
+        align-self: center;
+        margin: 0;
+    }
+
+    /* The entries open over the content, scrolling inside the box */
+    .toc-details > .TableOfContents {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: -1px;
+        right: -1px;
+        border: 1px solid var(--gray-300);
+        border-radius: 8px;
+        background: var(--neutral-white);
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    .toc-entries {
+        max-height: 60vh;
+        overflow-y: auto;
+        /* Scrolling past the end doesn't scroll the page (which closes it) */
+        overscroll-behavior: contain;
+        padding: 8px 0;
+    }
+
+    .TableOfContents .is-active > a {
+        color: var(--color-heading);
+        font-weight: 500;
+    }
+
+    .back-to-top {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 99;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    /* Room for the floating back to top button */
+    article.default {
+        padding-bottom: 72px;
+    }
+
+    /* Headings jumped to aren't hidden behind the sticky bar */
+    html:has(.toc) {
+        scroll-padding-top: calc(2rem + 56px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .toc {
+        top: var(--topbar-height);
+    }
+
+    html:has(.toc) {
+        scroll-padding-top: calc(var(--topbar-height) + 72px);
+    }
 }
 
 /* Article */
-
-article.default, article.chapter, article.home {
-    margin: 0 0 0 80px;
-    min-height: 600px;
-    grid-area: article;
-    width: calc(80vw - 440px); /* 300px + 80px + 60px */
-    max-width: 800px;
-}
 
 article.notfound {
     margin: auto;
     margin-top: 7rem;
     min-height: 600px;
-    grid-area: article;
-    width: calc(80vw - 440px);
     max-width: 800px;
 }
 
-@media screen and (max-width: 768px) {
-    article.default, article.chapter, article.home {
-        width: 100vw;
-        padding: 10px 20px;
-        margin: 0;
-    }
-}
-
-hgroup > h1, article > h2, article > h3, article > h4, article > h5, article > h6 {
+hgroup > h1, .article-body > :is(h2, h3, h4, h5, h6) {
     color: var(--color-link);
     font-family: var(--font-headlines);
     font-weight: var(--TYPOGRAPHY-BOLD-TEXT);
     overflow-wrap: break-word;
 }
 
-hgroup > h1,
-hgroup > h1 > code {
-    font-size: var(--TYPOGRAPHY-H1-SIZE);
-    margin: 40px 0 40px 0;
-    line-height: var(--TYPOGRAPHY-H1-HEIGHT);
+/* Page title and lead paragraph like on the home page */
+hgroup > h1 {
+    margin: 32px 0 12px;
+    color: var(--color-link);
+    font-size: 2.25rem;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
 }
 
 @media screen and (max-width: 768px) {
-    hgroup > h1,
-    hgroup > h1 > code {
-        font-size: var(--TYPOGRAPHY-H1-SIZE-SMALL);
-        margin: 0 0 20px 0;
-        line-height: var(--TYPOGRAPHY-H1-HEIGHT);
+    hgroup > h1 {
+        margin-top: 24px;
+        font-size: 1.75rem;
     }
 }
 
-article > h2,
-article > h2 > code {
+.article-body > h2,
+.article-body > h2 > code {
     font-size: var(--TYPOGRAPHY-H2-SIZE);
     margin-top: calc(var(--TYPOGRAPHY-H2-SIZE) + 1rem);
     line-height: var(--TYPOGRAPHY-H2-HEIGHT);
 }
 
 @media screen and (max-width: 768px) {
-    article > h2,
-    article > h2 > code {
+    .article-body > h2,
+    .article-body > h2 > code {
         font-size: var(--TYPOGRAPHY-H2-SIZE-SMALL);
     }
 }
 
-article > h3,
-article > h3 > code {
+.article-body > h3,
+.article-body > h3 > code {
     font-size: var(--TYPOGRAPHY-H3-SIZE);
     margin-top: calc(var(--TYPOGRAPHY-H3-SIZE) + 1rem);
     line-height: var(--TYPOGRAPHY-H3-HEIGHT);
 }
 @media screen and (max-width: 768px) {
-    article > h3,
-    article > h3 > code {
+    .article-body > h3,
+    .article-body > h3 > code {
         font-size: var(--TYPOGRAPHY-H3-SIZE-SMALL);
     }
 }
 
-article > h4,
-article > h4 > code {
+.article-body > h4,
+.article-body > h4 > code {
     font-size: var(--TYPOGRAPHY-H4-SIZE);
     margin-top: calc(var(--TYPOGRAPHY-H4-SIZE) + 1rem);
     line-height: var(--TYPOGRAPHY-H4-HEIGHT);
 }
 
 @media screen and (max-width: 768px) {
-    article > h4,
-    article > h4 > code {
+    .article-body > h4,
+    .article-body > h4 > code {
         font-size: var(--TYPOGRAPHY-H4-SIZE-SMALL);
     }
 }
 
-article > h5,
-article > h5 > code {
+.article-body > h5,
+.article-body > h5 > code {
     font-size: var(--TYPOGRAPHY-H5-SIZE);
     margin-top: calc(var(--TYPOGRAPHY-H5-SIZE) + 1rem);
     line-height: var(--TYPOGRAPHY-H5-HEIGHT);
 }
 
 @media screen and (max-width: 768px) {
-    article > h5,
-    article > h5 > code {
+    .article-body > h5,
+    .article-body > h5 > code {
         font-size: var(--TYPOGRAPHY-H5-SIZE-SMALL);
     }
 }
 
-article > h6,
-article > h6 > code {
+.article-body > h6,
+.article-body > h6 > code {
     font-size: var(--TYPOGRAPHY-H6-SIZE);
     margin-top: calc(var(--TYPOGRAPHY-H6-SIZE) + 1rem);
     line-height: var(--TYPOGRAPHY-H6-HEIGHT);
 }
 
 @media screen and (max-width: 768px) {
-    article > h6,
-    article > h6 > code {
+    .article-body > h6,
+    .article-body > h6 > code {
         font-size: var(--TYPOGRAPHY-H6-SIZE-SMALL);
     }
 }
 
-article > h2 > code,
-article > h3 > code,
-article > h4 > code,
-article > h5 > code,
-article > h6 > code {
+/* Plain monospace text in headings: the border and background of inline code
+   overlapped the previous line where a heading wraps */
+hgroup > h1 > code,
+.article-body > :is(h2, h3, h4, h5, h6) > code {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    /* A slightly lighter teal marks it as code without a box */
+    color: var(--color-link-hover);
+    font-size: 0.9em;
     white-space: normal;
+    vertical-align: baseline;
 }
 
 @keyframes target-highlight {
@@ -1535,34 +1489,53 @@ article ul li {
 }
 
 .lead {
-    line-height: 30px;
-    font-size: 1.3rem;
-    font-family: var(--font-headlines);
-    margin-bottom: 1.5rem;
-    font-weight: 600;
-    color: var(--gray-800);
+    margin: 0 0 24px;
+    color: var(--color-muted);
+    font-family: var(--font-content);
+    font-size: 1.0625rem;
+    font-weight: 400;
+    line-height: 1.5;
 }
 
+/* Copies the link to the heading. Absolutely positioned after the last word,
+   so that it never wraps to a line of its own. */
 .header-link {
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-    /* Box, so the focus ring encloses the icon */
+    position: absolute;
     display: inline-block;
-    line-height: 1;
+    margin-left: 0.2em;
+    /* Its own line box matches the heading's (last) line, see .header-link .icon */
+    line-height: inherit;
+    font-size: inherit;
+    color: var(--color-link-hover);
+    opacity: 0;
+    transition: opacity 0.15s;
 }
 
-h2:hover .header-link,
-h3:hover .header-link,
-h4:hover .header-link,
-h5:hover .header-link,
-h6:hover .header-link {
-    filter: alpha(opacity=70);
-    opacity: 0.7;
+:is(h2, h3, h4, h5, h6):hover .header-link,
+.header-link.tooltipped {
+    opacity: 1;
+}
+
+/* Centered on the x-height of the heading */
+.header-link .icon {
+    font-size: 0.7em;
+    vertical-align: middle;
+}
+
+.header-link.tooltipped .icon {
+    --icon: var(--icon-check);
 }
 
 /* Reveal on focus, otherwise the ring would surround an invisible icon */
 .header-link:focus-visible {
     opacity: 1;
+}
+
+/* Without hover, a faint icon shows that headings can be linked */
+@media (hover: none) {
+    .header-link {
+        opacity: 0.4;
+    }
 }
 
 .openapi-property-link {
@@ -1597,52 +1570,61 @@ li > code {
     white-space: pre-wrap;
 }
 
-.copy-to-clipboard-button {
+/* Outline buttons in code blocks (copy, show more) */
+.copy-to-clipboard-button,
+pre > .code-show-more {
     position: absolute;
-    align-items: center;
-    justify-content: center;
-    right: 0;
-    cursor: pointer;
-    background: var(--gray-200);
-    padding: 4px 12px;
-    margin: 4px;
-    border-radius: 1px;
-    /* Invisible rather than display:none, which cannot be focused */
     display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 0;
+    margin: 0;
+    padding: 4px 10px;
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    background: var(--neutral-white);
+    color: var(--color-heading);
+    font-family: var(--font-content);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: normal;
+    transition-property: opacity, background-color;
+    transition-duration: 0.1s;
+}
+
+.copy-to-clipboard-button:hover,
+pre > .code-show-more:hover {
+    background: var(--gray-100);
+}
+
+.copy-to-clipboard-button {
+    top: 8px;
+    right: 8px;
+    /* Invisible rather than display:none, which cannot be focused */
     opacity: 0;
 }
 
-pre:hover > .copy-to-clipboard-button {
-    opacity: 0.7;
-}
-
-/* After the rule above to win the specificity tie */
-.copy-to-clipboard-button:is(:hover, :focus-visible) {
+pre:hover > .copy-to-clipboard-button,
+.copy-to-clipboard-button:focus-visible,
+.copy-to-clipboard-button.tooltipped {
     opacity: 1;
 }
 
 .copy-to-clipboard-button::before {
     --icon: var(--icon-copy);
-    color: var(--color-teal-ink);
 }
 
 .copy-to-clipboard-button.tooltipped::before {
     --icon: var(--icon-check);
 }
 
-.copy-to-clipboard-button::after{
-    content: 'Copy';
-    font-family: var(--font-content);
-    padding: 0 5px;
-    font-weight: bold;
-    color: var(--color-teal-ink);
+.copy-to-clipboard-button::after {
+    content: "Copy";
 }
-.copy-to-clipboard-button.tooltipped::after{
-    content: 'Copied';
-    font-family: var(--font-content);
-    padding: 0 5px;
-    font-weight: bold;
-    color: var(--color-teal-ink);
+
+.copy-to-clipboard-button.tooltipped::after {
+    content: "Copied";
 }
 
 pre > code {
@@ -1668,23 +1650,8 @@ pre > code {
 }
 
 pre > .code-show-more {
-    font-size: 1rem;
-    background: var(--gray-200);
-    font-family: var(--font-content);
-    padding: 5px 5px;
-    font-weight: 500;
-    opacity: 0.7;
-    width: 160px;
-    color: var(--color-teal-ink);
-    margin: 0 auto;
-    position: absolute;
-    bottom: 12px;
-    right: 10px;
-    letter-spacing: 0;
-}
-
-pre > .code-show-more:hover{
-    opacity: 1;
+    bottom: 8px;
+    right: 8px;
 }
 
 pre > .code-show-more::before {
@@ -1696,22 +1663,16 @@ pre > .code-show-more.expanded::before {
 }
 
 pre > .code-show-more::after {
-    content: "Show More";
-    padding: 0 8px;
-
+    content: "Show more";
 }
 
 pre > .code-show-more.expanded::after {
-    content: "Show Less"
+    content: "Show less";
 }
 /* end Codeblocks */
 
 
 
-h2 > code {
-    font-size: 0.8em;
-    vertical-align: 1px;
-}
 
 
 
@@ -1898,7 +1859,7 @@ summary {
 }
 
 summary:hover, summary:focus-visible {
-    color: #005580;
+    color: var(--color-link);
 }
 
 summary::-webkit-details-marker {
@@ -1913,12 +1874,19 @@ details > summary::before {
     --icon: var(--icon-chevron-right);
     margin-right: 0.5rem;
     vertical-align: middle;
-    font-size: 12px;
-    color: grey;
+    font-size: 14px;
+    color: var(--color-muted);
+    transition: rotate 0.15s ease-out;
 }
 
 details[open] > summary::before {
     rotate: 90deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    details > summary::before {
+        transition: none;
+    }
 }
 
 /* */
@@ -2094,99 +2062,94 @@ details[open] > summary::before {
 
 /* Footer */
 
+/* Previous and next page, below each other if there isn't enough room */
+
 nav.pagination {
-    margin-top: 20px;
-    border-top: 1px solid #edf2f7;
-    line-height: 1;
-    padding: 0.75rem 1rem 2rem;
     display: flex;
-    grid-area: footer;
-    margin-bottom: 5rem;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid var(--gray-300);
 }
 
-nav.pagination span {
+nav.pagination > span {
     display: flex;
-    -webkit-box-flex: 50%;
-    -ms-flex: 50%;
-    flex: 50%;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
+    flex: 1 1 280px;
 }
 
-nav.pagination .next {
+nav.pagination > span:not(:has(a)) {
+    display: none;
+}
+
+nav.pagination > .next {
     justify-content: flex-end;
-    flex-direction: row;
+    text-align: right;
 }
 
-.nav-prev {
-    display: inherit;
-    margin-bottom: 20px;
+.nav-prev,
+.nav-next {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 0;
 }
 
 .nav-prev.link, .nav-next.link {
     border-bottom: 0;
     background-color: transparent;
-    overflow: inherit;
 }
+
 .nav-prev.link, .nav-next.link, .nav-next.link > code, .nav-next.link > p, .nav-prev.link > code, .nav-prev.link > p {
-    border-bottom: 0;
-}
-
-/* Centered on the first line of the title (24px line height below a 0.8rem margin) */
-.nav-prev > i,
-.nav-next > i {
-    margin-top: calc(0.8rem + 4px);
-}
-
-.nav-prev > i {
-    margin-right: 15px;
-}
-
-.nav-prev:hover,
-.nav-next:hover,
-.version-logo-container .link {
     border-bottom: 0;
 }
 
 .nav-prev > p,
 .nav-next > p {
-    margin-top: 0.8rem;
+    margin: 0;
 }
 
-.nav-next {
-    display: inherit;
-    margin-bottom: 20px;
-}
-
+/* Centered on the first line of the title */
+.nav-prev > i,
 .nav-next > i {
-    margin-left: 15px;
-}
-/* */
-
-.back-to-top {
-    position: fixed;
-    bottom: 35px;
-    right: 52px;
-    z-index: 99;
-    background-color: white;
-    color: var(--color-link);
-    cursor: pointer;
-    /* padding: 20px; */
-    border: 1px solid var(--color-link);
-    border-radius: 40px;
-    font-size: 18px;
+    margin-top: 4px;
 }
 
-.back-to-top:hover {
-    opacity: 60%;
+.nav-prev:hover > p,
+.nav-next:hover > p {
+    text-decoration: underline !important;
 }
 
-.back-to-top-icon {
-    width: 1rem;
-    height: 1rem;
-    color: #130909;
+/* Edit link, above the table of contents in the column */
+
+.edit-page,
+.edit-page:is(:visited, :hover, :focus) {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 0;
+    color: var(--color-muted);
+    font-size: 14px;
+    font-weight: 500;
+    /* Level with the breadcrumbs */
+    line-height: 20px;
+}
+
+.edit-page:hover {
+    color: var(--color-heading);
+}
+
+@media screen and (max-width: 1279px) {
+    .edit-page {
+        align-self: flex-start;
+        margin-top: 16px;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .edit-page {
+        margin: 0;
+    }
 }
 
 .DocSearch.DocSearch-Container {
@@ -2269,197 +2232,20 @@ nav.pagination .next {
     display: block;
 }
 
-.main-nav {
-    background-color: var(--gray-950);
-    position: fixed;
-    top: var(--padding-8);
-    left: 0;
-    bottom: 0;
-    width: var(--nav-width);
-    padding: var(--padding-1);
-    padding-left: 0;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--gray-800) var(--gray-950);
-    user-select: none;
-    z-index: 9999;
-}
+/* Sidebar: logo, search, main navigation, and footer link, like the sidebar of
+   the web UI. It replaces the top bar on desktop; on mobile the top bar stays
+   and the hamburger opens the sidebar as an overlay. */
 
-.main-nav code {
-    color: var(--gray-100);
-    background: transparent;
-    border: 0;
-    padding: 0;
-}
-
-@media screen and (max-width: 768px) {
-    .main-nav {
-        display: none;
-    }
-}
-
-.main-nav-ol,
-.nav-ol {
-    list-style: none;
-    margin: 0;
-    margin-left: 10px;
-}
-
-.main-nav-ol {
-    margin-left: 5px;
-}
-
-.main-nav-ol > .nav-section {
-    margin-bottom: .5rem;
-}
-
-.main-nav-ol.shimmer > .nav-section > .link-nav {
-    position: relative;
-    overflow: hidden;
-    background-color: var(--gray-950);
-}
-
-.main-nav-ol.shimmer > .nav-section > .link-nav::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transform: translateX(-100%);
-    background-image: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0) 20%,
-        rgba(255, 255, 255, 0.05) 40%,
-        rgba(255, 255, 255, 0.05) 60%,
-        rgba(255, 255, 255, 0) 80%
-    );
-    animation: 2s ease 1s infinite shimmer;
-}
-
-@keyframes shimmer {
-    100% {
-        transform: translateX(100%);
-    }
-}
-
-.nav-section-header {
-    display: flex;
-}
-
-.nav-section-header-versioned {
-    position: sticky;
-    top: -0.5rem;
-    background-color: var(--gray-950);
-}
-
-.nav-section > .nav-ol,
-.nav-section > .version-selector {
-    display: none;
-}
-
-.expand-nav {
-    display: block;
-    width: 48px;
-    border-radius:  0 .5rem .5rem 0;
-    margin: 0;
-}
-
-.expand-nav::after {
-    --icon: var(--icon-chevron-down);
-    vertical-align: middle;
-    font-size: 16px;
-    margin-top: 10px;
-    margin-left: 14px;
-    color: var(--gray-500);
-}
-
-.expand-nav:has(> input:checked)::after {
-    --icon: var(--icon-chevron-up);
-}
-
-.expand-nav > input {
-    display: none;
-}
-
-.nav-section:has(> .nav-section-header > .expand-nav > input:checked) > .version-selector {
-    display: block;
-}
-
-.nav-section:has(> .nav-section-header > .expand-nav > input:checked) > .nav-ol:not([data-version]) {
-    display: block;
-}
-
-.nav-section:has(> .nav-section-header > .expand-nav > input:checked) > .nav-ol.selected-version {
-    display: block;
-}
-
-.link-nav:hover, .expand-nav:hover, .link-nav-active + .expand-nav:hover {
-    background-color: var(--gray-900);
-}
-
-.link-nav {
-    display: block;
-    width: 100%;
-    padding: .4rem 1rem;
-    color: var(--gray-100);
-    border-radius: .5rem;
-    font-weight: 400;
-    text-wrap-style: balance;
-}
-
-.link-nav:is(:hover, .link-nav:visited, .link-nav:focus) {
-    color: var(--gray-100);
-}
-
-.main-nav-ol > .nav-section > .nav-section-header > .link-nav {
-    font-weight: 500;
-}
-
-.link-nav-active, .link-nav-active + .expand-nav {
-    background-color: rgba(255, 255, 255, 0.05);
-}
-
-.link-nav-active,
-.link-nav-active:is(:hover, .link-nav-active:visited, .link-nav-active:focus),
-.link-nav-active + .expand-nav,
-.nav-section:has(.link-nav-active) > .nav-section-header > .link-nav {
-    color: var(--color-lime);
-}
-
-.link-nav:focus-visible {
-    outline: 2px solid var(--color-lime);
-    outline-offset: 2px;
-}
-
-.nav-section-header > .link-nav {
-    border-radius: 0.5rem 0 0 .5rem;
-}
-
-.nav-section-header > .expand-nav {
-    border-radius: 0 .5rem .5rem 0;
-}
-
-.version-selector {
-    color: var(--gray-950);
-    background: var(--gray-100);
-    box-shadow: var(--gray-100) 5px 0 0;
-    border: none;
-    width: calc(100% - 2rem);
-    margin-left: 1rem;
-    position: sticky;
-    top: 2rem;
-}
-
-/* Sidebar: logo, search, main navigation, and footer link.
-   It replaces the top bar on desktop; on mobile the top bar stays and the
-   hamburger opens the sidebar as an overlay. */
 .sidebar {
     --sidebar-text: #F8FAFC;
     --sidebar-muted: #90A1B9;
+    --sidebar-code: #CAD5E2;
     --sidebar-hover: #06838A;
     --sidebar-lime: #BEFE99;
-    --focus-ring: var(--color-lime);
+    --sidebar-ink: #014654;
+    --sidebar-line: #ffffff19;
+    --sidebar-background: linear-gradient(180deg, #014654 0%, #012D3A 100%);
+    --focus-ring: rgb(190 254 153 / 0.64);
     position: fixed;
     top: 0;
     left: 0;
@@ -2467,18 +2253,22 @@ nav.pagination .next {
     width: var(--nav-width);
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    padding: 16px 8px;
-    background: linear-gradient(180deg, #014654 0%, #012D3A 100%);
+    gap: 8px;
+    padding: 0 8px 8px;
+    background: var(--sidebar-background);
+    color: var(--sidebar-text);
+    font-size: 14px;
     z-index: 9999;
     transition: transform 0.2s ease-in-out;
 }
 
 .sidebar-top {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    padding: 0 4px 4px 2px;
+    flex: none;
+    height: 64px;
+    padding-top: 16px;
 }
 
 .sidebar-logo,
@@ -2487,10 +2277,10 @@ nav.pagination .next {
     display: block;
 }
 
+/* By width, image heights are always auto (32px high) */
 .sidebar-logo img {
     display: block;
-    height: 36px;
-    width: auto;
+    width: 123px;
 }
 
 .sidebar-collapse,
@@ -2498,19 +2288,20 @@ nav.pagination .next {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     min-height: 0;
-    margin: 0;
+    margin: 2px 0 0;
     padding: 0;
-    border-radius: 6px;
+    border-radius: 8px;
     background: transparent;
     color: var(--sidebar-text, #F8FAFC);
     letter-spacing: normal;
+    transition: none;
 }
 
 .sidebar-collapse:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--sidebar-hover);
 }
 
 /* Search (DocSearch renders its button into .docsearch) */
@@ -2587,96 +2378,330 @@ nav.pagination .next {
     font-size: 1rem;
 }
 
-/* Navigation items */
-.sidebar .link-nav,
-.sidebar .link-nav:is(:hover, :visited, :focus) {
-    color: var(--sidebar-text);
-}
+/* Navigation */
 
-/* The theme's global 0.4s transition on links (but not on the chevron label)
-   made the two halves of a row fade at different speeds and leave a trail */
-.sidebar .link-nav,
-.sidebar .expand-nav {
-    transition: background-color 0.1s ease, color 0.1s ease;
-}
-
-.sidebar .link-nav,
-.sidebar .main-nav-ol > .nav-section > .nav-section-header > .link-nav {
-    padding: 0.55rem 0.75rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.4;
-}
-
-.sidebar .main-nav {
-    position: static;
+.main-nav {
     flex: 1;
     min-height: 0;
-    width: auto;
+    overflow-y: auto;
+    /* Room for the scrollbar, so that it doesn't cover the entries */
+    scrollbar-gutter: stable;
+    /* Also clear of the scrollbar when it grows on hover */
+    padding-right: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(248 250 252 / 0.5) transparent;
+    user-select: none;
+}
+
+.main-nav-ol,
+.nav-ol {
+    list-style: none;
+    margin: 0;
     padding: 0;
-    background: transparent;
-    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 
-.sidebar .main-nav-ol {
-    margin-left: 0;
+/* Nested entries, with a guide line like the sub-menus of the web UI */
+.nav-ol {
+    margin-left: 14px;
+    padding: 2px 0 2px 9px;
+    border-left: 1px solid var(--sidebar-line);
 }
 
-.sidebar .nav-ol {
-    margin-left: 12px;
+.nav-section-header {
+    display: flex;
+    border-radius: 8px;
 }
 
-.sidebar .main-nav-ol.shimmer > .nav-section > .link-nav,
-.sidebar .nav-section-header-versioned {
-    background-color: transparent;
-}
-
-/* The versioned ArangoDB header is sticky in the dark nav; on the gradient a
-   solid background would show as a highlighted row, so let it scroll instead */
-.sidebar .nav-section-header-versioned {
-    position: static;
-}
-
-.sidebar .expand-nav::after {
+.link-nav,
+.link-nav:is(:hover, :visited, :focus) {
+    display: block;
+    flex: 1;
+    min-width: 0;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border-bottom: 0;
     color: var(--sidebar-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    text-wrap-style: balance;
+    /* Instant like in the web UI */
+    transition: none;
 }
 
-.sidebar .link-nav:hover,
-.sidebar .expand-nav:hover,
-.sidebar .nav-section-header:hover > .link-nav,
-.sidebar .nav-section-header:hover > .expand-nav {
+/* Nested entries are a little lower (28px) */
+.nav-ol .link-nav,
+.nav-ol .link-nav:is(:hover, :visited, :focus) {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.nav-section-header > .link-nav {
+    border-radius: 8px 0 0 8px;
+}
+
+.expand-nav {
+    flex: none;
+    width: 32px;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border-radius: 0 8px 8px 0;
+    background: transparent;
+    color: inherit;
+    transition: none;
+}
+
+.expand-nav::after {
+    --icon: var(--icon-chevron-right);
+    display: block;
+    margin: auto;
+    font-size: 16px;
+    transition: rotate 0.15s;
+}
+
+.nav-section.expanded > .nav-section-header > .expand-nav::after,
+.nav-section.expanded > .nav-section-sticky > .nav-section-header > .expand-nav::after {
+    rotate: 90deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .expand-nav::after {
+        transition: none;
+    }
+}
+
+/* Collapsed sections hide their entries, the ArangoDB section shows the
+   entries of the selected version */
+.nav-section:not(.expanded) > .nav-ol,
+.nav-section:not(.expanded) .version-selector,
+.nav-section > .nav-ol[data-version]:not(.selected-version) {
+    display: none;
+}
+
+/* A row highlights as a whole on hover */
+.nav-section-header:hover,
+.nav-leaf > .link-nav:hover {
     background-color: var(--sidebar-hover);
 }
 
-/* Selected item (page or category): lime pill; a category's chevron joins it */
-.sidebar .link-nav-active,
-.sidebar .link-nav-active + .expand-nav,
-.sidebar .link-nav-active:hover,
-.sidebar .nav-section-header:hover > .link-nav-active,
-.sidebar .nav-section-header:hover > .link-nav-active + .expand-nav {
+/* Current page: lime row, a section's chevron joins it */
+.nav-section-header:has(> .link-nav-active),
+.nav-leaf > .link-nav-active,
+.nav-leaf > .link-nav-active:hover {
     background-color: var(--sidebar-lime);
 }
 
-/* The extra .nav-section prefix outranks the theme's lime-text rule for the
-   section that contains the active item */
-.sidebar .link-nav-active,
-.sidebar .link-nav-active:is(:hover, :visited, :focus),
-.sidebar .nav-section > .nav-section-header > .link-nav.link-nav-active,
-.sidebar .link-nav-active + .expand-nav::after {
-    color: #014654;
+.link-nav-active,
+.link-nav-active:is(:hover, :visited, :focus),
+.nav-section-header:has(> .link-nav-active) > .expand-nav {
+    color: var(--sidebar-ink);
+    font-weight: 500;
 }
 
-.sidebar .nav-section:has(.link-nav-active) > .nav-section-header > .link-nav:not(.link-nav-active) {
+/* Sections containing the current page (or the closest one for pages without an entry) */
+.nav-section:is(:has(.link-nav-active), .nav-section-current) > .nav-section-header > .link-nav:not(.link-nav-active),
+.nav-section:is(:has(.link-nav-active), .nav-section-current) > .nav-section-sticky > .nav-section-header > .link-nav:not(.link-nav-active) {
     color: var(--sidebar-lime);
+}
+
+.link-nav:focus-visible,
+.expand-nav:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: -2px;
+}
+
+/* Code is in a lighter color, except on the highlighted rows */
+.main-nav code {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--sidebar-code);
+    font-size: 13px;
+}
+
+:is(.nav-section-header:hover, .link-nav:hover, .link-nav-active) code {
+    color: inherit;
+}
+
+/* Non-clickable group labels */
+.nav-group-label {
+    display: flex;
+    align-items: center;
+    min-height: 32px;
+    margin-top: 8px;
+    padding: 0 8px;
+    color: rgb(248 250 252 / 0.7);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    list-style: none;
+}
+
+.nav-ol > .nav-group-label:first-child {
+    margin-top: 0;
+}
+
+/* Loading placeholder */
+.main-nav-ol.shimmer > .nav-section > .link-nav {
+    position: relative;
+    overflow: hidden;
+}
+
+.main-nav-ol.shimmer > .nav-section > .link-nav::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 20%,
+        rgba(255, 255, 255, 0.05) 40%,
+        rgba(255, 255, 255, 0.05) 60%,
+        rgba(255, 255, 255, 0) 80%
+    );
+    animation: 2s ease 1s infinite shimmer;
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* The ArangoDB section and the version selector stick to the top together.
+   The fixed background matches the sidebar's gradient behind it. */
+.nav-section-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    padding-bottom: 4px;
+    background: var(--sidebar-background) fixed;
+}
+
+/* Version selector, like the database selector of the web UI */
+.version-selector {
+    position: relative;
+    margin: 4px 0 0 23px;
+}
+
+/* Continues the guide line of the entries below */
+.version-selector::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    left: -9px;
+    border-left: 1px solid var(--sidebar-line);
+}
+
+.version-selector-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    min-height: 0;
+    height: 36px;
+    margin: 0;
+    padding: 0 8px 0 12px;
+    border: 1px solid rgb(248 250 252 / 0.15);
+    border-radius: 8px;
+    background: rgb(248 250 252 / 0.05);
+    color: var(--sidebar-text);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: normal;
+    transition: none;
+}
+
+.version-selector-button:hover {
+    background: rgb(248 250 252 / 0.1);
+}
+
+.version-selector-button[aria-expanded="true"] {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 0;
+}
+
+.version-selector-button .icon {
+    color: var(--sidebar-muted);
+}
+
+.version-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 3;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    border: 1px solid var(--sidebar-line);
+    border-radius: 10px;
+    background: var(--sidebar-ink);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.45);
+}
+
+.version-menu > li {
+    margin: 0;
+    line-height: 20px;
+}
+
+.version-menu-item,
+.version-menu-item:is(:hover, :visited, :focus) {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 32px;
+    padding: 6px 28px 6px 8px;
+    border-bottom: 0;
+    border-radius: 8px;
+    color: var(--sidebar-text);
+    font-weight: 400;
+    transition: none;
+}
+
+.version-menu-item:hover,
+.version-menu-item:focus-visible {
+    background: var(--sidebar-hover);
+}
+
+.version-menu-item[aria-current] {
+    background: var(--sidebar-lime);
+    color: var(--sidebar-ink);
+    font-weight: 500;
+}
+
+.version-alias {
+    opacity: 0.75;
+}
+
+.version-menu-item .icon {
+    position: absolute;
+    right: 8px;
+    display: none;
+}
+
+.version-menu-item[aria-current] .icon {
+    display: inline-block;
 }
 
 .sidebar-footer,
 .sidebar-footer:is(:hover, :visited, :focus) {
     flex: none;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     gap: 6px;
-    padding: 4px 2px 0;
+    /* Aligned with the text of the navigation entries, below a separator like in the web UI */
+    margin: 0 -8px;
+    padding: 12px calc(0.75rem + 8px) 0;
+    border-top: 1px solid #ffffff19;
     font-weight: 600;
     color: var(--sidebar-lime);
 }
@@ -2704,22 +2729,8 @@ nav.pagination .next {
         display: none;
     }
 
-    body .page-container {
-        grid-template-rows: 0 1fr;
-    }
-
     html {
         scroll-padding-top: 2rem;
-    }
-
-    /* Without the 64px top bar, move the sticky Contribute link and TOC up
-       by the same amount, keeping their 60px spacing */
-    .edit-page {
-        top: 36px;
-    }
-
-    .toc {
-        top: 96px;
     }
 
     .container-main {
@@ -2730,9 +2741,10 @@ nav.pagination .next {
         transform: translateX(-100%);
     }
 
+    /* Room for the expand button */
     body.sidebar-collapsed .container-main {
         margin-left: 0;
-        padding-left: 40px;
+        padding-left: 64px;
     }
 
     body.sidebar-collapsed .sidebar-expand {
@@ -2745,6 +2757,8 @@ nav.pagination .next {
         display: none;
         top: var(--topbar-height);
         width: 100%;
+        /* The logo row with its spacing is in the top bar instead */
+        padding-top: 8px;
     }
 
     .sidebar:has(.main-nav.active) {

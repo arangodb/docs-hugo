@@ -1,6 +1,12 @@
 {{- $title := .Get "title" }}
 {{- $link := .Get "link" }}
-{{- $image := resources.GetMatch (printf "images/%s" ( .Get "icon" )) }}
+{{- $image := "" }}
+{{- with .Get "icon" }}
+  {{- $image = resources.GetMatch (printf "images/%s" .) }}
+  {{- if not $image }}
+    {{- errorf "Card icon '%v' not found in site/content/images/ for %v" . $.Page.File.Path }}
+  {{- end }}
+{{- end }}
 {{- $versions := index hugo.Data.versions "/arangodb/" }}
 {{- $stableVersion := (index (where $versions "alias" "stable") 0).name }}
 {{- /* TODO: Check if relative links are resolved in the context of the linking page */}}

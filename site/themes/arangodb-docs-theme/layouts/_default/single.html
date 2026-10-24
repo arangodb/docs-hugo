@@ -1,15 +1,21 @@
 {{ define "main" -}}
   {{ with .Page -}}
     <article class="default">
-      {{ partial "deprecated.html" . -}}
-      {{ partial "in-development.html" . -}}
+      {{ partial "breadcrumbs.html" . -}}
+      <div class="article-notices">
+        {{- partial "deprecated.html" . -}}
+        {{- partial "in-development.html" . -}}
+      </div>
       <hgroup>
         <h1>{{ .Title | markdownify }}</h1>
         {{ with .Params.Description }}<p class="lead">{{ . | markdownify }}</p>{{ end }}
       </hgroup>
+      {{ partial "toc.html" . -}}
+      <div class="article-body">
       {{ .Content | safeHTML }}
       {{- partial "shortcodes/examples/page-done.html" . }}
-      <nav class="pagination">
+      </div>
+      <nav class="pagination" aria-label="Previous and next page">
         {{- partial "content-footer.html" . -}}
       </nav>
     </article>
