@@ -854,12 +854,13 @@ svg a.card-link {
 .steps .step:last-child::after {
     content: "";
     position: absolute;
-    left: 12px;
+    left: 11px;
     bottom: 0;
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    background-color: var(--gray-300);
+    background-color: var(--neutral-white);
+    border: 2px solid var(--gray-300);
 }
 
 .steps .step-indicator {
