@@ -1,4 +1,4 @@
-/* based on tango
+/* Syntax highlighting, based on tango */
 /* Background */ .chroma { background-color: #EEEEEE }
 /* Other */ .chroma .x { color: #000000 }
 /* Error */ .chroma .err { color: #a40000 }
