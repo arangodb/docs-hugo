@@ -1198,7 +1198,7 @@ article.default > * {
         display: flex;
         flex-direction: column;
         align-self: stretch;
-        max-height: calc(100vh - 136px);
+        max-height: calc(100vh - 160px);
     }
 
     .toc {
@@ -1209,9 +1209,10 @@ article.default > * {
     }
 
     /* Edit link and back to top below it, at the bottom of the viewport */
+    /* The same distance from the bottom as at the end of the article (its padding) */
     .aside-bottom {
         position: sticky;
-        bottom: 24px;
+        bottom: 48px;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
