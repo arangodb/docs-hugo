@@ -1274,14 +1274,28 @@ article.default > * {
         order: 1;
     }
 
-    /* The page background above the box hides the content scrolling behind it */
     .toc {
         position: sticky;
         top: 0;
         z-index: 20;
         margin-bottom: 16px;
         padding-top: 8px;
+        padding-bottom: 10px;
+    }
+
+    /* Hide the (scrolling) content above and below the box */
+    .toc::before {
+        content: "";
+        display: block;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        bottom: 32px;
         background: var(--CONTENT-BACKGROUND-COLOR);
+    }
+
+    .toc:has(.toc-details[open])::before {
+        bottom: 0;
     }
 
     .toc-details {
@@ -1318,8 +1332,6 @@ article.default > * {
     .toc-entries {
         max-height: 60vh;
         overflow-y: auto;
-        /* Scrolling past the end doesn't scroll the page (which closes it) */
-        overscroll-behavior: contain;
         padding: 8px 0;
     }
 

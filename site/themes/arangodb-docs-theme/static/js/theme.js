@@ -641,10 +641,6 @@ document.addEventListener("keydown", event => {
   if (event.key === "Escape") closeTocDropdown();
 });
 
-// Like other popovers, it closes when the page scrolls (not its own entries,
-// which scroll separately). Jumping to an entry closes it anyway.
-window.addEventListener("scroll", closeTocDropdown, { passive: true });
-
 window.matchMedia(TOC_COLUMN_QUERY).addEventListener("change", initToc);
 
 // The heading jumped to (link or deep link). It stays the current one until it
