@@ -2104,20 +2104,25 @@ details[open] > summary::before {
 
 /* Footer */
 
-/* Previous and next page, below each other if there isn't enough room */
+/* Previous and next page. Both start at zero width and grow equally, but each
+   stops at the width of its label, so a short label leaves the rest of the row to
+   the other one before its text wraps. The links stack if the row is too narrow for
+   two labels side by side. */
 
 nav.pagination {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 24px;
+    gap: 8px 1rem;
     margin-top: 48px;
     padding-top: 16px;
     border-top: 1px solid var(--gray-300);
+    container-type: inline-size;
 }
 
 nav.pagination > span {
     display: flex;
-    flex: 1 1 280px;
+    flex: 1 1 0;
+    max-width: max-content;
 }
 
 nav.pagination > span:not(:has(a)) {
@@ -2126,7 +2131,15 @@ nav.pagination > span:not(:has(a)) {
 
 nav.pagination > .next {
     justify-content: flex-end;
+    margin-left: auto;
     text-align: right;
+}
+
+@container (width < 20rem) {
+    nav.pagination > span {
+        flex-basis: 100%;
+        max-width: none;
+    }
 }
 
 .nav-prev,
@@ -2137,28 +2150,29 @@ nav.pagination > .next {
     padding: 8px 0;
 }
 
-.nav-prev.link, .nav-next.link {
-    border-bottom: 0;
-    background-color: transparent;
+.nav-prev {
+    padding-right: 1rem;
 }
 
-.nav-prev.link, .nav-next.link, .nav-next.link > code, .nav-next.link > p, .nav-prev.link > code, .nav-prev.link > p {
+.nav-next {
+    padding-left: 1rem;
+}
+
+.nav.link,
+.nav.link > p {
     border-bottom: 0;
 }
 
-.nav-prev > p,
-.nav-next > p {
+.nav.link > p {
     margin: 0;
 }
 
 /* Centered on the first line of the title */
-.nav-prev > i,
-.nav-next > i {
+.nav.link > i {
     margin-top: 4px;
 }
 
-.nav-prev:hover > p,
-.nav-next:hover > p {
+.nav.link:hover > p {
     text-decoration: underline !important;
 }
 
