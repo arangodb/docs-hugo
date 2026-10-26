@@ -1072,6 +1072,13 @@ function linkToVersionedContent() {
         setLinkHref(el, newUrl);
       }
     });
+    // Previous/next page links to the first or last page of the selected version
+    document.querySelectorAll(".nav-prev[data-versions], .nav-next[data-versions]").forEach(el => {
+      const link = JSON.parse(el.dataset.versions)[getSelectedVersion()];
+      if (!link) return;
+      setLinkHref(el, link.href);
+      el.querySelector("p").innerHTML = link.title;
+    });
   }
 }
 
