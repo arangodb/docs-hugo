@@ -2331,6 +2331,8 @@ nav.pagination > .next {
 .sidebar-logo:is(:hover, :focus, :visited) {
     border-bottom: 0;
     display: block;
+    /* For the alt text */
+    color: var(--sidebar-text);
 }
 
 /* By width, image heights are always auto (32px high) */
@@ -2363,6 +2365,8 @@ nav.pagination > .next {
 /* Search (DocSearch renders its button into .docsearch) */
 .sidebar .docsearch {
     flex: none;
+    /* Reserve the button's height so the nav doesn't shift once it renders */
+    min-height: 40px;
 }
 
 .sidebar .DocSearch-Button {
@@ -2598,33 +2602,38 @@ nav.pagination > .next {
     margin-top: 0;
 }
 
-/* Loading placeholder */
-.main-nav-ol.shimmer > .nav-section > .link-nav {
-    position: relative;
-    overflow: hidden;
+/* Loading placeholder, like the Skeleton of the web UI: muted bars that pulse.
+   Only the list's opacity is animated, a single compositor-only animation */
+.main-nav-ol.shimmer {
+    animation: 2s cubic-bezier(0.4, 0, 0.6, 1) 0.5s infinite shimmer;
 }
 
-.main-nav-ol.shimmer > .nav-section > .link-nav::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transform: translateX(-100%);
-    background-image: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0) 20%,
-        rgba(255, 255, 255, 0.05) 40%,
-        rgba(255, 255, 255, 0.05) 60%,
-        rgba(255, 255, 255, 0) 80%
-    );
-    animation: 2s ease 1s infinite shimmer;
+.main-nav-ol.shimmer > .nav-section > .link-nav {
+    height: 16px;
+    margin: 8px;
+    padding: 0;
+    border-radius: 6px;
+    background: var(--sidebar-line);
+}
+
+.main-nav-ol.shimmer > .nav-section:nth-child(3n+1) > .link-nav { width: 70%; }
+.main-nav-ol.shimmer > .nav-section:nth-child(3n+2) > .link-nav { width: 55%; }
+.main-nav-ol.shimmer > .nav-section:nth-child(3n) > .link-nav { width: 85%; }
+
+/* No animation if the sidebar is slid out or motion is unwanted */
+body.sidebar-collapsed .main-nav-ol.shimmer {
+    animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .main-nav-ol.shimmer {
+        animation: none;
+    }
 }
 
 @keyframes shimmer {
-    100% {
-        transform: translateX(100%);
+    50% {
+        opacity: 0.5;
     }
 }
 
