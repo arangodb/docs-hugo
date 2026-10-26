@@ -2772,7 +2772,8 @@ nav.pagination > .next {
     position: fixed;
     top: 16px;
     left: 16px;
-    z-index: 9999;
+    /* Below the sidebar so that its slide-out animation reveals the button */
+    z-index: 9998;
     background: #014654;
 }
 
@@ -2790,7 +2791,7 @@ nav.pagination > .next {
     }
 
     .container-main {
-        transition: margin-left 0.2s ease-in-out;
+        transition: margin-left 0.2s ease-in-out, padding-left 0.2s ease-in-out;
     }
 
     body.sidebar-collapsed .sidebar {
@@ -2803,8 +2804,16 @@ nav.pagination > .next {
         padding-left: 64px;
     }
 
-    body.sidebar-collapsed .sidebar-expand {
+    /* Hidden only once the sliding-in sidebar covers it */
+    .sidebar-expand {
         display: flex;
+        visibility: hidden;
+        transition: visibility 0s 0.2s;
+    }
+
+    body.sidebar-collapsed .sidebar-expand {
+        visibility: visible;
+        transition-delay: 0s;
     }
 }
 
