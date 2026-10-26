@@ -2638,13 +2638,21 @@ body.sidebar-collapsed .main-nav-ol.shimmer {
 }
 
 /* The ArangoDB section and the version selector stick to the top together.
-   The fixed background matches the sidebar's gradient behind it. */
+   The background covers the entries scrolling behind it and is sized and
+   shifted to the sidebar's box by theme.js to match the gradient behind it
+   (background-attachment: fixed goes out of sync on mobile). It sticks 1px
+   higher with 1px more background, so that no entry can shine through above
+   it when its edge and the scroll container's round to different device
+   pixels (zoomed in or with fractional device pixel ratios). */
 .nav-section-sticky {
     position: sticky;
-    top: 0;
+    top: -1px;
     z-index: 2;
+    padding-top: 1px;
     padding-bottom: 4px;
-    background: var(--sidebar-background) fixed;
+    background: var(--sidebar-background) no-repeat;
+    background-size: 100% var(--sidebar-height, 100vh);
+    background-position: 0 calc(-1 * var(--sticky-offset, 0px));
 }
 
 /* Version selector, like the database selector of the web UI */

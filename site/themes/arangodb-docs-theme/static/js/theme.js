@@ -529,6 +529,7 @@ async function loadNav() {
 
     mainNavPlaceholder.replaceChildren(mainNavContent);
     observeScrollFade(mainNavPlaceholder);
+    observeStickyNavBackground(mainNavPlaceholder);
     
     // Set initial active state
     updateActiveNavItem(window.location.pathname, true);
@@ -623,6 +624,35 @@ function observeScrollFade(el) {
   // Also when the content changes size, like expanded navigation sections
   for (const child of el.children) scrollFadeObserver.observe(child);
   updateScrollFade(el);
+}
+
+/*
+ * Keeps the background of the sticky navigation sections in line with the
+ * sidebar's gradient behind them, wherever the sections are in the sidebar.
+ */
+function observeStickyNavBackground(nav) {
+  const stickies = nav.querySelectorAll(".nav-section-sticky");
+  const sidebar = nav.closest(".sidebar");
+  if (!stickies.length || !sidebar) return;
+  let frame = 0;
+  const update = () => {
+    frame = 0;
+    const box = sidebar.getBoundingClientRect();
+    // Hidden, like the closed sidebar on mobile
+    if (!box.height) return;
+    for (const sticky of stickies) {
+      sticky.style.setProperty("--sidebar-height", `${box.height}px`);
+      sticky.style.setProperty("--sticky-offset", `${sticky.getBoundingClientRect().top - box.top}px`);
+    }
+  };
+  const schedule = () => frame ||= requestAnimationFrame(update);
+  nav.addEventListener("scroll", schedule, { passive: true });
+  // Also when the sidebar changes size (rotation, browser UI) or the entries
+  // above the section expand or collapse
+  const observer = new ResizeObserver(schedule);
+  observer.observe(sidebar);
+  observer.observe(nav);
+  for (const child of nav.children) observer.observe(child);
 }
 
 function updateScrollFade(el) {
