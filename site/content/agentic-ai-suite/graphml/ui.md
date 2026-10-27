@@ -93,8 +93,13 @@ format on the right side of the modal for transparency.
 In the **Configuration** tab, you can control the overall featurization job and
 how features are stored.
 - **Batch size**: The number of documents to process in a single batch.
-- **Profiles**: Add one or more profiles to specify pod configurations for the
-  project (e.g., `gpu-g4dn-xlarge`).
+- **Profiles**: Add one or more profiles by name to specify the pod
+  configuration of the job, such as CPU, memory, and GPU resources
+  (e.g., `gpu-memory-8gi-cpu-2`). Profiles are `ArangoProfile` resources in
+  your Kubernetes cluster. Without a profile, the job runs with low default
+  resource limits and may fail with an out-of-memory error on larger datasets.
+  It is recommended to create and use a custom profile, see
+  [Configure resources with profiles](setup.md#configure-resources-with-profiles).
 - **Run analysis checks**: Whether to run analysis checks to perform a high-level
   analysis of the data quality before proceeding. The default value is `true`.
 - **Skip labels**: Skip the featurization process for attributes marked as labels.
@@ -169,8 +174,8 @@ features and structural connections within the graph.
 - **Batch Size**: The number of documents processed in a single training iteration. (e.g. `256`)
 - **Data Load Batch Size**: The number of documents loaded from ArangoDB into memory in a single batch during the data loading phase (e.g. `50000`).
 - **Data Load Parallelism**: The number of parallel processes used when loading data from ArangoDB into memory for training (e.g. `10`).
-- **Enable GPU**: Enables GPU-accelerated training using GPU-capable profiles
-  configured for the project (e.g., `gpu-g4dn-xlarge`).
+- **Enable GPU**: Enables GPU-accelerated training using GPU-capable
+  [profiles](setup.md#configure-resources-with-profiles) configured for the project (e.g., `gpu-g4dn-xlarge`).
 
 After setting these values, click the **Begin training** button to submit the job.
 The button displays a loading state during submission, then the modal closes and
@@ -192,7 +197,7 @@ of graph nodes that capture structural and feature-based information.
 - **Batch Size:** The number of documents processed in a single training iteration (e.g. `256`)
 - **Data Load Batch Size:** The number of documents loaded from ArangoDB into memory in a single batch during the data loading phase (e.g. `50000`)
 - **Data Load Parallelism:** The number of parallel processes used when loading data from ArangoDB into memory for training (e.g. `10`)
-- **Enable GPU:** Enables GPU-accelerated training using GPU-capable profiles configured for the project
+- **Enable GPU:** Enables GPU-accelerated training using GPU-capable [profiles](setup.md#configure-resources-with-profiles) configured for the project
 - No label is required for training in this mode
 
 The target collection is where the model's predictions are stored when running a prediction job.
@@ -256,8 +261,8 @@ Configure your prediction job with the following options:
   single batch (e.g. `500000`).
 - **Data load parallelism**: The number of parallel threads used to process
   the prediction workload (e.g. `10`).
-- **Enable GPU**: Enables GPU-accelerated prediction using GPU-capable profiles
-  configured for the project (e.g., `gpu-g4dn-xlarge`).
+- **Enable GPU**: Enables GPU-accelerated prediction using GPU-capable
+  [profiles](setup.md#configure-resources-with-profiles) configured for the project (e.g., `gpu-g4dn-xlarge`).
 
 ### Featurization options
 
@@ -312,4 +317,5 @@ results directly in the Web Interface or export them for downstream use.
 
 - **Edge Attributes**: The current version of GraphML does not support the use of edge attributes as features.
 - **Dangling Edges**: Edges that point to non-existent nodes ("dangling edges") are not caught during the featurization analysis. They may cause errors later, during the Training phase.
-- **Memory Usage**: Both featurization and training can be memory-intensive. Out-of-memory errors can occur on large graphs with insufficient system resources.
+- **Memory Usage**: Both featurization and training can be memory-intensive. Out-of-memory errors can occur on large graphs with insufficient system resources. To give jobs more memory, use a custom profile, see
+  [Configure resources with profiles](setup.md#configure-resources-with-profiles).
