@@ -11,39 +11,111 @@ aliases:
   - ../../arangodb/4.x/develop/drivers/go
   - ../../arangodb/devel/develop/drivers/go
 ---
-The official Go driver in version 2 is the recommended client for interacting
-with ArangoDB using the Go programming language.
+The official Go driver is the recommended client for interacting with ArangoDB
+using the Go programming language. Which major version of the driver you need
+depends on the version of ArangoDB you connect to.
 
+## Driver versions
+
+| Driver | Go module | ArangoDB versions | Status |
+|:-------|:----------|:------------------|:-------|
+| v3 | `github.com/arangodb/go-driver/v3` | 4.0 and later | Active development |
+| v2 | `github.com/arangodb/go-driver/v2` | 3.12 and older | Maintenance (bug fixes and additive changes only) |
+| v1 | `github.com/arangodb/go-driver` | – | Unsupported, end of life |
+
+- Use **driver v2** with **ArangoDB 3.12 and older**.
+- Use **driver v3** with **ArangoDB 4.0 and later**. Driver v3 is not compatible
+  with ArangoDB 3.x because it implements the API changes of ArangoDB 4.0 and
+  no longer includes functionality that has been removed from the server,
+  such as JavaScript Transactions, user-defined AQL functions, and Foxx.
+
+If you upgrade from ArangoDB 3.12 to 4.0, you need to switch your application
+from driver v2 to v3. For most code, this only requires changing the import
+paths from `github.com/arangodb/go-driver/v2/...` to
+`github.com/arangodb/go-driver/v3/...`. See the
+[migration guide](https://github.com/arangodb/go-driver/blob/master/v3/MIGRATION.md)
+for the removed methods and fields and their replacements.
+
+Driver v3:
+- Reference: <https://pkg.go.dev/github.com/arangodb/go-driver/v3>
+- Repository: <https://github.com/arangodb/go-driver/tree/master/v3>
+- [Changelog](https://github.com/arangodb/go-driver/blob/master/v3/CHANGELOG.md)
+
+Driver v2:
 - Reference: <https://pkg.go.dev/github.com/arangodb/go-driver/v2>
 - Repository: <https://github.com/arangodb/go-driver/tree/master/v2>
 - [Changelog](https://github.com/arangodb/go-driver/blob/master/v2/CHANGELOG.md)
 
 ## Tutorial
 
+The examples in this tutorial work with both driver versions. Where the code
+differs, which is mainly the import paths, you can switch between the
+driver v2 and v3 variants using the tabs.
+
 ### Install the driver
 
 To use the driver, fetch the sources into your `GOPATH` first.
 
+{{< tabs "go-driver-version" >}}
+
+{{< tab "Driver v2 (ArangoDB 3.x)" >}}
 ```sh
 go get github.com/arangodb/go-driver/v2
 ```
+{{< /tab >}}
+
+{{< tab "Driver v3 (ArangoDB 4.0+)" >}}
+```sh
+go get github.com/arangodb/go-driver/v3
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 Import the driver in your Go program using the `import` statement.
 Two packages are necessary:
 
+{{< tabs "go-driver-version" >}}
+
+{{< tab "Driver v2 (ArangoDB 3.x)" >}}
 ```go
 import (
     "github.com/arangodb/go-driver/v2/arangodb"
     "github.com/arangodb/go-driver/v2/connection"
 )
 ```
+{{< /tab >}}
+
+{{< tab "Driver v3 (ArangoDB 4.0+)" >}}
+```go
+import (
+    "github.com/arangodb/go-driver/v3/arangodb"
+    "github.com/arangodb/go-driver/v3/connection"
+)
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 You may want to additionally import the following packages:
 
+{{< tabs "go-driver-version" >}}
+
+{{< tab "Driver v2 (ArangoDB 3.x)" >}}
 ```go
     "github.com/arangodb/go-driver/v2/arangodb/shared"
     "github.com/arangodb/go-driver/v2/utils"
 ```
+{{< /tab >}}
+
+{{< tab "Driver v3 (ArangoDB 4.0+)" >}}
+```go
+    "github.com/arangodb/go-driver/v3/arangodb/shared"
+    "github.com/arangodb/go-driver/v3/utils"
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 The former provides a `shared.IsNoMoreDocuments` function that makes it easy to
 check whether to stop iterating over the results of functions that return a reader,
@@ -62,6 +134,9 @@ You need to set `InsecureSkipVerify` to `true` if the ArangoDB server is not
 configured for TLS encryption to establish an unencrypted HTTP/2 connection.
 For more options, see [Connection management](#connection-management).
 
+{{< tabs "go-driver-version" >}}
+
+{{< tab "Driver v2 (ArangoDB 3.x)" >}}
 ```go
 import (
     "context"
@@ -88,6 +163,38 @@ if err != nil {
 // Create a client
 client := arangodb.NewClient(conn)
 ```
+{{< /tab >}}
+
+{{< tab "Driver v3 (ArangoDB 4.0+)" >}}
+```go
+import (
+    "context"
+    "log"
+
+    "github.com/arangodb/go-driver/v3/arangodb"
+    "github.com/arangodb/go-driver/v3/arangodb/shared"
+    "github.com/arangodb/go-driver/v3/connection"
+    "github.com/arangodb/go-driver/v3/utils"
+)
+
+/*...*/
+
+endpoint := connection.NewRoundRobinEndpoints([]string{"http://localhost:8529"})
+conn := connection.NewHttp2Connection(connection.DefaultHTTP2ConfigurationWrapper(endpoint, /*InsecureSkipVerify*/ true))
+
+// Add authentication
+auth := connection.NewBasicAuth("root", "")
+err := conn.SetAuthentication(auth)
+if err != nil {
+    log.Fatalf("Failed to set authentication: %v", err)
+}
+
+// Create a client
+client := arangodb.NewClient(conn)
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 Once you have a `Client` object, you can use this handle to create and edit
 objects, such as databases, collections, documents, and graphs. These database
@@ -99,6 +206,9 @@ and write data.
 The driver supports an asynchronous client that can be used to run multiple
 operations concurrently.
 
+{{< tabs "go-driver-version" >}}
+
+{{< tab "Driver v2 (ArangoDB 3.x)" >}}
 ```go
 import (
     "context"
@@ -160,6 +270,73 @@ if err != nil {
 }
 log.Printf("Async job result: %s", info.Version)
 ```
+{{< /tab >}}
+
+{{< tab "Driver v3 (ArangoDB 4.0+)" >}}
+```go
+import (
+    "context"
+    "log"
+    
+    "github.com/arangodb/go-driver/v3/arangodb"
+    "github.com/arangodb/go-driver/v3/connection"
+)
+
+/*...*/
+
+// Create an HTTP connection to the database
+endpoint := connection.NewRoundRobinEndpoints([]string{"http://localhost:8529"})
+conn := connection.NewHttp2Connection(connection.DefaultHTTP2ConfigurationWrapper(endpoint, false))
+
+auth := connection.NewBasicAuth("root", "password")
+err := conn.SetAuthentication(auth)
+if err != nil {
+    log.Fatalf("Failed to set authentication: %v", err)
+}
+
+// Create ASYNC wrapper for the connection
+conn = connection.NewConnectionAsyncWrapper(conn)
+
+// Create a client
+client := arangodb.NewClient(conn)
+
+// Trigger async request
+info, errWithJobID := client.Version(connection.WithAsync(context.Background()))
+if errWithJobID == nil {
+    log.Fatalf("Error object should not be nil but be an async job id")
+}
+if info.Version != "" {
+    log.Printf("Expected empty version if async request is in progress, got %s", info.Version)
+}
+
+// Fetch an async job id from the error
+id, isAsyncId := connection.IsAsyncJobInProgress(errWithJobID)
+if !isAsyncId {
+    log.Fatalf("Expected async job id, got %v", id)
+}
+
+// Wait for an async result
+time.Sleep(3 * time.Second)
+
+// List async jobs - there should be one, till the result is fetched
+jobs, err := client.AsyncJobList(context.Background(), arangodb.JobDone, nil)
+if err != nil {
+    log.Fatalf("Failed to list async jobs: %v", err)
+}
+if len(jobs) != 1 {
+    log.Fatalf("Expected 1 async job, got %d", len(jobs))
+}
+
+// Fetch an async job result
+info, err = client.Version(connection.WithAsyncID(context.Background(), id))
+if err != nil {
+    log.Fatalf("Failed to fetch async job result: %v", err)
+}
+log.Printf("Async job result: %s", info.Version)
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ### Important types for Go
 
@@ -490,6 +667,9 @@ fmt.Printf("Query yields %d documents\n", cursor.Count())
 
 ### Full example
 
+{{< tabs "go-driver-version" >}}
+
+{{< tab "Driver v2 (ArangoDB 3.x)" >}}
 ```go
 package main
 
@@ -631,6 +811,153 @@ func PrintCollection(db arangodb.Database) {
   }
 }
 ```
+{{< /tab >}}
+
+{{< tab "Driver v3 (ArangoDB 4.0+)" >}}
+```go
+package main
+
+import (
+  "context"
+  "flag"
+  "fmt"
+  "log"
+  "strings"
+
+  "github.com/arangodb/go-driver/v3/arangodb"
+  "github.com/arangodb/go-driver/v3/arangodb/shared"
+  "github.com/arangodb/go-driver/v3/connection"
+)
+
+type User struct {
+  Name string `json:"name"`
+  Age  int    `json:"age"`
+}
+
+func main() {
+  // Create an HTTP connection to the database
+  endpoint := connection.NewRoundRobinEndpoints([]string{"http://localhost:8529"})
+  conn := connection.NewHttp2Connection(connection.DefaultHTTP2ConfigurationWrapper(endpoint, true))
+
+  auth := connection.NewBasicAuth("root", "")
+  err := conn.SetAuthentication(auth)
+  if err != nil {
+    log.Fatalf("Failed to set authentication: %v", err)
+  }
+
+  // Create a client
+  client := arangodb.NewClient(conn)
+  ctx := context.Background()
+
+  flag.Parse()
+
+  var db arangodb.Database
+  var dbExists, collExists bool
+
+  dbExists, err = client.DatabaseExists(ctx, "example")
+
+  if dbExists {
+    fmt.Println("That db exists already")
+
+    db, err = client.GetDatabase(ctx, "example", nil)
+
+    if err != nil {
+      log.Fatalf("Failed to open existing database: %v", err)
+    }
+  } else {
+    db, err = client.CreateDatabase(ctx, "example", nil)
+
+    if err != nil {
+      log.Fatalf("Failed to create database: %v", err)
+    }
+  }
+
+  // Create collection
+  collExists, err = db.CollectionExists(ctx, "users")
+
+  if collExists {
+    fmt.Println("That collection exists already")
+  } else {
+    var col arangodb.Collection
+    col, err = db.CreateCollection(ctx, "users", nil)
+
+    if err != nil {
+      log.Fatalf("Failed to create collection: %v", err)
+    }
+
+    // Create documents
+    users := []User{
+      {
+        Name: "John",
+        Age:  65,
+      },
+      {
+        Name: "Tina",
+        Age:  25,
+      },
+      {
+        Name: "George",
+        Age:  31,
+      },
+    }
+    reader, err := col.CreateDocuments(ctx, users)
+    if err != nil {
+      log.Fatalf("Failed to create documents: %v", err)
+    }
+
+    meta1, err := reader.Read()
+    if err != nil {
+      log.Fatalf("Failed to read document: %v", err)
+    }
+    meta2, err := reader.Read()
+    if err != nil {
+      log.Fatalf("Failed to read document: %v", err)
+    }
+    meta3, err := reader.Read()
+    if err != nil {
+      log.Fatalf("Failed to read document: %v", err)
+    }
+
+    keys := []string{meta1.Key, meta2.Key, meta3.Key}
+
+    fmt.Printf("Created documents with keys '%s' in collection '%s' in database '%s'\n", strings.Join(keys, ","), col.Name(), db.Name())
+  }
+  PrintCollection(db)
+}
+
+func PrintCollection(db arangodb.Database) {
+  var err error
+  var cursor arangodb.Cursor
+
+  querystring := "FOR doc IN users LIMIT 10 RETURN doc"
+
+  cursor, err = db.Query(nil, querystring, nil)
+
+  if err != nil {
+    log.Fatalf("Query failed: %v", err)
+  }
+
+  defer cursor.Close()
+
+  for {
+    var doc User
+    var meta arangodb.DocumentMeta
+
+    meta, err = cursor.ReadDocument(nil, &doc)
+
+    if shared.IsNoMoreDocuments(err) {
+      break
+    } else if err != nil {
+      log.Fatalf("Reading document failed: %v", err)
+    } else {
+      fmt.Printf("Metadata and document:\n%+v\n%v\n", meta, doc)
+    }
+  }
+}
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## API Design
 
