@@ -1,10 +1,4 @@
-<div class="box notices cstyle security">{{/* */ -}}
-  <div class="box-content-container">{{/* */ -}}
-    <div class="box-content">{{/* */ -}}
-      <i class="icon icon-shield-alert" aria-hidden="true"></i>{{/* */ -}}
-      <div class="box-text">
-        {{- .InnerDeindent | .Page.RenderString -}}
-      </div>{{/* */ -}}
-    </div>{{/* */ -}}
-  </div>{{/* */ -}}
-</div>
+{{- partial "shortcodes/admonition.html" (dict
+  "type" "security"
+  "content" (.InnerDeindent | .Page.RenderString (dict "display" "block")))
+-}}
