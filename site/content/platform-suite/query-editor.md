@@ -29,8 +29,8 @@ The Query Editor of the Arango Contextual Data Platform offers the following fea
   You can download the results of queries in JSON and CSV format.
 
 - **Saved queries**:
-  You can save frequently used queries to add them to a sidebar for all users
-  in the current database.  
+  You can save frequently used queries to add them to a list for all users
+  in the current database.
 
 - **Remembered queries and results**:
   The Query Editor remembers its state including unsaved queries as well as
@@ -57,6 +57,10 @@ The Query Editor of the Arango Contextual Data Platform offers the following fea
   Analyze and optimize your AQL queries using AI-powered reasoning directly
   from the Query Editor. This feature requires a license.
 
+To open the Query Editor, click **Query Editor** in the sidebar of the
+web interface. It works with the database that is currently selected in the
+database selector.
+
 ![Screenshot of the Query Editor with an AQL query for retrieving movie documents on the left and the results displayed on the right](../images/data-platform-query-editor.png)
 
 ## Work with queries
@@ -77,8 +81,8 @@ set query options here on the **Options** tab using a **Form** or **JSON** mode.
 The following buttons are available at the bottom of a query tab:
 
 - **Save**: Store the query and the bind variables under a name you provide.
-  The saved queries of the current database are listed in the sidebar on the
-  left-hand side under **Saved**, where you can also clone, rename, and delete them.
+  The saved queries of the current database are listed in the queries panel on
+  the left-hand side under **Saved**, where you can also clone, rename, and delete them.
 - **AQLizer**: This button is only visible if you use the Arango Contextual Data Platform.
   See [Generate queries (AQLizer)](#generate-queries-aqlizer).
 - **Optimize**: This button is only visible if you have the required
@@ -126,7 +130,7 @@ You have the following actions available for queries you ran:
 
 ## Manage queries
 
-The sidebar on the left-hand side allows you to manage queries:
+The queries panel on the left-hand side of the Query Editor allows you to manage queries:
 
 - **Search queries**: Filter the list of **Saved** queries by name.
 - **Saved**: Open previously saved queries by clicking the name, or click the
