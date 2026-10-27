@@ -2,15 +2,13 @@
 {{ $shortVersion := $.Page.Store.Get "versionShort" -}}
 
 {{ if $inDevelopment -}}
-<div class="box notices cstyle warning">
-  <div class="box-content-container">
-    <div class="box-content">
-      <i class="icon icon-triangle-alert" aria-hidden="true"></i>
-      <div class="box-text">
-        <p>ArangoDB v{{ $shortVersion }} is under development and not released yet.</p>
-        <p>This documentation is not final and potentially incomplete.</p>
-      </div>
-    </div>
-  </div>
-</div>
+{{ partial "shortcodes/admonition.html" (dict
+  "type" "warning"
+  "content" (partial "inline/in-development-message.html" $shortVersion)
+) }}
 {{ end -}}
+
+{{- define "partials/inline/in-development-message.html" -}}
+<p>ArangoDB v{{ . }} is under development and not released yet.</p>
+<p>This documentation is not final and potentially incomplete.</p>
+{{- end -}}
