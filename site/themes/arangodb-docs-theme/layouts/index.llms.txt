@@ -1,0 +1,20 @@
+# Arango Documentation
+
+> {{ .Site.Params.description | plainify | chomp }}
+
+Arango provides the trusted data foundation for AI grounded in business context. This documentation covers the Contextual Data Platform, the Agentic AI Suite, the Platform Suite, the ArangoDB database, the Arango Managed Platform (AMP), and the ecosystem (drivers, integrations, MCP server). A markdown version of any page is available by appending `.md` to its URL. The full-text corpus is at [/llms-full.txt](/llms-full.txt).
+
+## Products
+{{ range .Site.Sections -}}
+{{ if .Title }}- [{{ .Title }}]({{ .Permalink }}){{ with .Params.description }}: {{ . | plainify | chomp }}{{ end }}
+{{ end -}}
+{{ end }}
+## Sections
+{{ range .Site.Sections -}}
+{{ if .Title }}
+### {{ .Title }}
+{{ range .Sections -}}
+- [{{ .Title }}]({{ .Permalink }})
+{{ end -}}
+{{ end -}}
+{{ end -}}

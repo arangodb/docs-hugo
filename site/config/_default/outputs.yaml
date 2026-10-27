@@ -1,0 +1,6 @@
+# Agent-readiness outputs. This file overrides the `outputs` block in config.yaml
+# (sibling config files take precedence over config.yaml), so the `home` list here
+# must keep navigation + notfound in addition to the agent formats.
+home: ["HTML", "navigation", "notfound", "llms", "llmsfull"]
+page: ["HTML", "md"]
+section: ["HTML", "md"]

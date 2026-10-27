@@ -11,6 +11,13 @@
   {{ partial "meta.html" . -}}
   {{ partial "structured-data.html" . -}}
 
+  <link rel="alternate" type="text/markdown" href="/llms.txt" title="llms.txt documentation index" />
+  {{ if .OutputFormats.Get "md" -}}
+    {{ with .OutputFormats.Get "md" -}}
+  <link rel="alternate" type="text/markdown" href="{{ .RelPermalink }}" title="Markdown version" />
+    {{- end -}}
+  {{ end -}}
+
   {{ partialCached "favicon.html" . -}}
   {{ partialCached "javascript.html" . -}}
 
