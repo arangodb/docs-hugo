@@ -6,38 +6,13 @@ description: >-
   Insert, delete, and update individual documents in an existing AutoGraph
   knowledge graph without rebuilding the corpus
 ---
-**Incremental Graph Updates (IGU)** keep a knowledge graph up-to-date after it
-has been built. You can add new documents, remove obsolete ones, and replace
-documents whose content has changed, without running the corpus build, the RAG
-Strategizer, and a full orchestration pass again.
-
-IGU updates all [three layers](design-guide.md#the-three-layers). In Layers 1
-and 2, it maintains the corpus graph with its sources, similarity edges, and
-cluster membership. In Layer 3, it adds or removes the knowledge graph data, such
-as documents, chunks, entities, communities, and relationships. Existing clusters
-and strategy profiles are kept, and a new document joins the cluster closest to
-it, so the whole category does not have to be clustered again.
-
-**Adding to Layer 3 is the Importer's job. Removing from it is not.** AutoGraph
-deletes knowledge graph data itself, with AQL queries, and only involves the
-Importer when new content has to be extracted, embedded, and clustered:
-
-| Operation | Layers 1 and 2 | Layer 3 |
-|-----------|----------------|---------|
-| Insert | AutoGraph, reported in the response | The Importer, through a [targeted orchestration](reference/orchestration.md#trigger-orchestration) that you start afterwards |
-| Delete | AutoGraph, reported in the response | AutoGraph, in the same call, before Layers 1 and 2 |
-| Update | AutoGraph, asynchronous | The old data: AutoGraph, in the same run. The new version: the Importer, through a targeted orchestration |
-| Recluster | Not touched | The Importer, rebuilding the communities of the partition |
-
-An update is a delete followed by an insert, which is why its Layer 3 work is
-split between the two services in exactly that way.
-
-How you track an operation follows from the table. What AutoGraph does itself is
-reported by the call that did it. What the Importer does runs in the background,
-so you start it with an orchestration call and poll until it is finished.
-
-For everyday document changes, this is much cheaper and faster than a rebuild,
-because only the documents that actually changed are processed.
+**Incremental Graph Updates (IGU)** let you add, remove, and replace documents
+in a knowledge graph that is already built, in place and without rebuilding it
+from scratch. Only the documents that changed are processed. The
+[corpus build](reference/corpus-build.md), the
+[RAG Strategizer](reference/rag-strategizer.md), and a full
+[orchestration](reference/orchestration.md) pass do not run again, which makes
+everyday document changes much cheaper and faster than a rebuild.
 
 {{< info >}}
 **IGU is API-only in Arango Contextual Data Platform 4.1.0.** You can insert,
@@ -47,31 +22,117 @@ delete, update, and recluster documents through the
 release.
 {{< /info >}}
 
-{{< info >}}
-Reclustering is never automatic. AutoGraph measures how far a partition has
-drifted since it was last clustered and flags it, but you decide whether to pay
-for a refresh. This only applies to **FullGraphRAG** partitions. See
-[Partition divergence and
-reclustering](#partition-divergence-and-reclustering).
-{{< /info >}}
-
 ## Supported operations
 
-| Operation | Endpoint | Purpose |
-|-----------|----------|---------|
-| Insert | [`POST /v1/graph/insert`](reference/orchestration.md#insert-documents) | Add a document that is not in the graph yet |
-| Delete | [`POST /v1/graph/delete`](reference/orchestration.md#delete-documents) | Remove a document and its data |
-| Update | [`POST /v1/graph/update`](reference/orchestration.md#update-documents) | Replace the content of a document that already exists |
-| Recluster | [`POST /v1/graph/recluster`](reference/orchestration.md#trigger-reclustering) | Rebuild the Layer 3 communities of a FullGraphRAG partition that has drifted |
+| Operation | Endpoint | Purpose | Call |
+|-----------|----------|---------|------|
+| Insert | [`POST /v1/graph/insert`](reference/orchestration.md#insert-documents) | Add documents that are not in the graph yet | Synchronous |
+| Delete | [`POST /v1/graph/delete`](reference/orchestration.md#delete-documents) | Remove documents and clean up all their graph data | Synchronous |
+| Update | [`POST /v1/graph/update`](reference/orchestration.md#update-documents) | Replace the content of documents that already exist | Asynchronous |
+| Recluster | [`POST /v1/graph/recluster`](reference/orchestration.md#trigger-reclustering) | Rebuild the knowledge graph communities of a FullGraphRAG partition that has drifted | Asynchronous |
 
-Insert, delete, and update work on documents and start in Layers 1 and 2, as
-described above. Reclustering is different: it takes Layer 3 partitions directly,
-schedules the Importer work for them, and resets the divergence values if the job
-succeeds.
+Insert, delete, and update work on documents. Every endpoint takes a batch, so
+you are not limited to one document per call. Reclustering is different: it
+takes knowledge graph partitions directly, and you only call it when AutoGraph has
+flagged a partition, see
+[Partition divergence and reclustering](#partition-divergence-and-reclustering).
 
-This page explains the concepts: when to use IGU, how it compares to a rebuild,
-and how partition divergence is measured. For the requests and responses of each
-endpoint, see the [Graph Operations](reference/orchestration.md) reference.
+This page explains the concepts: what each operation does to the graph, when to
+use IGU, and how partition divergence is measured. For the requests and
+responses of each endpoint, see the [Graph Operations](reference/orchestration.md)
+reference.
+
+## How the operations work
+
+An AutoGraph project holds two graphs, and IGU keeps both of them in sync:
+
+- The **corpus graph** contains your documents, the similarity edges between
+  them, and the clusters they are grouped into. Each cluster has a retrieval
+  strategy assigned to it.
+- The **knowledge graph** is built from the clusters. It contains the chunks,
+  entities, relationships, and communities that were extracted from the
+  documents.
+
+See [Architecture](architecture.md) for the full data model. Existing clusters
+and strategies are kept: a new document joins the cluster closest to it, so the
+whole category does not have to be clustered again.
+
+**Adding to the knowledge graph is the Importer's job. Removing from it is
+not.** AutoGraph deletes knowledge graph data itself, with AQL queries, and only
+involves the Importer when new content has to be extracted, embedded, and
+clustered:
+
+| Operation | Corpus graph | Knowledge graph |
+|-----------|----------------|---------|
+| Insert | AutoGraph, reported in the response | The Importer, through a [targeted orchestration](reference/orchestration.md#trigger-orchestration) that you start afterwards |
+| Delete | AutoGraph, reported in the response | AutoGraph, in the same call, before the corpus graph |
+| Update | AutoGraph, asynchronous | The old data: AutoGraph, in the same run. The new version: the Importer, through a targeted orchestration |
+| Recluster | Not touched | The Importer, rebuilding the communities of the partition |
+
+How you track an operation follows from this table. What AutoGraph does itself
+is reported by the call that did it. What the Importer does runs in the
+background, so you start it with an orchestration call and poll until it is
+finished.
+
+### Insert
+
+An insert adds documents that are not in the graph yet. AutoGraph stores the
+source and its embedding, links it to its nearest neighbours with similarity
+edges, and assigns it to the closest existing cluster. The new document
+**inherits that cluster's strategy profile**, so the RAG Strategizer does not
+run again.
+
+{{< embed-svg "AutoGraph-IGU-Insert" "An insert attaches new documents to the existing corpus graph. The documents that were already there are not processed again." >}}
+
+The call returns once the corpus graph is updated. To get the new content into
+the knowledge graph, run a
+[targeted orchestration](#identifying-documents-for-the-knowledge-graph) with the
+`file_id` values of the inserted documents.
+
+### Delete
+
+A delete removes documents together with all of their graph data. AutoGraph
+cleans up the **knowledge graph first**, with AQL queries of its own, and then
+removes the documents, similarity edges, and cluster membership from the corpus
+graph. The
+remaining documents are not touched.
+
+{{< embed-svg "AutoGraph-IGU-Delete" "A delete removes the selected documents and every edge attached to them. The other documents stay as they are." >}}
+
+The call is synchronous and its response is the final result. No Importer is
+involved, so there is no orchestration to run afterwards.
+
+### Update
+
+An update replaces the content of documents that are already in the graph. It
+is a delete followed by an insert, which is why its knowledge graph work is split
+between AutoGraph and the Importer in exactly that way:
+
+1. AutoGraph removes the old knowledge graph data of the documents.
+2. AutoGraph removes the old documents from the corpus graph.
+3. AutoGraph inserts the new versions into the corpus graph, computes their
+   similarity edges again, and assigns each one to the closest cluster.
+
+{{< embed-svg "AutoGraph-IGU-Update" "An update keeps the document but re-embeds its new content, so its similarity edges and possibly its cluster change." >}}
+
+The call is asynchronous: it validates the batch, starts the update, and returns
+an `update_id`. Once the update is done, run a
+[targeted orchestration](#identifying-documents-for-the-knowledge-graph) so that the
+knowledge graph contains the new versions.
+
+### Insert or update?
+
+| | Insert | Update |
+|--|--------|--------|
+| **Use if** | The document is **not** in the graph yet | The document **already exists** and you want to replace its content |
+| **Effect** | Adds the source and its embedding, assigns the closest cluster, and updates the corpus graph | Deletes the old graph data, waits for the knowledge graph cleanup, and then adds the new version to the corpus graph |
+| **Knowledge graph** | Run a targeted orchestration afterwards, so that the knowledge graph includes the new document | Run a targeted orchestration afterwards for the new version |
+| **Wrong choice** | Using insert for a `doc_name` or `file_id` that already exists creates duplicates and conflicts | Using update for a document that is not in the graph fails the validation |
+
+{{< warning >}}
+Insert is not a safe replacement for update. If you replace content with an
+insert call, the previous version of the document stays in the graph.
+{{< /warning >}}
 
 ## When to use IGU
 
@@ -111,6 +172,17 @@ category, whether that is one document or a batch of them, an incremental corpus
 build for bulk additions, and a corpus build for a new category or a clean
 category rebuild.
 
+### Full rebuild vs. IGU
+
+| | Full rebuild | IGU |
+|--|--------------|-----|
+| **How** | [Delete the category](reference/project-operations.md#delete-category), then [`POST /v1/corpus/builds`](reference/corpus-build.md) with the category in `categories`, followed by the RAG Strategizer and orchestration | `POST /v1/graph/insert`, `/delete`, or `/update`, then a targeted orchestration for the knowledge graph where one is needed. No Strategizer run. Optionally `/recluster` if the divergence is high |
+| **Scope** | The entire category. Similarity, clustering, and the related graph data are wiped and rebuilt | Individual documents in an existing category |
+| **Clusters and strategies** | Computed again for the processed category | Existing clusters and `rags` profiles are kept. A new document joins the closest cluster and **inherits that cluster's strategy profile**, so the RAG Strategizer never runs again |
+| **Knowledge graph** | Orchestrated again for the affected partitions after the Strategizer | Targeted orchestration for inserted and updated files, scoped to their `file_ids`. Deletions need no orchestration, they clean up the knowledge graph in the same call |
+| **Cost and time** | Higher. Full extraction, embedding, and clustering, usually followed by a Strategizer and Importer run | Lower. Only the changed documents are processed |
+| **Use if** | Embeddings or clusters are wrong, files are replaced as a whole, or the category topology has to be reset | You regularly add, remove, or replace documents and the cluster topology is still valid |
+
 ## Prerequisites
 
 - **Arango Contextual Data Platform 4.1.0**, where IGU is only available through
@@ -122,37 +194,12 @@ category rebuild.
   so that every document in the project has a `file_id`.
 - The documents you want to change belong to **existing** categories.
 
-## Full rebuild vs. IGU
-
-| | Full rebuild | IGU |
-|--|--------------|-----|
-| **How** | [Delete the category](reference/project-operations.md#delete-category), then [`POST /v1/corpus/builds`](reference/corpus-build.md) with the category in `categories`, followed by the RAG Strategizer and orchestration | `POST /v1/graph/insert`, `/delete`, or `/update`, then a targeted orchestration for Layer 3 where one is needed. No Strategizer run. Optionally `/recluster` if the divergence is high |
-| **Scope** | The entire category. Similarity, clustering, and the related graph data are wiped and rebuilt | Individual documents in an existing category |
-| **Clusters and strategies** | Computed again for the processed category | Existing clusters and `rags` profiles are kept. A new document joins the closest cluster at Layer 2 and **inherits that cluster's strategy profile**, so the RAG Strategizer never runs again |
-| **Layer 3** | Orchestrated again for the affected partitions after the Strategizer | Targeted orchestration for inserted and updated files, scoped to their `file_ids`. Deletions need no orchestration, they clean up Layer 3 in the same call |
-| **Cost and time** | Higher. Full extraction, embedding, and clustering, usually followed by a Strategizer and Importer run | Lower. Only the changed documents are processed |
-| **Use if** | Embeddings or clusters are wrong, files are replaced as a whole, or the category topology has to be reset | You regularly add, remove, or replace documents and the cluster topology is still valid |
-
-## Insert vs. update
-
-| | Insert | Update |
-|--|--------|--------|
-| **Use if** | The document is **not** in the graph yet | The document **already exists** and you want to replace its content |
-| **Effect** | Adds the source and its embedding, assigns the closest cluster, and updates Layers 1 and 2 | Deletes the old graph data, waits for the Layer 3 cleanup, and then adds the new version to Layers 1 and 2 |
-| **Layer 3** | Run a targeted orchestration afterwards, so that the knowledge graph includes the new document | Run a targeted orchestration afterwards for the new version |
-| **Wrong choice** | Using insert for a `doc_name` or `file_id` that already exists creates duplicates and conflicts | Using update for a document that is not in the graph fails the validation |
-
-{{< warning >}}
-Insert is not a safe replacement for update. If you replace content with an
-insert call, the previous version of the document stays in the graph.
-{{< /warning >}}
-
 ## Workflow
 
 ```mermaid
 flowchart TD
-  A["Corpus graph already built"] --> B["Insert / Delete / Update\n(Layers 1-2)"]
-  B --> C["Targeted orchestration\nfile_ids\n(Layer 3)"]
+  A["Corpus graph already built"] --> B["Insert / Delete / Update\n(corpus graph)"]
+  B --> C["Targeted orchestration\nfile_ids\n(knowledge graph)"]
   C --> D{"needs_reclustering\ntrue?"}
   D -->|no| E["Done"]
   D -->|yes| F["POST /v1/graph/recluster\n(your decision)"]
@@ -164,18 +211,18 @@ flowchart TD
    [delete](reference/orchestration.md#delete-documents), or
    [update](reference/orchestration.md#update-documents), depending on what
    changed.
-2. **Build Layer 3.** After an insert or a successful update, run a
+2. **Update the knowledge graph.** After an insert or a successful update, run a
    [targeted orchestration](reference/orchestration.md#trigger-orchestration) with
    the returned
    `file_id`, so that the knowledge graph contains the new content. AutoGraph
    works out which strategized clusters hold those ids, so you do not name a
    partition. Both insert and update take File Manager input only, so every
    changed document has a `file_id` you can target with. See
-   [Identifying documents for Layer 3](#identifying-documents-for-layer-3). A
-   delete needs no orchestration, because it has already removed its Layer 3
-   data.
+   [Identifying documents for the knowledge graph](#identifying-documents-for-the-knowledge-graph).
+   A delete needs no orchestration, because it has already removed its
+   knowledge graph data.
 3. **Check the divergence.** On a **FullGraphRAG** partition, a new
-   `divergence_score` is calculated once Layer 3 reflects the change, and
+   `divergence_score` is calculated once the knowledge graph reflects the change, and
    `needs_reclustering` is set if the score is above the partition's threshold.
    Insert and update responses do not carry the score, so read it from
    [`GET /v1/orchestrate/{orchestration_id}`](reference/orchestration.md#monitor-an-orchestration)
@@ -191,7 +238,7 @@ flowchart TD
    partition's `rags` node: `needs_reclustering` is cleared and
    `last_reclustered_at` is set only if it really ran.
 
-### Identifying documents for Layer 3
+### Identifying documents for the knowledge graph
 
 A targeted orchestration identifies documents by `file_id` alone. `doc_name` does
 not work here, and it never has to:
@@ -218,14 +265,21 @@ nothing else is stale, the request is rejected with a `409` and a
 
 ## Partition divergence and reclustering
 
-After every insert, delete, and update, AutoGraph measures how far each affected
-**FullGraphRAG** partition in Layer 3 has drifted from the state it was in when
-it was last clustered with the Leiden algorithm. The result is a
-**`divergence_score`**. It is stored in the partition's `rags` strategy profile.
-Where you can read it back depends on the operation, see [Where to read the
-score](#where-to-read-the-score).
+In a **FullGraphRAG** partition, the Leiden algorithm groups the entities of the
+knowledge graph into communities, and the community reports are built from
+these groups. Every insert, delete, and update changes the entities underneath,
+so the communities and their reports gradually drift out of date. Reclustering
+builds the communities again, so that the entities are grouped by what the data
+looks like now, not by what it looked like when the partition was first built.
 
-Everything in this section applies to FullGraphRAG partitions only.
+{{< embed-svg "AutoGraph-IGU-Reclustering" "Incremental updates add and remove entities without touching the communities. Once the partition has drifted far enough, reclustering rebuilds them: communities can grow, split, or shrink." >}}
+
+Reclustering is expensive, so it does not run on every change. Instead, after
+every insert, delete, and update, AutoGraph measures how far each affected
+partition has drifted from the state it was in when it was last clustered. The
+result is a **`divergence_score`**, stored in the partition's `rags` strategy
+profile. Where you can read it back depends on the operation, see
+[Where to read the score](#where-to-read-the-score).
 
 The divergence is only a signal. AutoGraph never starts a reclustering on its
 own. If the score gets above the partition's threshold, AutoGraph sets
@@ -236,7 +290,7 @@ own. If the score gets above the partition's threshold, AutoGraph sets
 signals below are calculated from a partition's `Entities`, and reclustering
 rebuilds its `Communities` and community edges. **VectorRAG** partitions
 (`strategy_type: VectorRAG`, `rag_partition_id` ending in `_b`) have neither
-collection, see [Layer 3 collections](architecture.md#layer-3). Their score
+collection, see [Knowledge graph collections](architecture.md#layer-3). Their score
 therefore stays at `0`, `needs_reclustering` is never set, and there is nothing
 for a reclustering to rebuild. Insert, delete, and update work on both kinds of
 partition.
@@ -313,15 +367,15 @@ The divergence values are stored in the partition's `rags` strategy profile:
 | Event | Effect on the divergence values |
 |-------|----------------------------|
 | First measurement after a build | The current entity count becomes the baseline, the score is `0`, and the flag is `false` |
-| Insert, delete, or update, once Layer 3 reflects the change | The score is calculated again, and the flag is set if the score is above the threshold |
+| Insert, delete, or update, once the knowledge graph reflects the change | The score is calculated again, and the flag is set if the score is above the threshold |
 | Successful `POST /v1/graph/recluster` | The score is reset to `0`, the churn is cleared, a new baseline is taken, the flag is cleared, and `last_reclustered_at` is set |
 | Failed, deferred, or incomplete reclustering | The score and the flag stay as they are, so that you can try again later. A partition that never got the write slot is left untouched in exactly the same way |
 
 ### Where to read the score
 
-A score is only meaningful once Layer 3 reflects the change, so **insert and
+A score is only meaningful once the knowledge graph reflects the change, so **insert and
 update do not report one at all**. Their responses are produced while the work is
-still in Layers 1 and 2, before a targeted orchestration has created the
+still in the corpus graph, before a targeted orchestration has created the
 entities the score would be measured against. Rather than return a value that is
 wrong by construction, AutoGraph leaves the field off.
 
@@ -333,7 +387,7 @@ That leaves three places to read it:
 | [`POST /v1/graph/delete`](reference/orchestration.md#delete-documents), per file in `results` | The score after the deletion | Stamped **only** if `overall_status` is `COMMITTED`. A deletion that ends in `ROLLED_BACK` or `FAILED` writes no score |
 | The partition's `rags` strategy profile | The **durable** state, see [Where the values are stored](#where-the-values-are-stored) | Survives eviction. Read it here when the orchestration status is gone |
 
-A delete can report its score directly because it removes the Layer 3 data
+A delete can report its score directly because it removes the knowledge graph data
 itself, before it returns. There is no import to schedule afterwards, so nothing
 is still pending when the score is taken.
 
@@ -342,11 +396,11 @@ is still pending when the score is taken.
 - [Graph Operations](reference/orchestration.md#insert-documents): The requests
   and responses of `/v1/graph/insert`, `/delete`, `/update`, and `/recluster`,
   as well as targeted orchestration with `file_ids`
-- [Design Guide](design-guide.md): How categories, layers, and partitions fit
+- [Design Guide](design-guide.md): How categories, clusters, and partitions fit
   together
 - [Corpus Build](reference/corpus-build.md#incremental-builds): Incremental
   builds for new categories and bulk additions
 - [Importer Incremental Updates](../importer/incremental-updates.md): What the
-  Importer does for Layer 3, and its reclustering endpoint
+  Importer does for the knowledge graph, and its reclustering endpoint
 - [Error Handling](reference/error-handling.md): HTTP codes and general
   troubleshooting

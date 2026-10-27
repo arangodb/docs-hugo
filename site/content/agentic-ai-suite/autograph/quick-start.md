@@ -160,7 +160,7 @@ is why step 2 uploads through the File Manager. The deprecated
 [`POST /v1/import-multiple`](reference/importing-files.md) path uploads files
 directly to the service, but a corpus built that way cannot be changed document
 by document. See
-[Identifying documents for Layer 3](incremental-graph-updates.md#identifying-documents-for-layer-3).
+[Identifying documents for the knowledge graph](incremental-graph-updates.md#identifying-documents-for-the-knowledge-graph).
 {{< /info >}}
 
 {{< tip >}}

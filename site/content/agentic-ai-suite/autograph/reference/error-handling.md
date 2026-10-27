@@ -322,7 +322,7 @@ For the full comparison, see
 - **An insert or update is rejected with `400` and a list of `doc_name`
   values.** Those entries have no `file_id`. Both endpoints take File Manager
   input only, and a single missing ID rejects the whole batch. See
-  [Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
+  [Identifying documents for the knowledge graph](../incremental-graph-updates.md#identifying-documents-for-the-knowledge-graph).
 - **Embed Field endpoint fails.** The target collection must exist, the
   source field must have non-empty values, and an embedding provider must
   be configured on the service.

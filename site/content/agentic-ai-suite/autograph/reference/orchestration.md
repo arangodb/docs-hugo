@@ -550,7 +550,7 @@ updates **Layers 1 and 2**. To add the document to Layer 3, run a targeted
 orchestration with its `file_id`. AutoGraph resolves the partition itself, so you
 do not pass one. Because every insert is keyed by a File Manager ID, an inserted
 document is always targetable, see
-[Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
+[Identifying documents for the knowledge graph](../incremental-graph-updates.md#identifying-documents-for-the-knowledge-graph).
 
 | Status Code | Meaning |
 |-------------|---------|
@@ -1141,7 +1141,7 @@ pick a maintenance window for them.
   entries have no `file_id`. Update reads the replacement from the File Manager
   and takes no inline content, so every entry needs one, and one missing ID
   rejects the whole batch. Upload the new version first, then send the returned
-  ID. See [Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
+  ID. See [Identifying documents for the knowledge graph](../incremental-graph-updates.md#identifying-documents-for-the-knowledge-graph).
 - **The delete reports `overall_status: "ROLLED_BACK"`.** Something failed, and
   the state from before the call has been fully restored, so the documents are
   still in the graph. There is nothing to poll and nothing to clean up by hand.
