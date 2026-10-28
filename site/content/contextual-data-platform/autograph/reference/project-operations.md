@@ -233,7 +233,7 @@ For guidance on picking providers and models, see
 | `embedding_secret_profile_id` | string | **Yes** | The secret profile ID of the embedding key. **Never a raw key.** Can be rotated after the first save. |
 | `multimodal_model` | string | No | The multimodal model name. Omit it unless you use image extraction. |
 | `chat_api_url` | string | Conditional | **Required** when `chat_api_provider` is `custom`. Otherwise optional: omit it to keep the current value, or send an empty string to reset it to the default OpenAI URL. |
-| `embedding_api_url` | string | Conditional | **Required** when `embedding_api_provider` is `custom`. Same omit and reset semantics as `chat_api_url`. |
+| `embedding_api_url` | string | Conditional | **Required** when `embedding_api_provider` is `custom`. **Immutable** once saved. Unlike `chat_api_url`, omitting it does not keep the current value: AutoGraph saves the URL at startup even if it was never set, falling back to `https://api.openai.com/v1`, and a missing value counts as a change. Always send the saved URL. |
 
 Only secret **profile IDs** are stored. Raw API keys are never persisted to the
 project metadata.
@@ -314,6 +314,11 @@ them is rejected with `400`, `valid: false`,
 `error_code: EMBEDDING_CONFIG_IMMUTABLE`, and a `field` naming the offending
 value. Nothing is written to the metadata and nothing is applied to the pod.
 
+The embedding URL is saved at startup even if you never set it, with
+`https://api.openai.com/v1` as the fallback. Leaving `embedding_api_url` out of
+a request therefore counts as a change and is rejected. Always send the saved
+embedding provider, model, and URL, even when you only rotate the secret.
+
 A different embedding model produces vectors that do not match the ones already
 stored, and the corpus cannot be re-embedded without stranding the knowledge
 graph that was built from it. What is still allowed is rotating
@@ -383,6 +388,7 @@ curl -X PUT \
     "chat_model": "gpt-5.4-nano",
     "chat_secret_profile_id": "chat-profile-id",
     "embedding_api_provider": "openai",
+    "embedding_api_url": "https://api.openai.com/v1",
     "embedding_model": "text-embedding-3-small",
     "embedding_secret_profile_id": "embedding-profile-id"
   }' \
