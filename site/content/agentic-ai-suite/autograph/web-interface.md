@@ -21,11 +21,8 @@ The workflow has two stages:
 1. From the left-hand sidebar, select the database where you want to create the
    project. You can switch to a different database at any time if you want to
    work elsewhere.
-2. In the left-hand sidebar, click **Agentic AI Suite**, then click
-   **AutoGraph Studio**. You can also open the **Agentic AI Suite** overview and
-   click **Run AutoGraph Studio**.
-
-![The Agentic AI Suite overview with the AutoGraph Studio card](../../images/autograph-ui-suite-overview.png)
+2. In the **Agentic AI Suite** section of the left-hand sidebar, click
+   **AutoGraph Studio**.
 
 {{< info >}}
 This page describes how to build a knowledge graph from scratch. To keep it
@@ -37,16 +34,22 @@ in Arango Contextual Data Platform 4.1.0. See
 
 ## Create an AutoGraph project
 
-1. In the **AutoGraph Studio** view, click **+ New Project**. A database without
-   any projects reports *No projects yet*.
+1. Open the **New project** dialog. What the **AutoGraph Studio** view shows
+   depends on whether the current database already has projects:
 
-   ![The AutoGraph Studio view of a database without projects](../../images/autograph-ui-studio-empty.png)
+   - If the database has no projects, AutoGraph Studio opens on a centered entry
+     point with the headline *Create your first AutoGraph Studio project*, a
+     short description with the supported file types, a **Create project**
+     button, and a **Discover more** link. Click **Create project**.
 
-   Existing projects of the current database are listed in a table with their
-   **Name**, **Description**, and **Actions**. Click a column header to sort, use
-   **Filters** to narrow the list, and click a project name to open it.
+     ![The AutoGraph Studio entry point of a database without projects](../../images/autograph-ui-studio-empty.png)
 
-   ![The AutoGraph Studio view listing the projects of a database](../../images/autograph-ui-projects-list.png)
+   - If the database has projects, they are listed in a table with their
+     **Name**, **Description**, and **Actions**. Click a column header to sort,
+     use **Filters** to narrow the list, and click a project name to open it.
+     Click **+ New Project** to create another project.
+
+     ![The AutoGraph Studio view listing the projects of a database](../../images/autograph-ui-projects-list.png)
 
 2. The **New project** dialog opens. Enter a **Project name** and, optionally,
    a **Description** of what this project's knowledge base is for.
@@ -94,8 +97,8 @@ the project when you continue to the next step.
    You can:
    - Use the **Search files by name** field and the **Category** dropdown to
      filter the list.
-   - Remove a single file with the cross icon, or delete a whole category with
-     the trash icon.
+   - Remove a single file or delete a whole category with the trash icon next to
+     it.
    - Repeat the upload to add more categories. Every upload opens its own
      **Name this category** dialog, and the files you already staged stay pending
      in the background. The footer counts them across all categories, for example
@@ -108,8 +111,6 @@ the project when you continue to the next step.
 5. Click **Configure LLM**. The documents are uploaded to the project, with the
    progress reported as *Uploading `<N>` documents…*, and the wizard continues to
    the configuration step automatically.
-
-   ![The Documents step uploading the staged documents](../../images/autograph-ui-documents-uploading.png)
 
    The categories are listed with their file counts once the upload completes.
 
@@ -124,7 +125,7 @@ you name the category yourself.
 
 In the **Configure** step, choose the LLM provider used to build the Corpus
 Graph. A banner confirms what you are building from, for example
-*Building from 35 documents across 3 categories*. A callout summarizes what
+*Building from 19 documents across 3 categories*. A callout summarizes what
 clicking **Start build** does: it deploys the AutoGraph service with these
 settings and builds the Corpus Graph from your uploaded documents. When it is
 ready, the wizard finishes at your project overview, where you can generate
@@ -191,13 +192,15 @@ For more details, see [LLM Configuration](llm-configuration.md).
 The **Build** step shows the two operations it performs. For details on what
 happens during the corpus build, see [Corpus Build](reference/corpus-build.md).
 
-1. **Deploy AutoGraph service**: The service is deployed and the interface waits
-   for it to respond, showing *Checking service status…* and
-   *Service deployed — waiting for it to respond. This might take up to 10
-   minutes.* The **AutoGraph service ID** is displayed, for example
-   `arangodb-autograph-hiojb`.
+1. **Deploy AutoGraph service**: The service is deployed, showing
+   *Deploying AutoGraph service…* and a **Running** status.
 
-   ![The Build step of the AutoGraph setup wizard waiting for the service](../../images/autograph-ui-build.png)
+   ![The Build step of the AutoGraph setup wizard deploying the service](../../images/autograph-ui-build.png)
+
+   The interface then waits for the service to respond, showing
+   *Checking service status…* and *Service deployed — waiting for it to
+   respond. This might take up to 10 minutes.* The **AutoGraph service ID** is
+   displayed, for example `arangodb-autograph-wdpdd`.
 
    Wait for the confirmation message **AutoGraph service deployed**.
 
@@ -465,8 +468,9 @@ Select the retriever to see its full service ID and an **initializing** to
 
 Select a retriever from the list to open its question composer and its past
 questions, then click **New question**. A retriever that has not answered
-anything yet is listed as *No runs yet*. Past questions are marked with the mode
-they ran in.
+anything yet is listed as *No runs yet*, and one that is still starting up as
+*Run history loads once the retriever is live*. Past questions are marked with
+the mode they ran in.
 
 {{< info >}}
 Until the service is ready to answer, a panel takes the place of the composer:
@@ -530,7 +534,7 @@ trust. It has the following views:
   entities and relationships the retriever traversed to assemble it. This is
   where a GraphRAG answer differs from a plain vector search: you see the
   connections that produced the answer, not just the matching text. The view
-  counts what it holds, for example *157 entities* and *265 relationships*.
+  counts what it holds, for example *207 entities* and *227 relationships*.
 
   ![The Graph view of the Provenance panel](../../images/autograph-ui-provenance-graph.png)
 

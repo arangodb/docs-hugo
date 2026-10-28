@@ -35,32 +35,29 @@ sidecar container for metadata that runs in the pod of the service. <!-- TODO: D
 
 ### Store a secret
 
-1. In the main navigation of the Arango Contextual Data Platform web interface, go to the
-   **Control Panel** ({{< icon "settings" >}}).
-2. Click **Secrets** in the navigation.
-3. Click **Add secret** in the top-right corner.
-4. In the **Create Secret** dialog, enter a **Name** to later reference the secret.
-5. The **Type** is fixed to `API_KEY` (generic API keys and tokens) for secrets
+1. In the **Admin** section of the Arango Contextual Data Platform sidebar,
+   click **Secrets**.
+2. Click **Add secret** in the top-right corner.
+3. In the **Create Secret** dialog, enter a **Name** to later reference the secret.
+4. The **Type** is fixed to `API_KEY` (generic API keys and tokens) for secrets
    created via the web interface. Other types can be created via the API.
-6. Enter the sensitive information (API key, password, or similar) into the
+5. Enter the sensitive information (API key, password, or similar) into the
    **Secret Data** field. Click the eye icon to show or hide the value.
-7. Optionally enter a **Description** to help identify the secret.
-8. Click **Create**.
+6. Optionally enter a **Description** to help identify the secret.
+7. Click **Create**.
 
 ### Edit a secret
 
-1. In the main navigation, go to the **Control Panel** ({{< icon "settings" >}}).
-2. Click **Secrets** in the navigation.
-3. In the **Actions** column, click the edit icon ({{< icon "edit-square" >}}).
-4. Adjust the information. To edit the **Secret Value**, click the toggle next to
+1. In the **Admin** section of the sidebar, click **Secrets**.
+2. In the **Actions** column, click the edit icon ({{< icon "edit-square" >}}).
+3. Adjust the information. To edit the **Secret Value**, click the toggle next to
    the label and then enter the new value.
-5. Click **Save Changes**.
+4. Click **Save Changes**.
 
 ### Delete a secret
 
-1. Go to the **Control Panel** ({{< icon "settings" >}}).
-2. Click **Secrets** in the navigation.
-3. Delete one or multiple secrets:
+1. In the **Admin** section of the sidebar, click **Secrets**.
+2. Delete one or multiple secrets:
    - In the **Actions** column, click the remove icon ({{< icon "delete" >}})
      and confirm by clicking **Delete**.
    - At the start of the row, tick the checkboxes of the secrets you want to
@@ -69,18 +66,17 @@ sidecar container for metadata that runs in the pod of the service. <!-- TODO: D
 
 ### Import secrets
 
-1. Go to the **Control Panel** ({{< icon "settings" >}}).
-2. Click **Secrets** in the navigation.
-3. Click the **Import** button in the top-right corner.
-4. In the **Import Secrets** dialog, you can **Paste JSON** from the clipboard
+1. In the **Admin** section of the sidebar, click **Secrets**.
+2. Click the **Import** button in the top-right corner.
+3. In the **Import Secrets** dialog, you can **Paste JSON** from the clipboard
    or go to the **Upload File** tab to select or drop a `.json` file. The file
    must contain a JSON array of secret profiles. You can inspect and edit
    uploaded data in the **Paste JSON** tab. Click **Load sample** to insert
    an example payload.
-5. Click **Validate & Preview**. Fix missing fields or syntax errors if necessary.
-6. Verify the data. You can remove ({{< icon "delete" >}}) individual rows to
+4. Click **Validate & Preview**. Fix missing fields or syntax errors if necessary.
+5. Verify the data. You can remove ({{< icon "delete" >}}) individual rows to
    exclude secrets from the import.
-7. Click **Import # Secret(s)**.
+6. Click **Import # Secret(s)**.
 
 ## API
 

@@ -52,10 +52,11 @@ To keep assets and API calls working under the app's URL path, serve the UI at
 You register a service as an App at deploy time in the Container Manager web
 interface:
 
-1. Open the **Container Manager** (**Control Panel** → **Container Manager**).
+1. Open the **Container Manager** (**Admin** section of the sidebar →
+   **Container Manager**).
 2. Fill in the **Deploy new Service** panel for your service:
    - On the **Packages** tab, upload your `.tar.gz` code package and set the
-     file name, version, and base image.
+     name, version, and base image.
    - On the **Containers** tab, enter your Docker image URL.
 
    For the full list of fields, see
@@ -76,7 +77,8 @@ To register a service as an App programmatically, see
 
 Once your App is running, you can open it from the Apps catalog:
 
-1. In the Arango Platform web interface, open the **Apps** catalog.
+1. In the **Other services** section of the sidebar, expand **Applications**
+   and click **All apps** to open the **Apps** catalog.
 2. Search for your app by its **Display name**.
 3. Select the app to open it. Its UI is rendered embedded in the web interface.
 
