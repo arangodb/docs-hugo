@@ -281,13 +281,18 @@ response, and the full list of error codes, see
 
 **Spread the chat load across multiple API keys**
 
-The [orchestration endpoint](../agentic-ai-suite/autograph/reference/orchestration.md)
-of AutoGraph accepts a list of chat profile IDs. Each spawned Importer worker
-picks one of the keys at random when it starts and uses it for its whole
-lifetime. This spreads the load of multiple workers across the keys, which helps
-to stay within per-key rate limits, but the split is not guaranteed to be even:
-with few workers, several of them can end up on the same key, and with a
-single replica, which is the default, only one key is used.
+When you install AutoGraph or change its model settings later, you can give it
+only one chat key, in `chat_secret_profile_id`. AutoGraph uses this key for its
+own work. When you
+[start an import](../agentic-ai-suite/autograph/reference/orchestration.md),
+you can give it several chat keys, in `chat_secret_profile_ids`. Only the
+Importer workers that do the import use these keys. If you start an import
+without any chat keys, the workers use the key you gave AutoGraph instead.
+
+Each worker uses one of the keys, so the keys only help if you run more than one
+worker, using `replicas`. With the default of one worker, only one key is used.
+The work isn't always split evenly, because several workers can end up using the
+same key.
 
 ```sh
 curl -X POST -H "Authorization: bearer <TOKEN>" -H "Content-Type: application/json" \
