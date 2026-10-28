@@ -160,7 +160,11 @@ value via the Secrets Manager. The raw API key is never part of the request.
 
 ### Get the profile ID of a secret
 
-The profile ID is returned when you create a secret:
+In the web interface, go to the **Control Panel** ({{< icon "settings" >}}),
+click **Secrets**, and click the copy button next to the ID in the
+**Profile ID** column.
+
+Via the API, the profile ID is returned when you create a secret:
 
 ```sh
 curl -H "Authorization: bearer <TOKEN>" \
