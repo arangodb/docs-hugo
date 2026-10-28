@@ -260,7 +260,7 @@ set it, falling back to `https://api.openai.com/v1`. Send the same
 before, including the URL, and only change `embedding_secret_profile_id`.
 Otherwise, the request is rejected with HTTP status `400` and the `error_code`
 `EMBEDDING_CONFIG_IMMUTABLE`. See
-[Embedding identity is immutable](../agentic-ai-suite/autograph/reference/project-operations.md#embedding-identity-is-immutable).
+[Embedding identity is immutable](autograph/reference/project-operations.md#embedding-identity-is-immutable).
 
 {{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/projects/{project}/model-config/credentials" >}}
 
@@ -282,14 +282,14 @@ If a profile ID is missing or cannot be resolved, the request is rejected with
 HTTP status `400` and an `error_code` such as `SECRET_PROFILE_REQUIRED`,
 `SECRET_NOT_FOUND`, or `SECRET_RESOLUTION_ERROR`. For all request fields, the
 response, and the full list of error codes, see
-[Update Model Config Credentials](../agentic-ai-suite/autograph/reference/project-operations.md#update-model-config-credentials).
+[Update Model Config Credentials](autograph/reference/project-operations.md#update-model-config-credentials).
 
 **Spread the chat load across multiple API keys**
 
 When you install AutoGraph or change its model settings later, you can give it
 only one chat key, in `chat_secret_profile_id`. AutoGraph uses this key for its
 own work. When you
-[start an import](../agentic-ai-suite/autograph/reference/orchestration.md),
+[start an import](autograph/reference/orchestration.md),
 you can give it several chat keys, in `chat_secret_profile_ids`. Only the
 Importer workers that do the import use these keys. If you start an import
 without any chat keys, the workers use the key you gave AutoGraph instead.
