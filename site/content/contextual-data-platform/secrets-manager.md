@@ -1,7 +1,7 @@
 ---
 title: Secrets Manager
 menuTitle: Secrets Manager
-group: Deploy & operate
+group: Operate
 weight: 440
 description: >-
   Store secrets like API keys for easy use across the Contextual Data Platform

@@ -1,7 +1,7 @@
 ---
 title: Monitoring tools in the data platform
 menuTitle: Monitoring
-group: Deploy & operate
+group: Operate
 weight: 460
 description: >-
   Monitor your Arango Contextual Data Platform deployment with integrated Grafana and Prometheus dashboards

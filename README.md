@@ -578,8 +578,8 @@ the first group, 200 to 299 for the second) to keep it that way. Pages without
 sets `group` or none does, and the pages of a group have to be adjacent by
 weight; the build fails with an error if either rule is broken, so a page
 cannot end up under a label by accident. The Contextual Data Platform section uses
-the labels Overview, Build, Query & explore, Develop & extend, Deploy &
-operate, and Reference.
+the labels Overview, Install, Build, Query & explore, Develop & extend,
+Operate, and Reference.
 
 #### Tags
 

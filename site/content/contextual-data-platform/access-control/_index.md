@@ -1,7 +1,7 @@
 ---
 title: Access control in the data platform
 menuTitle: Access control
-group: Deploy & operate
+group: Operate
 weight: 420
 description: >-
   How callers prove their identity to the Contextual Data Platform and what

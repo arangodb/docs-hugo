@@ -1,8 +1,8 @@
 ---
 title: The Arango Control Plane (ACP) service
 menuTitle: Control Plane (ACP)
-group: Deploy & operate
-weight: 430
+group: Develop & extend
+weight: 330
 description: >-
   Orchestrate the Contextual Data Platform with the Arango Control Plane to
   install, manage, and run services in your Kubernetes cluster

@@ -1,8 +1,8 @@
 ---
 title: License Management
 menuTitle: License Management
-group: Deploy & operate
-weight: 410
+group: Install
+weight: 30
 description: >-
   How to activate, renew, and apply licenses for Kubernetes-managed deployments
   of the Contextual Data Platform and ArangoDB, including the required network
