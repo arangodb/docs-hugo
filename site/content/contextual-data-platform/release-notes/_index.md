@@ -7,6 +7,28 @@ description: >-
 pageToc:
   maxHeadlineLevel: 2
 ---
+## v4.2.0 (October 2026)
+
+This release makes the web interface easier to navigate and improves the
+AutoGraph Studio experience, along with bug and security fixes.
+
+### Web interface
+
+The sidebar of the data platform web interface has been reorganized into clearly
+labeled sections, so that all features and tools are visible and one click away.
+
+### AutoGraph Studio
+
+{{< tag "Agentic AI Suite" >}}
+
+- **Faster query history**: The run history of an AutoRAG retriever loads
+  quickly, even with many past questions.
+- **Consistent access control**: Questions you ask with Local Search and
+  Unified Search now only access the data your user account has permission to
+  read, as is already the case for the other search methods.
+- **Smoother graph exploration**: The graph stays in view while you customize
+  its appearance.
+
 ## v4.1.1 (October 2026)
 
 This is a maintenance release with stability and security fixes for AutoGraph.
