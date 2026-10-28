@@ -164,9 +164,10 @@ but you can substitute them as follows for a schema description in terms of JSON
         - `strategy` (str): The strategy to use for mismatched values. Options include `REPLACE`, `RAISE`, `COERCE_REPLACE`, or `COERCE_RAISE`.
         - `replacement` (int/float for `numeric`, otherwise str): The value to replace mismatched values with. Only needed if `strategy` is `REPLACE`, or `COERCE_REPLACE`.
 
+- `profiles` (str, _optional_): The names of one or more `ArangoProfile` resources that define the pod configuration of the featurization job, such as CPU, memory, and GPU resources, node selectors, and tolerations. Separate multiple names with commas (e.g., `"gpu-memory-8gi-cpu-2"` or `"high-memory,gpu"`). Default is `None`, which means the default resource limits apply. It is recommended to create and use a custom profile for anything but small datasets, see [Configure resources with profiles](setup.md#configure-resources-with-profiles).
+
 - `jobConfiguration` (dict, _optional): A set of configurations that are applied to the job.
   - `batchSize` (int): The number of documents to process in a single batch. Default is `32`.
-  - `profiles` (list): The names of one or more `ArangoProfile` resources that define the pod configuration of the job, such as CPU, memory, and GPU resources, node selectors, and tolerations (e.g., `["gpu-memory-8gi-cpu-2"]`). Default is `None`, which means the default resource limits apply. It is recommended to create and use a custom profile for anything but small datasets, see [Configure resources with profiles](setup.md#configure-resources-with-profiles).
   - `runAnalysisChecks` (bool): Whether to run analysis checks, used  to perform a high-level analysis of the data quality before proceeding. Default is `true`.
   - `skipLabels` (bool): Skips the featurization process for attributes marked as `label`. Default is `false`.
   - `useFeatureStore` (bool): Enables the use of the Feature Store database, which allows you to store features separately from your Source Database. Default is `false`, therefore features are written to the source graph.
@@ -215,9 +216,9 @@ featurization_spec = {
         "dimensionalityReduction": { "size": 256 },
         "outputName": "x"
     },
+    "profiles": "gpu-memory-8gi-cpu-2",
     "jobConfiguration": {
         "batchSize": 512,
-        "profiles": ["gpu-memory-8gi-cpu-2"],
         "useFeatureStore": False,
         "runAnalysisChecks": False,
     },
@@ -415,7 +416,15 @@ The Training Service depends on a **Training Specification**:
 
 - `projectName` (str): The top-level project to which all the experiments will link back. Can be omitted if `featureSetID` is provided.
 
-- `useFeatureStore` (bool): Boolean for enabling or disabling the use of the feature store. Default is `false`.
+- `usesFeatureStore` (bool): Boolean for enabling or disabling the use of the feature store. Default is `false`.
+
+- `jobConfiguration` (dict, _optional_): A set of configurations that are applied to the training job.
+  - `dataLoadBatchSize` (int): The number of documents loaded from ArangoDB into memory in a single batch during the data loading phase. Default is `500000`.
+  - `dataLoadParallelism` (int): The number of parallel processes used when loading data from ArangoDB into memory for training. Default is `10`.
+
+- `enableGpu` (bool, _optional_): Runs the GPU version of the training job instead of the CPU version. If `profiles` is not set, the job uses the `gpu-g4dn-xlarge` profile. If `profiles` is set, it replaces `gpu-g4dn-xlarge` completely, so your profiles need to request a GPU and select GPU nodes themselves, see [Profiles and Enable GPU](setup.md#profiles-and-enable-gpu). Default is `false`.
+
+- `profiles` (str, _optional_): The names of one or more `ArangoProfile` resources that define the pod configuration of the training job. Separate multiple names with commas (e.g., `"gpu-memory-8gi-cpu-2"`). Works with and without `enableGpu`, but with `enableGpu`, it replaces the default GPU profile. Profiles of the featurization job don't carry over. Default is `None`, which means the default resource limits apply, see [Configure resources with profiles](setup.md#configure-resources-with-profiles).
 
 - `mlSpec` (dict): Describes the desired machine learning task, input features, and
     the attribute label to be predicted.
@@ -427,17 +436,11 @@ The Training Service depends on a **Training Specification**:
     - `labelField` (str): The name of the featurized label attribute, as
       returned in `label_field` by the featurization job.
     - `batchSize` (int): The number of documents to process in a single training batch. Default is `64`.
-    - `dataLoadBatchSize` (int): The number of documents loaded from ArangoDB into memory in a single batch during the data loading phase. Default is `50000`.
-    - `dataLoadParallelism` (int): The number of parallel processes used when loading data from ArangoDB into memory for training. Default is `10`.
-    - `enableGpu` (bool): Enables GPU-accelerated training using GPU-capable [profiles](setup.md#configure-resources-with-profiles) configured for the project. Default is `false`.
   - `graphEmbeddings` (dict): Dictionary to describe the Graph Embedding Task Specification.
     - `targetCollection` (str): The ArangoDB collection used to generate the embeddings. 
     - `embeddingSize` (int): The size of the embedding vector. Default is `128`.
     - `batchSize` (int): The number of documents to process in a single training batch. Default is `64`.
     - `generateEmbeddings` (bool): Whether to generate embeddings on the training dataset. Default is `false`.
-    - `dataLoadBatchSize` (int): The number of documents loaded from ArangoDB into memory in a single batch during the data loading phase. Default is `50000`.
-    - `dataLoadParallelism` (int): The number of parallel processes used when loading data from ArangoDB into memory for training. Default is `10`.
-    - `enableGpu` (bool): Enables GPU-accelerated training using GPU-capable [profiles](setup.md#configure-resources-with-profiles) configured for the project. Default is `false`.
 
 - `metagraph` (dict): Metadata to represent the node & edge collections of the graph. If `featureSetID` is provided, this can be omitted.
   - `graph` (str): The ArangoDB graph name.
@@ -752,9 +755,11 @@ The Prediction Service depends on a **Prediction Specification**:
 - `modelID` (str): The model ID to use for generating predictions.
 - `featurizeNewDocuments` (bool): Boolean for enabling or disabling the featurization of new documents. Useful if you don't want to re-train the model upon new data. Default is `false`.
 - `featurizeOutdatedDocuments` (bool): Boolean for enabling or disabling the featurization of outdated documents. Outdated documents are those whose features have changed since the last featurization. Default is `false`.
-- `dataLoadBatchSize` (int): The number of documents to load in a single batch. Default is `500000`.
-- `dataLoadParallelism` (int): The number of parallel threads used to process the prediction workload. Default is `10`.
-- `enableGpu` (bool): Enables GPU-accelerated prediction using GPU-capable [profiles](setup.md#configure-resources-with-profiles) configured for the project. Default is `false`.
+- `jobConfiguration` (dict, _optional_): A set of configurations that are applied to the prediction or embedding generation job.
+  - `dataLoadBatchSize` (int): The number of documents to load in a single batch. Default is `500000`.
+  - `dataLoadParallelism` (int): The number of parallel threads used to process the prediction workload. Default is `10`.
+- `enableGpu` (bool): Runs the GPU version of the prediction or embedding generation job instead of the CPU version. If `profiles` is not set, the job uses the `gpu-g4dn-xlarge` profile. If `profiles` is set, it replaces `gpu-g4dn-xlarge` completely, so your profiles need to request a GPU and select GPU nodes themselves, see [Profiles and Enable GPU](setup.md#profiles-and-enable-gpu). Default is `false`.
+- `profiles` (str): The names of one or more `ArangoProfile` resources that define the pod configuration of the prediction or embedding generation job. Separate multiple names with commas (e.g., `"gpu-memory-8gi-cpu-2"`). Works with and without `enableGpu`, but with `enableGpu`, it replaces the default GPU profile. Profiles of the featurization and training jobs don't carry over. Default is `None`, which means the default resource limits apply, see [Configure resources with profiles](setup.md#configure-resources-with-profiles).
 - `schedule` (str): A cron expression to schedule the prediction job. The cron syntax is a set of
   five fields in a line, indicating when the job should be executed. The format must follow
   the following order: `minute` `hour` `day-of-month` `month` `day-of-week`

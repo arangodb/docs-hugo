@@ -49,9 +49,11 @@ see the [GraphML Notebooks & API](notebooks-api.md) reference documentation.
 {{< /tab >}}
 
 {{< /tabs >}}
+
 ## Configure resources with profiles
 
-GraphML jobs (featurization, training, and prediction) run as Kubernetes pods
+GraphML jobs (featurization, training, prediction, and embedding generation)
+run as Kubernetes pods
 that the Arango Contextual Data Platform schedules on your behalf. Without
 further configuration, these pods use conservative default resource limits,
 including a low memory limit. This is enough for small example datasets, but
@@ -80,9 +82,10 @@ of a job when the profile is selected, for example:
 - A `nodeSelector` to run the job on specific nodes, such as GPU nodes
 - `tolerations` for tainted nodes
 
-Your deployment may come with predefined profiles, such as `gpu-g4dn-xlarge`.
-These typically only select a node type and request a GPU, but don't raise the
-memory limit. To give a job more memory, create your own profile.
+Your deployment may come with predefined profiles, such as `gpu-g4dn-xlarge`,
+which the **Enable GPU** option uses by default. These typically only select a
+node type and request a GPU, but don't raise the memory limit. To give a job
+more memory, create your own profile.
 
 For the full specification, see the
 [ArangoProfile Custom Resource](https://arangodb.github.io/kube-arangodb/docs/arango-profile-resource.html)
@@ -124,16 +127,29 @@ spec:
             memory: 8Gi
             nvidia.com/gpu: 1
     pod:
-      # Adjust to the node labels and taints of your cluster
+      # Adjust to the node labels of your cluster
       nodeSelector:
         arangodb.com/node: g4dn.xlarge
+      # Add one toleration for each taint of your GPU nodes
       tolerations:
         - key: arangodb.com/gpu
+          operator: Exists
+          effect: NoSchedule
+        - key: nvidia.com/gpu
           operator: Exists
           effect: NoSchedule
 ```
 
 - Create the profile in the same namespace as your deployment.
+- `priority` is optional and defaults to `0`. It only matters if multiple
+  profiles apply to the same pod: profiles with a higher value are applied
+  first, and profiles with the same value are sorted by name. You can omit it
+  if you select a single profile for a job.
+- Nodes usually have multiple taints, for example, one for the node type and
+  one for the GPU. List a toleration for each taint of the nodes you want the
+  job to run on, or Kubernetes cannot schedule the pod there. Copy the
+  `tolerations` of an existing GPU profile or check the taints of a node with
+  `kubectl describe node <node-name>`.
 - Set both `requests` and `limits`. The memory limit is what prevents the pod
   from being terminated, while the requests make sure that Kubernetes schedules
   the pod on a node with enough free resources.
@@ -153,14 +169,55 @@ kubectl get arangoprofile gpu-memory-8gi-cpu-2 -n <namespace> -o yaml
 
 ### Use a profile in GraphML
 
-Reference a profile by its name (`metadata.name`):
+Every GraphML job type supports profiles: featurization, training,
+prediction, and embedding generation. Each job has its own **Profiles** option
+in the web interface and its own `profiles` field in the API. Reference a
+profile by its name (`metadata.name`).
 
-- In the web interface, add it under **Profiles** in the configuration of a
-  featurization job, see [Configuration options](ui.md#configuration-options).
-- In the Python API, pass it in the `profiles` list of the job configuration,
-  for example, `"profiles": ["gpu-memory-8gi-cpu-2"]`, see
-  [Featurization](notebooks-api.md#featurization).
+{{< info >}}
+A profile only applies to the job you select it for. Profiles of a
+featurization job don't carry over to the training job, nor to later
+prediction or embedding generation jobs. Select a profile for each job that
+needs more resources than the defaults.
+{{< /info >}}
 
-The **Enable GPU** option for training and prediction jobs relies on
-GPU-capable profiles configured for the project. Make sure such a profile also
-defines enough memory for your data.
+- In the web interface, add the profile under **Profiles** in the
+  configuration of the job, see
+  [Featurization configuration](ui.md#configuration-options),
+  [Node classification](ui.md#node-classification),
+  [Node embeddings](ui.md#node-embeddings), and
+  [Prediction configuration](ui.md#configuration-options-1).
+- In the Python API, set the top-level `profiles` attribute of the job
+  specification to the profile name, for example,
+  `"profiles": "gpu-memory-8gi-cpu-2"`. To apply multiple profiles, separate
+  their names with commas, for example, `"profiles": "high-memory,gpu"`.
+  See [Featurization](notebooks-api.md#featurization),
+  [Training](notebooks-api.md#training), and
+  [Prediction](notebooks-api.md#prediction).
+
+### Profiles and Enable GPU
+
+Training, prediction, and embedding generation jobs have an **Enable GPU**
+option (`enableGpu` in the API). It selects whether the GPU or the CPU version
+of the job runs, and it determines the profiles of the job together with the
+**Profiles** option (`profiles`). Featurization jobs always run the CPU version
+and only use the profiles you set.
+
+| Enable GPU | Profiles | Job version | Profiles applied to the job |
+|:-----------|:---------|:------------|:----------------------------|
+| Off | Not set | CPU | None, the default resource limits apply |
+| Off | Set | CPU | Your profiles |
+| On | Not set | GPU | `gpu-g4dn-xlarge` |
+| On | Set | GPU | Your profiles, `gpu-g4dn-xlarge` is not applied |
+
+You can select a profile without enabling GPU, for example, to give a
+CPU-only job more CPU and memory. A profile that requests a GPU doesn't turn
+on GPU acceleration by itself. Enable GPU to run the GPU version of the job.
+
+{{< warning >}}
+If you enable GPU and set profiles, your profiles replace the default
+`gpu-g4dn-xlarge` profile completely. Nothing from the default profile is
+merged in. Your profiles need to request a GPU (`nvidia.com/gpu`) and define
+the `nodeSelector` and `tolerations` for your GPU nodes, as well as enough
+memory for your data. See [Create a profile](#create-a-profile) for an example.
+{{< /warning >}}

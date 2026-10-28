@@ -174,8 +174,17 @@ features and structural connections within the graph.
 - **Batch Size**: The number of documents processed in a single training iteration. (e.g. `256`)
 - **Data Load Batch Size**: The number of documents loaded from ArangoDB into memory in a single batch during the data loading phase (e.g. `50000`).
 - **Data Load Parallelism**: The number of parallel processes used when loading data from ArangoDB into memory for training (e.g. `10`).
-- **Enable GPU**: Enables GPU-accelerated training using GPU-capable
-  [profiles](setup.md#configure-resources-with-profiles) configured for the project (e.g., `gpu-g4dn-xlarge`).
+- **Enable GPU**: Runs the GPU version of the job instead of the CPU version. If you don't set any
+  **Profiles**, the job uses the `gpu-g4dn-xlarge` profile. If you set
+  profiles, they replace `gpu-g4dn-xlarge` completely, so your profiles need to
+  request a GPU and select GPU nodes themselves, see
+  [Profiles and Enable GPU](setup.md#profiles-and-enable-gpu).
+- **Profiles**: Add one or more profiles by name to specify the pod
+  configuration of the training job, such as CPU, memory, and GPU resources
+  (e.g., `gpu-memory-8gi-cpu-2`). This works with and without **Enable GPU**,
+  but with **Enable GPU**, your profiles replace the default GPU profile.
+  Profiles selected for featurization don't apply to training, see
+  [Configure resources with profiles](setup.md#configure-resources-with-profiles).
 
 After setting these values, click the **Begin training** button to submit the job.
 The button displays a loading state during submission, then the modal closes and
@@ -197,7 +206,17 @@ of graph nodes that capture structural and feature-based information.
 - **Batch Size:** The number of documents processed in a single training iteration (e.g. `256`)
 - **Data Load Batch Size:** The number of documents loaded from ArangoDB into memory in a single batch during the data loading phase (e.g. `50000`)
 - **Data Load Parallelism:** The number of parallel processes used when loading data from ArangoDB into memory for training (e.g. `10`)
-- **Enable GPU:** Enables GPU-accelerated training using GPU-capable [profiles](setup.md#configure-resources-with-profiles) configured for the project
+- **Enable GPU:** Runs the GPU version of the job instead of the CPU version. If you don't set any
+  **Profiles**, the job uses the `gpu-g4dn-xlarge` profile. If you set
+  profiles, they replace `gpu-g4dn-xlarge` completely, so your profiles need to
+  request a GPU and select GPU nodes themselves, see
+  [Profiles and Enable GPU](setup.md#profiles-and-enable-gpu).
+- **Profiles:** Add one or more profiles by name to specify the pod
+  configuration of the training job, such as CPU, memory, and GPU resources
+  (e.g., `gpu-memory-8gi-cpu-2`). This works with and without **Enable GPU**,
+  but with **Enable GPU**, your profiles replace the default GPU profile.
+  Profiles selected for featurization don't apply to training, see
+  [Configure resources with profiles](setup.md#configure-resources-with-profiles)
 - No label is required for training in this mode
 
 The target collection is where the model's predictions are stored when running a prediction job.
@@ -261,8 +280,18 @@ Configure your prediction job with the following options:
   single batch (e.g. `500000`).
 - **Data load parallelism**: The number of parallel threads used to process
   the prediction workload (e.g. `10`).
-- **Enable GPU**: Enables GPU-accelerated prediction using GPU-capable
-  [profiles](setup.md#configure-resources-with-profiles) configured for the project (e.g., `gpu-g4dn-xlarge`).
+- **Enable GPU**: Runs the GPU version of the job instead of the CPU version. If you don't set any
+  **Profiles**, the job uses the `gpu-g4dn-xlarge` profile. If you set
+  profiles, they replace `gpu-g4dn-xlarge` completely, so your profiles need to
+  request a GPU and select GPU nodes themselves, see
+  [Profiles and Enable GPU](setup.md#profiles-and-enable-gpu).
+- **Profiles**: Add one or more profiles by name to specify the pod
+  configuration of the prediction or embedding generation job, such as CPU,
+  memory, and GPU resources (e.g., `gpu-memory-8gi-cpu-2`). This works with and
+  without **Enable GPU**, but with **Enable GPU**, your profiles replace the
+  default GPU profile. Profiles selected for featurization or training don't
+  apply to this job, see
+  [Configure resources with profiles](setup.md#configure-resources-with-profiles).
 
 ### Featurization options
 
