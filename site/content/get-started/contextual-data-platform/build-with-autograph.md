@@ -1,33 +1,34 @@
 ---
-title: Build and tune Context Graphs from file corpora
-menuTitle: Build with AutoGraph
+title: Build and tune Context Graphs from a set of documents
+menuTitle: 'Tutorial 2: From documents to answers'
 weight: 10
 description: >-
-  Ingest a directory of documents with AutoGraph, tune the build parameters,
-  and pick the right retrieval mode for each kind of question
+  Turn a set of documents into a Context Graph you can ask questions about,
+  and get grounded answers
 ---
-Welcome to tutorial 2! This tutorial moves from a handful of sample texts to a
-real document corpus, with control over how the Context Graph is built and
-queried:
+Welcome to tutorial 2! In [tutorial 1](quickstart/_index.md#quick-start) you used a few
+short sample texts. Now you work with a larger set of 50 example
+articles and control how they are processed and searched:
 
-- [Ingest a file corpus](#ingest-a-file-corpus): connect and upload a whole
-  directory of documents.
-- [Basic pipeline configuration](#basic-pipeline-configuration): tune the
-  build parameters to trade extraction depth against build time.
-- [Deploy a retriever](#deploy-a-retriever): start AutoRAG on top of the
-  Context Graph.
-- [Choose a search method](#choose-a-search-method): local, global, or unified
-  search, depending on the kind of question.
-- [Execute queries and verify accuracy](#execute-queries-and-verify-accuracy):
-  read the answers and check that they come from your documents.
+- [Upload the documents](#upload-the-documents): upload a whole folder of
+  files at once.
+- [Adjust the settings](#adjust-the-settings): choose between a more detailed
+  result and a faster one.
+- [Start asking questions](#start-asking-questions): turn on AutoRAG so you
+  can ask questions about the documents.
+- [Pick a search method](#pick-a-search-method): some questions are about
+  specific details, others about the big picture. Each search method fits a
+  different kind of question.
+- [Check the answers](#check-the-answers): see each answer and the parts of
+  the documents it comes from.
 
 ## Prerequisites
 
 - **Completed installation**: A running Arango Contextual Data Platform instance
   and the Arango AI SDK installed, see the
   [Arango Contextual Data Platform Quickstart](quickstart/_index.md).
-- **Document corpus**: A directory of documents ready for ingestion, such as
-  text, Markdown, or PDF files.
+- **Example documents**: The example corpus described below, or a folder of
+  your own text, Markdown, or PDF files.
 
 To follow along with this tutorial, download the example corpus: 50 Markdown
 articles about technology companies, products, and people, such as Google,
@@ -44,7 +45,7 @@ and extract it into a local `./files` directory. You can also use your own
 documents instead, and adjust the path and the example questions to match your
 content.
 
-## Ingest a file corpus
+## Upload the documents
 
 While the [Quickstart](quickstart/_index.md#quick-start) uploaded
 three short text files, a real application ingests a whole corpus of
@@ -128,7 +129,7 @@ AutoGraph parses PDF files (including scanned documents, read using OCR),
 Office documents (`.doc`, `.docx`, `.ppt`, `.pptx`), plain text, and Markdown,
 so you do not need to convert files beforehand.
 
-## Basic pipeline configuration
+## Adjust the settings
 
 `project.autograph.ingest()` runs the uploaded corpus through the following
 phases:
@@ -209,7 +210,7 @@ A category can only be built once. To ingest again after adding files, pass
 `incremental=True`; without it, a second build of the same category raises
 `CategoryAlreadyBuiltError`.
 
-## Deploy a retriever
+## Start asking questions
 
 Questions are answered by an AutoRAG retriever, a separate service you deploy
 on top of the Context Graph with the same model settings as AutoGraph:
@@ -229,7 +230,7 @@ if not rag.wait_until_ready():
     raise RuntimeError("The retriever did not become ready in time")
 ```
 
-## Choose a search method
+## Pick a search method
 
 Selecting the appropriate retrieval mode balances response speed, factual
 accuracy, and reasoning depth across different query types. You select it with
@@ -265,7 +266,7 @@ global_search_response = rag.ask(
 unified_search_response = rag.ask("Which companies offer delivery drones?")
 ```
 
-## Execute queries and verify accuracy
+## Check the answers
 
 `ask()` returns a response object whose `result` field holds the generated
 answer, so you can print it or pass it on to the rest of your application:

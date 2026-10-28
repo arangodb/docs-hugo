@@ -12,6 +12,8 @@ aliases:
 
 ## Prerequisites
 
+- An **Arango Contextual Data Platform** deployment with a valid Agentic AI
+  Suite license.
 - A **project with imported data**. If you haven't built a graph
   yet, follow the [AutoGraph Quick Start](../autograph/quick-start.md).
 - An **LLM provider** for AutoRAG (any OpenAI-compatible API).

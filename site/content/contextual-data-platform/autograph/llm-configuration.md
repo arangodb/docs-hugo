@@ -53,7 +53,7 @@ environment.
 
 ## Supported providers
 
-For both the chat model and the embedding model, AutoGraph supports three
+For both the chat model and the embedding model, AutoGraph supports two
 provider values:
 
 - `openai`: the OpenAI API itself.
@@ -76,10 +76,10 @@ Any value other than `openai` or `custom` for `chat_api_provider` or
 `embedding_api_url` default to `https://api.openai.com/v1` if not specified.
 
 **Model defaults**: The following default models are applied automatically when
-`chat_model` or `embedding_model_name` are not specified:
+`chat_model` or `embedding_model` are not specified:
 
-| Provider | Chat model (`chat_model`) | Embedding model (`embedding_model_name`) |
-|----------|---------------------------|------------------------------------------|
+| Provider | Chat model (`chat_model`) | Embedding model (`embedding_model`) |
+|----------|---------------------------|-------------------------------------|
 | `openai` | `gpt-5.4-nano` | `text-embedding-3-small` |
 | `custom` | `gpt-5.4-nano` | `text-embedding-3-small` |
 
@@ -115,15 +115,16 @@ Pointing the `openai` provider at a non-OpenAI URL is **not supported**. Use
   "env": {
     "db_name": "your_database_name",
     "genai_project_name": "your_project_name",
+    "fps_recovery_username": "your_recovery_user",
     "chat_api_provider": "openai",
     "chat_api_url": "https://api.openai.com/v1",
     "chat_model": "gpt-5.4-nano",
     "chat_api_key": "your_openai_api_key",
     "embedding_api_provider": "openai",
     "embedding_api_url": "https://api.openai.com/v1",
-    "embedding_model_name": "text-embedding-3-small",
+    "embedding_model": "text-embedding-3-small",
     "embedding_api_key": "your_openai_api_key",
-    "embedding_dimensions": "512"
+    "embedding_dim": "512"
   }
 }
 ```
@@ -144,15 +145,16 @@ with the OpenRouter URL and leave `embedding_api_provider` on `openai`.
   "env": {
     "db_name": "your_database_name",
     "genai_project_name": "your_project_name",
+    "fps_recovery_username": "your_recovery_user",
     "chat_api_provider": "custom",
     "chat_api_url": "https://openrouter.ai/api/v1",
     "chat_model": "mistralai/mistral-nemo",
     "chat_api_key": "your_openrouter_api_key",
     "embedding_api_provider": "openai",
     "embedding_api_url": "https://api.openai.com/v1",
-    "embedding_model_name": "text-embedding-3-small",
+    "embedding_model": "text-embedding-3-small",
     "embedding_api_key": "your_openai_api_key",
-    "embedding_dimensions": "512"
+    "embedding_dim": "512"
   }
 }
 ```
@@ -164,7 +166,17 @@ For a full description of all parameters, see
 
 This reference section covers the chat and embedding model parameters.
 Provider-specific defaults and requirements are noted where applicable.
-Parameter names are also accepted in uppercase (for example, `CHAT_API_URL`).
+In the `env` map of the install request, spell the keys exactly as shown here,
+in lowercase snake_case. Keys with a different spelling, including uppercase
+variants such as `CHAT_API_URL`, are not passed on to the service and are
+silently ignored.
+
+{{< info >}}
+The embedding keys were previously named `embedding_model_name` and
+`embedding_dimensions`. Use `embedding_model` and `embedding_dim` instead: the
+old names are not passed on by the install request, so the service falls back
+to the defaults (`text-embedding-3-small` and `512`).
+{{< /info >}}
 
 ### General parameters
 
@@ -178,6 +190,12 @@ Parameter names are also accepted in uppercase (for example, `CHAT_API_URL`).
   [Project API](../control-plane-acp/api.md#create-a-project).
   The Project API names this field `project_name`; the AutoGraph install
   request uses `genai_project_name` for the same value.
+- `fps_recovery_username` (**required**): An ArangoDB user with read/write
+  access to the project database. AutoGraph uses it to resume File Parser work
+  after a pod restart. Installing without it fails. The user has to exist
+  before the first corpus build; a nonexistent user still installs and normal
+  builds still run, but resuming after a restart fails, which only shows up in
+  the service logs.
 
 ### Chat API parameters
 
@@ -209,13 +227,16 @@ Parameter names are also accepted in uppercase (for example, `CHAT_API_URL`).
 - `embedding_api_key` (**required for the `openai` and `custom` providers**):
   API key for authenticating with the embedding model. Alternatively, use
   `embedding_secret_profile_id`.
-- `embedding_model_name`: Model used to generate text embeddings.
+- `embedding_model`: Model used to generate text embeddings.
   - **OpenAI**: Defaults to `text-embedding-3-small`.
   - **Custom**: Also defaults to `text-embedding-3-small`; set it explicitly to
     a model your endpoint exposes.
-- `embedding_dimensions`: Embedding dimension. Defaults to `512`. It must match
+- `embedding_dim`: Embedding vector width. Defaults to `512`. It must match
   the embedding model's output dimension; set it explicitly when using a model
-  with a different dimension.
+  with a different dimension. Keep it the same for the life of the project:
+  stored embeddings and vector indexes use this width. AutoGraph passes the
+  value on to the Importer services it creates during
+  [orchestration](reference/orchestration.md).
 - `embedding_api_keys`: Optional comma-separated list of OpenAI-compatible API
   keys. When more than one key is provided, AutoGraph rotates across them in a
   round-robin pool to increase the effective rate limit. Falls back to
@@ -259,8 +280,7 @@ ones such as the GPT-4 series; the options below exist so you can match their
 payload requirements. Different model families accept different optional fields
 on chat completions.
 
-Optional parameters (also accepted in uppercase, for example
-`CHAT_PARAMETER_POLICY`):
+Optional parameters:
 
 | Parameter | Default | Purpose |
 |-----------|---------|---------|
@@ -288,6 +308,7 @@ When configuring AutoGraph, ensure you:
    `embedding_api_provider` must each be `openai` or `custom`.
    They are independent and do not need to match.
 2. **Provide all required parameters**:
+   - `db_name`, `genai_project_name`, and `fps_recovery_username`.
    - `chat_api_provider` and `embedding_api_provider` (both required).
    - `chat_api_key` and `embedding_api_key` (required for the `openai` and
      `custom` providers, or supply the corresponding secret profile ID).

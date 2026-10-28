@@ -12,7 +12,8 @@ aliases:
 
 ## Prerequisites
 
-- Access to the platform with **GraphML** services enabled.
+- An **Arango Contextual Data Platform** deployment with a valid Agentic AI
+  Suite license.
 - A database with **graph data** (node and edge collections).
 - For **Node Classification**: an attribute with known values on some nodes,
   marked with **Predict this** during featurization.

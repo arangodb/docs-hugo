@@ -88,8 +88,9 @@ All service creation endpoints share the same `env` and `labels` fields:
 
 - **env**: Service-specific parameters as key-value pairs. The required keys
   depend on the service type; see the corresponding service documentation, such
-  as [Importer](../autograph/importer/_index.md) and
-  [AutoRAG](../autorag/_index.md).
+  as [Importer](../autograph/importer/_index.md),
+  [AutoRAG](../autorag/_index.md), and
+  [AutoGraph](../autograph/reference/_index.md#install-the-service).
 - **labels** (optional): Key-value pairs used to filter and identify services
   in the platform.
 - **profiles** (optional): A comma-separated string inside `env` defining

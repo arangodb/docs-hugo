@@ -2262,6 +2262,7 @@ nav.pagination .next {
     border-radius: .5rem;
     text-shadow: none !important; /* Bootstrap ?! */
     font-weight: 400;
+    text-wrap-style: balance;
 }
 
 .link-nav:is(:hover, .link-nav:visited, .link-nav:focus) {

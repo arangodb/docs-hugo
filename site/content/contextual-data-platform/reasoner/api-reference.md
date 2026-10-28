@@ -208,8 +208,8 @@ operational monitoring.
 | Endpoint | Purpose | Kubernetes Probe |
 |---|---|---|
 | `GET /health` | Liveness check - confirms the service process is running | Liveness probe |
-| `GET /health/ready` | Readiness check - verifies connectivity to the AI coder and the MCP server | Readiness probe |
-| `GET /health/mcp` | Detailed MCP server connectivity status | Diagnostic / monitoring |
+| `GET /health/ready` | Readiness check - verifies connectivity to the AI coder and the internal MCP server | Readiness probe |
+| `GET /health/mcp` | Detailed connectivity status of the internal MCP server | Diagnostic / monitoring |
 
 ### Liveness check
 

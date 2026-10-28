@@ -28,12 +28,6 @@ You can interact with the Reasoner directly from the **Query Editor** in the
 Arango Contextual Data Platform, or through its HTTP API for programmatic
 integrations.
 
-{{< info >}}
-The Reasoner requires the **ArangoDB MCP Server** to be running and connected.
-Both services must be active for the Reasoner to function. The MCP Server is
-the bridge through which the Reasoner interacts with your ArangoDB database.
-{{< /info >}}
-
 ## Key capabilities
 
 | Capability | Description |
@@ -86,35 +80,48 @@ flowchart TD
 
 ## Architecture overview
 
-The Reasoner runs as a single self-contained service. It bundles an AI coder
-that communicates with the ArangoDB MCP Server — a dedicated bridge that
-exposes ArangoDB operations as structured tools.
+From a user perspective, the Reasoner is a single service that you start, stop,
+and configure as one unit. Internally, it consists of two components that the
+data platform deploys and manages together:
+
+- The **Reasoner** itself, which bundles an AI coder that plans and carries out
+  the work.
+- An **internal MCP server** that exposes ArangoDB operations as structured
+  tools that the AI coder can call.
+
+The internal MCP server is started, connected, and stopped automatically along
+with the Reasoner, so you don't need to deploy or configure an MCP server
+yourself.
+
+{{< info >}}
+The internal MCP server used by the Reasoner is not the same as the
+[ArangoDB MCP Server](../../ecosystem/arangodb-mcp-server.md). The latter is
+a separately available container image with a more limited set of tools that
+you can run yourself to connect AI assistants to ArangoDB. It is not required
+for the Reasoner.
+{{< /info >}}
 
 ```mermaid
 flowchart TD
     Client["Client Request
       <code>POST /query</code>"] --> ReasonerPort
 
-    subgraph ReasonerService["Reasoner Service"]
+    subgraph ReasonerService["Reasoner Service (managed by the data platform)"]
         ReasonerPort["Reasoner
         (port 8080)"] --> AICoder["AI coder
         (port 4099)"]
+        AICoder --> MCP["Internal MCP server
+        (database tooling)"]
     end
 
-    AICoder --> MCP["ArangoDB MCP Server
-      (database tooling)"]
     MCP --> DB[(ArangoDB)]
 ```
 
 ## Prerequisites
 
-The following external services are required:
-
-| Service | Role |
-|---|---|
-| **ArangoDB MCP Server** | Exposes ArangoDB operations as tools that the Reasoner can call; must be running and reachable before the Reasoner starts |
-| **ArangoDB** | The target database |
-| **OpenAI API** | An API key is required |
+- A valid **Agentic AI Suite** license for your Arango Contextual Data Platform
+  deployment.
+- An **OpenAI API key** for the language model the Reasoner uses.
 
 ## Query optimization
 

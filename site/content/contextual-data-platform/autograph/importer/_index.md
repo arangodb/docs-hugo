@@ -172,7 +172,7 @@ need its documentation in three situations:
 
 ### Prerequisites when you install it yourself
 
-- **Arango Contextual Data Platform**.
+- **Arango Contextual Data Platform** with a valid Agentic AI Suite license.
 - **LLM and embedding API access** (OpenAI-compatible endpoints).
 - **Valid JWT** for the API (`Authorization: Bearer ...`).
 - A **project** in the target database. Projects keep datasets and

@@ -1,6 +1,6 @@
 ---
 title: Arango Contextual Data Platform Quickstart
-menuTitle: Quickstart
+menuTitle: 'Tutorial 1: Install and try it out'
 weight: 5
 description: >-
   Install the Arango Contextual Data Platform and ask your first questions
@@ -47,8 +47,14 @@ Context Graph that you can ask questions in natural language:
 
 ## Install Arango Contextual Data Platform
 
-There are two ways to install the data platform, and they do not give you the same
+There are two ways to install the data platform and they do not give you the same
 deployment. Pick the one that matches what you need:
+
+- **Installation script**: a local evaluation setup for trying out AutoGraph
+  and AutoRAG on a single server. It does not include the full data platform
+  and is not meant for production.
+- **Manual installation**: the full data platform, for deployments you intend
+  to keep, including production.
 
 | | Installation script | Manual installation |
 |:---|:---|:---|

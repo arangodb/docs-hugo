@@ -10,6 +10,13 @@ aliases:
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 
+## Prerequisites
+
+- An **Arango Contextual Data Platform** deployment with a valid Agentic AI
+  Suite license.
+- An API key for an LLM provider (Anthropic, OpenAI, OpenRouter, or a custom
+  endpoint).
+
 {{< steps >}}
 
 {{< step "Open Ada" >}}

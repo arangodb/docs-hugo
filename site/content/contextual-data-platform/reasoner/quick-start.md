@@ -12,9 +12,9 @@ aliases:
 
 ## Prerequisites
 
-- An ArangoDB instance with the **ArangoDB MCP Server** running and connected.
+- An **Arango Contextual Data Platform** deployment with a valid Agentic AI
+  Suite license.
 - An OpenAI API key.
-- An Agentic AI Suite license (for the web interface).
 
 ## Optimize your first query
 
