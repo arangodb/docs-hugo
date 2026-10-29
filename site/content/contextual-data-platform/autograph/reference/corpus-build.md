@@ -4,8 +4,6 @@ menuTitle: Corpus Build
 description: >-
   Create and monitor corpus builds for document analysis and clustering
 weight: 10
-aliases:
-  - /agentic-ai-suite/autograph/reference/corpus-build/
 ---
 {{< tag "Agentic AI Suite" >}}
 

@@ -5,8 +5,6 @@ weight: 25
 description: >-
   Deploy a service that serves its own user interface and make it available as
   an embedded app in the Arango Platform web interface
-aliases:
-  - /platform-suite/container-manager/apps/
 ---
 {{< tag "Platform Suite" >}}
 

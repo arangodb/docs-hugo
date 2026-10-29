@@ -6,8 +6,6 @@ weight: 240
 description: >-
   Ask questions about your database in natural language with Ada, the ArangoDB
   AI Digital Assistant integrated into the Arango Contextual Data Platform
-aliases:
-  - /agentic-ai-suite/ada/
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 

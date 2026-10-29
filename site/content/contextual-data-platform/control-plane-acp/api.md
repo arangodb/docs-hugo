@@ -5,8 +5,6 @@ weight: 10
 description: >-
   HTTP API reference for the Arango Control Plane (ACP) service, covering the
   service lifecycle and AI projects
-aliases:
-  - /platform-suite/control-plane-acp/api/
 ---
 {{< tag "Platform Suite" >}}
 

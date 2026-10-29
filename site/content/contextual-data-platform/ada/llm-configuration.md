@@ -4,9 +4,6 @@ menuTitle: LLM Configuration
 weight: 5
 description: >-
   Configure the LLM provider and model that Ada uses for the current database
-aliases:
-  - /agentic-ai-suite/ada/llm-configuration/
-  - /agentic-ai-suite/ada/configure-the-llm-provider/
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 

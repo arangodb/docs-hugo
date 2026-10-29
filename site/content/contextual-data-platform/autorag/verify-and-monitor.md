@@ -5,8 +5,6 @@ description: >-
   Check service health, verify the status of your AutoRAG service, and browse
   the query history of your project
 weight: 50
-aliases:
-  - /agentic-ai-suite/autorag/verify-and-monitor/
 ---
 {{< tag "Agentic AI Suite" >}}
 

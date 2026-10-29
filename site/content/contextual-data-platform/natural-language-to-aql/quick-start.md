@@ -5,8 +5,6 @@ weight: 2
 description: >-
   Ask a question in plain language and get an executable AQL query back, using
   AQLizer
-aliases:
-  - /agentic-ai-suite/natural-language-to-aql/quick-start/
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 

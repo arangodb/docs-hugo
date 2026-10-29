@@ -5,8 +5,6 @@ weight: 2
 description: >-
   Reveal the structure hidden in your connected data - rank influential
   entities, detect communities, and spot fraud
-aliases:
-  - /agentic-ai-suite/graph-analytics/quick-start/
 ---
 {{< tag "Agentic AI Suite" >}}
 

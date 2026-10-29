@@ -5,8 +5,6 @@ group: Operate
 weight: 460
 description: >-
   Monitor your Arango Contextual Data Platform deployment with integrated Grafana and Prometheus dashboards
-aliases:
-  - /platform-suite/monitoring/
 ---
 {{< tag "Platform Suite" >}}
 

@@ -4,8 +4,6 @@ menuTitle: Web Interface
 weight: 10
 description: >-
   Learn how to create, configure, and run a complete AutoGraph workflow in the web interface
-aliases:
-  - /agentic-ai-suite/autograph/web-interface/
 ---
 {{< tag "Agentic AI Suite" >}}
 

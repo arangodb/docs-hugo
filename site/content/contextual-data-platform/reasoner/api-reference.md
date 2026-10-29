@@ -5,8 +5,6 @@ weight: 20
 description: >-
   Use the Reasoner programmatically via its HTTP API, with support for
   streaming (SSE) and non-streaming response modes
-aliases:
-  - /agentic-ai-suite/reasoner/api-reference/
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 

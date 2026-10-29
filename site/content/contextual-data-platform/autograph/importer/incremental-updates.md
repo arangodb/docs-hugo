@@ -5,8 +5,6 @@ description: >-
   Rebuild the community layer of a Layer 3 partition without re-ingesting
   documents, and how documents are removed and replaced
 weight: 20
-aliases:
-  - /agentic-ai-suite/importer/incremental-updates/
 ---
 {{< tag "Agentic AI Suite" >}}
 

@@ -5,8 +5,6 @@ weight: 65
 description: >-
   How AutoRAG reports failures, the status codes it returns, and what
   every error code means
-aliases:
-  - /agentic-ai-suite/autorag/error-handling/
 ---
 {{< tag "Agentic AI Suite" >}}
 

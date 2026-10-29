@@ -1,11 +1,11 @@
 ---
-title: API reference of the data platform
-menuTitle: API reference
+title: API references
+menuTitle: API references
 group: Reference
 weight: 500
 description: >-
-  Where to find the HTTP API of every service of the Arango Contextual Data
-  Platform
+  Where to find the HTTP API description of every service of the Arango
+  Contextual Data Platform
 ---
 Every service of the Arango Contextual Data Platform exposes an HTTP API, and
 each is documented in the chapter of the service it belongs to. This page

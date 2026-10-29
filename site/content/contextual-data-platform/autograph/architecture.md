@@ -4,8 +4,6 @@ menuTitle: Architecture
 weight: 60
 description: >-
   AutoGraph's three-layer knowledge graph architecture, ArangoDB collections, and named graphs
-aliases:
-  - /agentic-ai-suite/autograph/architecture/
 ---
 {{< tag "Agentic AI Suite" >}}
 

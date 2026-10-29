@@ -5,8 +5,6 @@ group: Operate
 weight: 440
 description: >-
   Store secrets like API keys for easy use across the Contextual Data Platform
-aliases:
-  - /platform-suite/secrets-manager/
 ---
 {{< tag "Platform Suite" >}}
 

@@ -5,8 +5,6 @@ weight: 25
 description: >-
   Insert, delete, and update individual documents in an existing AutoGraph
   knowledge graph without rebuilding the corpus
-aliases:
-  - /agentic-ai-suite/autograph/incremental-graph-updates/
 ---
 {{< tag "Agentic AI Suite" >}}
 

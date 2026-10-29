@@ -6,8 +6,6 @@ description: >-
   Learn how to manage Graph Analytics Engines (GAEs), load graphs, run algorithms,
   monitor jobs, and store results using the web interface of the Arango
   Contextual Data Platform
-aliases:
-  - /agentic-ai-suite/graph-analytics/web-interface/
 ---
 {{< tag "Agentic AI Suite" >}}
 

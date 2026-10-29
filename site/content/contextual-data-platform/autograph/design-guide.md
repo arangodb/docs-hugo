@@ -4,8 +4,6 @@ menuTitle: Design Guide
 weight: 65
 description: >-
   How to structure your data with categories, layers, and components when building knowledge graphs with AutoGraph
-aliases:
-  - /agentic-ai-suite/autograph/design-guide/
 ---
 {{< tag "Agentic AI Suite" >}}
 

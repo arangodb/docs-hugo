@@ -6,8 +6,6 @@ description: >-
   AutoRAG enables intelligent search and retrieval from the knowledge graphs
   built by the Importer and AutoGraph
 weight: 105
-aliases:
-  - /agentic-ai-suite/autorag/
 ---
 {{< tag "Agentic AI Suite" >}}
 
@@ -35,7 +33,7 @@ which calls the services it deploys *retrievers*.
 AutoRAG is the second stage of AutoGraph Studio: it serves questions from the
 Context Graph that [AutoGraph](../autograph/_index.md) built.
 
-### Against a Context Graph built by AutoGraph
+### Query a Context Graph built by AutoGraph
 
 When [AutoGraph](../autograph/_index.md) manages your document pipeline, it builds
 partitioned knowledge graphs with domain-aware RAG strategies. AutoRAG queries
@@ -49,13 +47,18 @@ that choice determines which search methods you can run against it. See
 For details on how partitions are created and mapped, see the
 [How AutoGraph runs the Importer](../autograph/importer/_index.md#how-autograph-runs-the-importer) section.
 
-{{< info >}}
-**Advanced: querying a graph built with the Importer directly.**
-A knowledge graph built with the [Importer](../autograph/importer/_index.md) directly, outside
-AutoGraph, is queried with the
+### Query a knowledge graph built with the Importer
+
+AutoGraph is the recommended way to build a Context Graph. You only call the
+[Importer](../autograph/importer/_index.md) directly if you need control that
+AutoGraph doesn't give you, such as import parameters it doesn't expose.
+
+A knowledge graph built with the [Importer](../autograph/importer/_index.md)
+directly, outside AutoGraph, is queried with the
 [query API](executing-queries.md), which gives access to all search methods and
 parameters.
 
+{{< info >}}
 The standalone Importer workflow is not available in the web interface.
 [AutoGraph Studio](../autograph/web-interface.md) can only query Context Graphs
 that belong to an AutoGraph project.

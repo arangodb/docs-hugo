@@ -7,8 +7,6 @@ description: >-
   Graph analytics analyzes information networks to extract insights from data
   relationships using algorithms like PageRank for fraud detection,
   recommendations, and network analysis
-aliases:
-  - /agentic-ai-suite/graph-analytics/
 ---
 {{< tag "Agentic AI Suite" >}}
 

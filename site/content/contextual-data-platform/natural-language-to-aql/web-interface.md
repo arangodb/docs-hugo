@@ -5,8 +5,6 @@ weight: 10
 description: >-
   Generate AQL queries from natural language using the AQLizer feature in the
   Query Editor of the Arango Contextual Data Platform web interface
-aliases:
-  - /agentic-ai-suite/natural-language-to-aql/web-interface/
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 

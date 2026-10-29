@@ -6,8 +6,6 @@ weight: 230
 description: >-
   Analyze and optimize AQL queries using AI-powered reasoning with the Reasoner
   feature of the Agentic AI Suite
-aliases:
-  - /agentic-ai-suite/reasoner/
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 

@@ -5,8 +5,6 @@ description: >-
   Configure OpenAI-compatible APIs for AutoRAG,
   at install time or at runtime
 weight: 20
-aliases:
-  - /agentic-ai-suite/autorag/llm-configuration/
 ---
 {{< tag "Agentic AI Suite" >}}
 

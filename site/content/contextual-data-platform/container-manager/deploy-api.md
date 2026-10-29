@@ -4,8 +4,6 @@ menuTitle: API Deployment
 weight: 30
 description: >-
   Deploy and manage services programmatically using the Container Manager APIs
-aliases:
-  - /platform-suite/container-manager/deploy-api/
 ---
 {{< tag "Platform Suite" >}}
 

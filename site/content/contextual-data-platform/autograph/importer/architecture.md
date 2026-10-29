@@ -5,8 +5,6 @@ weight: 50
 description: >-
   Knowledge graph collections, vector indexes, async-job lifecycle, and
   operational guidance for the Importer service
-aliases:
-  - /agentic-ai-suite/importer/architecture/
 ---
 {{< tag "Agentic AI Suite" >}}
 

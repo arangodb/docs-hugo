@@ -5,8 +5,6 @@ weight: 2
 description: >-
   Ask questions about your data in plain language and get answers back, no AQL
   required
-aliases:
-  - /agentic-ai-suite/ada/quick-start/
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 

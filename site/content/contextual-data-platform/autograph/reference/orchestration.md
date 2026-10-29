@@ -5,8 +5,6 @@ description: >-
   Spawn Importer workers, execute RAG pipeline builds, and apply document-level
   updates to a knowledge graph that is already built
 weight: 14
-aliases:
-  - /agentic-ai-suite/autograph/reference/orchestration/
 ---
 {{< tag "Agentic AI Suite" >}}
 

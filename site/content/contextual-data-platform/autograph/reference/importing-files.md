@@ -5,8 +5,6 @@ description: >-
   The deprecated direct upload of files into the Corpus Graph, superseded by
   the File Manager
 weight: 20
-aliases:
-  - /agentic-ai-suite/autograph/reference/importing-files/
 ---
 {{< tag "Agentic AI Suite" >}}
 

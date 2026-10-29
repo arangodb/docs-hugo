@@ -6,8 +6,6 @@ weight: 310
 description: >-
   View and manage container service files and RAG input files stored by the
   Arango Contextual Data Platform
-aliases:
-  - /platform-suite/file-manager/
 ---
 {{< tag "Platform Suite" >}}
 

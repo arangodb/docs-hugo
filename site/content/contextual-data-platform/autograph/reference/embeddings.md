@@ -4,8 +4,6 @@ menuTitle: Embeddings
 description: >-
   Add embeddings to documents in any ArangoDB collection
 weight: 16
-aliases:
-  - /agentic-ai-suite/autograph/reference/embeddings/
 ---
 {{< tag "Agentic AI Suite" >}}
 

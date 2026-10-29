@@ -5,7 +5,6 @@ weight: 15
 description: >-
   Control all resources inside GraphML via Jupyter Notebooks or Python API
 aliases:
-  - /agentic-ai-suite/graphml/notebooks-api/
   - ../../arangodb/3.12/data-science/arangographml/getting-started # 3.10, 3.11
   - ../../arangodb/stable/data-science/arangographml/getting-started # 3.10, 3.11
   - ../../arangodb/4.x/data-science/arangographml/getting-started # 3.10, 3.11

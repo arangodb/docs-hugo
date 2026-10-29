@@ -8,8 +8,6 @@ description: >-
   retrieval strategies, and AutoRAG deploys the retrievers that answer questions
   from it, providing AI copilots and agents with production-grade context
   infrastructure
-aliases:
-  - /agentic-ai-suite/autograph/
 ---
 {{< tag "Agentic AI Suite" >}}
 

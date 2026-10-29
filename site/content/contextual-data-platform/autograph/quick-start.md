@@ -5,8 +5,6 @@ weight: 2
 description: >-
   Turn a pile of documents into a knowledge base you can chat with, with
   answers cited back to the source
-aliases:
-  - /agentic-ai-suite/autograph/quick-start/
 ---
 {{< tag "Agentic AI Suite" >}}
 

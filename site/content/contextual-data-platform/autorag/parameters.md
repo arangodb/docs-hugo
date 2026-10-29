@@ -4,8 +4,6 @@ menuTitle: Parameters
 description: >-
   Complete reference for all AutoRAG query parameters
 weight: 60
-aliases:
-  - /agentic-ai-suite/autorag/parameters/
 ---
 {{< tag "Agentic AI Suite" >}}
 

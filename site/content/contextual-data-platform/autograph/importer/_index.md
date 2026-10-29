@@ -2,14 +2,9 @@
 title: The Importer
 menuTitle: Importer
 description: >-
-  The worker that AutoGraph runs to build the Knowledge Graph: what it writes,
-  how AutoGraph drives it, when you configure or call it yourself, and its
-  HTTP API
+  The worker service that AutoGraph runs to build the knowledge graph, and how
+  to configure and call it directly
 weight: 80
-aliases:
-  - /agentic-ai-suite/importer/
-  - /agentic-ai-suite/importer/autograph-integration/
-  - /agentic-ai-suite/importer/reference/
 ---
 {{< tag "Agentic AI Suite" >}}
 
@@ -28,20 +23,20 @@ The resulting knowledge graph is the data layer your applications query with
 [AutoRAG](../../autorag/_index.md) or with AQL directly.
 
 In [AutoGraph Studio](../_index.md), the Importer is the worker of the
-[AutoGraph service](../reference/_index.md): the orchestration installs Importer
-replicas, submits one import job per partition, monitors them, and tears them
-down again. You configure the Importer, but you do not normally call it.
+[AutoGraph service](../reference/_index.md): the orchestration starts Importer
+services, starts one import job per partition, monitors the jobs, and stops
+the services again. You configure the Importer, but you do not normally call it.
 
 ## How AutoGraph runs the Importer
 
 When you need to process large or heterogeneous document collections,
 [AutoGraph](../reference/_index.md) manages the Importer for you. AutoGraph
 automatically discovers knowledge domains in your data, assigns the optimal
-RAG strategy (`full_graphrag` or `vector_rag`) per domain, and spawns
-Importer workers to build partitioned knowledge graphs.
+RAG strategy (`full_graphrag` or `vector_rag`) per domain, and starts
+Importer services to build partitioned knowledge graphs.
 
 In this mode, you **do not call the Importer directly**. AutoGraph handles
-replica creation, job submission, `partition_id` and `rag_mode` assignment,
+starting the services, job submission, `partition_id` and `rag_mode` assignment,
 status polling, and teardown.
 
 ### Three-layer architecture
@@ -51,7 +46,7 @@ and purpose:
 
 | Layer | Built by | Named Graph | What it contains |
 |-------|----------|-------------|------------------|
-| **1 - Modules** | You (at import time) | - | Logical groupings of documents (e.g., `"legal"`, `"docs"`, `"support"`) |
+| **1 - Categories** | You (at import time) | - | Logical groupings of documents (e.g., `"legal"`, `"docs"`, `"support"`) |
 | **2 - Corpus Graph** | AutoGraph | `{project}_CorpusGraph` | Document similarity edges, Leiden clusters (`domains`), RAG strategy profiles (`rags`) |
 | **3 - Knowledge Graph** | Importer | `{project}_kg` | Documents, Chunks, Entities, Communities, Relations |
 
@@ -64,29 +59,29 @@ For full details on Layers 1 and 2, see the
 collections and the asynchronous job lifecycle, see the
 [Importer Architecture](architecture.md).
 
-### How AutoGraph spawns import jobs
+### How AutoGraph starts import jobs
 
-The same module string flows from **files** to **clusters** to **strategies**
+The same category label flows from **files** to **clusters** to **strategies**
 to **Importer partitions**:
 
 1. You [import documents into AutoGraph](../reference/importing-files.md)
-   with a **module** label (e.g., `"legal"`).
+   with a **category** label in the `module` field (e.g., `"legal"`).
 2. AutoGraph's [corpus build](../reference/corpus-build.md) clusters
-   documents within each module using Leiden community detection.
+   documents within each category using Leiden community detection.
 3. The [RAG strategizer](../reference/rag-strategizer.md) analyzes
    each cluster and assigns either `FullGraphRAG` or `VectorRAG`.
 4. Each assignment gets a `rag_partition_id` derived from the cluster key.
    For example, cluster `cluster_legal_0` becomes `legal_0_a` (FullGraphRAG)
    or `legal_0_b` (VectorRAG).
 5. [Orchestration](../reference/orchestration.md)
-   (`POST /v1/orchestrate`) spawns Importer worker replicas and submits
+   (`POST /v1/orchestrate`) starts Importer services and submits
    **one import job per partition**.
 6. Each job payload includes `partition_id` (set to the `rag_partition_id`)
    and `rag_mode` (set to the assigned strategy).
 
 ```mermaid
 flowchart LR
-  module["`Module
+  module["`Category
     **legal**`"]
 
   module --> cluster0["cluster_legal_0"]
@@ -255,8 +250,8 @@ gateway, you reach them on port `8529` under
 | `GET` | `/v1/jobs` | List recent jobs | [Import endpoints](import-endpoints.md#monitoring-jobs) |
 
 {{< info >}}
-A replica can only run one import or recluster job at a time, under a single
-global lock that is not keyed by partition. While one job holds the lock, calls
+An Importer service can only run one import or recluster job at a time, under
+a single global lock that is not keyed by partition. While one job holds the lock, calls
 to the other endpoints are rejected. How they are rejected depends on the
 endpoint you call. The import endpoints return `HTTP 200` with
 `"success": false`, whereas `/v1/recluster` returns `HTTP 503` (gRPC

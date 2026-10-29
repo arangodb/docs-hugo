@@ -5,8 +5,6 @@ weight: 2
 description: >-
   Chat with your knowledge graph - ask questions in plain language and get
   grounded, cited answers
-aliases:
-  - /agentic-ai-suite/autorag/quick-start/
 ---
 {{< tag "Agentic AI Suite" >}}
 

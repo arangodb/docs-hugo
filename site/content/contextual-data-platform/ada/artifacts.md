@@ -5,8 +5,6 @@ weight: 15
 description: >-
   The interactive charts and custom HTML that Ada renders alongside its chat
   answers
-aliases:
-  - /agentic-ai-suite/ada/artifacts/
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 

@@ -6,7 +6,6 @@ weight: 110
 description: >-
   Boost your machine learning models with graph data using ArangoDB's advanced GraphML capabilities
 aliases:
-  - /agentic-ai-suite/graphml/
   - ../arangodb/3.12/data-science/arangographml # 3.10, 3.11
   - ../arangodb/stable/data-science/arangographml # 3.10, 3.11
   - ../arangodb/4.x/data-science/arangographml # 3.10, 3.11

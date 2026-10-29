@@ -4,8 +4,6 @@ menuTitle: Inspect the Knowledge Graph
 description: >-
   Verify that an import succeeded and inspect the resulting ArangoDB collections
 weight: 30
-aliases:
-  - /agentic-ai-suite/importer/verify-and-explore/
 ---
 {{< tag "Agentic AI Suite" >}}
 

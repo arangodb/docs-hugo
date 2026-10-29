@@ -4,8 +4,6 @@ menuTitle: Semantic Units
 description: >-
   Extract and process images, web URLs, and multimedia content from your documents
 weight: 55
-aliases:
-  - /agentic-ai-suite/importer/semantic-units/
 ---
 {{< tag "Agentic AI Suite" >}}
 

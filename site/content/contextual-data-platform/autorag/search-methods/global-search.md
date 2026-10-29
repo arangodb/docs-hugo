@@ -4,8 +4,6 @@ menuTitle: Global Search
 description: >-
   Community-based analysis for themes, patterns, and high-level insights
 weight: 10
-aliases:
-  - /agentic-ai-suite/autorag/search-methods/global-search/
 ---
 {{< tag "Agentic AI Suite" >}}
 

@@ -6,8 +6,6 @@ description: >-
   Real-world enterprise use cases for Arango's AutoGraph copilot and 
   comparison with traditional RAG approaches, including business benefits 
   and practical applications
-aliases:
-  - /agentic-ai-suite/autograph/use-cases/
 ---
 {{< tag "Agentic AI Suite" >}}
 

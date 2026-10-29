@@ -5,8 +5,6 @@ weight: 84
 description: >-
   The concurrency, size, timeout, and provider limits the Importer service
   enforces, and which of them you can change
-aliases:
-  - /agentic-ai-suite/importer/reference/limits/
 ---
 {{< tag "Agentic AI Suite" >}}
 

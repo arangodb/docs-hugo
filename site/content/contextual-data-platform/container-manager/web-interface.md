@@ -4,8 +4,6 @@ menuTitle: Web Interface
 weight: 20
 description: >-
   Deploy and manage services through the Container Manager web interface
-aliases:
-  - /platform-suite/container-manager/web-interface/
 ---
 {{< tag "Platform Suite" >}}
 

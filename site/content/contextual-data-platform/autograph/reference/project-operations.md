@@ -5,8 +5,6 @@ description: >-
   Inspect the state of a project, configure its chat and embedding models, and
   remove categories or the whole project
 weight: 18
-aliases:
-  - /agentic-ai-suite/autograph/reference/project-operations/
 ---
 {{< tag "Agentic AI Suite" >}}
 

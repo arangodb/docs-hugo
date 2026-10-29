@@ -4,8 +4,6 @@ menuTitle: Deep Search
 description: >-
   LLM-orchestrated multi-step research for complex queries requiring thorough analysis
 weight: 25
-aliases:
-  - /agentic-ai-suite/autorag/search-methods/deep-search/
 ---
 {{< tag "Agentic AI Suite" >}}
 

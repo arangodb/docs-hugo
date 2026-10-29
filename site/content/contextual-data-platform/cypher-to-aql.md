@@ -6,8 +6,6 @@ weight: 250
 description: >-
   Translate Cypher queries to AQL for use with ArangoDB using the
   `arango-cypher2aql` service, available for the Arango Contextual Data Platform
-aliases:
-  - /platform-suite/cypher2aql/
 ---
 {{< tag "Platform Suite" >}}
 

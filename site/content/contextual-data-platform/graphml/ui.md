@@ -5,8 +5,6 @@ weight: 10
 description: >-
  Learn how to create, configure, and run a full machine learning workflow for
  GraphML in four steps using the features in the ArangoDB web interface
-aliases:
-  - /agentic-ai-suite/graphml/ui/
 ---
 {{< tag "Agentic AI Suite" >}}
 

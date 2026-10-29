@@ -6,8 +6,6 @@ weight: 300
 description: >-
   Deploy and manage custom services within the Arango Contextual Data Platform using
   your own code packages or Docker images
-aliases:
-  - /platform-suite/container-manager/
 ---
 {{< tag "Platform Suite" >}}
 

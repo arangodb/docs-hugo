@@ -5,8 +5,6 @@ weight: 2
 description: >-
   Turn slow AQL queries into fast ones - let AI find the bottleneck and
   rewrite the query, with results verified to match
-aliases:
-  - /agentic-ai-suite/reasoner/quick-start/
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 

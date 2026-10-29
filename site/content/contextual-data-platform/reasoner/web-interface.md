@@ -5,8 +5,6 @@ weight: 10
 description: >-
   Step-by-step instructions for accessing, setting up, and using the Reasoner
   from the Query Editor in the Arango Contextual Data Platform UI
-aliases:
-  - /agentic-ai-suite/reasoner/web-interface/
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 

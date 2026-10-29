@@ -6,8 +6,6 @@ weight: 330
 description: >-
   Orchestrate the Contextual Data Platform with the Arango Control Plane to
   install, manage, and run services in your Kubernetes cluster
-aliases:
-  - /platform-suite/control-plane-acp/
 ---
 {{< tag "Platform Suite" >}}
 

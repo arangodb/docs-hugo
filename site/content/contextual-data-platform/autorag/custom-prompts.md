@@ -4,8 +4,6 @@ menuTitle: Custom Prompts
 description: >-
   Customize LLM prompts used during query processing for domain-specific behavior
 weight: 55
-aliases:
-  - /agentic-ai-suite/autorag/custom-prompts/
 ---
 {{< tag "Agentic AI Suite" >}}
 

@@ -5,8 +5,6 @@ description: >-
   Domain-specific search using configurable tools with flexible search
   strategies and custom graph traversal
 weight: 40
-aliases:
-  - /agentic-ai-suite/autorag/search-methods/custom-retriever/
 ---
 {{< tag "Agentic AI Suite" >}}
 

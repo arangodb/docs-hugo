@@ -6,8 +6,6 @@ description: >-
   Deploy and configure the Natural Language to AQL service on the Arango
   Contextual Data Platform, including LLM provider configuration and
   Secrets Manager integration
-aliases:
-  - /agentic-ai-suite/natural-language-to-aql/setup/
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 

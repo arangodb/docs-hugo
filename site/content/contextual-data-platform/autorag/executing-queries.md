@@ -4,8 +4,6 @@ menuTitle: Execute Queries
 description: >-
   Learn how to execute different types of queries against your knowledge graph
 weight: 40
-aliases:
-  - /agentic-ai-suite/autorag/executing-queries/
 ---
 {{< tag "Agentic AI Suite" >}}
 

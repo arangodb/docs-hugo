@@ -4,11 +4,8 @@ menuTitle: Document Conversion
 weight: 30
 description: >-
   How the File Parser turns PDF, Office, and text files into the Markdown that
-  AutoGraph and the Importer work with, what it extracts from each format, and
+  AutoGraph and the Importer process, what it extracts from each format, and
   how to size it on a self-hosted cluster
-aliases:
-  - /agentic-ai-suite/importer/setup/
-  - /agentic-ai-suite/importer/quickstart/
 ---
 {{< tag "Agentic AI Suite" >}}
 

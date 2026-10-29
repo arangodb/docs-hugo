@@ -5,8 +5,6 @@ weight: 2
 description: >-
   Predict missing labels and uncover hidden patterns in your graph with
   machine learning, no data science pipeline required
-aliases:
-  - /agentic-ai-suite/graphml/quick-start/
 ---
 {{< tag "Agentic AI Suite" >}}
 

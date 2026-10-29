@@ -5,8 +5,6 @@ group: Develop & extend
 weight: 320
 description: >-
   Colocated Jupyter Notebooks within the Arango Contextual Data Platform
-aliases:
-  - /agentic-ai-suite/notebook-servers/
 ---
 {{< tag "Agentic AI Suite" >}}
 

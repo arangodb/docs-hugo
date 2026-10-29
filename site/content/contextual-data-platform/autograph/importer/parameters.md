@@ -4,8 +4,6 @@ menuTitle: Parameters
 description: >-
   Complete reference for all Importer service parameters
 weight: 82
-aliases:
-  - /agentic-ai-suite/importer/reference/parameters/
 ---
 {{< tag "Agentic AI Suite" >}}
 

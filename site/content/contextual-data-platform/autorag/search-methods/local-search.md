@@ -4,8 +4,6 @@ menuTitle: Local Search
 description: >-
   Entity-focused retrieval for detailed queries about specific concepts and relationships
 weight: 20
-aliases:
-  - /agentic-ai-suite/autorag/search-methods/local-search/
 ---
 {{< tag "Agentic AI Suite" >}}
 

@@ -6,7 +6,6 @@ description: >-
   Knowledge graphs, large language models, and how graph-based
   retrieval-augmented generation combines the two
 aliases:
-  - /agentic-ai-suite/autograph/concepts/
   - /arangodb/3.12/data-science/llm-knowledge-graphs # 3.10, 3.11
   - /arangodb/stable/data-science/llm-knowledge-graphs # 3.10, 3.11
   - /arangodb/4.x/data-science/llm-knowledge-graphs # 3.10, 3.11

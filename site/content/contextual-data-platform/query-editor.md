@@ -5,8 +5,6 @@ group: Query & explore
 weight: 200
 description: >-
   Write, run, and analyze AQL queries using an IDE-like interface
-aliases:
-  - /platform-suite/query-editor/
 ---
 {{< tag "Platform Suite" >}}
 

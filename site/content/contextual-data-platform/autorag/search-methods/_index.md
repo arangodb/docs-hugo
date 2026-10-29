@@ -4,8 +4,6 @@ menuTitle: Search Methods
 description: >-
   Understand the different search methods available in AutoRAG
 weight: 30
-aliases:
-  - /agentic-ai-suite/autorag/search-methods/
 ---
 {{< tag "Agentic AI Suite" >}}
 

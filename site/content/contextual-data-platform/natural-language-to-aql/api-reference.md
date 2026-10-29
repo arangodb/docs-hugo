@@ -5,8 +5,6 @@ weight: 20
 description: >-
   HTTP API reference for the Natural Language to AQL service, including
   endpoints for text processing, AQL generation, and query execution
-aliases:
-  - /agentic-ai-suite/natural-language-to-aql/api-reference/
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 

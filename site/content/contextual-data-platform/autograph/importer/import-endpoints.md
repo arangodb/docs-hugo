@@ -4,17 +4,15 @@ menuTitle: Import Endpoints
 description: >-
   Learn how to import single or multiple documents to build your knowledge graph
 weight: 80
-aliases:
-  - /agentic-ai-suite/importer/importing-files/
 ---
 {{< tag "Agentic AI Suite" >}}
 
 This page documents the import endpoints of the Importer and how to monitor
 running imports. During an [AutoGraph](../reference/_index.md) orchestration, these calls
 are submitted for you, one per partition. Call them yourself only to re-run a
-partition with custom settings, or to import documents outside AutoGraph, which
-has no web interface. In that case, install the service and configure its
-providers first, see [The Importer](_index.md#prerequisites-when-you-install-it-yourself)
+partition with custom settings, or to import documents without AutoGraph. The
+standalone Importer has no web interface. In that case, install the service and
+configure its providers first, see [The Importer](_index.md#prerequisites-when-you-install-it-yourself)
 and [LLM Configuration](llm-configuration.md).
 
 {{< info >}}
@@ -24,11 +22,15 @@ header (e.g., `Bearer <token>`) on every request to the Importer.
 
 ## Call sequence
 
+All paths are relative to the service URL
+`https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}`.
+
 ### Single file
 
-1. `GET /v1/health` - confirm the service is ready.
-2. `POST /v1/import` - submit the file. Returns `success: true` and starts
-   processing in the background. **No `job_id` is returned**.
+1. [`GET .../v1/health`](#health-check) - confirm the service is ready.
+2. [`POST .../v1/import`](#single-file-import) - submit the file. Returns
+   `success: true` and starts processing in the background.
+   **No `job_id` is returned**.
 3. Monitor via the **platform service status** until the status reaches
    `service_completed` or a terminal failure status.
 4. Query ArangoDB or call [AutoRAG](../../autorag/_index.md) against the
@@ -36,9 +38,11 @@ header (e.g., `Bearer <token>`) on every request to the Importer.
 
 ### Batch
 
-1. `GET /v1/health`
-2. `POST /v1/import-multiple` - save the returned `job_id`.
-3. Poll `GET /v1/jobs/{job_id}` (for example, every 10-30 seconds) until
+1. [`GET .../v1/health`](#health-check)
+2. [`POST .../v1/import-multiple`](#multi-file-import) - save the returned
+   `job_id`.
+3. Poll [`GET .../v1/jobs/{job_id}`](#get-job-status) (for example, every
+   10-30 seconds) until
    `is_terminal` is `true`.
 4. On `service_completed`, verify the graph; on failure, read
    `current_status.message` and consult [Error Handling](error-handling.md).

@@ -4,8 +4,6 @@ menuTitle: Package Code
 weight: 10
 description: >-
   Package your application code for deployment in Container Manager
-aliases:
-  - /platform-suite/container-manager/package-code/
 ---
 {{< tag "Platform Suite" >}}
 

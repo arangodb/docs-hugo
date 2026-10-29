@@ -5,8 +5,6 @@ weight: 10
 description: >-
   Ask Ada questions in natural language and use the suggested prompts to get
   started quickly
-aliases:
-  - /agentic-ai-suite/ada/start-a-conversation/
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 

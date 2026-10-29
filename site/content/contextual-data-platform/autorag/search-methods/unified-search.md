@@ -4,8 +4,6 @@ menuTitle: Unified Search
 description: >-
   Fast unified retrieval combining chunk and entity search for quick answers
 weight: 30
-aliases:
-  - /agentic-ai-suite/autorag/search-methods/unified-search/
 ---
 {{< tag "Agentic AI Suite" >}}
 

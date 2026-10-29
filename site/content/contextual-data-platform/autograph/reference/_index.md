@@ -3,37 +3,16 @@ title: AutoGraph HTTP API reference
 menuTitle: Reference
 weight: 90
 description: >-
-  The service that builds your Context Graph: what it does, how to install it,
-  and the HTTP API for the corpus build, the RAG Strategizer, and the
-  orchestration of the Knowledge Graph
-aliases:
-  - /agentic-ai-suite/autograph/setup/
-  - /agentic-ai-suite/autograph/reference/
+  The HTTP API of the AutoGraph service: corpus build, RAG Strategizer, and
+  orchestration
 ---
 {{< tag "Agentic AI Suite" >}}
 
-The AutoGraph service is the first stage of AutoGraph Studio, see the
-[AutoGraph overview](../_index.md).
-It builds the **Corpus Graph** from your documents, assigns a RAG strategy to
-every knowledge domain it discovers, and orchestrates the
-[Importer](../importer/_index.md) to build the **Knowledge Graph**. Together, the
-two graphs form your **Context Graph**, which [AutoRAG](../../autorag/_index.md)
-answers questions from.
-
-You can drive the service in two ways:
-
-- [**Web interface**](../web-interface.md): A guided, step-by-step workflow
-  for creating projects, uploading documents, and deploying retrieval
-  services without writing code.
-- **HTTP API**: The endpoints documented on this page and the pages of this
-  section. Full programmatic control over the AutoGraph pipeline for automation
-  and integration into existing workflows.
-
-{{< tip >}}
-Both interfaces produce the same result: a fully operational
-knowledge graph with deployed retrieval services. Choose the web
-interface for a guided experience, or the API for automation.
-{{< /tip >}}
+This page and the pages of this section describe the HTTP API of the AutoGraph
+service. Use it to automate the AutoGraph pipeline or integrate it into
+existing workflows. It produces the same result as the
+[web interface](../web-interface.md). For what AutoGraph does and how it
+works, see the [AutoGraph overview](../_index.md).
 
 ## Prerequisites
 

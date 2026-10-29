@@ -49,14 +49,12 @@ operational excellence. Read more about the platform's
 
 ## What you can do
 
-| Goal | Pages |
-|:-----|:------|
-| **Install** the platform | [Install & Upgrade](install-and-upgrade/_index.md), [License Management](license-management.md) |
-| **Build** context, retrieval, and models from your data | [AutoGraph](autograph/_index.md), [AutoRAG](autorag/_index.md), [GraphML](graphml/_index.md), [Graph Analytics](graph-analytics/_index.md), [Supported LLM providers and models](llm-models.md) |
-| **Query & explore** your data in the web interface | [Query Editor](query-editor.md), [Graph Visualizer](graph-visualizer.md), [Natural Language to AQL](natural-language-to-aql/_index.md), [Reasoner](reasoner/_index.md), [Ada](ada/_index.md), [Cypher to AQL](cypher-to-aql.md) |
-| **Develop & extend** the platform with your own code | [Container Manager](container-manager/_index.md), [File Manager](file-manager/_index.md), [Notebook Servers](notebook-servers.md), [Control Plane](control-plane-acp/_index.md) |
-| **Operate** the platform | [Access control](access-control/_index.md), [Secrets Manager](secrets-manager.md), [Monitoring](monitoring.md) |
-| **Reference** | [API reference](reference.md), [Release notes](release-notes/_index.md), [API changes](release-notes/api-changes.md), [Service versions](release-notes/service-versions.md) |
+| Goal | Start here |
+|:-----|:-----------|
+| **Install** the data platform | [Install & Upgrade](install-and-upgrade/_index.md), [License Management](license-management.md) |
+| **Build** a Context Graph from your documents and ask questions | [AutoGraph](autograph/_index.md), [AutoRAG](autorag/_index.md) |
+| **Query & explore** your data in the web interface | [Query Editor](query-editor.md), [Graph Visualizer](graph-visualizer.md) |
+| **Integrate** the services into your applications | [API references](reference.md) |
 
 ## Where your data lives
 
@@ -66,7 +64,7 @@ the platform's AI services produce (knowledge graphs, embeddings, analytics
 results, query history) is persisted as collections and documents in
 ArangoDB databases, alongside your existing application data.
 
-The exception is raw files (PDFs, images, office documents, and other
+The exception is raw files (PDFs, images, Office documents, and other
 binaries) that you upload for AI processing, such as the documents you
 feed into AutoGraph.
 These are stored in object storage (S3, MinIO, or another object store) and
@@ -105,15 +103,19 @@ to provide automated deployment, scaling, and management capabilities.
 
 ## Licensing
 
-The Arango Contextual Data Platform is licensed as two suites: the Platform
-Suite, which is always included, and the Agentic AI Suite, which is licensed
-on top of it. See [Features and licensing](features-and-licensing.md) for
-what each includes. Every page carries a badge with the suite it belongs to.
+The Arango Contextual Data Platform is licensed as two suites:
+
+- {{< tag "Platform Suite" >}} Always included.
+- {{< tag "Agentic AI Suite" >}} Licensed on top of the Platform Suite.
+
+See [Features and licensing](features-and-licensing.md) for what each
+includes. Every page carries a badge with the suite it belongs to.
 Licenses are activated and renewed automatically by the ArangoDB Kubernetes
 Operator, see [License Management](license-management.md).
 
-## Sample datasets
+## Tutorials
 
-If you want to try out the platform's data science features, you may use the
-[`arango-datasets` Python package](../ecosystem/arango-datasets.md)
-to load sample datasets into a deployment.
+To try out the data platform, follow the tutorials:
+
+- [Tutorial 1: Install and try it out](../get-started/contextual-data-platform/quickstart/_index.md)
+- [Tutorial 2: From documents to answers](../get-started/contextual-data-platform/build-with-autograph.md)

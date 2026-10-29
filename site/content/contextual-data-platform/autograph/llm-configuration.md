@@ -5,8 +5,6 @@ description: >-
   Configure OpenAI-compatible APIs for the chat and
   embedding models AutoGraph uses
 weight: 20
-aliases:
-  - /agentic-ai-suite/autograph/llm-configuration/
 ---
 {{< tag "Agentic AI Suite" >}}
 

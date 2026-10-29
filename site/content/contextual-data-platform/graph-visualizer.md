@@ -5,8 +5,6 @@ group: Query & explore
 weight: 210
 description: >-
   Visually explore and interact with your ArangoDB graphs through an intuitive interface
-aliases:
-  - /platform-suite/graph-visualizer/
 ---
 {{< tag "Platform Suite" >}}
 
