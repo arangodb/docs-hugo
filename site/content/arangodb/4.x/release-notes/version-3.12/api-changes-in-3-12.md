@@ -416,14 +416,21 @@ still requires a superuser JWT in the `_system` database.
 
 Changing the query tracking properties of a database via the
 [`PUT /_api/query/properties` endpoint](../../develop/http-api/queries/aql-queries.md#update-the-aql-query-tracking-configuration)
-no longer requires admin permissions. The user account you authenticate with
-now needs `rw` access to the database the request targets (classic
-authorization) or permission for the `db:UpdateQueryProperties` action on this
-database (RBAC). Up to v3.12.12, `rw` access to the `_system` database was
-required, regardless of the database.
+now requires `rw` access to the database the request targets (classic
+authorization). Previously, any user account with at least `ro` access to the
+database could change the properties, for example, to enable the tracking of
+bind variables.
 
-If the access level is insufficient, the request fails with an HTTP
-`403 Forbidden` error.
+With RBAC, none of the predefined roles grants the permission to change the
+query tracking properties. Only requests with a
+[superuser JWT](../../develop/http-api/authentication.md#jwt-superuser-tokens)
+can change them.
+
+Changing the properties is also no longer possible in read-only mode, except
+with a superuser JWT.
+
+If you lack the required permission or if the server is in read-only mode,
+the request fails with an HTTP `403 Forbidden` error.
 
 ### Endpoint return value changes
 

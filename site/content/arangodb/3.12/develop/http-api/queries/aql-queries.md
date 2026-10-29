@@ -2789,10 +2789,14 @@ paths:
         Modify one or more query tracking properties at runtime for the
         specified database.
 
-        The user account you authenticate with needs `rw` access to the
-        specified database (classic authorization) or permission for the
-        `db:UpdateQueryProperties` action on the database (RBAC).
-        Up to v3.12.12, `rw` access to the `_system` database was required.
+        From v3.12.13 onward, the user account you authenticate with needs
+        `rw` access to the specified database (classic authorization).
+        With RBAC, none of the predefined roles grants the permission to change
+        the query tracking properties, so only requests with a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens) can do so.
+        Changing the properties is not possible in read-only mode, except with a
+        superuser JWT. Up to v3.12.12, any user account with at least `ro`
+        access to the database could change the properties.
       parameters:
         - name: database-name
           in: path
@@ -2974,7 +2978,8 @@ paths:
         '403':
           description: |
             The user account you authenticate with lacks `rw` access to
-            the specified database.
+            the specified database, or the server is in read-only mode
+            (from v3.12.13 onward).
           content:
             application/json:
               schema:
