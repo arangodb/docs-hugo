@@ -1,26 +1,2 @@
-{{ "<!-- https://github.com/filamentgroup/loadCSS/blob/master/README.md#how-to-use -->" | safeHTML }}
-<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
-<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-<link href="{{"css/fontawesome-all.min.css" | relURL}}" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="{{"css/fontawesome-all.min.css" | relURL}}" rel="stylesheet"></noscript>
-<link href="{{"css/nucleus.css" | relURL}}" rel="stylesheet">
-<link href="{{"css/fonts.css" | relURL}}" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="{{"css/fonts.css" | relURL}}" rel="stylesheet"></noscript>
 <link href="{{"css/theme.css" | relURL}}" rel="stylesheet">
-{{- $themevariants := slice | append (.Site.Params.themeVariant | default "relearn-light" ) }}
-{{- with index $themevariants 0 }}
-<link href="{{(printf "css/theme-%s.css" .) | relURL}}" rel="stylesheet" id="variant-style">
-{{- end }}
-<link href="{{"css/print.css" | relURL}}" rel="stylesheet" media="print">
-<script src="{{"js/variant.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
-<script>
-  {{ "// hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic:" | safeJS }}
-  {{ "// https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72" | safeJS }}
-  var root_url="/";
-  var baseUri=root_url.replace(/\/$/, '');
-  {{ "// some further base stuff" | safeJS }}
-  var baseUriFull='{{ trim .Site.BaseURL "/" | safeJS }}/';
-  {{- $quotedthemevariants := slice }}
-  {{- range $themevariants }}
-    {{- $quotedthemevariants = $quotedthemevariants | append (printf "'%s'" .) }}
-  {{- end }}
-  window.variants && variants.init( [ {{ delimit $quotedthemevariants ", " | safeJS }} ] );
-</script>
+<link href="{{"css/chroma.css" | relURL}}" rel="stylesheet">

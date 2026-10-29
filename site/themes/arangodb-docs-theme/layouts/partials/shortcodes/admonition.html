@@ -1,0 +1,28 @@
+{{- /* Admonition box. Expects "type" (info, tip, warning, danger, security) and rendered HTML "content" */ -}}
+{{- $icons := dict 
+  "info" "info"
+  "tip" "circle-check"
+  "warning" "triangle-alert"
+  "danger" "circle-x"
+  "security" "shield-alert"
+-}}
+{{- $labels := dict
+  "info" "Note"
+  "tip" "Tip"
+  "warning" "Warning"
+  "danger" "Danger"
+  "security" "Security"
+-}}
+{{- $type := .type -}}
+<div class="box notices cstyle {{ $type }}" role="note">{{/* */ -}}
+  <div class="box-content-container">{{/* */ -}}
+    <div class="box-content">{{/* */ -}}
+      <i class="icon icon-{{ index $icons $type }}" aria-hidden="true"></i>{{/* */ -}}
+      <div class="box-text">{{/* */ -}}
+        <span class="visually-hidden">{{ index $labels $type }}:</span>
+        {{- .content -}}
+      </div>{{/* */ -}}
+    </div>{{/* */ -}}
+  </div>{{/* */ -}}
+</div>
+{{- /* Strip trailing newline */ -}}

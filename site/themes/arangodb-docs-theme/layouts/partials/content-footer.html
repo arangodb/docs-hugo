@@ -63,7 +63,7 @@
 {{- with $prev }}
   {{- if ne (len .Ancestors) 1 }}
     <a class="nav nav-prev link" href="{{ .RelPermalink }}">
-      <i class="fas fa-chevron-left fa-fw"></i><p>{{ .Params.menuTitle | markdownify }}</p></a>
+      <i class="icon icon-fw icon-chevron-left" aria-hidden="true"></i><p>{{ .Params.menuTitle | markdownify }}</p></a>
   {{- end}}
 {{- end }}
 </span>
@@ -71,6 +71,6 @@
 <span class="next">
 {{- with $next }}
   <a class="nav nav-next link" href="{{ .RelPermalink }}">
-    <p>{{ .Params.menuTitle | markdownify }}</p><i class="fas fa-chevron-right fa-fw"></i></a>
+    <p>{{ .Params.menuTitle | markdownify }}</p><i class="icon icon-fw icon-chevron-right" aria-hidden="true"></i></a>
 {{- end }}
 </span>
