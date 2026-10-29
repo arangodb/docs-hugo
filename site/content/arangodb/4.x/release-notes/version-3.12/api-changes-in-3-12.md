@@ -410,6 +410,21 @@ are not affected.
 Using the `all` query parameter to target all databases remains unchanged and
 still requires a superuser JWT in the `_system` database.
 
+#### Permission checks for the query tracking properties
+
+<small>Introduced in: v3.12.13</small>
+
+Changing the query tracking properties of a database via the
+[`PUT /_api/query/properties` endpoint](../../develop/http-api/queries/aql-queries.md#update-the-aql-query-tracking-configuration)
+no longer requires admin permissions. The user account you authenticate with
+now needs `rw` access to the database the request targets (classic
+authorization) or permission for the `db:UpdateQueryProperties` action on this
+database (RBAC). Up to v3.12.12, `rw` access to the `_system` database was
+required, regardless of the database.
+
+If the access level is insufficient, the request fails with an HTTP
+`403 Forbidden` error.
+
 ### Endpoint return value changes
 
 #### Storage engine API

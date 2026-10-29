@@ -2646,6 +2646,11 @@ paths:
       description: |
         Modify one or more query tracking properties at runtime for the
         specified database.
+
+        The user account you authenticate with needs `rw` access to the
+        specified database (classic authorization) or permission for the
+        `db:UpdateQueryProperties` action on the database (RBAC).
+        Up to v3.12.12, `rw` access to the `_system` database was required.
       parameters:
         - name: database-name
           in: path
@@ -2816,6 +2821,38 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            The user account you authenticate with lacks `rw` access to
+            the specified database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
