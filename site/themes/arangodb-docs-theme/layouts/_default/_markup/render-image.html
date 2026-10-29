@@ -4,7 +4,9 @@
 {{- $path := path.Join .Page.File.Dir .Destination }}
 {{- $img := resources.Get $path }}
 {{- if $img -}}
-<img alt="{{ .Text }}" src="{{ $img.RelPermalink }}">
+{{- /* Screenshots get a border, see img.img-border */ -}}
+<img alt="{{ .Text }}" src="{{ $img.RelPermalink }}"
+  {{- if in (slice "png" "jpeg" "gif" "webp") $img.MediaType.SubType }} class="img-border"{{ end }}>
 {{- else }}
   {{- errorf "Broken image reference '%v' found in %v" .Destination .Page.File.Path }}
 {{- end }}
