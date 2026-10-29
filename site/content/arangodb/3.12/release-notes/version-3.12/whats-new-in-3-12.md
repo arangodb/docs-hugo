@@ -2402,12 +2402,15 @@ request bodies has been added:
 
 - `--http.decompressed-request-body-global-memory-limit`:
   The maximum combined size of all decompressed request bodies that the server
-  holds at the same time (in bytes). Each compressed request reserves its
-  decompressed size from this budget until the request is finished. Requests
-  that would exceed the budget are rejected with an HTTP `503 Service Unavailable`
-  error and can be retried later. The default is 10% of the physical memory.
-  A value of `0` disables the limit. If you set a value lower than
-  `--http.max-decompressed-request-body-size`, the latter is used as the budget.
+  holds at the same time (in bytes). Each compressed request body (gzip,
+  deflate, or lz4) reserves its decompressed size from this budget until the
+  request is finished. Requests that would exceed the budget are rejected with
+  an HTTP `503 Service Unavailable` error and can be retried later.
+  The default is 10% of the physical memory. A value of `0` disables the limit.
+  The memory usage is tracked in steps of 32 KiB.
+
+  The budget must be at least as large as `--http.max-decompressed-request-body-size`.
+  If you set both options and the budget is smaller, the server refuses to start.
 
 ## Miscellaneous changes
 
