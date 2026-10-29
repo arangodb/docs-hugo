@@ -63,7 +63,7 @@ ArangoDB databases, alongside your existing application data.
 The exception is raw files (PDFs, images, office documents, and other
 binaries) that you upload for Agentic AI processing, such as the documents you
 feed into AutoGraph.
-These are stored in object storage (S3, MinIO, or another blob store) and
+These are stored in object storage (S3, MinIO, or another object store) and
 managed through the
 [File Manager](../platform-suite/file-manager/_index.md) service. The same
 File Manager also holds the code packages uploaded through the Container

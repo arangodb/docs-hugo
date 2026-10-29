@@ -28,6 +28,10 @@ ArangoDB, and agents and applications access the context layer through the
 The [**Agentic AI Suite**](../agentic-ai-suite/_index.md) builds the context
 graph, keeps it current, and answers questions from it.
 
+{{< info >}}
+The Agentic AI Suite requires a separate license.
+{{< /info >}}
+
 [**AutoGraph Studio**](../agentic-ai-suite/autograph/_index.md) turns enterprise
 data into a context graph and retrieves from it:
 

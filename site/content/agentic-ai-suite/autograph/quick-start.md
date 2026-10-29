@@ -8,7 +8,8 @@ description: >-
 ---
 ## Prerequisites
 
-- An **Arango Contextual Data Platform** deployment.
+- An **Arango Contextual Data Platform** deployment with a valid Agentic AI
+  Suite license.
 - A **project** in your target database (keeps datasets isolated).
   See [Projects](../../platform-suite/control-plane-acp/_index.md#projects).
 - **LLM and embedding API access** (OpenAI-compatible).
@@ -79,6 +80,9 @@ First, install the AutoGraph service through the
 [Arango Control Plane](../../platform-suite/control-plane-acp/_index.md):
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/autograph" >}}
+
+For an example install request and the required keys, see
+[Deploying AutoGraph](setup.md#deploying-autograph).
 
 Then run the pipeline. Every call uses an `Authorization: Bearer <token>`
 header. Each step below links to the endpoint's full reference, and the

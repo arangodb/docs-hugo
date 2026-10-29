@@ -7,6 +7,24 @@ description: >-
 pageToc:
   maxHeadlineLevel: 2
 ---
+## v4.1.1 (October 2026)
+
+This is a maintenance release with stability and security fixes for AutoGraph.
+
+### AutoGraph
+
+{{< tag "Agentic AI Suite" >}}
+
+- **Larger imports on the same resources**: Building a Knowledge Graph now
+  uses less memory, so larger document sets can be imported without running
+  out of memory.
+- **Accurate status for long builds**: Knowledge Graph builds that take longer
+  than an hour are no longer reported as timed out while they are still
+  running.
+- **Clean project deletion**: Deleting a large project now correctly removes
+  all its documents and categories, so a new project with the same name starts
+  empty. Deleting a project also no longer shows a misleading error.
+
 ## v4.1.1-preview (September 2026)
 
 {{< tag "Limited Release" >}}
