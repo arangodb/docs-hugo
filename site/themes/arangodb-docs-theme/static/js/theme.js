@@ -39,6 +39,33 @@ function showSidebarHandler() {
     document.querySelectorAll(".main-nav").forEach(el => el.classList.toggle("active"));
 }
 
+// Page-level search boxes (e.g. on the home page) open the DocSearch modal.
+// They are wired here because inline scripts in loaded page content don't run.
+const isMacPlatform = /Mac|iPhone|iPad/.test(navigator.platform);
+
+function openSearch() {
+    const btn = document.querySelector(".DocSearch-Button");
+    if (btn) {
+        btn.click();
+        return;
+    }
+    // Fallback: dispatch Ctrl/Cmd+K so DocSearch's global shortcut opens the modal
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", code: "KeyK", keyCode: 75, metaKey: isMacPlatform, ctrlKey: !isMacPlatform, bubbles: true }));
+}
+
+function setSearchShortcutLabels() {
+    // The HTML default "Ctrl K" covers non-Mac platforms
+    if (!isMacPlatform) return;
+    document.querySelectorAll("[data-search-kbd]").forEach(el => el.textContent = "⌘ K");
+}
+
+function toggleSidebarCollapsed() {
+    const collapsed = document.body.classList.toggle("sidebar-collapsed");
+    try {
+        localStorage.setItem("docs-sidebar-collapsed", collapsed ? "1" : "0");
+    } catch (e) {}
+}
+
 
 /*
 
@@ -487,6 +514,7 @@ function initArticle(url) {
   linkToVersionedContent();
   updateActiveNavItem(window.location.pathname, false);
   updateVersionSelector();
+  setSearchShortcutLabels();
   renderMermaidDiagrams();
 }
 
@@ -851,7 +879,7 @@ function linkToVersionedContent() {
   const currentVersion = getVersionFromURL();
   if (currentVersion) {
     if (currentVersion !== "stable" && currentVersion !== "devel") return;
-    document.querySelectorAll(".link:not([target]), .card-link:not([target]), .header-link").forEach(el => {
+    document.querySelectorAll(".link:not([target], [data-unversioned]), .card-link:not([target], [data-unversioned]), .header-link").forEach(el => {
       const originalUrl = getLinkHref(el);
       const matches = originalUrl && originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
       if (matches && matches.length > 2) {
@@ -861,7 +889,7 @@ function linkToVersionedContent() {
       }
     });
   } else {
-    document.querySelectorAll(".link:not([target], .nav-prev, .nav-next), .card-link:not([target])").forEach(el => {
+    document.querySelectorAll(".link:not([target], .nav-prev, .nav-next, [data-unversioned]), .card-link:not([target], [data-unversioned])").forEach(el => {
       const originalUrl = getLinkHref(el);
       const matches = originalUrl && originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
       const previousVersion = localStorage.getItem('docs-version') ?? "stable";
@@ -1025,6 +1053,18 @@ function handleDocumentClick(event) {
     // Mobile menu toggle
     if (closest('.sidebar-toggle-navigation')) {
         showSidebarHandler();
+        return;
+    }
+
+    // Page-level search boxes
+    if (closest('[data-open-search]')) {
+        openSearch();
+        return;
+    }
+
+    // Desktop sidebar collapse/expand
+    if (closest('.sidebar-collapse, .sidebar-expand')) {
+        toggleSidebarCollapsed();
         return;
     }
 }
