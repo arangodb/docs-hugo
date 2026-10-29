@@ -2374,6 +2374,25 @@ added:
 |:------|:------------|
 | `arangodb_rbac_request_duration` | Duration of requests to the external RBAC authorization service in microseconds. |
 
+### Memory limit for decompressing request bodies
+
+<small>Introduced in: v3.12.13</small>
+
+The ArangoDB server decompresses incoming request bodies that are sent with a
+`Content-Encoding: gzip`, `Content-Encoding: deflate`, or `Content-Encoding: lz4`
+HTTP header. The following startup option has been added to limit how much
+memory this can take:
+
+- `--http.max-decompressed-request-body-size`:
+  The maximum size of a single request body after decompression (in bytes).
+  The default is `536870912` (512 MiB). Requests with a body that exceeds this
+  size once decompressed are rejected with an HTTP `413 Payload Too Large` error.
+  The limit applies to the decompressed size only. The size of a request as it
+  arrives over the network is limited separately.
+
+Up to v3.12.12, the maximum decompressed size is not configurable and requests
+exceeding it are rejected with an HTTP `400 Bad Request` error.
+
 ## Miscellaneous changes
 
 ### V8 and ICU library upgrades

@@ -1,17 +1,19 @@
 ---
 title: Troubleshooting the data platform installation
-menuTitle: Troubleshooting the install
+menuTitle: Troubleshooting
 weight: 10
 description: >-
-  Common problems when installing the Arango Contextual Data Platform for the
-  first time and running the quick start, and how to fix them
+  Quick fixes for the issues you might run into while installing the Arango
+  Contextual Data Platform or following the Quickstart
 ---
-This page covers the problems you are most likely to hit when following
-the [Arango Contextual Data Platform Quickstart](_index.md).
+Most installations go through without trouble. If something does not work as
+expected while you follow the
+[Arango Contextual Data Platform Quickstart](_index.md), this page helps you
+find the cause and get going again.
 
-## Start here
+## Check the status
 
-Three commands answer most questions:
+These three commands show what is happening:
 
 ```bash
 # What the installer did, and where it stopped
@@ -24,16 +26,17 @@ kubectl get pods --namespace arango
 kubectl describe pod <pod-name> --namespace arango
 ```
 
-Pods should reach a status of `Running`. A pod in `Pending`, `ImagePullBackOff`,
-or `CrashLoopBackOff` is the fastest thing to look at.
+Each part of the data platform runs in its own pod. All pods should reach a
+status of `Running`. If a pod shows `Pending`, `ImagePullBackOff`, or
+`CrashLoopBackOff`, start by looking at that one.
 
-## The installation fails
+## If the installation does not complete
 
 ### Your machine is not x86-64
 
 The Contextual Data Platform requires processors that support the **x86-64**
-architecture. On Apple silicon and other ARM machines, individual services may
-fail to start or the installation may not complete.
+architecture. On Apple silicon and other ARM machines, some services might not
+start yet.
 
 {{< tip >}}
 Arango is fully committed to supporting the ARM architecture for all products
@@ -62,8 +65,8 @@ kubectl describe node | grep -A 5 "Allocatable"
 
 ### The license key is rejected
 
-The installer stops during license activation. Check that you are passing the
-license key exactly as issued, including any trailing characters:
+If the installer stops during license activation, check that you are passing
+the license key exactly as issued, including any trailing characters:
 
 ```bash
 curl --proto '=https' --tlsv1.2 -fsSL https://releases.license.arango.ai/releases/plg/install.sh | bash -s -- --license-key "YOUR_LICENSE_KEY"
@@ -90,21 +93,20 @@ renewal lifecycle.
 
 ### Port 8529 is already in use
 
-The installer starts a port-forward on port `8529`. If another process holds it,
-the port-forward fails and the web interface never opens. Stop the other process,
-then re-run the port-forward on its own:
+The installer opens a connection to the data platform on port `8529`. If
+another process already uses that port, the web interface cannot open. Stop the
+other process and start the connection again:
 
 ```bash
 kubectl port-forward --namespace arango service/deployment-ea 8529:8529
 ```
 
-## The installation succeeded but you cannot connect
+## If you cannot connect
 
 ### Connection refused from the browser or the Arango AI SDK
 
-The port-forward has dropped. It is not a background service - it stops when the
-terminal closes, when the network changes, or when the pod restarts. Start it
-again:
+The connection to the data platform was interrupted, for example because the
+terminal closed or your network changed. Start it again:
 
 ```bash
 kubectl port-forward --namespace arango service/deployment-ea 8529:8529
@@ -114,7 +116,7 @@ Then retry. Re-run this command any time the connection stops working.
 
 ### The browser warns about the certificate
 
-Expected for a local installation. The deployment uses a self-signed
+This is normal for a local installation. The deployment uses a self-signed
 certificate, so the browser cannot verify it. Continue anyway - depending on the
 browser, the option to continue is behind an **Advanced** button.
 
@@ -147,9 +149,9 @@ The installer prints the root password at the end of its run and also writes it
 to `~/.arango-install.log`. If you missed it, read it from there. Change it
 before exposing the deployment beyond your machine.
 
-## The quick start does not work
+## If the Quickstart steps do not work as expected
 
-### The build never finishes
+### The build takes a long time
 
 `project.autograph.ingest()` is the long step - a few minutes on the sample
 documents, longer on your own documents. It polls the data platform every 30
@@ -163,8 +165,7 @@ def show(progress):
 project.autograph.ingest(categories=["physicists"], on_progress=show)
 ```
 
-No output for more than a minute or two means something is wrong. Check the
-service pods:
+If you see no progress for more than a few minutes, check the pods:
 
 ```bash
 kubectl get pods --namespace arango
@@ -185,7 +186,7 @@ Azure, or a private corporate LLM. See
 [LLM Configuration](../../../agentic-ai-suite/autograph/llm-configuration.md) for the
 supported providers and models.
 
-### Questions return nothing useful
+### Answers are empty or unhelpful
 
 Make sure `project.autograph.ingest()` completed and the retriever reported
 ready before you call `ask()`. Until the graph is built there is nothing to
@@ -194,9 +195,9 @@ inventing an answer. Asking through a retriever that was removed from the
 project raises `AutoRagNotDeployedError`; deploy a new one with
 `project.autorag.deploy()`.
 
-## Start over
+## Start fresh
 
-To remove the local cluster and everything in it:
+If you want to start again from a clean state, remove the local setup:
 
 ```bash
 kind delete cluster --name arango-platform
@@ -204,7 +205,7 @@ kind delete cluster --name arango-platform
 
 Then run the installation command again.
 
-## Still stuck?
+## More help
 
 - [Online setup](../../../contextual-data-platform/install-and-upgrade/online-setup.md) - the manual installation
   steps, useful for isolating which one fails.

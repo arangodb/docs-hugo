@@ -84,8 +84,9 @@ All service creation endpoints share the same `env` and `labels` fields:
 
 - **env**: Service-specific parameters as key-value pairs. The required keys
   depend on the service type; see the corresponding service documentation, such
-  as [Importer](../../agentic-ai-suite/importer/_index.md) and
-  [AutoRAG](../../agentic-ai-suite/autorag/_index.md).
+  as [Importer](../../agentic-ai-suite/importer/_index.md),
+  [AutoRAG](../../agentic-ai-suite/autorag/_index.md), and
+  [AutoGraph](../../agentic-ai-suite/autograph/setup.md#deploying-autograph).
 - **labels** (optional): Key-value pairs used to filter and identify services
   in the platform.
 - **profiles** (optional): A comma-separated string inside `env` defining

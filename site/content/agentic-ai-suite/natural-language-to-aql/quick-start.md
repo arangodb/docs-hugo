@@ -10,6 +10,8 @@ description: >-
 
 ## Prerequisites
 
+- An **Arango Contextual Data Platform** deployment with a valid Agentic AI
+  Suite license.
 - An ArangoDB database (note its name).
 - An API key for OpenAI or an OpenAI-compatible LLM provider.
 - For the API: a bearer token from

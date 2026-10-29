@@ -71,8 +71,64 @@ For detailed instructions on creating and managing projects, see the
 [Projects](../../platform-suite/control-plane-acp/_index.md#projects) section in
 the Arango Control Plane (ACP) documentation.
 
-To install and start the AutoGraph service, use the `/_platform/acp/v1/autograph`
-endpoint of the [Arango Control Plane (ACP)](../../platform-suite/control-plane-acp/_index.md).
+## Deploying AutoGraph
+
+To install and start the AutoGraph service, use the following endpoint of the
+[Arango Control Plane (ACP)](../../platform-suite/control-plane-acp/_index.md):
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/autograph" >}}
+
+Send the install keys in the `env` map of the request body. Key names are
+lowercase snake_case and have to be spelled exactly as shown below. Keys with a
+different spelling are not passed on to the service and are silently ignored.
+
+```bash
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/autograph \
+  -H "Authorization: Bearer <your-bearer-token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "env": {
+      "db_name": "mydb",
+      "genai_project_name": "myproject",
+      "fps_recovery_username": "autograph-recovery",
+      "chat_api_provider": "openai",
+      "chat_secret_profile_id": "<chat-profile-id>",
+      "chat_model": "gpt-5.4-nano",
+      "embedding_api_provider": "openai",
+      "embedding_secret_profile_id": "<embedding-profile-id>",
+      "embedding_model": "text-embedding-3-small",
+      "embedding_dim": "512"
+    }
+  }'
+```
+
+### Required keys
+
+| Key | Notes |
+|-----|-------|
+| `db_name` | ArangoDB database holding the project. |
+| `genai_project_name` | Project name. Prefixes every collection and has to match the `project` field of API calls. |
+| `fps_recovery_username` | ArangoDB user with read/write access to the project database, used to resume File Parser work after a pod restart. Installing without it fails. |
+| `chat_api_provider` | `openai` or `custom`. |
+| `embedding_api_provider` | `openai` or `custom`. |
+| `chat_secret_profile_id` or `chat_api_key` | Required for `openai` and `custom`. Prefer the secret profile. |
+| `embedding_secret_profile_id` or `embedding_api_key` | Required for `openai` and `custom`. Prefer the secret profile. |
+| `chat_api_url` / `embedding_api_url` | Required for `custom`; optional for `openai`. |
+
+### Common optional keys
+
+| Key | Default | Notes |
+|-----|---------|-------|
+| `chat_model` | `gpt-5.4-nano` | |
+| `embedding_model` | `text-embedding-3-small` | Fixed for the life of the project. |
+| `embedding_dim` | `512` | Embedding vector width. Has to match the output dimension of the embedding model. |
+| `multimodal_model` | unset | Forwarded to the Importer for image extraction. |
+| `embedding_api_keys` | falls back to the single key | Comma-separated pool, used round-robin. |
+| `embedding_concurrency` | `10` | Starting concurrency; adapts upward when unset. |
+| `chunk_size` | `1200` | Tokens per chunk. Changes the graph structure. |
+
+For all chat and embedding parameters, including provider-specific defaults,
+see [LLM Configuration](llm-configuration.md#chat-and-embedding-parameters).
 
 ## Get started
 
