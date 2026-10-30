@@ -3403,6 +3403,10 @@ the resource usage of parallel _arangodump_ invocations:
   number of server-side prefetch threads is capped to this value.
   Will only be followed for _arangodump_ invocations that use the
   `--parallel-dump` option.
+- `--dump.max-prefetch-count` (introduced in v3.12.13): Maximum number of
+  batches that can be prefetched on a server in a dump. If an _arangodump_
+  invocation requests a higher number via the `--dbserver-prefetch-batches`
+  option, the value is automatically capped to this value. The default is `1024`.
 
 The following metrics have been added to observe the behavior of parallel
 _arangodump_ operations on the server:
