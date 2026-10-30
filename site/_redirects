@@ -40,6 +40,12 @@
 /contextual-data-platform/kubernetes/                                           /contextual-data-platform/architecture/                         301
 
 /ai-suite/reference/ai-orchestrator/                                            /contextual-data-platform/control-plane-acp/                              301
+/ai-suite/graphml/getting-started/                                              /contextual-data-platform/graphml/notebooks-api/                        301
+/ai-suite/graphml/quickstart/                                                   /contextual-data-platform/graphml/setup/                                301
+/ai-suite/graphrag/web-interface/                                               /contextual-data-platform/autograph/web-interface/                      301
+/ai-suite/graphrag/use-cases/                                                   /contextual-data-platform/autograph/use-cases/                          301
+/ai-suite/graphrag/tutorial-notebook/                                           /contextual-data-platform/autograph/web-interface/                      301
+/ai-suite/graphrag/*                                                            /contextual-data-platform/autograph/                                    301
 /ai-suite/*                                                                     /contextual-data-platform/:splat                                        301
 
 /arangodb/4.0/*                                                                 /arangodb/4.x/:splat                                            301
@@ -784,7 +790,7 @@
 /docs/stable/features-enterprise-edition.html                                              /arangodb/3.11/features/enterprise-edition/                                               301
 /docs/stable/highlights.html                                                               /arangodb/3.11/features/highlights-by-version/                                            301
 /docs/stable/quick-start-guide.html                                                        /arangodb/3.11/get-started/                                                               301
-/docs/stable/quick-start-in-the-cloud.html                                                 /arangodb/3.11/get-started/set-up-a-cloud-instance/                                       301
+/docs/stable/quick-start-in-the-cloud.html                                                 /amp/                                                                                 301
 /docs/stable/quick-start-on-premises.html                                                  /arangodb/3.11/get-started/on-premises-installation/                                      301
 /docs/stable/scaling.html                                                                  /arangodb/3.11/deploy/architecture/                                                       301
 /docs/stable/start-using-aql.html                                                          /arangodb/3.11/get-started/start-using-aql/                                               301
@@ -1531,7 +1537,7 @@
 /docs/3.11/features-enterprise-edition.html                                                /arangodb/3.11/features/enterprise-edition/                                               301
 /docs/3.11/highlights.html                                                                 /arangodb/3.11/features/highlights-by-version/                                            301
 /docs/3.11/quick-start-guide.html                                                          /arangodb/3.11/get-started/                                                               301
-/docs/3.11/quick-start-in-the-cloud.html                                                   /arangodb/3.11/get-started/set-up-a-cloud-instance/                                       301
+/docs/3.11/quick-start-in-the-cloud.html                                                   /amp/                                                                                 301
 /docs/3.11/quick-start-on-premises.html                                                    /arangodb/3.11/get-started/on-premises-installation/                                      301
 /docs/3.11/scaling.html                                                                    /arangodb/3.11/deploy/architecture/                                                       301
 /docs/3.11/start-using-aql.html                                                            /arangodb/3.11/get-started/start-using-aql/                                               301

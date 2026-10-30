@@ -26,6 +26,7 @@ aliases:
   - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.11
   - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.11
   - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.11
+  - ../operations/upgrading/manual-deployments/active-failover # 3.11 -> 3.11
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
