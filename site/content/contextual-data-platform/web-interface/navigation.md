@@ -18,8 +18,8 @@ The views in this section work with the database that is selected in the
 | Icon | Entry | What you do there | Learn more |
 |:----:|:------|:------------------|:-----------|
 | {{< icon "platform-ui/layout-dashboard" >}} | **Dashboard** | Check the health of the deployment, such as the status of the Coordinators, DB-Servers, and Agents, and how shards are distributed. | [Cluster](../../arangodb/3.12/components/web-interface/cluster.md) |
-| {{< icon "platform-ui/message-square-code" >}} | **Query Editor** | Write, run, explain, and profile AQL queries in tabs, save queries, and generate or optimize queries with AI assistance. | [Query Editor](../../platform-suite/query-editor.md) |
-| {{< image src="../../images/platform-ui-icons/graphs.png" alt="Graphs icon" style="width: 24px; margin: 0;" >}} | **Graphs** | List, create, and delete named graphs, and open a graph in the Graph Visualizer. | [Graph Visualizer](../../platform-suite/graph-visualizer.md) |
+| {{< icon "platform-ui/message-square-code" >}} | **Query Editor** | Write, run, explain, and profile AQL queries in tabs, save queries, and generate or optimize queries with AI assistance. | [Query Editor](../query-editor.md) |
+| {{< image src="../../images/platform-ui-icons/graphs.png" alt="Graphs icon" style="width: 24px; margin: 0;" >}} | **Graphs** | List, create, and delete named graphs, and open a graph in the Graph Visualizer. | [Graph Visualizer](../graph-visualizer.md) |
 | {{< icon "platform-ui/settings" >}} | **Management** | Open the administration views of the ArangoDB core database system, see [Management menu](#management-menu). | [Web Interface (ArangoDB)](../../arangodb/3.12/components/web-interface/_index.md) |
 
 ## Agentic AI Suite
@@ -28,10 +28,10 @@ The views in this section work with the database that is selected in the
 
 | Icon | Entry | What you do there | Learn more |
 |:----:|:------|:------------------|:-----------|
-| {{< icon "platform-ui/sparkles" >}} | **AutoGraph Studio** | Create projects that turn your documents into a Context Graph and deploy retrievers to answer questions from it. | [AutoGraph web interface](../../agentic-ai-suite/autograph/web-interface.md) |
-| {{< icon "platform-ui/chart-line" >}} | **Graph Analytics** | Start Graph Analytics Engines and run graph algorithms such as PageRank on them. | [Graph Analytics web interface](../../agentic-ai-suite/graph-analytics/web-interface.md) |
-| {{< icon "platform-ui/square-kanban" >}} | **GraphML** | Create GraphML projects and run featurization, training, and prediction jobs. | [GraphML web interface](../../agentic-ai-suite/graphml/ui.md) |
-| {{< icon "platform-ui/bot-message-square" >}} | **Ada** (beta) | Ask questions about your database in natural language and let the AI assistant run queries for you. | [Ada](../../agentic-ai-suite/ada/_index.md) |
+| {{< icon "platform-ui/sparkles" >}} | **AutoGraph Studio** | Create projects that turn your documents into a Context Graph and deploy retrievers to answer questions from it. | [AutoGraph web interface](../autograph/web-interface.md) |
+| {{< icon "platform-ui/chart-line" >}} | **Graph Analytics** | Start Graph Analytics Engines and run graph algorithms such as PageRank on them. | [Graph Analytics web interface](../graph-analytics/web-interface.md) |
+| {{< icon "platform-ui/square-kanban" >}} | **GraphML** | Create GraphML projects and run featurization, training, and prediction jobs. | [GraphML web interface](../graphml/ui.md) |
+| {{< icon "platform-ui/bot-message-square" >}} | **Ada** (beta) | Ask questions about your database in natural language and let the AI assistant run queries for you. | [Ada](../ada/_index.md) |
 
 ## Other services
 
@@ -39,18 +39,18 @@ These entries have sub-entries. Click an entry to expand it in the sidebar.
 
 | Icon | Entry | Sub-entries | Learn more |
 |:----:|:------|:------------|:-----------|
-| {{< icon "platform-ui/box" >}} | **Applications** | **All apps**, followed by one entry per deployed app that has its own user interface. | [Apps](../../platform-suite/container-manager/apps.md) |
-| {{< icon "platform-ui/circuit-board" >}} | **AI Tools** | **Notebook servers** to run Jupyter notebooks, and **MLFlow** to track experiments and manage models. | [Notebook servers](../../agentic-ai-suite/notebook-servers.md) |
-| {{< icon "platform-ui/activity" >}} | **Monitoring** | **Grafana** dashboards and **Prometheus** metrics. | [Monitoring](../../platform-suite/monitoring.md) |
+| {{< icon "platform-ui/box" >}} | **Applications** | **All apps**, followed by one entry per deployed app that has its own user interface. | [Apps](../container-manager/apps.md) |
+| {{< icon "platform-ui/circuit-board" >}} | **AI Tools** | **Notebook servers** to run Jupyter notebooks, and **MLFlow** to track experiments and manage models. | [Notebook servers](../notebook-servers.md) |
+| {{< icon "platform-ui/activity" >}} | **Monitoring** | **Grafana** dashboards and **Prometheus** metrics. | [Monitoring](../monitoring.md) |
 
 ## Admin
 
 | Icon | Entry | What you do there | Learn more |
 |:----:|:------|:------------------|:-----------|
 | {{< icon "platform-ui/database" >}} | **Databases** | List, create, and delete databases. | [Databases](../../arangodb/3.12/concepts/data-structure/databases.md) |
-| {{< icon "platform-ui/key-round" >}} | **Secrets** | Store API keys and credentials, for example, for LLM providers, so that services can use them without exposing them. | [Secrets Manager](../../platform-suite/secrets-manager.md) |
-| {{< icon "platform-ui/file-up" >}} | **File Manager** | Review uploaded service packages and RAG input files, and delete the ones no service uses anymore. | [File Manager](../../platform-suite/file-manager/_index.md) |
-| {{< icon "platform-ui/container" >}} | **Container Manager** | Deploy your own services from code packages or container images and manage running instances. | [Container Manager web interface](../../platform-suite/container-manager/web-interface.md) |
+| {{< icon "platform-ui/key-round" >}} | **Secrets** | Store API keys and credentials, for example, for LLM providers, so that services can use them without exposing them. | [Secrets Manager](../secrets-manager.md) |
+| {{< icon "platform-ui/file-up" >}} | **File Manager** | Review uploaded service packages and RAG input files, and delete the ones no service uses anymore. | [File Manager](../file-manager/_index.md) |
+| {{< icon "platform-ui/container" >}} | **Container Manager** | Deploy your own services from code packages or container images and manage running instances. | [Container Manager web interface](../container-manager/web-interface.md) |
 
 ## Management menu
 

@@ -1,6 +1,7 @@
 ---
 title: Get to know the data platform web interface
 menuTitle: Web Interface
+group: Overview
 weight: 15
 description: >-
   A tour of the unified web interface of the Contextual Data Platform: the
@@ -8,9 +9,9 @@ description: >-
   and the workspace where you do your work
 ---
 The Arango Contextual Data Platform comes with a unified web interface that
-brings the ArangoDB core database system, the
-[Platform Suite](../../platform-suite/_index.md), and the
-[Agentic AI Suite](../../agentic-ai-suite/_index.md) together in a single place.
+brings the ArangoDB core database system and the services of the data platform
+together in a single place, including the AI services if your deployment has the
+[Agentic AI Suite](../features-and-licensing.md#whats-included-in-the-agentic-ai-suite).
 Every feature uses the same layout and the same controls, so once you know your
 way around one part of the interface, you know your way around all of it.
 
@@ -64,7 +65,8 @@ belongs to.
 The entries you see can differ depending on the components installed in your
 deployment.
 For example, the **Agentic AI Suite** section is only available if your
-data platform includes the Agentic AI Suite.
+data platform is licensed with the Agentic AI Suite, see
+[Features and licensing](../features-and-licensing.md).
 
 ## Database selector
 
