@@ -1267,6 +1267,24 @@ and [user tokens](../../develop/http-api/authentication.md#jwt-user-tokens) of
 this user account are now rejected. Requests that
 authenticate with such a token fail with an HTTP `401 Unauthorized` error.
 
+## `REGEX_MATCHES()` evaluates the expression for empty input strings
+
+<small>Introduced in: v3.12.13</small>
+
+The [`REGEX_MATCHES()` AQL function](../../aql/functions/string.md#regex_matches)
+now applies the regular expression to an empty input string as to any other
+input string.
+
+Up to v3.12.12, it returns `[ "" ]` for an empty input string and a non-empty
+regular expression, without evaluating the expression at all. An expression that
+can match an empty string still returns `[ "" ]`, but one that cannot match an
+empty string now returns `null` like for any other input it doesn't match:
+
+```aql
+REGEX_MATCHES("", "^$")        // [ "" ] as before
+REGEX_MATCHES("", "^[a-z]+$")  // now null instead of [ "" ]
+```
+
 ## HTTP API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
