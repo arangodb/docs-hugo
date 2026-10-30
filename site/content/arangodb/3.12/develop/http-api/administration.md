@@ -499,7 +499,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -508,7 +508,7 @@ paths:
           required: false
           description: |
             If set to `true` and if the user account you authenticate with has
-            administrate access to the `_system` database, the response contains
+            `rw` access to the `_system` database, the response contains
             a `details` attribute with additional information about included
             components and their versions. The attribute names and internals of
             the `details` object may vary depending on platform and ArangoDB version.
@@ -1054,7 +1054,8 @@ paths:
                                 const: mdi
         '401':
           description: |
-            Missing read access to the given database.
+            The user account you authenticate with has `none` access to the
+            specified database.
           content:
             application/json:
               schema:
@@ -1123,7 +1124,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -1200,7 +1201,8 @@ paths:
                                 const: mdi
         '403':
           description: |
-            Missing read access to the given database.
+            The user account you authenticate with has `none` access to the
+            specified database.
           content:
             application/json:
               schema:
@@ -1687,9 +1689,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
       responses:

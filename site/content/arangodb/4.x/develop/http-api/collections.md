@@ -5434,8 +5434,8 @@ paths:
         the disk data for a collection may contain a lot of outdated data for which the
         space shall be reclaimed. In this case the compaction operation can be used.
 
-        The user account you authenticate with needs to have at least read/write
-        access to the collection.
+        The user account you authenticate with needs `rw` access to the
+        collection.
       parameters:
         - name: database-name
           in: path
@@ -5540,7 +5540,7 @@ paths:
                     type: string
         '403':
           description: |
-            The user account you authenticate with lacks read/write access to
+            The user account you authenticate with lacks `rw` access to
             the collection.
           content:
             application/json:

@@ -28,7 +28,7 @@ http://localhost:8529/_db/mydb/_api/index/demo/63563528
 
 {{< info >}}
 In a cluster, API version 1 checks whether the user account you authenticate
-with has read access to the collection before it looks the collection up. If it
+with has at least `ro` access to the collection before it looks the collection up. If it
 doesn't, all index endpoints report the collection as not found (HTTP `404`,
 error code `1203`) instead of revealing that it exists. API version 0 performs
 no such check, and lets any authenticated user with database access list and

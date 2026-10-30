@@ -1531,8 +1531,8 @@ paths:
                     type: string
         '403':
           description: |
-            Authentication is enabled and the user account you authenticated
-            with doesn't have at least read access to the specified database.
+            Authentication is enabled and the user account you authenticate
+            with has `none` access to the specified database.
           content:
             application/json:
               schema:

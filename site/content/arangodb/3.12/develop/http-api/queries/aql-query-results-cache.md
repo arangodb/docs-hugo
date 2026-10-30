@@ -236,8 +236,8 @@ paths:
           description: |
             The name of the database whose query results cache to clear.
 
-            The user account you authenticate with needs at least read access to
-            this database as well as **write** access to the `_system` database.
+            The user account you authenticate with needs at least `ro` access to
+            this database and `rw` access to the `_system` database.
           schema:
             type: string
       responses:
@@ -267,8 +267,8 @@ paths:
             The request is malformed.
         '403':
           description: |
-            The user account you authenticate with lacks read access to the
-            specified database, or lacks write access to the `_system` database.
+            The user account you authenticate with has `none` access to the
+            specified database, or lacks `rw` access to the `_system` database.
       tags:
         - Queries
 ```
@@ -542,7 +542,8 @@ paths:
 
         {{</* info */>}}
         You can only change the query cache properties from within the `_system` database.
-        Administrate access to the `_system` database is required for this.
+        The user account you authenticate with needs `rw` access to the
+        `_system` database.
         {{</* /info */>}}
       requestBody:
         content:
@@ -636,7 +637,7 @@ paths:
             The request is malformed.
         '403':
           description: |
-            The user account you authenticate with lacks write access to the
+            The user account you authenticate with lacks `rw` access to the
             `_system` database, or the request has been made in a database other
             than `_system` (error code `1230`).
       tags:

@@ -185,8 +185,8 @@ paths:
             The request is malformed.
         '403':
           description: |
-            The user account you authenticate with lacks read access to the
-            specified database, or lacks write access to the `_system` database.
+            The user account you authenticate with has `none` access to the
+            specified database, or lacks `rw` access to the `_system` database.
       tags:
         - Queries
 ```
@@ -402,7 +402,7 @@ paths:
             The request is malformed.
         '403':
           description: |
-            The user account you authenticate with lacks write access to the
+            The user account you authenticate with lacks `rw` access to the
             `_system` database, or the request has been made in a database other
             than `_system` (error code `1230`).
       tags:
