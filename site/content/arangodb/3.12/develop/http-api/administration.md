@@ -3257,7 +3257,7 @@ An ArangoDB server can listen for incoming requests on multiple _endpoints_.
 
 The endpoints are normally specified either in the _arangod_ configuration
 file or on the command-line, using the `--server.endpoint` startup option.
-The default endpoint for ArangoDB is `tcp://127.0.0.1:8529` (IPv4 localhost on
+The default endpoint for ArangoDB is `http://127.0.0.1:8529` (IPv4 localhost on
 port 8529 over the HTTP protocol).
 
 Note that all endpoint management operations can only be accessed via
