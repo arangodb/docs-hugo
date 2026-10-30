@@ -432,6 +432,17 @@ with a superuser JWT.
 If you lack the required permission or if the server is in read-only mode,
 the request fails with an HTTP `403 Forbidden` error.
 
+#### Maximum lifetime of replication batches
+
+<small>Introduced in: v3.12.13</small>
+
+The `ttl` of replication batches that you set when you
+[create a batch](../../develop/http-api/replication/replication-dump.md#create-a-new-dump-batch)
+or [extend its lifetime](../../develop/http-api/replication/replication-dump.md#extend-the-ttl-of-a-dump-batch)
+is now capped at `86400` seconds (24 hours). Previously, any value was accepted,
+and a batch with a very high `ttl` could prevent the RocksDB write-ahead log
+files from being released.
+
 ### Endpoint return value changes
 
 #### Storage engine API

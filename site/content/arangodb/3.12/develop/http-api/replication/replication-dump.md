@@ -219,6 +219,7 @@ paths:
                 ttl:
                   description: |
                     The time-to-live for the new batch (in seconds).
+                    Values above `86400` (24 hours) are capped from v3.12.13 onward.
                   type: number
       responses:
         '200':
@@ -334,7 +335,8 @@ paths:
               properties:
                 ttl:
                   description: |
-                    The time-to-live for the new batch (in seconds)
+                    The new time-to-live for the batch (in seconds).
+                    Values above `86400` (24 hours) are capped from v3.12.13 onward.
                   type: number
       responses:
         '204':
