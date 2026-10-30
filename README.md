@@ -556,6 +556,31 @@ Inner shortcode
 {{< /details >}}
 ```
 
+#### Navigation group labels
+
+Pages of a section can be grouped under a non-clickable label in the sidebar
+by setting `group` in their front matter:
+
+```yaml
+---
+title: Architecture
+menuTitle: Architecture
+group: Overview
+weight: 5
+---
+```
+
+The label is printed once whenever the `group` value changes while the pages
+of a section are rendered in weight order, so the pages of a group have to be
+contiguous by weight. Use a weight band per group (for example 100 to 199 for
+the first group, 200 to 299 for the second) to keep it that way. Pages without
+`group` are listed without a label. Within one section, either every page
+sets `group` or none does, and the pages of a group have to be adjacent by
+weight; the build fails with an error if either rule is broken, so a page
+cannot end up under a label by accident. The Contextual Data Platform section uses
+the labels Overview, Install, Build, Query & explore, Develop & extend,
+Operate, and Reference.
+
 #### Tags
 
 Tags let you display badges, usually below a headline.
@@ -726,7 +751,7 @@ block, and edit the `xlink:href` value.
 Conventions used in the existing diagrams:
 
 - Internal docs links use an absolute path, e.g. `/arangodb/4.x/deploy/cluster/`
-  or `/platform-suite/container-manager/`.
+  or `/contextual-data-platform/container-manager/`.
 - External links use a full URL and add `target="_blank"`, e.g.
   `<a xlink:href="https://kubernetes.io/" target="_blank">`.
 - Use `class="card-link"` on the `<a>` tag so the link picks up the shared
@@ -966,8 +991,8 @@ The following shortcodes also exist but are rarely used:
 - Avoid overly long link labels, such as entire sentences.
 
 - Use relative links for cross-references to other documentation pages, e.g.
-  `../../platform-suite/_index.md` instead of `/platform-suite/_index.md` or
-  `https://docs.arango.ai/platform-suite/`.
+  `../../contextual-data-platform/_index.md` instead of `/contextual-data-platform/_index.md` or
+  `https://docs.arango.ai/contextual-data-platform/`.
 
 - Avoid **bold** and *italic* markup in headlines. If you have to use it, then
   prefer `**bold**` and `*italic*`  over `__bold__` and `_italic_` because the
@@ -1311,10 +1336,13 @@ Pages and sections about features that are only available in certain environment
 such as in ArangoDB Shell should indicate where they are available using the
 `tag` shortcode.
 
-Features exclusive to the Contextual Data Platform, Platform Suite, Agentic AI Suite,
-Arango Managed Platform (AMP), and ArangoDB generally don't need to be tagged
-because they are in dedicated parts of the documentation. However, if there are
-subsections with different procedures, each can be tagged accordingly.
+Features exclusive to the Contextual Data Platform, the Arango Managed Platform
+(AMP), and ArangoDB generally don't need to be tagged because they are in
+dedicated parts of the documentation. Within the Contextual Data Platform
+documentation, the Platform Suite and the Agentic AI Suite are licenses rather
+than chapters, so pages of services that require one of them are tagged.
+If there are subsections with different procedures, each can be tagged
+accordingly.
 
 In the Contextual Data Platform only:
 
@@ -1322,13 +1350,13 @@ In the Contextual Data Platform only:
 {{< tag "Contextual Data Platform" >}}
 ```
 
-In the Platform Suite of the Contextual Data Platform:
+Requires the Platform Suite license of the Contextual Data Platform:
 
 ```markdown
 {{< tag "Platform Suite" >}}
 ```
 
-In the Agentic AI Suite of the Contextual Data Platform only:
+Requires the Agentic AI Suite license of the Contextual Data Platform:
 
 ```markdown
 {{< tag "Agentic AI Suite" >}}
@@ -1435,9 +1463,11 @@ Add the actual content formatted in Markdown syntax below the front matter.
 There are two options for setting up redirects when renaming or moving content:
 
 - **Netlify redirects**: Server-side, testable in Netlify deploy previews.
-  Use for unversioned content as well as when removing versioned content.
-- **Hugo aliases**: Client-side, can be tested locally. Use only when
-  renaming/moving versioned content to keep the version switcher working locally.
+  Use for unversioned content as well as when removing versioned content
+  that the version selector can't lead to, i.e. pages removed from all versions.
+- **Hugo aliases**: Server-side on Netlify (generated) and client-side when
+  running the docs toolchain locally. Use when renaming/moving versioned content,
+  or removing it from some versions only, to keep the version selector working.
 
 Note that turning a page `topic.md` into a section `topic/_index.md` (in
 order to add child pages) does not affect the resulting URL (`/topic/`) and
@@ -1450,8 +1480,9 @@ there is support for splatting and placeholders (but not regular expressions). S
 [Redirect options](https://docs.netlify.com/routing/redirects/redirect-options/)
 for details.
 
-The configuration file is [`site/static/_redirects`](site/static/_redirects).
-The general format is `/old/url/ /new/url/ 301`, where `301` is for a permanent
+The manual rules are in [`site/_redirects`](site/_redirects). Hugo publishes
+them as part of the generated `_redirects` file, after a forced `301!` rule
+for every alias (see below). The general format is `/old/url/ /new/url/ 301`, where `301` is for a permanent
 redirect and `302` for a temporary one. Use `302` until the redirects have been
 tested, then change them to `301` - this avoids caching issues (browser, CDN)
 should it be necessary to fix some of the redirects.
@@ -1471,16 +1502,23 @@ redirected. This is because the version selector merely substitutes the version
 in the current URL and we hope that this page exists.
 
 To ensure a working version selector locally, which can be helpful when
-reviewing content, the rule is to use Hugo aliases when moving or renaming
-versioned pages (i.e. `/arangodb/<version>/...`). This is possible in addition
-to or instead of Netlify redirects. Netlify's server-side `301` redirects are
-better for search engines, but it only redirects if there is no file for a given
-URL. Hugo aliases create client-redirect files. To make Netlify redirect anyway,
-write an exclamation mark after the `301` in `_redirects`, like so:
+reviewing content, use Hugo aliases when moving or renaming versioned pages
+(i.e. `/arangodb/<version>/...`), and when removing a page from some versions
+but not others. Hugo aliases create
+client-side redirect files (`<meta http-equiv="refresh">`), and Netlify only
+applies a redirect rule if there is no file for a given URL, unless the status
+code has an exclamation mark (`301!`). Therefore, Hugo generates a forced rule
+for every alias at the top of the published `_redirects` file
+(`site/themes/arangodb-docs-theme/layouts/_default/home.redirects`):
 
 ```
-/arangodb/4.x/old-feature/  /arangodb/4.x/deprecated-and-removed-features/  301!
+/arangodb/4.x/old-feature/  /arangodb/4.x/release-notes/deprecated-and-removed-features/  301!
 ```
+
+Do not add manual rules for URLs that are aliases. The generated rules take
+precedence as they come first. Manual rules for URLs without an alias don't
+need an exclamation mark. Hugo warns if an alias is the URL of an existing
+page (no rule is generated) or if two pages use the same alias.
 
 The following steps are necessary for moving/renaming versioned content:
 1. Rename file or folder
@@ -1552,7 +1590,8 @@ aliases:
 
 Aliases create HTML files with client-side redirects before any content is
 rendered to HTML, which means that aliases can get overwritten by content files.
-If this is not a mistake, the affected aliases should be removed.
+If this is not a mistake, the affected aliases should be removed. Hugo warns
+about such aliases (`Alias ... is the URL of another page`).
 
 ### Disable or limit the table of contents
 

@@ -1,6 +1,7 @@
 ---
 title: License Management
 menuTitle: License Management
+group: Install
 weight: 30
 description: >-
   How to activate, renew, and apply licenses for Kubernetes-managed deployments
