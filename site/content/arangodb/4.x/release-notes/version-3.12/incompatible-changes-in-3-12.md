@@ -1267,6 +1267,18 @@ and [user tokens](../../develop/http-api/authentication.md#jwt-user-tokens) of
 this user account are now rejected. Requests that
 authenticate with such a token fail with an HTTP `401 Unauthorized` error.
 
+## Case mapping of `UPPER()` and `LOWER()`
+
+<small>Introduced in: v3.12.13</small>
+
+The [`UPPER()`](../../aql/functions/string.md#upper) and
+[`LOWER()`](../../aql/functions/string.md#lower) AQL functions now apply the
+case mapping rules of the configured server language (`--icu-language` or
+`--default-language` startup option) instead of the locale of the server
+process. This can change the results for Greek, Turkish, Azeri, and Lithuanian
+text. For example, `UPPER("i")` returns `"İ"` (capital I with dot above) with a
+Turkish server language.
+
 ## HTTP API
 
 ### JavaScript-based traversal using `/_api/traversal` removed

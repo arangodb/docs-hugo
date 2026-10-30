@@ -881,6 +881,12 @@ RETURN [
 Convert upper-case letters in `value` to their lower-case counterparts.
 All other characters are returned unchanged.
 
+The case mapping follows the rules of the configured
+[server language](../../components/arangodb-server/options.md#--icu-language),
+which matters for Greek, Turkish, Azeri, and Lithuanian. For example,
+`LOWER("I")` returns `"ı"` with a Turkish server language.
+Up to v3.12.12, the locale of the server process is used instead.
+
 - **value** (string): a string
 - returns **lowerCaseString** (string): `value` with upper-case characters converted
   to lower-case characters
@@ -2050,6 +2056,12 @@ RETURN TRIM(";foo;bar;baz, ", ",; ")
 
 Convert lower-case letters in `value` to their upper-case counterparts.
 All other characters are returned unchanged.
+
+The case mapping follows the rules of the configured
+[server language](../../components/arangodb-server/options.md#--icu-language),
+which matters for Greek, Turkish, Azeri, and Lithuanian. For example,
+`UPPER("i")` returns `"İ"` with a Turkish server language.
+Up to v3.12.12, the locale of the server process is used instead.
 
 - **value** (string): a string
 - returns **upperCaseString** (string): `value` with lower-case characters converted
