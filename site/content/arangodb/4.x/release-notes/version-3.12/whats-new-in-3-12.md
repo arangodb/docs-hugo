@@ -2010,6 +2010,16 @@ Factory strings with a fixed number of centroids remain supported. The number
 needs to match the number of centroids that `nLists` resolves to, otherwise
 the training fails and the index stays `"unusable"`.
 
+---
+
+<small>Introduced in: v3.12.13</small>
+
+The memory that vector searches allocate for their results is now limited by
+the number of documents in the collection instead of the requested number of
+results (`LIMIT`, including the offset). This memory also counts towards the
+memory limit of the query (`memoryLimit` query option or
+`--query.memory-limit` startup option).
+
 ## Server options
 
 ### Effective and available startup options
@@ -3403,6 +3413,10 @@ the resource usage of parallel _arangodump_ invocations:
   number of server-side prefetch threads is capped to this value.
   Will only be followed for _arangodump_ invocations that use the
   `--parallel-dump` option.
+- `--dump.max-prefetch-count` (introduced in v3.12.13): Maximum number of
+  batches that can be prefetched on a server in a dump. If an _arangodump_
+  invocation requests a higher number via the `--dbserver-prefetch-batches`
+  option, the value is automatically capped to this value. The default is `1024`.
 
 The following metrics have been added to observe the behavior of parallel
 _arangodump_ operations on the server:
