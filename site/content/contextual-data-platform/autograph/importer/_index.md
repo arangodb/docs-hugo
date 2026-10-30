@@ -110,7 +110,7 @@ flowchart LR
 ```
 
 After the initial build, AutoGraph also uses the Importer for
-[Incremental Graph Updates](../incremental-graph-updates.md) in
+[Incremental Graph Updates](../incremental-graph-updates/_index.md) in
 Layer 3. It submits imports for new and changed files, and it can recluster a
 partition whose communities have drifted, but only if you ask for it. AutoGraph
 flags the drift and never reclusters on its own. Removing a document from
@@ -288,9 +288,9 @@ the platform service status. See
 See [Incremental Updates](incremental-updates.md) for the request fields,
 what the operation rebuilds, and how to troubleshoot problems. To remove or
 replace a document, use AutoGraph's
-[`POST /v1/graph/delete`](../reference/orchestration.md#delete-documents)
+[`POST /v1/graph/delete`](../incremental-graph-updates/api-reference.md#delete-documents)
 or
-[`POST /v1/graph/update`](../reference/orchestration.md#update-documents).
+[`POST /v1/graph/update`](../incremental-graph-updates/api-reference.md#update-documents).
 
 ### Direct imports
 

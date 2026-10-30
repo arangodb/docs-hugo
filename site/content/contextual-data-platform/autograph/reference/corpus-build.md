@@ -97,7 +97,7 @@ accepted with `202` first and the build then fails with
 
 Send only new categories with `incremental: false`, use `incremental: true` to
 append, change individual documents with an
-[incremental graph update](../incremental-graph-updates.md), or remove the
+[incremental graph update](../incremental-graph-updates/_index.md), or remove the
 category with
 [`DELETE /v1/projects/{project}/categories/{category}`](project-operations.md#delete-category)
 and build it again.
@@ -458,11 +458,11 @@ If `documents_deduplicated` is not what you expected:
 2. If the collapse was unintended, upload the absorbed file under a filename
    that is distinct **and** not of the form `name_1` or `name_2` for a basename
    that is used elsewhere in the build, then add it with
-   [`POST /v1/graph/insert`](orchestration.md#insert-documents). Uploading it
+   [`POST /v1/graph/insert`](../incremental-graph-updates/api-reference.md#insert-documents). Uploading it
    under the same name in the same category does not help, because the File
    Manager supersedes the earlier version instead of creating a second entry.
 3. To replace the content of a document deliberately, use
-   [`POST /v1/graph/update`](orchestration.md#update-documents) instead of
+   [`POST /v1/graph/update`](../incremental-graph-updates/api-reference.md#update-documents) instead of
    relying on a re-import under the same name.
 
 If 5% or more of a batch collapses, the completion `message` of the build says
@@ -488,7 +488,7 @@ the [Design Guide](../design-guide.md#designing-categories).
 - For a first build, or when you add a category that is new to the corpus, leave
   `incremental` at its default of `false`.
 - To change individual documents in a graph that is already built, use an
-  [incremental graph update](../incremental-graph-updates.md) instead.
+  [incremental graph update](../incremental-graph-updates/_index.md) instead.
 
 {{< warning >}}
 A corpus build never removes Layer 3 records, whether `incremental` is `true` or

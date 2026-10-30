@@ -30,11 +30,11 @@ The workflow has two stages:
 ![The Agentic AI Suite overview with the AutoGraph Studio card](../../images/autograph-ui-suite-overview.png)
 
 {{< info >}}
-This page describes how to build a knowledge graph from scratch. To keep it
-up-to-date afterwards by inserting, deleting, or replacing individual documents,
-you need to use the API. These operations are not available in the web interface
-in Arango Contextual Data Platform 4.1.0. See
-[Incremental Graph Updates](incremental-graph-updates.md).
+To keep a built knowledge graph up-to-date by adding, removing, or replacing
+individual documents, see
+[Update documents in the Knowledge Graph](#update-documents-in-the-knowledge-graph).
+In Arango Contextual Data Platform 4.1.0, these operations are only available
+through the [API](incremental-graph-updates/api-reference.md).
 {{< /info >}}
 
 ## Create an AutoGraph project
@@ -394,6 +394,118 @@ You can explore the Knowledge Graph in the
 {{< /tip >}}
 
 ![The Knowledge Graph of a project in the Graph Visualizer](../../images/autograph-ui-kg-visualizer.png)
+
+## Update documents in the Knowledge Graph
+
+Once the Knowledge Graph is built, you can add, replace, and remove documents in
+its categories without rebuilding it. Only the files that changed are processed:
+AutoGraph adds them to the closest existing cluster, and their entities and
+relationships are added to the Knowledge Graph. For what happens behind the
+scenes, see [Incremental Graph Updates](incremental-graph-updates/_index.md).
+
+{{< info >}}
+Updating documents in the web interface is not available in Arango Contextual
+Data Platform 4.1.0. In this release, use the
+[Incremental Graph Updates API](incremental-graph-updates/api-reference.md).
+{{< /info >}}
+
+### Add or replace files
+
+In the **Categories** section, click **+ Add files** next to the category you
+want to change, or drop files or a folder onto the category.
+
+- **One or two files** start updating right away, as long as there is nothing to
+  decide: each file is either new to the category or a new version of a file with
+  the same name. The file is marked **Updating** in its row.
+- **More than two files or a folder** open the **Add files to `<category>`**
+  dialog first, so that you can review what is going to change.
+
+In the **Add files** dialog, drop more files or a folder in the upload area, or
+click **Choose files**. Every file is listed with a tag that says what happens
+to it:
+
+- **New**: The category has no file with this name. The file is added.
+- **New version**: The category already has a file with this name. Its content
+  is replaced with the new version.
+- **Replaces `<file>`?**: The file name matches an existing file apart from a
+  number or year, for example `report-2026.md` and `report-2027.md`. The new file
+  is suggested as the successor of the old one, which is then removed. As this
+  is only a guess, the tag ends with a question mark. Click its cross icon to
+  add the file as **New** instead and keep the old one.
+- **Unchanged, skipped**: The file is identical to the version already in the
+  category, so it is not uploaded or processed again.
+- **Not in folder**: When you drop a folder, files of the category that are
+  missing from the folder are listed struck through. They are removed from the
+  Knowledge Graph and deleted from the File Manager. Click the cross icon to keep
+  such a file.
+
+Click the cross icon at the end of a row to leave a file out of the update. If
+every file is unchanged, the dialog reports that there is nothing to update.
+
+Nothing is uploaded and the graph is not touched while the dialog is open.
+Click **Update `<N>` files** to upload the files and start the update.
+
+### Remove a file
+
+1. In the **Categories** section, click the cross icon next to the file.
+2. Confirm with **Remove file**. The knowledge extracted from the file is removed
+   from the graph, and the file is deleted from the File Manager.
+
+If an update is running, the removal waits until it has finished.
+
+### Follow an update
+
+While an update runs, a progress alert at the top of the project overview reports
+it, for example *Updating knowledge graph (1 of 3 files)*. It lists every file
+with what is being done to it, such as *Adding*, *Replacing*, or *Replaced*. The
+update runs server-side, so you can leave the page and come back.
+
+The project stays usable while the update runs. You can keep adding, replacing,
+and removing files in any category. These changes are marked with a
+**waiting for the current update** badge and an **Undo** button on their
+category, are listed in the progress alert, and start by themselves once the
+running update is done. To drop a waiting change before it starts, click the
+cross icon on its row in the progress alert, or click **Undo** on the category.
+
+To stop the update, click **Stop update** and confirm. The update stops after the
+file that is currently being processed. Files that are already processed stay in
+the graph, and the files that were still waiting are not processed, so you can
+add them again later. Stopping does not undo the files that are done. To revert
+them, remove them from the category.
+
+### Review the result
+
+When the update has finished, the alert summarizes what changed, for example
+*md: 1 added, 2 replaced. 214 entities added.*
+
+If a file could not be processed, the update still finishes for all the other
+files. The alert lists the file that failed together with the reason, for
+example *the file could not be read*. Click **Retry**, for example
+**Retry 1 file**, to process only the failed files again.
+
+Click **Show changes** to open the **Changes to this knowledge graph** dialog. It
+lists every update of the project, newest first, with the category, what was
+added, replaced, removed, or not added, the number of entities added, and the
+time. Updates with failed files are highlighted. Open an update to see each file
+and to retry the ones that failed.
+
+### Reorganize the Knowledge Graph
+
+Every update changes the entities of the Knowledge Graph, but not the
+communities they are grouped into. Once a category has changed a lot since it
+was last built or reorganized, the **Reorganize** button on the
+**Knowledge Graph** card becomes available. For how this is measured, see
+[Partition divergence and reclustering](incremental-graph-updates/_index.md#partition-divergence-and-reclustering).
+
+1. Click **Reorganize**.
+2. The **Reorganize knowledge graph** dialog lists the affected **Categories**,
+   the expected **Time**, for example *Up to about 1 hour*, and the **Cost**.
+   Reorganizing uses your model provider credits.
+3. Click **Reorganize**.
+
+File changes you make while the Knowledge Graph is being reorganized wait until
+it finishes. If an update is running, **Reorganize** is only available after it
+has finished.
 
 ## Change the provider or key
 

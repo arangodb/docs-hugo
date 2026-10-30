@@ -23,7 +23,7 @@ endpoint. Removing and replacing documents is handled by AutoGraph, see
 {{< info >}}
 You normally do not call the recluster endpoint yourself. AutoGraph calls it as
 part of [Incremental Graph
-Updates](../incremental-graph-updates.md), which also maintains
+Updates](../incremental-graph-updates/_index.md), which also maintains
 Layers 1 and 2. Only call the Importer directly for standalone or advanced use
 cases.
 
@@ -75,7 +75,7 @@ removes the Layer 3 data as well, using AQL queries of its own. No Importer job
 is spawned and there is nothing to poll: the response is the final result and
 reports what was removed, along with the affected Layer 3 partitions. For the
 request and response fields, see
-[Delete documents](../reference/orchestration.md#delete-documents).
+[Delete documents](../incremental-graph-updates/api-reference.md#delete-documents).
 
 What a deletion removes from the Layer 3 collections of `{project}_kg`:
 
@@ -110,7 +110,7 @@ version to Layers 1 and 2. The new content only reaches Layer 3 once you run a
 targeted orchestration with that `file_id`, which submits an import to the
 Importer. AutoGraph resolves the partitions itself, so you do not name one. For the phases of an update and its response
 fields, see
-[Update documents](../reference/orchestration.md#update-documents).
+[Update documents](../incremental-graph-updates/api-reference.md#update-documents).
 
 {{< warning >}}
 Do not import a revised file into a partition that still holds the old version.
@@ -131,7 +131,7 @@ partition as needing a reclustering. It does **not** start one on its own. You
 decide whether the refresh is worth the cost and then start it, which in turn
 calls `POST /v1/recluster` for the affected `partition_id`. For the formula, the
 threshold, and the lifecycle, see
-[Partition divergence and reclustering](../incremental-graph-updates.md#partition-divergence-and-reclustering).
+[Partition divergence and reclustering](../incremental-graph-updates/_index.md#partition-divergence-and-reclustering).
 
 The divergence does not apply to `vector_rag` partitions because they have no
 `Entities` or `Communities`.
@@ -249,14 +249,14 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POST
 | Symptom | Likely cause | What to do |
 |---------|--------------|------------|
 | Recluster returns `HTTP 503` (gRPC `UNAVAILABLE`), or an import returns `"success": false` | Another import or recluster job holds the single global lock on this replica, whichever partition it works on | Try again once the running job is done (`GET /v1/jobs/{job_id}` or `GET /v1/jobs`). If a **single-file** import (`POST /v1/import`) holds the lock, there is no `job_id` to poll. Watch the platform service status or `GET /v1/health` for the busy message until it clears |
-| An update left duplicate content in the graph | The revised file was imported instead of replaced, so it was added as another import batch next to the old version | Use [`POST /v1/graph/update`](../reference/orchestration.md#update-documents) in AutoGraph to replace a document |
+| An update left duplicate content in the graph | The revised file was imported instead of replaced, so it was added as another import batch next to the old version | Use [`POST /v1/graph/update`](../incremental-graph-updates/api-reference.md#update-documents) in AutoGraph to replace a document |
 | Communities look outdated after inserts, deletions, or updates | The community layer of a `full_graphrag` partition has not been rebuilt yet | Reclustering is never automatic. Start it in AutoGraph once it reports `needs_reclustering: true`, or call `POST /v1/recluster` for that `partition_id` yourself |
 | A reclustering takes a long time and blocks other work | The LLM community reports take a while and the lock is held for the whole job | This is expected for large partitions. Avoid overlapping calls on the same replica until the recluster job is done |
 | A recluster job reached a terminal state but the communities are unchanged | The partition has no entities, so the job was a no-op over `0` entities | Confirm that the partition has `Entities`. If it does not, import documents into it first |
 
 ## Next steps
 
-- **[Incremental Graph Updates in AutoGraph](../incremental-graph-updates.md)**:
+- **[Incremental Graph Updates in AutoGraph](../incremental-graph-updates/_index.md)**:
   The workflow that inserts, deletes, updates, and reclusters documents across
   all three layers.
 - **[Architecture](architecture.md)**: The knowledge graph collections and the
