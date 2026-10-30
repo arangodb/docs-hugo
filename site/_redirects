@@ -1,9 +1,9 @@
-/arangodb/3.10/components/tools/arangodump/limitations/                         /arangodb/3.10/components/tools/arangodump/examples/    301!
-/arangodb/3.11/components/tools/arangodump/limitations/                         /arangodb/3.11/components/tools/arangodump/examples/    301!
-/arangodb/3.12/components/tools/arangodump/limitations/                         /arangodb/3.12/components/tools/arangodump/examples/    301!
-/arangodb/stable/components/tools/arangodump/limitations/                       /arangodb/stable/components/tools/arangodump/examples/  301!
-/arangodb/4.x/components/tools/arangodump/limitations/                          /arangodb/4.x/components/tools/arangodump/examples/     301!
-/arangodb/devel/components/tools/arangodump/limitations/                        /arangodb/devel/components/tools/arangodump/examples/   301!
+/arangodb/3.10/components/tools/arangodump/limitations/                         /arangodb/3.10/components/tools/arangodump/examples/    301
+/arangodb/3.11/components/tools/arangodump/limitations/                         /arangodb/3.11/components/tools/arangodump/examples/    301
+/arangodb/3.12/components/tools/arangodump/limitations/                         /arangodb/3.12/components/tools/arangodump/examples/    301
+/arangodb/stable/components/tools/arangodump/limitations/                       /arangodb/stable/components/tools/arangodump/examples/  301
+/arangodb/4.x/components/tools/arangodump/limitations/                          /arangodb/4.x/components/tools/arangodump/examples/     301
+/arangodb/devel/components/tools/arangodump/limitations/                        /arangodb/devel/components/tools/arangodump/examples/   301
 
 /arangodb/3.11/aql/graphs/*                                                     /arangodb/3.11/aql/graph-queries/:splat                         301
 /arangodb/3.12/aql/graphs/*                                                     /arangodb/3.12/aql/graph-queries/:splat                         301

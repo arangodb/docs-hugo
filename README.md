@@ -1462,12 +1462,12 @@ Add the actual content formatted in Markdown syntax below the front matter.
 
 There are two options for setting up redirects when renaming or moving content:
 
-- **Hugo aliases**: Set in the front matter of the page to redirect to.
-  Server-side redirects on Netlify (generated) and client-side when running the
-  docs toolchain locally. Use whenever a single page replaces the old URL.
-- **Manual Netlify redirects**: Server-side, testable in Netlify deploy previews.
-  Use for rules that aliases can't express, like redirecting whole folders
-  with wildcards, or old URLs that don't belong to any version of a page.
+- **Netlify redirects**: Server-side, testable in Netlify deploy previews.
+  Use for unversioned content as well as when removing versioned content
+  that the version selector can't lead to, i.e. pages removed from all versions.
+- **Hugo aliases**: Server-side on Netlify (generated) and client-side when
+  running the docs toolchain locally. Use when renaming/moving versioned content,
+  or removing it from some versions only, to keep the version selector working.
 
 Note that turning a page `topic.md` into a section `topic/_index.md` (in
 order to add child pages) does not affect the resulting URL (`/topic/`) and
@@ -1502,8 +1502,9 @@ redirected. This is because the version selector merely substitutes the version
 in the current URL and we hope that this page exists.
 
 To ensure a working version selector locally, which can be helpful when
-reviewing content, use Hugo aliases when moving, renaming, or removing
-versioned pages (i.e. `/arangodb/<version>/...`). Hugo aliases create
+reviewing content, use Hugo aliases when moving or renaming versioned pages
+(i.e. `/arangodb/<version>/...`), and when removing a page from some versions
+but not others. Hugo aliases create
 client-side redirect files (`<meta http-equiv="refresh">`), and Netlify only
 applies a redirect rule if there is no file for a given URL, unless the status
 code has an exclamation mark (`301!`). Therefore, Hugo generates a forced rule
@@ -1515,7 +1516,8 @@ for every alias at the top of the published `_redirects` file
 ```
 
 Do not add manual rules for URLs that are aliases. The generated rules take
-precedence as they come first. Hugo warns if an alias is the URL of an existing
+precedence as they come first. Manual rules for URLs without an alias don't
+need an exclamation mark. Hugo warns if an alias is the URL of an existing
 page (no rule is generated) or if two pages use the same alias.
 
 The following steps are necessary for moving/renaming versioned content:
