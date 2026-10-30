@@ -1323,6 +1323,22 @@ REGEX_MATCHES("", "^$")        // [ "" ] as before
 REGEX_MATCHES("", "^[a-z]+$")  // now null instead of [ "" ]
 ```
 
+## `REVERSE()` AQL function keeps characters above U+FFFF intact
+
+<small>Introduced in: v3.12.13</small>
+
+The [`REVERSE()` AQL function](../../aql/functions/string.md#reverse) now
+reverses strings by Unicode code point, keeping characters above U+FFFF like
+most emoji intact.
+
+```aql
+REVERSE("We 🥑 avocado!") // now "!odacova 🥑 eW" instead of "!odacova �� eW"
+```
+
+Up to v3.12.12, every code point above U+FFFF is turned into two U+FFFD
+replacement characters, and everything before a U+FFFF character in the input
+is dropped.
+
 ## HTTP API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
