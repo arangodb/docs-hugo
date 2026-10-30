@@ -71,7 +71,7 @@ with the database selected in the [database selector](_index.md#database-selecto
 | {{< icon "aardvark/sitemap" >}} | **Graphs** | List and create named graphs, including SmartGraphs, SatelliteGraphs, and EnterpriseGraphs. | [Graphs](../../arangodb/3.12/components/web-interface/graphs.md) |
 | {{< icon "aardvark/cogs" >}} | **Services** | Install and manage Foxx microservices. | [Services](../../arangodb/3.12/components/web-interface/services.md) |
 | {{< icon "aardvark/users" >}} | **Users** | Create user accounts and manage their permissions. | [Users](../../arangodb/3.12/components/web-interface/users.md) |
-| {{< icon "aardvark/support" >}} | **Support** | Find links to the documentation, community, and support channels, and browse the REST API. | |
+| {{< icon "aardvark/support" >}} | **Support** | Find links to the documentation, community, and support channels, and browse the HTTP API. | |
 | {{< icon "aardvark/keyboard-o" >}} | **Shortcuts** | Look up the keyboard shortcuts of the web interface. | |
 
 The icons at the bottom of the Management panel link to the Arango community
