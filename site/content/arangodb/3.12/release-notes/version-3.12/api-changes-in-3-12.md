@@ -432,6 +432,23 @@ with a superuser JWT.
 If you lack the required permission or if the server is in read-only mode,
 the request fails with an HTTP `403 Forbidden` error.
 
+#### Permission checks for reading index definitions
+
+<small>Introduced in: v3.12.13</small>
+
+Reading index definitions via the
+[`GET /_api/index` endpoint](../../develop/http-api/indexes/_index.md#list-all-indexes-of-a-collection)
+and the [`GET /_api/index/{index-id}` endpoint](../../develop/http-api/indexes/_index.md#get-an-index)
+now consistently requires at least `ro` access to the collection in all
+deployment modes. The index definitions include the names of the indexed
+attributes. Previously, Coordinators in cluster deployments didn't check the
+access level for all requests. Single servers are unaffected because they
+already enforced the check.
+
+This applies to both classic authorization and RBAC. If the user account you
+authenticate with has `none` access to the collection, the request fails with
+an HTTP `403 Forbidden` error.
+
 #### Maximum lifetime of replication batches
 
 <small>Introduced in: v3.12.13</small>

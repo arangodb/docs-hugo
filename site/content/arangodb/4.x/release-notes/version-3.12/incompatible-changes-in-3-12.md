@@ -1305,6 +1305,24 @@ Furthermore, the query now raises a warning
 numeric, or not an integer. As before, negative and non-numeric values are
 treated as `0` and fractional numbers are truncated.
 
+## `REGEX_MATCHES()` evaluates the expression for empty input strings
+
+<small>Introduced in: v3.12.13</small>
+
+The [`REGEX_MATCHES()` AQL function](../../aql/functions/string.md#regex_matches)
+now applies the regular expression to an empty input string as to any other
+input string.
+
+Up to v3.12.12, it returns `[ "" ]` for an empty input string and a non-empty
+regular expression, without evaluating the expression at all. An expression that
+can match an empty string still returns `[ "" ]`, but one that cannot match an
+empty string now returns `null` like for any other input it doesn't match:
+
+```aql
+REGEX_MATCHES("", "^$")        // [ "" ] as before
+REGEX_MATCHES("", "^[a-z]+$")  // now null instead of [ "" ]
+```
+
 ## HTTP API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
@@ -1558,6 +1576,23 @@ with a superuser JWT.
 
 If you lack the required permission or if the server is in read-only mode,
 the request fails with an HTTP `403 Forbidden` error.
+
+### Permission checks for reading index definitions
+
+<small>Introduced in: v3.12.13</small>
+
+Reading index definitions via the
+[`GET /_api/index` endpoint](../../develop/http-api/indexes/_index.md#list-all-indexes-of-a-collection)
+and the [`GET /_api/index/{index-id}` endpoint](../../develop/http-api/indexes/_index.md#get-an-index)
+now consistently requires at least `ro` access to the collection in all
+deployment modes. The index definitions include the names of the indexed
+attributes. Previously, Coordinators in cluster deployments didn't check the
+access level for all requests. Single servers are unaffected because they
+already enforced the check.
+
+This applies to both classic authorization and RBAC. If the user account you
+authenticate with has `none` access to the collection, the request fails with
+an HTTP `403 Forbidden` error.
 
 ## JavaScript API
 
