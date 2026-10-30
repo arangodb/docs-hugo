@@ -837,7 +837,7 @@ Download and install the package for your platform.
 Run the following command:
 
 ```sh
-arangod --server.endpoint tcp://0.0.0.0:8529
+arangod --server.endpoint http://0.0.0.0:8529
 ```
 {{< /step >}}
 
