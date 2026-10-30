@@ -6,7 +6,7 @@ description: >-
   Host and manage private large language models inside the Arango Contextual
   Data Platform with the Triton LLM Host and MLflow
 weight: 450
-draft: true
+draft: true # When publishing, redirect /agentic-ai-suite/private-llms/* and /agentic-ai-suite/reference/{mlflow,triton-inference-server}/ in site/_redirects back to these pages instead of llm-models
 ---
 {{< tag "Agentic AI Suite" >}}
 

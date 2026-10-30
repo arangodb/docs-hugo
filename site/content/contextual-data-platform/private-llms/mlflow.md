@@ -5,7 +5,7 @@ description: >-
   The Arango MLflow Service integrates the MLflow platform for managing the
   full machine learning lifecycle into the Arango Contextual Data Platform
 weight: 25
-draft: true
+draft: true # When publishing, redirect /agentic-ai-suite/private-llms/* and /agentic-ai-suite/reference/{mlflow,triton-inference-server}/ in site/_redirects back to these pages instead of llm-models
 ---
 {{< tag "Agentic AI Suite" >}}
 

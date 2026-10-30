@@ -5,7 +5,7 @@ description: >-
   Enable the services of the Agentic AI Suite to use private LLMs via Triton
   Inference Server
 weight: 30
-draft: true
+draft: true # When publishing, redirect /agentic-ai-suite/private-llms/* and /agentic-ai-suite/reference/{mlflow,triton-inference-server}/ in site/_redirects back to these pages instead of llm-models
 ---
 {{< tag "Agentic AI Suite" >}}
 
