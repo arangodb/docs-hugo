@@ -25,7 +25,7 @@ you view and manage these files.
 RAG input files are organized into **scopes**. A scope is an ordered list of
 labels that addresses a file within a database, for example
 `acme / legal / q3`. The model is deliberately generic: the same
-mechanism represents a project, a module, or any deeper folder level, and each
+mechanism represents a project, a category, or any deeper folder level, and each
 service that uses the File Manager maps its own concepts onto scope levels.
 
 The following rules apply:

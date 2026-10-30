@@ -53,8 +53,8 @@ on how to work with categories.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/import-multiple" >}}
 
-Each call attaches every file in the request to one module (the `module`
-field) and creates one new partition for that module, and it deletes what the
+Each call attaches every file in the request to one category (the `module`
+field) and creates one new partition for that category, and it deletes what the
 previous call staged. Build from the staged files by running a
 [corpus build](corpus-build.md) without a selector. Do not import new files
 while a build is in progress.
@@ -90,7 +90,7 @@ while a build is in progress.
 | `files[].content` | string (base64) | Yes | Raw file bytes, **base64-encoded** in JSON. | Encode the entire file in a single field; the endpoint does not support chunked or resumable uploads. |
 | `files[].citable_url` | string | No | Canonical URL shown in citations, for **this direct-upload path only**. On the File Manager path, set `custom_metadata.citable_url` on the RAG input at upload time instead. The URL is preserved through the corpus build and passed to the Importer. Automatic citation extraction and SemanticUnits linking are not yet implemented; see [Known Limitations](error-handling.md#citation-handling). | Provide the source URL for web-sourced documents (for example, `https://docs.example.com/guide`). Omit the field for documents without a canonical web location. |
 | `files[].metadata` | string | No | Opaque string carried in metadata (often JSON as text). | Use for stable IDs, versions, or tags your app parses later. Omit if unused. |
-| `module` | string | No | Module label applied to **every** file in this request. See [Designing modules](../design-guide.md#designing-categories) for naming guidance. | Use a **stable** module label (`legal`, `docs_en`, …). If omitted, files receive the `default` module label during corpus build. |
+| `module` | string | No | Category label applied to **every** file in this request. See [Designing categories](../design-guide.md#designing-categories) for naming guidance. | Use a **stable** category label (`legal`, `docs_en`, …). If omitted, files receive the `default` category during corpus build. |
 
 {{< info >}}
 Duplicate `doc_name` values within a single request are deduplicated before
@@ -108,7 +108,7 @@ version, not one per entry.
 
 The `module` label of a request maps onto the *category*, which is the second
 scope level. The first scope level is the project. The same `doc_name` under two
-different modules therefore refers to two separate files with independent
+different categories therefore refers to two separate files with independent
 version histories.
 
 A version history built this way does not survive the next call, as that call

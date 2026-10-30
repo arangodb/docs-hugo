@@ -277,11 +277,11 @@ by **scope** (a subtree of the scope hierarchy).
 
 A scope is an ordered list of labels that addresses a file within a database,
 for example `["acme", "legal", "q3"]`. The model is deliberately
-generic: the same mechanism represents a project, a module, or any deeper
+generic: the same mechanism represents a project, a category, or any deeper
 folder level. Consumers map their own concepts onto scope levels —
 [AutoGraph](../autograph/design-guide.md#designing-categories)
-uses the first level for the project and the second, the *category*, for its
-module, for instance.
+uses the first level for the project and the second for the *category*,
+for instance.
 
 The following rules apply:
 

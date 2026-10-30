@@ -15,7 +15,7 @@ the collections it creates, the vector indexes it adds, the asynchronous job
 lifecycle of an import, and the operational rules to keep in mind when
 deploying the service.
 
-For Layer 1 and Layer 2 (modules and Corpus Graph), see
+For Layer 1 and Layer 2 (categories and Corpus Graph), see
 [AutoGraph Architecture](../architecture.md).
 
 ## Knowledge graph collections

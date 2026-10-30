@@ -190,7 +190,7 @@ prefix is `SG_`).
 |-------|---------------|------------|
 | `filename` | `about-us.md` | Original file name. |
 | `content` | `"--- source: https://… Building the world's leading AI data…"` | The raw source text. |
-| `module` | `default` | Which module / corpus it belongs to. |
+| `module` | `default` | The category it belongs to, in its stored (encoded) form. |
 | `partition_id` | (empty until assigned) | Filled once its domain becomes a partition. |
 | `embeddings` | `[vector]` | Corpus-level vector used to cluster sources into domains. |
 
@@ -200,7 +200,7 @@ prefix is `SG_`).
 |-------|---------------|------------|
 | `size` | `100` | Number of sources in the cluster. |
 | `members` | `[source ids]` | The sources grouped into this domain. |
-| `module` | `default` | Owning module. |
+| `module` | `default` | Owning category, in its stored (encoded) form. |
 
 **`rags`** — the RAG-partition configuration (written by the RAG Strategizer)
 
@@ -223,12 +223,12 @@ divergence is calculated from the entities of a partition, and a reclustering
 rebuilds its communities. A VectorRAG partition has neither collection, see
 [Layer 3](#layer-3), so it is never flagged for reclustering.
 
-**`modules`** — the top-level corpus container
+**`modules`** — one vertex per category, the top-level corpus container
 
 | Field | Example value | What it is |
 |-------|---------------|------------|
-| `name` | `default` | Module name. |
-| `clusters` | `[domains/cluster_default_0]` | The domains grouped under this module. |
+| `name` | `default` | Stored (encoded) form of the category label. |
+| `clusters` | `[domains/cluster_default_0]` | The domains grouped under this category. |
 
 ### Knowledge-graph nodes
 

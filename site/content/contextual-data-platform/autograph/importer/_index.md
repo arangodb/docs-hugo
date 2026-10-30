@@ -64,8 +64,13 @@ collections and the asynchronous job lifecycle, see the
 The same category label flows from **files** to **clusters** to **strategies**
 to **Importer partitions**:
 
-1. You [import documents into AutoGraph](../reference/importing-files.md)
-   with a **category** label in the `module` field (e.g., `"legal"`).
+1. You upload documents to the
+   [File Manager](../../file-manager/api.md#upload-a-rag-input-file) under the
+   scope `[project, category]` (e.g., category `"legal"`) and pass the labels
+   in `categories` when you start the
+   [corpus build](../reference/corpus-build.md). The deprecated
+   [`POST /v1/import-multiple`](../reference/importing-files.md) endpoint takes
+   the category in its `module` field instead.
 2. AutoGraph's [corpus build](../reference/corpus-build.md) clusters
    documents within each category using Leiden community detection.
 3. The [RAG strategizer](../reference/rag-strategizer.md) analyzes
