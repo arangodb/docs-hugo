@@ -1588,6 +1588,9 @@ Replace search values in the string `value`.
   corresponding array element in `replace`. If `replace` has less list items
   than `search`, occurrences of unmapped `search` items will be replaced by an
   empty string.
+  From v3.12.13 onward, an empty search string matches at every
+  character position, including the start and end of `value`. For example,
+  `SUBSTITUTE("abc", "", "_")` returns `"_a_b_c_"`.
 - **replace** (string\|array, *optional*): a replacement string, or an array of
   strings to replace the corresponding elements of `search` with. Can have less
   elements than `search` or be left out to remove matches. If `search` is an array
@@ -1595,6 +1598,15 @@ Replace search values in the string `value`.
 - **limit** (number, *optional*): cap the number of replacements to this value
 - returns **substitutedString** (string): a new string with matches replaced
   (or removed)
+
+The string is processed in a single pass from left to right. The leftmost
+match is replaced and the search continues after the end of the match, so that
+replaced text is not searched again. If multiple search values match at the
+same position, the one that comes first in `search` wins. After a match of an
+empty search string, a non-empty search value can still match at the same
+position. For example, `SUBSTITUTE("abc", ["b", ""], ["-", "_"])` returns
+`"_a-_c_"`, whereas `SUBSTITUTE("abc", ["", "b"], ["_", "-"])` returns
+`"_a_-_c_"`.
 
 **Examples**
 

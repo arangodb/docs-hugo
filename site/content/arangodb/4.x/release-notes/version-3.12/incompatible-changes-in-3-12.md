@@ -1279,6 +1279,16 @@ process. This can change the results for Greek, Turkish, Azeri, and Lithuanian
 text. For example, `UPPER("i")` returns `"İ"` (capital I with dot above) with a
 Turkish server language.
 
+## `SUBSTITUTE()` with an empty search string
+
+<small>Introduced in: v3.12.13</small>
+
+The [`SUBSTITUTE()`](../../aql/functions/string.md#substitute) AQL function now
+treats an empty search string as a match at every character position, including
+the start and end of the string. For example, `SUBSTITUTE("abc", "", "_")` now
+returns `"_a_b_c_"`. Up to v3.12.12, the function returns `null` and raises a
+warning in this case.
+
 ## HTTP API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
