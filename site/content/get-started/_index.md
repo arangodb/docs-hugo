@@ -23,7 +23,7 @@ to each other and which one to install.
 Install the data platform, turn documents into a knowledge graph with AutoGraph,
 and ask questions about them in natural language. Choose between an
 installation script for local evaluation and a manual install of the full
-platform. The script takes about 10 minutes, most of it downloading container
+data platform. The script takes about 10 minutes, most of it downloading container
 images.
 {{% /card %}}
 

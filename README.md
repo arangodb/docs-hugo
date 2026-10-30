@@ -556,6 +556,31 @@ Inner shortcode
 {{< /details >}}
 ```
 
+#### Navigation group labels
+
+Pages of a section can be grouped under a non-clickable label in the sidebar
+by setting `group` in their front matter:
+
+```yaml
+---
+title: Architecture
+menuTitle: Architecture
+group: Overview
+weight: 5
+---
+```
+
+The label is printed once whenever the `group` value changes while the pages
+of a section are rendered in weight order, so the pages of a group have to be
+contiguous by weight. Use a weight band per group (for example 100 to 199 for
+the first group, 200 to 299 for the second) to keep it that way. Pages without
+`group` are listed without a label. Within one section, either every page
+sets `group` or none does, and the pages of a group have to be adjacent by
+weight; the build fails with an error if either rule is broken, so a page
+cannot end up under a label by accident. The Contextual Data Platform section uses
+the labels Overview, Install, Build, Query & explore, Develop & extend,
+Operate, and Reference.
+
 #### Tags
 
 Tags let you display badges, usually below a headline.
@@ -726,7 +751,7 @@ block, and edit the `xlink:href` value.
 Conventions used in the existing diagrams:
 
 - Internal docs links use an absolute path, e.g. `/arangodb/4.x/deploy/cluster/`
-  or `/platform-suite/container-manager/`.
+  or `/contextual-data-platform/container-manager/`.
 - External links use a full URL and add `target="_blank"`, e.g.
   `<a xlink:href="https://kubernetes.io/" target="_blank">`.
 - Use `class="card-link"` on the `<a>` tag so the link picks up the shared
@@ -837,7 +862,7 @@ Download and install the package for your platform.
 Run the following command:
 
 ```sh
-arangod --server.endpoint tcp://0.0.0.0:8529
+arangod --server.endpoint http://0.0.0.0:8529
 ```
 {{< /step >}}
 
@@ -966,8 +991,8 @@ The following shortcodes also exist but are rarely used:
 - Avoid overly long link labels, such as entire sentences.
 
 - Use relative links for cross-references to other documentation pages, e.g.
-  `../../platform-suite/_index.md` instead of `/platform-suite/_index.md` or
-  `https://docs.arango.ai/platform-suite/`.
+  `../../contextual-data-platform/_index.md` instead of `/contextual-data-platform/_index.md` or
+  `https://docs.arango.ai/contextual-data-platform/`.
 
 - Avoid **bold** and *italic* markup in headlines. If you have to use it, then
   prefer `**bold**` and `*italic*`  over `__bold__` and `_italic_` because the
@@ -1015,12 +1040,17 @@ The following shortcodes also exist but are rarely used:
     ~~Oasis~~, ~~ArangoDB Oasis~~, ~~ArangoDB Cloud~~, ~~ArangoGraph Insights Platform~~, or ~~ArangoGraph~~
   - _Arango Contextual Data Platform_
     and _data platform_ for short in prose that refers to it many times, but not
-     ~~Data Platform~~, ~~Arango Data Platform~~, ~~Arango AI Services Data Platform~~,
-     ~~Arango AI Suite Data Platform~~, or ~~Arango AI Data Platform~~
+    ~~platform~~ (ambiguous with Arango Managed Platform),
+    ~~Data Platform~~, ~~Arango Data Platform~~, ~~Arango AI Services Data Platform~~,
+    ~~Arango AI Suite Data Platform~~, or ~~Arango AI Data Platform~~
   - _Arango Platform Suite_ and _Arango Agentic AI Suite_, but not
     ~~AI Services~~, ~~GenAI Suite~~, or ~~AI Suite~~
   - _Arango Control Plane_, but not ~~GenAI Service~~ or ~~AI Orchestrator~~
   - _Deployment mode_ (single server, cluster, etc.), not ~~deployment type~~
+
+- Use _object storage_, not ~~blob storage~~ when referring to S3-like services,
+  as it is more precise (includes the metadata and identifier) and to avoid
+  confusion with RocksDB BLOB storage.
 
 - Use _HTTP API_, not ~~REST (HTTP) API~~ or ~~RESTful (HTTP) API~~ unless it
   truly adheres to the REST principles, especially regarding hypermedia (HATEOAS).
@@ -1057,6 +1087,46 @@ The following shortcodes also exist but are rarely used:
 
 - Do not write TODOs right into the content and avoid using
   `<!-- HTML comments -->`. Use `{{< comment >}}...{{< /comment >}}` instead.
+
+### Permission wording
+
+Describe required permissions the same way everywhere, especially in the
+HTTP API descriptions (endpoint descriptions and `403`/`401` responses) and in
+the release notes:
+
+- Refer to access levels by their code values in inline code: `rw`, `ro`, and
+  `none`. Don't use ~~Administrate~~, ~~Read Only~~, ~~Write~~, ~~No access~~,
+  ~~read access~~, ~~write access~~, ~~read/write access~~, or
+  ~~administrate access~~.
+
+- Write _at least `ro` access_ if `rw` access is sufficient as well.
+
+- Name the database or collection the access level applies to, e.g.
+  _`rw` access to the `_system` database_ or _`ro` access to this database_.
+  Admin permissions are expressed as `rw` access to the `_system` database.
+
+- Make the user account the subject: _The user account you authenticate with
+  needs …_ in descriptions, and _… has `none` access to …_ or
+  _… lacks `rw` access to …_ in error responses.
+
+- Write _superuser JWT_, not ~~superuser token~~, ~~superuser rights~~,
+  ~~superuser privileges~~, or ~~the superuser~~. Link it to the
+  [JWT superuser tokens](site/content/arangodb/3.12/develop/http-api/authentication.md#jwt-superuser-tokens)
+  section at least once per description, using a relative link like
+  `[superuser JWT](../authentication.md#jwt-superuser-tokens)`.
+  For exceptions, write _unless you authenticate with a superuser JWT_ or
+  _Requests with a superuser JWT are not affected_.
+
+Examples:
+
+| Instead of | Write |
+|:-----------|:------|
+| The user needs **Administrate** access to the `_system` database. | The user account you authenticate with needs `rw` access to the `_system` database. |
+| …needs at least read access to this database as well as **write** access to the `_system` database. | …needs at least `ro` access to this database and `rw` access to the `_system` database. |
+| Returned if you have *No access* database access level to the `_system` database. | Returned if you have `none` access to the `_system` database. |
+| …lacks write access to the `_system` database. | …lacks `rw` access to the `_system` database. |
+| This is a protected API and can only be executed with superuser rights. | This endpoint requires a [superuser JWT](…#jwt-superuser-tokens). |
+| …with the exception of the superuser. | …unless you authenticate with a [superuser JWT](…#jwt-superuser-tokens). |
 
 ### Add links
 
@@ -1266,10 +1336,13 @@ Pages and sections about features that are only available in certain environment
 such as in ArangoDB Shell should indicate where they are available using the
 `tag` shortcode.
 
-Features exclusive to the Contextual Data Platform, Platform Suite, Agentic AI Suite,
-Arango Managed Platform (AMP), and ArangoDB generally don't need to be tagged
-because they are in dedicated parts of the documentation. However, if there are
-subsections with different procedures, each can be tagged accordingly.
+Features exclusive to the Contextual Data Platform, the Arango Managed Platform
+(AMP), and ArangoDB generally don't need to be tagged because they are in
+dedicated parts of the documentation. Within the Contextual Data Platform
+documentation, the Platform Suite and the Agentic AI Suite are licenses rather
+than chapters, so pages of services that require one of them are tagged.
+If there are subsections with different procedures, each can be tagged
+accordingly.
 
 In the Contextual Data Platform only:
 
@@ -1277,13 +1350,13 @@ In the Contextual Data Platform only:
 {{< tag "Contextual Data Platform" >}}
 ```
 
-In the Platform Suite of the Contextual Data Platform:
+Requires the Platform Suite license of the Contextual Data Platform:
 
 ```markdown
 {{< tag "Platform Suite" >}}
 ```
 
-In the Agentic AI Suite of the Contextual Data Platform only:
+Requires the Agentic AI Suite license of the Contextual Data Platform:
 
 ```markdown
 {{< tag "Agentic AI Suite" >}}
@@ -1390,9 +1463,11 @@ Add the actual content formatted in Markdown syntax below the front matter.
 There are two options for setting up redirects when renaming or moving content:
 
 - **Netlify redirects**: Server-side, testable in Netlify deploy previews.
-  Use for unversioned content as well as when removing versioned content.
-- **Hugo aliases**: Client-side, can be tested locally. Use only when
-  renaming/moving versioned content to keep the version switcher working locally.
+  Use for unversioned content as well as when removing versioned content
+  that the version selector can't lead to, i.e. pages removed from all versions.
+- **Hugo aliases**: Server-side on Netlify (generated) and client-side when
+  running the docs toolchain locally. Use when renaming/moving versioned content,
+  or removing it from some versions only, to keep the version selector working.
 
 Note that turning a page `topic.md` into a section `topic/_index.md` (in
 order to add child pages) does not affect the resulting URL (`/topic/`) and
@@ -1405,8 +1480,9 @@ there is support for splatting and placeholders (but not regular expressions). S
 [Redirect options](https://docs.netlify.com/routing/redirects/redirect-options/)
 for details.
 
-The configuration file is [`site/static/_redirects`](site/static/_redirects).
-The general format is `/old/url/ /new/url/ 301`, where `301` is for a permanent
+The manual rules are in [`site/_redirects`](site/_redirects). Hugo publishes
+them as part of the generated `_redirects` file, after a forced `301!` rule
+for every alias (see below). The general format is `/old/url/ /new/url/ 301`, where `301` is for a permanent
 redirect and `302` for a temporary one. Use `302` until the redirects have been
 tested, then change them to `301` - this avoids caching issues (browser, CDN)
 should it be necessary to fix some of the redirects.
@@ -1426,16 +1502,23 @@ redirected. This is because the version selector merely substitutes the version
 in the current URL and we hope that this page exists.
 
 To ensure a working version selector locally, which can be helpful when
-reviewing content, the rule is to use Hugo aliases when moving or renaming
-versioned pages (i.e. `/arangodb/<version>/...`). This is possible in addition
-to or instead of Netlify redirects. Netlify's server-side `301` redirects are
-better for search engines, but it only redirects if there is no file for a given
-URL. Hugo aliases create client-redirect files. To make Netlify redirect anyway,
-write an exclamation mark after the `301` in `_redirects`, like so:
+reviewing content, use Hugo aliases when moving or renaming versioned pages
+(i.e. `/arangodb/<version>/...`), and when removing a page from some versions
+but not others. Hugo aliases create
+client-side redirect files (`<meta http-equiv="refresh">`), and Netlify only
+applies a redirect rule if there is no file for a given URL, unless the status
+code has an exclamation mark (`301!`). Therefore, Hugo generates a forced rule
+for every alias at the top of the published `_redirects` file
+(`site/themes/arangodb-docs-theme/layouts/_default/home.redirects`):
 
 ```
-/arangodb/4.x/old-feature/  /arangodb/4.x/deprecated-and-removed-features/  301!
+/arangodb/4.x/old-feature/  /arangodb/4.x/release-notes/deprecated-and-removed-features/  301!
 ```
+
+Do not add manual rules for URLs that are aliases. The generated rules take
+precedence as they come first. Manual rules for URLs without an alias don't
+need an exclamation mark. Hugo warns if an alias is the URL of an existing
+page (no rule is generated) or if two pages use the same alias.
 
 The following steps are necessary for moving/renaming versioned content:
 1. Rename file or folder
@@ -1507,7 +1590,8 @@ aliases:
 
 Aliases create HTML files with client-side redirects before any content is
 rendered to HTML, which means that aliases can get overwritten by content files.
-If this is not a mistake, the affected aliases should be removed.
+If this is not a mistake, the affected aliases should be removed. Hugo warns
+about such aliases (`Alias ... is the URL of another page`).
 
 ### Disable or limit the table of contents
 
@@ -2087,6 +2171,55 @@ bindVars:
 ---
 FOR doc IN @@coll
   RETURN doc.@attr
+```
+
+#### Backslashes in AQL examples
+
+The query is handed to _arangosh_ as a JavaScript string literal, so the AQL
+parser sees exactly what you write in the example. Escape backslashes by the AQL
+rules alone, the same way you would when typing the query into the query editor
+of the web interface:
+
+- `\\` in an AQL string literal for a single literal backslash. A regular
+  expression shorthand like `\d`, `\s`, or `\b` therefore needs to be written as
+  `\\d`, `\\s`, and `\\b` to survive the string literal
+- `\n`, `\r`, and `\t` for a line feed, carriage return, and tabulation
+
+````yaml
+```aql
+---
+name: regexExample
+description: ''
+---
+RETURN REGEX_MATCHES("foo=1, bar=22", "(\\w+)=(\\d+)")
+```
+````
+
+Do not add a second level of escaping for _arangosh_. An example can be copied
+from the rendered documentation straight into the query editor and run unchanged.
+
+For the same reason, `${...}` and backticks carry no special meaning in the query
+and need no escaping. A named capturing group can be referenced in a replacement
+string as usual:
+
+````yaml
+```aql
+---
+name: namedGroupExample
+description: ''
+---
+RETURN REGEX_REPLACE("Jane Roe", "(?<first>\\w+) (?<last>\\w+)", "${last}, ${first}")
+```
+````
+
+In the generated **output**, _arangosh_ prints strings with JSON-style escaping.
+A single backslash in a result value is therefore displayed as `\\`. A query that
+returns the three-character string `a\b` renders like this:
+
+```
+[
+  "a\\b"
+]
 ```
 
 ### Add a new OpenAPI endpoint description

@@ -161,7 +161,7 @@ to work with ArangoDB from the outside using JavaScript as your language.
 
 If you upgrade to the [Arango Contextual Data Platform](../../../../contextual-data-platform/_index.md),
 you can run custom services in the data platform with the
-[Container Manager](../../../../platform-suite/container-manager/_index.md)
+[Container Manager](../../../../contextual-data-platform/container-manager/_index.md)
 You can think of it as a more powerful incarnation of Foxx because it is a
 microservice architecture but with a clear separation of the core database system
 and the surrounding services. It is also not limited to (synchronous) JavaScript
@@ -967,6 +967,15 @@ and throw errors if set:
 - `--network.protocol`
 - `--query.allow-collections-in-expressions`
 - `--rocksdb.exclusive-writes`
+
+### Read write metrics option renamed
+
+The `--server.export-read-write-metrics` startup option has been renamed to
+`--rocksdb.export-read-write-metrics`. This aligns the option category with what
+the option provides, which is additional metrics from the RocksDB storage engine.
+
+Using the new option is recommended. You can still start the server with the
+old option, which logs a warning on startup.
 
 ## Client tools
 
