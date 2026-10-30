@@ -443,6 +443,17 @@ is now capped at `86400` seconds (24 hours). Previously, any value was accepted,
 and a batch with a very high `ttl` could prevent the RocksDB write-ahead log
 files from being released.
 
+#### Escaped label values in metrics
+
+<small>Introduced in: v3.12.13</small>
+
+The [Metrics API](../../develop/http-api/monitoring/metrics.md) now escapes
+backslashes, double quotes, and line feeds in label values as `\\`, `\"`, and
+`\n` according to the Prometheus text exposition format. This affects database
+and collection names, for example, which can contain such characters if you use
+extended names. Previously, these characters were output as-is, resulting in
+invalid metrics output.
+
 ### Endpoint return value changes
 
 #### Storage engine API
