@@ -1087,7 +1087,7 @@
   "server.jwt-renewal-threshold" : {
     "base" : 1,
     "category" : "option",
-    "default" : 300,
+    "default" : 150,
     "deprecatedIn" : null,
     "description" : "The time (in seconds) before JWT token expiry to trigger automatic renewal. Default is 300 seconds (5 minutes). With 0, a renewal is only attempted once the token has expired.",
     "dynamic" : false,

@@ -25,7 +25,7 @@ is only one. You can connect to any node in case of a cluster (_DB-Server_,
 _Coordinator_, _Agent_).
 
 ```
-arangoinspect --server.endpoint tcp://127.0.0.1:8529
+arangoinspect --server.endpoint http://127.0.0.1:8529
 ```
 
 This tries to connect to the specified ArangoDB server. As _arangoinspect_
@@ -65,13 +65,20 @@ arangoinspect --server.ask-jwt-secret false --server.username "root" --server.pa
 
 The password can be omitted and entered interactively.
 
+The superuser tokens that _arangoinspect_ generates from the JWT secret don't
+expire. If you authenticate with a username and password, _arangoinspect_ uses
+a JWT session token that it renews automatically before it expires. From v3.12.13
+onward, this also applies to session tokens you pass via `--server.jwt-token`.
+See [Connect to an ArangoDB server](../_index.md#connect-to-an-arangodb-server)
+for details.
+
 ## Example outputs
 
 If _arangoinspect_ succeeds to authenticate, it starts to gather information
 and writes the result to `arangodb-inspector.json`, then exits:
 
 ```
-arangoinspect --server.endpoint tcp://127.0.0.1:9730
+arangoinspect --server.endpoint http://127.0.0.1:9730
 
 Please specify the JWT secret: 
 Connected to ArangoDB 'http+tcp://localhost:9730, version: 4.0.0 [COORDINATOR, unknown mode], database: '_system', username: 'root'

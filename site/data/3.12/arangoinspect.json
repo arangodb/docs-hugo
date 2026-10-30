@@ -104,12 +104,15 @@
     "category" : "option",
     "default" : true,
     "deprecatedIn" : null,
-    "description" : "whether to attempt to connect the server.",
+    "description" : "Whether to connect to the server (intended for internal development use only).",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.12.13"
+    ],
+    "longDescription" : "If set to `false`, no connection to the server\nis established. The `arango` and `db` objects are not available then, and you\ncannot connect later in the same session. Only the interactive shell and\n`--javascript.execute-string` honor this option.",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -373,7 +376,7 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "The program must output 32 bytes of data on the\nstandard output and exit.",
+    "longDescription" : "The program must output 32 bytes of data on the\nstandard output and exit. Leading and trailing whitespace in the output is\nremoved.\n\nThis option is for the client tools that read and write files, such as\n`arangodump` and `arangorestore`. It does not encrypt the data of an `arangod`\ninstance. To encrypt the database directory (encryption at rest), use the\n`--rocksdb.encryption-key-generator` startup option (or\n`--rocksdb.encryption-keyfile` or `--rocksdb.encryption-keyfolder`).",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -392,7 +395,7 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "You must secure the encryption key file so that\nonly `arangodump`, `arangorestore`, and `arangod` can access it. You should also\nensure that the file is not readable if someone steals your hardware, for\nexample, by encrypting `/mytmpfs` or creating an in-memory file-system under\n`/mytmpfs`.",
+    "longDescription" : "This option is for the client tools that read and\nwrite files, such as `arangodump` and `arangorestore`. It lets them encrypt and\ndecrypt the files they handle, for example, dump files.\n\n**Note**: This option does not encrypt the data of an `arangod` instance. To\nencrypt the database directory (encryption at rest), use the\n`--rocksdb.encryption-keyfile` startup option (or\n`--rocksdb.encryption-key-generator` or `--rocksdb.encryption-keyfolder`).\n`arangod` accepts `--encryption.keyfile` and checks the key, but does not use it\nto encrypt the database.\n\nThe key file is read as is. It must contain exactly 32 bytes, so make sure that\nthe file has no trailing newline.\n\nYou must secure the encryption key file so that\nonly `arangodump`, `arangorestore`, and `arangod` can access it. You should also\nensure that the file is not readable if someone steals your hardware, for\nexample, by encrypting `/mytmpfs` or creating an in-memory file-system under\n`/mytmpfs`.",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -1686,7 +1689,7 @@
   "server.jwt-renewal-threshold" : {
     "base" : 1,
     "category" : "option",
-    "default" : 300,
+    "default" : 150,
     "deprecatedIn" : null,
     "description" : "The time (in seconds) before JWT token expiry to trigger automatic renewal. Default is 300 seconds (5 minutes). With 0, a renewal is only attempted once the token has expired.",
     "dynamic" : false,

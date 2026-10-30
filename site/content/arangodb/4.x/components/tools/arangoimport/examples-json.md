@@ -207,14 +207,14 @@ The option `--file -` with a hyphen as the file name is special and makes it
 read from the standard input. No progress can be reported for such imports as the
 size of the input is unknown to _arangoimport_.
 
-By default, the endpoint `tcp://127.0.0.1:8529` is used. If you want to
+By default, the endpoint `http://127.0.0.1:8529` is used. If you want to
 specify a different endpoint, you can use the `--server.endpoint` option. You
 probably want to specify a database user and password as well. You can do so by
 using the options `--server.username` and `--server.password`. If you do not
 specify a password (or access token), you are prompted for one.
 
 ```
-arangoimport --server.endpoint tcp://127.0.0.1:8529 --server.username root ...
+arangoimport --server.endpoint http://127.0.0.1:8529 --server.username root ...
 ```
 
 Note that the collection (`users` in this case) must already exist or the import

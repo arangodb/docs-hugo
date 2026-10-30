@@ -6,41 +6,29 @@ description: >-
   How to export data in JSON, CSV, or XML formats from ArangoDB on the
   command-line with _arangoexport_
 ---
-_arangoexport_ can be invoked by executing the following command in a command line:
+## Export a collection
+
+To export a collection of the `_system` database, run _arangoexport_ with the
+name of the collection and an output directory:
 
 ```
 arangoexport --collection test --output-directory "dump"
 ```
 
-This exports the `test` collection into the `dump` directory. Every line of the
-output is a JSON object that corresponds to one document from the collection,
-without a specific order.
+Without further startup options, _arangoexport_ connects to the ArangoDB server
+at the default endpoint `http://127.0.0.1:8529` as the `root` user and prompts
+you for the password. It exports the `test` collection into the `dump`
+directory. Every line of the output is a JSON object that corresponds to one
+document from the collection, without a specific order.
 
-To export more than one collection at a time specify multiple `--collection` options.
+To export more than one collection at a time, specify multiple `--collection`
+options. The default output directory is `export`.
 
-The default output directory is `export`.
+You can also specify the output directory as a [positional argument](../../../operations/administration/configuration.md#command-line-options)
+without `--output-directory`:
 
-By default, _arangoexport_ connects to the `_system` database using the default
-endpoint. If you want to connect to a different database or a different endpoint, 
-or use authentication, you can use the following command-line options:
-
-- `--server.database <string>`: the name of the database to connect to
-- `--server.endpoint <string>`: the endpoint to connect to
-- `--server.username <string>`: the username
-- `--server.password <string>`: password or access token to use
-  (omit this and you'll be prompted for the password)
-- `--server.authentication <bool>`: whether or not to use authentication
-
-Here is an example of exporting data from a non-standard endpoint, using a dedicated
-[database name](../../../concepts/data-structure/databases.md#database-names):
-
-```bash
-arangoexport \
-  --server.endpoint tcp://192.168.173.13:8531 \
-  --server.username backup \
-  --server.database mydb \
-  --collection test \
-  --output-directory "my-export"
+```
+arangoexport --collection test dump
 ```
 
 When _arangoexport_ has finished, it prints out a summary line with some aggregate
@@ -49,6 +37,42 @@ statistics about what it did, for example:
 ```
 Processed 2 collection(s), wrote 9031763 Byte(s), 78 HTTP request(s)
 ```
+
+## Connect and authenticate
+
+To connect to a different server, database, or as a different user, use the
+following startup options:
+
+- `--server.endpoint <string>`: The endpoint to connect to. In a cluster,
+  specify a Coordinator.
+- `--server.database <string>`: The name of the database to export from.
+- `--server.username <string>`: The username.
+- `--server.password <string>`: The password or access token. If you omit it,
+  you are prompted for the password.
+- `--server.authentication <bool>`: Whether to authenticate. Set it to
+  `false` if authentication is disabled on the server.
+
+For example, to export a collection from a
+[database](../../../concepts/data-structure/databases.md#database-names)
+of a server at a non-standard endpoint as the `backup` user:
+
+```bash
+arangoexport \
+  --server.endpoint http://192.168.173.13:8531 \
+  --server.username backup \
+  --server.database mydb \
+  --collection test \
+  --output-directory "my-export"
+```
+
+The user needs **Read only** / `ro` access to the collections you want to export.
+
+From v3.12.13 onward, _arangoexport_ exchanges the username and password for a
+JWT when it starts and renews the token automatically before it expires, so
+that long-running exports don't fail with an HTTP `401 Unauthorized` error.
+For details about the authentication, how to avoid exposing credentials in the
+process list, and how the token renewal works, see
+[Connect to an ArangoDB server](../_index.md#connect-to-an-arangodb-server).
 
 ## Export JSONL
 
