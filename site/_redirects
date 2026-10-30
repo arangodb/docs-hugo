@@ -21,9 +21,9 @@
 /agentic-ai-suite/graphml/quickstart/                                           /contextual-data-platform/graphml/setup/                                301
 /agentic-ai-suite/aqlizer/                                                      /contextual-data-platform/natural-language-to-aql/                      301
 /agentic-ai-suite/reference/natural-language-to-aql/                            /contextual-data-platform/natural-language-to-aql/api-reference/        301
-/agentic-ai-suite/reference/mlflow/                                             /contextual-data-platform/private-llms/mlflow/                          301
-/agentic-ai-suite/reference/triton-inference-server/                            /contextual-data-platform/private-llms/triton-inference-server/         301
-/agentic-ai-suite/reference/                                                    /contextual-data-platform/private-llms/                                 301
+/agentic-ai-suite/reference/mlflow/                                             /contextual-data-platform/llm-models/                                   301
+/agentic-ai-suite/reference/triton-inference-server/                            /contextual-data-platform/llm-models/                                   301
+/agentic-ai-suite/reference/                                                    /contextual-data-platform/reference/                                    301
 /agentic-ai-suite/graphrag/web-interface/                                       /contextual-data-platform/autograph/web-interface/                      301
 /agentic-ai-suite/graphrag/use-cases/                                           /contextual-data-platform/autograph/use-cases/                          301
 /agentic-ai-suite/graphrag/quick-start/                                         /contextual-data-platform/autograph/quick-start/                        301
@@ -3840,9 +3840,9 @@
 /agentic-ai-suite/natural-language-to-aql/setup/                                /contextual-data-platform/natural-language-to-aql/setup/        301
 /agentic-ai-suite/natural-language-to-aql/web-interface/                        /contextual-data-platform/natural-language-to-aql/web-interface/  301
 /agentic-ai-suite/notebook-servers/                                             /contextual-data-platform/notebook-servers/                     301
-/agentic-ai-suite/private-llms/                                                 /contextual-data-platform/private-llms/                         301
-/agentic-ai-suite/private-llms/mlflow/                                          /contextual-data-platform/private-llms/mlflow/                  301
-/agentic-ai-suite/private-llms/triton-inference-server/                         /contextual-data-platform/private-llms/triton-inference-server/ 301
+/agentic-ai-suite/private-llms/                                                 /contextual-data-platform/llm-models/                           301
+/agentic-ai-suite/private-llms/mlflow/                                          /contextual-data-platform/llm-models/                           301
+/agentic-ai-suite/private-llms/triton-inference-server/                         /contextual-data-platform/llm-models/                           301
 /agentic-ai-suite/reasoner/                                                     /contextual-data-platform/reasoner/                             301
 /agentic-ai-suite/reasoner/api-reference/                                       /contextual-data-platform/reasoner/api-reference/               301
 /agentic-ai-suite/reasoner/quick-start/                                         /contextual-data-platform/reasoner/quick-start/                 301
