@@ -17,7 +17,7 @@ in the unified web interface, deploy your own services, and operate it all
 with enterprise-grade governance.
 {{% /card %}}
 
-{{% card title="ArangoDB" link="arangodb/" icon="avo-core.svg" %}}
+{{% card title="ArangoDB" link="arangodb/" %}}
 The native multi-model database system that unifies graph, document,
 key-value, full-text, and vector search with one query language.
 {{% /card %}}
