@@ -5681,7 +5681,9 @@ paths:
                     type: string
         '401':
           description: |
-            If the request was not authenticated as a user with sufficient rights.
+            Authentication is enabled and the user account you authenticate with
+            has `none` access to the specified database, the credentials are
+            wrong, or the user account is inactive.
           content:
             application/json:
               schema:

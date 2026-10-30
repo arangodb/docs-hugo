@@ -5717,7 +5717,9 @@ paths:
                     type: string
         '401':
           description: |
-            If the request was not authenticated as a user with sufficient rights.
+            Authentication is enabled and the user account you authenticate with
+            has `none` access to the specified database, the credentials are
+            wrong, or the user account is inactive.
           content:
             application/json:
               schema:
@@ -5875,8 +5877,8 @@ paths:
                     type: string
         '403':
           description: |
-            The user account you authenticate with lacks `rw` access to
-            the collection.
+            The user account you authenticate with lacks `rw` access to the
+            collection.
           content:
             application/json:
               schema:

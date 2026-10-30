@@ -821,9 +821,10 @@ paths:
                     type: string
         '403':
           description: |
-            The recording API has been disabled, or the user account you
-            authenticate with has insufficient permissions for the selected
-            database.
+            The recording API has been disabled, the user account you
+            authenticate with has `none` access to the specified database or
+            lacks `rw` access to the `_system` database, or you tried to
+            authenticate with user credentials but a superuser JWT is required.
           content:
             application/json:
               schema:
@@ -1064,9 +1065,10 @@ paths:
                     type: string
         '403':
           description: |
-            The recording API has been disabled, or the user account you
-            authenticate with has insufficient permissions for the selected
-            database.
+            The recording API has been disabled, the user account you
+            authenticate with has `none` access to the specified database or
+            lacks `rw` access to the `_system` database, or you tried to
+            authenticate with user credentials but a superuser JWT is required.
           content:
             application/json:
               schema:

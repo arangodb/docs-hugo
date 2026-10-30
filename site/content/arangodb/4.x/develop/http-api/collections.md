@@ -5540,8 +5540,8 @@ paths:
                     type: string
         '403':
           description: |
-            The user account you authenticate with lacks `rw` access to
-            the collection.
+            The user account you authenticate with lacks `rw` access to the
+            collection.
           content:
             application/json:
               schema:
