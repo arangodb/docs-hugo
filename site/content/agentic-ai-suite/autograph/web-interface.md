@@ -32,7 +32,7 @@ This page describes how to build a knowledge graph from scratch. To keep it
 up-to-date afterwards by inserting, deleting, or replacing individual documents,
 you need to use the API. These operations are not available in the web interface
 in Arango Contextual Data Platform 4.1.0. See
-[Incremental Graph Updates](incremental-graph-updates.md).
+[Incremental Graph Updates](incremental-graph-updates/_index.md).
 {{< /info >}}
 
 ## Create an AutoGraph project

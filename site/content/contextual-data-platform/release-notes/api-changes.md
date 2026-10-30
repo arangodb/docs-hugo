@@ -219,7 +219,7 @@ unusable as the only upload path:
   has to be uploaded twice.
 
 In addition,
-[incremental graph updates](../../agentic-ai-suite/autograph/incremental-graph-updates.md)
+[incremental graph updates](../../agentic-ai-suite/autograph/incremental-graph-updates/_index.md)
 identify a document by its File Manager `file_id` and cannot reach a document
 that exists only as a direct upload.
 
@@ -595,7 +595,7 @@ require you to import data again:
 
 `POST /v1/delete` has been removed. Removing the Layer 3 data of a document is
 handled by
-[`POST /v1/graph/delete`](../../agentic-ai-suite/autograph/reference/orchestration.md#delete-documents)
+[`POST /v1/graph/delete`](../../agentic-ai-suite/autograph/incremental-graph-updates/api-reference.md#delete-documents)
 in AutoGraph. The Importer keeps
 [`POST /v1/recluster`](../../agentic-ai-suite/importer/incremental-updates.md#reclustering)
 for rebuilding the community layer of a single partition. See

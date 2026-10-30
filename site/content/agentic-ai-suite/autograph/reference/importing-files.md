@@ -24,7 +24,7 @@ carry an upload on its own:
   them.
 - Every imported basename has to exist as a RAG input in the File Manager for
   the same database as well, so every document has to be uploaded twice.
-- [Incremental graph updates](../incremental-graph-updates.md) identify a
+- [Incremental graph updates](../incremental-graph-updates/_index.md) identify a
   document by its File Manager `file_id` and cannot reach a document that
   exists only as a direct upload.
 

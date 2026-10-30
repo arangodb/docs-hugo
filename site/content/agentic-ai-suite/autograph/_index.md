@@ -95,7 +95,7 @@ drifted since it was last clustered and flags the ones that may need a refresh,
 but it never reclusters on its own. That decision, and the cost of it, is up to
 you.
 
-See [Incremental Graph Updates](incremental-graph-updates.md).
+See [Incremental Graph Updates](incremental-graph-updates/_index.md).
 
 ## What's next
 
@@ -112,5 +112,5 @@ See [Incremental Graph Updates](incremental-graph-updates.md).
   from Python with the official SDK for the Agentic AI Suite.
 - **[Architecture](architecture.md)**: Explore AutoGraph's three-layer knowledge graph architecture and ArangoDB collections.
 - **[Design Guide](design-guide.md)**: Learn how to structure your data with categories, layers, and components.
-- **[Incremental Graph Updates](incremental-graph-updates.md)**: Insert, delete, and update individual documents in a knowledge graph that has already been built.
+- **[Incremental Graph Updates](incremental-graph-updates/_index.md)**: Insert, delete, and update individual documents in a knowledge graph that has already been built.
 - **[API Reference](reference/)**: Dive into the corpus build, embeddings, RAG Strategizer, and orchestration endpoints.

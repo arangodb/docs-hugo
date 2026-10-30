@@ -111,9 +111,9 @@ the platform service status. See
 See [Incremental Updates](../incremental-updates.md) for the request fields,
 what the operation rebuilds, and how to troubleshoot problems. To remove or
 replace a document, use AutoGraph's
-[`POST /v1/graph/delete`](../../autograph/reference/orchestration.md#delete-documents)
+[`POST /v1/graph/delete`](../../autograph/incremental-graph-updates/api-reference.md#delete-documents)
 or
-[`POST /v1/graph/update`](../../autograph/reference/orchestration.md#update-documents).
+[`POST /v1/graph/update`](../../autograph/incremental-graph-updates/api-reference.md#update-documents).
 
 ## Related references
 

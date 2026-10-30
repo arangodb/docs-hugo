@@ -106,7 +106,7 @@ the Importer yourself only for standalone imports or advanced scenarios
 (e.g., re-running a single partition with custom settings).
 
 After the initial build, AutoGraph also uses the Importer for
-[Incremental Graph Updates](../autograph/incremental-graph-updates.md) in
+[Incremental Graph Updates](../autograph/incremental-graph-updates/_index.md) in
 Layer 3. It submits imports for new and changed files, and it can recluster a
 partition whose communities have drifted, but only if you ask for it. AutoGraph
 flags the drift and never reclusters on its own. Removing a document from

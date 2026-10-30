@@ -43,7 +43,7 @@ data into a context graph and retrieves from it:
   retrieval-augmented generation) for relationship-rich content, or a lighter
   VectorRAG path where similarity search is enough.
 - **Maintain**: Updates are
-  [incremental](../agentic-ai-suite/autograph/incremental-graph-updates.md).
+  [incremental](../agentic-ai-suite/autograph/incremental-graph-updates/_index.md).
   Inserting, deleting, or replacing a document reprocesses only what changed,
   and new documents join the nearest existing domain. Domains that have drifted
   since they were clustered are flagged; reclustering runs when you start it.
