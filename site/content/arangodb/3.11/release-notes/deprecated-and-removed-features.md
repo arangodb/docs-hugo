@@ -5,8 +5,28 @@ weight: 100
 description: >-
   Features listed in this section should no longer be used, because they are considered obsolete and may get removed in a future release
 aliases:
-  - ../develop/drivers/csharp-dotnet # 3.10 -> 3.11
   - ../components/tools/arangorestore/fast-cluster-restore # 3.10 -> 3.11
+  - ../develop/drivers/csharp-dotnet # 3.10 -> 3.11
+  - ../components/arangodb-server/ldap # 3.11 -> 3.11
+  - ../data-science/pregel # 3.11 -> 3.11
+  - ../data-science/pregel/algorithms # 3.11 -> 3.11
+  - ../develop/http-api/pregel # 3.11 -> 3.11
+  - ../deploy/active-failover # 3.11 -> 3.11
+  - ../deploy/active-failover/administration # 3.11 -> 3.11
+  - ../deploy/active-failover/manual-start # 3.11 -> 3.11
+  - ../deploy/active-failover/using-the-arangodb-starter # 3.11 -> 3.11
+  - ../deploy/arangosync # 3.11 -> 3.11
+  - ../deploy/arangosync/administration # 3.11 -> 3.11
+  - ../deploy/arangosync/monitoring # 3.11 -> 3.11
+  - ../deploy/arangosync/operations-and-maintenance # 3.11 -> 3.11
+  - ../deploy/arangosync/security # 3.11 -> 3.11
+  - ../deploy/arangosync/troubleshooting # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangodb-cluster # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.11
+  - ../operations/upgrading/manual-deployments/active-failover # 3.11 -> 3.11
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -21,6 +41,23 @@ This page only lists significant obsolete features but not minor API changes.
 See the [Release notes](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
+
+- **Datacenter-to-Datacenter Replication (DC2DC)**:\
+  The Datacenter-to-Datacenter Replication for cluster deployments including the
+  _arangosync_ tool is not supported in 3.11 OEM LTS (v3.11.14-1 or later)
+  and from v3.12 onward.
+
+- **LDAP authentication**:\
+  ArangoDB user authentication with an LDAP server in the Enterprise Edition is
+  not supported in the 3.11 OEM LTS version and from v3.12.0 onward.
+
+- **Pregel**:\
+  The distributed iterative graph processing (Pregel) system is not supported
+  in the 3.11 OEM LTS version and not available from v3.12 onward.
+  All Pregel graph algorithms, the Pregel JavaScript API and
+  HTTP API, and everything else related to Pregel is out of support.
+  All other graph features including AQL graph traversals and path finding
+  algorithms are unaffected.
 
 - **VelocyStream protocol**:\
   ArangoDB's own bi-directional asynchronous binary protocol VelocyStream (VST)
@@ -69,8 +106,7 @@ detailed information about breaking changes before upgrading.
 
 - **Leader/Follower Deployment Mode**:\
   The Leader/Follower deployment mode is deprecated and already removed from
-  documentation. Active Failover and OneShard databases in clusters are better
-  alternatives.
+  documentation. OneShard databases in clusters are a better alternative.
 
 - **Skiplist and hash indexes**:\
   Skiplist and hash indexes have been deprecated in 3.9 and will be removed in a 
@@ -86,14 +122,14 @@ detailed information about breaking changes before upgrading.
   [Foxx guide](../develop/foxx-microservices/guides/using-node-modules.md).
 
 - **Batch Requests API**:\
-  The [batch request REST API](../develop/http-api/batch-requests.md) is deprecated and will be 
+  The [batch request HTTP API](../develop/http-api/batch-requests.md) is deprecated and will be 
   removed in a future version. Instead of using this API, please use the 
   [HTTP interface for documents](../develop/http-api/documents.md#multiple-document-operations)
   that can insert, update, replace or remove arrays of documents.
 
 - **PUT method in Cursor API**:\
-  The HTTP endpoint `PUT /_api/cursor/<cursor-id>` in the
-  [Cursor REST API](../develop/http-api/queries/aql-queries.md) is deprecated and will be
+  The HTTP API endpoint `PUT /_api/cursor/<cursor-id>` in the
+  [Cursor HTTP API](../develop/http-api/queries/aql-queries.md) is deprecated and will be
   removed in a future version. Please use the drop-in replacement
   `POST /_api/cursor/<cursor-id>` instead. The POST endpoint is functionally
   equivalent to the PUT endpoint, but does not violate idempotency requirements
@@ -117,32 +153,32 @@ detailed information about breaking changes before upgrading.
   is deprecated and highly discouraged. This functionality may be removed in
   future versions of ArangoDB.
 
-- **Old metrics REST API**:\
+- **Old metrics HTTP API**:\
   The old metrics API under `/_admin/metrics` is deprecated and replaced by
   a new one under `/_admin/metrics/v2` from version 3.8.0 on. This step was
   necessary because the old API did not follow quite a few Prometheus
   guidelines for metrics.
 
-- **Statistics REST API**:\
+- **Statistics HTTP API**:\
   The endpoints `/_admin/statistics` and `/_admin/statistics-description`
   are deprecated in favor of the new metrics API under `/_admin/metrics/v2`.
   The metrics API provides a lot more information than the statistics API, so
   it is much more useful.
 
-- **Database target version REST API**:\
+- **Database target version HTTP API**:\
   The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
   more general version API with the endpoint `GET /_api/version`. The endpoint
   is removed in ArangoDB v4.0.
 
-- **Replication logger-follow REST API**:\
+- **Replication logger-follow HTTP API**:\
   The endpoint `/_api/replication/logger-follow` is deprecated since 3.4.0 and
-  may be removed in a future version. Client applications should use the REST 
-  API endpoint `/_api/wal/tail` instead, which is available since ArangoDB 3.3.
+  may be removed in a future version. Client applications should use the HTTP API
+  endpoint `/_api/wal/tail` instead, which is available since ArangoDB 3.3.
 
 - **Loading and unloading of collections**:\
   The JavaScript functions for explicitly loading and unloading collections,
   `db.<collection-name>.load()` and `db.<collection-name>.unload()` and their
-  REST API endpoints `PUT /_api/collection/<collection-name>/load` and
+  HTTP API endpoints `PUT /_api/collection/<collection-name>/load` and
   `PUT /_api/collection/<collection-name>/unload` are deprecated in 3.8.
   There should be no need to explicitly load or unload a collection with the
   RocksDB storage engine. The load/unload functionality was useful only with
@@ -154,7 +190,7 @@ detailed information about breaking changes before upgrading.
   write [Foxx Microservices](../develop/foxx-microservices/_index.md), which allow you to define
   custom endpoints even with complex business logic.
 
-  From v3.5.0 on, the system collections `_routing` and `_modules` are not
+  From v3.5.0 onward, the system collections `_routing` and `_modules` are not
   created anymore when the `_system` database is first created (blank new data
   folder). They are not actively removed, they remain on upgrade or backup
   restoration from previous versions.

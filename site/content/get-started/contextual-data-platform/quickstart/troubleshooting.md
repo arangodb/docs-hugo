@@ -1,0 +1,215 @@
+---
+title: Troubleshooting the data platform installation
+menuTitle: Troubleshooting
+weight: 10
+description: >-
+  Quick fixes for the issues you might run into while installing the Arango
+  Contextual Data Platform or following the Quickstart
+---
+Most installations go through without trouble. If something does not work as
+expected while you follow the
+[Arango Contextual Data Platform Quickstart](_index.md), this page helps you
+find the cause and get going again.
+
+## Check the status
+
+These three commands show what is happening:
+
+```bash
+# What the installer did, and where it stopped
+cat ~/.arango-install.log
+
+# Are the data platform pods running?
+kubectl get pods --namespace arango
+
+# Why is a particular pod not running?
+kubectl describe pod <pod-name> --namespace arango
+```
+
+Each part of the data platform runs in its own pod. All pods should reach a
+status of `Running`. If a pod shows `Pending`, `ImagePullBackOff`, or
+`CrashLoopBackOff`, start by looking at that one.
+
+## If the installation does not complete
+
+### Your machine is not x86-64
+
+The Contextual Data Platform requires processors that support the **x86-64**
+architecture. On Apple silicon and other ARM machines, some services might not
+start yet.
+
+{{< tip >}}
+Arango is fully committed to supporting the ARM architecture for all products
+and tests them before each release. As new services and components are
+developed, some of them may still be under validation. If you need ARM support
+for a specific service, contact your sales, service, or support team to confirm
+its status.
+{{< /tip >}}
+
+### Docker does not have enough resources
+
+The installer creates a local Kubernetes cluster and pulls a large set of
+container images. If Docker is limited to the defaults, pods stay `Pending`
+with an `Insufficient cpu` or `Insufficient memory` event, or the installation
+times out.
+
+Allocate at least **4 CPUs and 8 GB of RAM** to Docker, and make sure you have
+**50 GB or more of free disk space**. In Docker Desktop, this is under
+**Settings** &rarr; **Resources**.
+
+Verify what the cluster actually sees:
+
+```bash
+kubectl describe node | grep -A 5 "Allocatable"
+```
+
+### The license key is rejected
+
+If the installer stops during license activation, check that you are passing
+the license key exactly as issued, including any trailing characters:
+
+```bash
+curl --proto '=https' --tlsv1.2 -fsSL https://releases.license.arango.ai/releases/plg/install.sh | bash -s -- --license-key "YOUR_LICENSE_KEY"
+```
+
+Request credentials on the
+[Arango Developer Edition page](https://arango.ai/arango-developer-edition/)
+if you do not have them yet.
+
+### The cluster cannot reach the license service
+
+Deployments with internet access need to reach `*.license.arango.ai` for the
+initial activation and for continuous renewal. If your network blocks it, the
+operator logs a warning event and activation never completes:
+
+```bash
+kubectl get events --namespace arango --sort-by=.lastTimestamp | tail -20
+```
+
+Allow outbound access to `*.license.arango.ai`, or follow the
+[offline setup](../../../contextual-data-platform/install-and-upgrade/offline-setup.md) for air-gapped
+environments. See [License Management](../../../contextual-data-platform/license-management.md) for the full
+renewal lifecycle.
+
+### Port 8529 is already in use
+
+The installer opens a connection to the data platform on port `8529`. If
+another process already uses that port, the web interface cannot open. Stop the
+other process and start the connection again:
+
+```bash
+kubectl port-forward --namespace arango service/deployment-ea 8529:8529
+```
+
+## If you cannot connect
+
+### Connection refused from the browser or the Arango AI SDK
+
+The connection to the data platform was interrupted, for example because the
+terminal closed or your network changed. Start it again:
+
+```bash
+kubectl port-forward --namespace arango service/deployment-ea 8529:8529
+```
+
+Then retry. Re-run this command any time the connection stops working.
+
+### The browser warns about the certificate
+
+This is normal for a local installation. The deployment uses a self-signed
+certificate, so the browser cannot verify it. Continue anyway - depending on the
+browser, the option to continue is behind an **Advanced** button.
+
+### The Arango AI SDK fails with a TLS or certificate error
+
+The SDK has to accept the same self-signed certificate:
+
+```python
+from arango_ai_sdk import ArangoAIClient
+
+client = ArangoAIClient(
+    base_url="https://localhost:8529",
+    username="root",
+    password="test",
+    verify=False,
+)
+```
+
+Note the `https` scheme - the data platform gateway does not serve plain HTTP.
+
+For `curl`, pass `-k` / `--insecure`:
+
+```bash
+curl -k -u root: -d '{"query":"RETURN 42"}' https://127.0.0.1:8529/_db/_system/_api/cursor
+```
+
+### Login fails with the default credentials
+
+The installer prints the root password at the end of its run and also writes it
+to `~/.arango-install.log`. If you missed it, read it from there. Change it
+before exposing the deployment beyond your machine.
+
+## If the Quickstart steps do not work as expected
+
+### The build takes a long time
+
+`project.autograph.ingest()` is the long step - a few minutes on the sample
+documents, longer on your own documents. It polls the data platform every 30
+seconds, so pass an `on_progress` callback to see each status as it arrives
+instead of watching a blank screen:
+
+```python
+def show(progress):
+    print(progress.step, progress.status.status)
+
+project.autograph.ingest(categories=["physicists"], on_progress=show)
+```
+
+If you see no progress for more than a few minutes, check the pods:
+
+```bash
+kubectl get pods --namespace arango
+kubectl logs <pod-name> --namespace arango
+```
+
+### The LLM provider rejects the request
+
+Authentication and quota errors come from your LLM provider, not from the
+data platform. Confirm the key is set in the environment you are actually running in:
+
+```bash
+echo $LLM_API_KEY
+```
+
+Any OpenAI-compatible endpoint works - OpenRouter, Google Gemini, Anthropic,
+Azure, or a private corporate LLM. See
+[LLM Configuration](../../../contextual-data-platform/autograph/llm-configuration.md) for the
+supported providers and models.
+
+### Answers are empty or unhelpful
+
+Make sure `project.autograph.ingest()` completed and the retriever reported
+ready before you call `ask()`. Until the graph is built there is nothing to
+retrieve from, and the retriever will tell you it does not know rather than
+inventing an answer. Asking through a retriever that was removed from the
+project raises `AutoRagNotDeployedError`; deploy a new one with
+`project.autorag.deploy()`.
+
+## Start fresh
+
+If you want to start again from a clean state, remove the local setup:
+
+```bash
+kind delete cluster --name arango-platform
+```
+
+Then run the installation command again.
+
+## More help
+
+- [Online setup](../../../contextual-data-platform/install-and-upgrade/online-setup.md) - the manual installation
+  steps, useful for isolating which one fails.
+- [License Management](../../../contextual-data-platform/license-management.md) - activation, renewal, and the
+  required network access.
+- [Architecture](../../../contextual-data-platform/architecture.md) - what each component does and how they
+  connect.

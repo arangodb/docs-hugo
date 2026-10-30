@@ -43,10 +43,9 @@ paths:
 
         The permissions required to use the endpoint depend on the
         [`--activities.only-superuser-enabled` startup option](../../../components/arangodb-server/options.md#--activitiesonly-superuser-enabled).
-        By default, *administrate* access for the `_system` database is
-        sufficient. If the startup option is enabled, the endpoint is restricted
-        to the superuser and you therefore need to authenticate with a token
-        created from the JWT secret.
+        By default, `rw` access for the `_system` database is
+        sufficient. If the startup option is enabled, the endpoint requires a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens).
       parameters:
         - name: database-name
           in: path
@@ -54,8 +53,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and write access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         # TODO: Forwarding broken in v3.12.11
@@ -202,8 +201,8 @@ paths:
             - `false`: The endpoint is restricted to admin users but the
               user account you authenticated with lacks write access to the
               `_system` database.
-            - `true`: The endpoint is restricted to the superuser but you didn't
-              authenticate with a token created from the JWT secret.
+            - `true`: The endpoint requires a superuser JWT but you
+              didn't use one.
           content:
             application/json:
               schema:
@@ -393,10 +392,9 @@ paths:
 
         The permissions required to use the endpoint depend on the
         [`--activities.only-superuser-enabled` startup option](../../../components/arangodb-server/options.md#--activitiesonly-superuser-enabled).
-        By default, *administrate* access for the `_system` database is
-        sufficient. If the startup option is enabled, the endpoint is restricted
-        to the superuser and you therefore need to authenticate with a token
-        created from the JWT secret.
+        By default, `rw` access for the `_system` database is
+        sufficient. If the startup option is enabled, the endpoint requires a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens).
       parameters:
         - name: database-name
           in: path
@@ -404,8 +402,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and write access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
       responses:
@@ -485,8 +483,7 @@ paths:
               `false` and the user account you authenticated with lacks write
               access to the `_system` database.
             - The `--activities.only-superuser-enabled` startup option is `true`
-              and you didn't authenticate with a token created from the
-              JWT secret.
+              and you didn't use a superuser JWT.
           content:
             application/json:
               schema:
@@ -595,7 +592,7 @@ following additional attributes. They mirror the internal query setup request:
 
 <small>Introduced in: v3.12.11</small>
 
-A [consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation)
+A [consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation)
 of the index segments of an `arangosearch` View or an inverted index.
 
 Every consolidation is reported as an activity for as long as it runs, from the

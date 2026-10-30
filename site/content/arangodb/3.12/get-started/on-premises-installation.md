@@ -48,14 +48,16 @@ The default installation contains one database `_system` and a user
 named `root`.
 
 Debian-based packages ask for a password during the installation process.
-Red-Hat based packages set a random password. For all other installation
-packages, you need to execute the following:
+Red-Hat based packages set a random password. You can change the password with the
+following command, which asks for a new root password and sets it:
 
 ```
 shell> arango-secure-installation
 ```
 
-This command asks for a root password and sets it.
+If you use the `tar.gz` archives, see
+[Securing your installation](../operations/installation/linux/_index.md#targz-archives)
+instead.
 
 {{< warning >}}
 The password that is set for the root user during the installation of the ArangoDB

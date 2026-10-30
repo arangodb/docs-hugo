@@ -154,7 +154,7 @@ paths:
           description: |
             The name of the database whose query results cache to clear.
 
-            The user account you authenticate with needs at least read access to
+            The user account you authenticate with needs at least `ro` access to
             this database as well as to the `_system` database (the latter is
             required from v3.12.11 onward).
           schema:
@@ -225,7 +225,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -317,7 +317,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database as well as to the `_system` database (the latter
             is required from v3.12.11 onward).
           schema:

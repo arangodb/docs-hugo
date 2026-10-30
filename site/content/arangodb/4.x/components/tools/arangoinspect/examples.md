@@ -25,13 +25,39 @@ is only one. You can connect to any node in case of a cluster (_DB-Server_,
 _Coordinator_, _Agent_).
 
 ```
-arangoinspect --server.endpoint tcp://127.0.0.1:8529
+arangoinspect --server.endpoint http://127.0.0.1:8529
 ```
 
-This starts the tool with a prompt for the JWT secret and tries to connect
-to the specified ArangoDB server. You have to type the secret as is used for
-the _arangod_ option `--server.jwt-secret`. For non-cluster deployments,
-you may authenticate with a user name and password (or access token) instead:
+This tries to connect to the specified ArangoDB server. As _arangoinspect_
+needs to query the Agency, you generally have to authenticate with the JWT
+secret of the deployment, that is, the content of the file that the `arangod`
+option [`--server.jwt-secret-keyfile`](../../arangodb-server/options.md#--serverjwt-secret-keyfile)
+points to (or of one of the files in a `--server.jwt-secret-folder`).
+
+Let _arangoinspect_ read the secret from this file:
+
+```
+arangoinspect --server.endpoint tcp://127.0.0.1:8529 --server.jwt-secret-keyfile /etc/arangodb.secret
+```
+
+Alternatively, you can use the `--server.ask-jwt-secret` option to get prompted
+for the secret and type it in. This is only feasible if the secret is a string
+you can type, however. It may contain arbitrary bytes, like the secrets that the
+[ArangoDB Starter](../arangodb-starter/security.md#jwt-tokens) creates, in which
+case you need to use `--server.jwt-secret-keyfile`.
+
+You can also authenticate with an existing authentication token using the
+`--server.jwt-token` option. Set the value to `-` to get prompted for the token
+instead of passing it as a command-line argument:
+
+```
+arangoinspect --server.endpoint tcp://127.0.0.1:8529 --server.jwt-token -
+```
+
+For non-cluster deployments, you may authenticate with a user name and password
+(or access token) instead. The prompt for the JWT secret is enabled by default
+for _arangoinspect_ and cannot be combined with a user name and password, so you
+need to disable it:
 
 ```
 arangoinspect --server.ask-jwt-secret false --server.username "root" --server.password "foobar"
@@ -39,13 +65,20 @@ arangoinspect --server.ask-jwt-secret false --server.username "root" --server.pa
 
 The password can be omitted and entered interactively.
 
+The superuser tokens that _arangoinspect_ generates from the JWT secret don't
+expire. If you authenticate with a username and password, _arangoinspect_ uses
+a JWT session token that it renews automatically before it expires. From v3.12.13
+onward, this also applies to session tokens you pass via `--server.jwt-token`.
+See [Connect to an ArangoDB server](../_index.md#connect-to-an-arangodb-server)
+for details.
+
 ## Example outputs
 
 If _arangoinspect_ succeeds to authenticate, it starts to gather information
 and writes the result to `arangodb-inspector.json`, then exits:
 
 ```
-arangoinspect --server.endpoint tcp://127.0.0.1:9730
+arangoinspect --server.endpoint http://127.0.0.1:9730
 
 Please specify the JWT secret: 
 Connected to ArangoDB 'http+tcp://localhost:9730, version: 4.0.0 [COORDINATOR, unknown mode], database: '_system', username: 'root'

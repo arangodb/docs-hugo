@@ -6,7 +6,7 @@ description: >-
   A summary of the changes to the HTTP API and other interfaces that are relevant
   for developers, like maintainers of drivers and integrations for ArangoDB
 ---
-## HTTP RESTful API
+## HTTP API
 
 ### Behavior changes
 
@@ -205,7 +205,7 @@ for this reason if your deployment is at or above the configured maximum. Exampl
   spaces have been removed between the `}` delimiting the labels and the value of
   the metric.
 
-- Changed the encoding of revision IDs returned by the below listed REST APIs.
+- Changed the encoding of revision IDs returned by the below listed HTTP APIs.
 
   <small>Introduced in: v3.8.8, v3.9.4, v3.10.1</small>
 
@@ -649,7 +649,7 @@ The following HTTP APIs are affected:
 
 #### Startup and recovery information
 
-The GET `/_admin/status` API now also returns startup and recovery information. This
+The `GET /_admin/status` API now also returns startup and recovery information. This
 can be used to determine the instance's progress during startup. The new `progress`
 attribute is returned inside the `serverInfo` object with the following subattributes:
 
@@ -712,7 +712,7 @@ object to set per-query thresholds for the
 
 #### Index API
 
-- The index creation API at POST `/_api/index` now accepts an optional `storedValues`
+- The index creation API at `POST /_api/index` now accepts an optional `storedValues`
   attribute to include additional attributes in a persistent index.
   These additional attributes cannot be used for index lookups or sorts, but they
   can be used for projections.
@@ -721,21 +721,21 @@ object to set per-query thresholds for the
   overlap of attribute paths between `fields` and `storedValues`. The maximum number
   of values is 32.
 
-  All index APIs that return additional data about indexes (e.g. GET `/_api/index`)
+  All index APIs that return additional data about indexes (e.g. `GET /_api/index`)
   will now also return the `storedValues` attribute for indexes that have their
   `storedValues` attribute set.
 
   The extra index information is also returned by inventory-like APIs that return
   the full set of collections with their indexes.
 
-- The index creation API at POST `/_api/index` now accepts an optional `cacheEnabled`
+- The index creation API at `POST /_api/index` now accepts an optional `cacheEnabled`
   attribute to enable an in-memory cache for index values for persistent indexes.
 
   If `cacheEnabled` is set to `true`, the index is created with the cache. Otherwise
   the index is created without it. Caching is turned off by default.
 
-  APIs that return information about all indexes such as GET `/_api/index` 
-  or GET `/_api/index/<index-id>` can now also return the `cacheEnabled`
+  APIs that return information about all indexes such as `GET /_api/index` 
+  or `GET /_api/index/<index-id>` can now also return the `cacheEnabled`
   attribute.
 
 You cannot create multiple persistent indexes with the same `fields` attributes

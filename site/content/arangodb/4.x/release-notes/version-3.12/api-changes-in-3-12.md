@@ -6,7 +6,7 @@ description: >-
   A summary of the changes to the HTTP API and other interfaces that are relevant
   for developers, like maintainers of drivers and integrations for ArangoDB
 ---
-## HTTP RESTful API
+## HTTP API
 
 ### Behavior changes
 
@@ -375,9 +375,62 @@ set it explicitly in this case. Alternatively, use the `{}` placeholder as in
 
 If you deactivate a user account by setting `active` to `false` using the
 [User Management API](../../develop/http-api/users.md), the
-[JWT session tokens](../../develop/http-api/authentication.md#jwt-user-tokens)
-that have been issued for this user account are now rejected. Requests that
+[JWT session tokens](../../develop/http-api/authentication.md#jwt-session-tokens)
+and [user tokens](../../develop/http-api/authentication.md#jwt-user-tokens) of
+this user account are now rejected. Requests that
 authenticate with such a token fail with an HTTP `401 Unauthorized` error.
+
+#### Per-user scoping of the query tracking API
+
+<small>Introduced in: v3.12.13</small>
+
+Listing and killing AQL queries is now limited to the queries of the user account
+you authenticate with. Previously, any user account with at least `ro` access
+to a database could list all running and slow queries of that database,
+including the query strings and bind variables of other users, and kill any of
+them.
+
+This affects the following endpoints of the
+[AQL query API](../../develop/http-api/queries/aql-queries.md#track-queries):
+
+- `GET /_api/query/current` and `GET /_api/query/slow` only return your own
+  queries.
+- `DELETE /_api/query/slow` only removes your own entries from the list of slow
+  queries.
+- `DELETE /_api/query/{query-id}` only kills your own queries. Requests to
+  kill a query of another user fail with an HTTP `403 Forbidden` error.
+
+Administrators can still list and kill the queries of all users and clear the
+entire list of slow queries. This requires `rw` access to the `_system`
+database (classic authorization) or the `coredb-admin` role (RBAC).
+Requests with a
+[superuser JWT](../../develop/http-api/authentication.md#jwt-superuser-tokens)
+are not affected.
+
+Using the `all` query parameter to target all databases remains unchanged and
+still requires a superuser JWT in the `_system` database.
+
+#### Permission checks for the query tracking properties
+
+<small>Introduced in: v3.12.13</small>
+
+Changing the query tracking properties of a database via the
+[`PUT /_api/query/properties` endpoint](../../develop/http-api/queries/aql-queries.md#update-the-aql-query-tracking-configuration)
+now requires `rw` access to the database the request targets (classic
+authorization). Previously, any user account with at least `ro` access to the
+database could change the properties, for example, to enable the tracking of
+bind variables.
+
+With RBAC, none of the predefined roles grants the permission to change the
+query tracking properties. Only requests with a
+[superuser JWT](../../develop/http-api/authentication.md#jwt-superuser-tokens)
+can change them.
+
+Changing the properties is also no longer possible in read-only mode, except
+with a superuser JWT.
+
+If you lack the required permission or if the server is in read-only mode,
+the request fails with an HTTP `403 Forbidden` error.
 
 ### Endpoint return value changes
 
@@ -1277,6 +1330,21 @@ curl -uroot:v1.7b2265...71227d http://localhost:8529/_api/database
 Note that it is recommended to use access tokens for creating
 [JWT session tokens](../../develop/http-api/authentication.md#create-a-jwt-session-token).
 
+#### Custom expiry time for session tokens
+
+<small>Introduced in: v3.12.6</small>
+
+The `POST /_open/auth` endpoint accepts a new optional `expiryTime` attribute
+in the request body to request a session token with a lifetime (in seconds)
+different from the default of the `--server.session-timeout` startup option.
+The value needs to be within the bounds of the new
+`--auth.minimal-jwt-expiry-time` (default: `10`) and
+`--auth.maximal-jwt-expiry-time` (default: `3600`) startup options, otherwise
+the request is rejected with an HTTP `400 Bad Request` error.
+
+See [JWT session tokens](../../develop/http-api/authentication.md#jwt-session-tokens)
+for details.
+
 #### Activities API (experimental)
 
 ##### Threads of an activity
@@ -1316,14 +1384,14 @@ are unaffected.
 #### JavaScript-based traversal using `/_api/traversal`
 
 The long-deprecated JavaScript-based traversal functionality has been removed
-in v3.12.0, including the REST API endpoint `/_api/traversal`.
+in v3.12.0, including the HTTP API endpoint `/_api/traversal`.
 
 The functionality provided by this API was deprecated and unmaintained since
 v3.4.0. JavaScript-based traversals have been replaced with AQL traversals in
-v2.8.0. Additionally, the JavaScript-based traversal REST API could not handle
+v2.8.0. Additionally, the JavaScript-based traversal HTTP API could not handle
 larger amounts of data and was thus very limited.
 
-Users of the `/_api/traversal` REST API should use
+Users of the `/_api/traversal` HTTP API should use
 [AQL traversal queries](../../aql/graph-queries/traversals.md) instead.
 
 #### Pregel API

@@ -30,7 +30,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -39,7 +39,7 @@ paths:
           required: false
           description: |
             If set to `true` and if the user account you authenticate with has
-            administrate access to the `_system` database, the response contains
+            `rw` access to the `_system` database, the response contains
             a `details` attribute with additional information about included
             components and their versions. The attribute names and internals of
             the `details` object may vary depending on platform and ArangoDB version.
@@ -434,7 +434,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -583,9 +583,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
       responses:
@@ -634,7 +634,7 @@ paths:
         '403':
           description: |
             The `--server.harden` startup option is enabled but the user account
-            you authenticated with lacks write access to the `_system` database.
+            you authenticated with lacks `rw` access to the `_system` database.
           content:
             application/json:
               schema:
@@ -685,7 +685,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -737,9 +737,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
       responses:
@@ -996,12 +996,11 @@ paths:
         '200':
           description: |
             This API will return HTTP 200 in case the server is up and running and usable for
-            arbitrary operations, is not set to read-only mode and is currently not a follower
-            in case of an Active Failover deployment setup.
+            arbitrary operations and is not set to read-only mode.
         '503':
           description: |
-            HTTP 503 will be returned in case the server is during startup or during shutdown,
-            is set to read-only mode or is currently a follower in an Active Failover deployment setup.
+            HTTP 503 will be returned during startup and shutdown, and in case
+            the server is set to read-only mode.
 
             In addition, HTTP 503 will be returned in case the fill grade of the scheduler
             queue exceeds the configured high-water mark (adjustable via startup option
@@ -1145,7 +1144,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -1180,8 +1179,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
       requestBody:
@@ -1229,9 +1228,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
       responses:
@@ -1330,9 +1329,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
         - name: force
@@ -1497,8 +1496,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: soft
@@ -1568,8 +1567,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
       responses:
@@ -1653,7 +1652,8 @@ paths:
         This endpoint can be used to reclaim disk space after substantial data
         deletions have taken place, by compacting the entire database system data.
 
-        The endpoint requires superuser access.
+        This endpoint requires a [superuser JWT](authentication.md#jwt-superuser-tokens).
+        User accounts, including `root`, are not sufficient.
       requestBody:
         content:
           application/json:
@@ -1713,7 +1713,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -1747,7 +1747,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -1987,7 +1987,7 @@ paths:
       operationId: listEndpoints
       description: |
         {{</* warning */>}}
-        This route should no longer be used.
+        This endpoint should no longer be used.
         It is considered as deprecated from version 3.4.0 on.
         {{</* /warning */>}}
 

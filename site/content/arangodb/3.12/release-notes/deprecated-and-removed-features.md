@@ -7,32 +7,32 @@ description: >-
 aliases:
   - ../components/tools/arangorestore/fast-cluster-restore # 3.10 -> 3.11
   - ../develop/drivers/csharp-dotnet # 3.10 -> 3.11
-  - ../components/arangodb-server/ldap # 3.11 -> 3.12
-  - ../data-science/pregel # 3.11 -> 3.12
-  - ../data-science/pregel/algorithms # 3.11 -> 3.12
-  - ../develop/http-api/pregel # 3.11 -> 3.12
+  - ../components/arangodb-server/ldap # 3.11 -> 3.11
+  - ../data-science/pregel # 3.11 -> 3.11
+  - ../data-science/pregel/algorithms # 3.11 -> 3.11
+  - ../develop/http-api/pregel # 3.11 -> 3.11
   - ../deploy/active-failover # 3.11 -> 3.12
   - ../deploy/active-failover/administration # 3.11 -> 3.12
   - ../deploy/active-failover/manual-start # 3.11 -> 3.12
   - ../deploy/active-failover/using-the-arangodb-starter # 3.11 -> 3.12
-  - ../deploy/arangosync # 3.11 -> 3.12
-  - ../deploy/arangosync/administration # 3.11 -> 3.12
-  - ../deploy/arangosync/monitoring # 3.11 -> 3.12
-  - ../deploy/arangosync/operations-and-maintenance # 3.11 -> 3.12
-  - ../deploy/arangosync/security # 3.11 -> 3.12
-  - ../deploy/arangosync/troubleshooting # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/arangodb-cluster # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.12
+  - ../deploy/arangosync # 3.11 -> 3.11
+  - ../deploy/arangosync/administration # 3.11 -> 3.11
+  - ../deploy/arangosync/monitoring # 3.11 -> 3.11
+  - ../deploy/arangosync/operations-and-maintenance # 3.11 -> 3.11
+  - ../deploy/arangosync/security # 3.11 -> 3.11
+  - ../deploy/arangosync/troubleshooting # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangodb-cluster # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.11
   - ../operations/installation/macos # 3.11 -> 3.12
   - ../operations/installation/windows # 3.11 -> 3.12
-  - ../operations/installation/compiling # 3.11 -> 3.12
-  - ../operations/installation/compiling/compile-on-debian # 3.11 -> 3.12
-  - ../operations/installation/compiling/running-custom-build # 3.11 -> 3.12
-  - ../operations/installation/compiling/compile-on-windows # 3.11 -> 3.12
-  - ../operations/installation/compiling/recompiling-jemalloc # 3.11 -> 3.12
+  - ../operations/installation/compiling # 3.11 -> 3.11
+  - ../operations/installation/compiling/compile-on-debian # 3.11 -> 3.11
+  - ../operations/installation/compiling/running-custom-build # 3.11 -> 3.11
+  - ../operations/installation/compiling/compile-on-windows # 3.11 -> 3.11
+  - ../operations/installation/compiling/recompiling-jemalloc # 3.11 -> 3.11
   - ../operations/upgrading/manual-deployments/active-failover # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/macos # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/windows # 3.11 -> 3.12
@@ -167,14 +167,14 @@ detailed information about breaking changes before upgrading.
   [Foxx guide](../develop/foxx-microservices/guides/using-node-modules.md).
 
 - **Batch Requests API**:\
-  The [batch request REST API](../develop/http-api/batch-requests.md) was deprecated
+  The [batch request HTTP API](../develop/http-api/batch-requests.md) was deprecated
   in v3.8.0 and has been removed in v3.12.3. Instead of using this API, please use the
   [HTTP interface for documents](../develop/http-api/documents.md#multiple-document-operations)
   that can insert, update, replace or remove arrays of documents.
 
 - **PUT method in Cursor API**:\
-  The HTTP endpoint `PUT /_api/cursor/<cursor-id>` in the
-  [Cursor REST API](../develop/http-api/queries/aql-queries.md) is deprecated and will be
+  The HTTP API endpoint `PUT /_api/cursor/<cursor-id>` in the
+  [Cursor HTTP API](../develop/http-api/queries/aql-queries.md) is deprecated and will be
   removed in a future version. Please use the drop-in replacement
   `POST /_api/cursor/<cursor-id>` instead. The POST endpoint is functionally
   equivalent to the PUT endpoint, but does not violate idempotency requirements
@@ -198,13 +198,13 @@ detailed information about breaking changes before upgrading.
   is deprecated and highly discouraged. This functionality may be removed in
   future versions of ArangoDB.
 
-- **Old metrics REST API**:\
+- **Old metrics HTTP API**:\
   The old metrics API under `/_admin/metrics` is deprecated and replaced by
   a new one under `/_admin/metrics/v2` from version 3.8.0 on. This step was
   necessary because the old API did not follow quite a few Prometheus
   guidelines for metrics.
 
-- **Statistics REST API**:\
+- **Statistics HTTP API**:\
   The endpoints `/_admin/statistics`, `/_admin/statistics-description`,
   `/_admin/cluster/nodeStatistics`, and `/_admin/cluster/statistics`
   are deprecated and removed in ArangoDB 4.0 in favor of the new metrics API
@@ -212,17 +212,17 @@ detailed information about breaking changes before upgrading.
   The metrics API provides a lot more information than the statistics endpoints,
   so it is much more useful and uses the standard Prometheus format.
 
-- **Database target version REST API**:\
+- **Database target version HTTP API**:\
   The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
   more general version API with the endpoint `GET /_api/version`. The endpoint
   is removed in ArangoDB v4.0.
 
-- **Replication logger-follow REST API**:\
+- **Replication logger-follow HTTP API**:\
   The endpoint `/_api/replication/logger-follow` is deprecated since 3.4.0 and
-  removed in ArangoDB v3.12.10. Client applications should use the REST 
-  API endpoint `/_api/wal/tail` instead, which is available since ArangoDB v3.3.
+  removed in ArangoDB v3.12.10. Client applications should use the HTTP API
+  endpoint `/_api/wal/tail` instead, which is available since ArangoDB v3.3.
 
-- **Replication REST API**:\
+- **Replication HTTP API**:\
   Various endpoints related to asynchronous replication like the global applier
   have been removed in ArangoDB v3.12.10. These endpoints provided the low-level
   mechanisms for the user-managed Leader/Follower Replication and the
@@ -234,7 +234,7 @@ detailed information about breaking changes before upgrading.
 - **Loading and unloading of collections**:\
   The JavaScript functions for explicitly loading and unloading collections,
   `db.<collection-name>.load()` and `db.<collection-name>.unload()` and their
-  REST API endpoints `PUT /_api/collection/<collection-name>/load` and
+  HTTP API endpoints `PUT /_api/collection/<collection-name>/load` and
   `PUT /_api/collection/<collection-name>/unload` were deprecated in 3.8 and are
   removed in ArangoDB v4.0. The load/unload functionality was only useful with
   the MMFiles storage engine, which is not available anymore since 3.7.

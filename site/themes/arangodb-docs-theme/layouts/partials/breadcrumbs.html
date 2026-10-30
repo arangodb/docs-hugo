@@ -1,27 +1,25 @@
 {{ $navLevel := len .Page.Ancestors -}}
 {{ if ge $navLevel 1 -}}
-<nav class="breadcrumbs{{ if eq $navLevel 1 }} none{{ end }}">
+<nav class="breadcrumbs">
   <ol class="links" vocab="https://schema.org/" typeof="BreadcrumbList">
   {{ $position := 0 -}}
   {{ range .Ancestors.Reverse | append . -}}
-    {{ if not .IsHome -}}
-      {{ $position = add $position 1 -}}
-      <li typeof="ListItem" property="itemListElement">
-        {{ if gt $position 1 }}<i class="fas fa-chevron-right fa-fw"></i>{{/* TODO <svg style="height: 12px; width: 12px" viewBox="0 0 7 7"><path fill="none" stroke="currentColor" stroke-width="1" d="m 2,6.5 3,-3 -3,-3"></path></svg> */}}{{ end -}}
-        <a property="item" typeof="WebPage" class="link" href="{{ .RelPermalink }}">{{/* White-space control */ -}}
-          <span property="name" class="breadcrumb-entry">
-          {{- $splitPath := split .Path "/" -}}
-          {{ if and (hasPrefix .Path "/arangodb/") (eq ($splitPath | len) 3) -}}
-            {{ $coreVersion := index $splitPath 2 -}}
-            {{ template "getVersionLong" dict "coreVersion" $coreVersion -}}
-          {{ else -}}
-            {{ .Params.menuTitle | markdownify -}}
-          {{ end -}}
-          </span>
-        </a>
-        <meta property="position" content="{{ $position }}">
-      </li>
-    {{ end -}}
+    {{ $position = add $position 1 -}}
+    <li typeof="ListItem" property="itemListElement">
+      {{ if gt $position 1 }}<i class="fas fa-chevron-right fa-fw"></i>{{/* TODO <svg style="height: 12px; width: 12px" viewBox="0 0 7 7"><path fill="none" stroke="currentColor" stroke-width="1" d="m 2,6.5 3,-3 -3,-3"></path></svg> */}}{{ end -}}
+      <a property="item" typeof="WebPage" class="link" href="{{ .RelPermalink }}">{{/* White-space control */ -}}
+        <span property="name" class="breadcrumb-entry">
+        {{- $splitPath := split .Path "/" -}}
+        {{ if and (hasPrefix .Path "/arangodb/") (eq ($splitPath | len) 3) -}}
+          {{ $coreVersion := index $splitPath 2 -}}
+          {{ template "getVersionLong" dict "coreVersion" $coreVersion -}}
+        {{ else -}}
+          {{ .Params.menuTitle | markdownify -}}
+        {{ end -}}
+        </span>
+      </a>
+      <meta property="position" content="{{ $position }}">
+    </li>
   {{ end -}}
   </ol>
 </nav>
@@ -32,7 +30,7 @@
   {{ $versions := index hugo.Data.versions "/arangodb/" -}}
   {{ range $i, $version := $versions -}}
     {{ if or (eq $coreVersion $version.name) (eq $coreVersion $version.alias) -}}
-      {{ $version.version -}}
+      {{ $version.version }}{{ with $version.label }} {{ . }}{{ end -}}
       {{ break -}}
     {{ end -}}
   {{ end -}}

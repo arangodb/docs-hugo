@@ -2374,6 +2374,25 @@ added:
 |:------|:------------|
 | `arangodb_rbac_request_duration` | Duration of requests to the external RBAC authorization service in microseconds. |
 
+### Memory limit for decompressing request bodies
+
+<small>Introduced in: v3.12.13</small>
+
+The ArangoDB server decompresses incoming request bodies that are sent with a
+`Content-Encoding: gzip`, `Content-Encoding: deflate`, or `Content-Encoding: lz4`
+HTTP header. The following startup option has been added to limit how much
+memory this can take:
+
+- `--http.max-decompressed-request-body-size`:
+  The maximum size of a single request body after decompression (in bytes).
+  The default is `536870912` (512 MiB). Requests with a body that exceeds this
+  size once decompressed are rejected with an HTTP `413 Payload Too Large` error.
+  The limit applies to the decompressed size only. The size of a request as it
+  arrives over the network is limited separately.
+
+Up to v3.12.12, the maximum decompressed size is not configurable and requests
+exceeding it are rejected with an HTTP `400 Bad Request` error.
+
 ## Miscellaneous changes
 
 ### V8 and ICU library upgrades
@@ -2914,6 +2933,22 @@ impact of this feature:
 See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-aql-queries)
 for details.
 
+### Custom session token expiry
+
+<small>Introduced in: v3.12.6</small>
+
+You can request a session token with a lifetime different from the default
+controlled by the `--server.session-timeout` startup option. To do so, specify
+the `expiryTime` attribute in seconds when creating a session token via
+`POST /_open/auth`. The value needs to be within the bounds of the following
+new startup options:
+
+- `--auth.minimal-jwt-expiry-time` (default: `10`)
+- `--auth.maximal-jwt-expiry-time` (default: `3600`)
+
+See [JWT session tokens](../../develop/http-api/authentication.md#jwt-session-tokens)
+for details.
+
 ### RocksDB upgrade
 
 <small>Introduced in: v3.12.6</small>
@@ -3247,6 +3282,41 @@ Could not connect to endpoint 'tcp://127.0.0.1:8529', database: '_system', usern
 ```
 
 Up to v3.12.11, the reason is dropped and only the generic message is shown.
+
+### Automatic JWT authentication and renewal
+
+<small>Introduced in: v3.12.13</small>
+
+If you start _arangodump_, _arangorestore_, _arangoimport_, _arangoexport_,
+_arangobench_, or _arangobackup_ with a username and password, the tools now
+exchange the credentials for a JSON Web Token (JWT) via the
+[`POST /_open/auth` endpoint](../../develop/http-api/authentication.md#create-a-jwt-session-token)
+at startup and use this token for all requests, like _arangosh_ already does.
+This also makes the tools work with deployments that use
+[RBAC](#external-service-for-rbac) for authorization. If the server doesn't
+issue a token, for example, because authentication is disabled, the tools fall
+back to HTTP Basic Authentication.
+
+The token is renewed automatically before it expires, so that long-running
+operations like dumps and restores no longer fail with an HTTP `401` error once
+the token's lifetime has elapsed. This also applies to JWT session tokens that
+you pass to a tool via the `--server.jwt-token` startup option. Before, _arangosh_
+and _arangoinspect_ only renewed session tokens they obtained using a username
+and password.
+
+You can control how many seconds before the expiry a renewal is attempted with
+the [`--server.jwt-renewal-threshold`](../../components/tools/arangodump/options.md#--serverjwt-renewal-threshold)
+startup option. The default is `150` seconds. Note that the server only issues a
+new token if the current one expires within the next 150 seconds.
+
+See [Connect to an ArangoDB server](../../components/tools/_index.md#connect-to-an-arangodb-server)
+for details.
+
+If you use the `--server.jwt-token` startup option, the tools now also report
+the user the token was issued for, for example, in connection messages.
+Before, they reported the value of the `--server.username` startup option,
+which is `root` by default. The same applies to the user that _arangorestore_
+grants access to a database it creates (`--create-database true`).
 
 ### arangodump
 
