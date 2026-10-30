@@ -1103,7 +1103,7 @@
     ],
     "default" : 604800,
     "deprecatedIn" : null,
-    "description" : "The maximal expiry time (in seconds) allowed for personal access tokens requested via the `POST /_api/token` endpoint.",
+    "description" : "The maximal expiry time (in seconds) allowed for personal access tokens requested via the `POST /_api/token/{user}` endpoint.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -1111,7 +1111,7 @@
     "introducedIn" : [
       "v3.12.10"
     ],
-    "longDescription" : "This option sets the maximum lifetime that can be\nrequested for a personal access token via the `valid_until` parameter in the\n`POST /_api/token` endpoint. If a request specifies a `valid_until` further in\nthe future than this maximum allows, it is silently capped to `now` plus this\noption's value.",
+    "longDescription" : "This option sets the maximum lifetime that can be\nrequested for a personal access token via the `valid_until` parameter in the\n`POST /_api/token/{user}` endpoint. If a request specifies a `valid_until`\nfurther in the future than this maximum allows, it is silently capped to the\nmoment of the request plus this option's value.",
     "maxInclusive" : true,
     "maxValue" : 1.7976931348623157e+308,
     "minInclusive" : false,
@@ -1539,7 +1539,7 @@
       "agent",
       "single"
     ],
-    "default" : 3580413952,
+    "default" : 3580411904,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -2976,7 +2976,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 2864331161,
+    "default" : 2864329523,
     "deprecatedIn" : null,
     "description" : "Maximum memory usage (in bytes) to be used by all ongoing dumps.",
     "dynamic" : true,
@@ -3075,7 +3075,7 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "The program must output 32 bytes of data on the\nstandard output and exit.",
+    "longDescription" : "The program must output 32 bytes of data on the\nstandard output and exit. Leading and trailing whitespace in the output is\nremoved.\n\nThis option is for the client tools that read and write files, such as\n`arangodump` and `arangorestore`. It does not encrypt the data of an `arangod`\ninstance. To encrypt the database directory (encryption at rest), use the\n`--rocksdb.encryption-key-generator` startup option (or\n`--rocksdb.encryption-keyfile` or `--rocksdb.encryption-keyfolder`).",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -3100,7 +3100,7 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "You must secure the encryption key file so that\nonly `arangodump`, `arangorestore`, and `arangod` can access it. You should also\nensure that the file is not readable if someone steals your hardware, for\nexample, by encrypting `/mytmpfs` or creating an in-memory file-system under\n`/mytmpfs`.",
+    "longDescription" : "This option is for the client tools that read and\nwrite files, such as `arangodump` and `arangorestore`. It lets them encrypt and\ndecrypt the files they handle, for example, dump files.\n\n**Note**: This option does not encrypt the data of an `arangod` instance. To\nencrypt the database directory (encryption at rest), use the\n`--rocksdb.encryption-keyfile` startup option (or\n`--rocksdb.encryption-key-generator` or `--rocksdb.encryption-keyfolder`).\n`arangod` accepts `--encryption.keyfile` and checks the key, but does not use it\nto encrypt the database.\n\nThe key file is read as is. It must contain exactly 32 bytes, so make sure that\nthe file has no trailing newline.\n\nYou must secure the encryption key file so that\nonly `arangodump`, `arangorestore`, and `arangod` can access it. You should also\nensure that the file is not readable if someone steals your hardware, for\nexample, by encrypting `/mytmpfs` or creating an in-memory file-system under\n`/mytmpfs`.",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -3446,6 +3446,38 @@
     "requiresValue" : true,
     "section" : "http",
     "type" : "double"
+  },
+  "http.max-decompressed-request-body-size" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 536870912,
+    "deprecatedIn" : null,
+    "description" : "The maximum size of a compressed HTTP request body after decompression (in bytes).",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.13"
+    ],
+    "longDescription" : "A compressed request body declares how large it\nwill be once decompressed, and the server allocates that much before unpacking\nit. This option caps that value, so a small request cannot force a large\nallocation.\n\nRequests exceeding the limit are rejected with HTTP 413.\n\nNote that this limits the body size *after* decompression. The size of the\nrequest as it arrives on the wire is limited separately.",
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "http",
+    "type" : "uint64"
   },
   "http.permanently-redirect-root" : {
     "category" : "option",
@@ -5921,7 +5953,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 16469139456,
+    "base" : 16469131264,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5929,7 +5961,7 @@
       "agent",
       "single"
     ],
-    "default" : 13340002959,
+    "default" : 13339996324,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -5939,7 +5971,7 @@
     "introducedIn" : [
       "v3.8.0"
     ],
-    "longDescription" : "You can use this option to set a limit on the\ncombined estimated memory usage of all AQL queries (in bytes). If this option\nhas a value of `0`, then no global memory limit is in place. This is also the\ndefault value and the same behavior as in version 3.7 and older.\n\nIf you set this option to a value greater than zero, then the total memory usage\nof all AQL queries is limited approximately to the configured value. The limit\nis enforced by each server node in a cluster independently, i.e. it can be set\nseparately for Coordinators, DB-Servers etc. The memory usage of a query that\nruns on multiple servers in parallel is not summed up, but tracked separately on\neach server.\n\nIf a memory allocation in a query would lead to the violation of the configured\nglobal memory limit, then the query is aborted with error code 32\n(\"resource limit exceeded\").\n\nThe global memory limit is approximate, in the same fashion as the per-query\nmemory limit exposed by the option `--query.memory-limit` is. The global memory\ntracking has a granularity of 32 KiB chunks.\n\nIf both, `--query.global-memory-limit` and `--query.memory-limit`, are set, you\nmust set the former at least as high as the latter.",
+    "longDescription" : "You can use this option to set a limit on the\ncombined estimated memory usage of all AQL queries (in bytes). If this option\nhas a value of `0`, then no global memory limit is in place.\n\nThe default value depends on the amount of available RAM: 90% of the memory\nthat remains after subtracting a reserve of 10% of the RAM (at least 256 MiB),\nbut no less than 25% of the RAM. This is about 81% of the RAM for systems with\nmore than 2.5 GiB. If the amount of available RAM cannot be determined, the\ndefault value is `0`.\n\nIf you set this option to a value greater than zero, then the total memory usage\nof all AQL queries is limited approximately to the configured value. The limit\nis enforced by each server node in a cluster independently, i.e. it can be set\nseparately for Coordinators, DB-Servers etc. The memory usage of a query that\nruns on multiple servers in parallel is not summed up, but tracked separately on\neach server.\n\nIf a memory allocation in a query would lead to the violation of the configured\nglobal memory limit, then the query is aborted with error code 32\n(\"resource limit exceeded\").\n\nThe global memory limit is approximate, in the same fashion as the per-query\nmemory limit exposed by the option `--query.memory-limit` is. The global memory\ntracking has a granularity of 32 KiB chunks.\n\nIf both, `--query.global-memory-limit` and `--query.memory-limit`, are set, you\nmust set the former at least as high as the latter.",
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
     "minInclusive" : true,
@@ -6256,7 +6288,7 @@
     "type" : "uint64"
   },
   "query.memory-limit" : {
-    "base" : 16469139456,
+    "base" : 16469131264,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -6264,7 +6296,7 @@
       "agent",
       "single"
     ],
-    "default" : 9881483673,
+    "default" : 9881478759,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7496,7 +7528,7 @@
       "agent",
       "single"
     ],
-    "default" : 4296496742,
+    "default" : 4296494284,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -7992,12 +8024,13 @@
     ],
     "default" : false,
     "deprecatedIn" : null,
-    "description" : "Generate an internal encryption-at-rest key.",
+    "description" : "On first startup, encrypt the data with a random key instead of the first user-supplied key.",
     "dynamic" : false,
     "enterpriseOnly" : true,
     "experimental" : false,
     "hidden" : true,
     "introducedIn" : null,
+    "longDescription" : "If you set this option to `true`, the server\ngenerates a random internal encryption-at-rest key when it starts with an empty\ndatabase directory. The key you supply with one of the `--rocksdb.encryption-*`\nkey options only protects this internal key. If you set it to `false` (default),\nthe first supplied user key is used as the internal key.\n\nThe option only has an effect at the first startup. The internal key never\nchanges afterwards, whether it is generated or not.",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -8017,7 +8050,7 @@
     ],
     "default" : true,
     "deprecatedIn" : null,
-    "description" : "Use Intel intrinsics-based encryption, requiring a CPU with the AES-NI instruction set. If turned off, then OpenSSL is used, which may use hardware-accelerated encryption, too.",
+    "description" : "Use AES-NI CPU instructions for encryption at rest. If disabled, OpenSSL is used, which may also be hardware-accelerated.",
     "dynamic" : false,
     "enterpriseOnly" : true,
     "experimental" : false,
@@ -8044,12 +8077,13 @@
     ],
     "default" : "",
     "deprecatedIn" : null,
-    "description" : "A program providing the encryption key on stdout. If set, encryption is enabled.",
+    "description" : "Program that prints a 32-byte key to stdout. Enables encryption at rest.",
     "dynamic" : false,
     "enterpriseOnly" : true,
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
+    "longDescription" : "The server runs the program and reads its standard\noutput. Leading and trailing whitespace in the output is removed, so a trailing\nnewline does not matter. The exit code of the program is ignored. After\ntrimming, the output must be exactly 32 bytes long. The server refuses to start\nif the program cannot be executed or if the key has a different length.\n\nYou can only use one of `--rocksdb.encryption-keyfile`,\n`--rocksdb.encryption-key-generator`, and `--rocksdb.encryption-keyfolder` at a\ntime. The server refuses to start if you set more than one of them.\n\nYou need to set the option when you start the server for the first time with an\nempty database directory. It is not possible to enable encryption for an\nexisting unencrypted database directory. Once a database directory is\nencrypted, you need to provide a key every time you start the server, and\nunencrypted operation is not possible anymore.\n\nUnless you set `--rocksdb.encryption-gen-internal-key` to `true`, the key that\nthe program outputs is also used as the internal encryption-at-rest key. If the\nprogram later outputs a different key without rotating the key first, the server\ncannot start because the key no longer matches the internal keystore.",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -8068,12 +8102,13 @@
     ],
     "default" : false,
     "deprecatedIn" : null,
-    "description" : "Allow encryption key rotation.",
+    "description" : "Allow reloading the user-supplied keys at runtime via the /_admin/server/encryption endpoint.",
     "dynamic" : false,
     "enterpriseOnly" : true,
     "experimental" : false,
     "hidden" : true,
     "introducedIn" : null,
+    "longDescription" : "If you set this option to `true`, you can use the\n`POST /_admin/server/encryption` HTTP API endpoint to rotate the user encryption\nkeys without restarting the server, and `GET /_admin/server/encryption` to\nretrieve the SHA-256 hashes of the loaded user keys.\n\nA rotation reads the keys again from the configured source\n(`--rocksdb.encryption-keyfile`, `--rocksdb.encryption-key-generator`, or\n`--rocksdb.encryption-keyfolder`) and re-encrypts the internal\nencryption-at-rest key with them. The data on disk is not re-encrypted. Using\n`--rocksdb.encryption-keyfolder` is recommended because the server can then\nstart with any of the keys in the folder while you roll out a new key.\n\nRotating keys requires superuser access. The endpoint is not available on\nCoordinators, as they do not store data.",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -8093,12 +8128,13 @@
     ],
     "default" : "",
     "deprecatedIn" : null,
-    "description" : "A file containing an encryption key. If set, encryption is enabled.",
+    "description" : "Path to a file containing a 32-byte key. Enables encryption at rest.",
     "dynamic" : false,
     "enterpriseOnly" : true,
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
+    "longDescription" : "The file must contain exactly 32 bytes of key\nmaterial. The content is read as is and not trimmed, so make sure that the file\nhas no trailing newline or other whitespace. Otherwise, the key is too long and\nthe server refuses to start.\n\nYou can only use one of `--rocksdb.encryption-keyfile`,\n`--rocksdb.encryption-key-generator`, and `--rocksdb.encryption-keyfolder` at a\ntime. The server refuses to start if you set more than one of them.\n\nYou need to set the option when you start the server for the first time with an\nempty database directory. It is not possible to enable encryption for an\nexisting unencrypted database directory. Once a database directory is\nencrypted, you need to provide a key every time you start the server, and\nunencrypted operation is not possible anymore.\n\nUnless you set `--rocksdb.encryption-gen-internal-key` to `true`, the key in\nthe file is also used as the internal encryption-at-rest key. If you replace\nthe file content later without rotating the key first, the server cannot start\nbecause the key no longer matches the internal keystore.",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -8117,12 +8153,13 @@
     ],
     "default" : "",
     "deprecatedIn" : null,
-    "description" : "A folder containing all possible user encryption keys. All keys are used to decrypt the internal keystore.",
+    "description" : "Directory with 32-byte key files, any of which can unlock the data. Enables encryption at rest.",
     "dynamic" : false,
     "enterpriseOnly" : true,
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
+    "longDescription" : "The server reads every regular file in the\nfolder as a user encryption key. Each file must contain exactly 32 bytes of key\nmaterial. The content is read as is and not trimmed, so make sure that the files\nhave no trailing newline or other whitespace.\n\nThe following entries are ignored:\n- Hidden files (names starting with a dot)\n- Files with a `.tmp` extension\n- Anything that is not a regular file, such as subfolders, sockets, and named\n  pipes (symbolic links to regular files are followed)\n\nThe folder must exist and contain at least one key file, otherwise the server\nrefuses to start. The files are not read in a defined order and none of the\nkeys is special: any one of the keys is enough to start the server.\n\nThe user keys do not encrypt the data directly. The server uses them to encrypt\nan internal encryption-at-rest key and stores one copy of it per user key in a\nkeystore inside the database directory. On startup, the server tries the user\nkeys until one of them decrypts the internal key. At the first startup with an\nempty database directory, the first key that the server finds becomes the\ninternal key, unless you set `--rocksdb.encryption-gen-internal-key` to\n`true`. As the order is not defined, you should set this option to `true` or\nonly put a single key into the folder when you start for the first time.\n\nIf you set `--rocksdb.encryption-key-rotation` to `true`, you can call the\n`POST /_admin/server/encryption` HTTP API endpoint to make the server read the\nfolder again. It re-encrypts the internal key with all keys that are currently\nin the folder and discards the keystore entries of keys that are no longer\nthere. You can use this to roll out a new key without downtime: add the new key\nfile, call the endpoint, remove the old key file, call the endpoint again. The\ndata on disk is not re-encrypted, as the internal key does not change.\n\nYou can only use one of `--rocksdb.encryption-keyfile`,\n`--rocksdb.encryption-key-generator`, and `--rocksdb.encryption-keyfolder` at a\ntime.",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -8652,7 +8689,7 @@
     ],
     "default" : 13,
     "deprecatedIn" : null,
-    "description" : "The maximum number of write buffers that build up in memory (default: number of column families + 2 = 12 write buffers). You can only increase the number.",
+    "description" : "The maximum number of write buffers that build up in memory (default: number of column families + 2). You can only increase the number.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -10132,7 +10169,7 @@
       "agent",
       "single"
     ],
-    "default" : 5728662323,
+    "default" : 5728659046,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
@@ -11139,7 +11176,7 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "The server reads JWT secrets from every file in\nthe configured folder.\n\nFiles are sorted lexicographically by name.\nTwo kinds are ignored: hidden files (names starting with `.`) and files ending\nin `.tmp`.\n\n- **First remaining file = active secret.** Signs new tokens and verifies\n  incoming ones.\n- **Every other file = passive secret.** Verifies only, never signs.\n\nA token is accepted if *any* secret verifies it. This allows zero-downtime\nrotation: keep the old secret in the folder as a passive secret so existing\ntokens stay valid, and put the new one first so it takes over signing\n(e.g. name the files like `01-current`, `02-previous` to control the order).\n\nTo reload the JWT secrets from disk without restarting, call the\n`POST /_admin/server/jwt` HTTP API endpoint. This lets you roll out new\nJWT secrets throughout a cluster.\n\n**File contents:**\n\nEach file is either a PEM-encoded key or raw bytes; the server decides by\ninspecting the content.\n\n| File contains | As active secret | As passive secret |\n|---|---|---|\n| PEM public/private key pair | Signs with the private key, verifies with the public key | Verifies with the public key |\n| PEM public key only | ⚠️ Cannot sign — server starts but can't issue tokens | Verifies with the public key |\n| PEM with no usable key | Error | Error |\n| Anything else | Raw bytes used as an HMAC secret; signs and verifies | Raw bytes used as an HMAC secret; verifies |",
+    "longDescription" : "The server reads JWT secrets from every file in\nthe configured folder.\n\nFiles are sorted lexicographically by name.\nThe following entries are ignored: hidden files (names starting with `.`),\nfiles ending in `.tmp`, and anything that is not a regular file, such as\nsubfolders, sockets, devices, or named pipes. Symbolic links are followed and\nare only used if they point to a regular file.\n\n- **First remaining file = active secret.** Signs new tokens and verifies\n  incoming ones.\n- **Every other file = passive secret.** Verifies only, never signs.\n\nA token is accepted if *any* secret verifies it. This allows zero-downtime\nrotation: keep the old secret in the folder as a passive secret so existing\ntokens stay valid, and put the new one first so it takes over signing\n(e.g. name the files like `01-current`, `02-previous` to control the order).\n\nTo reload the JWT secrets from disk without restarting, call the\n`POST /_admin/server/jwt` HTTP API endpoint. This lets you roll out new\nJWT secrets throughout a cluster.\n\n**File contents:**\n\nEach file is either a PEM-encoded key or raw bytes; the server decides by\ninspecting the content.\n\n| File contains | As active secret | As passive secret |\n|---|---|---|\n| PEM public/private key pair | Signs with the private key, verifies with the public key | Verifies with the public key |\n| PEM public key only | ⚠️ Cannot sign — server starts but can't issue tokens | Verifies with the public key |\n| PEM with no usable key | Error | Error |\n| Anything else | Raw bytes used as an HMAC secret; signs and verifies | Raw bytes used as an HMAC secret; verifies |",
     "obsolete" : false,
     "os" : [
       "linux"

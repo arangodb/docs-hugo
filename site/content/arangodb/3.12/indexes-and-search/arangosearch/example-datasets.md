@@ -17,7 +17,7 @@ repository.
 2. Unpack the downloaded archive
 3. Restore the folder `dump` with [arangorestore](../../components/tools/arangorestore/_index.md)
    into an ArangoDB instance, e.g.
-   `arangorestore --server.endpoint tcp://localhost:8529 --server.database IMDB --create-database --include-system-collections --input-directory dump`
+   `arangorestore --server.endpoint http://localhost:8529 --server.database IMDB --create-database --include-system-collections --input-directory dump`
 4. Create a View called `imdb` in the IMDB database. You can find various View
    configuration examples in this chapter.
 
@@ -32,7 +32,7 @@ repository.
 2. Unpack the downloaded archive
 3. Restore the folder `demo-geo-s2-dump` with [arangorestore](../../components/tools/arangorestore/_index.md)
    into an ArangoDB instance, e.g.
-   `arangorestore --server.endpoint tcp://localhost:8529 --server.database GeoS2 --create-database --input-directory demo-geo-s2-dump`
+   `arangorestore --server.endpoint http://localhost:8529 --server.database GeoS2 --create-database --input-directory demo-geo-s2-dump`
 4. Create a View called `restaurantsView` in the `GeoS2` database.
    You can find various View configuration examples in
    [Geospatial Search with ArangoSearch](geospatial-search.md).
