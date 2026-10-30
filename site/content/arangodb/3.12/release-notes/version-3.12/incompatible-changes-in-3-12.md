@@ -1289,6 +1289,22 @@ the start and end of the string. For example, `SUBSTITUTE("abc", "", "_")` now
 returns `"_a_b_c_"`. Up to v3.12.12, the function returns `null` and raises a
 warning in this case.
 
+## Stricter evaluation of `AT LEAST`
+
+<small>Introduced in: v3.12.13</small>
+
+The [`AT LEAST (<number>)`](../../aql/operators.md#array-comparison-operators)
+array comparison operator now evaluates to `false` if the number is greater than
+the length of the array. Up to v3.12.12, it can evaluate to `true` in this case
+if all array elements satisfy the condition, including for empty arrays. For
+example, `[] AT LEAST (1) == 1` and `[ 1, 2 ] AT LEAST (3) > 0` return `true` in
+these versions.
+
+Furthermore, the query now raises a warning
+(`ERROR_QUERY_INVALID_ARITHMETIC_VALUE`, `1561`) if the number is negative, not
+numeric, or not an integer. As before, negative and non-numeric values are
+treated as `0` and fractional numbers are truncated.
+
 ## HTTP API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
