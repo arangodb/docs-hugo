@@ -1622,6 +1622,15 @@ div > .box-content-container {
     padding: 24px;
 }
 
+/* Same spacing as the paragraph it used to be, except in front of list item text */
+.labels {
+    margin: 1rem 0;
+}
+
+li > .labels {
+    margin: 0;
+}
+
 .label {
     display: inline-block;
     padding: 0.2rem 0.8rem;

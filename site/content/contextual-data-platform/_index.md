@@ -106,6 +106,7 @@ to provide automated deployment, scaling, and management capabilities.
 The Arango Contextual Data Platform is licensed as two suites:
 
 - {{< tag "Platform Suite" >}} Always included.
+
 - {{< tag "Agentic AI Suite" >}} Licensed on top of the Platform Suite.
 
 See [Features and licensing](features-and-licensing.md) for what each
