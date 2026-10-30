@@ -1272,7 +1272,7 @@ authenticate with such a token fail with an HTTP `401 Unauthorized` error.
 <small>Introduced in: v3.12.13</small>
 
 The [`REGEX_MATCHES()` AQL function](../../aql/functions/string.md#regex_matches)
-now applies the regular expression to an empty input string like to any other
+now applies the regular expression to an empty input string as to any other
 input string.
 
 Up to v3.12.12, it returns `[ "" ]` for an empty input string and a non-empty

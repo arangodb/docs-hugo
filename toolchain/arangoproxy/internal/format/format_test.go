@@ -2,6 +2,7 @@ package format
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 
 	"gopkg.in/yaml.v3"
@@ -314,5 +315,22 @@ func TestAQLFormatterRequestCode(t *testing.T) {
 				t.Errorf("FormatRequestCode()\n got: %s\nwant: %s", got, test.want)
 			}
 		})
+	}
+}
+
+func TestAdjustCodeForArangoshKeepsAQL(t *testing.T) {
+	formatter := AQLFormatter{}
+	code := "LET x = 1\nlet y = 2\nRETURN assert(\n  true,\n  \"const failure\"\n)"
+	query := formatter.FormatRequestCode(code, nil)
+
+	got := AdjustCodeForArangosh(query)
+	if !strings.Contains(got, query) {
+		t.Errorf("AdjustCodeForArangosh() changed the query\n got: %s\nwant it to contain: %s", got, query)
+	}
+
+	// JavaScript is still rewritten
+	got = AdjustCodeForArangosh("const a = 1;\nassert(a === 1);")
+	if !strings.Contains(got, "var a = 1;") || !strings.Contains(got, "assert(a === 1, 'a === 1');") {
+		t.Errorf("AdjustCodeForArangosh() did not rewrite JavaScript\n got: %s", got)
 	}
 }

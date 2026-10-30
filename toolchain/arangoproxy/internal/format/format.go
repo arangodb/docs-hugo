@@ -32,15 +32,21 @@ func AdjustCodeForArangosh(code string) string {
 	lines := strings.Split(code, "\n")
 
 	for _, line := range lines {
-		re := regexp.MustCompile(`(?m)let |const `)
-		line = re.ReplaceAllString(line, "var ")
+		// An AQL example is a single db._query("...") line (see AQLFormatter).
+		// The JavaScript rewrites below must not change the text of the query.
+		isQuery := strings.HasPrefix(strings.TrimLeft(line, " \t~"), "db._query(")
 
-		assertRE := regexp2.MustCompile(`(?m)(?<=assert\().*(?=\))`, 0) // Replace all asserts args with String args because we want to eval() assert args
-		if assertArgs, _ := assertRE.FindStringMatch(line); assertArgs != nil {
-			args := strings.ReplaceAll(assertArgs.String(), "\"", "`")
-			args = strings.ReplaceAll(args, "'", "`")
+		if !isQuery {
+			re := regexp.MustCompile(`(?m)let |const `)
+			line = re.ReplaceAllString(line, "var ")
 
-			line = fmt.Sprintf("assert(%s, '%s');\n", args, args)
+			assertRE := regexp2.MustCompile(`(?m)(?<=assert\().*(?=\))`, 0) // Replace all asserts args with String args because we want to eval() assert args
+			if assertArgs, _ := assertRE.FindStringMatch(line); assertArgs != nil {
+				args := strings.ReplaceAll(assertArgs.String(), "\"", "`")
+				args = strings.ReplaceAll(args, "'", "`")
+
+				line = fmt.Sprintf("assert(%s, '%s');\n", args, args)
+			}
 		}
 
 		tildeRE := regexp.MustCompile(`(?m)^\s*~`)

@@ -1075,7 +1075,8 @@ text that each capturing group of the `regex` matched.
 
 The function reports the first match only, not every match in the `text`. The
 `regex` does not need to match the entire `text` unless you anchor it with `^`
-and `$`.
+and `$`. Note that `$` also matches before a line terminator at the end of the
+`text`. Use `\z` instead of `$` to rule this out (see [Assertions](#assertions)).
 
 The first element of the returned array is always the entire match, even if you
 do not define any [capturing group](#groups-and-back-references). Every capturing
@@ -1236,7 +1237,9 @@ using regular expression matching.
   and `false` otherwise, or `null` and a warning if the expression is invalid
 
 A partial match anywhere in the `text` is sufficient. Anchor the pattern with `^`
-and `$` if you want it to match the entire `text`. Capturing groups have no
+and `$` if you want it to match the entire `text`. Note that `$` also matches
+before a line terminator at the end of the `text`. Use `\z` instead of `$` to
+rule this out (see [Assertions](#assertions)). Capturing groups have no
 effect on the result. Use [`REGEX_MATCHES()`](#regex_matches) if you need the
 matched text.
 
@@ -2239,11 +2242,14 @@ characters and sequences:
 
 - `.` – the dot matches any single character except line terminators.
   To include line terminators, use `[\s\S]` instead to simulate `.` with *DOTALL* flag.
-- `\d` – matches a single digit, equivalent to `[0-9]`
+- `\d` – matches a single decimal digit of any script (Unicode category `Nd`),
+  such as `7` or `٧`. Use `[0-9]` to only match the ASCII digits
 - `\D` – negation of `\d`
 - `\s` – matches a single whitespace character
 - `\S` – matches a single non-whitespace character
-- `\w` – matches a single word character (a letter, a digit, or an underscore)
+- `\w` – matches a single word character of any script, i.e. a letter, a
+  decimal digit, a combining mark, or a connector punctuation character such as
+  the underscore. Use `[a-zA-Z0-9_]` to only match the ASCII word characters
 - `\W` – negation of `\w`
 - `\h` – matches a single horizontal whitespace character, such as a space or
   a tabulation, but not a line feed
