@@ -862,7 +862,7 @@ Download and install the package for your platform.
 Run the following command:
 
 ```sh
-arangod --server.endpoint tcp://0.0.0.0:8529
+arangod --server.endpoint http://0.0.0.0:8529
 ```
 {{< /step >}}
 
@@ -1087,6 +1087,46 @@ The following shortcodes also exist but are rarely used:
 
 - Do not write TODOs right into the content and avoid using
   `<!-- HTML comments -->`. Use `{{< comment >}}...{{< /comment >}}` instead.
+
+### Permission wording
+
+Describe required permissions the same way everywhere, especially in the
+HTTP API descriptions (endpoint descriptions and `403`/`401` responses) and in
+the release notes:
+
+- Refer to access levels by their code values in inline code: `rw`, `ro`, and
+  `none`. Don't use ~~Administrate~~, ~~Read Only~~, ~~Write~~, ~~No access~~,
+  ~~read access~~, ~~write access~~, ~~read/write access~~, or
+  ~~administrate access~~.
+
+- Write _at least `ro` access_ if `rw` access is sufficient as well.
+
+- Name the database or collection the access level applies to, e.g.
+  _`rw` access to the `_system` database_ or _`ro` access to this database_.
+  Admin permissions are expressed as `rw` access to the `_system` database.
+
+- Make the user account the subject: _The user account you authenticate with
+  needs …_ in descriptions, and _… has `none` access to …_ or
+  _… lacks `rw` access to …_ in error responses.
+
+- Write _superuser JWT_, not ~~superuser token~~, ~~superuser rights~~,
+  ~~superuser privileges~~, or ~~the superuser~~. Link it to the
+  [JWT superuser tokens](site/content/arangodb/3.12/develop/http-api/authentication.md#jwt-superuser-tokens)
+  section at least once per description, using a relative link like
+  `[superuser JWT](../authentication.md#jwt-superuser-tokens)`.
+  For exceptions, write _unless you authenticate with a superuser JWT_ or
+  _Requests with a superuser JWT are not affected_.
+
+Examples:
+
+| Instead of | Write |
+|:-----------|:------|
+| The user needs **Administrate** access to the `_system` database. | The user account you authenticate with needs `rw` access to the `_system` database. |
+| …needs at least read access to this database as well as **write** access to the `_system` database. | …needs at least `ro` access to this database and `rw` access to the `_system` database. |
+| Returned if you have *No access* database access level to the `_system` database. | Returned if you have `none` access to the `_system` database. |
+| …lacks write access to the `_system` database. | …lacks `rw` access to the `_system` database. |
+| This is a protected API and can only be executed with superuser rights. | This endpoint requires a [superuser JWT](…#jwt-superuser-tokens). |
+| …with the exception of the superuser. | …unless you authenticate with a [superuser JWT](…#jwt-superuser-tokens). |
 
 ### Add links
 

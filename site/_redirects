@@ -1,3 +1,10 @@
+/arangodb/3.10/components/tools/arangodump/limitations/                         /arangodb/3.10/components/tools/arangodump/examples/    301!
+/arangodb/3.11/components/tools/arangodump/limitations/                         /arangodb/3.11/components/tools/arangodump/examples/    301!
+/arangodb/3.12/components/tools/arangodump/limitations/                         /arangodb/3.12/components/tools/arangodump/examples/    301!
+/arangodb/stable/components/tools/arangodump/limitations/                       /arangodb/stable/components/tools/arangodump/examples/  301!
+/arangodb/4.x/components/tools/arangodump/limitations/                          /arangodb/4.x/components/tools/arangodump/examples/     301!
+/arangodb/devel/components/tools/arangodump/limitations/                        /arangodb/devel/components/tools/arangodump/examples/   301!
+
 /arangodb/3.11/aql/graphs/*                                                     /arangodb/3.11/aql/graph-queries/:splat                         301
 /arangodb/3.12/aql/graphs/*                                                     /arangodb/3.12/aql/graph-queries/:splat                         301
 /arangodb/stable/aql/graphs/*                                                   /arangodb/stable/aql/graph-queries/:splat                       301
@@ -159,7 +166,7 @@
 /docs/3.10/programs-arangodump-examples.html                                               /arangodb/3.10/components/tools/arangodump/examples/                                      301
 /docs/3.10/programs-arangodump-options.html                                                /arangodb/3.10/components/tools/arangodump/options/                                       301
 /docs/3.10/programs-arangodump-maskings.html                                               /arangodb/3.10/components/tools/arangodump/maskings/                                      301
-/docs/3.10/programs-arangodump-limitations.html                                            /arangodb/3.10/components/tools/arangodump/limitations/                                   301
+/docs/3.10/programs-arangodump-limitations.html                                            /arangodb/3.10/components/tools/arangodump/examples/                                      301
 /docs/3.10/programs-arangorestore.html                                                     /arangodb/3.10/components/tools/arangorestore/                                            301
 /docs/3.10/programs-arangorestore-examples.html                                            /arangodb/3.10/components/tools/arangorestore/examples/                                   301
 /docs/3.10/programs-arangorestore-fast-cluster-restore.html                                /arangodb/3.10/components/tools/arangorestore/fast-cluster-restore/                       301
@@ -895,7 +902,7 @@
 /docs/stable/programs-arangodump-examples.html                                             /arangodb/3.11/components/tools/arangodump/examples/                                      301
 /docs/stable/programs-arangodump-options.html                                              /arangodb/3.11/components/tools/arangodump/options/                                       301
 /docs/stable/programs-arangodump-maskings.html                                             /arangodb/3.11/components/tools/arangodump/maskings/                                      301
-/docs/stable/programs-arangodump-limitations.html                                          /arangodb/3.11/components/tools/arangodump/limitations/                                   301
+/docs/stable/programs-arangodump-limitations.html                                          /arangodb/3.11/components/tools/arangodump/examples/                                      301
 /docs/stable/programs-arangorestore.html                                                   /arangodb/3.11/components/tools/arangorestore/                                            301
 /docs/stable/programs-arangorestore-examples.html                                          /arangodb/3.11/components/tools/arangorestore/examples/                                   301
 /docs/stable/programs-arangorestore-options.html                                           /arangodb/3.11/components/tools/arangorestore/options/                                    301
@@ -1642,7 +1649,7 @@
 /docs/3.11/programs-arangodump-examples.html                                               /arangodb/3.11/components/tools/arangodump/examples/                                      301
 /docs/3.11/programs-arangodump-options.html                                                /arangodb/3.11/components/tools/arangodump/options/                                       301
 /docs/3.11/programs-arangodump-maskings.html                                               /arangodb/3.11/components/tools/arangodump/maskings/                                      301
-/docs/3.11/programs-arangodump-limitations.html                                            /arangodb/3.11/components/tools/arangodump/limitations/                                   301
+/docs/3.11/programs-arangodump-limitations.html                                            /arangodb/3.11/components/tools/arangodump/examples/                                      301
 /docs/3.11/programs-arangorestore.html                                                     /arangodb/3.11/components/tools/arangorestore/                                            301
 /docs/3.11/programs-arangorestore-examples.html                                            /arangodb/3.11/components/tools/arangorestore/examples/                                   301
 /docs/3.11/programs-arangorestore-options.html                                             /arangodb/3.11/components/tools/arangorestore/options/                                    301
@@ -2384,7 +2391,7 @@
 /docs/devel/programs-arangodump-examples.html                                              /arangodb/3.12/components/tools/arangodump/examples/                                      301
 /docs/devel/programs-arangodump-options.html                                               /arangodb/3.12/components/tools/arangodump/options/                                       301
 /docs/devel/programs-arangodump-maskings.html                                              /arangodb/3.12/components/tools/arangodump/maskings/                                      301
-/docs/devel/programs-arangodump-limitations.html                                           /arangodb/3.12/components/tools/arangodump/limitations/                                   301
+/docs/devel/programs-arangodump-limitations.html                                           /arangodb/3.12/components/tools/arangodump/examples/                                      301
 /docs/devel/programs-arangorestore.html                                                    /arangodb/3.12/components/tools/arangorestore/                                            301
 /docs/devel/programs-arangorestore-examples.html                                           /arangodb/3.12/components/tools/arangorestore/examples/                                   301
 /docs/devel/programs-arangorestore-options.html                                            /arangodb/3.12/components/tools/arangorestore/options/                                    301
@@ -3128,7 +3135,7 @@
 /docs/3.12/programs-arangodump-examples.html                                               /arangodb/3.12/components/tools/arangodump/examples/                                      301
 /docs/3.12/programs-arangodump-options.html                                                /arangodb/3.12/components/tools/arangodump/options/                                       301
 /docs/3.12/programs-arangodump-maskings.html                                               /arangodb/3.12/components/tools/arangodump/maskings/                                      301
-/docs/3.12/programs-arangodump-limitations.html                                            /arangodb/3.12/components/tools/arangodump/limitations/                                   301
+/docs/3.12/programs-arangodump-limitations.html                                            /arangodb/3.12/components/tools/arangodump/examples/                                      301
 /docs/3.12/programs-arangorestore.html                                                     /arangodb/3.12/components/tools/arangorestore/                                            301
 /docs/3.12/programs-arangorestore-examples.html                                            /arangodb/3.12/components/tools/arangorestore/examples/                                   301
 /docs/3.12/programs-arangorestore-options.html                                             /arangodb/3.12/components/tools/arangorestore/options/                                    301
