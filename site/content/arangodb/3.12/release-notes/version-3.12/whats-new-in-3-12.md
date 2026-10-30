@@ -2010,6 +2010,16 @@ Factory strings with a fixed number of centroids remain supported. The number
 needs to match the number of centroids that `nLists` resolves to, otherwise
 the training fails and the index stays `"unusable"`.
 
+---
+
+<small>Introduced in: v3.12.13</small>
+
+The memory that vector searches allocate for their results is now limited by
+the number of documents in the collection instead of the requested number of
+results (`LIMIT`, including the offset). This memory also counts towards the
+memory limit of the query (`memoryLimit` query option or
+`--query.memory-limit` startup option).
+
 ## Server options
 
 ### Effective and available startup options
