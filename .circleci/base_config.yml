@@ -486,6 +486,7 @@ jobs:
           root: .
           paths:
             - docs-hugo/site/public
+            - docs-hugo/toolchain/frontend-tests
 
 
 
@@ -543,6 +544,7 @@ jobs:
           root: .
           paths:
             - docs-hugo/site/public
+            - docs-hugo/toolchain/frontend-tests
 
   commit-generated:
     machine:
@@ -561,6 +563,26 @@ jobs:
           create-pr: false
           pr-branch: ""
             
+  frontend-tests:
+    docker:
+      # Keep the version in sync with @playwright/test in toolchain/frontend-tests/package.json
+      - image: mcr.microsoft.com/playwright:v1.49.1-noble
+    resource_class: large
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run frontend tests
+          command: |
+            cd docs-hugo/toolchain/frontend-tests
+            npm ci --no-audit --no-fund
+            npx playwright test
+      - store_test_results:
+          path: docs-hugo/toolchain/frontend-tests/results/junit.xml
+      - store_artifacts:
+          path: docs-hugo/toolchain/frontend-tests/results
+          destination: frontend-tests
+
   deploy:
     parameters:
       deploy-args:
@@ -646,6 +668,10 @@ workflows:
       - deploy:
           requires:
             - plain-build
+      # In parallel, so the deploy preview doesn't wait for it
+      - frontend-tests:
+          requires:
+            - plain-build
 
   release:
     when: { equal: [ release, << pipeline.parameters.workflow >> ] }
@@ -654,6 +680,10 @@ workflows:
           url: https://docs.arango.ai/
       - deploy:
           deploy-args: "--prod"
+          requires:
+            - plain-build
+            - frontend-tests
+      - frontend-tests:
           requires:
             - plain-build
 

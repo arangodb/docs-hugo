@@ -1,0 +1,12 @@
+{
+  "name": "docs-frontend-tests",
+  "private": true,
+  "description": "Browser tests for the built Arango documentation site",
+  "scripts": {
+    "test": "playwright test",
+    "report": "playwright show-report results/report"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.49.1"
+  }
+}

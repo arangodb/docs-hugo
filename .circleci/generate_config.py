@@ -81,6 +81,9 @@ def branch_for(version):
 
 def generate_workflow(config):
     if args.workflow == "plain-build":
+        if not frontend_changed():
+            jobs = config["workflows"]["plain"]["jobs"]
+            jobs[:] = [j for j in jobs if not (isinstance(j, dict) and "frontend-tests" in j)]
         return config
 
     if args.workflow == "generate":
@@ -196,6 +199,7 @@ def workflow_generate(config):
     }
     jobs.append(generateJob)
     jobs.append(deployJob)
+    jobs.append(frontendTestsJob(args.workflow))
 
     # Approval only if ArangoDB is compiled (takes long and is costly). The webhook
     # only lets members of the arangodb organization trigger the generate workflow.
@@ -210,6 +214,55 @@ def workflow_generate(config):
         remove_attach_workspace(config)
 
     return config
+
+
+# Plain builds only run the frontend tests if the changes compared to main can
+# affect the frontend. The other workflows always run them.
+FRONTEND_PATHS = (
+    "site/themes/",
+    "site/layouts/",
+    "site/static/",
+    "site/config/",
+    "site/data/versions.yaml",
+    "toolchain/frontend-tests/",
+    ".circleci/",
+)
+
+def frontend_changed():
+    sha = os.environ.get("CIRCLE_SHA1")
+    token = os.environ.get("CIRCLECI_GITHUB_READONLY")
+    if not sha or not token:
+        print("Running the frontend tests, can't determine the changed files without CIRCLE_SHA1 and CIRCLECI_GITHUB_READONLY")
+        return True
+    try:
+        r = requests.get(
+            f"https://api.github.com/repos/arangodb/docs-hugo/compare/main...{sha}",
+            headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"},
+            timeout=30,
+        )
+        r.raise_for_status()
+        files = r.json().get("files", [])
+    except Exception as e:
+        print(f"Running the frontend tests, can't determine the changed files: {e}")
+        return True
+    # The API lists at most 300 files
+    if len(files) >= 300:
+        print("Running the frontend tests, too many changed files to check")
+        return True
+    changed = [name for f in files for name in (f["filename"], f.get("previous_filename", "")) if name.startswith(FRONTEND_PATHS)]
+    if changed:
+        print(f"Running the frontend tests for the changed files {changed}")
+    else:
+        print("Skipping the frontend tests, no frontend files changed")
+    return bool(changed)
+
+
+def frontendTestsJob(buildJob):
+    return {
+        "frontend-tests": {
+            "requires": [buildJob]
+        }
+    }
 
 
 # The generate job attaches the workspace of the compile jobs, which fails if there
@@ -266,6 +319,7 @@ def workflow_generate_scheduled(config):
     }
 
     jobs.append(generateJob)
+    jobs.append(frontendTestsJob(args.workflow))
 
 
 def workflow_release_arangodb(config):
