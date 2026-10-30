@@ -1,0 +1,35 @@
+{{- /*
+  Netlify's _redirects file. Hugo writes a client-side redirect page for every
+  alias, and Netlify only applies a rule without "!" if there is no file for the
+  URL, so every alias becomes a forced server-side 301 here, followed by the
+  manually maintained rules in site/_redirects.
+*/ -}}
+{{- $s := newScratch -}}
+{{- range site.Pages -}}
+  {{- $s.SetInMap "pages" .RelPermalink true -}}
+{{- end -}}
+{{- range $page := site.Pages -}}
+  {{- range $alias := .Aliases -}}
+    {{- /* Older Hugo versions return relative aliases as written */ -}}
+    {{- if not (hasPrefix $alias "/") -}}
+      {{- $alias = path.Join $page.RelPermalink ".." $alias -}}
+    {{- end -}}
+    {{- if not (strings.Contains (path.Base $alias) ".") -}}
+      {{- $alias = printf "%s/" (strings.TrimSuffix "/" $alias) -}}
+    {{- end -}}
+    {{- $existing := index ($s.Get "rules" | default dict) $alias -}}
+    {{- if index ($s.Get "pages") $alias -}}
+      {{- warnf "Alias %s of %s is the URL of another page, not adding a redirect" $alias $page.RelPermalink -}}
+    {{- else if and $existing (ne $existing $page.RelPermalink) -}}
+      {{- warnf "Alias %s is used by %s and %s" $alias $existing $page.RelPermalink -}}
+    {{- else -}}
+      {{- $s.SetInMap "rules" $alias $page.RelPermalink -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+# Generated from the aliases in the front matter
+{{ range $alias, $target := $s.Get "rules" -}}
+{{ $alias }}  {{ $target }}  301!
+{{ end }}
+# Manually maintained rules from site/_redirects
+{{ readFile "_redirects" }}
