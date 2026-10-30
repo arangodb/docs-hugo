@@ -1422,10 +1422,12 @@ Add the actual content formatted in Markdown syntax below the front matter.
 
 There are two options for setting up redirects when renaming or moving content:
 
-- **Netlify redirects**: Server-side, testable in Netlify deploy previews.
-  Use for unversioned content as well as when removing versioned content.
-- **Hugo aliases**: Client-side, can be tested locally. Use only when
-  renaming/moving versioned content to keep the version switcher working locally.
+- **Hugo aliases**: Set in the front matter of the page to redirect to.
+  Server-side redirects on Netlify (generated) and client-side when running the
+  docs toolchain locally. Use whenever a single page replaces the old URL.
+- **Manual Netlify redirects**: Server-side, testable in Netlify deploy previews.
+  Use for rules that aliases can't express, like redirecting whole folders
+  with wildcards, or old URLs that don't belong to any version of a page.
 
 Note that turning a page `topic.md` into a section `topic/_index.md` (in
 order to add child pages) does not affect the resulting URL (`/topic/`) and
@@ -1438,8 +1440,9 @@ there is support for splatting and placeholders (but not regular expressions). S
 [Redirect options](https://docs.netlify.com/routing/redirects/redirect-options/)
 for details.
 
-The configuration file is [`site/static/_redirects`](site/static/_redirects).
-The general format is `/old/url/ /new/url/ 301`, where `301` is for a permanent
+The manual rules are in [`site/_redirects`](site/_redirects). Hugo publishes
+them as part of the generated `_redirects` file, after a forced `301!` rule
+for every alias (see below). The general format is `/old/url/ /new/url/ 301`, where `301` is for a permanent
 redirect and `302` for a temporary one. Use `302` until the redirects have been
 tested, then change them to `301` - this avoids caching issues (browser, CDN)
 should it be necessary to fix some of the redirects.
@@ -1459,16 +1462,21 @@ redirected. This is because the version selector merely substitutes the version
 in the current URL and we hope that this page exists.
 
 To ensure a working version selector locally, which can be helpful when
-reviewing content, the rule is to use Hugo aliases when moving or renaming
-versioned pages (i.e. `/arangodb/<version>/...`). This is possible in addition
-to or instead of Netlify redirects. Netlify's server-side `301` redirects are
-better for search engines, but it only redirects if there is no file for a given
-URL. Hugo aliases create client-redirect files. To make Netlify redirect anyway,
-write an exclamation mark after the `301` in `_redirects`, like so:
+reviewing content, use Hugo aliases when moving, renaming, or removing
+versioned pages (i.e. `/arangodb/<version>/...`). Hugo aliases create
+client-side redirect files (`<meta http-equiv="refresh">`), and Netlify only
+applies a redirect rule if there is no file for a given URL, unless the status
+code has an exclamation mark (`301!`). Therefore, Hugo generates a forced rule
+for every alias at the top of the published `_redirects` file
+(`site/themes/arangodb-docs-theme/layouts/_default/home.redirects`):
 
 ```
-/arangodb/4.x/old-feature/  /arangodb/4.x/deprecated-and-removed-features/  301!
+/arangodb/4.x/old-feature/  /arangodb/4.x/release-notes/deprecated-and-removed-features/  301!
 ```
+
+Do not add manual rules for URLs that are aliases. The generated rules take
+precedence as they come first. Hugo warns if an alias is the URL of an existing
+page (no rule is generated) or if two pages use the same alias.
 
 The following steps are necessary for moving/renaming versioned content:
 1. Rename file or folder
@@ -1540,7 +1548,8 @@ aliases:
 
 Aliases create HTML files with client-side redirects before any content is
 rendered to HTML, which means that aliases can get overwritten by content files.
-If this is not a mistake, the affected aliases should be removed.
+If this is not a mistake, the affected aliases should be removed. Hugo warns
+about such aliases (`Alias ... is the URL of another page`).
 
 ### Disable or limit the table of contents
 
