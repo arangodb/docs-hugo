@@ -245,8 +245,8 @@ does not write one.
 | Value | Meaning |
 |-------|---------|
 | `COMMITTED` | The deletion succeeded in both the knowledge graph and the corpus graph. |
-| `ROLLED_BACK` | Something failed, and the state from before the call has been **fully restored**. The documents are still in the graph, and it is safe to retry the same batch. |
-| `FAILED` | Something failed and the restore itself was **incomplete**. Do not simply retry. Inspect the corpus and the knowledge graph before you call again. |
+| `ROLLED_BACK` | Something failed, and the knowledge graph data has been restored. If the knowledge graph cleanup failed, the corpus graph was never touched and it is safe to retry the same batch. If the corpus graph removal failed, see the warning below. |
+| `FAILED` | Something failed and restoring the knowledge graph data was **incomplete**, so the documents may be partly deleted. Do not simply retry. Check the per-file and per-partition results before you call again. |
 
 In field and status names, `LAYER3` refers to the knowledge graph and `LAYER2`
 to the corpus graph. The `status` of a `layer3_results` entry is one of
@@ -261,14 +261,28 @@ corpus graph removal still goes ahead, and `overall_status` can still be
 {{< /info >}}
 
 {{< tip >}}
-**A failed deletion is rolled back.** AutoGraph snapshots the knowledge graph
-data before it removes anything. If the knowledge graph cleanup fails, the
-snapshot is restored and the corpus graph is never touched. If the corpus graph
-removal then fails, the knowledge graph
-snapshots are restored as well. A deletion that unwinds this way reports
-`ROLLED_BACK`, and the same batch is safe to send again. Only `FAILED` means the
-restore did not complete.
+**A failed knowledge graph cleanup is rolled back.** AutoGraph snapshots the
+knowledge graph data before it removes anything. If the knowledge graph cleanup
+fails for any partition, the snapshot of the whole batch is restored and the
+corpus graph is never touched. The deletion reports `ROLLED_BACK`, and the same
+batch is safe to send again.
 {{< /tip >}}
+
+{{< warning >}}
+**Only the knowledge graph can be rolled back, not the corpus graph.** If the
+corpus graph removal fails for one file, the knowledge graph snapshots are
+restored, but the other files of the batch stay removed from the corpus graph.
+The deletion still reports `ROLLED_BACK`, and the files that were removed from
+the corpus graph keep their knowledge graph data. If the batch had knowledge
+graph data, every entry in `results` is marked as failed in this case, including
+the files that were actually removed. To clean up, insert the removed files
+again, then delete them again.
+{{< /warning >}}
+
+Once the deletion has committed, AutoGraph also deletes the files from the File
+Manager, with all of their versions, so you do not need a separate File Manager
+call. This step is best effort: if it fails, the deletion still reports
+`COMMITTED` and the files are left in the File Manager.
 
 When the deletion **commits**, AutoGraph calculates the divergence of every
 affected partition again and stamps `divergence_score` and `needs_reclustering`
@@ -356,7 +370,9 @@ field at all.
 
 `accepted: true` means that the update has been validated and started, not that
 it is done. Poll the `importerOrchestration` entry in the metadata of your
-platform project. The update goes through the following phases. In their
+platform project. This entry only holds the latest operation, and the next
+update, reclustering, or knowledge graph build overwrites it, so save the result
+as soon as the update has finished. The update goes through the following phases. In their
 names, `L3` stands for the knowledge graph and `L12` for the corpus graph:
 
 1. `DELETE_L3`: AutoGraph removes the old knowledge graph data with AQL queries
@@ -599,7 +615,18 @@ stored](_index.md#where-the-values-are-stored).
 - Reclustering uses the same service-wide slot as build, insert, update, and
   delete, so it cannot run at the same time as these operations.
 - A reclustering that fails or is skipped does not clear `needs_reclustering`.
-  Start it again once the slot is free.
+  Start it again once the slot is free. Nothing retries it automatically.
+- Reclustering only blocks writes. Queries keep working while it runs, but the
+  communities are rebuilt in place in the live knowledge graph collections, so
+  queries can see communities that are only partly rebuilt.
+- If a reclustering fails before it writes the new communities, the partition
+  keeps its old ones. If it fails while writing them, the partition can be left
+  with no communities or only some of them. Community-based retrieval for that
+  partition then returns little or nothing until a reclustering succeeds, while
+  entity and relationship retrieval still works.
+- The `importerOrchestration` entry can stay at `running` if the service
+  restarts during a reclustering. Check the `rags` profile of the partition
+  instead.
 - A partition **without entities** is a successful no-op. The job reports `0`
   communities over `0` entities and finishes, so a completed job is not evidence
   that anything was refreshed. Check `last_reclustered_at` and the
