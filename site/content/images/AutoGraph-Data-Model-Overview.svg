@@ -9,7 +9,7 @@
     .agov .phead { font-size: 13px; font-weight: bold; fill: #014654; }
     .agov .elabel { font-size: 10px; font-weight: bold; fill: #014654; }
     .agov .ebadge { fill: #eefbd5; stroke: #00576e; stroke-width: 1; }
-    .agov .note { font-size: 11px; fill: #62748e; }
+    .agov .note { font-size: 11px; fill: #45556c; }
   </style>
   <defs>
     <marker id="agov-arrow" markerWidth="9" markerHeight="7" refX="2" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">
@@ -18,10 +18,10 @@
   </defs>
   <g class="agov">
     <rect width="920" height="540" fill="#f1f5f9" rx="6"/>
-    <text x="460" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#014654">AutoGraph data model — two graphs, one pipeline</text>
+    <text x="460" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#014654">AutoGraph data model: two graphs, one pipeline</text>
 
     <rect class="panel" x="20" y="55" width="410" height="400" rx="12"/>
-    <text class="phead" x="225" y="78" text-anchor="middle">Corpus graph — {project}_CorpusGraph</text>
+    <text class="phead" x="225" y="78" text-anchor="middle">Corpus graph: {project}_CorpusGraph</text>
 
     <g class="card">
       <rect class="vtx" x="170" y="95" width="130" height="44" rx="12"/>
@@ -57,7 +57,7 @@
     <text class="elabel" x="91" y="169" text-anchor="middle">SIMILAR_TO</text>
 
     <rect class="panel" x="490" y="55" width="410" height="400" rx="12"/>
-    <text class="phead" x="695" y="78" text-anchor="middle">Knowledge graph — {project}_kg</text>
+    <text class="phead" x="695" y="78" text-anchor="middle">Knowledge graph: {project}_kg</text>
 
     <g class="card">
       <rect class="vtx" x="510" y="95" width="120" height="46" rx="12"/>
@@ -98,7 +98,7 @@
 
     <path d="M 375 353 C 445 353, 445 118, 510 118" stroke="#90a1b9" stroke-width="2" fill="none" stroke-dasharray="5 4"/>
     <rect x="398" y="220" width="114" height="20" rx="10" fill="#f1f5f9" stroke="#90a1b9" stroke-width="1"/>
-    <text x="455" y="234" text-anchor="middle" font-size="10" font-weight="bold" fill="#62748e">partition_id</text>
+    <text x="455" y="234" text-anchor="middle" font-size="10" font-weight="bold" fill="#45556c">partition_id</text>
 
     <line x1="40" y1="490" x2="74" y2="490" stroke="#00576e" stroke-width="2" marker-end="url(#agov-arrow)"/>
     <text class="note" x="92" y="494">stored edge (relationship type in a label or type field)</text>

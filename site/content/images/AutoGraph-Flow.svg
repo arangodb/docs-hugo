@@ -28,10 +28,10 @@
     <rect width="1380" height="400" fill="#f1f5f9" rx="6"/>
 
     <rect x="20" y="50" width="640" height="330" rx="14" fill="#ffffff" fill-opacity="0.55" stroke="#90a1b9" stroke-width="1" stroke-dasharray="4 3"/>
-    <text x="340" y="76" text-anchor="middle" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" fill="#014654">STAGE 1 · AUTOGRAPH — build the Context Graph</text>
+    <text x="340" y="76" text-anchor="middle" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" fill="#014654">Stage 1 · AutoGraph: build the Context Graph</text>
 
     <rect x="676" y="50" width="684" height="330" rx="14" fill="#ffffff" fill-opacity="0.55" stroke="#90a1b9" stroke-width="1" stroke-dasharray="4 3"/>
-    <text x="1018" y="76" text-anchor="middle" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" fill="#014654">STAGE 2 · AUTORAG — answer questions from it</text>
+    <text x="1018" y="76" text-anchor="middle" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" fill="#014654">Stage 2 · AutoRAG: answer questions from it</text>
 
     <g class="card">
       <rect x="44" y="155" width="166" height="90" rx="14" class="pill-ps"/>

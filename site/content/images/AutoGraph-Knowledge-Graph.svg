@@ -8,7 +8,7 @@
     .agkg .vsub { font-size: 11px; font-style: italic; fill: #014654; }
     .agkg .elabel { font-size: 11px; font-weight: bold; fill: #014654; }
     .agkg .ebadge { fill: #eefbd5; stroke: #00576e; stroke-width: 1; }
-    .agkg .note { font-size: 11px; fill: #62748e; }
+    .agkg .note { font-size: 11px; fill: #45556c; }
   </style>
   <defs>
     <marker id="agkg-arrow" markerWidth="10" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse">
@@ -17,7 +17,7 @@
   </defs>
   <g class="agkg">
     <rect width="820" height="480" fill="#f1f5f9" rx="6"/>
-    <text x="410" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#014654">Knowledge graph — {project}_kg</text>
+    <text x="410" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#014654">Knowledge graph: {project}_kg</text>
 
     <g class="card">
       <rect class="vtx" x="45" y="95" width="195" height="72" rx="14"/>
@@ -64,7 +64,7 @@
     <text class="elabel" x="675" y="445" text-anchor="middle">SUB_COMMUNITY_OF</text>
 
     <text class="note" x="300" y="430" text-anchor="middle">All five relationships live in one edge</text>
-    <text class="note" x="300" y="448" text-anchor="middle">collection, {project}_Relations — the</text>
+    <text class="note" x="300" y="448" text-anchor="middle">collection, {project}_Relations, the</text>
     <text class="note" x="300" y="466" text-anchor="middle">relationship type is stored in a type field.</text>
   </g>
 </svg>

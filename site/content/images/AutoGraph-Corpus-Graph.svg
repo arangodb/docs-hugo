@@ -8,7 +8,7 @@
     .agcorp .vsub { font-size: 11px; font-style: italic; fill: #014654; }
     .agcorp .elabel { font-size: 11px; font-weight: bold; fill: #014654; }
     .agcorp .ebadge { fill: #eefbd5; stroke: #00576e; stroke-width: 1; }
-    .agcorp .note { font-size: 11px; fill: #62748e; }
+    .agcorp .note { font-size: 11px; fill: #45556c; }
   </style>
   <defs>
     <marker id="agc-arrow" markerWidth="10" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse">
@@ -17,7 +17,7 @@
   </defs>
   <g class="agcorp">
     <rect width="820" height="460" fill="#f1f5f9" rx="6"/>
-    <text x="410" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#014654">Corpus graph — {project}_CorpusGraph</text>
+    <text x="410" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#014654">Corpus graph: {project}_CorpusGraph</text>
 
     <g class="card">
       <rect class="vtx" x="325" y="55" width="170" height="58" rx="14"/>

@@ -28,7 +28,7 @@
 
     <rect x="20" y="24" width="980" height="180" rx="14" fill="#ffffff" fill-opacity="0.55"
           stroke="#90a1b9" stroke-width="1" stroke-dasharray="4 3"/>
-    <text x="44" y="48" class="lane">INDEXING</text>
+    <text x="44" y="48" class="lane">Indexing</text>
 
     <path d="M 214 122 L 246 122" stroke="#00576e" stroke-width="2" fill="none"/>
     <polygon points="256,122 245,117.5 245,126.5" fill="#00576e"/>
@@ -61,7 +61,7 @@
 
     <rect x="20" y="228" width="980" height="222" rx="14" fill="#ffffff" fill-opacity="0.55"
           stroke="#90a1b9" stroke-width="1" stroke-dasharray="4 3"/>
-    <text x="44" y="252" class="lane">QUERYING</text>
+    <text x="44" y="252" class="lane">Querying</text>
 
     <path d="M 178 332 L 218 332" stroke="#00576e" stroke-width="2" fill="none"/>
     <polygon points="228,332 217,327.5 217,336.5" fill="#00576e"/>
