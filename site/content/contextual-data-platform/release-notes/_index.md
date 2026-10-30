@@ -8,6 +8,44 @@ description: >-
 pageToc:
   maxHeadlineLevel: 2
 ---
+## v4.2.0 (October 2026)
+
+This release makes the web interface easier to navigate and improves the
+AutoGraph Studio experience, along with bug and security fixes.
+
+### Web interface
+
+- **Reorganized sidebar**: The sidebar of the data platform web interface is
+  organized into clearly labeled sections, so that all features and tools are
+  visible and one click away.
+- **Secret profile IDs**: The Secrets Manager shows the full ID of each secret
+  profile and lets you copy it, so you can reference the profile in API calls
+  and notebooks.
+
+### AutoGraph Studio
+
+{{< tag "Agentic AI Suite" >}}
+
+- **Guided first start**: Without any projects, the web interface of AutoGraph
+  Studio opens with a short introduction, the supported file types, and a button
+  to create your first project.
+- **Recovery after restarts**: AutoGraph and the Importer keep track of every
+  running job and incremental update. If a service restarts, it resumes its
+  unfinished work instead of losing it.
+- **Large partitions complete**: A partition that repeatedly runs out of memory
+  during import is split into smaller import jobs instead of failing.
+- **No duplicates on retry**: A retried import no longer creates duplicate
+  relations, and a partition only counts as built once all of its documents
+  have been written.
+- **Faster query history**: The run history of an AutoRAG retriever loads
+  quickly, even with many past questions.
+- **Consistent access control**: All search methods now apply the database
+  permissions of the user who asks the question.
+- **Smoother graph exploration**: The graph stays in view while you customize
+  its appearance.
+- **Stop button**: The button to stop a running answer in the AutoRAG retriever
+  chat displays correctly.
+
 ## v4.1.1 (October 2026)
 
 This is a maintenance release with stability and security fixes for AutoGraph.
