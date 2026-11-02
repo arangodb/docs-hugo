@@ -1267,6 +1267,78 @@ and [user tokens](../../develop/http-api/authentication.md#jwt-user-tokens) of
 this user account are now rejected. Requests that
 authenticate with such a token fail with an HTTP `401 Unauthorized` error.
 
+## Case mapping of `UPPER()` and `LOWER()`
+
+<small>Introduced in: v3.12.13</small>
+
+The [`UPPER()`](../../aql/functions/string.md#upper) and
+[`LOWER()`](../../aql/functions/string.md#lower) AQL functions now apply the
+case mapping rules of the configured server language (`--icu-language` or
+`--default-language` startup option) instead of the locale of the server
+process. This can change the results for Greek, Turkish, Azeri, and Lithuanian
+text. For example, `UPPER("i")` returns `"İ"` (capital I with dot above) with a
+Turkish server language.
+
+## `SUBSTITUTE()` with an empty search string
+
+<small>Introduced in: v3.12.13</small>
+
+The [`SUBSTITUTE()`](../../aql/functions/string.md#substitute) AQL function now
+treats an empty search string as a match at every character position, including
+the start and end of the string. For example, `SUBSTITUTE("abc", "", "_")` now
+returns `"_a_b_c_"`. Up to v3.12.12, the function returns `null` and raises a
+warning in this case.
+
+## Stricter evaluation of `AT LEAST`
+
+<small>Introduced in: v3.12.13</small>
+
+The [`AT LEAST (<number>)`](../../aql/operators.md#array-comparison-operators)
+array comparison operator now evaluates to `false` if the number is greater than
+the length of the array. Up to v3.12.12, it can evaluate to `true` in this case
+if all array elements satisfy the condition, including for empty arrays. For
+example, `[] AT LEAST (1) == 1` and `[ 1, 2 ] AT LEAST (3) > 0` return `true` in
+these versions.
+
+Furthermore, the query now raises a warning
+(`ERROR_QUERY_INVALID_ARITHMETIC_VALUE`, `1561`) if the number is negative, not
+numeric, or not an integer. As before, negative and non-numeric values are
+treated as `0` and fractional numbers are truncated.
+
+## `REGEX_MATCHES()` evaluates the expression for empty input strings
+
+<small>Introduced in: v3.12.13</small>
+
+The [`REGEX_MATCHES()` AQL function](../../aql/functions/string.md#regex_matches)
+now applies the regular expression to an empty input string as to any other
+input string.
+
+Up to v3.12.12, it returns `[ "" ]` for an empty input string and a non-empty
+regular expression, without evaluating the expression at all. An expression that
+can match an empty string still returns `[ "" ]`, but one that cannot match an
+empty string now returns `null` like for any other input it doesn't match:
+
+```aql
+REGEX_MATCHES("", "^$")        // [ "" ] as before
+REGEX_MATCHES("", "^[a-z]+$")  // now null instead of [ "" ]
+```
+
+## `REVERSE()` AQL function keeps characters above U+FFFF intact
+
+<small>Introduced in: v3.12.13</small>
+
+The [`REVERSE()` AQL function](../../aql/functions/string.md#reverse) now
+reverses strings by Unicode code point, keeping characters above U+FFFF like
+most emoji intact.
+
+```aql
+REVERSE("We 🥑 avocado!") // now "!odacova 🥑 eW" instead of "!odacova �� eW"
+```
+
+Up to v3.12.12, every code point above U+FFFF is turned into two U+FFFD
+replacement characters, and everything before a U+FFFF character in the input
+is dropped.
+
 ## HTTP API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
@@ -1520,6 +1592,23 @@ with a superuser JWT.
 
 If you lack the required permission or if the server is in read-only mode,
 the request fails with an HTTP `403 Forbidden` error.
+
+### Permission checks for reading index definitions
+
+<small>Introduced in: v3.12.13</small>
+
+Reading index definitions via the
+[`GET /_api/index` endpoint](../../develop/http-api/indexes/_index.md#list-all-indexes-of-a-collection)
+and the [`GET /_api/index/{index-id}` endpoint](../../develop/http-api/indexes/_index.md#get-an-index)
+now consistently requires at least `ro` access to the collection in all
+deployment modes. The index definitions include the names of the indexed
+attributes. Previously, Coordinators in cluster deployments didn't check the
+access level for all requests. Single servers are unaffected because they
+already enforced the check.
+
+This applies to both classic authorization and RBAC. If the user account you
+authenticate with has `none` access to the collection, the request fails with
+an HTTP `403 Forbidden` error.
 
 ## JavaScript API
 

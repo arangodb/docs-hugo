@@ -9,12 +9,13 @@ description: >-
 {{< tag "Experimental" >}}
 
 [`arango-ai-sdk`](https://github.com/arangoml/arango-ai-sdk) is the official Python SDK for the
-[Agentic AI Suite](../../agentic-ai-suite/_index.md). It is the code-first way to
-drive an [AutoGraph](../../agentic-ai-suite/autograph/_index.md) workflow: sign
+[Agentic AI Suite](../../contextual-data-platform/features-and-licensing.md#whats-included-in-the-agentic-ai-suite).
+It is the code-first way to drive an
+[AutoGraph](../../contextual-data-platform/autograph/_index.md) workflow: sign
 in, create a project, store the API keys the models need, upload your documents,
 deploy the AutoGraph service, ingest the documents into a Context Graph, and
-deploy an [AutoRAG](../../agentic-ai-suite/autorag/_index.md) retriever to ask
-questions against it.
+deploy an [AutoRAG](../../contextual-data-platform/autorag/_index.md) retriever
+to ask questions against it.
 
 The SDK wraps the suite's wire contracts, so you never assemble a URL, set an
 authentication header, or interpret an HTTP status code.
@@ -35,7 +36,7 @@ project = client.project.create(project_name="sales", project_type="autograph")
 The SDK is developed continuously and grows one area at a time. It does not
 cover the entire AutoGraph flow yet: it cannot edit strategies or delete
 categories or files from the graph. Use the
-[AutoGraph HTTP API](../../agentic-ai-suite/autograph/reference/_index.md) for
+[AutoGraph HTTP API](../../contextual-data-platform/autograph/reference/_index.md) for
 those. On the AutoRAG side, the SDK asks one question per call and returns the
 complete answer. Streaming the answer, Deep Search, and the Custom Retriever are
 not available in the SDK, and it cannot list past query runs.
@@ -81,18 +82,18 @@ call `ask()` and `undeploy()` on that object.
 
 The SDK is a client for services that are documented in their own right:
 
-- [AutoGraph](../../agentic-ai-suite/autograph/_index.md) builds the context
+- [AutoGraph](../../contextual-data-platform/autograph/_index.md) builds the context
   graph from your documents. The SDK deploys it and runs the ingestion.
-- [Projects](../../platform-suite/control-plane-acp/_index.md#projects) in the
+- [Projects](../../contextual-data-platform/control-plane-acp/_index.md#projects) in the
   Arango Control Plane group related services and keep your data separate.
   `client.project` creates and fetches them.
-- The [Secrets Manager](../../platform-suite/secrets-manager.md) stores the
+- The [Secrets Manager](../../contextual-data-platform/secrets-manager.md) stores the
   provider API keys as secret profiles. `client.secret_profile` writes them, and
   the key never leaves the platform again.
-- The [File Manager](../../platform-suite/file-manager/_index.md) holds the
+- The [File Manager](../../contextual-data-platform/file-manager/_index.md) holds the
   uploaded documents. `client.files` puts them there, under the scope the
   ingestion later reads from.
-- [AutoRAG](../../agentic-ai-suite/autorag/_index.md) answers questions from the
+- [AutoRAG](../../contextual-data-platform/autorag/_index.md) answers questions from the
   Context Graph. `project.autorag` deploys retrievers into a project, and
   `ask()` on a retriever sends it a question.
 

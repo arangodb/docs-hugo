@@ -1,6 +1,7 @@
 ---
 title: License Management
 menuTitle: License Management
+group: Install
 weight: 30
 description: >-
   How to activate, renew, and apply licenses for Kubernetes-managed deployments
@@ -195,6 +196,17 @@ apply it as a secret on the air-gapped cluster.
 Because the license key has a limited validity, you need to repeat the
 generation step and update the secret before the key expires. The operator
 applies the updated key on its next reconciliation cycle.
+
+## Move a license to a different deployment
+
+The license is bound to the deployment ID of the `ArangoDeployment` it was
+activated or generated for. To use your license for a different deployment,
+for example, when replacing an existing deployment with a new one, raise a
+support ticket with Arango to have the old deployment deactivated. This is
+not self-service. After the deactivation, recreate the license for the new
+deployment using one of the flows described above. See
+[Move a license to a different deployment](../arangodb/4.x/operations/administration/license-management.md#move-a-license-to-a-different-deployment)
+for details.
 
 ## Verify the license
 
