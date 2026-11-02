@@ -8,8 +8,7 @@
   {{/* Avoid redundancy */}}
 {{- else if or
   (eq .Type "contextual-data-platform")
-  (eq .Type "agentic-ai-suite" )
-  (eq .Type "platform-suite" ) }} • Arango Contextual Data Platform
+  (eq .Type "contextual-data-platform") }} • Arango Contextual Data Platform
 {{- else if eq .Type "amp" }} • Arango Managed Platform
 {{- else if eq .Type "arangodb" }} • ArangoDB
   {{- $pageVersion := .Page.Store.Get "versionShort" -}}

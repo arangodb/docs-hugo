@@ -380,6 +380,97 @@ and [user tokens](../../develop/http-api/authentication.md#jwt-user-tokens) of
 this user account are now rejected. Requests that
 authenticate with such a token fail with an HTTP `401 Unauthorized` error.
 
+#### Per-user scoping of the query tracking API
+
+<small>Introduced in: v3.12.13</small>
+
+Listing and killing AQL queries is now limited to the queries of the user account
+you authenticate with. Previously, any user account with at least `ro` access
+to a database could list all running and slow queries of that database,
+including the query strings and bind variables of other users, and kill any of
+them.
+
+This affects the following endpoints of the
+[AQL query API](../../develop/http-api/queries/aql-queries.md#track-queries):
+
+- `GET /_api/query/current` and `GET /_api/query/slow` only return your own
+  queries.
+- `DELETE /_api/query/slow` only removes your own entries from the list of slow
+  queries.
+- `DELETE /_api/query/{query-id}` only kills your own queries. Requests to
+  kill a query of another user fail with an HTTP `403 Forbidden` error.
+
+Administrators can still list and kill the queries of all users and clear the
+entire list of slow queries. This requires `rw` access to the `_system`
+database (classic authorization) or the `coredb-admin` role (RBAC).
+Requests with a
+[superuser JWT](../../develop/http-api/authentication.md#jwt-superuser-tokens)
+are not affected.
+
+Using the `all` query parameter to target all databases remains unchanged and
+still requires a superuser JWT in the `_system` database.
+
+#### Permission checks for the query tracking properties
+
+<small>Introduced in: v3.12.13</small>
+
+Changing the query tracking properties of a database via the
+[`PUT /_api/query/properties` endpoint](../../develop/http-api/queries/aql-queries.md#update-the-aql-query-tracking-configuration)
+now requires `rw` access to the database the request targets (classic
+authorization). Previously, any user account with at least `ro` access to the
+database could change the properties, for example, to enable the tracking of
+bind variables.
+
+With RBAC, none of the predefined roles grants the permission to change the
+query tracking properties. Only requests with a
+[superuser JWT](../../develop/http-api/authentication.md#jwt-superuser-tokens)
+can change them.
+
+Changing the properties is also no longer possible in read-only mode, except
+with a superuser JWT.
+
+If you lack the required permission or if the server is in read-only mode,
+the request fails with an HTTP `403 Forbidden` error.
+
+#### Permission checks for reading index definitions
+
+<small>Introduced in: v3.12.13</small>
+
+Reading index definitions via the
+[`GET /_api/index` endpoint](../../develop/http-api/indexes/_index.md#list-all-indexes-of-a-collection)
+and the [`GET /_api/index/{index-id}` endpoint](../../develop/http-api/indexes/_index.md#get-an-index)
+now consistently requires at least `ro` access to the collection in all
+deployment modes. The index definitions include the names of the indexed
+attributes. Previously, Coordinators in cluster deployments didn't check the
+access level for all requests. Single servers are unaffected because they
+already enforced the check.
+
+This applies to both classic authorization and RBAC. If the user account you
+authenticate with has `none` access to the collection, the request fails with
+an HTTP `403 Forbidden` error.
+
+#### Maximum lifetime of replication batches
+
+<small>Introduced in: v3.12.13</small>
+
+The `ttl` of replication batches that you set when you
+[create a batch](../../develop/http-api/replication/replication-dump.md#create-a-new-dump-batch)
+or [extend its lifetime](../../develop/http-api/replication/replication-dump.md#extend-the-ttl-of-a-dump-batch)
+is now capped at `86400` seconds (24 hours). Previously, any value was accepted,
+and a batch with a very high `ttl` could prevent the RocksDB write-ahead log
+files from being released.
+
+#### Escaped label values in metrics
+
+<small>Introduced in: v3.12.13</small>
+
+The [Metrics API](../../develop/http-api/monitoring/metrics.md) now escapes
+backslashes, double quotes, and line feeds in label values as `\\`, `\"`, and
+`\n` according to the Prometheus text exposition format. This affects database
+and collection names, for example, which can contain such characters if you use
+extended names. Previously, these characters were output as-is, resulting in
+invalid metrics output.
+
 ### Endpoint return value changes
 
 #### Storage engine API

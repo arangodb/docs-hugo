@@ -42,7 +42,7 @@ Context Graph that you can ask questions in natural language:
 - **LLM access**: A valid OpenAI API key. Any other OpenAI-compatible endpoint
   works as well - OpenRouter, Google Gemini, Anthropic, Azure, or a private
   corporate LLM - see
-  [LLM Configuration](../../../agentic-ai-suite/autograph/llm-configuration.md) for the
+  [LLM Configuration](../../../contextual-data-platform/autograph/llm-configuration.md) for the
   supported providers and models.
 
 ## Install Arango Contextual Data Platform
@@ -188,7 +188,7 @@ For common setup issues, see
 ## Install the Arango AI SDK
 
 AutoGraph and AutoRAG are exposed as HTTP APIs, and you can call them directly -
-the [AutoGraph Service Reference](../../../agentic-ai-suite/autograph/reference/_index.md)
+the [AutoGraph Service Reference](../../../contextual-data-platform/autograph/reference/_index.md)
 documents every endpoint. Going from documents to answers that way takes more
 than a dozen calls in the right order, though: obtaining and renewing a JWT,
 storing your LLM API key as a secret, creating a project, starting the AutoGraph
@@ -246,7 +246,7 @@ creates a **Context Graph** made of two parts:
 
 **AutoRAG** then deploys a retriever on top of the Context Graph that answers
 natural-language questions from it. For a closer look at each stage, see
-[AutoGraph](../../../agentic-ai-suite/autograph/_index.md).
+[AutoGraph](../../../contextual-data-platform/autograph/_index.md).
 
 {{< info >}}
 The Arango AI SDK client connects through the port-forward that the installer
@@ -411,15 +411,15 @@ that retrieved context rather than on its general knowledge.
 How the retriever searches depends on the kind of question, and you select it
 with the `query_type` parameter:
 
-- [**Local search**](../../../agentic-ai-suite/autorag/search-methods/local-search.md)
+- [**Local search**](../../../contextual-data-platform/autorag/search-methods/local-search.md)
   (`QueryType.LOCAL`) starts from the entities your question names, such as
   Heisenberg, and follows their direct relationships. Use it for questions about
   a specific person or thing.
-- [**Global search**](../../../agentic-ai-suite/autorag/search-methods/global-search.md)
+- [**Global search**](../../../contextual-data-platform/autorag/search-methods/global-search.md)
   (`QueryType.GLOBAL`) works from summaries of groups of closely related
   entities across the whole graph. Use it for broad questions about overall
   themes.
-- [**Unified search**](../../../agentic-ai-suite/autorag/search-methods/unified-search.md)
+- [**Unified search**](../../../contextual-data-platform/autorag/search-methods/unified-search.md)
   (`QueryType.UNIFIED`, the default) combines matching text passages with
   matching entities in a single fast lookup, and works on every part of the
   graph.

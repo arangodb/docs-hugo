@@ -237,13 +237,13 @@ accuracy, and reasoning depth across different query types. You select it with
 the `query_type` parameter of `ask()`, a `QueryType` enum value imported from
 `arango_ai_sdk.models`:
 
-- [**Local Search**](../../agentic-ai-suite/autorag/search-methods/local-search.md)
+- [**Local Search**](../../contextual-data-platform/autorag/search-methods/local-search.md)
   (`QueryType.LOCAL`): Starts from the entities the question names and follows
   their direct relationships. Use it for questions about specific entities.
-- [**Global Search**](../../agentic-ai-suite/autorag/search-methods/global-search.md)
+- [**Global Search**](../../contextual-data-platform/autorag/search-methods/global-search.md)
   (`QueryType.GLOBAL`): Answers from the community summaries that span the
   whole graph. Use it for themes and patterns across the corpus.
-- [**Unified Search**](../../agentic-ai-suite/autorag/search-methods/unified-search.md)
+- [**Unified Search**](../../contextual-data-platform/autorag/search-methods/unified-search.md)
   (`QueryType.UNIFIED`, the default): Combines matching chunks and entities in
   one fast lookup.
 
