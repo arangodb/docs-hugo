@@ -17,7 +17,7 @@ the query language first.
 
 1. In the left-hand sidebar of the Arango Contextual Data Platform, select the database
    you want to query.
-2. Click **Query Editor** in the navigation.
+2. In the **Database related** section of the sidebar, click **Query Editor**.
 3. The Query Editor opens. The **AQLizer** button is visible at the bottom of each
    query tab.
 

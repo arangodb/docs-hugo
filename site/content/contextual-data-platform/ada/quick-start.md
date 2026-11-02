@@ -19,7 +19,8 @@ description: >-
 
 {{< step "Open Ada" >}}
 In the Arango Contextual Data Platform web interface, select your database in
-the database selector, then open **Ada** from the left sidebar.
+the database selector, then click **Ada** in the **Agentic AI Suite** section
+of the left sidebar.
 {{< /step >}}
 
 {{< step "Configure the LLM provider" >}}
