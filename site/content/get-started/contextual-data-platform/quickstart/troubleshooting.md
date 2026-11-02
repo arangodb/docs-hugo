@@ -46,7 +46,7 @@ for a specific service, contact your sales, service, or support team to confirm
 its status.
 {{< /tip >}}
 
-### Docker does not have enough resources
+### The cluster does not have enough resources
 
 The installer creates a local Kubernetes cluster and pulls a large set of
 container images. If Docker is limited to the defaults, pods stay `Pending`
@@ -62,6 +62,93 @@ Verify what the cluster actually sees:
 ```bash
 kubectl describe node | grep -A 5 "Allocatable"
 ```
+
+Too little memory can also show up later, while you build a graph: pods
+restart repeatedly, and `kubectl describe pod <pod-name> --namespace arango`
+reports `OOMKilled` as the reason the last container terminated. The file
+parser services are the most likely to be affected. Give the cluster more
+memory and run the step again.
+
+### Pods fail with `too many open files`
+
+Linux limits how many inotify instances and watches each user can create.
+Kubernetes nodes that run as containers, as with Kind and minikube, share
+these limits with everything else on the host, and the defaults of many
+distributions are too low for the data platform. When a pod hits the limit, it
+stops, and its log contains an error about creating an fsnotify watcher that
+ends in `too many open files`. For example, this can happen to the
+`grpc-server` container of the `arangodb-graphrag-importer` pod while you build
+a graph.
+
+Other pods can fail in the same way at other times. To find the log message,
+run:
+
+```bash
+kubectl logs <pod-name> --namespace arango --all-containers
+```
+
+Check the current limits:
+
+```bash
+sysctl fs.inotify.max_user_instances fs.inotify.max_user_watches
+```
+
+Raise them until the next reboot:
+
+```bash
+sudo sysctl fs.inotify.max_user_instances=512
+sudo sysctl fs.inotify.max_user_watches=524288
+```
+
+To keep the values across reboots, store them in a configuration file:
+
+```bash
+printf 'fs.inotify.max_user_instances = 512\nfs.inotify.max_user_watches = 524288\n' | sudo tee /etc/sysctl.d/99-inotify.conf
+sudo sysctl --system
+```
+
+Then delete the failed pods so that Kubernetes recreates them, or start over.
+See also the [Kind known issues](https://kind.sigs.k8s.io/docs/user/known-issues/#pod-errors-due-to-too-many-open-files).
+
+### You use Podman instead of Docker
+
+Some Linux distributions, such as Fedora, ship rootless Podman instead of
+Docker. The installer only creates a Kind cluster if no cluster is reachable,
+so one way to use Podman is to create a minikube cluster on Podman yourself
+and then run the installer against it.
+
+1. Raise the process limit per container. The Podman default of `2048` is too
+   low for a Kubernetes node and leads to frequent `runc` crashes. Set a higher
+   limit in the `[containers]` section of
+   `~/.config/containers/containers.conf`, or in
+   `/etc/containers/containers.conf` for all users. Create the file if it does
+   not exist:
+
+   ```toml
+   [containers]
+   pids_limit = 32768
+   ```
+
+2. Tell minikube that Podman runs rootless:
+
+   ```bash
+   minikube config set rootless true
+   ```
+
+3. Start the cluster with enough resources. The minikube defaults are too
+   small, and the file parser services get `OOMKilled`. For example:
+
+   ```bash
+   minikube start --driver=podman --container-runtime=containerd --cpus=8 --memory=20g
+   ```
+
+4. Raise the inotify limits as described in
+   [Pods fail with `too many open files`](#pods-fail-with-too-many-open-files).
+
+5. Confirm that `kubectl` points to the minikube cluster with
+   `kubectl cluster-info`, and then run the installer.
+
+To start over, run `minikube delete` instead of `kind delete cluster`.
 
 ### The license key is rejected
 
