@@ -53,7 +53,7 @@ operational excellence. Read more about the platform's
 |:-----|:-----------|
 | **Install** the data platform | [Install & Upgrade](install-and-upgrade/_index.md), [License Management](license-management.md) |
 | **Build** a Context Graph from your documents and ask questions | [AutoGraph](autograph/_index.md), [AutoRAG](autorag/_index.md) |
-| **Query & explore** your data in the web interface | [Query Editor](query-editor.md), [Graph Visualizer](graph-visualizer.md) |
+| **Query & explore** your data in the [web interface](web-interface/_index.md) | [Query Editor](query-editor.md), [Graph Visualizer](graph-visualizer.md) |
 | **Integrate** the services into your applications | [API references](reference.md) |
 
 ## Where your data lives
