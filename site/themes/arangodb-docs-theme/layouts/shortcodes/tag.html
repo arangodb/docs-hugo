@@ -10,8 +10,8 @@
   "ArangoDB Enterprise Edition" "This feature is available in the Enterprise Edition but not the Community Edition of ArangoDB"
 -}}
 
-<p class="labels">
+<div class="labels">
 {{ range $.Params }}
   <span class="label"{{ with index $tooltips . }} title="{{ . }}"{{ end }}>{{ . }}</span>
 {{ end }}
-</p>
+</div>

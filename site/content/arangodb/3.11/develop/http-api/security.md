@@ -106,11 +106,6 @@ paths:
     get:
       operationId: getEncryptionAtRestKeyHashes
       description: |
-        {{</* warning */>}}
-        The encryption at rest key rotation is an **experimental** feature,
-        and its APIs and behavior are still subject to change. 
-        {{</* /warning */>}}
-
         Get information about the currently loaded user-supplied encryption at
         rest keys. The keys themselves are not returned, only the SHA-256 hashes
         of the key secrets. If you use the
@@ -197,11 +192,6 @@ paths:
     post:
       operationId: rotateEncryptionAtRestKey
       description: |
-        {{</* warning */>}}
-        The encryption at rest key rotation is an **experimental** feature,
-        and its APIs and behavior are still subject to change. 
-        {{</* /warning */>}}
-
         Change the user-supplied encryption at rest key by sending a request without
         payload to this endpoint. The user key is read again from the configured
         key source, and the internal encryption key is re-encrypted with it. The

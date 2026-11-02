@@ -16,7 +16,7 @@ description: >-
   Git to clone the repository.
 - **An Arango Contextual Data Platform deployment with the Agentic AI Suite**,
   reachable from wherever your code runs. See the
-  [AutoGraph prerequisites](../../agentic-ai-suite/autograph/setup.md#prerequisites)
+  [AutoGraph prerequisites](../../contextual-data-platform/autograph/reference/_index.md#prerequisites)
   for the platform and ArangoDB versions AutoGraph needs.
 - **A username and password** for an account that can access the database you
   want to work in. The SDK signs in with these; it does not take a token.

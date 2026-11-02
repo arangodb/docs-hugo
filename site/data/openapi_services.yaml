@@ -23,4 +23,4 @@ cypher2aql:
     url: https://arango.ai
   externalDocs:
     description: Cypher to AQL Documentation
-    url: https://docs.arango.ai/platform-suite/cypher2aql/
+    url: https://docs.arango.ai/contextual-data-platform/cypher-to-aql/

@@ -1023,11 +1023,10 @@ Creates a new View and returns a [_view_ object](view-object.md).
 same name may already exist in the current database. For information about the
 naming constraints for Views, see [View names](../../../concepts/data-structure/views.md#view-names).
 
-`type` must be the string `"arangosearch"`, as it is currently the only
-supported View type.
+`type` must be the string `"arangosearch"` or `"search-alias"`.
 
 `properties` is an optional object containing View configuration specific
-to each View-type.
+to each View type:
 - [`arangosearch` View definition](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-definitionmodification)
 - [`search-alias` View definition](../../../indexes-and-search/arangosearch/search-alias-views-reference.md#view-definition)
 

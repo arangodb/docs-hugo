@@ -18,7 +18,7 @@ The vector index implementation uses the [Faiss library](https://github.com/face
 
 ## How to use vector indexes
 
-1. Calculate vector embeddings using [Arango's GraphML](../../../../../agentic-ai-suite/graphml/_index.md)
+1. Calculate vector embeddings using [Arango's GraphML](../../../../../contextual-data-platform/graphml/_index.md)
    capabilities (available in the Arango Contextual Data Platform) or using external tools.
    Store each vector as an attribute in the respective document.
 2. Create a vector index over this attribute. You need to choose which
