@@ -26,7 +26,7 @@
 arangodb-platform-ui:
   features:
     - name: Web interface (frontend)
-      link: contextual-data-platform/_index.md
+      link: contextual-data-platform/web-interface/_index.md
     - name: Graph Visualizer
       link: contextual-data-platform/graph-visualizer.md
     - name: Query Editor
@@ -34,7 +34,7 @@ arangodb-platform-ui:
 arangodb-platform-ui-server:
   features:
     - name: Web interface (backend)
-      link: contextual-data-platform/_index.md
+      link: contextual-data-platform/web-interface/_index.md
 arangodb-core-ui:
   features:
     # The legacy ArangoDB web interface, embedded in an iframe. It has no
