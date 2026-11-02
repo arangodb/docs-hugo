@@ -2400,7 +2400,7 @@ exceeding it are rejected with an HTTP `400 Bad Request` error.
 A startup option to limit the global memory usage for decompressing
 request bodies has been added:
 
-`--http.decompressed-request-body-global-memory-limit`:
+- `--http.decompressed-request-body-global-memory-limit`:
   The maximum combined size of all decompressed request bodies that the server
   holds at the same time (in bytes). Each compressed request body (gzip,
   deflate, or lz4) reserves its decompressed size from this budget until the
@@ -2409,8 +2409,16 @@ request bodies has been added:
   The default is 10% of the physical memory. A value of `0` disables the limit.
   The memory usage is tracked in steps of 32 KiB.
 
-  The budget must be at least as large as `--http.max-decompressed-request-body-size`.
-  If you set both options and the budget is smaller, the server refuses to start.
+  The budget needs to be at least as large as
+  `--http.max-decompressed-request-body-size` so that a request body of the
+  maximum size can be decompressed. If the budget is smaller (and not `0`):
+
+  - If you set both options, the server refuses to start.
+  - If you only set the budget, the maximum size of a single decompressed
+    request body is lowered to the budget.
+  - Otherwise, the budget is raised to the maximum size of a single
+    decompressed request body. For example, this happens with the default
+    settings if 10% of the physical memory is less than 512 MiB.
 
 ## Miscellaneous changes
 
