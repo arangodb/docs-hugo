@@ -1136,7 +1136,7 @@ article.default > * {
     text-overflow: ellipsis;
 }
 
-.TableOfContents a {
+.toc-body a {
     display: block;
     padding: 4px 12px;
     color: var(--color-muted);
@@ -1147,17 +1147,23 @@ article.default > * {
     transition: color 0.1s;
 }
 
-.TableOfContents a:hover {
+.toc-body a:hover {
     color: var(--color-heading);
 }
 
-.TableOfContents .level-3 > a { padding-left: 24px; }
-.TableOfContents .level-4 > a { padding-left: 36px; }
-.TableOfContents .level-5 > a { padding-left: 48px; }
-.TableOfContents .level-6 > a { padding-left: 60px; }
+/* Faux bold, as a heavier weight is wider and can change the wrapping */
+.toc-body .is-active > a {
+    color: var(--color-heading);
+    text-shadow: 0.35px 0 0 currentColor;
+}
+
+.toc-body .level-3 > a { padding-left: 24px; }
+.toc-body .level-4 > a { padding-left: 36px; }
+.toc-body .level-5 > a { padding-left: 48px; }
+.toc-body .level-6 > a { padding-left: 60px; }
 
 /* Plain monospace text in the list, breaking long names only where needed */
-.TableOfContents code {
+.toc-body code {
     padding: 0;
     border: 0;
     background: none;
@@ -1258,21 +1264,19 @@ article.default > * {
         display: none;
     }
 
-    .TableOfContents {
+    .toc-body {
         margin-top: 8px;
         /* The single line along the entries, the current one is marked on it */
         border-left: 1px solid var(--gray-300);
     }
 
-    .TableOfContents a {
+    .toc-body a {
         margin-left: -1px;
         border-left: 2px solid transparent;
     }
 
-    .TableOfContents .is-active > a {
+    .toc-body .is-active > a {
         border-left-color: var(--color-link);
-        color: var(--color-heading);
-        font-weight: 500;
     }
 
 }
@@ -1334,7 +1338,7 @@ article.default > * {
     }
 
     /* The entries open over the content, scrolling inside the box */
-    .toc-details > .TableOfContents {
+    .toc-details > .toc-body {
         position: absolute;
         top: calc(100% + 4px);
         left: -1px;
@@ -1349,11 +1353,6 @@ article.default > * {
         max-height: 60vh;
         overflow-y: auto;
         padding: 8px 0;
-    }
-
-    .TableOfContents .is-active > a {
-        color: var(--color-heading);
-        font-weight: 500;
     }
 
     .back-to-top {

@@ -821,7 +821,7 @@ function getAllAnchors() {
     let tocIds = [];
     let headlineIds = [];
     // Exclude headline anchors that are not in the ToC
-    document.querySelectorAll(".TableOfContents a").forEach(e => { tocIds.push(e.getAttribute("href").slice(1)) });
+    document.querySelectorAll(".toc-body a").forEach(e => { tocIds.push(e.getAttribute("href").slice(1)) });
     document.querySelector("article").querySelectorAll("h2,h3,h4,h5,h6").forEach(a => { if (tocIds.indexOf(a.id) !== -1) { headlineIds.push(a); } });
     return headlineIds;
 }
@@ -832,7 +832,7 @@ function getAllAnchors() {
  * above the first one. At the end of the page, the last heading in view.
  */
 function tocHiglighter() {
-  const toc = document.querySelector(".TableOfContents");
+  const toc = document.querySelector(".toc-body");
   if (!toc) return;
   const headings = getAllAnchors();
   const threshold = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) + 16;
@@ -1246,12 +1246,12 @@ function handleDocumentClick(event) {
     }
 
     // Choosing an entry or clicking elsewhere closes the dropdown on narrow screens
-    if (!closest(".toc-details") || closest(".TableOfContents a")) {
+    if (!closest(".toc-details") || closest(".toc-body a")) {
         closeTocDropdown();
     }
 
     // Also for the fragment that is already in the URL (no hashchange)
-    const tocLink = closest(".TableOfContents a");
+    const tocLink = closest(".toc-body a");
     if (tocLink) {
         tocTarget = tocLink.getAttribute("href").slice(1);
         setTimeout(tocHiglighter);
