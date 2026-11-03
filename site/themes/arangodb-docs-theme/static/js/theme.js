@@ -1966,6 +1966,23 @@ function panImageViewer(dx, dy) {
   applyImageViewerTransform();
 }
 
+/** Pans as little as needed for the element to be in the free area, with some room around it. */
+function panImageViewerTo(el) {
+  let bounds = _viewer.stage.getBoundingClientRect();
+  let area = imageViewerArea();
+  let box = el.getBoundingClientRect();
+  let margin = 24;
+  let left = box.left - bounds.left;
+  let top = box.top - bounds.top;
+  let dx = 0, dy = 0;
+  // The start of the element wins if it is larger than the area
+  if (left + box.width > area.left + area.width - margin) dx = area.left + area.width - margin - (left + box.width);
+  if (left + dx < area.left + margin) dx = area.left + margin - left;
+  if (top + box.height > area.top + area.height - margin) dy = area.top + area.height - margin - (top + box.height);
+  if (top + dy < area.top + margin) dy = area.top + margin - top;
+  if (dx || dy) panImageViewer(dx, dy);
+}
+
 /* The illustration is resized rather than scaled with a CSS transform, so
    that browsers redraw vector graphics sharply at every zoom level. */
 function applyImageViewerTransform() {
@@ -2085,7 +2102,11 @@ function handleImageViewerKeydown(e) {
       if (!focusable.length) break;
       let index = focusable.indexOf(document.activeElement);
       let next = e.shiftKey ? index - 1 : index + 1;
-      focusable[(next + focusable.length) % focusable.length].focus();
+      let target = focusable[(next + focusable.length) % focusable.length];
+      // The illustration is moved with a transform, not scrolled, so the
+      // browser can't bring a link in it into view. It is panned instead.
+      target.focus({ preventScroll: true });
+      if (_viewer.content && _viewer.content.contains(target)) panImageViewerTo(target);
       break;
     }
     default: return;
