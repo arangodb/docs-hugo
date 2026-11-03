@@ -41,33 +41,33 @@
       <rect x="42" y="176" width="270" height="40" rx="20" class="pill-aai"/>
       <text x="177" y="202" text-anchor="middle">AutoGraph Studio</text>
     </a>
-    <a class="card-link" xlink:href="/contextual-data-platform/graphml/">
+    <a class="card-link" xlink:href="/contextual-data-platform/autorag/">
       <rect x="322" y="176" width="270" height="40" rx="20" class="pill-aai"/>
-      <text x="457" y="202" text-anchor="middle">GraphML</text>
+      <text x="457" y="202" text-anchor="middle">AutoRAG</text>
+    </a>
+    <a class="card-link" xlink:href="/contextual-data-platform/graphml/">
+      <rect x="42" y="226" width="270" height="40" rx="20" class="pill-aai"/>
+      <text x="177" y="252" text-anchor="middle">GraphML</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/graph-analytics/">
-      <rect x="42" y="226" width="270" height="40" rx="20" class="pill-aai"/>
-      <text x="177" y="252" text-anchor="middle">Graph Analytics</text>
+      <rect x="322" y="226" width="270" height="40" rx="20" class="pill-aai"/>
+      <text x="457" y="252" text-anchor="middle">Graph Analytics</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/natural-language-to-aql/">
-      <rect x="322" y="226" width="270" height="40" rx="20" class="pill-aai"/>
-      <text x="457" y="252" text-anchor="middle">Natural Language to AQL</text>
+      <rect x="42" y="276" width="270" height="40" rx="20" class="pill-aai"/>
+      <text x="177" y="302" text-anchor="middle">Natural Language to AQL</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/reasoner/">
-      <rect x="42" y="276" width="270" height="40" rx="20" class="pill-aai"/>
-      <text x="177" y="302" text-anchor="middle">Reasoner</text>
+      <rect x="322" y="276" width="270" height="40" rx="20" class="pill-aai"/>
+      <text x="457" y="302" text-anchor="middle">Reasoner</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/ada/">
-      <rect x="322" y="276" width="270" height="40" rx="20" class="pill-aai"/>
-      <text x="457" y="302" text-anchor="middle">Ada</text>
+      <rect x="42" y="326" width="270" height="40" rx="20" class="pill-aai"/>
+      <text x="177" y="352" text-anchor="middle">Ada</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/notebook-servers/">
-      <rect x="42" y="326" width="270" height="40" rx="20" class="pill-aai"/>
-      <text x="177" y="352" text-anchor="middle">Notebook servers</text>
-    </a>
-    <a class="card-link" xlink:href="/contextual-data-platform/private-llms/">
       <rect x="322" y="326" width="270" height="40" rx="20" class="pill-aai"/>
-      <text x="457" y="352" text-anchor="middle">Private LLM hosting</text>
+      <text x="457" y="352" text-anchor="middle">Notebook servers</text>
     </a>
 
     <!-- Plus: the Agentic AI Suite adds to the layers below -->
