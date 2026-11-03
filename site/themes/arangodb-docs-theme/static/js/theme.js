@@ -76,6 +76,12 @@ function toggleSidebarCollapsed() {
     try {
         localStorage.setItem("docs-sidebar-collapsed", collapsed ? "1" : "0");
     } catch (e) {}
+    // The two buttons act as one: the focus moves to the other one, so that
+    // the sidebar can be collapsed and expanded again without tabbing
+    const toggle = document.querySelector(collapsed ? ".sidebar-expand" : ".sidebar-collapse");
+    if (toggle && document.activeElement?.matches(".sidebar-collapse, .sidebar-expand")) {
+        toggle.focus({ preventScroll: true });
+    }
 }
 
 

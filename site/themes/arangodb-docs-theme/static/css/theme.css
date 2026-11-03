@@ -2947,8 +2947,16 @@ body.sidebar-collapsed .main-nav-ol.shimmer {
         transition: margin-left 0.2s ease-in-out, padding-left 0.2s ease-in-out;
     }
 
+    /* Hidden once it has slid out, so that its entries can't be focused,
+       but shown at once to slide in */
+    .sidebar {
+        transition: transform 0.2s ease-in-out, visibility 0s;
+    }
+
     body.sidebar-collapsed .sidebar {
         transform: translateX(-100%);
+        visibility: hidden;
+        transition: transform 0.2s ease-in-out, visibility 0s 0.2s;
     }
 
     /* Room for the expand button */
