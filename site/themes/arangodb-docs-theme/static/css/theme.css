@@ -19,6 +19,8 @@
     --color-link-hover: #06838A;
     --color-teal-ink: #014654;
     --color-lime: #BEFE99;
+    /* The accent of the design system: lime is for dark surfaces only */
+    --color-lime-tint: #EEFBD5;
 
     --neutral-black: #000000;
     --neutral-gray-darkest: #323b40;
@@ -1579,17 +1581,18 @@ hgroup > h1 > code,
     vertical-align: baseline;
 }
 
+/* Marks the heading or element jumped to, held briefly so that it is noticed */
 @keyframes target-highlight {
-    from {
-        background-color: var(--color-lime);
+    0%, 40% {
+        background-color: var(--color-lime-tint);
     }
-    to {
+    100% {
         background-color: transparent;
     }
 }
 
 .docs-target-flash {
-    animation: target-highlight 0.5s ease-out;
+    animation: target-highlight 1.2s ease-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
