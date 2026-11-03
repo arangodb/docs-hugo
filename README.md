@@ -757,6 +757,57 @@ Conventions used in the existing diagrams:
 - Use `class="card-link"` on the `<a>` tag so the link picks up the shared
   hover styling defined in the theme.
 
+##### Keyboard and screen reader access to SVG links
+
+Every link in an embedded SVG is a tab stop, and screen readers announce it by
+its text. Keep the following in mind so that diagrams work without a mouse:
+
+- **Document order**: The order of the `<a>` elements in the file is the order
+  in which they are focused and read. Arrange them like the layout, top to
+  bottom and left to right, and the link of a container (like the title of a
+  box) before the links inside of it. Later elements are drawn on top of earlier
+  ones, so a container's own shapes still come first.
+- **Link text**: Put the visible `<text>` inside the `<a>`. A link around a
+  transparent shape without text has no name for screen readers.
+- **Few duplicates**: Each link is a stop when tabbing. Avoid many links to the
+  same page in a row.
+- **Scoped styles**: The `<style>` element of an SVG applies to the whole page
+  once inlined. Scope all rules with a class on the SVG's top-level group, like
+  `.cdp-arch .card-link { ... }`.
+- **Focus state**: Apply hover styles on keyboard focus, too:
+
+  ```css
+  .arch .card-link:is(:hover, :focus-visible) .node { fill: #1f5c38; }
+  ```
+
+- **Focus ring color**: The theme draws a 2px focus ring in the color of the
+  `--focus-ring` custom property, dark teal by default. It is hardly visible on
+  dark backgrounds. Set the property to the lime of the theme for the links
+  there, and only there, for example with a class:
+
+  ```css
+  .arch .on-dark { --focus-ring: #befe99; }
+  ```
+
+  Where a ring is still easy to miss, like around a large box among other green
+  borders, change the border of the focused shape, too
+  (`.arch .on-dark:focus-visible > rect { stroke: #befe99; stroke-width: 3; }`).
+- **Room for the ring**: The ring is a rectangle around the bounding box of the
+  link, 3px outside of it. Leave at least 10px between links that are next to
+  each other, as the ring of the earlier link is otherwise drawn below the later
+  one.
+- **Ring inside a shape**: For links that fill a box edge to edge, like a title
+  strip, the ring would cover the box border. Firefox ignores a negative
+  `outline-offset` in SVGs, so draw a shape inside the link instead, with
+  `outline: none` for the link and a stroke for the shape on focus. See the
+  `title-focus` paths in `Arango-Contextual-Data-Platform-Overview.svg`.
+- **Shapes within borders**: Draw fills that adjoin a border (like a title strip
+  in a box) inside the border, inset by its stroke width, so that they don't
+  show through or overlap it.
+
+Check diagrams by tabbing through them in Chrome and Firefox, on the page and in
+the image viewer (**Enlarge**), which pans to the focused link.
+
 #### Diagrams
 
 For flowcharts and similar schematics that you want to maintain as text instead
