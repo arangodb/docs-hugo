@@ -2628,7 +2628,7 @@ nav.pagination > .next {
     align-items: center;
     min-height: 32px;
     margin-top: 8px;
-    padding: 0 8px;
+    padding: 0;
     color: rgb(248 250 252 / 0.7);
     font-size: 12px;
     font-weight: 500;
