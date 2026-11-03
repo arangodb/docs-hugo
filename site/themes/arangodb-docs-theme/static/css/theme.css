@@ -50,7 +50,9 @@
     --padding-4: 32px;
     --padding-8: 64px;
     
-    --topbar-height: 64px;
+    /* The design system has no height for it, the hamburger button (48px) is
+       a large enough touch target in it */
+    --topbar-height: 56px;
     --nav-width: 260px;
 
     --content-width: 800px;
