@@ -2491,6 +2491,12 @@ nav.pagination > .next {
     box-shadow: none;
 }
 
+/* DocSearch removes the outline on focus */
+.sidebar .DocSearch-Button:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+}
+
 /* Match the placeholder colour; DocSearch's own .DocSearch-Button rules
    would otherwise make the icon near-black (and change it on hover) */
 .sidebar .DocSearch-Button .DocSearch-Search-Icon,
