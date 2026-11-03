@@ -1,15 +1,20 @@
-{{- /* The article's aside: the table of contents (in a column on wide screens,
-  collapsible below the page title otherwise) and the back to top button */ -}}
+{{- /* The article's aside: the table of contents, in a column on wide screens
+  and as a dropdown below the page title otherwise. The scroll containers have
+  tabindex="-1", as Firefox would otherwise add them to the tab order (as an
+  invisible stop before the entries), but they can still be scrolled with the
+  keyboard once clicked into or when an entry is focused. */ -}}
 <aside class="article-aside">
-  {{- /* The table of contents sticks to the top, the edit link and back to top to the bottom */}}
+  {{- /* Sticks to the top, leaving room for the article actions at the bottom */}}
   <div class="aside-sticky">
     {{- if ge (.Page.Fragments.HeadingsMap | len) 2 }}
-    <nav class="toc" aria-labelledby="toc-heading">
+    <nav class="toc" aria-labelledby="toc-title" tabindex="-1">
+      {{- /* The plain title in the column, the summary of the dropdown otherwise */}}
+      <p class="toc-title" id="toc-title">On this page</p>
       <details class="toc-details" open>
-        <summary class="toc-header" id="toc-heading">On this page<span class="toc-current"></span></summary>
+        <summary class="toc-header">On this page<span class="toc-current"></span></summary>
         <div class="toc-body">
           {{- /* Scrolls inside the box of the dropdown on narrow screens */}}
-          <div class="toc-entries">
+          <div class="toc-entries" tabindex="-1">
             {{- /* The content before the first heading, links to the top */}}
             <div class="level-2"><a href="#top">Overview</a></div>
             {{ template "nestedHeadline" dict "headings" .Page.Fragments.Headings "level" 1 "maxLevel" .Page.Params.pageToc.maxHeadlineLevel }}
@@ -18,10 +23,6 @@
       </details>
     </nav>
     {{- end }}
-  </div>
-  <div class="aside-bottom">
-    {{ partial "edit-link.html" . }}
-    {{ partial "back-to-top.html" . }}
   </div>
 </aside>
 

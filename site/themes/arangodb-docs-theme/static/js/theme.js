@@ -1267,12 +1267,6 @@ function handleDocumentClick(event) {
     const versionItem = closest(".version-menu-item");
     if (!versionItem) setVersionMenuOpen(false);
 
-    // The table of contents can only be collapsed below the page title, not in the column
-    if (closest(".toc-details > summary") && window.matchMedia(TOC_COLUMN_QUERY).matches) {
-        event.preventDefault();
-        return;
-    }
-
     // Choosing an entry or clicking elsewhere closes the dropdown on narrow screens
     if (!closest(".toc-details") || closest(".toc-body a")) {
         closeTocDropdown();

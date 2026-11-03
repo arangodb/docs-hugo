@@ -1011,8 +1011,7 @@ body .page-container {
     background-color: var(--CONTENT-BACKGROUND-COLOR);
 }
 
-/* Narrow screens: everything below each other in the document order,
-   except for the edit link at the end */
+/* Narrow screens: everything below each other in the document order */
 article.default {
     display: flex;
     flex-direction: column;
@@ -1048,6 +1047,9 @@ article.default > * {
     article.default > .article-aside { grid-area: aside; }
     article.default > .article-body { grid-area: body; min-width: 0; }
     article.default > .pagination { grid-area: pager; }
+    /* In the column, for the horizontal position of its fixed content. It has
+       no height, so it doesn't add to the row or cover the table of contents. */
+    article.default > .article-actions { grid-column: 2; grid-row: 1; align-self: start; }
 }
 
 @media screen and (max-width: 768px) {
@@ -1160,13 +1162,15 @@ article.default > * {
 
 
 
-/* Aside: table of contents and back to top
+/* Aside: table of contents, and the article actions (edit link, back to top)
 
    From 1280px, the aside is a column: the table of contents sticks to the
-   top, back to top to the bottom of the viewport. Below, the table of
+   top, the article actions to the bottom of the viewport. Below, the table of
    contents is a sticky bar with the current section, which opens the entries
-   over the content. */
+   over the content, and the article actions follow the previous/next links.
+   The article actions come last in the document order either way. */
 
+.toc-title,
 .toc-header {
     display: flex;
     align-items: baseline;
@@ -1208,6 +1212,12 @@ article.default > * {
     color: var(--color-heading);
 }
 
+/* Inside the scroll container, which would clip a ring outside the entry */
+:root .toc-body a:focus-visible {
+    outline-offset: -2px;
+    border-radius: 4px;
+}
+
 /* Faux bold, as a heavier weight is wider and can change the wrapping */
 .toc-body .is-active > a {
     color: var(--color-heading);
@@ -1234,6 +1244,8 @@ article.default > * {
 
 /* Fades out the end of a scroll container if there is more to scroll to */
 .scroll-fade {
+    /* Entries focused by keyboard are scrolled clear of the fade */
+    scroll-padding-bottom: 48px;
     mask-image: linear-gradient(to bottom, #000 calc(100% - 48px), transparent);
 }
 
@@ -1272,6 +1284,13 @@ article.default > * {
     }
 }
 
+.article-actions-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
 @media screen and (min-width: 1280px) {
     .article-aside {
         display: flex;
@@ -1279,7 +1298,7 @@ article.default > * {
         align-items: flex-start;
     }
 
-    /* The table of contents, leaving room for the edit link and back to top */
+    /* The table of contents, leaving room for the article actions */
     .aside-sticky {
         position: sticky;
         top: 0;
@@ -1297,27 +1316,17 @@ article.default > * {
         scrollbar-width: thin;
     }
 
-    /* Edit link and back to top below it, at the bottom of the viewport */
-    /* Always at the same place at the bottom of the viewport, whatever follows
-       the article. Without left or right, it stays in the column. */
-    .aside-bottom {
+    /* Edit link and back to top, always at the same place at the bottom of
+       the viewport, whatever follows the article. Without left or right, it
+       stays in the column. */
+    .article-actions-inner {
         position: fixed;
         bottom: 24px;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
     }
 
-    /* Not collapsible in the column */
-    .toc-details > summary,
-    .toc-details > summary:hover {
-        cursor: default;
-        color: var(--color-heading);
-    }
-
-    .toc-details > summary::before,
-    .toc-current {
+    /* Not collapsible in the column: a plain title instead of the summary,
+       which would be a focusable button that does nothing */
+    .toc-details > summary {
         display: none;
     }
 
@@ -1339,16 +1348,19 @@ article.default > * {
 }
 
 @media screen and (max-width: 1279px) {
-    /* The sticky bar needs the article as its containing block, and the edit
-       link moves to the end of the article */
+    /* The sticky bar needs the article as its containing block */
     .article-aside,
-    .aside-sticky,
-    .aside-bottom {
+    .aside-sticky {
         display: contents;
     }
 
-    .edit-page {
-        order: 1;
+    /* The summary of the dropdown has the title */
+    .toc-title {
+        display: none;
+    }
+
+    .article-actions {
+        margin-top: 16px;
     }
 
     .toc {
@@ -1392,6 +1404,16 @@ article.default > * {
     .toc-details > summary::before {
         align-self: center;
         margin: 0;
+    }
+
+    /* The ring follows the rounded box, not the summary inside its padding */
+    :root .toc-details > summary:focus-visible {
+        outline: none;
+    }
+
+    .toc-details:has(> summary:focus-visible) {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: 2px;
     }
 
     /* The entries open over the content, scrolling inside the box */
@@ -2270,7 +2292,7 @@ nav.pagination > .next {
     text-decoration: underline !important;
 }
 
-/* Edit link, above the table of contents in the column */
+/* Edit link, in the article actions */
 
 .edit-page,
 .edit-page:is(:visited, :hover, :focus) {
@@ -2287,19 +2309,6 @@ nav.pagination > .next {
 
 .edit-page:hover {
     color: var(--color-heading);
-}
-
-@media screen and (max-width: 1279px) {
-    .edit-page {
-        align-self: flex-start;
-        margin-top: 16px;
-    }
-}
-
-@media screen and (min-width: 1280px) {
-    .edit-page {
-        margin: 0;
-    }
 }
 
 .DocSearch.DocSearch-Container {
