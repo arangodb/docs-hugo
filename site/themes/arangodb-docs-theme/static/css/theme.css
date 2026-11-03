@@ -1805,7 +1805,7 @@ div > .box-content-container {
 }
 
 li > .labels {
-    margin: 0;
+    margin: 0.2rem 0;
 }
 
 .label {
