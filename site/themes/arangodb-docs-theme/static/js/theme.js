@@ -738,15 +738,25 @@ function initToc() {
  * Fades out the end of a scroll container while there is more to scroll to,
  * by toggling the scroll-fade class (on the navigation and table of contents).
  */
-const scrollFadeObserver = new ResizeObserver(entries => entries.forEach(e => updateScrollFade(e.target)));
+// Observed element (the container or one of its children) → scroll container
+const scrollFadeContainers = new WeakMap();
+const scrollFadeObserver = new ResizeObserver(entries => {
+  const containers = new Set(entries.map(e => scrollFadeContainers.get(e.target)));
+  containers.forEach(el => el && updateScrollFade(el));
+});
 
 function observeScrollFade(el) {
   if (el.dataset.scrollFade) return;
   el.dataset.scrollFade = "observed";
   el.addEventListener("scroll", () => updateScrollFade(el), { passive: true });
+  scrollFadeContainers.set(el, el);
   scrollFadeObserver.observe(el);
-  // Also when the content changes size, like expanded navigation sections
-  for (const child of el.children) scrollFadeObserver.observe(child);
+  // Also when the content changes size, like expanded navigation sections.
+  // The child resizes, but the fade belongs on the container.
+  for (const child of el.children) {
+    scrollFadeContainers.set(child, el);
+    scrollFadeObserver.observe(child);
+  }
   updateScrollFade(el);
 }
 
