@@ -1119,9 +1119,17 @@ function observeBackToTop() {
   backToTopObserver.observe(title);
 }
 
+// Moves the keyboard focus to the start of the main content, so that tabbing
+// continues from there (the button hides itself at the top of the page)
+function focusMainContent(options) {
+  document.getElementById("main-content")?.focus(options);
+}
+
 const goToTop = (event) => {
-    if (event != undefined)       // Comes from the back-to-top button
+    if (event != undefined) {     // Comes from the back-to-top button
       window.scrollTo({top: 0});
+      focusMainContent({ preventScroll: true });
+    }
 
     if (window.location.hash.length == 0)
         window.scrollTo({top: 0});
@@ -1228,6 +1236,20 @@ function linkToVersionedContent() {
 function handleDocumentClick(event) {
     const target = event.target;
     const closest = (selector) => target.closest(selector);
+
+    // Skip link: past the navigation and breadcrumbs to the page title, without
+    // a fragment in the URL. Tabbing continues with the table of contents.
+    if (closest(".skip-link")) {
+        event.preventDefault();
+        const title = document.querySelector("#main-content h1");
+        if (title) {
+            title.tabIndex = -1;
+            title.focus();
+        } else {
+            focusMainContent();
+        }
+        return;
+    }
 
     // Navigation sections
     const expandButton = closest(".expand-nav");

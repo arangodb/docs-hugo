@@ -455,6 +455,63 @@ a:hover {
     outline: none;
 }
 
+/* Focused by the skip link (the page title) and back to top (the start of the
+   main content), so that tabbing continues from there. Not controls, no ring. */
+:root :is(.container-main, .container-main h1):focus-visible {
+    outline: none;
+}
+
+/* The first focusable element, only visible when focused. A default (primary)
+   button of the design system, so that it stands out from whatever it covers,
+   like the top bar on narrow screens */
+.skip-link,
+.skip-link:is(:hover, :visited, :focus) {
+    position: fixed;
+    /* Centered on the logo of the top bar */
+    top: calc((var(--topbar-height) - 36px) / 2);
+    left: 8px;
+    z-index: 10000;
+    display: inline-flex;
+    align-items: center;
+    height: 36px;
+    padding: 0 10px;
+    border-radius: 8px;
+    border-bottom: 0;
+    background: var(--color-link);
+    color: #f8fafc;
+    font-size: 14px;
+    font-weight: 500;
+    transform: translateY(calc(-100% - 16px));
+}
+
+/* The hover colors of the design system are translucent (80%), for buttons on
+   the page background. Over the logo and sidebar, these are their opaque
+   equivalents, as they would look on the page background. */
+.skip-link:hover {
+    background: #346b76;
+}
+
+.skip-link:focus-visible {
+    transform: none;
+}
+
+/* Over the dark sidebar: the dark variant of the button, lime like the
+   current page in the navigation */
+@media screen and (min-width: 769px) {
+    .skip-link,
+    .skip-link:is(:hover, :visited, :focus) {
+        /* Centered on the logo of the sidebar (64px row) */
+        top: 14px;
+        --focus-ring: var(--color-lime);
+        background: var(--color-lime);
+        color: var(--color-teal-ink);
+    }
+
+    .skip-link:hover {
+        background: #98cc7f;
+    }
+}
+
 /* Keep outline out of `transition: all`, which animates the ring's width as it appears. */
 a, .btn, input[type=submit], input[type=reset], button, input[type="checkbox"] {
     transition-property: color, background-color, border-color, border-width, opacity, box-shadow;

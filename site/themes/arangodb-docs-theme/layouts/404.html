@@ -9,11 +9,12 @@
   <body>
     {{ if $isProduction }}{{ partialCached "tracking/body-start.html" . }}{{ end -}}
     <noscript>You need to enable JavaScript to use the Arango documentation.</noscript>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <section class="page-main">
       <section class="page-container">
         {{ partialCached "header.html" . -}}
-        <nav class="main-nav" aria-label="Main"></nav>
-        <div class="container-main">
+        <nav class="main-nav" aria-label="Main" tabindex="-1"></nav>
+        <main class="container-main" id="main-content" tabindex="-1">
           <div class="row-main">
             <div class="notfound">
               <div class="flex-block-wrapper">
@@ -31,7 +32,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </main>
       </section>
     </section>
     {{ partialCached "search.html" . -}}
