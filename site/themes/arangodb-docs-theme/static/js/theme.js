@@ -1596,6 +1596,66 @@ function layoutZoomBadges() {
   });
 }
 
+/* Firefox doesn't scroll links in inline SVGs (diagrams) into view when they
+   get the keyboard focus, but (seemingly) to the top of the diagram, so the
+   focus can move out of sight. This scrolls them into view instead, or back
+   to where the page was if they were in view already. Not in the image viewer,
+   which doesn't scroll the page. */
+let _svgFocus = null;
+// The scroll position when Tab was pressed, as the browser may scroll before
+// the focusin event already
+let _tabScrollY = null;
+
+document.addEventListener('keydown', function (e) {
+  if (e.key !== 'Tab') return;
+  _tabScrollY = window.scrollY;
+  // The focus moves in the same task
+  setTimeout(function () { _tabScrollY = null; });
+}, true);
+
+document.addEventListener('focusin', function (e) {
+  let link = e.target;
+  if (!(link instanceof SVGAElement) || link.closest('.image-viewer')) return;
+  // Before the browser's own scrolling
+  _svgFocus = { link, scrollY: _tabScrollY ?? window.scrollY };
+  // If the browser doesn't scroll (at all, or not in this frame)
+  requestAnimationFrame(function () {
+    revealFocusedSvgLink();
+    _svgFocus = null;
+  });
+});
+
+// The browser's own scrolling is corrected in the same scroll event, before
+// the listener of the table of contents on the window sees the wrong position
+// (it would briefly mark the section of the diagram's top as the current one)
+document.addEventListener('scroll', revealFocusedSvgLink, { passive: true });
+
+function revealFocusedSvgLink() {
+  if (!_svgFocus) return;
+  // Undo the browser's scrolling, then scroll only as far as needed (if at all)
+  if (window.scrollY !== _svgFocus.scrollY) window.scrollTo(0, _svgFocus.scrollY);
+  let delta = svgLinkScrollDelta(_svgFocus.link);
+  if (delta) window.scrollBy(0, delta);
+  // Where it should stay, if this runs again for the same focus change
+  _svgFocus.scrollY = window.scrollY;
+}
+
+// How far to scroll for the link to be in view with some room around it, so
+// that it isn't at the very edge (or under the URL preview of the browser at
+// the bottom), and below the sticky table of contents on narrow screens (the
+// scroll padding, which is only for headings jumped to otherwise)
+function svgLinkScrollDelta(link) {
+  let box = link.getBoundingClientRect();
+  let margin = Math.max(48, window.innerHeight * 0.1);
+  let sticky = window.matchMedia(TOC_COLUMN_QUERY).matches ? 0
+    : parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+  let top = sticky + margin;
+  let bottom = window.innerHeight - margin;
+  if (box.top < top) return box.top - top;
+  if (box.bottom > bottom) return box.bottom - bottom;
+  return 0;
+}
+
 function zoomableCaption(el) {
   let caption = el.closest('figure')?.querySelector('figcaption');
   let text = caption ? caption.textContent.trim() : '';
