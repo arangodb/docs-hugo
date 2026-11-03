@@ -547,8 +547,14 @@ function updateActiveNavItem(pathname, scrollIntoView) {
   }
   expandCurrentPath();
 
+  // Centered by scrolling the navigation only. scrollIntoView() would also
+  // scroll the page and, in Chrome, move the starting point of sequential focus
+  // navigation, so that Tab would skip everything before the entry.
   if (activeItem && scrollIntoView) {
-    activeItem.scrollIntoView({ behavior: "auto", block: "center" });
+    const nav = activeItem.closest(".main-nav");
+    const navBox = nav.getBoundingClientRect();
+    const itemBox = activeItem.getBoundingClientRect();
+    nav.scrollTop += itemBox.top - navBox.top - (nav.clientHeight - itemBox.height) / 2;
   }
 }
 
