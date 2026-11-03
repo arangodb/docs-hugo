@@ -2,7 +2,7 @@
 
 Browser tests with [Playwright](https://playwright.dev/) for the functionality
 of the built documentation site, like the navigation, version selector, copy
-buttons, tabs, and image viewer. They run in Chromium, Firefox, and WebKit, on
+buttons, tabs, image viewer, and keyboard access. They run in Chromium, Firefox, and WebKit, on
 desktop and mobile viewports.
 
 For when CircleCI runs them and how to run them locally, see

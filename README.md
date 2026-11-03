@@ -248,7 +248,7 @@ includes Google Analytics etc.
 
 Browser tests with [Playwright](https://playwright.dev/) check the
 functionality of the built site, like the navigation, version selector, copy
-buttons, tabs, and image viewer, in Chromium, Firefox, and WebKit on desktop and
+buttons, tabs, image viewer, and keyboard access, in Chromium, Firefox, and WebKit on desktop and
 mobile viewports. They are in `toolchain/frontend-tests/`.
 
 CircleCI runs them before deploying a release, after scheduled and example
