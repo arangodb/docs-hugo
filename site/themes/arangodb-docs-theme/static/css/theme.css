@@ -2680,6 +2680,15 @@ nav.pagination > .next {
     outline-offset: -2px;
 }
 
+/* The lime ring would vanish on the lime row of the current page, so it is
+   inverted to the row's dark teal text color there, with lime on both sides
+   (at the edge, it would blend into the teal sidebar) */
+.link-nav-active:focus-visible,
+.nav-section-header:has(> .link-nav-active) > .expand-nav:focus-visible {
+    outline-color: var(--sidebar-ink);
+    outline-offset: -4px;
+}
+
 /* Code is in a lighter color, except on the highlighted rows */
 .main-nav code {
     padding: 0;
