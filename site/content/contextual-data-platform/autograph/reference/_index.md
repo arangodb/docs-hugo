@@ -174,10 +174,10 @@ architecture, see [Architecture](../architecture.md#complete-pipeline).
 
 | Method | Path | Description | Details |
 |--------|------|-------------|---------|
-| `POST` | `/v1/graph/insert` | Add a document to a knowledge graph that is already built | [Graph Operations](orchestration.md#insert-documents) |
-| `POST` | `/v1/graph/delete` | Remove a document from the graph | [Graph Operations](orchestration.md#delete-documents) |
-| `POST` | `/v1/graph/update` | Replace the content of an existing document | [Graph Operations](orchestration.md#update-documents) |
-| `POST` | `/v1/graph/recluster` | Rebuild the Layer 3 communities of a partition | [Graph Operations](orchestration.md#trigger-reclustering) |
+| `POST` | `/v1/graph/insert` | Add a document to a knowledge graph that is already built | [Incremental Graph Updates](../incremental-graph-updates/api-reference.md#insert-documents) |
+| `POST` | `/v1/graph/delete` | Remove a document from the graph | [Incremental Graph Updates](../incremental-graph-updates/api-reference.md#delete-documents) |
+| `POST` | `/v1/graph/update` | Replace the content of an existing document | [Incremental Graph Updates](../incremental-graph-updates/api-reference.md#update-documents) |
+| `POST` | `/v1/graph/recluster` | Rebuild the Layer 3 communities of a partition | [Incremental Graph Updates](../incremental-graph-updates/api-reference.md#trigger-reclustering) |
 
 ### Project operations
 
@@ -321,7 +321,7 @@ also the supported recovery path for a partition that imported incompletely.
 
 Use these calls if the corpus graph is already built and you only want to change
 individual documents. See
-[Incremental Graph Updates](../incremental-graph-updates.md) for the
+[Incremental Graph Updates](../incremental-graph-updates/_index.md) for the
 prerequisites, a comparison with a rebuild, and the full endpoint reference.
 
 1. Call `POST /v1/graph/insert`, `/v1/graph/delete`, or `/v1/graph/update`,
@@ -456,7 +456,7 @@ curl -X POST \
 
 - [LLM Configuration](../llm-configuration.md): Configure the chat and embedding
   providers the service calls.
-- [Incremental Graph Updates](../incremental-graph-updates.md): Insert, delete,
+- [Incremental Graph Updates](../incremental-graph-updates/_index.md): Insert, delete,
   and replace individual documents in a graph that is already built.
 - [Document conversion and the File Parser](../document-conversion.md): What the
   parser extracts from each format and how to size it.

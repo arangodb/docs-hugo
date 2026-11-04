@@ -73,7 +73,7 @@ source documents they came from.
 {{< info >}}
 To add, remove, or replace individual documents later, use the API. The web
 interface does not offer these operations in Arango Contextual Data Platform
-4.1.0. See [Incremental Graph Updates](incremental-graph-updates.md).
+4.1.0. See [Incremental Graph Updates](incremental-graph-updates/_index.md).
 {{< /info >}}
 {{< /tab >}}
 
@@ -145,13 +145,13 @@ is ready.
 {{< step "Keep the graph up-to-date (optional)" >}}
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update" >}}
 Once the graph is built, you can add, remove, or replace individual documents
-with [`/v1/graph/insert`](reference/orchestration.md#insert-documents),
-[`/v1/graph/delete`](reference/orchestration.md#delete-documents), and
-[`/v1/graph/update`](reference/orchestration.md#update-documents) instead of
+with [`/v1/graph/insert`](incremental-graph-updates/api-reference.md#insert-documents),
+[`/v1/graph/delete`](incremental-graph-updates/api-reference.md#delete-documents), and
+[`/v1/graph/update`](incremental-graph-updates/api-reference.md#update-documents) instead of
 rebuilding the corpus. After an insert or update, call
 [`/v1/orchestrate`](reference/orchestration.md#trigger-orchestration) again with
 the `file_ids` of the changed documents so that the change reaches the knowledge
-graph. See [Incremental Graph Updates](incremental-graph-updates.md).
+graph. See [Incremental Graph Updates](incremental-graph-updates/_index.md).
 {{< /step >}}
 
 {{< /steps >}}
@@ -162,7 +162,7 @@ is why step 2 uploads through the File Manager. The deprecated
 [`POST /v1/import-multiple`](reference/importing-files.md) path uploads files
 directly to the service, but a corpus built that way cannot be changed document
 by document. See
-[Identifying documents for Layer 3](incremental-graph-updates.md#identifying-documents-for-layer-3).
+[Identifying documents for the knowledge graph](incremental-graph-updates/api-reference.md#identifying-documents-for-the-knowledge-graph).
 {{< /info >}}
 
 {{< tip >}}
@@ -186,7 +186,7 @@ source. To query it programmatically, see [AutoRAG](../autorag/quick-start.md).
 ## Next steps
 
 - [Use Cases](use-cases.md): Real-world enterprise scenarios.
-- [Incremental Graph Updates](incremental-graph-updates.md): Add, remove, and
+- [Incremental Graph Updates](incremental-graph-updates/_index.md): Add, remove, and
   replace documents in a knowledge graph that has already been built.
 - [Architecture](architecture.md): The three-layer knowledge graph and
   resulting collections.
