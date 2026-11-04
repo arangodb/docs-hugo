@@ -20,9 +20,9 @@ rebuild.
 {{< info >}}
 **IGU is API-only in Arango Contextual Data Platform 4.1.0.** You can insert,
 delete, update, and recluster documents through the
-[HTTP endpoints](api-reference.md) only. In later releases, the
-[web interface](../web-interface.md#update-documents-in-the-knowledge-graph)
-offers these operations as well.
+[HTTP endpoints](api-reference.md) only. The
+[web interface](../web-interface.md) does not offer these operations in this
+release.
 {{< /info >}}
 
 ## Supported operations
@@ -63,8 +63,7 @@ An insert adds documents that are not in the graph yet. AutoGraph stores the
 source and its embedding, links it to its nearest neighbours with similarity
 edges, and assigns it to the closest existing cluster. The new document
 inherits that cluster's strategy profile, so the RAG Strategizer does not
-run again. IGU cannot change the strategy of a cluster or add new
-strategies.
+run again.
 
 {{< embed-svg "AutoGraph-IGU-Insert" "An insert attaches new documents to the existing corpus graph. The documents that were already there are not processed again." >}}
 
