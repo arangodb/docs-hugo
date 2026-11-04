@@ -181,5 +181,5 @@ In other cases, use one of the following:
 | No knowledge graph exists yet | The [standard workflow](../reference/_index.md#standard-workflow) |
 | A new category | A [corpus build](../reference/corpus-build.md) with `incremental: false` for the new category, the RAG Strategizer, and a knowledge graph build |
 | Many new documents for an existing category | An [incremental corpus build](../reference/corpus-build.md#incremental-builds) with `incremental: true` |
-| A category has to be built again, for example because of wrong embeddings or clusters | [Delete the category](../reference/project-operations.md#delete-category), then build it again |
+| A category has to be built again, for example because of wrong embeddings or clusters | A full build of only that category. [Delete the category](../reference/project-operations.md#delete-category) without `delete_files`, so that its files stay in the File Manager. Then run a corpus build with `incremental: false`, the RAG Strategizer, and a knowledge graph build, each with only this category in `categories`. The other categories do not change |
 | Only vectors on an existing collection | [`POST /v1/embed-field-in-collection`](../reference/embeddings.md) |
