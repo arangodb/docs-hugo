@@ -10,7 +10,8 @@ description: >-
 
 **Incremental Graph Updates (IGU)** let you add, remove, and replace documents
 in the **existing categories** of a knowledge graph that is already built,
-without rebuilding it. Only the documents that changed are processed: the
+without rebuilding it. IGU changes the corpus graph and the knowledge graph
+directly, but only for the documents that changed: the
 [corpus build](../reference/corpus-build.md) and the
 [RAG Strategizer](../reference/rag-strategizer.md) do not run again, and the
 rest of the category stays as it is. This makes everyday document changes much
@@ -39,7 +40,7 @@ endpoints, requests, and responses, see the [API Reference](api-reference.md).
 
 ## Operations
 
-An AutoGraph project holds two graphs, and IGU keeps both of them in sync:
+An AutoGraph project holds two graphs, and IGU updates both of them:
 
 - The **corpus graph** is the map of your documents: which documents are
   similar to each other (similarity edges), and which **cluster** of similar
