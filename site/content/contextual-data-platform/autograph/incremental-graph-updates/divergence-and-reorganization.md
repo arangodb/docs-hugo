@@ -10,7 +10,7 @@ description: >-
 
 Adding, removing, and replacing documents in an existing category changes the
 entities of the knowledge graph, but not the communities they belong to. To
-show when the communities are out of date, AutoGraph tracks the
+show when the communities no longer match the entities, AutoGraph tracks the
 **divergence** of every partition. The divergence is how much of the partition
 has changed since its communities were last organized. If it is above 25%,
 AutoGraph sets `needs_reclustering: true` on the partition, and you can

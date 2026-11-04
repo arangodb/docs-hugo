@@ -46,7 +46,7 @@
     <text class="ptitle" x="64" y="245" text-anchor="start">After document changes</text>
     <text class="psub" x="30" y="272" text-anchor="start">Entities added and</text>
     <text class="psub" x="30" y="288" text-anchor="start">removed, communities</text>
-    <text class="psub" x="30" y="304" text-anchor="start">are out of date</text>
+    <text class="psub" x="30" y="304" text-anchor="start">no longer match</text>
     <path d="M 410 370 L 410 392.5" stroke="#00576e" stroke-width="2" fill="none" marker-end="url(#igur-arrow)"/>
     <rect class="panel" x="20" y="400" width="780" height="160" rx="8"/>
     <circle class="step" cx="44" cy="430" r="12"/>
@@ -160,7 +160,7 @@
     <circle class="node" cx="312.5" cy="274.6" r="7"/>
     <circle class="node" cx="344.9" cy="281.7" r="7"/>
     <rect class="tag-stale" x="264.5" y="233" width="111.0" height="20" rx="10"/>
-    <text class="tagtext" x="320" y="247" text-anchor="middle">A (out of date)</text>
+    <text class="tagtext" x="320" y="247" text-anchor="middle">A (old grouping)</text>
     <ellipse class="comm-stale" cx="520" cy="298" rx="75" ry="54"/>
     <line class="edge" x1="520.0" y1="298.0" x2="552.5" y2="305.1"/>
     <line class="edge" x1="520.0" y1="298.0" x2="527.5" y2="321.4"/>
@@ -192,7 +192,7 @@
     <circle class="node" cx="564.6" cy="323.8" r="7"/>
     <circle class="node" cx="475.4" cy="272.2" r="7"/>
     <rect class="tag-stale" x="464.5" y="233" width="111.0" height="20" rx="10"/>
-    <text class="tagtext" x="520" y="247" text-anchor="middle">B (out of date)</text>
+    <text class="tagtext" x="520" y="247" text-anchor="middle">B (old grouping)</text>
     <ellipse class="comm-stale" cx="722" cy="298" rx="68" ry="50"/>
     <line class="edge" x1="722.0" y1="298.0" x2="751.2" y2="304.4"/>
     <line class="edge-gone" x1="722.0" y1="298.0" x2="728.8" y2="319.1"/>
@@ -219,7 +219,7 @@
     <circle class="node" cx="715.2" cy="276.9" r="7"/>
     <circle class="node-gone" cx="744.4" cy="283.3" r="7"/>
     <rect class="tag-stale" x="666.5" y="237" width="111.0" height="20" rx="10"/>
-    <text class="tagtext" x="722" y="251" text-anchor="middle">C (out of date)</text>
+    <text class="tagtext" x="722" y="251" text-anchor="middle">C (old grouping)</text>
     <line class="edge-new" x1="420.0" y1="264.0" x2="475.4" y2="272.2"/>
     <line class="edge-new" x1="414.0" y1="304.0" x2="352.5" y2="305.1"/>
     <line class="edge-new" x1="424.0" y1="342.0" x2="495.1" y2="314.3"/>
@@ -327,6 +327,6 @@
     <ellipse class="comm" cx="441" cy="592" rx="14" ry="9"/>
     <text class="legend" x="461" y="596" text-anchor="start">community</text>
     <ellipse class="comm-stale" cx="547" cy="592" rx="14" ry="9"/>
-    <text class="legend" x="567" y="596" text-anchor="start">out-of-date community</text>
+    <text class="legend" x="567" y="596" text-anchor="start">community with old grouping</text>
   </g>
 </svg>

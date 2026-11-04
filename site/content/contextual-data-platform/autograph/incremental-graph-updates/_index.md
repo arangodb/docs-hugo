@@ -127,9 +127,9 @@ duplicates within one request are rejected, with `400`.
 In a partition with the FullGraphRAG strategy, closely related entities form
 **communities**, and each community has a summary of what its entities have in
 common. Adding, removing, and replacing documents changes the entities but not
-the communities, so the communities and their summaries become out of date.
-**Reorganizing** groups the entities again, based on what the partition
-contains now.
+the communities, so the communities and their summaries no longer match the
+entities. **Reorganizing** groups the entities again, based on what the
+partition contains now.
 
 {{< embed-svg "AutoGraph-IGU-Reorganization" "Adding, removing, and replacing documents changes the entities but not the communities. Once a partition has changed a lot, reorganizing rebuilds its communities. They can grow, split, or shrink." >}}
 
@@ -159,7 +159,7 @@ This has downsides:
   knowledge graph. The response of the
   [add request](api-reference.md#add-documents) then has an empty
   `cluster_key` or `rag_partition_id`.
-- The communities become out of date, see
+- The communities no longer match the entities, see
   [Reorganize the knowledge graph](#reorganize-the-knowledge-graph).
 
 IGU cannot change the strategy of a cluster or add strategies. If a category
