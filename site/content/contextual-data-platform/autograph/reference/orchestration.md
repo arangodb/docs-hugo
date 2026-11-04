@@ -236,7 +236,7 @@ partition. For a **FullGraphRAG** partition, the entry carries the
 `divergence_score` and `needs_reclustering` of that partition, measured after the
 job has created its Layer 3 entities. This is the value to act on, not the one
 from an insert or update response, see
-[Where to read the score](../incremental-graph-updates/_index.md#where-to-read-the-score).
+[Where to read the score](../incremental-graph-updates/divergence-and-reorganization.md#where-to-read-the-divergence).
 
 ### Response
 
@@ -372,7 +372,7 @@ way, returns `404`.
 
 The durable copy of the divergence lives on the partition's `rags` strategy
 profile, see [Where the values are
-stored](../incremental-graph-updates/_index.md#where-the-values-are-stored). Read it
+stored](../incremental-graph-updates/divergence-and-reorganization.md#where-the-values-are-stored). Read it
 from there if you need the state after the run has been evicted.
 {{< /warning >}}
 

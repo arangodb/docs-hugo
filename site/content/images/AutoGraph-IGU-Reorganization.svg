@@ -1,57 +1,57 @@
-<svg viewBox="0 0 820 580" width="820" height="580"
+<svg viewBox="0 0 820 614" width="820" height="614"
      xmlns="http://www.w3.org/2000/svg">
   <style>
-    .igur text { font-family: sans-serif; }
-    .igur .panel { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; }
-    .igur .ptitle { font-size: 14px; font-weight: bold; fill: #0b2e1e; }
-    .igur .psub { font-size: 11px; fill: #555; }
-    .igur .edge { stroke: #9ca3af; stroke-width: 1.2; }
-    .igur .edge-new { stroke: #d97706; stroke-width: 1.4; stroke-dasharray: 4 3; }
-    .igur .edge-gone { stroke: #d1d5db; stroke-width: 1; stroke-dasharray: 2 3; }
-    .igur .node { fill: #4ade80; stroke: #15803d; stroke-width: 1.5; }
-    .igur .node-new { fill: #fbbf24; stroke: #b45309; stroke-width: 1.5; }
-    .igur .node-del { fill: #f87171; stroke: #b91c1c; stroke-width: 1.5; }
-    .igur .node-gone { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; stroke-dasharray: 2 2; }
-    .igur .ring { fill: none; stroke: #d97706; stroke-width: 1.5; stroke-dasharray: 3 2; }
-    .igur .legend { font-size: 11px; fill: #333; }
-    .igur .note { font-size: 11px; fill: #666; }
+    .igur text { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
+    .igur .panel { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1; }
+    .igur .ptitle { font-size: 14px; font-weight: bold; fill: #1d293d; }
+    .igur .psub { font-size: 11px; fill: #45556c; }
+    .igur .edge { stroke: #90a1b9; stroke-width: 1.2; }
+    .igur .edge-new { stroke: #008236; stroke-width: 1.4; stroke-dasharray: 4 3; }
+    .igur .edge-gone { stroke: #cad5e2; stroke-width: 1; stroke-dasharray: 2 3; }
+    .igur .node { fill: #e3eef0; stroke: #00576e; stroke-width: 1.5; }
+    .igur .node-new { fill: #befe99; stroke: #008236; stroke-width: 1.5; }
+    .igur .node-del { fill: #fef9c2; stroke: #bb4d00; stroke-width: 1.5; }
+    .igur .node-gone { fill: #ffffff; stroke: #90a1b9; stroke-width: 1.2; stroke-dasharray: 2 2; }
+    .igur .ring { fill: none; stroke: #008236; stroke-width: 1.5; stroke-dasharray: 3 2; }
+    .igur .legend { font-size: 11px; fill: #314158; }
+    .igur .note { font-size: 11px; fill: #45556c; }
   </style>
   <style>
-    .igur .comm { fill: #fef3c7; stroke: #d97706; stroke-width: 1.5; }
-    .igur .comm-stale { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 5 4; }
-    .igur .tag { fill: #fffbeb; stroke: #d97706; stroke-width: 1; }
-    .igur .tag-stale { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
-    .igur .tagtext { font-size: 11px; font-weight: bold; fill: #0b2e1e; }
-    .igur .step { fill: #15803d; }
+    .igur .comm { fill: #eefbd5; stroke: #008236; stroke-width: 1.5; }
+    .igur .comm-stale { fill: #f1f5f9; stroke: #90a1b9; stroke-width: 1.5; stroke-dasharray: 5 4; }
+    .igur .tag { fill: #ffffff; stroke: #008236; stroke-width: 1; }
+    .igur .tag-stale { fill: #ffffff; stroke: #90a1b9; stroke-width: 1; }
+    .igur .tagtext { font-size: 11px; font-weight: bold; fill: #1d293d; }
+    .igur .step { fill: #014654; }
     .igur .steptext { font-size: 13px; font-weight: bold; fill: #ffffff; }
-    .igur .flag { font-size: 11px; font-family: monospace; fill: #b45309; }
+    .igur .flag { font-size: 11px; font-weight: 600; fill: #bb4d00; }
   </style>
   <defs>
     <marker id="igur-arrow" markerWidth="10" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse">
-      <polygon points="0 0,10 4,0 8" fill="#15803d"/>
+      <polygon points="0 0,10 4,0 8" fill="#00576e"/>
     </marker>
   </defs>
   <g class="igur">
-    <rect width="820" height="580" fill="#f3f4f6" rx="6"/>
+    <rect width="820" height="614" fill="#f1f5f9" rx="6"/>
     <rect class="panel" x="20" y="20" width="780" height="160" rx="8"/>
     <circle class="step" cx="44" cy="50" r="12"/>
     <text class="steptext" x="44" y="55" text-anchor="middle">1</text>
-    <text class="ptitle" x="64" y="55" text-anchor="start">Last clustering</text>
-    <text class="psub" x="30" y="82" text-anchor="start">Leiden communities</text>
-    <text class="psub" x="30" y="98" text-anchor="start">match the entities</text>
-    <path d="M 410 183 L 410 203" stroke="#15803d" stroke-width="2" fill="none" marker-end="url(#igur-arrow)"/>
+    <text class="ptitle" x="64" y="55" text-anchor="start">Last organized</text>
+    <text class="psub" x="30" y="82" text-anchor="start">Communities match</text>
+    <text class="psub" x="30" y="98" text-anchor="start">the entities</text>
+    <path d="M 410 183 L 410 203" stroke="#00576e" stroke-width="2" fill="none" marker-end="url(#igur-arrow)"/>
     <rect class="panel" x="20" y="210" width="780" height="160" rx="8"/>
     <circle class="step" cx="44" cy="240" r="12"/>
     <text class="steptext" x="44" y="245" text-anchor="middle">2</text>
-    <text class="ptitle" x="64" y="245" text-anchor="start">After IGU operations</text>
+    <text class="ptitle" x="64" y="245" text-anchor="start">After document changes</text>
     <text class="psub" x="30" y="272" text-anchor="start">Entities added and</text>
-    <text class="psub" x="30" y="288" text-anchor="start">removed; communities</text>
-    <text class="psub" x="30" y="304" text-anchor="start">are now stale</text>
-    <path d="M 410 373 L 410 393" stroke="#15803d" stroke-width="2" fill="none" marker-end="url(#igur-arrow)"/>
+    <text class="psub" x="30" y="288" text-anchor="start">removed, communities</text>
+    <text class="psub" x="30" y="304" text-anchor="start">are out of date</text>
+    <path d="M 410 373 L 410 393" stroke="#00576e" stroke-width="2" fill="none" marker-end="url(#igur-arrow)"/>
     <rect class="panel" x="20" y="400" width="780" height="160" rx="8"/>
     <circle class="step" cx="44" cy="430" r="12"/>
     <text class="steptext" x="44" y="435" text-anchor="middle">3</text>
-    <text class="ptitle" x="64" y="435" text-anchor="start">After reclustering</text>
+    <text class="ptitle" x="64" y="435" text-anchor="start">After reorganizing</text>
     <text class="psub" x="30" y="462" text-anchor="start">Communities rebuilt</text>
     <text class="psub" x="30" y="478" text-anchor="start">from current entities</text>
     <ellipse class="comm" cx="320" cy="108" rx="75" ry="54"/>
@@ -159,8 +159,8 @@
     <circle class="node" cx="287.5" cy="290.9" r="7"/>
     <circle class="node" cx="312.5" cy="274.6" r="7"/>
     <circle class="node" cx="344.9" cy="281.7" r="7"/>
-    <rect class="tag-stale" x="278.5" y="233" width="83.0" height="20" rx="10"/>
-    <text class="tagtext" x="320" y="247" text-anchor="middle">A (stale)</text>
+    <rect class="tag-stale" x="264.5" y="233" width="111.0" height="20" rx="10"/>
+    <text class="tagtext" x="320" y="247" text-anchor="middle">A (out of date)</text>
     <ellipse class="comm-stale" cx="520" cy="298" rx="75" ry="54"/>
     <line class="edge" x1="520.0" y1="298.0" x2="552.5" y2="305.1"/>
     <line class="edge" x1="520.0" y1="298.0" x2="527.5" y2="321.4"/>
@@ -191,8 +191,8 @@
     <circle class="node" cx="544.9" cy="281.7" r="7"/>
     <circle class="node" cx="564.6" cy="323.8" r="7"/>
     <circle class="node" cx="475.4" cy="272.2" r="7"/>
-    <rect class="tag-stale" x="478.5" y="233" width="83.0" height="20" rx="10"/>
-    <text class="tagtext" x="520" y="247" text-anchor="middle">B (stale)</text>
+    <rect class="tag-stale" x="464.5" y="233" width="111.0" height="20" rx="10"/>
+    <text class="tagtext" x="520" y="247" text-anchor="middle">B (out of date)</text>
     <ellipse class="comm-stale" cx="722" cy="298" rx="68" ry="50"/>
     <line class="edge" x1="722.0" y1="298.0" x2="751.2" y2="304.4"/>
     <line class="edge-gone" x1="722.0" y1="298.0" x2="728.8" y2="319.1"/>
@@ -218,8 +218,8 @@
     <circle class="node-gone" cx="692.8" cy="291.6" r="7"/>
     <circle class="node" cx="715.2" cy="276.9" r="7"/>
     <circle class="node-gone" cx="744.4" cy="283.3" r="7"/>
-    <rect class="tag-stale" x="680.5" y="237" width="83.0" height="20" rx="10"/>
-    <text class="tagtext" x="722" y="251" text-anchor="middle">C (stale)</text>
+    <rect class="tag-stale" x="666.5" y="237" width="111.0" height="20" rx="10"/>
+    <text class="tagtext" x="722" y="251" text-anchor="middle">C (out of date)</text>
     <line class="edge-new" x1="420.0" y1="264.0" x2="475.4" y2="272.2"/>
     <line class="edge-new" x1="414.0" y1="304.0" x2="352.5" y2="305.1"/>
     <line class="edge-new" x1="424.0" y1="342.0" x2="495.1" y2="314.3"/>
@@ -230,8 +230,8 @@
     <circle class="node-new" cx="424.0" cy="342.0" r="7"/>
     <circle class="node-new" cx="621.0" cy="276.0" r="7"/>
     <circle class="node-new" cx="618.0" cy="330.0" r="7"/>
-    <text class="flag" x="30" y="336" text-anchor="start">divergence_score &gt; 0.25</text>
-    <text class="flag" x="30" y="352" text-anchor="start">needs_reclustering: true</text>
+    <text class="flag" x="30" y="336" text-anchor="start">Divergence above 25%:</text>
+    <text class="flag" x="30" y="352" text-anchor="start">reorganizing recommended</text>
     <ellipse class="comm" cx="335" cy="488" rx="92" ry="56"/>
     <line class="edge" x1="335.0" y1="488.0" x2="369.1" y2="495.4"/>
     <line class="edge" x1="335.0" y1="488.0" x2="342.9" y2="512.6"/>
@@ -267,8 +267,8 @@
     <circle class="node" cx="381.8" cy="515.1" r="7"/>
     <circle class="node" cx="269.8" cy="497.2" r="7"/>
     <circle class="node" cx="353.3" cy="451.6" r="7"/>
-    <rect class="tag" x="300.5" y="421" width="69.0" height="20" rx="10"/>
-    <text class="tagtext" x="335" y="435" text-anchor="middle">A′ grew</text>
+    <rect class="tag" x="304.5" y="421" width="61.0" height="20" rx="10"/>
+    <text class="tagtext" x="335" y="435" text-anchor="middle">A grew</text>
     <ellipse class="comm" cx="483" cy="488" rx="50" ry="44"/>
     <line class="edge" x1="483.0" y1="488.0" x2="510.6" y2="494.0"/>
     <line class="edge" x1="483.0" y1="488.0" x2="474.5" y2="507.5"/>
@@ -284,8 +284,8 @@
     <circle class="node" cx="474.5" cy="507.5" r="7"/>
     <circle class="node" cx="455.4" cy="482.0" r="7"/>
     <circle class="node" cx="491.5" cy="468.5" r="7"/>
-    <rect class="tag" x="462.5" y="433" width="41.0" height="20" rx="10"/>
-    <text class="tagtext" x="483" y="447" text-anchor="middle">B1′</text>
+    <rect class="tag" x="465.5" y="433" width="35.0" height="20" rx="10"/>
+    <text class="tagtext" x="483" y="447" text-anchor="middle">B1</text>
     <ellipse class="comm" cx="595" cy="488" rx="50" ry="44"/>
     <line class="edge" x1="595.0" y1="488.0" x2="622.6" y2="494.0"/>
     <line class="edge" x1="595.0" y1="488.0" x2="586.5" y2="507.5"/>
@@ -301,8 +301,8 @@
     <circle class="node" cx="586.5" cy="507.5" r="7"/>
     <circle class="node" cx="567.4" cy="482.0" r="7"/>
     <circle class="node" cx="603.5" cy="468.5" r="7"/>
-    <rect class="tag" x="574.5" y="433" width="41.0" height="20" rx="10"/>
-    <text class="tagtext" x="595" y="447" text-anchor="middle">B2′</text>
+    <rect class="tag" x="577.5" y="433" width="35.0" height="20" rx="10"/>
+    <text class="tagtext" x="595" y="447" text-anchor="middle">B2</text>
     <ellipse class="comm" cx="722" cy="488" rx="62" ry="46"/>
     <line class="edge" x1="722.0" y1="488.0" x2="748.0" y2="493.7"/>
     <line class="edge" x1="722.0" y1="488.0" x2="702.0" y2="501.0"/>
@@ -314,7 +314,19 @@
     <circle class="node" cx="748.0" cy="493.7" r="7"/>
     <circle class="node" cx="702.0" cy="501.0" r="7"/>
     <circle class="node" cx="716.0" cy="469.3" r="7"/>
-    <rect class="tag" x="680.5" y="431" width="83.0" height="20" rx="10"/>
-    <text class="tagtext" x="722" y="445" text-anchor="middle">C′ shrank</text>
+    <rect class="tag" x="684.5" y="431" width="75.0" height="20" rx="10"/>
+    <text class="tagtext" x="722" y="445" text-anchor="middle">C shrank</text>
+    <circle class="node" cx="27" cy="592" r="6"/>
+    <text class="legend" x="38" y="596" text-anchor="start">entity</text>
+    <circle class="node-new" cx="94" cy="592" r="6"/>
+    <text class="legend" x="105" y="596" text-anchor="start">added entity</text>
+    <circle class="node-gone" cx="200" cy="592" r="6"/>
+    <text class="legend" x="211" y="596" text-anchor="start">removed entity</text>
+    <line class="edge" x1="314" y1="592" x2="336" y2="592"/>
+    <text class="legend" x="344" y="596" text-anchor="start">relationship</text>
+    <ellipse class="comm" cx="441" cy="592" rx="14" ry="9"/>
+    <text class="legend" x="461" y="596" text-anchor="start">community</text>
+    <ellipse class="comm-stale" cx="547" cy="592" rx="14" ry="9"/>
+    <text class="legend" x="567" y="596" text-anchor="start">out-of-date community</text>
   </g>
 </svg>

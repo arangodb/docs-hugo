@@ -145,13 +145,14 @@ is ready.
 {{< step "Keep the graph up-to-date (optional)" >}}
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update" >}}
 Once the graph is built, you can add, remove, or replace individual documents
-with [`/v1/graph/insert`](incremental-graph-updates/api-reference.md#insert-documents),
-[`/v1/graph/delete`](incremental-graph-updates/api-reference.md#delete-documents), and
-[`/v1/graph/update`](incremental-graph-updates/api-reference.md#update-documents) instead of
-rebuilding the corpus. After an insert or update, call
+in its existing categories with [`/v1/graph/insert`](incremental-graph-updates/api-reference.md#add-documents),
+[`/v1/graph/delete`](incremental-graph-updates/api-reference.md#remove-documents), and
+[`/v1/graph/update`](incremental-graph-updates/api-reference.md#replace-documents) instead of
+rebuilding the corpus. After adding or replacing documents, call
 [`/v1/orchestrate`](reference/orchestration.md#trigger-orchestration) again with
 the `file_ids` of the changed documents so that the change reaches the knowledge
-graph. See [Incremental Graph Updates](incremental-graph-updates/_index.md).
+graph. See the
+[Incremental Graph Updates Quick Start](incremental-graph-updates/quick-start.md).
 {{< /step >}}
 
 {{< /steps >}}
@@ -187,7 +188,8 @@ source. To query it programmatically, see [AutoRAG](../autorag/quick-start.md).
 
 - [Use Cases](use-cases.md): Real-world enterprise scenarios.
 - [Incremental Graph Updates](incremental-graph-updates/_index.md): Add, remove, and
-  replace documents in a knowledge graph that has already been built.
+  replace documents in the existing categories of a knowledge graph that has
+  already been built.
 - [Architecture](architecture.md): The three-layer knowledge graph and
   resulting collections.
 - [Design Guide](design-guide.md): Structure data with categories, layers, and

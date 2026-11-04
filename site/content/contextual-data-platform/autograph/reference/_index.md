@@ -174,10 +174,10 @@ architecture, see [Architecture](../architecture.md#complete-pipeline).
 
 | Method | Path | Description | Details |
 |--------|------|-------------|---------|
-| `POST` | `/v1/graph/insert` | Add a document to a knowledge graph that is already built | [Incremental Graph Updates](../incremental-graph-updates/api-reference.md#insert-documents) |
-| `POST` | `/v1/graph/delete` | Remove a document from the graph | [Incremental Graph Updates](../incremental-graph-updates/api-reference.md#delete-documents) |
-| `POST` | `/v1/graph/update` | Replace the content of an existing document | [Incremental Graph Updates](../incremental-graph-updates/api-reference.md#update-documents) |
-| `POST` | `/v1/graph/recluster` | Rebuild the Layer 3 communities of a partition | [Incremental Graph Updates](../incremental-graph-updates/api-reference.md#trigger-reclustering) |
+| `POST` | `/v1/graph/insert` | Add a document to an existing category of a knowledge graph that is already built | [Incremental Graph Updates](../incremental-graph-updates/api-reference.md#add-documents) |
+| `POST` | `/v1/graph/delete` | Remove a document from an existing category | [Incremental Graph Updates](../incremental-graph-updates/api-reference.md#remove-documents) |
+| `POST` | `/v1/graph/update` | Replace a document in an existing category with a new version | [Incremental Graph Updates](../incremental-graph-updates/api-reference.md#replace-documents) |
+| `POST` | `/v1/graph/recluster` | Reorganize the communities of a partition | [Incremental Graph Updates](../incremental-graph-updates/api-reference.md#reorganize-partitions) |
 
 ### Project operations
 
@@ -456,8 +456,9 @@ curl -X POST \
 
 - [LLM Configuration](../llm-configuration.md): Configure the chat and embedding
   providers the service calls.
-- [Incremental Graph Updates](../incremental-graph-updates/_index.md): Insert, delete,
-  and replace individual documents in a graph that is already built.
+- [Incremental Graph Updates](../incremental-graph-updates/_index.md): Add, remove,
+  and replace individual documents in the existing categories of a graph that is
+  already built.
 - [Document conversion and the File Parser](../document-conversion.md): What the
   parser extracts from each format and how to size it.
 - [The Importer](../importer/_index.md): The worker that builds the Knowledge

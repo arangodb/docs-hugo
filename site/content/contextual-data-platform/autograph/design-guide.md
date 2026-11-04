@@ -188,8 +188,8 @@ Use AutoGraph for everything up to and including Layer 2.
 | Run orchestration (Importer jobs for all profiles) | [`POST /v1/orchestrate`](reference/orchestration.md#trigger-orchestration) |
 | Add a category without rebuilding the whole corpus | [`POST /v1/corpus/builds`](reference/corpus-build.md) with only the new category in `categories` |
 | Append documents to a category that is already built | [`POST /v1/corpus/builds`](reference/corpus-build.md#incremental-builds) with `incremental: true` |
-| Add, remove, or replace individual documents in an existing category | [`POST /v1/graph/insert`, `/delete`, `/update`](incremental-graph-updates/api-reference.md#insert-documents) |
-| Rebuild the Layer 3 communities of a FullGraphRAG partition after many document changes | [`POST /v1/graph/recluster`](incremental-graph-updates/api-reference.md#trigger-reclustering) |
+| Add, remove, or replace individual documents in an existing category (not for new categories) | [`POST /v1/graph/insert`, `/delete`, `/update`](incremental-graph-updates/api-reference.md#add-documents) |
+| Reorganize the communities of a FullGraphRAG partition after many document changes | [`POST /v1/graph/recluster`](incremental-graph-updates/api-reference.md#reorganize-partitions) |
 | Inspect the state of the project and its categories | [`GET /v1/projects/{project}/overview`](reference/project-operations.md#project-overview) |
 | Remove a category and everything it contributed | [`DELETE /v1/projects/{project}/categories/{category}`](reference/project-operations.md#delete-category) |
 | Embed a field on an existing ArangoDB collection | [`POST /v1/embed-field-in-collection`](reference/embeddings.md) |
@@ -343,8 +343,9 @@ categories.
 ## Next steps
 
 - [Architecture](architecture.md): Collections and named graphs per layer
-- [Incremental Graph Updates](incremental-graph-updates/_index.md): Insert, delete, and
-  update documents in a knowledge graph that has already been built
+- [Incremental Graph Updates](incremental-graph-updates/_index.md): Add, remove, and
+  replace documents in the existing categories of a knowledge graph that has
+  already been built
 - [Setup](reference/_index.md): End-to-end setup with the web interface or API
 - [Import Files](reference/importing-files.md): Upload documents with the legacy `module` label
 - [Corpus Build](reference/corpus-build.md): Trigger and monitor corpus builds
