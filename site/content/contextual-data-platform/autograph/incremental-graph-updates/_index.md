@@ -59,7 +59,9 @@ IGU has four operations. The API uses its own names for them.
 
 ### Add documents
 
-Adding puts new documents into an existing category. AutoGraph stores each
+Adding puts new documents into an existing category. You upload the documents
+to the File Manager and send their `file_id` values to
+[`POST /v1/graph/insert`](api-reference.md#add-documents). AutoGraph stores each
 document, links it to the most similar documents with similarity edges, and
 assigns it to the closest existing cluster. The document gets the strategy of
 that cluster, so the RAG Strategizer does not run again.
@@ -76,7 +78,8 @@ graph.
 ### Remove documents
 
 Removing deletes documents from an existing category, together with everything
-that was built from them. AutoGraph removes their entities from the knowledge
+that was built from them. You send their `file_id` values or file names to
+[`POST /v1/graph/delete`](api-reference.md#remove-documents). AutoGraph removes their entities from the knowledge
 graph first. Then it removes the documents, their similarity edges, and their
 cluster membership from the corpus graph. The other documents do not change.
 
@@ -87,8 +90,10 @@ graph build afterwards.
 
 ### Replace documents
 
-Replacing swaps documents in an existing category for a new version. AutoGraph
-removes the old version and then adds the new one:
+Replacing swaps documents in an existing category for a new version. You
+upload the new version to the File Manager under the same name and send its
+`file_id` to [`POST /v1/graph/update`](api-reference.md#replace-documents).
+AutoGraph removes the old version and then adds the new one:
 
 1. AutoGraph removes the entities of the old version from the knowledge graph.
 2. AutoGraph removes the old version from the corpus graph.
@@ -129,7 +134,8 @@ contains now.
 Reorganizing is expensive, so it does not run after every change. AutoGraph
 tracks how much each partition has changed since it was last organized, as its
 **divergence**. If the divergence is above 25%, AutoGraph flags the partition.
-It never reorganizes on its own. You decide when. See
+It never reorganizes on its own. You decide when, and start it with
+[`POST /v1/graph/recluster`](api-reference.md#reorganize-partitions). See
 [Divergence and Reorganization](divergence-and-reorganization.md).
 
 ## Clusters and strategies do not change
