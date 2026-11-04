@@ -40,12 +40,12 @@ endpoints, requests, and responses, see the [API Reference](api-reference.md).
 
 ## Operations
 
-An AutoGraph project holds two graphs, and IGU updates both of them:
+An AutoGraph project has two graphs, and IGU updates both of them:
 
 - The **corpus graph** is the map of your documents: which documents are
   similar to each other (similarity edges), and which **cluster** of similar
   documents each one belongs to. Each cluster has a retrieval strategy.
-- The **knowledge graph** holds what the documents are about: the **entities**
+- The **knowledge graph** contains what the documents are about: the **entities**
   found in them, such as people, products, or contracts, and the
   **relationships** between these entities. The part of the knowledge graph
   that is built from one cluster is called a **partition**.
@@ -126,7 +126,7 @@ In a partition with the FullGraphRAG strategy, closely related entities are
 grouped into **communities**, and each community has a summary of what its
 entities have in common. Adding, removing, and replacing
 documents changes the entities but not the communities, so the communities and
-their summaries slowly drift out of date. **Reorganizing** groups the entities
+their summaries become out of date. **Reorganizing** groups the entities
 again, based on what the partition contains now.
 
 {{< embed-svg "AutoGraph-IGU-Reorganization" "Adding, removing, and replacing documents changes the entities but not the communities. Once a partition has changed a lot, reorganizing rebuilds its communities: they can grow, split, or shrink." >}}
@@ -135,7 +135,7 @@ Reorganizing is expensive, so it does not run after every change. Instead,
 AutoGraph tracks the **divergence** of every partition: how much of it has
 changed since it was last organized. Once the divergence is above 25%, the
 partition is flagged as needing to be reorganized. AutoGraph never reorganizes
-on its own: you decide when it is worth the cost. See
+on its own, you decide when. See
 [Divergence and Reorganization](divergence-and-reorganization.md).
 
 ## Clusters and strategies do not change
@@ -144,22 +144,20 @@ IGU works with the clusters and strategies that the last full build created.
 It does not cluster the category again and does not run the RAG Strategizer,
 which is why it is fast. This also has downsides:
 
-- **A new document always joins an existing cluster.** It goes to the cluster
-  it is most similar to, even if it does not fit that cluster well. A full
-  build might have put it into a cluster of its own. Documents on a new topic
-  can therefore end up next to unrelated content, which can make answers about
-  them less accurate.
-- **The document gets the strategy of that cluster.** If the cluster uses
-  VectorRAG, no entities and relationships are extracted from the new
-  document. If it uses FullGraphRAG, only the entity types that were chosen for
-  that cluster are extracted, so new kinds of entities can be missed.
-- **Some documents do not reach the knowledge graph.** If no existing cluster
-  is similar enough, or the cluster has no strategy yet, the document is added
-  to the corpus graph only. The response of the
+- A new document always joins the existing cluster it is most similar to, even
+  if it does not fit that cluster well. A full build might have put it into a
+  cluster of its own. Documents on a new topic can therefore end up next to
+  unrelated content, which can make answers about them less accurate.
+- The document gets the strategy of that cluster. If the cluster uses
+  VectorRAG, no entities and relationships are extracted from it. If the
+  cluster uses FullGraphRAG, only the entity types chosen for that cluster are
+  extracted, so new kinds of entities can be missed.
+- If no existing cluster is similar enough, or the cluster has no strategy yet,
+  the document is added to the corpus graph only and does not reach the
+  knowledge graph. The response of the
   [add request](api-reference.md#add-documents) then has an empty
   `cluster_key` or `rag_partition_id`.
-- **The communities get out of date.** Adding, removing, and replacing
-  documents does not change the communities, see
+- The communities get out of date, see
   [Reorganize the knowledge graph](#reorganize-the-knowledge-graph).
 
 IGU cannot change the strategy of a cluster or add new strategies. If a
@@ -171,7 +169,7 @@ not cover before, build the category again instead, see
 ## When to use IGU
 
 Use IGU to add, remove, or replace documents in an **existing category**, as
-long as the change is small compared to what the category already holds. A
+long as the change is small compared to what the category already contains. A
 batch of documents is fine. A large change drives up the
 [divergence](divergence-and-reorganization.md) and leads to a costly
 reorganization.

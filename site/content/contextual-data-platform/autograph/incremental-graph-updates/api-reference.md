@@ -29,7 +29,7 @@ see the [Quick Start](quick-start.md). For how the divergence is measured, see
 {{< info >}}
 The `/v1/graph/*` endpoints scope documents by **category**, and the category
 has to **exist already**. A category is the second scope level of a project and
-carries the label you set as `module` when you imported the files, see
+has the label you set as `module` when you imported the files, see
 [Import files](../reference/importing-files.md#parameters). The endpoints take a
 single one in `category`. They cannot create a category. To add a new one, run
 the full build for it, see [When to use IGU](_index.md#when-to-use-igu).
@@ -104,7 +104,7 @@ upload it.
 | `file_id` | The File Manager ID of the added document. Use this value in the `file_ids` of the knowledge graph build. |
 
 {{< info >}}
-**The response carries no divergence.** At this point, it would be measured
+**The response does not include the divergence.** At this point, it would be measured
 before the knowledge graph build has created the entities of the new documents.
 Read it from
 [`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration)
@@ -250,7 +250,7 @@ standalone removal does not write one.
 |-------|---------|
 | `COMMITTED` | The deletion succeeded in both the knowledge graph and the corpus graph. |
 | `ROLLED_BACK` | Something failed, and the state from before the call has been **fully restored**. The documents are still in the graph, and it is safe to retry the same batch. |
-| `FAILED` | Something failed and the restore itself was **incomplete**. Do not simply retry. Inspect the corpus and the knowledge graph before you call again. |
+| `FAILED` | Something failed and the restore itself was **incomplete**. Do not retry right away. Inspect the corpus and the knowledge graph before you call again. |
 
 In field and status names, `LAYER3` refers to the knowledge graph and `LAYER2`
 to the corpus graph. The `status` of a `layer3_results` entry is one of
@@ -410,13 +410,13 @@ apply.
 
 {{< warning >}}
 **Check every file, not only the top-level `status`.** A run can report
-`status: "completed"` while an individual entry of `files[]` carries an `error`.
+`status: "completed"` while an individual entry of `files[]` has an `error`.
 Read the `result` and `error` of each file before you treat the replacement as
 done.
 {{< /warning >}}
 
 {{< info >}}
-**The status carries no divergence either**, for the same reason as when
+**The status does not include the divergence either**, for the same reason as when
 [adding](#add-documents): the new version only reaches the knowledge graph
 through a knowledge graph build, so any score written here would predate the
 entities it is supposed to measure. Read it from
@@ -476,7 +476,7 @@ than a queue position, see the response below. Reorganizing itself runs
 **asynchronously**, and only one partition is reorganized at a time.
 
 Call this endpoint if `needs_reclustering: true` is reported for a partition and
-you decide that rebuilding its communities is worth the cost. AutoGraph never
+you decide to rebuild its communities, which is expensive. AutoGraph never
 reorganizes on its own. The flag is reported by
 [`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration),
 by a [removal](#remove-documents) once it has committed, and by the `rags`
@@ -494,7 +494,7 @@ with examples, and how the values change over time, see
 
 {{< warning >}}
 **Plan reorganizing as a maintenance operation.** It holds the single
-service-wide mutation slot for its entire run, which can take up to **3600
+service-wide write lock for its entire run, which can take up to **3600
 seconds**, and blocks every corpus build and every addition, removal, and
 replacement until it is done. Partitions are reorganized one after another, so
 a request for several of them blocks changes for roughly the sum of their run
@@ -545,20 +545,19 @@ does not make them faster.
 
 {{< warning >}}
 **`accepted: true` is not a queue position.** Partitions are reorganized one at
-a time, and there is no queue behind it. A partition whose peer holds the
-mutation slot makes about **ten attempts, one second apart**, to claim it and
-then gives up. It is left flagged `needs_reclustering`, so that you can trigger
+a time, and there is no queue. A partition that has to wait for the write lock
+makes about **ten attempts, one second apart**, to get it and then gives up. It is left flagged `needs_reclustering`, so that you can trigger
 it again later. The response reports `accepted: true` for those partitions too,
-which means it tells you nothing about whether they actually ran.
+so it does not tell you whether they ran.
 {{< /warning >}}
 
 Read the per-partition outcome from the **`rags` strategy profile**, not from
 `importerOrchestration`. The `importerOrchestration` entry in your project
-metadata carries the status of the job that holds the slot. It is *not* a
-per-partition ledger. A partition that gave up waiting behind **another
-reorganization** is not published there at all, so it is invisible in that slot;
-a deferral behind any other operation is published as `failed`. The `rags` node
-of the partition is authoritative:
+metadata shows the status of the job that has the lock, not the result of
+each partition. A partition that gave up waiting for **another reorganization**
+does not appear there at all. A partition that gave up waiting for any other
+operation appears as `failed`. The `rags` node of the partition has the
+reliable result:
 
 | Field on the `rags` node | After a successful reorganization |
 |--------------------------|---------------------------------|
@@ -567,7 +566,7 @@ of the partition is authoritative:
 | `divergence_score` | Reset to `0`, and a new baseline is taken |
 
 If `needs_reclustering` is still `true` and `last_reclustered_at` has not moved,
-the partition was not reorganized, whether it failed or never got the slot.
+the partition was not reorganized, whether it failed or never got the lock.
 Trigger it again. See [Where the values are
 stored](divergence-and-reorganization.md#where-the-values-are-stored).
 
@@ -583,11 +582,11 @@ stored](divergence-and-reorganization.md#where-the-values-are-stored).
 
 - If a partition is already being reorganized, a second request is
   **merged** into it and does not start another Importer job.
-- Reorganizing uses the same service-wide slot as builds and as adding,
+- Reorganizing uses the same service-wide write lock as builds and as adding,
   removing, and replacing documents, so it cannot run at the same time as these
   operations.
 - A reorganization that fails or is skipped does not clear `needs_reclustering`.
-  Start it again once the slot is free.
+  Start it again once the lock is free.
 - A partition **without entities** is a successful no-op. The job reports `0`
   communities over `0` entities and finishes, so a completed job is not evidence
   that anything was refreshed. Check `last_reclustered_at` and the
@@ -679,7 +678,7 @@ reported on this response.
 
 Poll
 [`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration)
-until `status` leaves `running`. Each entry of `jobs` carries the
+until `status` leaves `running`. Each entry of `jobs` has the
 `divergence_score` and `needs_reclustering` of its partition, which is the
 value to act on after adding or replacing documents.
 
