@@ -44,12 +44,12 @@ divergence_score = max(gross_churn_score, multi_batch_score)
 needs_reclustering = (divergence_score > divergence_threshold)
 ```
 
-The `divergence_threshold` is `0.25` (25%) in this release. It is stored per
-partition, in the `rags` profile (the document that stores the strategy of the
-partition). No API request sets it, so every partition uses this default. To
-change it, you have to edit the `rags` document in ArangoDB by hand. A
-divergence equal to the threshold does not set the flag. Only a higher one
-does.
+The `divergence_threshold` is `0.25` (25%) in Arango Contextual Data Platform
+4.1.x. It is stored per partition, in the `rags` profile (the document that
+stores the strategy of the partition). No API request sets it, so every
+partition uses this default. To change it, you have to edit the `rags` document
+in ArangoDB by hand. A divergence equal to the threshold does not set the flag.
+Only a higher one does.
 
 ### Changed entities
 
