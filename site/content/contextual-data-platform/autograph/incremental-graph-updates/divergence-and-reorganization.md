@@ -31,7 +31,8 @@ In the example above, the divergence of one partition develops as follows:
 4. You reorganize the partition. Its communities are rebuilt, the current
    entities become the new starting point, and the divergence is back to 0%.
 
-VectorRAG partitions have no communities, so AutoGraph never flags them.
+Partitions with the VectorRAG strategy have no communities, so AutoGraph never
+flags them.
 
 ## How the divergence is calculated
 

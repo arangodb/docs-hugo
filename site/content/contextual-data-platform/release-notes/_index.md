@@ -144,8 +144,8 @@ obsolete ones, and replace changed ones without re-running the corpus build, the
 orchestration pass. Existing clusters and strategy profiles are preserved, and
 only the documents that actually changed are processed.
 
-AutoGraph also tracks how much a FullGraphRAG partition has changed since its
-communities were last organized and flags it, so you can
+AutoGraph also tracks how much a partition with the FullGraphRAG strategy has
+changed since its communities were last organized and flags it, so you can
 [reorganize](../autograph/incremental-graph-updates/divergence-and-reorganization.md)
 it when you choose to. Reorganizing is never automatic.
 

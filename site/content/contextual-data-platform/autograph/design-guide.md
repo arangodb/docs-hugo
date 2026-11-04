@@ -189,7 +189,7 @@ Use AutoGraph for everything up to and including Layer 2.
 | Add a category without rebuilding the whole corpus | [`POST /v1/corpus/builds`](reference/corpus-build.md) with only the new category in `categories` |
 | Append documents to a category that is already built | [`POST /v1/corpus/builds`](reference/corpus-build.md#incremental-builds) with `incremental: true` |
 | Add, remove, or replace individual documents in an existing category (not for new categories) | [`POST /v1/graph/insert`, `/delete`, `/update`](incremental-graph-updates/api-reference.md#add-documents) |
-| Reorganize the communities of a FullGraphRAG partition after many document changes | [`POST /v1/graph/recluster`](incremental-graph-updates/api-reference.md#reorganize-partitions) |
+| Reorganize the communities of a partition with the FullGraphRAG strategy after many document changes | [`POST /v1/graph/recluster`](incremental-graph-updates/api-reference.md#reorganize-partitions) |
 | Inspect the state of the project and its categories | [`GET /v1/projects/{project}/overview`](reference/project-operations.md#project-overview) |
 | Remove a category and everything it contributed | [`DELETE /v1/projects/{project}/categories/{category}`](reference/project-operations.md#delete-category) |
 | Embed a field on an existing ArangoDB collection | [`POST /v1/embed-field-in-collection`](reference/embeddings.md) |

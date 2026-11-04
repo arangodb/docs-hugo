@@ -21,7 +21,7 @@ changed a lot. For when to use them, see
 | [`POST /v1/graph/insert`](#add-documents) | Add | Add new documents to an existing category | Synchronous |
 | [`POST /v1/graph/delete`](#remove-documents) | Remove | Remove documents that are in an existing category, with all their graph data | Synchronous |
 | [`POST /v1/graph/update`](#replace-documents) | Replace | Replace documents that are in an existing category with a new version | Asynchronous |
-| [`POST /v1/graph/recluster`](#reorganize-partitions) | Reorganize | Rebuild the communities of a FullGraphRAG partition that has changed a lot | Asynchronous |
+| [`POST /v1/graph/recluster`](#reorganize-partitions) | Reorganize | Rebuild the communities of a partition with the FullGraphRAG strategy that has changed a lot | Asynchronous |
 | [`POST /v1/orchestrate`](#build-the-knowledge-graph-for-changed-documents) with `file_ids` | Knowledge graph build | Add the added and replaced documents to the knowledge graph | Asynchronous |
 
 {{< info >}}
@@ -464,11 +464,11 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/recluster" >}}
 
-Rebuilds the communities of up to five FullGraphRAG partitions from their
-current entities. The API calls this operation recluster. The call returns
-right away and reports whether each partition was taken up. This is not a queue
-position, see the response below. Reorganizing runs asynchronously, and only
-one partition is reorganized at a time.
+Rebuilds the communities of up to five partitions with the FullGraphRAG strategy
+from their current entities. The API calls this operation recluster. The call
+returns right away and reports whether each partition was taken up. This is
+not a queue position, see the response below. Reorganizing runs
+asynchronously, and only one partition is reorganized at a time.
 
 Call this endpoint if `needs_reclustering: true` is reported for a partition and
 you decide to rebuild its communities, which is expensive. AutoGraph never
@@ -478,8 +478,8 @@ by a [removal](#remove-documents) once it has committed, and by the `rags`
 profile of the partition. Adding and replacing do not report it, see
 [Where to read the divergence](divergence-and-reorganization.md#where-to-read-the-divergence).
 
-Only FullGraphRAG partitions have communities that can be rebuilt. A
-VectorRAG partition has no `Entities` or `Communities`, so there is nothing to
+Only partitions with the FullGraphRAG strategy have communities that can be
+rebuilt. A partition with the VectorRAG strategy has no `Entities` or `Communities`, so there is nothing to
 rebuild, and such a partition is never flagged.
 
 The flag is set when the `divergence_score` is above the threshold,
