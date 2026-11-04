@@ -232,6 +232,18 @@ FOR n IN nodes
       RETURN [n, e, m]
 ```
 
+### Join order optimization (experimental)
+
+A new `optimize-join-order` optimizer rule has been added as the groundwork
+for cost-based join reordering. It detects adjacent `FOR` loops over
+collections that are joined by equality conditions like
+`FILTER doc1.attr == doc2.attr`.
+
+The rule does not modify execution plans yet. It is disabled by default and
+you can enable it with `{ optimizer: { rules: ["+optimize-join-order"] } }`,
+in which case it is listed as applied in the query explain output if a join
+is found.
+
 ## Indexing
 
 ### Upgrading vector indexes
