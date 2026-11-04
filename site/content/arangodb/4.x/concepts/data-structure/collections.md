@@ -257,8 +257,8 @@ if err != nil {
 }
 ```
 
-See [`DatabaseCollection.CreateCollection()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseCollection)
-in the _go-driver_ v2 documentation for details.
+See [`DatabaseCollection.CreateCollection()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#DatabaseCollection)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -348,8 +348,8 @@ if err != nil {
 }
 ```
 
-See [`DatabaseCollection.GetCollection()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseCollection)
-in the _go-driver_ v2 documentation for details.
+See [`DatabaseCollection.GetCollection()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#DatabaseCollection)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -438,8 +438,8 @@ if err != nil {
 }
 ```
 
-See [`DatabaseCollection.Collections()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseCollection)
-in the _go-driver_ v2 documentation for details.
+See [`DatabaseCollection.Collections()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#DatabaseCollection)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -530,8 +530,8 @@ if err != nil {
 }
 ```
 
-See [`Collection.Properties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)
-in the _go-driver_ v2 documentation for details.
+See [`Collection.Properties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#Collection)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -629,8 +629,8 @@ if err != nil {
 }
 ```
 
-See [`Collection.SetProperties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)
-in the _go-driver_ v2 documentation for details.
+See [`Collection.SetProperties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#Collection)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -724,8 +724,8 @@ if err != nil {
 }
 ```
 
-See [`Collection.Remove()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)
-in the _go-driver_ v2 documentation for details.
+See [`Collection.Remove()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#Collection)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
