@@ -42,7 +42,9 @@ knowledge graph.
    documents need no build.
 4. **Reorganize, if needed.** If the build status reports
    `needs_reclustering: true` for a partition, you can rebuild its communities
-   with [`POST /v1/graph/recluster`](divergence-and-reorganization.md).
+   with [`POST /v1/graph/recluster`](api-reference.md#reorganize-partitions).
+   For when this is worth it, see
+   [Divergence and Reorganization](divergence-and-reorganization.md).
 
 ## Example
 
