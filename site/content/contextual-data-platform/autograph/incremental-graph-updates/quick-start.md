@@ -121,9 +121,3 @@ After three changes in 50 articles, you usually do not need this.
 {{< /step >}}
 
 {{< /steps >}}
-
-## Next steps
-
-- [Incremental Graph Updates](_index.md)
-- [Divergence and Reorganization](divergence-and-reorganization.md)
-- [API Reference](api-reference.md)
