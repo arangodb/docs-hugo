@@ -16,9 +16,6 @@ communities were last organized. Once the divergence is above the threshold of
 25%, the partition is flagged with `needs_reclustering: true`, and you can
 [reorganize](api-reference.md#reorganize-partitions) it.
 
-For the terms used on this page, see
-[Terms](_index.md#terms).
-
 {{< embed-svg "AutoGraph-IGU-Divergence" "The divergence of a partition grows with every change. Replacing 3 documents changes 200 of 1,000 entities (20%). Adding 2 more documents brings it to 280 (28%), which is above the threshold of 25%. Reorganizing rebuilds the communities and sets the divergence back to 0%." >}}
 
 The example above shows how the divergence of one partition develops:

@@ -37,24 +37,17 @@ category, run the full build for it: a
 To get started right away, see the [Quick Start](quick-start.md). For the
 endpoints, requests, and responses, see the [API Reference](api-reference.md).
 
-## Terms
-
-The Incremental Graph Updates pages use the following terms:
-
-| Term | Meaning |
-|------|---------|
-| **Category** | A group of documents that you defined when you first built the project, for example `legal` or `engineering`. IGU works inside existing categories only. |
-| **Document** | One file in the [File Manager](../../file-manager/api.md#upload-a-rag-input-file), identified by its `file_id`. |
-| **Corpus graph** | The map of your documents: which documents are similar to each other (**similarity edges**) and which cluster each one belongs to. It does not contain what the documents say. |
-| **Cluster** | A group of similar documents within a category. Each cluster has a retrieval strategy, which the RAG Strategizer assigned to it. |
-| **Knowledge graph** | What the documents are about: the **entities** (people, products, contracts, and so on) found in the documents, and the **relationships** between them. |
-| **Partition** | The part of the knowledge graph that is built from one cluster. In the API, it is identified by its `rag_partition_id`. |
-| **Community** | A group of closely related entities, with a summary of what they have in common. Only partitions with the FullGraphRAG strategy have communities. |
-| **Knowledge graph build** | The step that reads documents, extracts their entities and relationships, and adds them to the knowledge graph. In the API, it is `POST /v1/orchestrate`. |
-| **Divergence** | How much the entities of a partition have changed since its communities were last organized, from 0% to 100%. See [Divergence and Reorganization](divergence-and-reorganization.md). |
-| **Reorganize** | Rebuild the communities of a partition from its current entities. In the API, this is called **recluster**. |
-
 ## Operations
+
+An AutoGraph project holds two graphs, and IGU keeps both of them in sync:
+
+- The **corpus graph** is the map of your documents: which documents are
+  similar to each other (similarity edges), and which **cluster** of similar
+  documents each one belongs to. Each cluster has a retrieval strategy.
+- The **knowledge graph** holds what the documents are about: the **entities**
+  found in them, such as people, products, or contracts, and the
+  **relationships** between these entities. The part of the knowledge graph
+  that is built from one cluster is called a **partition**.
 
 IGU has four operations. The API uses its own names for them:
 
@@ -83,7 +76,9 @@ does not run again.
 You get a response as soon as the documents are in the corpus graph. They are
 not in the knowledge graph yet: to add them, start a
 [knowledge graph build](api-reference.md#build-the-knowledge-graph-for-changed-documents)
-with the `file_id` values of the added documents.
+with the `file_id` values of the added documents. The build reads the documents,
+extracts their entities and relationships, and adds them to the knowledge
+graph.
 
 ### Remove documents
 
@@ -131,8 +126,9 @@ the new one.
 
 ### Reorganize the knowledge graph
 
-In a partition with the FullGraphRAG strategy, the entities are grouped into
-communities, and each community has a summary. Adding, removing, and replacing
+In a partition with the FullGraphRAG strategy, closely related entities are
+grouped into **communities**, and each community has a summary of what its
+entities have in common. Adding, removing, and replacing
 documents changes the entities but not the communities, so the communities and
 their summaries slowly drift out of date. **Reorganizing** groups the entities
 again, based on what the partition contains now.
