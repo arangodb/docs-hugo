@@ -79,7 +79,7 @@
     <circle class="node-gone" cx="706.0" cy="194.0" r="8"/>
     <circle class="node-gone" cx="562.0" cy="264.0" r="8"/>
     <circle class="node" cx="670.0" cy="266.0" r="8"/>
-    <path d="M 394 155 L 433 155" stroke="#00576e" stroke-width="2" fill="none" marker-end="url(#igud-arrow)"/>
+    <path d="M 380 155 L 432.5 155" stroke="#00576e" stroke-width="2" fill="none" marker-end="url(#igud-arrow)"/>
     <circle class="node" cx="27" cy="312" r="6"/>
     <text class="legend" x="38" y="316" text-anchor="start">existing document</text>
     <circle class="node-del" cx="175" cy="312" r="6"/>

@@ -39,7 +39,7 @@
     <text class="ptitle" x="64" y="55" text-anchor="start">Last organized</text>
     <text class="psub" x="30" y="82" text-anchor="start">Communities match</text>
     <text class="psub" x="30" y="98" text-anchor="start">the entities</text>
-    <path d="M 410 183 L 410 203" stroke="#00576e" stroke-width="2" fill="none" marker-end="url(#igur-arrow)"/>
+    <path d="M 410 180 L 410 202.5" stroke="#00576e" stroke-width="2" fill="none" marker-end="url(#igur-arrow)"/>
     <rect class="panel" x="20" y="210" width="780" height="160" rx="8"/>
     <circle class="step" cx="44" cy="240" r="12"/>
     <text class="steptext" x="44" y="245" text-anchor="middle">2</text>
@@ -47,7 +47,7 @@
     <text class="psub" x="30" y="272" text-anchor="start">Entities added and</text>
     <text class="psub" x="30" y="288" text-anchor="start">removed, communities</text>
     <text class="psub" x="30" y="304" text-anchor="start">are out of date</text>
-    <path d="M 410 373 L 410 393" stroke="#00576e" stroke-width="2" fill="none" marker-end="url(#igur-arrow)"/>
+    <path d="M 410 370 L 410 392.5" stroke="#00576e" stroke-width="2" fill="none" marker-end="url(#igur-arrow)"/>
     <rect class="panel" x="20" y="400" width="780" height="160" rx="8"/>
     <circle class="step" cx="44" cy="430" r="12"/>
     <text class="steptext" x="44" y="435" text-anchor="middle">3</text>
