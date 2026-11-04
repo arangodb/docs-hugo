@@ -118,7 +118,8 @@ to add the new version to the knowledge graph.
 
 {{< warning >}}
 Do not add a new version of a document instead of replacing it. The old version
-stays in the graph next to the new one.
+stays in the graph, and the new one is added next to it as a duplicate. Only
+duplicates within one request are rejected, with `400`.
 {{< /warning >}}
 
 ### Reorganize the knowledge graph
