@@ -27,7 +27,7 @@ Updates](../incremental-graph-updates/_index.md), which also maintains
 Layers 1 and 2. Only call the Importer directly for standalone or advanced use
 cases.
 
-In Arango Contextual Data Platform 4.1.0, this is an **API-only** feature on
+In Arango Contextual Data Platform 4.1.x, this is an **API-only** feature on
 both sides. Neither this Importer endpoint nor AutoGraph's IGU endpoints are
 available in the web interface.
 {{< /info >}}

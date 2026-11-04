@@ -17,7 +17,7 @@ rest of the category stays as it is. This makes everyday document changes much
 cheaper and faster than a rebuild.
 
 {{< info >}}
-**IGU is API-only in Arango Contextual Data Platform 4.1.0.** You can add,
+**IGU is API-only in Arango Contextual Data Platform 4.1.x.** You can add,
 remove, replace, and reorganize documents through the
 [HTTP endpoints](api-reference.md) only. The
 [web interface](../web-interface.md) does not offer these operations in this

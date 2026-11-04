@@ -13,7 +13,7 @@ knowledge graph.
 
 ## Prerequisites
 
-- Arango Contextual Data Platform 4.1.0 (API only).
+- Arango Contextual Data Platform 4.1.x (API only).
 - A built knowledge graph, with its files in the
   [File Manager](../../file-manager/api.md#upload-a-rag-input-file).
 - Documents in **existing categories**. For a new category, run the full build,

@@ -73,7 +73,7 @@ source documents they came from.
 {{< info >}}
 To add, remove, or replace individual documents later, use the API. The web
 interface does not offer these operations in Arango Contextual Data Platform
-4.1.0. See [Incremental Graph Updates](incremental-graph-updates/_index.md).
+4.1.x. See [Incremental Graph Updates](incremental-graph-updates/_index.md).
 {{< /info >}}
 {{< /tab >}}
 
