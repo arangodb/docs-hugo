@@ -103,9 +103,9 @@ paths:
         '400':
           description: |
             The request is malformed.
-        '401':
+        '403':
           description: |
-            The user account you authenticate with lacks read access to the
+            The user account you authenticate with has `none` access to the
             specified database.
       tags:
         - Queries
@@ -155,8 +155,7 @@ paths:
             The name of the database whose query results cache to clear.
 
             The user account you authenticate with needs at least `ro` access to
-            this database as well as to the `_system` database (the latter is
-            required from v3.12.11 onward).
+            this database and `rw` access to the `_system` database.
           schema:
             type: string
       responses:
@@ -184,15 +183,10 @@ paths:
         '400':
           description: |
             The request is malformed.
-        '401':
-          description: |
-            The user account you authenticate with lacks read access to the
-            specified database.
         '403':
           description: |
-            The user account you authenticated with lacks read access to the
-            `_system` database (introduced in v3.12.11). Up to v3.12.10, this
-            endpoint didn't perform this permission check.
+            The user account you authenticate with has `none` access to the
+            specified database, or lacks `rw` access to the `_system` database.
       tags:
         - Queries
 ```
@@ -275,9 +269,9 @@ paths:
         '400':
           description: |
             The request is malformed.
-        '401':
+        '403':
           description: |
-            The user account you authenticate with lacks read access to the
+            The user account you authenticate with has `none` access to the
             specified database.
       tags:
         - Queries
@@ -303,25 +297,19 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_db/{database-name}/_api/query-cache/properties:
+  /_db/_system/_api/query-cache/properties:
     put:
       operationId: setQueryCacheProperties
       description: |
         Adjusts the global properties for the AQL query results cache.
 
         Changing the properties may invalidate all results currently in the cache.
-      parameters:
-        - name: database-name
-          in: path
-          required: true
-          example: _system
-          description: |
-            The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least `ro` access
-            to this database as well as to the `_system` database (the latter
-            is required from v3.12.11 onward).
-          schema:
-            type: string
+
+        {{</* info */>}}
+        You can only change the query cache properties from within the `_system`
+        database. The user account you authenticate with needs `rw` access to
+        the `_system` database.
+        {{</* /info */>}}
       requestBody:
         content:
           application/json:
@@ -412,15 +400,11 @@ paths:
         '400':
           description: |
             The request is malformed.
-        '401':
-          description: |
-            The user account you authenticate with lacks read access to the
-            specified database.
         '403':
           description: |
-            The user account you authenticated with lacks read access to the
-            `_system` database (introduced in v3.12.11). Up to v3.12.10, this
-            endpoint didn't perform this permission check.
+            The user account you authenticate with lacks `rw` access to the
+            `_system` database, or the request was made in a database other than
+            `_system` (error number `1230`).
       tags:
         - Queries
 ```
@@ -431,7 +415,7 @@ name: HttpSetQueryResultsCacheProperties
 description: |
   Change some properties of the global configuration of the AQL query results cache:
 ---
-var url = "/_api/query-cache/properties";
+var url = "/_db/_system/_api/query-cache/properties";
 var body = { mode: "demand", maxResults: 32 };
 var response = logCurlRequest('PUT', url, body);
 assert(response.code === 200);

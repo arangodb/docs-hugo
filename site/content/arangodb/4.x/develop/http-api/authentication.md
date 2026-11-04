@@ -155,7 +155,7 @@ The decoded payload of a JWT can contain the following fields (claims):
 | `server_id` | An arbitrary string identifier. Required if `preferred_username` is not set, which makes the token a superuser token. |
 | `exp` | The expiry time as Unix timestamp in seconds. Optional, but session tokens always have it. |
 | `iat` | The time the token has been issued as Unix timestamp in seconds. Optional. |
-| `allowed_paths` | An array of request paths that the token can be used for, without the `/_db/<database-name>` prefix, like `"/_api/version"`. Requests to other paths are rejected. Optional. |
+| `allowed_paths` | An array of request paths that the token can be used for, without the `/_arango/<api-version>` and `/_db/<database-name>` prefixes, like `"/_api/version"`. Requests to other paths are rejected. Optional. |
 
 If you generate tokens yourself, set the `alg` field in the JWT header to the
 algorithm that matches the active JWT secret, `HS256` for a shared secret or `ES256`

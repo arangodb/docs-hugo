@@ -105,7 +105,7 @@ paths:
             The request is malformed.
         '401':
           description: |
-            The user account you authenticate with lacks read access to the
+            The user account you authenticate with has `none` access to the
             specified database.
       tags:
         - Queries
@@ -139,7 +139,14 @@ db._drop("coll");
 
 ## Clear the AQL query results cache
 
+{{< api-versions "v0" "v1" >}}
+
+{{< api-version >}}
+
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/query-cache:
     delete:
@@ -186,11 +193,11 @@ paths:
             The request is malformed.
         '401':
           description: |
-            The user account you authenticate with lacks read access to the
+            The user account you authenticate with has `none` access to the
             specified database.
         '403':
           description: |
-            The user account you authenticated with lacks read access to the
+            The user account you authenticate with has `none` access to the
             `_system` database (introduced in v3.12.11). Up to v3.12.10, this
             endpoint didn't perform this permission check.
       tags:
@@ -208,6 +215,77 @@ var response = logCurlRequest('DELETE', url);
 assert(response.code === 200);
 logJsonResponse(response);
 ```
+
+{{< api-version >}}
+
+```openapi
+---
+apiVersions: [v1]
+---
+paths:
+  /_db/{database-name}/_api/query-cache:
+    delete:
+      operationId: deleteAqlQueryCache
+      description: |
+        Clears all results stored in the AQL query results cache for the selected database.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database whose query results cache to clear.
+
+            The user account you authenticate with needs at least `ro` access to
+            this database and `rw` access to the `_system` database.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            The results cache has been cleared.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+        '400':
+          description: |
+            The request is malformed.
+        '403':
+          description: |
+            The user account you authenticate with has `none` access to the
+            specified database, or lacks `rw` access to the `_system` database.
+      tags:
+        - Queries
+```
+
+```curl
+---
+name: HttpClearQueryResultsCacheApiV1
+description: |
+  Clear the AQL query results cache of the current database:
+---
+var url = "/_arango/v1/_api/query-cache";
+var response = logCurlRequest('DELETE', url);
+assert(response.code === 200);
+logJsonResponse(response);
+```
+
+{{< api-versions-end >}}
 
 ## Get the AQL query results cache configuration
 
@@ -277,7 +355,7 @@ paths:
             The request is malformed.
         '401':
           description: |
-            The user account you authenticate with lacks read access to the
+            The user account you authenticate with has `none` access to the
             specified database.
       tags:
         - Queries
@@ -301,7 +379,14 @@ logJsonResponse(response);
 
 ## Set the AQL query results cache configuration
 
+{{< api-versions "v0" "v1" >}}
+
+{{< api-version >}}
+
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/query-cache/properties:
     put:
@@ -414,11 +499,11 @@ paths:
             The request is malformed.
         '401':
           description: |
-            The user account you authenticate with lacks read access to the
+            The user account you authenticate with has `none` access to the
             specified database.
         '403':
           description: |
-            The user account you authenticated with lacks read access to the
+            The user account you authenticate with has `none` access to the
             `_system` database (introduced in v3.12.11). Up to v3.12.10, this
             endpoint didn't perform this permission check.
       tags:
@@ -439,3 +524,139 @@ assert(response.parsedBody.mode == "demand");
 assert(response.parsedBody.maxResults == 32);
 logJsonResponse(response);
 ```
+
+{{< api-version >}}
+
+```openapi
+---
+apiVersions: [v1]
+---
+paths:
+  /_db/_system/_api/query-cache/properties:
+    put:
+      operationId: setQueryCacheProperties
+      description: |
+        Adjusts the global properties for the AQL query results cache.
+
+        Changing the properties may invalidate all results currently in the cache.
+
+        {{</* info */>}}
+        You can only change the query cache properties from within the `_system`
+        database. The user account you authenticate with needs `rw` access to
+        the `_system` database.
+        {{</* /info */>}}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: |
+                The result cache configuration settings to change.
+              type: object
+              properties:
+                mode:
+                  description: |
+                     The mode the AQL query cache shall operate in.
+
+                     Default: Controlled by the [`--query.cache-mode` startup option](../../../components/arangodb-server/options.md#--querycache-mode).
+                  type: string
+                  # Unquoted on and off are booleans in YAML 1.1!
+                  enum: ["off", "on", "demand"]
+                maxResults:
+                  description: |
+                    The maximum number of query results that are stored per
+                    database-specific cache.
+
+                    Default: Controlled by the [`--query.cache-entries` startup option](../../../components/arangodb-server/options.md#--querycache-entries).
+                  type: integer
+                maxResultsSize:
+                  description: |
+                    The maximum cumulated size of query results that are stored
+                    per database-specific cache (in bytes).
+
+                    Default: Controlled by the [`--query.cache-entries-max-size` startup option](../../../components/arangodb-server/options.md#--querycache-entries-max-size).
+                  type: integer
+                maxEntrySize:
+                  description: |
+                    The maximum individual size of query results that are stored
+                    per database-specific cache (in bytes).
+
+                    Default: Controlled by the [`--query.cache-entry-max-size` startup option](../../../components/arangodb-server/options.md#--querycache-entry-max-size).
+                  type: integer
+                includeSystem:
+                  description: |
+                    Whether to store results of queries that involve
+                    system collections in the cache.
+
+                    Default: Controlled by the [`--query.cache-include-system-collections` startup option](../../../components/arangodb-server/options.md#--querycache-include-system-collections).
+                  type: boolean
+      responses:
+        '200':
+          description: |
+            The result cache configuration has been changed successfully.
+          content:
+            application/json:
+              schema:
+                description: |
+                  The result cache configuration.
+                type: object
+                required:
+                  - mode
+                  - maxResults
+                  - maxResultsSize
+                  - maxEntrySize
+                  - includeSystem
+                properties:
+                  mode:
+                    description: |
+                      The mode the AQL query results cache operates in.
+                    type: string
+                    # Unquoted on and off are booleans in YAML 1.1!
+                    enum: ["off", "on", "demand"]
+                  maxResults:
+                    description: |
+                      The maximum number of query results that are stored per
+                      database-specific cache.
+                    type: integer
+                  maxResultsSize:
+                    description: |
+                      The maximum cumulated size of query results that are
+                      stored per database-specific cache (in bytes).
+                    type: integer
+                  maxEntrySize:
+                    description: |
+                      The maximum individual result size of queries that are
+                      stored per database-specific cache (in bytes).
+                    type: integer
+                  includeSystem:
+                    description: |
+                      Whether results of queries that involve system collections
+                      are stored in the query results cache.
+                    type: boolean
+        '400':
+          description: |
+            The request is malformed.
+        '403':
+          description: |
+            The user account you authenticate with lacks `rw` access to the
+            `_system` database, or the request was made in a database other than
+            `_system` (error number `1230`).
+      tags:
+        - Queries
+```
+
+```curl
+---
+name: HttpSetQueryResultsCachePropertiesApiV1
+description: |
+  Change some properties of the global configuration of the AQL query results cache:
+---
+var url = "/_arango/v1/_db/_system/_api/query-cache/properties";
+var body = { mode: "demand", maxResults: 64 };
+var response = logCurlRequest('PUT', url, body);
+assert(response.code === 200);
+assert(response.parsedBody.mode == "demand");
+assert(response.parsedBody.maxResults == 64);
+logJsonResponse(response);
+```
+
+{{< api-versions-end >}}

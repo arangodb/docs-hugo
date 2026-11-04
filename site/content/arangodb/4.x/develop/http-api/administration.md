@@ -557,9 +557,10 @@ paths:
                                   The `zkd` index type is an alias for `mdi`.
                                 type: string
                                 const: mdi
-        '401':
+        '403':
           description: |
-            Missing read access to the given database.
+            The user account you authenticate with has `none` access to the
+            specified database.
           content:
             application/json:
               schema:
@@ -579,7 +580,7 @@ paths:
                     description: |
                       The HTTP response status code.
                     type: integer
-                    example: 401
+                    example: 403
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
@@ -641,9 +642,7 @@ paths:
                 type: object
         '401':
           description: |
-            The user account you authenticated with lacks read access to the
-            specified database, the credentials are wrong, or the user account
-            is inactive.
+            The credentials are wrong or the user account is inactive.
           content:
             application/json:
               schema:
@@ -674,8 +673,9 @@ paths:
                     type: string
         '403':
           description: |
-            The `--server.harden` startup option is enabled but the user account
-            you authenticated with lacks `rw` access to the `_system` database.
+            The user account you authenticate with has `none` access to the
+            specified database, or the `--server.harden` startup option is enabled
+            and the account lacks `rw` access to the `_system` database.
           content:
             application/json:
               schema:
@@ -843,7 +843,7 @@ paths:
 
                           You need to start _arangod_ with the `--server.early-connections` startup option
                           enabled to be able to query the endpoint during the startup process.
-                          If authentication is enabled, then you need to use the super-user JWT for the
+                          If authentication is enabled, then you need to use a [superuser JWT](authentication.md#jwt-superuser-tokens) for the
                           request because the user management is not available during the startup.
                         type: object
                         required:
@@ -1091,7 +1091,7 @@ logJsonResponse(response);
 ---
 description: |-
   Query support information from a cluster
-name: RestAdminSupportInfo
+name: RestAdminSupportInfoCluster
 type: cluster
 ---
 var url = "/_db/_system/_admin/support-info";
@@ -1106,8 +1106,8 @@ logJsonResponse(response);
 The permissions required to use the `/_admin/options` and `/_admin/options-description`
 endpoints depend on the setting of the
 [`--server.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api).
-The `/_admin/options-public` endpoint is always available to any authenticated user
-with read access to a database and is not affected by that setting.
+The `/_admin/options-public` endpoint is always available to any user account
+with at least `ro` access to a database and is not affected by that setting.
 
 ### Get the startup option configuration
 
@@ -1130,10 +1130,10 @@ paths:
         you to disable them entirely. The option can have the following values:
         - `disabled`: This endpoint is disabled.
         - `jwt`: This endpoint can only be accessed using a [superuser JWT](authentication.md#jwt-superuser-tokens) (default).
-        - `admin`: This endpoint can only be accessed by users with
+        - `admin`: This endpoint can only be accessed by user accounts with
           `rw` access to the `_system` database.
-        - `public`: Every user with read access to the `_system` database can
-          access this endpoint.
+        - `public`: Every user account with at least `ro` access to the
+          `_system` database can access this endpoint.
       responses:
         '200':
           description: |
@@ -1146,11 +1146,7 @@ paths:
                 type: object
         '401':
           description: |
-            You tried to authenticate with user credentials but a superuser JWT
-            is required (`--server.options-api` set
-            to `jwt`), you lack read access to the `_system` database
-            (`--server.options-api` set to `public`), the credentials are wrong,
-            or the user account is inactive.
+            The credentials are wrong or the user account is inactive.
           content:
             application/json:
               schema:
@@ -1181,9 +1177,12 @@ paths:
                     type: string
         '403':
           description: |
-            You don't have `rw` access to the `_system` database
-            (`--server.options-api` set to `admin`) or you tried to access the
-            endpoint using a database other than `_system`.
+            You tried to authenticate with user credentials but a superuser JWT
+            is required (`--server.options-api` set to `jwt`), the user account
+            you authenticate with has `none` access to the `_system` database
+            (`--server.options-api` set to `public`) or lacks `rw` access to the
+            `_system` database (`--server.options-api` set to `admin`), or you
+            tried to access the endpoint using a database other than `_system`.
           content:
             application/json:
               schema:
@@ -1264,10 +1263,10 @@ paths:
         you to disable them entirely. The option can have the following values:
         - `disabled`: This endpoint is disabled.
         - `jwt`: This endpoint can only be accessed using a [superuser JWT](authentication.md#jwt-superuser-tokens) (default).
-        - `admin`: This endpoint can only be accessed by users with
+        - `admin`: This endpoint can only be accessed by user accounts with
           `rw` access to the `_system` database.
-        - `public`: Every user with read access to the `_system` database can
-          access this endpoint.
+        - `public`: Every user account with at least `ro` access to the
+          `_system` database can access this endpoint.
       responses:
         '200':
           description: |
@@ -1329,8 +1328,7 @@ paths:
                 type: object
         '401':
           description: |
-            You tried to authenticate with user credentials but a superuser JWT
-            is required, the credentials are wrong, or the user account is inactive.
+            The credentials are wrong or the user account is inactive.
           content:
             application/json:
               schema:
@@ -1361,8 +1359,10 @@ paths:
                     type: string
         '403':
           description: |
-            You don't have `rw` access to the `_system` database or you tried
-            to access the endpoint using a database other than `_system`.
+            You tried to authenticate with user credentials but a superuser JWT
+            is required, the user account you authenticate with lacks `rw` access
+            to the `_system` database, or you tried to access the endpoint using a
+            database other than `_system`.
           content:
             application/json:
               schema:
@@ -1435,8 +1435,8 @@ paths:
       operationId: getPublicStartupOptions
       description: |
         Return a small, curated subset of the configured server startup options
-        that are safe to expose to any authenticated user with read access to the
-        requested database.
+        that are safe to expose to any user account with at least `ro` access to
+        the requested database.
 
         Administrative tools can use this endpoint to adapt their behavior to the server
         configuration. For example, they can show the valid range for `replicationFactor`
@@ -1502,9 +1502,7 @@ paths:
                     type: number
         '401':
           description: |
-            Authentication is enabled and the user account you authenticated with
-            doesn't have at least `ro` access to the specified database, the
-            credentials are wrong, or the user account is inactive.
+            The credentials are wrong or the user account is inactive.
           content:
             application/json:
               schema:
@@ -1525,6 +1523,38 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            Authentication is enabled and the user account you authenticated
+            with has `none` access to the specified database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
@@ -1617,8 +1647,8 @@ paths:
         Creating or dropping of databases and collections will also fail with error
         code `11` (_ERROR_FORBIDDEN_).
 
-        This is a protected API. It requires authentication and administrative
-        server rights.
+        The user account you authenticate with needs `rw` access to the
+        `_system` database.
       parameters:
         - name: database-name
           in: path
@@ -1646,9 +1676,10 @@ paths:
         '200':
           description: |
             This API will return HTTP 200 if everything is ok
-        '401':
+        '403':
           description: |
-            if the request was not authenticated as a user with sufficient rights
+            The user account you authenticate with lacks `rw` access to the
+            `_system` database.
       tags:
         - Administration
 ```
@@ -2024,9 +2055,10 @@ paths:
                       The UUID that uniquely identifies the deployment.
                     type: string
                     format: uuid
-        '401':
+        '403':
           description: |
-            The user account has insufficient permissions for the selected database.
+            The user account you authenticate with has `none` access to the
+            specified database.
           content:
             application/json:
               schema:
@@ -2110,7 +2142,8 @@ paths:
         The server keeps the most recent 10 crash dumps. Older ones are removed
         during startup.
 
-        This endpoint requires `rw` access to the `_system` database.
+        The user account you authenticate with needs `rw` access to the
+        `_system` database.
       parameters:
         - name: database-name
           in: path
@@ -2150,9 +2183,7 @@ paths:
                       format: uuid
         '401':
           description: |
-            Returned if authentication is enabled and the user does not have at
-            least read access to the specified database, the credentials are
-            wrong, or the user account is inactive.
+            The credentials are wrong or the user account is inactive.
           content:
             application/json:
               schema:
@@ -2183,8 +2214,9 @@ paths:
                     type: string
         '403':
           description: |
-            Returned if authentication is enabled and the user does not have
-            `rw` access to the `_system` database.
+            Returned if authentication is enabled and the user account you
+            authenticate with has `none` access to the specified database, or
+            lacks `rw` access to the `_system` database.
           content:
             application/json:
               schema:
@@ -2265,7 +2297,8 @@ paths:
         to their contents. Crash dumps are stored under
         `<database-directory>/crashes/<uuid>/`.
 
-        This endpoint requires `rw` access to the `_system` database.
+        The user account you authenticate with needs `rw` access to the
+        `_system` database.
       parameters:
         - name: database-name
           in: path
@@ -2325,9 +2358,7 @@ paths:
                           type: string
         '401':
           description: |
-            Returned if authentication is enabled and the user does not have at
-            least read access to the specified database, the credentials are
-            wrong, or the user account is inactive.
+            The credentials are wrong or the user account is inactive.
           content:
             application/json:
               schema:
@@ -2358,8 +2389,9 @@ paths:
                     type: string
         '403':
           description: |
-            Returned if authentication is enabled and the user does not have
-            `rw` access to the `_system` database.
+            Returned if authentication is enabled and the user account you
+            authenticate with has `none` access to the specified database, or
+            lacks `rw` access to the `_system` database.
           content:
             application/json:
               schema:
@@ -2470,7 +2502,8 @@ paths:
         stored under `<database-directory>/crashes/<uuid>/`. The server keeps the
         most recent 10 crash dumps. Older ones are removed during startup.
 
-        This endpoint requires `rw` access to the `_system` database.
+        The user account you authenticate with needs `rw` access to the
+        `_system` database.
       parameters:
         - name: database-name
           in: path
@@ -2523,9 +2556,7 @@ paths:
                         format: uuid
         '401':
           description: |
-            Returned if authentication is enabled and the user does not have at
-            least read access to the specified database, the credentials are
-            wrong, or the user account is inactive.
+            The credentials are wrong or the user account is inactive.
           content:
             application/json:
               schema:
@@ -2556,8 +2587,9 @@ paths:
                     type: string
         '403':
           description: |
-            Returned if authentication is enabled and the user does not have
-            `rw` access to the `_system` database.
+            Returned if authentication is enabled and the user account you
+            authenticate with has `none` access to the specified database, or
+            lacks `rw` access to the `_system` database.
           content:
             application/json:
               schema:
@@ -2664,7 +2696,10 @@ paths:
     delete:
       operationId: startShutdown
       description: |
-        This call initiates a clean shutdown sequence. Requires administrative privileges.
+        This call initiates a clean shutdown sequence.
+
+        The user account you authenticate with needs `rw` access to the
+        `_system` database.
       parameters:
         - name: database-name
           in: path
@@ -2808,7 +2843,7 @@ paths:
 ```openapi
 paths:
   /_admin/compact:
-  # Independent of database (superuser has access to all databases that exist)
+  # Independent of database (a superuser JWT grants access to all databases that exist)
     put:
       operationId: compactAllDatabases
       description: |
@@ -2843,9 +2878,10 @@ paths:
         '200':
           description: |
             Compaction started successfully
-        '401':
+        '403':
           description: |
-            if the request was not authenticated as a user with sufficient rights
+            You tried to authenticate with user credentials but a superuser JWT
+            is required.
       tags:
         - Administration
 ```

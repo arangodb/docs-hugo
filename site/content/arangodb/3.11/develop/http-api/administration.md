@@ -518,7 +518,8 @@ paths:
                         const: false
         '401':
           description: |
-            Missing read access to the given database.
+            The user account you authenticate with has `none` access to the
+            specified database.
           content:
             application/json:
               schema:
@@ -600,7 +601,7 @@ paths:
                 type: object
         '401':
           description: |
-            The user account you authenticated with lacks read access to the
+            The user account you authenticate with has `none` access to the
             specified database, the credentials are wrong, or the user account
             is inactive.
           content:
@@ -820,7 +821,7 @@ paths:
 
                           You need to start _arangod_ with the `--server.early-connections` startup option
                           enabled to be able to query the endpoint during the startup process.
-                          If authentication is enabled, then you need to use the super-user JWT for the
+                          If authentication is enabled, then you need to use a [superuser JWT](authentication.md#jwt-superuser-tokens) for the
                           request because the user management is not available during the startup.
                         type: object
                         required:
@@ -1170,8 +1171,8 @@ paths:
         Creating or dropping of databases and collections will also fail with error
         code `11` (_ERROR_FORBIDDEN_).
 
-        This is a protected API. It requires authentication and administrative
-        server rights.
+        The user account you authenticate with needs `rw` access to the
+        `_system` database.
       parameters:
         - name: database-name
           in: path
@@ -1201,7 +1202,8 @@ paths:
             This API will return HTTP 200 if everything is ok
         '401':
           description: |
-            if the request was not authenticated as a user with sufficient rights
+            The request is not authenticated or the user account you
+            authenticate with lacks `rw` access to the `_system` database.
       tags:
         - Administration
 ```
@@ -1488,7 +1490,10 @@ paths:
     delete:
       operationId: startShutdown
       description: |
-        This call initiates a clean shutdown sequence. Requires administrative privileges.
+        This call initiates a clean shutdown sequence.
+
+        The user account you authenticate with needs `rw` access to the
+        `_system` database.
       parameters:
         - name: database-name
           in: path
@@ -1639,7 +1644,7 @@ paths:
 ```openapi
 paths:
   /_admin/compact:
-  # Independent of database (superuser has access to all databases that exist)
+  # Independent of database (a superuser JWT grants access to all databases that exist)
     put:
       operationId: compactAllDatabases
       description: |
@@ -1676,7 +1681,7 @@ paths:
             Compaction started successfully
         '401':
           description: |
-            if the request was not authenticated as a user with sufficient rights
+            The request is not authenticated with a superuser JWT.
       tags:
         - Administration
 ```

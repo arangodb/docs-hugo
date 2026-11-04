@@ -3,10 +3,10 @@
 {{ $icon := .Get "icon" -}}
 {{ $id := .Get "id" -}}
 {{ if .Parent -}}
-  {{ if not (.Parent.Scratch.Get "steps") -}}
-    {{ .Parent.Scratch.Set "steps" slice -}}
+  {{ if not (.Parent.Store.Get "steps") -}}
+    {{ .Parent.Store.Set "steps" slice -}}
   {{ end -}}
-  {{ $.Parent.Scratch.Add "steps" (dict
+  {{ $.Parent.Store.Add "steps" (dict
     "title"   (trim ($title | default "") " ")
     "content" $content
     "icon"    $icon

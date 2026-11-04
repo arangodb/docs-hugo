@@ -35,8 +35,8 @@ paths:
     post:
       operationId: createUser
       description: |
-        Create a new user. You need `rw` access to the `_system` database in order to
-        execute this action.
+        Create a new user. The user account you authenticate with needs `rw`
+        access to the `_system` database.
       parameters:
         - name: database-name
           in: path
@@ -85,13 +85,10 @@ paths:
           description: |
             If the JSON representation is malformed or mandatory data is missing
             from the request.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            The user account you authenticate with has `none` access to the
+            specified database or lacks `rw` access to the `_system` database.
         '409':
           description: |
             Returned if a user with the same name already exists.
@@ -126,18 +123,16 @@ paths:
       operationId: replaceUserData
       description: |
         Replaces the data of an existing user. This resets the user's
-        access levels for databases and collections. You need `rw` access to the `_system`
-        database in order to execute this action. Additionally, users can
-        change their own data.
+        access levels for databases and collections. You can replace your own
+        user data, or you need `rw` access to the `_system` database to replace
+        the data of other users.
       parameters:
         - name: database-name
           in: path
           required: true
           example: _system
           description: |
-            The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least `ro` access
-            to this database and `rw` access to the `_system` database.
+            The name of a database. Which database you use doesn't matter.
           schema:
             type: string
         - name: user
@@ -177,13 +172,10 @@ paths:
         '400':
           description: |
             The JSON representation is malformed or mandatory data is missing from the request
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            You specified a different user than the one you authenticated with,
+            and your user account lacks `rw` access to the `_system` database.
         '404':
           description: |
             The specified user does not exist
@@ -220,18 +212,16 @@ paths:
     patch:
       operationId: updateUserData
       description: |
-        Partially modifies the data of an existing user. You need `rw` access to the `_system`
-        database in order to execute this action. Additionally, users can
-        change their own data.
+        Partially modifies the data of an existing user. You can update your own
+        user data, or you need `rw` access to the `_system` database to update
+        the data of other users.
       parameters:
         - name: database-name
           in: path
           required: true
           example: _system
           description: |
-            The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least `ro` access
-            to this database and `rw` access to the `_system` database.
+            The name of a database. Which database you use doesn't matter.
           schema:
             type: string
         - name: user
@@ -268,13 +258,10 @@ paths:
         '400':
           description: |
             The JSON representation is malformed or mandatory data is missing from the request.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            You specified a different user than the one you authenticated with,
+            and your user account lacks `rw` access to the `_system` database.
         '404':
           description: |
             The specified user does not exist
@@ -313,17 +300,15 @@ paths:
       description: |
         Removes an existing user, identified by `user`.
 
-        You need `rw` access to the `_system` database in order to
-        execute this action.
+        The user account you authenticate with needs `rw` access to the
+        `_system` database.
       parameters:
         - name: database-name
           in: path
           required: true
           example: _system
           description: |
-            The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least `ro` access
-            to this database and `rw` access to the `_system` database.
+            The name of a database. Which database you use doesn't matter.
           schema:
             type: string
         - name: user
@@ -337,13 +322,10 @@ paths:
         '202':
           description: |
             Is returned if the user was removed by the server
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            The user account you authenticate with lacks `rw` access to the
+            `_system` database.
         '404':
           description: |
             The specified user does not exist
@@ -378,18 +360,16 @@ paths:
     get:
       operationId: getUser
       description: |
-        Fetches data about the specified user. You can fetch information about
-        yourself or you need `rw` access to the `_system` database in order to
-        execute this action.
+        Fetches data about the specified user. You can fetch your own user data,
+        or you need `rw` access to the `_system` database to fetch the data of
+        other users.
       parameters:
         - name: database-name
           in: path
           required: true
           example: _system
           description: |
-            The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least `ro` access
-            to this database and `rw` access to the `_system` database.
+            The name of a database. Which database you use doesn't matter.
           schema:
             type: string
         - name: user
@@ -403,13 +383,10 @@ paths:
         '200':
           description: |
             The user was found.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            You specified a different user than the one you authenticated with,
+            and your user account lacks `rw` access to the `_system` database.
         '404':
           description: |
             The user with the specified name does not exist.
@@ -445,9 +422,8 @@ paths:
     get:
       operationId: listUsers
       description: |
-        Fetches data about all users. You need `rw` access to the `_system` database
-        in order to execute this action.  Otherwise, you will only get information
-        about yourself.
+        Fetches data about all users. The user account you authenticate with
+        needs `rw` access to the `_system` database.
 
         The call will return a JSON object with at least the following
         attributes on success:
@@ -471,13 +447,10 @@ paths:
         '200':
           description: |
             The users that were found.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            The user account you authenticate with has `none` access to the
+            specified database or lacks `rw` access to the `_system` database.
       tags:
         - Users
 ```
@@ -507,8 +480,9 @@ paths:
     put:
       operationId: setUserDatabasePermissions
       description: |
-        Sets the database access levels for the database `dbname` of user `user`. You
-        need `rw` access to the `_system` database in order to execute this action.
+        Sets the database access levels for the database `dbname` of user `user`.
+        The user account you authenticate with needs `rw` access to the `_system`
+        database.
       requestBody:
         content:
           application/json:
@@ -531,9 +505,7 @@ paths:
           required: true
           example: _system
           description: |
-            The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least `ro` access
-            to this database and `rw` access to the `_system` database.
+            The name of a database. Which database you use doesn't matter.
           schema:
             type: string
         - name: user
@@ -558,13 +530,10 @@ paths:
           description: |
             If the JSON representation is malformed or mandatory data is missing
             from the request.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            The user account you authenticate with lacks `rw` access to the
+            `_system` database.
       tags:
         - Users
 ```
@@ -599,8 +568,8 @@ paths:
       operationId: setUserCollectionPermissions
       description: |
         Sets the collection access level for the `collection` in the database `dbname`
-        for user `user`. You need `rw` access to the `_system` database in order to
-        execute this action.
+        for user `user`. The user account you authenticate with needs `rw` access
+        to the `_system` database.
       requestBody:
         content:
           application/json:
@@ -622,9 +591,7 @@ paths:
           required: true
           example: _system
           description: |
-            The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least `ro` access
-            to this database and `rw` access to the `_system` database.
+            The name of a database. Which database you use doesn't matter.
           schema:
             type: string
         - name: user
@@ -656,13 +623,10 @@ paths:
           description: |
             If the JSON representation is malformed or mandatory data is missing
             from the request.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            The user account you authenticate with lacks `rw` access to the
+            `_system` database.
       tags:
         - Users
 ```
@@ -857,8 +821,8 @@ paths:
       description: |
         Fetch the list of databases available to the specified `user`.
 
-        You need `rw` access to the `_system` database in order to
-        execute this action.
+        You can fetch your own access levels, or you need `rw` access to the
+        `_system` database to fetch the access levels of other users.
 
         The call will return a JSON object with the per-database access
         privileges for the specified user. The `result` object will contain
@@ -877,9 +841,7 @@ paths:
           required: true
           example: _system
           description: |
-            The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least `ro` access
-            to this database and `rw` access to the `_system` database.
+            The name of a database. Which database you use doesn't matter.
           schema:
             type: string
         - name: user
@@ -901,16 +863,13 @@ paths:
         '200':
           description: |
             Returned if the list of available databases can be returned.
-        '400':
-          description: |
-            If the access privileges are not right etc.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            You specified a different user than the one you authenticated with,
+            and your user account lacks `rw` access to the `_system` database.
+        '404':
+          description: |
+            The specified user does not exist.
       tags:
         - Users
 ```
@@ -964,16 +923,17 @@ paths:
     get:
       operationId: getUserDatabasePermissions
       description: |
-        Fetch the database access level for a specific database
+        Fetch the database access level for a specific database.
+
+        You can fetch your own access level, or you need `rw` access to the
+        `_system` database to fetch the access levels of other users.
       parameters:
         - name: database-name
           in: path
           required: true
           example: _system
           description: |
-            The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least `ro` access
-            to this database and `rw` access to the `_system` database.
+            The name of a database. Which database you use doesn't matter.
           schema:
             type: string
         - name: user
@@ -994,16 +954,10 @@ paths:
         '200':
           description: |
             Returned if the access level can be returned
-        '400':
-          description: |
-            If the access privileges are not right etc.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            You specified a different user than the one you authenticated with,
+            and your user account lacks `rw` access to the `_system` database.
       tags:
         - Users
 ```
@@ -1037,16 +991,17 @@ paths:
     get:
       operationId: getUserCollectionPermissions
       description: |
-        Returns the collection access level for a specific collection
+        Returns the collection access level for a specific collection.
+
+        You can fetch your own access level, or you need `rw` access to the
+        `_system` database to fetch the access levels of other users.
       parameters:
         - name: database-name
           in: path
           required: true
           example: _system
           description: |
-            The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least `ro` access
-            to this database and `rw` access to the `_system` database.
+            The name of a database. Which database you use doesn't matter.
           schema:
             type: string
         - name: user
@@ -1074,16 +1029,10 @@ paths:
         '200':
           description: |
             Returned if the access level can be returned
-        '400':
-          description: |
-            If the access privileges are not right etc.
-        '401':
-          description: |
-            Returned if you have `none` access to the `_system`
-            database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            You specified a different user than the one you authenticated with,
+            and your user account lacks `rw` access to the `_system` database.
       tags:
         - Users
 ```
