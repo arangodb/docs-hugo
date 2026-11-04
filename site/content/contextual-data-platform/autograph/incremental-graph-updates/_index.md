@@ -59,11 +59,6 @@ IGU has four operations. The API uses its own names for them:
 | [Replace](#replace-documents) | update | Replaces documents that are in an existing category with a new version | The old version is removed and the new one is added | The old entities are removed. The new ones are added afterwards, by a knowledge graph build that you start |
 | [Reorganize](#reorganize-the-knowledge-graph) | recluster | Rebuilds the communities of a partition that has changed a lot | Not touched | The communities of the partition are rebuilt |
 
-Existing clusters and strategies are kept: a new document joins the cluster that
-is closest to it, so the category does not have to be clustered again. IGU
-cannot change the strategy of a cluster or add new strategies. See
-[Architecture](../architecture.md) for the full data model.
-
 ### Add documents
 
 Adding puts documents that are not in the graph yet into an **existing
@@ -142,6 +137,36 @@ changed since it was last organized. Once the divergence is above 25%, the
 partition is flagged as needing to be reorganized. AutoGraph never reorganizes
 on its own: you decide when it is worth the cost. See
 [Divergence and Reorganization](divergence-and-reorganization.md).
+
+## Clusters and strategies do not change
+
+IGU works with the clusters and strategies that the last full build created.
+It does not cluster the category again and does not run the RAG Strategizer,
+which is why it is fast. This also has downsides:
+
+- **A new document always joins an existing cluster.** It goes to the cluster
+  it is most similar to, even if it does not fit that cluster well. A full
+  build might have put it into a cluster of its own. Documents on a new topic
+  can therefore end up next to unrelated content, which can make answers about
+  them less accurate.
+- **The document gets the strategy of that cluster.** If the cluster uses
+  VectorRAG, no entities and relationships are extracted from the new
+  document. If it uses FullGraphRAG, only the entity types that were chosen for
+  that cluster are extracted, so new kinds of entities can be missed.
+- **Some documents do not reach the knowledge graph.** If no existing cluster
+  is similar enough, or the cluster has no strategy yet, the document is added
+  to the corpus graph only. The response of the
+  [add request](api-reference.md#add-documents) then has an empty
+  `cluster_key` or `rag_partition_id`.
+- **The communities get out of date.** Adding, removing, and replacing
+  documents does not change the communities, see
+  [Reorganize the knowledge graph](#reorganize-the-knowledge-graph).
+
+IGU cannot change the strategy of a cluster or add new strategies. If a
+category has changed a lot, or new documents cover topics that the category did
+not cover before, build the category again instead, see
+[When to use IGU](#when-to-use-igu). For the full data model, see
+[Architecture](../architecture.md).
 
 ## When to use IGU
 
