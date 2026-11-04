@@ -21,14 +21,28 @@ knowledge graph.
 
 ## How it works
 
-1. Upload the new files to the File Manager, into their existing category.
-2. [Add](api-reference.md#add-documents),
-   [replace](api-reference.md#replace-documents), or
-   [remove](api-reference.md#remove-documents) documents.
-3. Start a [knowledge graph build](api-reference.md#build-the-knowledge-graph-for-changed-documents)
-   for the added and replaced documents.
-4. Optional: [reorganize](divergence-and-reorganization.md) if the build says
-   so.
+1. **Upload** each new document, and each new version of an existing one, to
+   the [File Manager](../../file-manager/api.md#upload-a-rag-input-file) with
+   `POST /_platform/filemanager/_db/{database}/rag-input`, under the scope
+   `[project, category]` of its existing category. Note the `id` it returns: this
+   is the `file_id`. A new version keeps the `id` of the old one.
+2. **Change the documents** in the category, by `file_id`:
+   - `POST /v1/graph/insert` [adds](api-reference.md#add-documents) documents
+     that are not in the category yet.
+   - `POST /v1/graph/update` [replaces](api-reference.md#replace-documents)
+     documents that are in the category with their new version. It runs in the
+     background, so wait until it is done.
+   - `POST /v1/graph/delete` [removes](api-reference.md#remove-documents)
+     documents from the category, including their entities in the knowledge
+     graph.
+3. **Build the knowledge graph** for the added and replaced documents:
+   [`POST /v1/orchestrate`](api-reference.md#build-the-knowledge-graph-for-changed-documents)
+   with their `file_ids`. Wait until
+   `GET /v1/orchestrate/{orchestration_id}` reports `completed`. Removed
+   documents need no build.
+4. **Reorganize, if needed.** If the build status reports
+   `needs_reclustering: true` for a partition, you can rebuild its communities
+   with [`POST /v1/graph/recluster`](divergence-and-reorganization.md).
 
 ## Example
 
