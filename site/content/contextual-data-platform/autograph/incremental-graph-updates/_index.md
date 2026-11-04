@@ -79,9 +79,10 @@ graph.
 
 Removing deletes documents from an existing category, together with everything
 that was built from them. You send their `file_id` values or file names to
-[`POST /v1/graph/delete`](api-reference.md#remove-documents). AutoGraph removes their entities from the knowledge
-graph first. Then it removes the documents, their similarity edges, and their
-cluster membership from the corpus graph. The other documents do not change.
+[`POST /v1/graph/delete`](api-reference.md#remove-documents). AutoGraph
+removes their entities from the knowledge graph first. Then it removes the
+documents, their similarity edges, and their cluster membership from the corpus
+graph. The other documents do not change.
 
 {{< embed-svg "AutoGraph-IGU-Delete" "Removing deletes the selected documents and every edge attached to them. The other documents stay as they are." >}}
 
