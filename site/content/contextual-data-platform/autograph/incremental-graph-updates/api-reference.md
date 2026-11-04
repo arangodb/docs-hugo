@@ -8,14 +8,12 @@ weight: 30
 ---
 {{< tag "Agentic AI Suite" >}}
 
-This page describes the endpoints of
-[Incremental Graph Updates](_index.md). `POST /v1/graph/insert`, `/delete`, and
-`/update` add, remove, and replace individual documents in the **existing
-categories** of a graph that has already been built, and
+`POST /v1/graph/insert`, `/delete`, and `/update` add, remove, and replace
+individual documents in the existing categories of a built knowledge graph.
 `POST /v1/graph/recluster` reorganizes the communities of a partition that has
-changed a lot. To learn when to use them and how they compare to a full
-rebuild, see [Incremental Graph Updates](_index.md). For a step-by-step guide,
-see the [Quick Start](quick-start.md). For how the divergence is measured, see
+changed a lot. For when to use them, see
+[Incremental Graph Updates](_index.md). For a step-by-step guide, see the
+[Quick Start](quick-start.md). For how the divergence is measured, see
 [Divergence and Reorganization](divergence-and-reorganization.md).
 
 | Endpoint | Operation | Purpose | Call |
@@ -27,20 +25,20 @@ see the [Quick Start](quick-start.md). For how the divergence is measured, see
 | [`POST /v1/orchestrate`](#build-the-knowledge-graph-for-changed-documents) with `file_ids` | Knowledge graph build | Add the added and replaced documents to the knowledge graph | Asynchronous |
 
 {{< info >}}
-The `/v1/graph/*` endpoints scope documents by **category**, and the category
-has to **exist already**. A category is the second scope level of a project and
-has the label you set as `module` when you imported the files, see
-[Import files](../reference/importing-files.md#parameters). The endpoints take a
-single one in `category`. They cannot create a category. To add a new one, run
-the full build for it, see [When to use IGU](_index.md#when-to-use-igu).
+The `/v1/graph/*` endpoints work on one existing category, which you set in
+`category`. A category is the second scope level of a project. It has the label
+you set as `module` when you imported the files, see
+[Import files](../reference/importing-files.md#parameters). The endpoints cannot
+create a category. To add one, build it, see
+[When to use IGU](_index.md#when-to-use-igu).
 {{< /info >}}
 
 ## Add documents
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/insert" >}}
 
-Adds documents that are not in the graph yet to an **existing category**. The
-API calls this operation **insert**. The call is **synchronous**.
+Adds new documents to an existing category. The API calls this operation
+insert. The call is synchronous.
 
 The corpus and the target category have to exist already. If the project has
 exactly one category, you can omit `category`. Otherwise, it is required.
@@ -68,7 +66,7 @@ first and pass the returned ID.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `files` | object[] | Yes | The documents to add. The list cannot be empty, cannot contain duplicate `doc_name` or `file_id` values, and cannot hold more than **100** files per request. |
+| `files` | object[] | Yes | The documents to add. The list cannot be empty, cannot contain duplicate `doc_name` or `file_id` values, and cannot have more than 100 files per request. |
 | `files[].doc_name` | string | Yes | The file name of the document. It has to match the File Manager file name of `file_id`. |
 | `files[].file_id` | string | Yes | The File Manager ID to get the document from. Every entry needs one. If any entry is missing it, the whole batch is rejected with `400` and a message that lists the offending `doc_name` values. |
 | `category` | string | Conditional | The existing category to add the documents to. Required unless the project has exactly one category. |
@@ -104,9 +102,9 @@ upload it.
 | `file_id` | The File Manager ID of the added document. Use this value in the `file_ids` of the knowledge graph build. |
 
 {{< info >}}
-**The response does not include the divergence.** At this point, it would be measured
-before the knowledge graph build has created the entities of the new documents.
-Read it from
+**The response does not include the divergence.** At this point, it would be
+measured before the knowledge graph build has created the entities of the new
+documents. Read it from
 [`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration)
 once the knowledge graph build has run. See
 [Where to read the divergence](divergence-and-reorganization.md#where-to-read-the-divergence).
@@ -114,7 +112,7 @@ once the knowledge graph build has run. See
 
 Adding extracts the text, creates an embedding, stores the document, assigns the
 closest existing cluster, and adds the membership and similarity edges. It only
-changes the **corpus graph**. To add the document to the knowledge graph, start
+changes the corpus graph. To add the document to the knowledge graph, start
 a [knowledge graph build](#build-the-knowledge-graph-for-changed-documents) with
 its `file_id`. AutoGraph resolves the partition itself, so you do not pass one.
 Because every added document has a File Manager ID, it can always be passed to
@@ -151,11 +149,11 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/delete" >}}
 
-Removes documents that are **already in an existing category**. The API calls
-this operation **delete**. The call is **synchronous** and performs the whole
-removal itself. It cleans up the knowledge graph first, then the corpus graph.
-No Importer worker is involved, and there is no background job to wait for. The
-response is the final result.
+Removes documents from an existing category. The API calls this operation
+delete. The call is synchronous and does the whole removal itself. It cleans up
+the knowledge graph first, then the corpus graph. No Importer worker is
+involved, and there is no background job to wait for. The response is the final
+result.
 
 Use File Manager IDs in `file_ids` if you can, as they are stable. Otherwise,
 provide `doc_names`, which are looked up in the requested category. You need to
@@ -198,7 +196,7 @@ invalid, the request returns `400` and nothing is removed.
 {{< info >}}
 **Removing has no replica setting, because it has no workers.** AutoGraph
 removes the knowledge graph data itself, with AQL queries, as part of this
-request. There are no Importer jobs to spawn or to scale, unlike a
+request. There are no Importer jobs to start or to scale, unlike a
 [knowledge graph build](#build-the-knowledge-graph-for-changed-documents).
 {{< /info >}}
 
@@ -244,13 +242,13 @@ standalone removal does not write one.
 | `affected_rag_partitions` / `affected_cluster_ids` | The partitions and clusters the deletion touched. |
 | `removed_rag_partitions` / `removed_cluster_ids` | The partitions and clusters that became empty and have been dropped. |
 
-**`overall_status`** covers both stages and tells you whether you can retry:
+`overall_status` covers both stages and tells you whether you can retry.
 
 | Value | Meaning |
 |-------|---------|
 | `COMMITTED` | The deletion succeeded in both the knowledge graph and the corpus graph. |
-| `ROLLED_BACK` | Something failed, and the state from before the call has been **fully restored**. The documents are still in the graph, and it is safe to retry the same batch. |
-| `FAILED` | Something failed and the restore itself was **incomplete**. Do not retry right away. Inspect the corpus and the knowledge graph before you call again. |
+| `ROLLED_BACK` | Something failed, and the state from before the call has been restored. The documents are still in the graph, and it is safe to retry the same batch. |
+| `FAILED` | Something failed, and the restore itself was incomplete. Do not retry right away. Inspect the corpus and the knowledge graph before you call again. |
 
 In field and status names, `LAYER3` refers to the knowledge graph and `LAYER2`
 to the corpus graph. The `status` of a `layer3_results` entry is one of
@@ -267,14 +265,13 @@ corpus graph removal still goes ahead, and `overall_status` can still be
 {{< tip >}}
 **A failed deletion is rolled back.** AutoGraph snapshots the knowledge graph
 data before it removes anything. If the knowledge graph cleanup fails, the
-snapshot is restored and the corpus graph is never touched. If the corpus graph
-removal then fails, the knowledge graph
-snapshots are restored as well. A deletion that unwinds this way reports
-`ROLLED_BACK`, and the same batch is safe to send again. Only `FAILED` means the
-restore did not complete.
+snapshot is restored and the corpus graph does not change. If the corpus graph
+removal then fails, the knowledge graph snapshots are restored as well. A
+deletion that unwinds this way reports `ROLLED_BACK`, and the same batch is safe
+to send again. Only `FAILED` means the restore did not complete.
 {{< /tip >}}
 
-When the deletion **commits**, AutoGraph calculates the divergence of every
+When the deletion commits, AutoGraph calculates the divergence of every
 affected partition again and adds `divergence_score` and `needs_reclustering`
 to the result of each file. The fields are only present if `overall_status` is
 `COMMITTED`. A deletion that ends in `ROLLED_BACK` or `FAILED` reports no
@@ -308,8 +305,8 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update" >}}
 
-Replaces documents that are **already in an existing category** with a new
-version. The API calls this operation **update**. The call is **asynchronous**.
+Replaces documents in an existing category with a new version. The API calls
+this operation update. The call is asynchronous.
 
 Every document has to be in the requested category already. A single
 invalid document makes the whole batch fail before anything is changed.
@@ -317,7 +314,7 @@ invalid document makes the whole batch fail before anything is changed.
 ### Request
 
 As when adding, every document is identified by its File Manager `file_id`.
-Replacing takes **no inline content**: the replacement is always read back from
+Replacing takes no inline content. AutoGraph always reads the new version from
 the File Manager. Upload the new version with
 [`POST /_platform/filemanager/_db/{database}/rag-input`](../../file-manager/api.md#upload-a-rag-input-file)
 and pass the returned ID.
@@ -343,7 +340,7 @@ and pass the returned ID.
 | `files[].file_id` | string | Yes | The File Manager ID to get the new version from. Every entry needs one. If any entry is missing it, the whole batch is rejected with `400` and a message that lists the offending `doc_name` values. |
 | `category` | string | Conditional | The existing category the documents are in. Required unless the project has exactly one category. If you omit it in a project with a single category, the `doc_name` values are looked up in that category before anything is changed. |
 
-`POST /v1/graph/update` still accepts the **deprecated** `module` field, which
+`POST /v1/graph/update` still accepts the deprecated `module` field, which
 is only honored when `category` is empty. Send `category`. Insert and delete
 have no `module` field at all.
 
@@ -370,10 +367,9 @@ names, `L3` stands for the knowledge graph and `L12` for the corpus graph:
    cluster to it.
 4. `DONE`: Replacing has succeeded or failed.
 
-The knowledge graph is cleaned up first, for the same reason as in a standalone
-[removal](#remove-documents): replacing reuses the same removal logic, which
-snapshots and removes the knowledge graph data before it touches the corpus
-graph.
+Replacing uses the same logic as a standalone [removal](#remove-documents).
+It saves a snapshot of the knowledge graph data and removes that data before it
+changes the corpus graph.
 
 A final status message looks like this:
 
@@ -409,17 +405,17 @@ conditionally, so read them as absent rather than empty when the value does not
 apply.
 
 {{< warning >}}
-**Check every file, not only the top-level `status`.** A run can report
-`status: "completed"` while an individual entry of `files[]` has an `error`.
-Read the `result` and `error` of each file before you treat the replacement as
-done.
+**Check the result of every file as well as the top-level `status`.** A run can
+report `status: "completed"` while an individual entry of `files[]` has an
+`error`. Read the `result` and `error` of each file before you treat the
+replacement as done.
 {{< /warning >}}
 
 {{< info >}}
-**The status does not include the divergence either**, for the same reason as when
-[adding](#add-documents): the new version only reaches the knowledge graph
-through a knowledge graph build, so any score written here would predate the
-entities it is supposed to measure. Read it from
+**The status does not include the divergence either.** As when
+[adding](#add-documents), the new version only reaches the knowledge graph
+through a knowledge graph build, so a value here would be measured before the
+new entities exist. Read it from
 [`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration)
 afterwards.
 {{< /info >}}
@@ -430,9 +426,8 @@ side. It is still not a database transaction.
 
 {{< warning >}}
 If removing the old version succeeds but adding the new one fails, the document
-stays removed.
-Fix the underlying problem and add it again with `POST /v1/graph/insert`, using
-the `file_id` from the entry of that file.
+stays removed. Fix the problem and add it again with `POST /v1/graph/insert`,
+using the `file_id` from the entry of that file.
 {{< /warning >}}
 
 After the documents have been replaced, start a
@@ -469,11 +464,11 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/recluster" >}}
 
-Rebuilds the communities of up to five **FullGraphRAG** partitions from their
-current entities. The API calls this operation **recluster**. The call returns
-right away and reports whether each partition was taken up, which is weaker
-than a queue position, see the response below. Reorganizing itself runs
-**asynchronously**, and only one partition is reorganized at a time.
+Rebuilds the communities of up to five FullGraphRAG partitions from their
+current entities. The API calls this operation recluster. The call returns
+right away and reports whether each partition was taken up. This is not a queue
+position, see the response below. Reorganizing runs asynchronously, and only
+one partition is reorganized at a time.
 
 Call this endpoint if `needs_reclustering: true` is reported for a partition and
 you decide to rebuild its communities, which is expensive. AutoGraph never
@@ -485,17 +480,17 @@ profile of the partition. Adding and replacing do not report it, see
 
 Only FullGraphRAG partitions have communities that can be rebuilt. A
 VectorRAG partition has no `Entities` or `Communities`, so there is nothing to
-rebuild, and such a partition is never flagged in the first place.
+rebuild, and such a partition is never flagged.
 
-The flag is set when the `divergence_score` is **strictly above** the threshold,
+The flag is set when the `divergence_score` is above the threshold,
 which is `0.25` and not configurable. For how the divergence is calculated,
 with examples, and how the values change over time, see
 [Divergence and Reorganization](divergence-and-reorganization.md).
 
 {{< warning >}}
 **Plan reorganizing as a maintenance operation.** It holds the single
-service-wide write lock for its entire run, which can take up to **3600
-seconds**, and blocks every corpus build and every addition, removal, and
+service-wide write lock for its entire run, which can take up to 3600
+seconds, and blocks every corpus build and every addition, removal, and
 replacement until it is done. Partitions are reorganized one after another, so
 a request for several of them blocks changes for roughly the sum of their run
 times. Run it in a window where nothing else has to change the corpus.
@@ -511,7 +506,7 @@ times. Run it in a window where nothing else has to change the corpus.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `partition_ids` | string[] | Yes | One or more `rag_partition_id` values, for example from the response of an addition, removal, or replacement. At least one non-empty ID is required, and **at most five**. Duplicates are ignored. |
+| `partition_ids` | string[] | Yes | One or more `rag_partition_id` values, for example from the response of an addition, removal, or replacement. At least one non-empty ID is required, and at most five. Duplicates are ignored. |
 
 {{< info >}}
 **Five partitions per request is a hard cap.** A request that lists more than
@@ -540,24 +535,25 @@ does not make them faster.
 | Field | Meaning |
 |-------|---------|
 | `results[].rag_partition_id` | The partition this result refers to. |
-| `results[].accepted` | `true` if the request for this partition was taken up, or if it has been merged into a reorganization that is already running for this partition. It does **not** mean the work is queued, see the warning below. |
+| `results[].accepted` | `true` if the request for this partition was taken up, or if it has been merged into a reorganization that is already running for this partition. It does not mean the work is queued, see the warning below. |
 | `results[].error_message` | Set if reorganizing could not be scheduled for this partition, for example because the ID is empty. |
 
 {{< warning >}}
 **`accepted: true` is not a queue position.** Partitions are reorganized one at
 a time, and there is no queue. A partition that has to wait for the write lock
-makes about **ten attempts, one second apart**, to get it and then gives up. It is left flagged `needs_reclustering`, so that you can trigger
-it again later. The response reports `accepted: true` for those partitions too,
+makes about ten attempts, one second apart, to get it and then gives up. It
+stays flagged with `needs_reclustering`, so that you can start it again
+later. The response reports `accepted: true` for those partitions too,
 so it does not tell you whether they ran.
 {{< /warning >}}
 
-Read the per-partition outcome from the **`rags` strategy profile**, not from
+Read the result of each partition from its `rags` strategy profile, not from
 `importerOrchestration`. The `importerOrchestration` entry in your project
 metadata shows the status of the job that has the lock, not the result of
-each partition. A partition that gave up waiting for **another reorganization**
+each partition. A partition that gave up waiting for another reorganization
 does not appear there at all. A partition that gave up waiting for any other
 operation appears as `failed`. The `rags` node of the partition has the
-reliable result:
+reliable result.
 
 | Field on the `rags` node | After a successful reorganization |
 |--------------------------|---------------------------------|
@@ -578,18 +574,18 @@ stored](divergence-and-reorganization.md#where-the-values-are-stored).
 | `403` | Access denied. |
 | `500` | Server error. |
 
-**Notes:**
+Notes:
 
-- If a partition is already being reorganized, a second request is
-  **merged** into it and does not start another Importer job.
+- If a partition is already being reorganized, a second request is merged into
+  it and does not start another Importer job.
 - Reorganizing uses the same service-wide write lock as builds and as adding,
   removing, and replacing documents, so it cannot run at the same time as these
   operations.
 - A reorganization that fails or is skipped does not clear `needs_reclustering`.
   Start it again once the lock is free.
-- A partition **without entities** is a successful no-op. The job reports `0`
-  communities over `0` entities and finishes, so a completed job is not evidence
-  that anything was refreshed. Check `last_reclustered_at` and the
+- For a partition without entities, the job reports `0` communities over `0`
+  entities and finishes successfully without changing anything. A completed job
+  does not mean that anything was rebuilt. Check `last_reclustered_at` and the
   `Communities` of the partition.
 - To learn what the Importer does while it reorganizes and how long it takes,
   see
@@ -614,8 +610,8 @@ curl -X POST \
 Adding and replacing only change the corpus graph. To extract the entities and
 relationships of the new content and add them to the knowledge graph, call
 `POST /v1/orchestrate` with the `file_ids` of the added and replaced
-documents. Only those documents are processed, in the partitions that hold
-them. You do not name the partitions, AutoGraph finds them from the IDs.
+documents. Only those documents are processed, in the partitions that contain
+them. You do not name the partitions. AutoGraph finds them from the IDs.
 
 Removing does not need this call. It removes the knowledge graph data itself.
 
@@ -633,10 +629,10 @@ Removing does not need this call. It removes the knowledge graph data itself.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `project` | string | Yes | The platform project that holds the corpus. |
+| `project` | string | Yes | The platform project of the corpus. |
 | `file_ids` | string[] | Yes, for an incremental update | The `file_id` values from the response of an addition or the status of a replacement. A non-empty list skips the filter that otherwise only builds partitions that are not in the knowledge graph yet, so a partition that is already built can take the changed documents. |
-| `replicas` | integer | No | Number of Importer workers. **1** is enough for a handful of documents. |
-| `categories` | string[] | No | Narrows the IDs to these categories. Sending `categories` **without** `file_ids` does not work for an incremental update, see [Identifying documents for the knowledge graph](#identifying-documents-for-the-knowledge-graph). |
+| `replicas` | integer | No | Number of Importer workers. `1` is enough for a handful of documents. |
+| `categories` | string[] | No | Narrows the IDs to these categories. Sending `categories` without `file_ids` does not work for an incremental update, see [Identifying documents for the knowledge graph](#identifying-documents-for-the-knowledge-graph). |
 
 For the complete list of parameters, the response, the credential handling, and
 the three kinds of `409`, see
@@ -644,10 +640,10 @@ the three kinds of `409`, see
 
 ### Identifying documents for the knowledge graph
 
-The build identifies documents by `file_id` alone. `doc_name` does not work
-here, and it never has to: [adding](#add-documents) and
-[replacing](#replace-documents) both require a File Manager `file_id` for every
-document, so the ID you send is the ID you pass on to the build. IDs have the
+The build identifies documents by `file_id` only, not by `doc_name`.
+[Adding](#add-documents) and [replacing](#replace-documents) both require a
+File Manager `file_id` for every document, so you pass the same IDs on to the
+build. IDs have the
 form `rag-input-{base64url(db:path)}` and refer to a File Manager path, which is
 why the project has to be built through the File Manager. Upload a document with
 [`POST /_platform/filemanager/_db/{database}/rag-input`](../../file-manager/api.md#upload-a-rag-input-file)

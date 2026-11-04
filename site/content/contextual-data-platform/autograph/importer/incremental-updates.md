@@ -27,7 +27,7 @@ Updates](../incremental-graph-updates/_index.md), which also maintains
 Layers 1 and 2. Only call the Importer directly for standalone or advanced use
 cases.
 
-In Arango Contextual Data Platform 4.1.x, this is an **API-only** feature on
+In Arango Contextual Data Platform 4.1.x, this is an API-only feature on
 both sides. Neither this Importer endpoint nor AutoGraph's IGU endpoints are
 available in the web interface.
 {{< /info >}}
@@ -110,7 +110,7 @@ version to Layers 1 and 2. The new content only reaches Layer 3 once you run a
 targeted orchestration with that `file_id`, which submits an import to the
 Importer. AutoGraph resolves the partitions itself, so you do not name one. For the phases of an update and its response
 fields, see
-[Update documents](../incremental-graph-updates/api-reference.md#replace-documents).
+[Replace documents](../incremental-graph-updates/api-reference.md#replace-documents).
 
 {{< warning >}}
 Do not import a revised file into a partition that still holds the old version.
@@ -257,8 +257,8 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POST
 ## Next steps
 
 - **[Incremental Graph Updates in AutoGraph](../incremental-graph-updates/_index.md)**:
-  The workflow that inserts, deletes, updates, and reclusters documents across
-  all three layers.
+  How to add, remove, and replace documents in existing categories, and
+  reorganize the knowledge graph.
 - **[Architecture](architecture.md)**: The knowledge graph collections and the
   lifecycle of asynchronous jobs.
 - **[Import Files](import-endpoints.md)**: Single-file and multi-file import

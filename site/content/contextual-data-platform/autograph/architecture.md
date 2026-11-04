@@ -240,7 +240,7 @@ rebuilds its communities. A VectorRAG partition has neither collection, see
 | `content` | `"--- source: https://…"` | Full document text. |
 | `partition_id` | `default_0_a` | Which RAG partition it belongs to. |
 | `import_number` | `1` | Which import / build produced it. Every incremental import into the same partition adds another batch. |
-| `file_ids` | `["rag-input-…"]` | The File Manager IDs stored at import time. [Incremental graph updates](incremental-graph-updates/_index.md) use them to find a document that you want to delete. |
+| `file_ids` | `["rag-input-…"]` | The File Manager IDs stored at import time. [Incremental graph updates](incremental-graph-updates/_index.md) use them to find a document that you want to remove. |
 
 **`Chunks`** — a token-sized passage, the retrieval unit
 
