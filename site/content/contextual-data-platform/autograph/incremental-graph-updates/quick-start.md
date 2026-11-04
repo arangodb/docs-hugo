@@ -21,11 +21,11 @@ knowledge graph.
 
 ## How it works
 
-1. **Upload** each new document, and each new version of an existing one, to
-   the [File Manager](../../file-manager/api.md#upload-a-rag-input-file) with
+1. **Upload** each new document, and each new version of an existing one, to the
+   [File Manager](../../file-manager/api.md#upload-a-rag-input-file) with
    `POST /_platform/filemanager/_db/{database}/rag-input`, under the scope
-   `[project, category]` of its existing category. Note the `id` it returns: this
-   is the `file_id`. A new version keeps the `id` of the old one.
+   `[project, category]` of its existing category. Note the `id` it returns:
+   this is the `file_id`. A new version keeps the `id` of the old one.
 2. **Change the documents** in the category, by `file_id`:
    - `POST /v1/graph/insert` [adds](api-reference.md#add-documents) documents
      that are not in the category yet.

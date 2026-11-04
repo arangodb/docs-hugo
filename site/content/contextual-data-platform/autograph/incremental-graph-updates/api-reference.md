@@ -73,11 +73,11 @@ first and pass the returned ID.
 | `files[].file_id` | string | Yes | The File Manager ID to get the document from. Every entry needs one. If any entry is missing it, the whole batch is rejected with `400` and a message that lists the offending `doc_name` values. |
 | `category` | string | Conditional | The existing category to add the documents to. Required unless the project has exactly one category. |
 
-There is no `citable_url` request field. AutoGraph reads the citable URL from the
-`custom_metadata` of the File Manager file and validates it the same way a
-[corpus build](../reference/importing-files.md#parameters) does, so it has to be an
-`http` or `https` URL with valid characters. Set it on the file when you upload
-it.
+There is no `citable_url` request field. AutoGraph reads the citable URL from
+the `custom_metadata` of the File Manager file and validates it the same way a
+[corpus build](../reference/importing-files.md#parameters) does, so it has to be
+an `http` or `https` URL with valid characters. Set it on the file when you
+upload it.
 
 ### Response
 
@@ -107,18 +107,18 @@ it.
 **The response carries no divergence.** At this point, it would be measured
 before the knowledge graph build has created the entities of the new documents.
 Read it from
-[`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration) once the
-knowledge graph build has run. See
+[`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration)
+once the knowledge graph build has run. See
 [Where to read the divergence](divergence-and-reorganization.md#where-to-read-the-divergence).
 {{< /info >}}
 
 Adding extracts the text, creates an embedding, stores the document, assigns the
 closest existing cluster, and adds the membership and similarity edges. It only
-changes the **corpus graph**. To add the document to the knowledge graph, start a
-[knowledge graph build](#build-the-knowledge-graph-for-changed-documents) with
-its `file_id`. AutoGraph resolves the partition itself, so you
-do not pass one. Because every added document has a File Manager ID, it can
-always be passed to the build, see
+changes the **corpus graph**. To add the document to the knowledge graph, start
+a [knowledge graph build](#build-the-knowledge-graph-for-changed-documents) with
+its `file_id`. AutoGraph resolves the partition itself, so you do not pass one.
+Because every added document has a File Manager ID, it can always be passed to
+the build, see
 [Identifying documents for the knowledge graph](#identifying-documents-for-the-knowledge-graph).
 
 | Status Code | Meaning |
@@ -153,9 +153,9 @@ curl -X POST \
 
 Removes documents that are **already in an existing category**. The API calls
 this operation **delete**. The call is **synchronous** and performs the whole
-removal itself. It cleans up the knowledge graph first, then
-the corpus graph. No Importer worker is involved, and there is no background job to wait
-for. The response is the final result.
+removal itself. It cleans up the knowledge graph first, then the corpus graph.
+No Importer worker is involved, and there is no background job to wait for. The
+response is the final result.
 
 Use File Manager IDs in `file_ids` if you can, as they are stable. Otherwise,
 provide `doc_names`, which are looked up in the requested category. You need to
@@ -196,9 +196,9 @@ invalid, the request returns `400` and nothing is removed.
 {{< /info >}}
 
 {{< info >}}
-**Removing has no replica setting, because it has no workers.** AutoGraph removes
-the knowledge graph data itself, with AQL queries, as part
-of this request. There are no Importer jobs to spawn or to scale, unlike a
+**Removing has no replica setting, because it has no workers.** AutoGraph
+removes the knowledge graph data itself, with AQL queries, as part of this
+request. There are no Importer jobs to spawn or to scale, unlike a
 [knowledge graph build](#build-the-knowledge-graph-for-changed-documents).
 {{< /info >}}
 
@@ -231,9 +231,9 @@ of this request. There are no Importer jobs to spawn or to scale, unlike a
 }
 ```
 
-The response reports the outcome of the complete deletion, knowledge graph included.
-There is no `importerOrchestration` entry to poll, because a standalone removal
-does not write one.
+The response reports the outcome of the complete deletion, knowledge graph
+included. There is no `importerOrchestration` entry to poll, because a
+standalone removal does not write one.
 
 | Field | Meaning |
 |-------|---------|
@@ -317,8 +317,8 @@ invalid document makes the whole batch fail before anything is changed.
 ### Request
 
 As when adding, every document is identified by its File Manager `file_id`.
-Replacing takes **no inline content**: the replacement is always read back from the
-File Manager. Upload the new version with
+Replacing takes **no inline content**: the replacement is always read back from
+the File Manager. Upload the new version with
 [`POST /_platform/filemanager/_db/{database}/rag-input`](../../file-manager/api.md#upload-a-rag-input-file)
 and pass the returned ID.
 
@@ -411,20 +411,22 @@ apply.
 {{< warning >}}
 **Check every file, not only the top-level `status`.** A run can report
 `status: "completed"` while an individual entry of `files[]` carries an `error`.
-Read the `result` and `error` of each file before you treat the replacement as done.
+Read the `result` and `error` of each file before you treat the replacement as
+done.
 {{< /warning >}}
 
 {{< info >}}
 **The status carries no divergence either**, for the same reason as when
-[adding](#add-documents): the new version only reaches the knowledge graph through a
-knowledge graph build, so any score written here would predate the entities it
-is supposed to measure. Read it from
-[`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration) afterwards.
+[adding](#add-documents): the new version only reaches the knowledge graph
+through a knowledge graph build, so any score written here would predate the
+entities it is supposed to measure. Read it from
+[`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration)
+afterwards.
 {{< /info >}}
 
-Replacing waits for the old knowledge graph data to be removed before it adds the new
-version, so that old and new knowledge graph data do not exist side by side. It
-is still not a database transaction.
+Replacing waits for the old knowledge graph data to be removed before it adds
+the new version, so that old and new knowledge graph data do not exist side by
+side. It is still not a database transaction.
 
 {{< warning >}}
 If removing the old version succeeds but adding the new one fails, the document
@@ -476,11 +478,10 @@ than a queue position, see the response below. Reorganizing itself runs
 Call this endpoint if `needs_reclustering: true` is reported for a partition and
 you decide that rebuilding its communities is worth the cost. AutoGraph never
 reorganizes on its own. The flag is reported by
-[`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration), by a
-[removal](#remove-documents) once it has committed, and by the
-`rags` profile of the partition. Adding and replacing do not report it,
-see [Where to read the
-divergence](divergence-and-reorganization.md#where-to-read-the-divergence).
+[`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration),
+by a [removal](#remove-documents) once it has committed, and by the `rags`
+profile of the partition. Adding and replacing do not report it, see
+[Where to read the divergence](divergence-and-reorganization.md#where-to-read-the-divergence).
 
 Only FullGraphRAG partitions have communities that can be rebuilt. A
 VectorRAG partition has no `Entities` or `Communities`, so there is nothing to
@@ -544,8 +545,8 @@ does not make them faster.
 
 {{< warning >}}
 **`accepted: true` is not a queue position.** Partitions are reorganized one at
-a time, and there is no queue behind it. A partition whose peer holds
-the mutation slot makes about **ten attempts, one second apart**, to claim it and
+a time, and there is no queue behind it. A partition whose peer holds the
+mutation slot makes about **ten attempts, one second apart**, to claim it and
 then gives up. It is left flagged `needs_reclustering`, so that you can trigger
 it again later. The response reports `accepted: true` for those partitions too,
 which means it tells you nothing about whether they actually ran.
@@ -555,9 +556,9 @@ Read the per-partition outcome from the **`rags` strategy profile**, not from
 `importerOrchestration`. The `importerOrchestration` entry in your project
 metadata carries the status of the job that holds the slot. It is *not* a
 per-partition ledger. A partition that gave up waiting behind **another
-reorganization** is not published there at all, so it is invisible in that slot; a
-deferral behind any other operation is published as `failed`. The `rags` node of
-the partition is authoritative:
+reorganization** is not published there at all, so it is invisible in that slot;
+a deferral behind any other operation is published as `failed`. The `rags` node
+of the partition is authoritative:
 
 | Field on the `rags` node | After a successful reorganization |
 |--------------------------|---------------------------------|
@@ -656,9 +657,9 @@ and pass the returned ID.
 A non-empty `file_ids` is what keeps an already built partition eligible,
 because it bypasses the filter that otherwise only builds partitions that are
 not in the `{project}_kg` knowledge graph yet. Sending `categories` alone does
-not bypass that filter, so it skips exactly the partitions that your addition
-or replacement touched. If nothing else is stale, the request is rejected with a `409`
-and a `Nothing to orchestrate` message, see
+not bypass that filter, so it skips exactly the partitions that your addition or
+replacement touched. If nothing else is stale, the request is rejected with a
+`409` and a `Nothing to orchestrate` message, see
 [Telling the three `409` responses apart](../reference/orchestration.md#telling-the-three-409-responses-apart).
 
 ### Response
