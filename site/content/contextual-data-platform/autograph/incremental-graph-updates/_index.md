@@ -37,13 +37,9 @@ category, run the full build for it: a
 To get started right away, see the [Quick Start](quick-start.md). For the
 endpoints, requests, and responses, see the [API Reference](api-reference.md).
 
-## Terms and legend
+## Terms
 
-The diagrams on these pages use the following symbols:
-
-{{< embed-svg "AutoGraph-IGU-Legend" "The symbols used in the Incremental Graph Updates diagrams: documents and similarity edges in the corpus graph, entities, relationships, and communities in the knowledge graph." >}}
-
-The pages use the following terms:
+The Incremental Graph Updates pages use the following terms:
 
 | Term | Meaning |
 |------|---------|

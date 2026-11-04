@@ -92,11 +92,13 @@
     <circle class="node-new" cx="762.0" cy="246.0" r="8"/>
     <circle class="node-new" cx="720.0" cy="280.0" r="8"/>
     <path d="M 394 155 L 433 155" stroke="#00576e" stroke-width="2" fill="none" marker-end="url(#igui-arrow)"/>
-    <circle class="node" cx="27.0" cy="312.0" r="6"/>
+    <circle class="node" cx="27" cy="312" r="6"/>
     <text class="legend" x="38" y="316" text-anchor="start">existing document</text>
-    <circle class="node-new" cx="175.0" cy="312.0" r="6"/>
+    <circle class="node-new" cx="175" cy="312" r="6"/>
     <text class="legend" x="186" y="316" text-anchor="start">added document</text>
-    <line class="edge-new" x1="316" y1="312" x2="338" y2="312"/>
-    <text class="legend" x="346" y="316" text-anchor="start">new similarity edge</text>
+    <line class="edge" x1="300" y1="312" x2="322" y2="312"/>
+    <text class="legend" x="330" y="316" text-anchor="start">similarity edge</text>
+    <line class="edge-new" x1="440" y1="312" x2="462" y2="312"/>
+    <text class="legend" x="470" y="316" text-anchor="start">new similarity edge</text>
   </g>
 </svg>
