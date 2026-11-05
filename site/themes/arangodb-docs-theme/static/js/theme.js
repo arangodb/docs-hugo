@@ -102,7 +102,8 @@ function isSameDocumentUrl(urlPath) {
 
 /**
  * Same-document navigation to a fragment via location.hash so CSS :target updates (pushState does not).
- * If the URL already matches (including hash), clears the fragment first so :target can re-apply.
+ * If the URL already matches (including hash), only scrolls to the fragment again, like the browser
+ * does, without adding a history entry.
  * Returns true if handled; caller should not pushState or scroll.
  */
 function navigateSameDocumentFragment(urlPath) {
@@ -116,8 +117,9 @@ function navigateSameDocumentFragment(urlPath) {
       return false;
     }
     if (historyUrlMatchesCurrent(u.href)) {
-      var base = window.location.pathname + window.location.search;
-      window.history.replaceState(window.history.state, document.title, base);
+      scrollToFragment();
+      flashTarget();
+      return true;
     }
     window.location.hash = hash;
     return true;
@@ -126,26 +128,150 @@ function navigateSameDocumentFragment(urlPath) {
   }
 }
 
+/*
+ * Scroll positions per history entry: going back or forward to another page
+ * restores where the reader left it, to another fragment of the same page jumps
+ * to its heading. The browser would restore the position before loadPage() has
+ * swapped in the content, so this is done manually after the swap.
+ */
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
+
+function historyState() {
+  return history.state && typeof history.state === "object" ? history.state : {};
+}
+
+/*
+ * The view of a history entry: the scroll position relative to the heading
+ * above it (stays correct if content above changes size), and what was
+ * expanded or selected: open details (also OpenAPI properties), selected tabs
+ * (not stored as preference, which other pages may have changed), and
+ * expanded long code blocks. Restored after loadPage() swapped the page in.
+ */
+// Content only, not the dropdown of the table of contents (which may come)
+const VIEW_DETAILS = "details:not(.toc-details)";
+
+function articleHeadings() {
+  return document.querySelectorAll("article :is(h2, h3, h4, h5, h6)[id]");
+}
+
+function captureViewState() {
+  const article = document.querySelector("article");
+  if (!article) return { scrollY: Math.round(window.scrollY) };
+  const padding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+  let anchor = null;
+  for (const heading of articleHeadings()) {
+    const top = heading.getBoundingClientRect().top;
+    if (top > padding + 1) break;
+    anchor = { id: heading.id, offset: Math.round(padding - top) };
+  }
+  const tabs = {};
+  article.querySelectorAll(".tab-nav-button.selected[data-tab-group]").forEach(tab => {
+    tabs[tab.dataset.tabGroup] = tab.dataset.tabItem;
+  });
+  const indices = (list, test) => [...list].flatMap((el, i) => test(el) ? [i] : []);
+  return {
+    scrollY: Math.round(window.scrollY),
+    anchor,
+    open: indices(article.querySelectorAll(VIEW_DETAILS), el => el.open),
+    tabs,
+    code: indices(article.querySelectorAll("pre > code"), el => el.classList.contains("expanded")),
+  };
+}
+
+function saveViewState() {
+  // While loadPage() fetches the page of a new history entry, the old page is still shown
+  if (docKeyWithoutHash(window.location.href) !== docsLastFetchedDocKey) return;
+  try {
+    history.replaceState({ ...historyState(), ...captureViewState() }, document.title);
+  } catch (e) {
+    // Browsers limit the rate of history changes
+  }
+}
+
+// Debounced, replaceState() calls are rate-limited (Safari throws after 100 in 30 seconds).
+// Saved continuously because popstate only fires after leaving the entry.
+let saveViewStateTimer;
+function scheduleSaveViewState() {
+  clearTimeout(saveViewStateTimer);
+  saveViewStateTimer = setTimeout(saveViewState, 200);
+}
+
+window.addEventListener("scroll", scheduleSaveViewState, { passive: true });
+// details toggled (doesn't bubble), tabs and Show more clicked
+document.addEventListener("toggle", scheduleSaveViewState, true);
+document.addEventListener("click", scheduleSaveViewState);
+
+// Also for the back/forward cache and reloads
+window.addEventListener("pagehide", saveViewState);
+
+/** Returns true if a saved view was restored (including the scroll position). */
+function restoreViewState() {
+  const state = historyState();
+  if (typeof state.scrollY !== "number") return false;
+  const article = document.querySelector("article");
+  if (article) {
+    const details = article.querySelectorAll(VIEW_DETAILS);
+    (state.open || []).forEach(i => {
+      const el = details[i];
+      if (!el) return;
+      el.open = true;
+      el.querySelector(":scope > summary")?.classList.remove("collapsed");
+    });
+    Object.entries(state.tabs || {}).forEach(([group, item]) => switchTab(group, item, undefined, false));
+    // After the tabs, which add Show more buttons to code in shown panels
+    const code = article.querySelectorAll("pre > code");
+    (state.code || []).forEach(i => {
+      const el = code[i];
+      const button = el && el.nextElementSibling;
+      if (!el || !el.classList.contains("code-long") || !button?.classList.contains("code-show-more")) return;
+      el.classList.add("expanded");
+      button.classList.add("expanded");
+    });
+  }
+  const heading = state.anchor && document.getElementById(state.anchor.id);
+  if (heading) {
+    const padding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+    window.scrollTo(window.scrollX, heading.getBoundingClientRect().top + window.scrollY - padding + state.anchor.offset);
+  } else {
+    window.scrollTo(window.scrollX, state.scrollY);
+  }
+  return true;
+}
+
 function updateHistory(urlPath) {
   //console.log("updateHistory: " + urlPath);
-  if (!urlPath || historyUrlMatchesCurrent(urlPath)) {
+  if (!urlPath) {
     return;
   }
+  if (historyUrlMatchesCurrent(urlPath)) {
+    // Like the browser, a link to the current fragment scrolls to it again
+    // (after scrolling elsewhere), without a new history entry
+    if (location.hash.length > 1) {
+      scrollToFragment();
+      flashTarget();
+    }
+    return;
+  }
+
+  clearTimeout(saveViewStateTimer);
+  saveViewState();
 
   // Same page, different fragment only: avoid fetch + synthetic popstate (~1s on slow networks).
   if (isSameDocumentUrl(urlPath)) {
     if (navigateSameDocumentFragment(urlPath)) {
       return;
     }
-    window.history.pushState("navchange", "Arango Documentation", urlPath);
+    window.history.pushState({}, "Arango Documentation", urlPath);
     scrollToFragment();
     return;
   }
 
-  window.history.pushState("navchange", "Arango Documentation", urlPath);
+  window.history.pushState({}, "Arango Documentation", urlPath);
   //if (!urlPath.startsWith("#")) trackPageView(document.title, urlPath);
 
-  var popStateEvent = new PopStateEvent('popstate', { state: "navchange" });
+  var popStateEvent = new PopStateEvent('popstate', { state: {} });
   window.dispatchEvent(popStateEvent);
 }
 
@@ -159,7 +285,7 @@ function replaceHistory(urlPath) {
     return false;
   }
 
-  window.history.replaceState("navchange", "Arango Documentation", urlPath);
+  window.history.replaceState(historyState(), "Arango Documentation", urlPath);
   return true;
 }
 
@@ -203,19 +329,6 @@ function styleImages() {
       image.setAttribute("style", styles)
       image.removeAttribute("x-style")
   }
-}
-
-function loadNotFoundPage() {
-  fetch(window.location.origin + "/notfound.html")
-    .then(response => response.text())
-    .then(newDoc => {
-      replaceArticle("", newDoc)
-      initArticle("");
-      docsLastFetchedDocKey = docKeyWithoutHash(window.location.href);
-      flashTarget();
-      return true;
-    })
-    .catch(error => console.error('Error loading not found page:', error));
 }
 
 /** Origin + pathname + search of the last document we successfully injected (no hash). Used to skip refetch on hash-only history steps. */
@@ -272,17 +385,22 @@ function loadPage(target) {
 
   var requestedKey = docKeyWithoutHash(href);
   if (docsLastFetchedDocKey !== null && requestedKey !== null && requestedKey === docsLastFetchedDocKey) {
-    scrollToFragment();
+    // Same page: back or forward to a fragment jumps to its heading again
+    if (location.hash || !restoreViewState()) {
+      scrollToFragment();
+    }
     return;
   }
 
   var menuPathName = new URL(href).pathname;
   //console.log(menuPathName);
   
+  // Until the new article is swapped in, errors fall back to a normal navigation
+  var swapped = false;
   fetch(href)
     .then(response => {
-      if (!response.ok) {
-        // Handle 404 and other HTTP errors
+      // Unknown URLs get 404.html, which is shown like any other page
+      if (!response.ok && response.status !== 404) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       if (response.url) {
@@ -323,10 +441,14 @@ function loadPage(target) {
         return;
       }
       replaceArticle(href, newDoc);
+      swapped = true;
       docsLastFetchedDocKey = docKeyWithoutHash(href);
-      scrollToFragment();
+      // Collapse code blocks, restore tabs etc. first, they move the target
       initArticle(href);
-      flashTarget();
+      if (!restoreViewState()) {
+        scrollToFragment();
+        flashTarget();
+      }
       if (window.setupDocSearch) {
         window.setupDocSearch(getSelectedVersion());
       }
@@ -334,7 +456,9 @@ function loadPage(target) {
     })
     .catch(error => {
       console.error('Error loading page:', error);
-      loadNotFoundPage(href);
+      // Network or server errors: let the browser show what it gets. Errors
+      // while initializing the new article only need logging.
+      if (!swapped) window.location.assign(href);
     });
 }
 
@@ -573,7 +697,7 @@ window.addEventListener('scroll', throttle(function() {
 
 */
 
-function switchTab(tabGroup, tabId, event) {
+function switchTab(tabGroup, tabId, event, persist = true) {
   var tabs = document.querySelectorAll(".tab-panel");
   var allTabItems = [];
   var targetTabItems = [];
@@ -615,7 +739,7 @@ function switchTab(tabGroup, tabId, event) {
   }
 
   // Store the selection to make it persistent
-  if(window.localStorage){
+  if(persist && window.localStorage){
       var selectionsJSON = window.localStorage.getItem("tab-selections");
       if(selectionsJSON){
         var tabSelections = JSON.parse(selectionsJSON);
@@ -717,8 +841,10 @@ function hideEmptyOpenapiDiv() {
       for (var i = 0; i < fields.length; i++) {
         field = fields.slice(0, i+1).join("_")
         var el = document.getElementById(method+"_"+field);
+        if (!el) continue;
         el.setAttribute("open", "")
-        el.childNodes[0].classList.remove("collapsed")
+        // The first child node is whitespace, not the <summary>
+        el.querySelector(":scope > summary")?.classList.remove("collapsed")
       }
     }
     element.scrollIntoView();
@@ -1037,7 +1163,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Use replaceState (not pushState) to avoid duplicate URL in stack and breaking
     // the forward list when combined with alias resolution
     if (document.body.hasChildNodes()) {
-      window.history.replaceState("popstate", "Arango Documentation", window.location.href);
+      window.history.replaceState(historyState(), "Arango Documentation", window.location.href);
     }
 
     const currentVersion = getVersionFromURL();
@@ -1045,7 +1171,21 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem('docs-version', currentVersion);
     }
 
-    loadPage(window.location.href)
+    // Initialize the server-rendered article in place (also the not found page).
+    // Fetching and swapping it again would reset the images to zero height (until
+    // decoded) and undo the browser's scroll to the fragment, which can then land
+    // in the wrong spot.
+    docsLastFetchedDocKey = docKeyWithoutHash(window.location.href);
+    initArticle(window.location.href);
+    // A saved position means a reload, or a return after the page was evicted
+    // from the back/forward cache
+    if (!restoreViewState()) {
+      scrollToFragment();
+      flashTarget();
+    }
+    if (window.setupDocSearch) {
+      window.setupDocSearch(getSelectedVersion());
+    }
 
     // Add central click handler to document
     document.addEventListener("click", handleDocumentClick);
@@ -1074,13 +1214,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const ZOOMABLE_SELECTOR = 'article img, article .svg-figure > svg, article pre.mermaid > svg';
 /* Images rendered smaller than this are treated as inline icons. */
-const ZOOMABLE_MIN_SIZE = 48;
+// Smaller illustrations, like icons, are shown as they are. The Enlarge hint alone is about this wide.
+const ZOOMABLE_MIN_SIZE = 100;
 /* How much of the illustration has to stay inside the overlay while panning, in pixels. */
 const VIEWER_PAN_GUTTER = 80;
 /* Pointer movement in pixels below which a press counts as a click, not a drag. */
 const VIEWER_DRAG_THRESHOLD = 5;
 const VIEWER_ZOOM_STEP = 1.5;
-/* Devices without hover get a permanent button on every illustration instead of the hover hint. */
+/* Devices without hover get a permanent button on every illustration instead of
+   the hover hint. CSS shows one or the other, so that it changes along with the
+   primary input device (a tablet with a mouse, touch emulation, etc.). */
 const ZOOM_BADGE_QUERY = '(hover: none)';
 /* Illustrations rendered smaller than this get no permanent button, as it would cover them. */
 const ZOOM_BADGE_MIN_WIDTH = 96;
@@ -1114,8 +1257,12 @@ function prepareZoomables() {
       el.addEventListener('load', prepareZoomables, { once: true });
       return;
     }
+    // Content box, the padding of floated icons doesn't make them bigger
     let rect = el.getBoundingClientRect();
-    if (rect.width && rect.width < ZOOMABLE_MIN_SIZE && rect.height < ZOOMABLE_MIN_SIZE) return;
+    let style = getComputedStyle(el);
+    let width = rect.width - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+    let height = rect.height - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+    if (rect.width && width < ZOOMABLE_MIN_SIZE && height < ZOOMABLE_MIN_SIZE) return;
     el.setAttribute('data-zoomable', '');
     el.setAttribute('tabindex', '0');
     if (!el.querySelector('a')) {
@@ -1124,7 +1271,7 @@ function prepareZoomables() {
     }
     let label = zoomableCaption(el);
     el.setAttribute('aria-label', label ? 'Enlarge: ' + label : 'Enlarge illustration');
-    if (window.matchMedia(ZOOM_BADGE_QUERY).matches) addZoomBadge(el);
+    addZoomBadge(el);
   });
   scheduleZoomBadgeLayout();
 }
@@ -1155,6 +1302,7 @@ function addZoomBadge(el) {
     _zoomBadgeObserver = new ResizeObserver(scheduleZoomBadgeLayout);
     _zoomBadgeObserver.observe(document.body);
     window.addEventListener('resize', scheduleZoomBadgeLayout);
+    window.matchMedia(ZOOM_BADGE_QUERY).addEventListener('change', scheduleZoomBadgeLayout);
   }
   // Also catches illustrations in tabs and collapsed sections being shown
   _zoomBadgeObserver.observe(el);
@@ -1169,6 +1317,8 @@ function scheduleZoomBadgeLayout() {
 }
 
 function layoutZoomBadges() {
+  // Hidden by CSS with hover, no need to position them
+  let shown = window.matchMedia(ZOOM_BADGE_QUERY).matches;
   _zoomBadges = _zoomBadges.filter(({ el, button }) => {
     // The illustration is gone after navigating to another page
     if (!document.contains(el)) {
@@ -1176,6 +1326,7 @@ function layoutZoomBadges() {
       button.remove();
       return false;
     }
+    if (!shown) return true;
     let rect = el.getBoundingClientRect();
     let fits = rect.width >= ZOOM_BADGE_MIN_WIDTH && rect.height >= ZOOM_BADGE_MIN_HEIGHT;
     button.hidden = !fits;
