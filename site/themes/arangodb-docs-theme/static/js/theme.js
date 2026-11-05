@@ -142,11 +142,46 @@ function historyState() {
   return history.state && typeof history.state === "object" ? history.state : {};
 }
 
-function saveScrollPosition() {
+/*
+ * The view of a history entry: the scroll position relative to the heading
+ * above it (stays correct if content above changes size), and what was
+ * expanded or selected: open details (also OpenAPI properties), selected tabs
+ * (not stored as preference, which other pages may have changed), and
+ * expanded long code blocks. Restored after loadPage() swapped the page in.
+ */
+function articleHeadings() {
+  return document.querySelectorAll("article :is(h2, h3, h4, h5, h6)[id]");
+}
+
+function captureViewState() {
+  const article = document.querySelector("article");
+  if (!article) return { scrollY: Math.round(window.scrollY) };
+  const padding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+  let anchor = null;
+  for (const heading of articleHeadings()) {
+    const top = heading.getBoundingClientRect().top;
+    if (top > padding + 1) break;
+    anchor = { id: heading.id, offset: Math.round(padding - top) };
+  }
+  const tabs = {};
+  article.querySelectorAll(".tab-nav-button.selected[data-tab-group]").forEach(tab => {
+    tabs[tab.dataset.tabGroup] = tab.dataset.tabItem;
+  });
+  const indices = (list, test) => [...list].flatMap((el, i) => test(el) ? [i] : []);
+  return {
+    scrollY: Math.round(window.scrollY),
+    anchor,
+    open: indices(article.querySelectorAll("details"), el => el.open),
+    tabs,
+    code: indices(article.querySelectorAll("pre > code"), el => el.classList.contains("expanded")),
+  };
+}
+
+function saveViewState() {
   // While loadPage() fetches the page of a new history entry, the old page is still shown
   if (docKeyWithoutHash(window.location.href) !== docsLastFetchedDocKey) return;
   try {
-    history.replaceState({ ...historyState(), scrollY: Math.round(window.scrollY) }, document.title);
+    history.replaceState({ ...historyState(), ...captureViewState() }, document.title);
   } catch (e) {
     // Browsers limit the rate of history changes
   }
@@ -154,20 +189,51 @@ function saveScrollPosition() {
 
 // Debounced, replaceState() calls are rate-limited (Safari throws after 100 in 30 seconds).
 // Saved continuously because popstate only fires after leaving the entry.
-let saveScrollPositionTimer;
-window.addEventListener("scroll", () => {
-  clearTimeout(saveScrollPositionTimer);
-  saveScrollPositionTimer = setTimeout(saveScrollPosition, 200);
-}, { passive: true });
+let saveViewStateTimer;
+function scheduleSaveViewState() {
+  clearTimeout(saveViewStateTimer);
+  saveViewStateTimer = setTimeout(saveViewState, 200);
+}
+
+window.addEventListener("scroll", scheduleSaveViewState, { passive: true });
+// details toggled (doesn't bubble), tabs and Show more clicked
+document.addEventListener("toggle", scheduleSaveViewState, true);
+document.addEventListener("click", scheduleSaveViewState);
 
 // Also for the back/forward cache and reloads
-window.addEventListener("pagehide", saveScrollPosition);
+window.addEventListener("pagehide", saveViewState);
 
-/** Returns true if a saved scroll position was restored. */
-function restoreScrollPosition() {
-  const scrollY = historyState().scrollY;
-  if (typeof scrollY !== "number") return false;
-  window.scrollTo(window.scrollX, scrollY);
+/** Returns true if a saved view was restored (including the scroll position). */
+function restoreViewState() {
+  const state = historyState();
+  if (typeof state.scrollY !== "number") return false;
+  const article = document.querySelector("article");
+  if (article) {
+    const details = article.querySelectorAll("details");
+    (state.open || []).forEach(i => {
+      const el = details[i];
+      if (!el) return;
+      el.open = true;
+      el.querySelector(":scope > summary")?.classList.remove("collapsed");
+    });
+    Object.entries(state.tabs || {}).forEach(([group, item]) => switchTab(group, item, undefined, false));
+    // After the tabs, which add Show more buttons to code in shown panels
+    const code = article.querySelectorAll("pre > code");
+    (state.code || []).forEach(i => {
+      const el = code[i];
+      const button = el && el.nextElementSibling;
+      if (!el || !el.classList.contains("code-long") || !button?.classList.contains("code-show-more")) return;
+      el.classList.add("expanded");
+      button.classList.add("expanded");
+    });
+  }
+  const heading = state.anchor && document.getElementById(state.anchor.id);
+  if (heading) {
+    const padding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+    window.scrollTo(window.scrollX, heading.getBoundingClientRect().top + window.scrollY - padding + state.anchor.offset);
+  } else {
+    window.scrollTo(window.scrollX, state.scrollY);
+  }
   return true;
 }
 
@@ -186,8 +252,8 @@ function updateHistory(urlPath) {
     return;
   }
 
-  clearTimeout(saveScrollPositionTimer);
-  saveScrollPosition();
+  clearTimeout(saveViewStateTimer);
+  saveViewState();
 
   // Same page, different fragment only: avoid fetch + synthetic popstate (~1s on slow networks).
   if (isSameDocumentUrl(urlPath)) {
@@ -317,7 +383,7 @@ function loadPage(target) {
   var requestedKey = docKeyWithoutHash(href);
   if (docsLastFetchedDocKey !== null && requestedKey !== null && requestedKey === docsLastFetchedDocKey) {
     // Same page: back or forward to a fragment jumps to its heading again
-    if (location.hash || !restoreScrollPosition()) {
+    if (location.hash || !restoreViewState()) {
       scrollToFragment();
     }
     return;
@@ -376,7 +442,7 @@ function loadPage(target) {
       docsLastFetchedDocKey = docKeyWithoutHash(href);
       // Collapse code blocks, restore tabs etc. first, they move the target
       initArticle(href);
-      if (!restoreScrollPosition()) {
+      if (!restoreViewState()) {
         scrollToFragment();
         flashTarget();
       }
@@ -628,7 +694,7 @@ window.addEventListener('scroll', throttle(function() {
 
 */
 
-function switchTab(tabGroup, tabId, event) {
+function switchTab(tabGroup, tabId, event, persist = true) {
   var tabs = document.querySelectorAll(".tab-panel");
   var allTabItems = [];
   var targetTabItems = [];
@@ -670,7 +736,7 @@ function switchTab(tabGroup, tabId, event) {
   }
 
   // Store the selection to make it persistent
-  if(window.localStorage){
+  if(persist && window.localStorage){
       var selectionsJSON = window.localStorage.getItem("tab-selections");
       if(selectionsJSON){
         var tabSelections = JSON.parse(selectionsJSON);
@@ -1110,7 +1176,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initArticle(window.location.href);
     // A saved position means a reload, or a return after the page was evicted
     // from the back/forward cache
-    if (!restoreScrollPosition()) {
+    if (!restoreViewState()) {
       scrollToFragment();
       flashTarget();
     }
