@@ -53,13 +53,19 @@
     /* The design system has no height for it, the hamburger button (48px) is
        a large enough touch target in it */
     --topbar-height: 56px;
-    --nav-width: 260px;
+    /* On very wide screens (4K), the sidebar, its padding, and the gaps
+       around the content grow with the viewport width beyond 1920px, up to a
+       limit so that the areas don't look disconnected. Nothing changes below. */
+    --wide-extra: max(0px, 100vw - 1920px);
+    --nav-width: min(260px + var(--wide-extra) * 0.125, 360px);
+    --nav-padding: min(8px + var(--wide-extra) * 0.025, 24px);
 
     --content-width: 800px;
     --toc-min-width: 220px;
     --toc-max-width: 600px;
-    --toc-gap: 48px;
-    --page-gutter: 48px;
+    --page-gutter: min(48px + var(--wide-extra) * 0.075, 112px);
+    /* Between the content and the table of contents (and the edit link) */
+    --toc-gap: var(--page-gutter);
     --page-gutter-narrow: 20px;
 
     --green-50: #e3f2e0;
@@ -2418,7 +2424,7 @@ nav.pagination > .next {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 0 8px 8px;
+    padding: 0 var(--nav-padding) 8px;
     background: var(--sidebar-background);
     color: var(--sidebar-text);
     font-size: 14px;
@@ -2908,8 +2914,8 @@ body.sidebar-collapsed .main-nav-ol.shimmer {
     align-items: center;
     gap: 6px;
     /* Aligned with the text of the navigation entries, below a separator like in the web UI */
-    margin: 0 -8px;
-    padding: 12px calc(0.75rem + 8px) 0;
+    margin: 0 calc(-1 * var(--nav-padding));
+    padding: 12px calc(0.75rem + var(--nav-padding)) 0;
     border-top: 1px solid #ffffff19;
     font-weight: 600;
     color: var(--sidebar-lime);
@@ -2962,7 +2968,7 @@ body.sidebar-collapsed .main-nav-ol.shimmer {
     /* Room for the expand button */
     body.sidebar-collapsed .container-main {
         margin-left: 0;
-        padding-left: 64px;
+        padding-left: max(64px, var(--page-gutter));
     }
 
     /* Hidden only once the sliding-in sidebar covers it */
