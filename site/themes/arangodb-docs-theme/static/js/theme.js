@@ -867,7 +867,7 @@ function tocHiglighter() {
 
   const entry = current
     ? toc.querySelector('a[href="#' + CSS.escape(current.id) + '"]').parentElement
-    : toc.querySelector('a[href="#top"]').parentElement;
+    : toc.querySelector('a[href="#Top"]').parentElement;
   if (entry.classList.contains("is-active")) return;
   toc.querySelectorAll(".is-active").forEach(el => el.classList.remove("is-active"));
   entry.classList.add("is-active");
@@ -1047,7 +1047,11 @@ function hideEmptyOpenapiDiv() {
   fragment = location.hash.replace("#", "")
   if (fragment) {
     var element = document.getElementById(fragment);
-    if (!element) return;
+    if (!element) {
+      // Like browsers, #top in any case is the top of the page (the Overview entry)
+      if (fragment.toLowerCase() === "top") window.scrollTo(window.scrollX, 0);
+      return;
+    }
 
     if (element.tagName == "DETAILS") {
       method = fragment.split("_").slice(0,2).join("_")

@@ -16,7 +16,9 @@
           {{- /* Scrolls inside the box of the dropdown on narrow screens */}}
           <div class="toc-entries" tabindex="-1">
             {{- /* The content before the first heading, links to the top */}}
-            <div class="level-2"><a href="#top">Overview</a></div>
+            {{- /* Browsers scroll to the top for #top in any case if no element has that ID.
+                   Hugo generates lowercase heading IDs only, so #Top can't clash with one. */}}
+            <div class="level-2"><a href="#Top">Overview</a></div>
             {{ template "nestedHeadline" dict "headings" .Page.Fragments.Headings "level" 1 "maxLevel" .Page.Params.pageToc.maxHeadlineLevel }}
           </div>
         </div>
