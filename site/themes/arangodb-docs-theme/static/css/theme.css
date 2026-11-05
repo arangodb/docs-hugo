@@ -1180,6 +1180,15 @@ article.default > * {
    over the content, and the article actions follow the previous/next links.
    The article actions come last in the document order either way. */
 
+/* Browsers keep the scroll position when content above the viewport changes
+   size, like when the fonts swap after jumping to a heading, using the first
+   element in view as the anchor. The aside spans the whole article but doesn't
+   move with the content, so the anchor has to be in the content. */
+.article-aside,
+.toc {
+    overflow-anchor: none;
+}
+
 .toc-title,
 .toc-header {
     display: flex;
