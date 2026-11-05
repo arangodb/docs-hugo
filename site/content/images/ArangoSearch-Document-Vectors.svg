@@ -16,23 +16,21 @@
     <polygon points="70.0,40.0 78.5,58.0 61.5,58.0" fill="#cad5e2"/>
     <text x="386" y="345" class="axlbl">brown</text>
     <text x="70" y="26" text-anchor="middle" class="axlbl">quick</text>
-    <path d="M 70 340 L 326.7 83.3" stroke="#008236" stroke-width="11" fill="none"/>
-    <polygon points="338.0,72.0 331.3,90.7 319.3,78.7" fill="#dcfce7" stroke="#008236" stroke-width="2" stroke-linejoin="round"/>
-    <path d="M 70 340 L 326.7 83.3" stroke="#dcfce7" stroke-width="7" fill="none"/>
+    <path d="M 75 335 L 326.7 83.3" stroke="#008236" stroke-width="11" fill="none" stroke-linecap="round"/>
+    <polygon points="338.0,72.0 331.3,90.7 319.3,78.7" fill="#008236"/>
     <text x="382" y="44" text-anchor="middle" class="qtext">query:</text>
     <text x="382" y="60" text-anchor="middle" class="qtext">quick or brown</text>
     <path d="M 70 340 L 70.0 135.0" stroke="#00576e" stroke-width="3" stroke-linecap="round" fill="none"/>
     <polygon points="70.0,124.0 75.0,137.0 65.0,137.0" fill="#00576e"/>
     <path d="M 70 340 L 239.0 340.0" stroke="#bb4d00" stroke-width="3" stroke-linecap="round" fill="none"/>
     <polygon points="250.0,340.0 237.0,345.0 237.0,335.0" fill="#bb4d00"/>
-    <path d="M 70 340 L 242.2 167.8" stroke="#002e3b" stroke-width="3" stroke-linecap="round" fill="none"/>
-    <polygon points="250.0,160.0 244.3,172.7 237.3,165.7" fill="#002e3b"/>
-    <text x="128" y="116" text-anchor="middle" class="dtext" fill="#00576e">document 1:</text>
-    <text x="128" y="132" text-anchor="middle" class="dtext" fill="#00576e">quick dog</text>
-    <text x="250" y="368" text-anchor="middle" class="dtext" fill="#bb4d00">document 2:</text>
-    <text x="250" y="384" text-anchor="middle" class="dtext" fill="#bb4d00">brown fox</text>
-    <text x="300" y="190" text-anchor="middle" class="dtext" fill="#002e3b">document 3:</text>
-    <text x="300" y="206" text-anchor="middle" class="dtext" fill="#002e3b">quick brown fox</text>
-    <circle cx="70" cy="340" r="7" fill="#314158"/>
+    <path d="M 69.8 340.2 L 242.2 167.8" stroke="#effbfd" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <polygon points="250.0,160.0 244.3,172.7 237.3,165.7" fill="#effbfd"/>
+    <text x="128" y="122" text-anchor="middle" class="dtext" fill="#00576e">document 1:</text>
+    <text x="128" y="138" text-anchor="middle" class="dtext" fill="#00576e">quick dog</text>
+    <text x="246" y="368" text-anchor="middle" class="dtext" fill="#bb4d00">document 2:</text>
+    <text x="246" y="384" text-anchor="middle" class="dtext" fill="#bb4d00">brown fox</text>
+    <text x="290" y="194" text-anchor="middle" class="dtext" fill="#002e3b">document 3:</text>
+    <text x="290" y="210" text-anchor="middle" class="dtext" fill="#002e3b">quick brown fox</text>
   </g>
 </svg>
