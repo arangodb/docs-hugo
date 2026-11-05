@@ -149,6 +149,9 @@ function historyState() {
  * (not stored as preference, which other pages may have changed), and
  * expanded long code blocks. Restored after loadPage() swapped the page in.
  */
+// Content only, not the dropdown of the table of contents (which may come)
+const VIEW_DETAILS = "details:not(.toc-details)";
+
 function articleHeadings() {
   return document.querySelectorAll("article :is(h2, h3, h4, h5, h6)[id]");
 }
@@ -171,7 +174,7 @@ function captureViewState() {
   return {
     scrollY: Math.round(window.scrollY),
     anchor,
-    open: indices(article.querySelectorAll("details"), el => el.open),
+    open: indices(article.querySelectorAll(VIEW_DETAILS), el => el.open),
     tabs,
     code: indices(article.querySelectorAll("pre > code"), el => el.classList.contains("expanded")),
   };
@@ -209,7 +212,7 @@ function restoreViewState() {
   if (typeof state.scrollY !== "number") return false;
   const article = document.querySelector("article");
   if (article) {
-    const details = article.querySelectorAll("details");
+    const details = article.querySelectorAll(VIEW_DETAILS);
     (state.open || []).forEach(i => {
       const el = details[i];
       if (!el) return;
