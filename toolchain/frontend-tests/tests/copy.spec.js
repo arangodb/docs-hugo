@@ -35,9 +35,10 @@ test.describe("code block copy button", () => {
     await pre.hover();
     const button = pre.locator(".copy-to-clipboard-button");
     await button.click();
+    // Right after the click, the confirmation only lasts a second
+    await expect(button).toHaveClass(/tooltipped/);
     const code = await pre.locator(".copy-this").innerText();
     expect((await copied(page)).trim()).toBe(code.trim());
-    await expect(button).toHaveClass(/tooltipped/);
     await expect(button).not.toHaveClass(/tooltipped/, { timeout: 3000 });
   });
 });

@@ -149,7 +149,7 @@ test.describe("going back", () => {
     const B = "/arangodb/stable/concepts/data-structure/documents/";
     const view = () => page.evaluate(() => ({
       tab: document.querySelector("article .tab-nav-button.selected[data-tab-group='interfaces']")?.dataset.tabItem,
-      open: [...document.querySelectorAll("article details")].map(d => d.open),
+      open: [...document.querySelectorAll("article details:not(.toc-details)")].map(d => d.open),
       // The text at the top of the viewport
       text: document.elementFromPoint(innerWidth / 2, 200)?.textContent.trim().slice(0, 80),
     }));
@@ -169,7 +169,7 @@ test.describe("going back", () => {
     const tab = page.locator("article .tab-nav-button[data-tab-group='interfaces']").nth(1);
     await tab.scrollIntoViewIfNeeded();
     await tab.click();
-    const summary = page.locator("article details > summary").first();
+    const summary = page.locator("article details:not(.toc-details) > summary").first();
     await summary.scrollIntoViewIfNeeded();
     await summary.click();
     await page.mouse.wheel(0, 300);
