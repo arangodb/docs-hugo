@@ -10,15 +10,15 @@
 
   <g class="asr">
     <rect width="460" height="420" fill="#f1f5f9" rx="6"/>
-    <path d="M 70 340 L 354.0 340.0" stroke="#cad5e2" stroke-width="9" stroke-linecap="round" fill="none"/>
-    <polygon points="370.0,340.0 352.0,348.5 352.0,331.5" fill="#cad5e2"/>
-    <path d="M 70 340 L 70.0 56.0" stroke="#cad5e2" stroke-width="9" stroke-linecap="round" fill="none"/>
-    <polygon points="70.0,40.0 78.5,58.0 61.5,58.0" fill="#cad5e2"/>
-    <text x="386" y="345" class="axlbl">brown</text>
-    <text x="70" y="26" text-anchor="middle" class="axlbl">quick</text>
-    <path d="M 75 335 L 326.7 83.3" stroke="#008236" stroke-width="11" fill="none" stroke-linecap="round"/>
-    <polygon points="338.0,72.0 331.3,90.7 319.3,78.7" fill="#008236"/>
-    <text x="382" y="44" text-anchor="middle" class="qtext">query:</text>
-    <text x="382" y="60" text-anchor="middle" class="qtext">quick or brown</text>
+    <path d="M 70 354 L 354.0 354.0" stroke="#cad5e2" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <polygon points="370.0,354.0 352.0,362.5 352.0,345.5" fill="#cad5e2"/>
+    <path d="M 70 354 L 70.0 70.0" stroke="#cad5e2" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <polygon points="70.0,54.0 78.5,72.0 61.5,72.0" fill="#cad5e2"/>
+    <text x="386" y="359" class="axlbl">brown</text>
+    <text x="70" y="40" text-anchor="middle" class="axlbl">quick</text>
+    <path d="M 75 349 L 326.7 97.3" stroke="#008236" stroke-width="11" fill="none" stroke-linecap="round"/>
+    <polygon points="338.0,86.0 331.3,104.7 319.3,92.7" fill="#008236"/>
+    <text x="382" y="58" text-anchor="middle" class="qtext">query:</text>
+    <text x="382" y="74" text-anchor="middle" class="qtext">quick or brown</text>
   </g>
 </svg>
