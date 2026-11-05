@@ -1484,11 +1484,26 @@ article.default > * {
 
 /* Article */
 
+/* Not found page: centered in the column of the article on other pages */
 article.notfound {
-    margin: auto;
-    margin-top: 7rem;
+    max-width: var(--content-width);
     min-height: 600px;
-    max-width: 800px;
+    padding: 96px 0 48px;
+    text-align: center;
+}
+
+article.notfound > h1 {
+    margin: 0 0 24px;
+    color: var(--color-link);
+    font-family: var(--font-headlines);
+    font-size: 1.75rem;
+    line-height: 1.2;
+}
+
+@media screen and (max-width: 768px) {
+    article.notfound {
+        padding-top: 48px;
+    }
 }
 
 hgroup > h1, .article-body > :is(h2, h3, h4, h5, h6) {
@@ -2179,6 +2194,24 @@ details[open] > summary::before {
     opacity: 1;
 }
 
+/* Without hover: no invisible tap target on collapsed properties (it copied a
+   link and changed the URL by accident), shown faintly while expanded like the
+   heading links. Tapping focuses the summary and sticks :hover, which only
+   counts if focused with the keyboard. */
+@media (hover: none) {
+    details:not([open]) > .openapi-prop > .openapi-property-link {
+        pointer-events: none;
+    }
+
+    details:not([open]) > .openapi-prop:not(:focus-visible, :has(a:focus-visible)) > a > .icon-link {
+        opacity: 0;
+    }
+
+    details[open] > .openapi-prop:not(:focus-visible, :has(a:focus-visible)) > a > .icon-link {
+        opacity: 0.4;
+    }
+}
+
 .openapi-prop > code,
 .openapi-prop > span {
     pointer-events: none;
@@ -2353,22 +2386,27 @@ nav.pagination > .next {
     box-shadow: none;
 }
 
-/* 404 page */
-.flex-block-wrapper {
-    margin-top: 9rem;
-}
-
 .notfound-404 {
     display: flex;
-    font-size: 10rem;
     align-items: center;
     justify-content: center;
-    margin-bottom: 4rem;
+    gap: 8px;
+    margin-bottom: 48px;
+    color: var(--color-heading);
+    font-family: var(--font-headlines);
+    font-size: clamp(6rem, 20vw, 10rem);
+    font-weight: 700;
+    line-height: 1;
 }
 
+.notfound-4 {
+    margin: 0;
+}
+
+/* By width, image heights are always auto */
 .notfound-image {
     display: block;
-    width: 9rem;
+    width: 0.9em;
 }
 
 .ag-banner {
