@@ -5,6 +5,36 @@ weight: 5
 description: >-
   How to create a consistent snapshot with the _arangobackup_ tool
 ---
+## Connect and authenticate
+
+Without further startup options, _arangobackup_ connects to the ArangoDB server
+at the default endpoint `http://127.0.0.1:8529` as the `root` user and prompts
+you for the password. To connect to a different server or as a different user,
+use the following startup options:
+
+- `--server.endpoint <string>`: The endpoint to connect to. In a cluster,
+  specify a Coordinator.
+- `--server.username <string>`: The username.
+- `--server.password <string>`: The password or access token. If you omit it,
+  you are prompted for the password.
+- `--server.authentication <bool>`: Whether to authenticate. Set it to
+  `false` if authentication is disabled on the server.
+
+For example, to list the Hot Backups of a server at a non-standard endpoint
+as the `backup` user:
+
+```
+arangobackup list --server.endpoint http://192.168.173.13:8531 --server.username backup
+```
+
+The user needs **Administrate** / `rw` access to the `_system` database.
+
+From v3.12.13 onward, _arangobackup_ exchanges the username and password for a
+JWT when it starts and renews the token automatically before it expires.
+For details about the authentication, how to avoid exposing credentials in the
+process list, and how the token renewal works, see
+[Connect to an ArangoDB server](../_index.md#connect-to-an-arangodb-server).
+
 ## Create
 
 Hot backups are created near instantaneously. The single server as
@@ -19,22 +49,31 @@ Once that lock could be acquired the hot backup itself is most
 readily described as a consistent snapshot on the local file system.
 
 ```bash
-arangobackup create --server.endpoint tcp://myserver:8529 --label my-label 
+arangobackup create --server.endpoint http://myserver:8529 --label my-label 
 ```
 
-The above will create a hot backup with a unique identifier consisting
-of the UTC time according to the local computer clock output and the
-specified label and report the success like below.
+The above creates a hot backup and reports the success like below:
 
 ```
 2019-05-15T13:57:11Z [15213] INFO {backup} Server version: 3.5.1
 2019-05-15T14:20:16Z [15397] INFO {backup} Backup succeeded. Generated identifier '2019-05-15T14.20.15Z_my-label'
 ```
 
-{{< tip >}}
-If the `label` marker is omitted then a unique identifier string is
-generated instead.
-{{< /tip >}}
+The identifier of a hot backup consists of a timestamp and the label, separated
+by an underscore. The timestamp is the creation time in UTC according to the
+clock of the server (of the Coordinator in a cluster), in an ISO 8601 format
+with dots instead of colons, like `2019-05-15T14.20.15Z`. If you don't specify
+a `--label`, a random UUID is used as the label instead, for example,
+`2019-05-15T14.20.15Z_745a59f4-7246-495a-a086-1b003b7312ac`. Characters that
+are not allowed in directory names are replaced in the label.
+
+The hot backup is stored on the server, not on the machine where you run
+_arangobackup_. Its files are located in a directory named like the identifier
+in the `backups` folder of the server's database directory
+(`--database.directory`), for example,
+`/var/lib/arangodb3/backups/2019-05-15T14.20.15Z_my-label/`. In a cluster, each
+DB-Server stores its part of the hot backup in its own database directory under
+the same identifier.
 
 There are more options for the cluster mode regarding the acquisition of the
 global write transaction lock:
@@ -124,7 +163,7 @@ Hot backups can be uploaded to a remote repository, here is an example which
 uses the `S3` protocol:
 
 ```bash
-arangobackup upload --server.endpoint tcp://myserver:8529 --rclone-config-file /path/to/remote.json --identifier 2019-05-13T07.15.43Z_some-label --remote-path S3://remote-endpoint/remote-directory
+arangobackup upload --server.endpoint http://myserver:8529 --rclone-config-file /path/to/remote.json --identifier 2019-05-13T07.15.43Z_some-label --remote-path S3://remote-endpoint/remote-directory
 ```
 
 The output will look like this:
@@ -162,7 +201,7 @@ to the same remote site.
 The status of the process may be acquired at any later time.
 
 ```bash
-arangobackup upload --server.endpoint tcp://myserver:8529 --status-id=114
+arangobackup upload --server.endpoint http://myserver:8529 --status-id=114
 ```
 
 where the number given in the `--status-id` option is the one which was
@@ -184,7 +223,7 @@ file to configure the remote site for `rclone` for different protocols than S3.
 Hot backups can be downloaded from a remote repository like this:
 
 ```bash
-arangobackup download --server.endpoint tcp://myserver:8529 --rclone-config-file /path/to/remote.json --identifier 2019-05-13T07.15.43Z_some-label --remote-path S3://remote-endpoint/remote-directory
+arangobackup download --server.endpoint http://myserver:8529 --rclone-config-file /path/to/remote.json --identifier 2019-05-13T07.15.43Z_some-label --remote-path S3://remote-endpoint/remote-directory
 ```
 
 The output will look like this:
@@ -207,7 +246,7 @@ present.
 The status of the download process may be acquired at any later time.
 
 ```bash
-arangobackup download --server.endpoint tcp://myserver:8529 --status-id=250
+arangobackup download --server.endpoint http://myserver:8529 --status-id=250
 ```
 
 The output will look like this:

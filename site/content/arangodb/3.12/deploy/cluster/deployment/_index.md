@@ -78,14 +78,14 @@ standalone instance's port in `/etc/arangodb3/arangod.conf`
 
 ```cfg
 [server]
-endpoint = tcp://127.0.0.1:8529
+endpoint = http://127.0.0.1:8529
 ```
 
 to something unused, e.g.
 
 ```cfg
 [server]
-endpoint = tcp://127.1.2.3:45678
+endpoint = http://127.1.2.3:45678
 ```
 .
 

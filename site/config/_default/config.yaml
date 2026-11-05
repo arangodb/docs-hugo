@@ -53,13 +53,23 @@ markup:
         emDash: '---'
         enDash: '--'
 
+mediaTypes:
+  text/netlify:
+    suffixes: []
+
 outputFormats:
+  redirects:
+    baseName: _redirects
+    mediaType: text/netlify
+    isPlainText: true
+    notAlternative: true
   navigation:
     baseName: nav
     isHTML: true
     mediaType: text/html
+
 outputs:
-  home: ["HTML", "navigation"]
+  home: ["HTML", "navigation", "redirects"]
 
 enableRobotsTXT: true
 
