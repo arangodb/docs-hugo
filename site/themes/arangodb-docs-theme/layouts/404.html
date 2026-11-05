@@ -15,7 +15,21 @@
         <nav class="main-nav" aria-label="Main"></nav>
         <div class="container-main">
           <div class="row-main">
-            {{ partial "notfound.html" . }}
+            <div class="notfound">
+              <div class="flex-block-wrapper">
+                <div class="notfound-404">
+                  <p class="notfound-4">4</p>
+                  <img class="notfound-image" src="{{ "sad-avocado.png" | relURL }}" alt="Page not found!">
+                  <p class="notfound-4">4</p>
+                </div>
+                <hgroup>
+                  <h3 style="text-align: center;">Oops… Avocados are not growing here</h3>
+                </hgroup>
+                <p style="text-align: center;">
+                  <a href="{{ site.Home.RelPermalink }}" class="link">Back to Home</a>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

@@ -1679,10 +1679,11 @@ div > .box-content-container {
     opacity: 1;
 }
 
-/* Without a mouse to hover, the copy buttons are always shown */
+/* Without a mouse to hover, the copy buttons are always shown (fully opaque,
+   semi-transparent buttons look disabled) */
 @media (hover: none) {
     .copy-to-clipboard-button {
-        opacity: 0.7;
+        opacity: 1;
     }
 
     .clipboard-copy {
