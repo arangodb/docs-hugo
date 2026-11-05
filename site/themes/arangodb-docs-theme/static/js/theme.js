@@ -262,19 +262,6 @@ function styleImages() {
   }
 }
 
-function loadNotFoundPage() {
-  fetch(window.location.origin + "/notfound.html")
-    .then(response => response.text())
-    .then(newDoc => {
-      replaceArticle("", newDoc)
-      initArticle("");
-      docsLastFetchedDocKey = docKeyWithoutHash(window.location.href);
-      flashTarget();
-      return true;
-    })
-    .catch(error => console.error('Error loading not found page:', error));
-}
-
 /** Origin + pathname + search of the last document we successfully injected (no hash). Used to skip refetch on hash-only history steps. */
 var docsLastFetchedDocKey = null;
 
@@ -339,10 +326,12 @@ function loadPage(target) {
   var menuPathName = new URL(href).pathname;
   //console.log(menuPathName);
   
+  // Until the new article is swapped in, errors fall back to a normal navigation
+  var swapped = false;
   fetch(href)
     .then(response => {
-      if (!response.ok) {
-        // Handle 404 and other HTTP errors
+      // Unknown URLs get 404.html, which is shown like any other page
+      if (!response.ok && response.status !== 404) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       if (response.url) {
@@ -383,6 +372,7 @@ function loadPage(target) {
         return;
       }
       replaceArticle(href, newDoc);
+      swapped = true;
       docsLastFetchedDocKey = docKeyWithoutHash(href);
       // Collapse code blocks, restore tabs etc. first, they move the target
       initArticle(href);
@@ -397,7 +387,9 @@ function loadPage(target) {
     })
     .catch(error => {
       console.error('Error loading page:', error);
-      loadNotFoundPage(href);
+      // Network or server errors: let the browser show what it gets. Errors
+      // while initializing the new article only need logging.
+      if (!swapped) window.location.assign(href);
     });
 }
 
@@ -1110,24 +1102,20 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem('docs-version', currentVersion);
     }
 
-    if (document.querySelector(".row-main:empty")) {
-      // 404.html has no content of its own, loadPage() shows the not found page
-      loadPage(window.location.href);
-    } else {
-      // Initialize the server-rendered article in place. Fetching and swapping it
-      // again would reset the images to zero height (until decoded) and undo the
-      // browser's scroll to the fragment, which can then land in the wrong spot.
-      docsLastFetchedDocKey = docKeyWithoutHash(window.location.href);
-      initArticle(window.location.href);
-      // A saved position means a reload, or a return after the page was evicted
-      // from the back/forward cache
-      if (!restoreScrollPosition()) {
-        scrollToFragment();
-        flashTarget();
-      }
-      if (window.setupDocSearch) {
-        window.setupDocSearch(getSelectedVersion());
-      }
+    // Initialize the server-rendered article in place (also the not found page).
+    // Fetching and swapping it again would reset the images to zero height (until
+    // decoded) and undo the browser's scroll to the fragment, which can then land
+    // in the wrong spot.
+    docsLastFetchedDocKey = docKeyWithoutHash(window.location.href);
+    initArticle(window.location.href);
+    // A saved position means a reload, or a return after the page was evicted
+    // from the back/forward cache
+    if (!restoreScrollPosition()) {
+      scrollToFragment();
+      flashTarget();
+    }
+    if (window.setupDocSearch) {
+      window.setupDocSearch(getSelectedVersion());
     }
 
     // Add central click handler to document
@@ -1164,7 +1152,9 @@ const VIEWER_PAN_GUTTER = 80;
 /* Pointer movement in pixels below which a press counts as a click, not a drag. */
 const VIEWER_DRAG_THRESHOLD = 5;
 const VIEWER_ZOOM_STEP = 1.5;
-/* Devices without hover get a permanent button on every illustration instead of the hover hint. */
+/* Devices without hover get a permanent button on every illustration instead of
+   the hover hint. CSS shows one or the other, so that it changes along with the
+   primary input device (a tablet with a mouse, touch emulation, etc.). */
 const ZOOM_BADGE_QUERY = '(hover: none)';
 /* Illustrations rendered smaller than this get no permanent button, as it would cover them. */
 const ZOOM_BADGE_MIN_WIDTH = 96;
@@ -1212,7 +1202,7 @@ function prepareZoomables() {
     }
     let label = zoomableCaption(el);
     el.setAttribute('aria-label', label ? 'Enlarge: ' + label : 'Enlarge illustration');
-    if (window.matchMedia(ZOOM_BADGE_QUERY).matches) addZoomBadge(el);
+    addZoomBadge(el);
   });
   scheduleZoomBadgeLayout();
 }
@@ -1243,6 +1233,7 @@ function addZoomBadge(el) {
     _zoomBadgeObserver = new ResizeObserver(scheduleZoomBadgeLayout);
     _zoomBadgeObserver.observe(document.body);
     window.addEventListener('resize', scheduleZoomBadgeLayout);
+    window.matchMedia(ZOOM_BADGE_QUERY).addEventListener('change', scheduleZoomBadgeLayout);
   }
   // Also catches illustrations in tabs and collapsed sections being shown
   _zoomBadgeObserver.observe(el);
@@ -1257,6 +1248,8 @@ function scheduleZoomBadgeLayout() {
 }
 
 function layoutZoomBadges() {
+  // Hidden by CSS with hover, no need to position them
+  let shown = window.matchMedia(ZOOM_BADGE_QUERY).matches;
   _zoomBadges = _zoomBadges.filter(({ el, button }) => {
     // The illustration is gone after navigating to another page
     if (!document.contains(el)) {
@@ -1264,6 +1257,7 @@ function layoutZoomBadges() {
       button.remove();
       return false;
     }
+    if (!shown) return true;
     let rect = el.getBoundingClientRect();
     let fits = rect.width >= ZOOM_BADGE_MIN_WIDTH && rect.height >= ZOOM_BADGE_MIN_HEIGHT;
     button.hidden = !fits;

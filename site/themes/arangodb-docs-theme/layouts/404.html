@@ -1,4 +1,5 @@
-{{/* Should match baseof.html but have breadcrumbs, toc, and main block removed */ -}}
+{{/* Should match baseof.html but with the not found content instead of breadcrumbs, toc, and main block.
+     Served by Netlify (and hugo server) with status 404 for unknown URLs, also to in-app navigation. */ -}}
 {{ partial "shortcodes/version.html" (dict "page" .Page) -}}
 {{ $isProduction := eq site.BaseURL "https://docs.arango.ai/" -}}
 
@@ -13,7 +14,9 @@
         {{ partialCached "header.html" . -}}
         <nav class="main-nav" aria-label="Main"></nav>
         <div class="container-main">
-          <div class="row-main"></div>
+          <div class="row-main">
+            {{ partial "notfound.html" . }}
+          </div>
         </div>
       </section>
     </section>

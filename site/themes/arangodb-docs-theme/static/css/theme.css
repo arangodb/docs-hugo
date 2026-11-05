@@ -2410,10 +2410,11 @@ nav.pagination .next {
     }
 }
 
+/* Only without hover, see ZOOM_BADGE_QUERY */
 .image-zoom-badge {
     position: absolute;
     z-index: 50;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     width: 2.25rem;
@@ -2426,6 +2427,12 @@ nav.pagination .next {
     background: rgba(17, 24, 39, 0.6);
     color: #fff;
     -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: none) {
+    .image-zoom-badge {
+        display: flex;
+    }
 }
 
 .image-zoom-badge[hidden] {
