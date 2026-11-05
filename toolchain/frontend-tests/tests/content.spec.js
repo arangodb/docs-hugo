@@ -54,9 +54,6 @@ test.describe("deep links to OpenAPI properties", () => {
 });
 
 test.describe("deep links", () => {
-  // Swapping in the article again on the initial load can make the scroll land elsewhere
-  test.fixme(true, "Fixed by https://github.com/arangodb/docs-hugo/pull/876");
-
   for (const target of [
     "/arangodb/stable/graphs/example-graphs/#city-graph",
     "/arangodb/stable/indexes-and-search/arangosearch/geospatial-search/#search-for-polygons-within-polygons",
@@ -70,13 +67,14 @@ test.describe("deep links", () => {
       await page.waitForTimeout(1000);
       const top = await page.locator(`#${id}`).evaluate(el => el.getBoundingClientRect().top);
       const padding = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop));
-      expect(Math.abs(top - padding)).toBeLessThanOrEqual(2);
+      // A few pixels of rounding when the browser keeps the position while fonts swap
+      expect(Math.abs(top - padding)).toBeLessThanOrEqual(4);
     });
   }
 });
 
 test("renders mermaid diagrams", async ({ page }) => {
-  await open(page, "/agentic-ai-suite/autograph/architecture/");
+  await open(page, "/contextual-data-platform/autograph/architecture/");
   await expect(page.locator("article pre.mermaid > svg").first()).toBeVisible();
 });
 
