@@ -24,10 +24,11 @@ test.describe("tabs", () => {
 });
 
 test("long code blocks can be expanded", async ({ page }) => {
-  await open(page, "/arangodb/stable/aql/fundamentals/subqueries/");
-  const more = page.locator("article .code-show-more").first();
-  test.skip(await more.count() === 0, "No long code block on the page");
-  const code = page.locator("article pre:has(.code-show-more) .code-long").first();
+  await open(page, "/arangodb/stable/release-notes/version-3.12/whats-new-in-3-12/");
+  // Fails rather than skips if the page has no long code block anymore
+  const more = page.locator("article .code-show-more:visible").first();
+  await expect(more).toBeAttached();
+  const code = page.locator("article pre:has(.code-show-more:visible) .code-long").first();
   const collapsed = (await code.boundingBox()).height;
   await more.scrollIntoViewIfNeeded();
   await more.click();

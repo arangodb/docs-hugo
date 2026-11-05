@@ -140,3 +140,47 @@ test("collapses expanded navigation sections except for the path to the current 
   expect(expanded.onPath).toBe(expanded.checked);
   expect(expanded.checked).toBe(expanded.pathLength);
 });
+
+test.describe("going back", () => {
+  test.skip(({ isMobile }) => isMobile, "Same behavior, desktop is enough");
+
+  test("restores the scroll position, open details, and selected tabs", async ({ page }) => {
+    const A = "/arangodb/stable/concepts/data-structure/collections/";
+    const B = "/arangodb/stable/concepts/data-structure/documents/";
+    const view = () => page.evaluate(() => ({
+      tab: document.querySelector("article .tab-nav-button.selected[data-tab-group='interfaces']")?.dataset.tabItem,
+      open: [...document.querySelectorAll("article details")].map(d => d.open),
+      // The text at the top of the viewport
+      text: document.elementFromPoint(innerWidth / 2, 200)?.textContent.trim().slice(0, 80),
+    }));
+    // A link at a fixed position, so that clicking it doesn't scroll
+    const follow = async href => {
+      await page.evaluate(href => {
+        const a = document.createElement("a");
+        a.className = "link"; a.href = href; a.id = "test-link"; a.textContent = "test";
+        a.style.cssText = "position: fixed; top: 100px; left: 50%; z-index: 100000";
+        document.body.append(a);
+      }, href);
+      await page.click("#test-link");
+      await waitForApp(page);
+    };
+
+    await open(page, A);
+    const tab = page.locator("article .tab-nav-button[data-tab-group='interfaces']").nth(1);
+    await tab.scrollIntoViewIfNeeded();
+    await tab.click();
+    const summary = page.locator("article details > summary").first();
+    await summary.scrollIntoViewIfNeeded();
+    await summary.click();
+    await page.mouse.wheel(0, 300);
+    await page.waitForTimeout(500);
+    const before = await view();
+
+    // Another page with the same tab group, which changes the preference
+    await follow(B);
+    await page.locator("article .tab-nav-button[data-tab-group='interfaces']").first().click();
+    await page.goBack();
+    await waitForApp(page);
+    await expect.poll(view).toEqual(before);
+  });
+});
