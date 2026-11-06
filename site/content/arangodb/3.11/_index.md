@@ -5,6 +5,13 @@ weight: 98
 ---
 {{< cloudbanner >}}
 
+{{< warning >}}
+ArangoDB version 3.11 reached End of Life (EOL) on May 30th, 2025.
+It is no longer supported for general users.
+
+Long-term support (LTS) is available for OEM / embedded use cases on request.
+{{< /warning >}}
+
 {{< cards >}}
 
 {{% card title="What is ArangoDB?" link="about/" %}}
@@ -21,8 +28,8 @@ Try out Arango's fully-managed cloud offering for a faster time to value.
 {{% /card %}}
 
 {{% card title="AQL" link="aql/" %}}
-ArangoDB's Query Language AQL lets you use graphs, JSON documents, and search
-via a single, composable query language.
+ArangoDB's Query Language AQL lets you use graphs, JSON documents, search,
+and geo-spatial data via a single, composable query language.
 {{% /card %}}
 
 {{% card title="Data Science" link="data-science/" %}}

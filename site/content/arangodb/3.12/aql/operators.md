@@ -65,7 +65,7 @@ The supported wildcards are `_` to match a single arbitrary character, and `%` t
 match any number of arbitrary characters. Literal `%` and `_` need to be escaped
 with a backslash. Backslashes need to be escaped themselves, which effectively
 means that two reverse solidus characters need to precede a literal percent sign
-or underscore. In arangosh, additional escaping is required, making it four
+or underscore. In _arangosh_, additional escaping is required, making it four
 backslashes in total preceding the to-be-escaped character.
 
 ```aql
@@ -108,6 +108,11 @@ You can also combine one of the supported comparison operators with the special
 `AT LEAST (<expression>)` operator to require an arbitrary number of elements
 to satisfy the condition to evaluate to `true`. You can use a static number or
 calculate it dynamically using an expression.
+
+The number needs to be a non-negative integer. Negative and non-numeric values
+are treated as `0` and fractional numbers are truncated, and the query raises a
+warning in these cases. If the number is greater than the length of the array,
+the condition evaluates to `false`.
 
 ```aql
 [ 1, 2, 3 ]  ALL IN  [ 2, 3, 4 ]  // false

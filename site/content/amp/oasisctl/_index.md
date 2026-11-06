@@ -1,15 +1,15 @@
 ---
-title: The `oasisctl` tool for AMP
+title: The _oasisctl_ tool for AMP
 menuTitle: oasisctl
 weight: 65
 description: >-
-  A command-line client tool for managing AMP
+  A command-line client tool for managing the Arango Managed Platform (AMP)
 ---
-_oasisctl_ is a command-line tool for using the [Arango Management Platform (AMP) API](../api/_index.md).
+_oasisctl_ is a command-line tool for using the [AMP API](../api/_index.md).
 This tool makes integration of AMP in all kinds of (bash) scripts easy.
 It is also a good example on how to use the API.
 
-See [Getting started with oasisctl](../api/get-started.md) for a
+See [Getting started with _oasisctl_](../api/get-started.md) for a
 tutorial.
 
 _oasisctl_ is available for Linux, macOS and Windows.

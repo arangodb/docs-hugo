@@ -30,7 +30,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -39,7 +39,7 @@ paths:
           required: false
           description: |
             If set to `true` and if the user account you authenticate with has
-            administrate access to the `_system` database, the response contains
+            `rw` access to the `_system` database, the response contains
             a `details` attribute with additional information about included
             components and their versions. The attribute names and internals of
             the `details` object may vary depending on platform and ArangoDB version.
@@ -78,10 +78,10 @@ paths:
                       - enterprise
                   version:
                     description: |
-                      The server version string in the format `major.minor.sub`.
+                      The server version string in the format `major.minor.sub` (e.g. `3.12.11`).
                       The `major` and `minor` parts are numeric, and `sub` is a
                       number that may have a version suffix starting with
-                      a hyphen minus (e.g. `3.12.7-2` or `4.0.0-devel`).
+                      a hyphen minus (e.g. `3.11.14-5` or `4.0.0-devel`).
                     type: string
                   apiVersions:
                     description: |
@@ -91,7 +91,7 @@ paths:
                     uniqueItems: true
                     items:
                       type: string
-                      enum: [v0] # TODO: Add v1 for v3.12.10
+                      enum: [v0] # TODO: Add v1 for v3.12.12
                   deprecatedApiVersions:
                     description: |
                       The versions of the HTTP API that are still supported by
@@ -111,10 +111,63 @@ paths:
                     enum: [v0]
                   details:
                     description: |
-                      an optional JSON object with additional details. This is
-                      returned only if the `details` query parameter is set to `true` in the
-                      request.
+                      An object with additional details like compile flags,
+                      dependency versions, and so on.
+
+                      Only returned if the `details` query parameter is set to
+                      `true` in the request.
                     type: object
+                    required:
+                      - architecture
+                      - arm
+                      - asan
+                      - assertions
+                      - avx
+                      - avx2
+                      - boost-version
+                      - build-date
+                      - compiler
+                      - coverage
+                      - cplusplus
+                      - curl-version
+                      - debug
+                      - endianness
+                      - failure-tests
+                      - faiss
+                      - fd-client-event-handler
+                      - fd-setsize
+                      - full-version-string
+                      - icu-version
+                      - ipo
+                      - iresearch-version
+                      - jemalloc
+                      - license
+                      - libunwind
+                      - maintainer-mode
+                      - memory-profiler
+                      - ndebug
+                      - openmp
+                      - openssl-version-compile-time
+                      - openssl-version-run-time
+                      - pic
+                      - pie
+                      - platform
+                      - reactor-type
+                      - replication2-enabled
+                      - rocksdb-version
+                      - server-version
+                      - "sizeof int"
+                      - "sizeof long"
+                      - "sizeof void*"
+                      - sse42
+                      - tsan
+                      - unaligned-access
+                      - v8-version
+                      - vpack-version
+                      - zlib-version
+                      - mode
+                      - role
+                      - host
                     properties:
                       architecture:
                         description: |
@@ -282,10 +335,6 @@ paths:
                         description: |
                           The OpenMP version used for parallelization.
                         type: string
-                      openssl-version:
-                        description: |
-                          The OpenSSL version that is linked.
-                        type: string
                       openssl-version-compile-time:
                         description: |
                           The OpenSSL version at compile time.
@@ -297,6 +346,11 @@ paths:
                       optimization-flags:
                         description: |
                           The compiler optimization flags used for this build.
+                        type: string
+                      oskar-build-repository:
+                        description: |
+                          Reference to the Git ID of the build environment this was
+                          compiled with.
                         type: string
                       pic:
                         description: |
@@ -425,7 +479,9 @@ paths:
     get:
       operationId: getEngine
       description: |
-        Returns the storage engine the server is configured to use.
+        Returns the name of the storage engine the server is configured to use,
+        the endianness of its on-disk key format, as well as the index types
+        it supports.
       parameters:
         - name: database-name
           in: path
@@ -433,25 +489,96 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
       responses:
         '200':
           description: |
-            Successfully retrieved storage engine name.
+            Successfully retrieved the storage engine information.
           content:
             application/json:
               schema:
                 type: object
                 required:
                   - name
+                  - endianness
+                  - supports
                 properties:
                   name:
                     description: |
-                      Always `rocksdb`.
+                      The name of the storage engine.
                     type: string
+                    const: rocksdb
+                  endianness:
+                    description: |
+                      The endianness of the key format the storage engine
+                      uses on disk.
+                    type: string
+                    enum: [little, big]
+                  supports:
+                    description: |
+                      An object describing what the storage engine supports.
+                    type: object
+                    required:
+                      - indexes
+                      - aliases
+                    properties:
+                      indexes:
+                        description: |
+                          A list of the index types you can use.
+                          `vector` is only included if the
+                          `--vector-index` startup option is enabled.
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                            - primary
+                            - edge
+                            - ttl
+                            - persistent
+                            - geo
+                            - mdi
+                            - mdi-prefixed
+                            - inverted
+                            - hash
+                            - skiplist
+                            - fulltext
+                            - vector
+                      aliases:
+                        description: |
+                          An object describing the alternative names you can
+                          use for certain index types.
+                        type: object
+                        required:
+                          - indexes
+                        properties:
+                          indexes:
+                            description: |
+                              The keys are the alternative index type names and
+                              the values are the index types they refer to.
+                            type: object
+                            required:
+                              - hash
+                              - skiplist
+                              - zkd
+                            properties:
+                              hash:
+                                description: |
+                                  The `hash` index type is an alias for `persistent`.
+                                type: string
+                                const: persistent
+                              skiplist:
+                                description: |
+                                  The `skiplist` index type is an alias for `persistent`.
+                                type: string
+                                const: persistent
+                              zkd:
+                                description: |
+                                  The `zkd` index type is an alias for `mdi`.
+                                type: string
+                                const: mdi
         '401':
           description: |
             Missing read access to the given database.
@@ -519,9 +646,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
       responses:
@@ -570,7 +697,7 @@ paths:
         '403':
           description: |
             The `--server.harden` startup option is enabled but the user account
-            you authenticated with lacks write access to the `_system` database.
+            you authenticated with lacks `rw` access to the `_system` database.
           content:
             application/json:
               schema:
@@ -621,7 +748,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -673,9 +800,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
       responses:
@@ -698,9 +825,9 @@ paths:
                   - serverInfo
                 properties:
                   server:
-                    description: |
-                      Always `"arango"`.
+                    description: ''
                     type: string
+                    const: arango
                   license:
                     description: |
                       ArangoDB Edition, either `"community"` or `"enterprise"`.
@@ -827,12 +954,16 @@ paths:
                       Information about the Agency.
                       *Cluster only* (Coordinators and DB-Servers).
                     type: object
+                    required:
+                      - agencyComm
                     properties:
                       agencyComm:
                         description: |
                           Information about the communication with the Agency.
                           *Cluster only* (Coordinators and DB-Servers).
                         type: object
+                        required:
+                          - endpoints
                         properties:
                           endpoints:
                             description: |
@@ -850,21 +981,23 @@ paths:
                         description: |
                           The server ID of the Coordinator that is the Foxx master.
                           **Deprecated**
-                        type: array
-                        items:
-                          type: string
+                        type: string
                       isFoxxmaster:
                         description: |
                           Whether the queried Coordinator is the Foxx master.
                           **Deprecated**
-                        type: array
-                        items:
-                          type: string
+                        type: boolean
                   agent:
                     description: |
                       Information about the Agents.
                       *Cluster only* (Agents)
                     type: object
+                    required:
+                      - id
+                      - leaderId
+                      - leading
+                      - endpoint
+                      - term
                     properties:
                       id:
                         description: |
@@ -1084,9 +1217,9 @@ paths:
         controls the required privileges to access the option endpoints and allows
         you to disable them entirely. The option can have the following values:
         - `disabled`: This endpoint is disabled.
-        - `jwt`: This endpoint can only be accessed using a superuser JWT (default).
+        - `jwt`: This endpoint can only be accessed using a [superuser JWT](authentication.md#jwt-superuser-tokens) (default).
         - `admin`: This endpoint can only be accessed by users with
-          write access to the `_system` database.
+          `rw` access to the `_system` database.
         - `public`: Every user with read access to the `_system` database can
           access this endpoint.
       responses:
@@ -1101,8 +1234,8 @@ paths:
                 type: object
         '401':
           description: |
-            You tried to authenticate with user credentials but a superuser token
-            created from the JWT secret is required (`--server.options-api` set
+            You tried to authenticate with user credentials but a superuser JWT
+            is required (`--server.options-api` set
             to `jwt`), you lack read access to the `_system` database
             (`--server.options-api` set to `public`), the credentials are wrong,
             or the user account is inactive.
@@ -1136,7 +1269,7 @@ paths:
                     type: string
         '403':
           description: |
-            You don't have write access to the `_system` database
+            You don't have `rw` access to the `_system` database
             (`--server.options-api` set to `admin`) or you tried to access the
             endpoint using a database other than `_system`.
           content:
@@ -1218,9 +1351,9 @@ paths:
         controls the required privileges to access the option endpoints and allows
         you to disable them entirely. The option can have the following values:
         - `disabled`: This endpoint is disabled.
-        - `jwt`: This endpoint can only be accessed using a superuser JWT (default).
+        - `jwt`: This endpoint can only be accessed using a [superuser JWT](authentication.md#jwt-superuser-tokens) (default).
         - `admin`: This endpoint can only be accessed by users with
-          write access to the `_system` database.
+          `rw` access to the `_system` database.
         - `public`: Every user with read access to the `_system` database can
           access this endpoint.
       responses:
@@ -1284,7 +1417,7 @@ paths:
                 type: object
         '401':
           description: |
-            You tried to authenticate with user credentials but a superuser token
+            You tried to authenticate with user credentials but a superuser JWT
             is required, the credentials are wrong, or the user account is inactive.
           content:
             application/json:
@@ -1316,7 +1449,7 @@ paths:
                     type: string
         '403':
           description: |
-            You don't have write access to the `_system` database or you tried
+            You don't have `rw` access to the `_system` database or you tried
             to access the endpoint using a database other than `_system`.
           content:
             application/json:
@@ -1409,7 +1542,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -1422,6 +1555,13 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - database.extended-names
+                  - cluster.min-replication-factor
+                  - cluster.max-replication-factor
+                  - cluster.max-number-of-shards
+                  - cluster.api-jwt-policy
+                  - server.session-timeout
                 properties:
                   database.extended-names:
                     description: |
@@ -1451,7 +1591,7 @@ paths:
         '401':
           description: |
             Authentication is enabled and the user account you authenticated with
-            doesn't have at least read access to the specified database, the
+            doesn't have at least `ro` access to the specified database, the
             credentials are wrong, or the user account is inactive.
           content:
             application/json:
@@ -1539,7 +1679,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -1574,8 +1714,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
       requestBody:
@@ -1627,9 +1767,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
       responses:
@@ -1787,9 +1927,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
         - name: force
@@ -1954,7 +2094,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -2060,7 +2200,7 @@ paths:
         The server keeps the most recent 10 crash dumps. Older ones are removed
         during startup.
 
-        This endpoint requires *administrate* access to the `_system` database.
+        This endpoint requires `rw` access to the `_system` database.
       parameters:
         - name: database-name
           in: path
@@ -2068,8 +2208,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and write access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
       responses:
@@ -2134,7 +2274,7 @@ paths:
         '403':
           description: |
             Returned if authentication is enabled and the user does not have
-            write access to the `_system` database.
+            `rw` access to the `_system` database.
           content:
             application/json:
               schema:
@@ -2215,7 +2355,7 @@ paths:
         to their contents. Crash dumps are stored under
         `<database-directory>/crashes/<uuid>/`.
 
-        This endpoint requires *administrate* access to the `_system` database.
+        This endpoint requires `rw` access to the `_system` database.
       parameters:
         - name: database-name
           in: path
@@ -2223,8 +2363,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and write access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: crashId
@@ -2309,7 +2449,7 @@ paths:
         '403':
           description: |
             Returned if authentication is enabled and the user does not have
-            write access to the `_system` database.
+            `rw` access to the `_system` database.
           content:
             application/json:
               schema:
@@ -2420,7 +2560,7 @@ paths:
         stored under `<database-directory>/crashes/<uuid>/`. The server keeps the
         most recent 10 crash dumps. Older ones are removed during startup.
 
-        This endpoint requires *administrate* access to the `_system` database.
+        This endpoint requires `rw` access to the `_system` database.
       parameters:
         - name: database-name
           in: path
@@ -2428,8 +2568,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and write access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: crashId
@@ -2507,7 +2647,7 @@ paths:
         '403':
           description: |
             Returned if authentication is enabled and the user does not have
-            write access to the `_system` database.
+            `rw` access to the `_system` database.
           content:
             application/json:
               schema:
@@ -2622,16 +2762,14 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: soft
           in: query
           required: false
           description: |
-            <small>Introduced in: v3.7.12, v3.8.1, v3.9.0</small>
-
             If set to `true`, this initiates a soft shutdown. This is only available
             on Coordinators. When issued, the Coordinator tracks a number of ongoing
             operations, waits until all have finished, and then shuts itself down
@@ -2673,8 +2811,6 @@ paths:
     get:
       operationId: getShutdownProgress
       description: |
-        <small>Introduced in: v3.7.12, v3.8.1, v3.9.0</small>
-
         This call reports progress about a soft Coordinator shutdown (see
         documentation of `DELETE /_admin/shutdown?soft=true`).
         In this case, the following types of operations are tracked:
@@ -2695,8 +2831,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
       responses:
@@ -2775,7 +2911,8 @@ paths:
         This endpoint can be used to reclaim disk space after substantial data
         deletions have taken place, by compacting the entire database system data.
 
-        The endpoint requires superuser access.
+        This endpoint requires a [superuser JWT](authentication.md#jwt-superuser-tokens).
+        User accounts, including `root`, are not sufficient.
       requestBody:
         content:
           application/json:
@@ -2844,7 +2981,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -2887,7 +3024,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -3120,7 +3257,7 @@ An ArangoDB server can listen for incoming requests on multiple _endpoints_.
 
 The endpoints are normally specified either in the _arangod_ configuration
 file or on the command-line, using the `--server.endpoint` startup option.
-The default endpoint for ArangoDB is `tcp://127.0.0.1:8529` (IPv4 localhost on
+The default endpoint for ArangoDB is `http://127.0.0.1:8529` (IPv4 localhost on
 port 8529 over the HTTP protocol).
 
 Note that all endpoint management operations can only be accessed via
@@ -3139,7 +3276,7 @@ paths:
       deprecated: true
       description: |
         {{</* warning */>}}
-        This route should no longer be used.
+        This endpoint should no longer be used.
         It is considered as deprecated from version 3.4.0 on.
         {{</* /warning */>}}
 

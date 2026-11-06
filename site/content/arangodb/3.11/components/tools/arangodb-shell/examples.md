@@ -2,7 +2,8 @@
 title: _arangosh_ Examples
 menuTitle: Examples
 weight: 5
-description: ''
+description: >-
+  How to connect to a server and use the ArangoDB Shell
 ---
 ## Connecting to a server
 
@@ -16,6 +17,8 @@ command-line options:
 - `--server.endpoint <string>`: endpoint to connect to
 - `--server.username <string>`: database username
 - `--server.password <string>`: password to use when connecting 
+- `--server.jwt-secret-keyfile <string>`: file with the JWT secret of the server
+  to authenticate with superuser rights instead of a username and password
 - `--server.authentication <bool>`: whether or not to use authentication
 
 For example, to connect to an ArangoDB server on IP `192.168.173.13` on port
@@ -26,7 +29,9 @@ arangosh --server.endpoint tcp://192.168.173.13:8530 --server.username foo --ser
 ```
 
 _arangosh_ then displays a password prompt and tries to connect to the 
-server after the password is entered.
+server after the password is entered. For details about the authentication
+methods and how to avoid exposing credentials in the process list, see
+[Connect to an ArangoDB server](../_index.md#connect-to-an-arangodb-server).
 
 {{< warning >}}
 At signs `@` in startup option arguments need to be escaped as `@@`.
@@ -86,5 +91,5 @@ Calling it displays helpful information.
 
 _arangosh_ also provides auto-completion. Additional information on available 
 commands and methods is thus provided by typing the first few letters of a
-variable and then pressing the tab key. It is recommend to try this with entering
-`db.` (without pressing return) and then pressing tab.
+variable and then pressing the {{< kbd "Tab" >}} key. It is recommend to try this with entering
+`db.` (without pressing {{< kbd "Return" >}}) and then pressing {{< kbd "Tab" >}}.

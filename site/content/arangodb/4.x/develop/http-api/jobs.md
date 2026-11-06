@@ -35,7 +35,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -236,7 +236,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -259,10 +259,9 @@ paths:
                   - result
                 properties:
                   result:
-                    description: |
-                      Always `true`.
+                    description: ''
                     type: boolean
-                    example: true
+                    const: true
         '400':
           description: |
             The `job-id` is missing in the request or has an invalid value.
@@ -387,7 +386,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -428,10 +427,9 @@ paths:
                   - result
                 properties:
                   result:
-                    description: |
-                      Always `true`.
+                    description: ''
                     type: boolean
-                    example: true
+                    const: true
         '400':
           description: |
             The `job-id` is missing in the request or has an invalid value.
@@ -603,7 +601,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string

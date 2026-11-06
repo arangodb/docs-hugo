@@ -1,7 +1,8 @@
 ---
-title: Create Example with `oasisctl`
+title: Create Example with _oasisctl_
 menuTitle: Create Example
 weight: 7
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Create example ...

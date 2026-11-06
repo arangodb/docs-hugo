@@ -1,7 +1,8 @@
 ---
-title: Get Project with `oasisctl`
+title: Get Project with _oasisctl_
 menuTitle: Get Project
-weight: 26
+weight: 25
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get a project the authenticated user has access to

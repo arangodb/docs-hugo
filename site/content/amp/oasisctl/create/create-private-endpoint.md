@@ -1,7 +1,8 @@
 ---
-title: Create Private Endpoint with `oasisctl`
+title: Create Private Endpoint with _oasisctl_
 menuTitle: Create Private Endpoint
-weight: 17
+weight: 16
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 

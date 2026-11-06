@@ -1,7 +1,8 @@
 ---
-title: Update Private Endpoint with `oasisctl`
+title: Update Private Endpoint with _oasisctl_
 menuTitle: Update Private Endpoint
-weight: 23
+weight: 22
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 

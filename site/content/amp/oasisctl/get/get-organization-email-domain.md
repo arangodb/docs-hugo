@@ -1,7 +1,8 @@
 ---
-title: Get Organization Email Domain with `oasisctl`
+title: Get Organization Email Domain with _oasisctl_
 menuTitle: Get Organization Email Domain
-weight: 19
+weight: 18
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get email domain specific information for an organization

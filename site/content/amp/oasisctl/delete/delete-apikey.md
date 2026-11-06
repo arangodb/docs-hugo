@@ -1,7 +1,8 @@
 ---
-title: Delete API Key with `oasisctl`
+title: Delete API Key with _oasisctl_
 menuTitle: Delete API Key
 weight: 1
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete an API key with given identifier

@@ -57,8 +57,10 @@ The meaning of the statistics attributes is as follows:
   an index. Documents scanned by subqueries are included in the result, but operations
   triggered by built-in AQL functions are not.
 - **searchParallelism** (integer):
-  The number of threads used by ArangoSearch for this
-  query (introduced in v3.12.9).
+
+  <small>Introduced in: v3.12.9</small>
+
+  The number of threads used by ArangoSearch for this query.
 - **cursorsCreated** (integer):
   The total number of cursor objects created during query execution. Cursor
   objects are created for index lookups.
@@ -112,7 +114,7 @@ The meaning of the statistics attributes is as follows:
 - **nodes** (array, _optional_): When the query is executed with the option `profile` set to at least `2`,
   then this value contains runtime statistics per query execution node.
   For a human-readable output you can execute `db._profileQuery(<query>, <bind-vars>)`
-  in the arangosh.
+  in the _arangosh_.
   - **id** (integer):
   The execution node ID to correlate the statistics with the `plan` returned in
     the `extra` attribute.

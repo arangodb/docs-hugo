@@ -37,7 +37,7 @@ It is assumed that a _Starter_ deployment with mode `single` or `cluster` is run
 
 {{< warning >}}
 It is highly recommended to take a backup of your data before upgrading ArangoDB
-using [_arangodump_](../../components/tools/arangodump/_index.md).
+using [arangodump](../../components/tools/arangodump/_index.md).
 {{< /warning >}}
 
 ### Install the new ArangoDB version binary
@@ -164,7 +164,7 @@ the executable in the service description to the new location.
 Do this before you `kill -9` the _Starter_ or else the old version will be
 restarted in this case. If you forgot, simply do the `kill -9` again.
 
-After you stopped the _Starter_ make sure the `arangod` processes it spawned
+After you stopped the _Starter_ make sure the _arangod_ processes it spawned
 are still running; they should be re-parented to the systemd or init process:
 
 ```bash

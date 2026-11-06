@@ -1,11 +1,12 @@
 ---
-title: Managing Users in the ArangoDB Shell
+title: Managing Users in the ArangoDB Shell (_arangosh_)
 menuTitle: In arangosh
 weight: 5
 description: >-
   The `@arangodb/users` module exposes a JavaScript API to manage user accounts
+  and access levels
 ---
-Connect with `arangosh` to the server or a Coordinator respectively.
+Connect with _arangosh_ to the server or a Coordinator respectively.
 The module `@arangodb/users` exposes a JavaScript API to manage user accounts.
 
 Please note, that for backward compatibility the server access levels
@@ -22,10 +23,10 @@ database and collection access levels is discouraged.
 
 **Example**
 
-Start *arangosh* and require the users module. Use it to create a new user:
+Start _arangosh_ and require the users module. Use it to create a new user:
 
 ```js
-arangosh --server.endpoint tcp://127.0.0.1:8529 ...
+arangosh --server.endpoint http://127.0.0.1:8529 ...
 ...
 > const users = require('@arangodb/users');
 > users.save('JohnSmith', 'mypassword');
@@ -76,11 +77,11 @@ access level applies.
 {{< /info >}}
 
 Before we can grant *JohnSmith* access to a collection, we first have to
-connect to the new database and create a collection. Disconnect `arangosh`
+connect to the new database and create a collection. Disconnect _arangosh_
 by pressing Ctrl+C twice. Then reconnect, but to the database we created:
 
 ```js
-arangosh --server.endpoint tcp://127.0.0.1:8529 --server.database testdb ...
+arangosh --server.endpoint http://127.0.0.1:8529 --server.database testdb ...
 ...
 > db._create('testcoll');
 > const users = require('@arangodb/users');
@@ -94,13 +95,13 @@ To confirm that the authentication works as expected, try to connect to
 different databases as *JohnSmith*:
 
 ```
-arangosh --server.endpoint tcp://127.0.0.1:8529 --server.username JohnSmith --server.database testdb ...
+arangosh --server.endpoint http://127.0.0.1:8529 --server.username JohnSmith --server.database testdb ...
 ...
 > Connected to ArangoDB 'http+tcp://127.0.0.1:8529, version: 3.5.2 [SINGLE, server], database: 'testdb', username: 'JohnSmith'
 ```
 
 ```
-arangosh --server.endpoint tcp://127.0.0.1:8529 --server.username JohnSmith --server.database _system ...
+arangosh --server.endpoint http://127.0.0.1:8529 --server.username JohnSmith --server.database _system ...
 ...
 > Could not connect to endpoint 'tcp://127.0.0.1:8529', database: '_system', username: 'JohnSmith'
 > Error message: 'not authorized to execute this request'
@@ -144,6 +145,7 @@ to grant the access rights for one or more databases using
 name: USER_02_saveUser
 description: ''
 ---
+~addIgnoreUser("my-user");
 require('@arangodb/users').save('my-user', 'my-secret-password');
 ```
 
@@ -282,6 +284,7 @@ name: USER_07_removeUser
 description: ''
 ---
 require("@arangodb/users").remove("my-user");
+~assert(!require("@arangodb/users").exists("my-user"));
 ~require('@arangodb/users').save('my-user', 'my-secret-password');
 ```
 
@@ -363,4 +366,6 @@ description: ''
 const users = require("@arangodb/users");
 users.permission("my-user", "testdb");
 users.permission("my-user", "testdb", "_graphs");
+~users.remove("my-user");
+~removeIgnoreUser("my-user");
 ```

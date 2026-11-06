@@ -2,7 +2,8 @@
 title: Administrate ArangoDB cluster deployments
 menuTitle: Administration
 weight: 10
-description: ''
+description: >-
+  Learn about replication, sharding, rebalancing, and managing ArangoDB cluster nodes
 ---
 This section includes information related to the administration of an ArangoDB Cluster.
 
@@ -306,7 +307,7 @@ do {
 } while (count > 0);
 ```
 
-This script has to be executed in [`arangosh`](../../components/tools/arangodb-shell/_index.md)
+This script has to be executed in [arangosh](../../components/tools/arangodb-shell/_index.md)
 by issuing the following command:
 
 ```bash

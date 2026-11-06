@@ -251,7 +251,7 @@ It thus creates prefix _n_-grams only and not all _n_-grams for the input.
 
 ### Custom Analyzer
 
-Create a `text` Analyzer in arangosh to normalize case to all lowercase, remove
+Create a `text` Analyzer in _arangosh_ to normalize case to all lowercase, remove
 diacritics, with no stemming, with edge _n_-grams of size 3 to 6 for example and
 including the original string as well:
 

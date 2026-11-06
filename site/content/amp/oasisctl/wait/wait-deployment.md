@@ -1,7 +1,8 @@
 ---
-title: Wait Deployment with `oasisctl`
+title: Wait Deployment with _oasisctl_
 menuTitle: Wait Deployment
 weight: 1
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Wait for a deployment to reach the ready status

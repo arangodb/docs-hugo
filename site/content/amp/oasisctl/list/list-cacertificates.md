@@ -1,7 +1,8 @@
 ---
-title: List CA Certificates with `oasisctl`
+title: List CA Certificates with _oasisctl_
 menuTitle: List CA Certificates
 weight: 11
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List all CA certificates of the given project

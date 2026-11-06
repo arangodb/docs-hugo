@@ -31,7 +31,7 @@ ArangoDB's web interface has a **Queries** section for
 3. Enter an AQL query in the code editor, e.g. `RETURN CONCAT("Hello, ", @name)`.
 4. Specify any needed bind parameters in the panel on the right-hand side,
    e.g. set `name` to a value of `AQL`.
-5. Click the **Execute** button or hit `Ctrl`/`Cmd` + `Return`.
+5. Click the **Execute** button or press {{< kbd "Ctrl Return" >}} respectively {{< kbd "Cmd Return" >}}.
 {{< /tab >}}
 
 {{< tab "arangosh" >}}
@@ -59,7 +59,7 @@ for examples including tagged template strings.
 
 {{< tab "cURL" >}}
 You can use a tool like [cURL](https://curl.se/) to run AQL queries from a
-command-line, directly using the HTTP REST API of ArangoDB.
+command-line, directly using the HTTP API of ArangoDB.
 
 The response bodies are generally compact JSON (without any line breaks and
 indentation). You can format them with the [jq](https://jqlang.github.io/jq/)

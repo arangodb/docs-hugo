@@ -1,7 +1,8 @@
 ---
-title: Create API Key with `oasisctl`
+title: Create API Key with _oasisctl_
 menuTitle: Create API Key
 weight: 1
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Create a new API key

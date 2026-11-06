@@ -66,7 +66,7 @@ options:
 
    Let ArangoDB generate a random root password.
        
-For an in depth guide about Docker and ArangoDB please check the official documentation:
+For an in-depth guide about Docker and ArangoDB please check the official documentation:
 [hub.docker.com/r/arangodb/arangodb/](https://hub.docker.com/r/arangodb/arangodb/).
 Note that we are using the image `arangodb/arangodb` here which is always the most current one.
 There is also the "official" one called `arangodb` whose documentation is here:

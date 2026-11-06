@@ -1,7 +1,8 @@
 ---
-title: Get Role with `oasisctl`
+title: Get Role with _oasisctl_
 menuTitle: Get Role
-weight: 29
+weight: 28
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get a role the authenticated user has access to

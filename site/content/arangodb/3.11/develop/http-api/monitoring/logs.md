@@ -1,11 +1,14 @@
 ---
-title: HTTP interface for server logs
+title: Logging HTTP API
 menuTitle: Logs
 weight: 5
 description: >-
-  Server events and errors are logged depending on the defined log levels for
-  the available log topics
+  The HTTP interface of the logging subsystem lets you fetch log entries as
+  well as configure the log levels per log topic
 ---
+Server events and errors are logged depending on the defined log levels for
+the available log topics.
+
 Whether events are logged to a file, syslog, or only an attached terminal depends
 on the [log startup options](../../../components/arangodb-server/options.md#log).
 
@@ -31,8 +34,9 @@ paths:
 
         This API can be turned off via the startup option `--log.api-enabled`. In case
         the API is disabled, all requests will be responded to with HTTP 403. If the
-        API is enabled, accessing it requires admin privileges, or even superuser
-        privileges, depending on the value of the `--log.api-enabled` startup option.
+        API is enabled, accessing it requires admin privileges, or a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
+        the value of the `--log.api-enabled` startup option.
       parameters:
         - name: upto
           in: query
@@ -140,8 +144,9 @@ paths:
 
         This API can be turned off via the startup option `--log.api-enabled`. In case
         the API is disabled, all requests will be responded to with HTTP 403. If the
-        API is enabled, accessing it requires admin privileges, or even superuser
-        privileges, depending on the value of the `--log.api-enabled` startup option.
+        API is enabled, accessing it requires admin privileges, or a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
+        the value of the `--log.api-enabled` startup option.
       parameters:
         - name: upto
           in: query
@@ -286,8 +291,9 @@ paths:
 
         This API can be turned off via the startup option `--log.api-enabled`. In case
         the API is disabled, all requests will be responded to with HTTP 403. If the
-        API is enabled, accessing it requires admin privileges, or even superuser
-        privileges, depending on the value of the `--log.api-enabled` startup option.
+        API is enabled, accessing it requires admin privileges, or a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
+        the value of the `--log.api-enabled` startup option.
       parameters:
         - name: serverId
           in: query
@@ -345,8 +351,9 @@ paths:
 
         This API can be turned off via the startup option `--log.api-enabled`. In case
         the API is disabled, all requests will be responded to with HTTP 403. If the
-        API is enabled, accessing it requires admin privileges, or even superuser
-        privileges, depending on the value of the `--log.api-enabled` startup option.
+        API is enabled, accessing it requires admin privileges, or a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
+        the value of the `--log.api-enabled` startup option.
       parameters:
         - name: serverId
           in: query
@@ -489,7 +496,7 @@ paths:
                     Logs various information related to ArangoDB's use of the
                     RocksDB storage engine, like the initialization and
                     file operations.
-                    
+
                     RocksDB's internal log messages are passed through using the
                     `rocksdb` log topic.
                   type: string
@@ -670,8 +677,9 @@ paths:
 
         This API can be turned off via the startup option `--log.api-enabled`. In case
         the API is disabled, all requests will be responded to with HTTP 403. If the
-        API is enabled, accessing it requires admin privileges, or even superuser
-        privileges, depending on the value of the `--log.api-enabled` startup option.
+        API is enabled, accessing it requires admin privileges, or a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
+        the value of the `--log.api-enabled` startup option.
       responses:
         '200':
           description: |
@@ -706,8 +714,9 @@ paths:
 
         This API can be turned off via the startup option `--log.api-enabled`. In case
         the API is disabled, all requests will be responded to with HTTP 403. If the
-        API is enabled, accessing it requires admin privileges, or even superuser
-        privileges, depending on the value of the `--log.api-enabled` startup option.
+        API is enabled, accessing it requires admin privileges, or a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
+        the value of the `--log.api-enabled` startup option.
       requestBody:
         content:
           application/json:

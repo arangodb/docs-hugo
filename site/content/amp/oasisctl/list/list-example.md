@@ -1,7 +1,8 @@
 ---
-title: List Example with `oasisctl`
+title: List Example with _oasisctl_
 menuTitle: List Example
 weight: 17
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List example ...

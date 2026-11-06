@@ -591,7 +591,7 @@ for details and usage examples.
 The following APIs have been expanded / changed:
 
 - [Database creation API](../../develop/http-api/databases.md#create-a-database),\
-  HTTP route `POST /_api/database`
+  HTTP endpoint `POST /_api/database`
 
   The database creation API now handles the `replicationFactor`, `writeConcern`
   and `sharding` attributes. All these attributes are optional, and only
@@ -602,37 +602,37 @@ The following APIs have been expanded / changed:
   allowing to omit these attributes when creating collections. However, the
   values set here are just defaults for new collections in the database.
   The values can still be adjusted per collection when creating new collections
-  in that database via the web UI, the arangosh or drivers.
+  in that database via the web UI, the _arangosh_ or drivers.
 
   In an Enterprise Edition cluster, the `sharding` attribute can be given a
   value of `"single"`, which will make all new collections in that database use
   the same shard distribution and use one shard by default (OneShard
   configuration). This can still be overridden by setting the values of
   `numberOfShards` and `distributeShardsLike` when creating new collections in
-  that database via the web UI, arangosh or drivers (unless the startup option
+  that database via the web UI, _arangosh_ or drivers (unless the startup option
   `--cluster.force-one-shard` is enabled).
 
 - [Database properties API](../../develop/http-api/databases.md#get-information-about-the-current-database),\
-  HTTP route `GET /_api/database/current`
+  HTTP endpoint `GET /_api/database/current`
 
   The database properties endpoint returns the new additional attributes
   `replicationFactor`, `writeConcern` and `sharding` in a cluster.
   A description of these attributes can be found above.
 
 - [Collection](../../develop/http-api/collections.md) / [Graph APIs](../../develop/http-api/graphs/named-graphs.md#management),\
-  HTTP routes `POST /_api/collection`, `GET /_api/collection/{collection-name}/properties`
+  HTTP endpoints `POST /_api/collection`, `GET /_api/collection/{collection-name}/properties`
   and various `/_api/gharial/*` endpoints
 
   `minReplicationFactor` has been renamed to `writeConcern` for consistency.
   The old attribute name is still accepted and returned for compatibility.
 
 - [Hot Backup API](../../develop/http-api/hot-backups.md#create-a-backup),\
-  HTTP route `POST /_admin/backup/create`
+  HTTP endpoint `POST /_admin/backup/create`
 
   New attribute `force`, see [Hot Backup](#hot-backup) below.
 
 - New [Metrics API](../../develop/http-api/monitoring/metrics.md#get-the-metrics),\
-  HTTP route `GET /_admin/metrics`
+  HTTP endpoint `GET /_admin/metrics`
 
   Returns the instance's current metrics in Prometheus format. The returned
   document collects all instance metrics, which are measured at any given
@@ -754,7 +754,7 @@ which is a stopgap measure only.
 
 ### AQL options
 
-The new startup option `--query.optimizer-rules` can be used to to selectively
+The new startup option `--query.optimizer-rules` can be used to selectively
 enable or disable AQL query optimizer rules by default. The option can be
 specified multiple times, and takes the same input as the query option of the
 same name.
@@ -789,14 +789,14 @@ may be shipped in a disabled-by-default state.
 
 ## TLS v1.3
 
-Added support for TLS 1.3 for the [arangod server](../../components/arangodb-server/options.md#--sslprotocol)
+Added support for TLS 1.3 for the [_arangod_ server](../../components/arangodb-server/options.md#--sslprotocol)
 and the client tools (also added to v3.5.1).
 
-The arangod server can be started with option `--ssl.protocol 6` to make it require
+The _arangod_ server can be started with option `--ssl.protocol 6` to make it require
 TLS 1.3 for incoming client connections. The server can be started with option
-`--ssl.protocol 5` to make it require TLS 1.2, as in previous versions of arangod.
+`--ssl.protocol 5` to make it require TLS 1.2, as in previous versions of _arangod_.
 
-The default TLS protocol for the arangod server is now generic TLS
+The default TLS protocol for the _arangod_ server is now generic TLS
 (`--ssl.protocol 9`), which will allow the negotiation of the TLS version between
 the client and the server.
 
@@ -804,7 +804,7 @@ All client tools also support TLS 1.3, by using the `--ssl.protocol 6` option wh
 invoking them. The client tools will use TLS 1.2 by default, in order to be
 compatible with older versions of ArangoDB that may be contacted by these tools.
 
-To configure the TLS version for arangod instances started by the ArangoDB starter,
+To configure the TLS version for _arangod_ instances started by the ArangoDB starter,
 one can use the `--all.ssl.protocol=VALUE` startup option for the ArangoDB starter,
 where VALUE is one of the following:
 

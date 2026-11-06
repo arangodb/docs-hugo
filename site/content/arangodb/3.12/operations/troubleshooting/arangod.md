@@ -9,7 +9,7 @@ description: >-
 ## Server not starting or not reachable
 
 If the ArangoDB server does not start or if you cannot connect to it 
-using *arangosh* or other clients, you can try to find the problem cause by 
+using _arangosh_ or other clients, you can try to find the problem cause by 
 executing the following steps. If the server starts up without problems
 you can skip this section.
 
@@ -76,10 +76,10 @@ you can skip this section.
 
 When there is an out-of-memory situation, the Linux operating system is usually
 configured to kill processes that use most RAM. When running a dedicated
-database server, this process is like the ArangoDB server, arangod.
+database server, this process is like the ArangoDB server, _arangod_.
 
-A system process called OOM (out of memory) killer will send the arangod server
-a SIGKILL signal then, which the arangod process can neither detect nor ignore.
+A system process called OOM (out of memory) killer will send the _arangod_ server
+a SIGKILL signal then, which the _arangod_ process can neither detect nor ignore.
 It will be terminated ungracefully then.
 
 Usually, the Linux kernel will write information about the killing of processes
@@ -88,10 +88,10 @@ ArangoDB was killed because of an out-of-memory situation.
 
 ## Other crashes
 
-The Linux builds of the arangod executable contain a built-in crash handler.
+The Linux builds of the _arangod_ executable contain a built-in crash handler.
 
 The crash handler is supposed to log basic crash information to the ArangoDB
-logfile in case the arangod process receives one of the signals SIGSEGV,
+logfile in case the _arangod_ process receives one of the signals SIGSEGV,
 SIGBUS, SIGILL, SIGFPE or SIGABRT. SIGKILL signals, which the operating system
 can send to a process in case of OOM (out of memory), are not interceptable and
 thus cannot be intercepted by the crash handler.

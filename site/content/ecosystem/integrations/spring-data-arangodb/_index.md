@@ -48,7 +48,7 @@ the corresponding version of Spring Framework:
 
 | Spring Data ArangoDB | Spring Framework | Spring Boot |
 |----------------------|------------------|-------------|
-| 5.x                  | 7.0              | 4.0         |
+| 5.x                  | 7.0              | 4.*         |
 | 4.x                  | 6.2              | 3.5         |
 
 ## Get started

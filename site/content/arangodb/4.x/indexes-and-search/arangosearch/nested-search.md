@@ -35,7 +35,7 @@ Consider the following document:
 
 {{< tab "`search-alias` View" >}}
 You would normally index the `dimensions.type` and `dimensions.value` fields and
-with an inverted index and then use it via a `search-alias` View, in arangosh:
+with an inverted index and then use it via a `search-alias` View, in _arangosh_:
 
 ```js
 db.<collection>.ensureIndex({
@@ -230,7 +230,7 @@ Consider the following document:
 {{< tab "`search-alias` View" >}}
 To index the array of dimension objects and the nested array of measurement
 objects, you can use an inverted index and `search-view` View definition like
-the following, using arangosh:
+the following, using _arangosh_:
 
 ```js
 db.<collection>.ensureIndex({

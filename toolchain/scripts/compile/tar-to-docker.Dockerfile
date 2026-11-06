@@ -27,8 +27,8 @@ RUN echo "UTC" > /etc/timezone
 # Containers in OpenShift by default run with a random UID but with GID 0,
 # and we want that they can access the database and doc directories even
 # without a volume mount:
-RUN chgrp 0 /var/lib/arangodb3 /var/lib/arangodb3-apps && \
-    chmod 775 /var/lib/arangodb3 /var/lib/arangodb3-apps
+RUN chgrp 0 /var/lib/arangodb* && \
+    chmod 775 /var/lib/arangodb*
 
 COPY docker-entrypoint.sh /entrypoint.sh
 RUN ["chmod", "+x", "/entrypoint.sh"]

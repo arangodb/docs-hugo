@@ -1,0 +1,60 @@
+{{- /* The previous and next page of every page in the order of the navigation
+  (see home.navigation.html), by RelPermalink. Meant to be cached, as it walks
+  all pages once.
+
+  Each version of the versioned section is a separate chain between the section
+  and the page that follows the section, as if the other versions didn't exist.
+  The pages at these boundaries are unversioned and link to the stable version,
+  with the links for all versions in prevVersions / nextVersions (JSON) for
+  theme.js to substitute the selected version. */ -}}
+{{- $s := newScratch }}
+{{- range slice "prev" "next" "prevVersions" "nextVersions" }}
+  {{- $s.Set . dict }}
+{{- end }}
+{{- template "prev-next-walk" dict "pages" site.Sections "s" $s }}
+{{- return $s.Values -}}
+
+{{- define "prev-next-walk" }}
+  {{- $s := .s }}
+  {{- range $page := .pages.ByWeight }}
+    {{- template "prev-next-link" dict "page" $page "s" $s }}
+    {{- if eq $page.RelPermalink "/arangodb/" }}
+      {{- $firsts := dict }}
+      {{- $lasts := dict }}
+      {{- range $versionSection := $page.Pages }}
+        {{- $version := index (split $versionSection.Path "/") 2 }}
+        {{- $s.SetInMap "prev" $versionSection.RelPermalink $page }}
+        {{- $s.Set "last" $versionSection }}
+        {{- template "prev-next-walk" dict "pages" $versionSection.Pages "s" $s }}
+        {{- $firsts = merge $firsts (dict $version $versionSection) }}
+        {{- $lasts = merge $lasts (dict $version ($s.Get "last")) }}
+      {{- end }}
+      {{- $s.SetInMap "next" $page.RelPermalink (index $firsts "stable") }}
+      {{- $s.SetInMap "nextVersions" $page.RelPermalink (partial "prev-next-versions.html" $firsts) }}
+      {{- /* Linked when visiting the next page */}}
+      {{- $s.Set "lasts" $lasts }}
+    {{- else if $page.Pages }}
+      {{- template "prev-next-walk" dict "pages" $page.Pages "s" $s }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- define "prev-next-link" }}
+  {{- $page := .page }}
+  {{- $s := .s }}
+  {{- with $s.Get "lasts" }}
+    {{- /* The page after the versioned section follows the last page of every version */}}
+    {{- range . }}
+      {{- $s.SetInMap "next" .RelPermalink $page }}
+    {{- end }}
+    {{- $s.SetInMap "prev" $page.RelPermalink (index . "stable") }}
+    {{- $s.SetInMap "prevVersions" $page.RelPermalink (partial "prev-next-versions.html" .) }}
+    {{- $s.Delete "lasts" }}
+  {{- else }}
+    {{- with $s.Get "last" }}
+      {{- $s.SetInMap "next" .RelPermalink $page }}
+      {{- $s.SetInMap "prev" $page.RelPermalink . }}
+    {{- end }}
+  {{- end }}
+  {{- $s.Set "last" $page }}
+{{- end }}

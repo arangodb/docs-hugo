@@ -3,7 +3,7 @@ title: _arangobackup_ Options
 menuTitle: Options
 weight: 10
 description: >-
-  The startup options of the `arangobackup` executable
+  The startup options of the _arangobackup_ executable
 pageToc:
   maxHeadlineLevel: 2
 ---

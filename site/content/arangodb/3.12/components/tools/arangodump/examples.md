@@ -4,102 +4,142 @@ menuTitle: Examples
 weight: 5
 description: >-
   How to create database dumps of an ArangoDB server and use encryption,
-  compression, multi-threading, and other features of `arangodump`
+  compression, multi-threading, and other features of _arangodump_
 ---
-_arangodump_ can be invoked in a command line by executing the following command:
+## Create a dump
+
+To create a dump of all collections of the `_system` database, run _arangodump_
+with an output directory and enable the `--include-system-collections` startup
+option:
 
 ```
-arangodump --output-directory "dump"
+arangodump --include-system-collections true --output-directory "dump"
 ```
 
-This connects to an ArangoDB server and dump all non-system collections from
-the default database (`_system`) into an output directory named `dump`.
-Invoking _arangodump_ fails if the output directory already exists. This is
-an intentional security measure to prevent you from accidentally overwriting already
-dumped data. If you are positive that you want to overwrite data in the output
-directory, you can use the parameter `--overwrite true` to confirm this:
+System collections hold data that other features depend on, for example, the
+definitions of named graphs in the `_graphs` collection. Without them, you
+cannot fully restore such features. In the `_system` database, the system
+collections also include the user accounts (`_users` collection). You can
+leave out the system collections if you only want to dump your own collections,
+see [Choose the collections and data to dump](#choose-the-collections-and-data-to-dump).
+
+Without further startup options, _arangodump_ connects to the ArangoDB server at
+the default endpoint `http://127.0.0.1:8529` as the `root` user and prompts you
+for the password. It writes the dump into a directory named `dump`.
+
+You can also specify the output directory as a [positional argument](../../../operations/administration/configuration.md#command-line-options)
+without `--output-directory`:
 
 ```
-arangodump --output-directory "dump" --overwrite true
+arangodump --include-system-collections true dump
 ```
 
-_arangodump_ connects to the `_system` database by default using the default
-endpoint. To override the endpoint, or specify a different user, use one of the
-following startup options:
-
-- `--server.endpoint <string>`: endpoint to connect to
-- `--server.username <string>`: username
-- `--server.password <string>`: password or access token to use
-  (omit this and you'll be prompted for the password)
-- `--server.authentication <bool>`: whether or not to use authentication
-
-If you want to connect to a different database or dump all databases you can additionally
-use the following startup options:
-
-- `--all-databases true`: must have access to all databases, and not specify a database.
-- `--server.database <string>`: name of the database to connect to
-
-Note that the specified user must have access to the databases.
-
-Here's an example of dumping data from a non-standard endpoint, using a dedicated
-[database name](../../../concepts/data-structure/databases.md#database-names):
+_arangodump_ fails if the output directory already exists. This is an
+intentional security measure to prevent you from accidentally overwriting
+previously dumped data. If you are sure that you want to overwrite the data in
+the output directory, set the `--overwrite` startup option to `true`:
 
 ```
-arangodump \
-  --server.endpoint tcp://192.168.173.13:8531 \
-  --server.username backup \
-  --server.database mydb \
-  --output-directory "dump"
-```
-
-In contrast to the above call `--server.database` must not be specified when dumping
-all databases using `--all-databases true`:
-
-```
-arangodump \
-  --server.endpoint tcp://192.168.173.13:8531 \
-  --server.username backup \
-  --all-databases true \
-  --output-directory "dump-multiple"
+arangodump --include-system-collections true --output-directory "dump" --overwrite true
 ```
 
 When finished, _arangodump_ prints out a summary line with some aggregate
-statistics about what it did, e.g.:
+statistics about what it did, for example:
 
 ```
 Processed 43 collection(s), wrote 408173500 byte(s) into datafiles, sent 88 batch(es)
 ```
 
-Also, more than one endpoint can be provided, such as:
+## Connect and authenticate
+
+To connect to a different server or as a different user, use the following
+startup options:
+
+- `--server.endpoint <string>`: The endpoint to connect to. In a cluster,
+  specify a Coordinator.
+- `--server.username <string>`: The username.
+- `--server.password <string>`: The password or access token. If you omit it,
+  you are prompted for the password.
+- `--server.jwt-token <string>`: A JWT to authenticate with instead of a username
+  and password. Set it to `-` to be prompted for the token.
+- `--server.jwt-secret-keyfile <string>`: A file with the JWT secret of the
+  server, to authenticate with superuser rights instead of a username and password.
+- `--server.authentication <bool>`: Whether to authenticate. Set it to
+  `false` if authentication is disabled on the server.
+
+For example, to dump a database from a server at a non-standard endpoint
+as the `backup` user:
 
 ```
 arangodump \
-  --server.endpoint tcp://192.168.173.13:8531 \
-  --server.endpoint tcp://192.168.173.13:8532 \
+  --server.endpoint http://192.168.173.13:8531 \
+  --server.username backup \
+  --server.database mydb \
+  --output-directory "dump"
+```
+
+You can specify more than one endpoint, for example, multiple Coordinators of a
+cluster. _arangodump_ then distributes the connections of its threads across
+the endpoints:
+
+```
+arangodump \
+  --server.endpoint http://192.168.173.13:8531 \
+  --server.endpoint http://192.168.173.13:8532 \
   --server.username backup \
   --all-databases true \
   --output-directory "dump-multiple"
 ```
 
-By default, _arangodump_ dumps both structural information and documents from all
-non-system collections. To adjust this, there are the following command-line
-arguments:
+The specified user needs to have access to the databases you want to dump.
 
-- `--dump-data <bool>`: set to `true` to include documents in the dump. Set to `false`
-  to exclude documents. The default value is `true`.
-- `--include-system-collections <bool>`: whether or not to include system collections
-  in the dump. The default value is `false`. **Set to _true_ if you are using named
-  graphs that you are interested in restoring.**
+From v3.12.13 onward, _arangodump_ renews JWTs automatically before they
+expire, including the token it obtains for a username and password, so that
+long-running dumps don't fail with an HTTP `401 Unauthorized` error.
+For details about the authentication methods, how to avoid exposing
+credentials in the process list, and how the token renewal works, see
+[Connect to an ArangoDB server](../_index.md#connect-to-an-arangodb-server).
 
-For example, to only dump structural information of all collections (including system
-collections), use:
+## Choose the databases to dump
+
+_arangodump_ dumps the `_system` database by default. To dump a different
+database, specify its [name](../../../concepts/data-structure/databases.md#database-names)
+with the `--server.database` startup option:
+
+```
+arangodump --server.database mydb --output-directory "dump"
+```
+
+To dump all databases, set the `--all-databases` startup option to `true` and
+don't specify `--server.database`. The user needs to have access to all
+databases. _arangodump_ creates a subdirectory in the output directory for each
+database:
+
+```
+arangodump --all-databases true --output-directory "dump-multiple"
+```
+
+## Choose the collections and data to dump
+
+By default, _arangodump_ dumps both the structural information and the documents
+of all non-system collections. To adjust this, use the following startup options:
+
+- `--dump-data <bool>`: Whether to include the documents in the dump. The
+  default is `true`. Set it to `false` to only dump the structural information.
+- `--include-system-collections <bool>`: Whether to include system collections
+  in the dump. The default is `false`. **Set it to `true` if you use named
+  graphs or other features that store data in system collections and that you
+  want to restore.**
+
+For example, to only dump the structural information of all collections,
+including system collections, use:
 
 ```
 arangodump --dump-data false --include-system-collections true --output-directory "dump"
 ```
 
-To restrict the dump to just specific collections, use the `--collection` option.
-You can specify it multiple times if required:
+To restrict the dump to specific collections, use the `--collection` option.
+You can specify it multiple times:
 
 ```
 arangodump --collection myusers --collection myvalues --output-directory "dump"
@@ -112,15 +152,18 @@ option instead:
 arangodump --ignore-collection myusers --ignore-collection myvalues --output-directory "dump"
 ```
 
-Structural information for a collection is saved in files with name pattern
-`<collection-name>.structure.json`. Each structure file contains a JSON object
-with these attributes:
-- `parameters`: contains the collection properties
-- `indexes`: contains the collection indexes
+## Dump files
 
-Document data for a collection is saved in files with name pattern
-`<collection-name>.data.json`. Each line in a data file is a document insertion/update or
-deletion marker.
+_arangodump_ saves the structural information of each collection in a file with
+the name pattern `<collection-name>.structure.json`. Each structure file contains
+a JSON object with these attributes:
+
+- `parameters`: The collection properties.
+- `indexes`: The collection indexes.
+
+The document data of each collection is saved in files with the name pattern
+`<collection-name>.data.json`. Each line in a data file is a document
+insertion/update or deletion marker.
 
 ## Cluster Backup
 
@@ -129,7 +172,14 @@ Simply point it to one of the _Coordinators_ and it
 behaves exactly as described above, working on sharded collections
 in the Cluster.
 
-Please see the [Limitations](limitations.md).
+{{< warning >}}
+In a cluster, _arangodump_ does not guarantee to dump a consistent snapshot
+if write operations happen while the dump is in progress. It is therefore
+recommended not to perform any data-modification operations on the cluster
+while _arangodump_ is running, or to use [Hot Backups](../../../operations/backup-and-restore.md#hot-backups)
+instead. This is in contrast to a single server, where the dump is consistent
+even if write operations are ongoing, as a snapshot is taken when the dump starts.
+{{< /warning >}}
 
 As above, the output is one structure description file and one data
 file per sharded collection. Note that the data in the data file is
@@ -137,7 +187,7 @@ sorted first by shards and within each shard by ascending timestamp. The
 structural information of the collection contains the number of shards
 and the shard keys.
 
-Note that the version of the arangodump client tool needs to match the
+Note that the version of the _arangodump_ client tool needs to match the
 version of the ArangoDB server it connects to.
 
 ### Dumping collections with sharding prototypes
@@ -145,7 +195,7 @@ version of the ArangoDB server it connects to.
 Collections may be created with the shard distribution identical to an existing
 prototypical collection (see [`distributeShardsLike`](../../../develop/javascript-api/@arangodb/db-object.md#db_createcollection-name--properties--type--options));
 i.e. shards are distributed in the very same pattern as in the prototype collection.
-Such collections cannot be dumped without the referenced collection or arangodump
+Such collections cannot be dumped without the referenced collection or _arangodump_
 yields an error.
 
 ```
@@ -221,6 +271,8 @@ RocksDB encryption-at-rest feature.
 The size of dumps can be reduced using compression, for storing but also for the
 data transfer.
 
+### Compressed dumps on disk
+
 You can optionally store data in a compressed format to save space on disk with
 the `--compress-output` startup option. It cannot be used together with
 [Encryption](#encryption).
@@ -241,6 +293,8 @@ detects whether the data is compressed or not based on the file extension.
 arangorestore --input-directory "dump"
 ```
 
+### Compressed dumps on the wire
+
 You can optionally let the server compress the data for the network transfer
 with the `--compress-transfer` startup option. This can reduce the traffic and
 thus save time and money.
@@ -253,8 +307,11 @@ the dump compressed or not but without affecting the transfer size.
 arangodump --output-directory "dump" --compress-transfer --compress-output false
 ```
 
-{{< comment >}} Experimental feature in 3.12
 ## Storage format
+
+{{< warning >}}
+Dumps in VelocyPack format is an **experimental** feature.
+{{< /warning >}}
 
 The default output format for dumps is JSON.
 
@@ -265,7 +322,6 @@ format instead of the text-based JSON format. The output file size can be less
 even compared to compressed JSON. It can also lead to faster dumps because there
 is less data to transfer and no conversion from the server-internal VelocyPack
 format to JSON is needed.
-{{< /comment >}}
 
 ## Threads
 

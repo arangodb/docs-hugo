@@ -1,6 +1,7 @@
 {{ $tooltips := dict
   "Beta"              "This feature is in beta and may still change before it becomes generally available"
   "Experimental"      "This feature is available for testing but may still change or get removed"
+  "Limited Release"   "This release is only available to selected customers"
   "AMP"               "This feature is available in the Arango Managed Platform (AMP)"
   "Platform Suite"    "This feature is available in the Arango Contextual Data Platform without the Agentic AI Suite"
   "Agentic AI Suite"  "This feature is available in the Arango Contextual Data Platform with the Agentic AI Suite"
@@ -9,8 +10,8 @@
   "ArangoDB Enterprise Edition" "This feature is available in the Enterprise Edition but not the Community Edition of ArangoDB"
 -}}
 
-<p class="labels">
+<div class="labels">
 {{ range $.Params }}
   <span class="label"{{ with index $tooltips . }} title="{{ . }}"{{ end }}>{{ . }}</span>
 {{ end }}
-</p>
+</div>

@@ -1,7 +1,8 @@
 ---
-title: Lock Policy with `oasisctl`
+title: Lock Policy with _oasisctl_
 menuTitle: Lock Policy
 weight: 5
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Lock a backup policy

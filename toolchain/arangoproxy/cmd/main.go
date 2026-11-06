@@ -27,9 +27,10 @@ func init() {
 		fmt.Printf("Error loading config: %s\n, aborting...", err.Error())
 		os.Exit(1)
 	}
-	models.Conf.Override = strings.ReplaceAll(override, ",", "|")
+	models.Conf.Override = strings.TrimSpace(override)
+	models.SetOverride(models.Conf.Override)
 
-	models.Logger.Printf(startupBanner)
+	models.Logger.Printf("%s", startupBanner)
 
 	models.Logger.Printf("Configuration:\n%s\n", models.Conf.String())
 

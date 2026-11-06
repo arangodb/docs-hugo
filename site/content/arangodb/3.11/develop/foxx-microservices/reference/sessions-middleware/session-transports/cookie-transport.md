@@ -2,7 +2,9 @@
 title: Foxx Cookie Session Transport
 menuTitle: Cookie transport
 weight: 5
-description: ''
+description: >-
+  The cookie transport stores session identifiers in cookies on the request
+  and response objects
 ---
 `const cookieTransport = require('@arangodb/foxx/sessions/transports/cookie');`
 

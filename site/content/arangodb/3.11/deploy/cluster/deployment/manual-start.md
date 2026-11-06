@@ -2,7 +2,8 @@
 title: Start an ArangoDB cluster manually
 menuTitle: Manual Start
 weight: 5
-description: ''
+description: >-
+  How to start an ArangoDB cluster without the help of the ArangoDB Starter
 ---
 An ArangoDB Cluster consists of several running _tasks_ or _processes_ which
 form the Cluster. 
@@ -378,7 +379,7 @@ options:
 
    Let ArangoDB generate a random root password.
        
-For an in depth guide about Docker and ArangoDB please check the official documentation:
+For an in-depth guide about Docker and ArangoDB please check the official documentation:
 [hub.docker.com/r/arangodb/arangodb/](https://hub.docker.com/r/arangodb/arangodb/).
 Note that we are using the image `arangodb/arangodb` here which is always the most current one.
 There is also the "official" one called `arangodb` whose documentation is here:

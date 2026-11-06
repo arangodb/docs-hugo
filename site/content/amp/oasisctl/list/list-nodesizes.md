@@ -1,7 +1,8 @@
 ---
-title: List Node Sizes with `oasisctl`
+title: List Node Sizes with _oasisctl_
 menuTitle: List Node Sizes
 weight: 26
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List node sizes

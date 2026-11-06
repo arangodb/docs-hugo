@@ -1,7 +1,8 @@
 ---
-title: List Roles with `oasisctl`
+title: List Roles with _oasisctl_
 menuTitle: List Roles
-weight: 37
+weight: 35
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List all roles of the given organization

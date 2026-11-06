@@ -962,7 +962,7 @@ RETURN UNIQUE(
 
 `UNION_DISTINCT(array1, array2, ... arrayN) → newArray`
 
-Return the union of distinct values of all arrays specified.
+Combine all given arrays into a single array, keeping each value only once.
 
 - **arrays** (array, *repeatable*): an arbitrary number of arrays as multiple
   arguments (at least 2)

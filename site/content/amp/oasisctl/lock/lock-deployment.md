@@ -1,7 +1,8 @@
 ---
-title: Lock Deployment with `oasisctl`
+title: Lock Deployment with _oasisctl_
 menuTitle: Lock Deployment
 weight: 2
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Lock a deployment, so it cannot be deleted

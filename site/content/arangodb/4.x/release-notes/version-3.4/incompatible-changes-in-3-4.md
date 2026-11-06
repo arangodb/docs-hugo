@@ -39,7 +39,7 @@ In case the target platform does not conform to these requirements, ArangoDB may
 not work correctly.
 
 The compiled-in architecture optimizations can be retrieved on most platforms by 
-invoking the *arangod* binary with the `--version` option. The optimization switches
+invoking the _arangod_ binary with the `--version` option. The optimization switches
 will then show up in the output in the line starting with `optimization-flags`, e.g.
 
 ```
@@ -117,7 +117,7 @@ there is any discrepancy, the Coordinator will abort its startup.
 - The on-disk storage format for indexes of type `geo` has changed for the RocksDB
   storage engine. This also affects `geo1` and `geo2` indexes.
 
-  This **requires** users to start the arangod process with the
+  This **requires** users to start the _arangod_ process with the
   `--database.auto-upgrade true` option to allow ArangoDB recreating these 
   indexes using the new on-disk format.
 
@@ -149,7 +149,7 @@ of your data on this fresh installation).
 In order to use the new binary format with existing data, it is required to 
 create a logical dump of the database data, shut down the server, erase the 
 database directory and restore the data from the logical dump. To minimize 
-downtime you can alternatively run a second arangod instance in your system,
+downtime you can alternatively run a second _arangod_ instance in your system,
 that replicates the original data; once the replication has reached completion, 
 you can switch the instances.
 
@@ -178,7 +178,7 @@ to a value greater than 0 will produce a startup warning on Windows.
 
 The total amount of data to build up in all in-memory write buffers (backed by log
 files) is now by default restricted to a certain fraction of the available physical 
-RAM. This helps restricting memory usage for the arangod process, but may have an 
+RAM. This helps restricting memory usage for the _arangod_ process, but may have an 
 effect on the RocksDB storage engine's write performance. 
 
 In ArangoDB 3.3 the governing configuration option `--rocksdb.total-write-buffer-size`
@@ -206,17 +206,17 @@ The number of server threads is now configured by the following startup options:
   threads the server will start and always keep around
 - `--server.maximal-threads`: determines the maximum number of request processing 
   threads the server will start for request handling. If that number of threads is 
-  already running, arangod will not start further threads for request handling
+  already running, _arangod_ will not start further threads for request handling
 
 The actual number of request processing threads is adjusted dynamically at runtime
 and will float between `--server.minimal-threads` and `--server.maximal-threads`.
 
-## HTTP REST API
+## HTTP API
 
-The following incompatible changes were made in context of ArangoDB's HTTP REST
+The following incompatible changes were made in context of ArangoDB's HTTP
 APIs:
 
-- The following, partly undocumented internal REST APIs have been removed in ArangoDB 3.4:
+- The following, partly undocumented internal HTTP APIs have been removed in ArangoDB 3.4:
 
   - `GET /_admin/test`
   - `GET /_admin/clusterCheckPort`
@@ -250,14 +250,14 @@ APIs:
   }
   ```
 
-  In previous versions, this REST API returned only the list of available
+  In previous versions, this HTTP API returned only the list of available
   AQL user functions on the top level of the response.
   Each AQL user function description now also contains the 'isDeterministic' attribute.
 
 - if authentication is turned on, requests to databases by users with insufficient 
   access rights will be answered with HTTP 401 (Forbidden) instead of HTTP 404 (Not found).
 
-- the REST handler for user permissions at `/_api/user` will now return HTTP 404
+- the HTTP API for user permissions at `/_api/user` will now return HTTP 404
   (Not found) when trying to grant or revoke user permissions for a non-existing
   collection.
 
@@ -268,7 +268,7 @@ The following APIs have been added or augmented:
 
 - additional `stream` attribute in queries HTTP API
 
-  The REST APIs for retrieving the list of currently running and slow queries
+  The HTTP APIs for retrieving the list of currently running and slow queries
   at `GET /_api/query/current` and `GET /_api/query/slow` are now returning an
   additional attribute `stream` for each query.
   
@@ -350,7 +350,7 @@ The following APIs have been added or augmented:
 
 - APIs for view management have been added at endpoint `/_api/view`.
 
-- The REST APIs for modifying graphs at endpoint `/_api/gharial` now support returning
+- The HTTP APIs for modifying graphs at endpoint `/_api/gharial` now support returning
   the old revision of vertices / edges after modifying them. The APIs also supports 
   returning the just-inserted vertex / edge. This is in line with the already existing 
   single-document functionality provided at endpoint `/_api/document`.
@@ -574,7 +574,7 @@ in case a lot of the above features are used.
 
 ## Startup option changes
 
-For arangod, the following startup options have changed:
+For _arangod_, the following startup options have changed:
 
 - the number of server threads is now configured by the following startup options:
 
@@ -647,7 +647,7 @@ specified is now:
 
 ## SSLv2
 
-Support for SSLv2 has been removed from arangod and all client tools.
+Support for SSLv2 has been removed from _arangod_ and all client tools.
 
 Startup will now be aborted when using SSLv2 for a server endpoint, or when connecting 
 with one of the client tools via an SSLv2 connection.
@@ -736,16 +736,16 @@ threads.
 The following features and APIs are deprecated in ArangoDB 3.4, and will be 
 removed in future versions of ArangoDB:
 
-- the JavaScript-based traversal REST API at `/_api/traversal` and the
+- the JavaScript-based traversal HTTP API at `/_api/traversal` and the
   underlying traversal module `@arangodb/graph/traversal`:
 
   This API has several limitations (including low result set sizes) and has 
   effectively been unmaintained since the introduction of native AQL traversal.
 
-  It is recommended to migrate client applications that use the REST API at
+  It is recommended to migrate client applications that use the HTTP API at
   `/_api/traversal` to use AQL-based traversal queries instead.
 
-- the REST API for simple queries at `/_api/simple`:
+- the HTTP API for simple queries at `/_api/simple`:
 
   The simple queries provided by the `/_api/simple` endpoint are limited in
   functionality and will internally resort to AQL queries anyway. It is advised
@@ -753,14 +753,14 @@ removed in future versions of ArangoDB:
   using the simple query API, because that is more flexible and allows greater 
   control of how the queries are executed.
 
-- the REST API for querying endpoints at `/_api/endpoint`:
+- the HTTP API for querying endpoints at `/_api/endpoint`:
 
   The API `/_api/endpoint` is deprecated since ArangoDB version 3.1. 
   For cluster mode there is `/_api/cluster/endpoints` to find all current 
   Coordinator endpoints.
 
 - accessing collections via their numeric IDs instead of their names. This mostly
-  affects the REST APIs at
+  affects the HTTP APIs at
 
   - `/_api/collection/<collection-id>`
   - `/_api/document/<collection-id>`
@@ -770,7 +770,7 @@ removed in future versions of ArangoDB:
   their numeric ID, but the preferred way to access a collections is by its
   user-defined name.
 
-- the REST API for WAL tailing at `/_api/replication/logger-follow`:
+- the HTTP API for WAL tailing at `/_api/replication/logger-follow`:
 
   The `logger-follow` WAL tailing API has several limitations. A better API
   was introduced at endpoint `/_api/wal/tail` in ArangoDB 3.3.
@@ -778,7 +778,7 @@ removed in future versions of ArangoDB:
   Client applications using the old tailing API at `/_api/replication/logger-follow`
   should switch to the new API eventually.
 
-- the result attributes `mode` and `writeOpsEnabled` in the REST API for querying
+- the result attributes `mode` and `writeOpsEnabled` in the HTTP API for querying
   a server's status at `/_admin/status`:
 
   `GET /_admin/status` returns the additional attributes `operationMode` and 
@@ -830,13 +830,13 @@ removed in future versions of ArangoDB:
   to the above forms. However, AQL queries using the deprecated AQL functions
   should eventually be adjusted.
 
-- using the `arangoimp` binary instead of `arangoimport` 
+- using the _arangoimp_ binary instead of _arangoimport_ 
 
-  `arangoimp` has been renamed to `arangoimport` for consistency in ArangoDB
-  3.4, and `arangoimp` is just a symbolic link to `arangoimport` now.
-  `arangoimp` is there for compatibility only, but client scripts should 
-  eventually be migrated to use `arangoimport` instead.
+  _arangoimp_ has been renamed to _arangoimport_ for consistency in ArangoDB
+  3.4, and _arangoimp_ is just a symbolic link to _arangoimport_ now.
+  _arangoimp_ is there for compatibility only, but client scripts should 
+  eventually be migrated to use _arangoimport_ instead.
 
-- the `foxx-manager` executable is deprecated and will be removed in ArangoDB 4.
+- the _foxx-manager_ executable is deprecated and will be removed in ArangoDB 4.
   
   Please use Foxx CLI for v3.x.x instead.

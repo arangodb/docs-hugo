@@ -1,7 +1,8 @@
 ---
-title: Update Role with `oasisctl`
+title: Update Role with _oasisctl_
 menuTitle: Update Role
-weight: 26
+weight: 25
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Update a role the authenticated user has access to

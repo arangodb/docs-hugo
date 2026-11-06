@@ -2,7 +2,9 @@
 title: '`search-alias` Views Reference'
 menuTitle: '`search-alias` Views Reference'
 weight: 80
-description: ''
+description: >-
+  Overview of `search-alias` View properties you can set when creating or
+  modifying a View
 ---
 `search-alias` Views let you add one or more inverted indexes to a View, enabling
 federate searching, sorting search results by relevance, and search highlighting, on top of
@@ -24,6 +26,8 @@ index standalone or as part of a View.
 
 Certain settings of inverted indexes need to match if you want to add them to the
 same `search-alias` View, see the [restrictions](../indexing/working-with-indexes/inverted-indexes.md#restrictions).
+A `search-alias` View stores no data of its own, see the
+[Architecture overview of ArangoSearch](architecture.md).
 
 Inverted indexes can be managed as follows:
 - in the web interface, in the **Collections** section, in the **Indexes** tab

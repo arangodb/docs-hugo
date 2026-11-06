@@ -19,17 +19,18 @@ deployment has internet access:
 | Your deployment | How to license it | Run the Platform CLI tool? |
 |---|---|---|
 | **Standalone ArangoDB** with internet access | [Activate the deployment](#activate-a-deployment) with the Platform CLI tool (recommended for unattended renewal) or, if **Managed** activation is enabled for your license, with the [License Activation portal](https://activate.license.arango.ai/) (one-off). | **Optional** — only if you use the Platform CLI tool |
-| **Standalone ArangoDB**, offline / air-gapped | [Generate a license key](#generate-a-license-key) on a separate internet-connected machine, then [apply it](#apply-a-license-key) via arangosh, the web interface, or the HTTP API. | **Yes** — on the internet-connected machine only |
+| **Standalone ArangoDB**, offline / air-gapped | [Generate a license key](#generate-a-license-key) on a separate internet-connected machine, then [apply it](#apply-a-license-key) via _arangosh_, the web interface, or the HTTP API. | **Yes** — on the internet-connected machine only |
 | **Kubernetes with internet access** (incl. Contextual Data Platform) | Create a Kubernetes secret with your client ID and client secret. The [ArangoDB Kubernetes Operator (`kube-arangodb`)](https://github.com/arangodb/kube-arangodb) activates the deployment and renews the license automatically. | **No** — the operator does everything |
 | **Air-gapped Kubernetes** (no internet access) | Generate a license key on a separate internet-connected machine — the [License Activation portal](https://activate.license.arango.ai/) is the recommended way to do this — then apply it as a Kubernetes secret on the air-gapped cluster. | **Yes** — on the internet-connected machine only |
 
 {{< info >}}
-**Legacy deployments (pre-v3.12.6):** Arango issued a ready-made license
-key directly to customers — there were no client ID and client secret
+**Old license keys instead of license credentials**:\
+Arango issued ready-made license keys directly to customers until the time of
+the ArangoDB v3.12.6 release. There were no client ID and client secret
 credentials, and no Platform CLI tool. If Arango issued you a ready-made
 license key rather than license credentials (a client ID and client
-secret), skip the activation and generation steps and go directly to
-[Apply a license key](#apply-a-license-key).
+secret) and if this license key hasn't expired yet, skip the activation and
+generation steps and go directly to [Apply a license key](#apply-a-license-key).
 {{< /info >}}
 
 {{< info >}}
@@ -87,7 +88,7 @@ See the **Activation portal** entries in
 
 ## License methods summary
 
-- **Activate a deployment** (from v3.12.6 onward):\
+- **Activate a deployment** (from the v3.12.6 release date onward):\
   Customers receive license credentials composed of a client ID and a client secret.
   You can use the Platform CLI tool to activate deployments with these credentials,
   either one-off or continuously.
@@ -96,8 +97,8 @@ See the **Activation portal** entries in
   renew the activation weekly.
 
 - **Apply a license key**:\
-  Up to v3.12.5, customers received a license key directly and it was typically
-  valid for one year. From v3.12.6 onward, customers receive license credentials
+  Before the time of the v3.12.6 release, customers received a license key directly and it was typically
+  valid for one year. Since this release, customers receive license credentials
   instead. You can use the Platform CLI tool to generate a license key using these
   credentials, and the license key generally expires every two weeks.
 
@@ -121,7 +122,7 @@ permitted by your contract.
 #### Platform CLI tool
 
 1. Download the Platform CLI tool `arangodb_operator_platform` from
-   <https://github.com/arangodb/kube-arangodb/releases>.
+   <https://github.com/arangodb/kube-arangodb/releases/latest>.
    It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
    architecture (e.g. `arangodb_operator_platform_linux_amd64`).
 
@@ -227,7 +228,7 @@ use the Platform CLI tool's `--license.interval` instead.
 5. Optionally enable **Custom TTL** to override the default license duration.
 6. Click **Activate** and copy the generated license key.
 7. Apply the license key to ArangoDB using one of the interfaces in
-   [Apply a license key](#apply-a-license-key) — for example `arangosh` or
+   [Apply a license key](#apply-a-license-key) — for example _arangosh_ or
    the web interface.
 
 Repeat this procedure when the license is close to expiry. If you want
@@ -273,7 +274,7 @@ configuration options that let you tune TTL and grace periods.
 ## Generate a license key
 
 1. Download the Platform CLI tool `arangodb_operator_platform` from
-   <https://github.com/arangodb/kube-arangodb/releases>.
+   <https://github.com/arangodb/kube-arangodb/releases/latest>.
    It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
    architecture (e.g. `arangodb_operator_platform_linux_amd64`).
 
@@ -392,7 +393,7 @@ Use this walkthrough if you need to run
 `arangodb_operator_platform license generate` yourself — that is, you are:
 
 - Running **standalone ArangoDB** (no Kubernetes) and want a license key
-  file you can apply via arangosh or the web interface, or
+  file you can apply via _arangosh_ or the web interface, or
 - Preparing an **air-gapped Kubernetes** install and need to generate a key
   on an internet-connected machine to carry into the air-gapped cluster.
 
@@ -573,7 +574,7 @@ docker cp arangodb:/license_key.txt ./license_key.txt
 
 Copy the license string from `license_key.txt` and apply it to your ArangoDB
 deployment using any of the interfaces documented in the next section,
-[Apply a license key](#apply-a-license-key) — for example `arangosh` or
+[Apply a license key](#apply-a-license-key) — for example _arangosh_ or
 the web interface.
 
 ## Apply a license key
@@ -883,3 +884,21 @@ and restored with any of the above mechanisms.
 Make sure that you store your license in a safe place, and potentially the
 email with which you received it, should you require the license key to
 re-activate a deployment.
+
+### Move a license to a different deployment
+
+A license activation or generated license key is bound to the deployment ID
+of the deployment it was created for. If you want to use your license
+credentials for a different deployment instead, for example, because you
+replace an existing deployment with a new one, the old deployment needs to be
+deactivated first.
+
+Deactivating a deployment is not self-service. To have a deployment
+deactivated, raise a support ticket with Arango and include the deployment ID
+of the deployment you no longer want to license.
+
+Once the deactivation is complete, the license is not transferred
+automatically. You need to recreate the license for the new deployment by
+[activating it](#activate-a-deployment) or
+[generating a license key](#generate-a-license-key) for it, using the
+deployment ID of the new deployment.

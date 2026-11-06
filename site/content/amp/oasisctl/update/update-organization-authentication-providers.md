@@ -1,7 +1,8 @@
 ---
-title: Update Organization Authentication Providers with `oasisctl`
+title: Update Organization Authentication Providers with _oasisctl_
 menuTitle: Update Organization Authentication Providers
-weight: 13
+weight: 12
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Update allowed authentication providers for an organization the authenticated user has access to

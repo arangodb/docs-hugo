@@ -1,7 +1,8 @@
 ---
-title: List Examples with `oasisctl`
+title: List Examples with _oasisctl_
 menuTitle: List Examples
 weight: 19
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List all example datasets

@@ -2,7 +2,8 @@
 title: Document
 menuTitle: Document
 weight: 20
-description: ''
+description: >-
+  The document browser of the ArangoDB web interface
 ---
 The document section offers a editor which let you edit documents and edges of a collection.
 

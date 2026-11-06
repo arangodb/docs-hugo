@@ -3,7 +3,7 @@ title: ArangoDB Server
 menuTitle: ArangoDB Server
 weight: 170
 description: >-
-  The ArangoDB daemon (arangod) is the central server binary that can run in
+  The ArangoDB daemon (_arangod_) is the central server binary that can run in
   different modes for single server setups and clusters
 ---
 The ArangoDB server is the core component of ArangoDB. The executable file to

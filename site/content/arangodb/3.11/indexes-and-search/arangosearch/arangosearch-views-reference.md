@@ -2,7 +2,9 @@
 title: '`arangosearch` Views Reference'
 menuTitle: '`arangosearch` Views Reference'
 weight: 85
-description: ''
+description: >-
+  Overview of the `arangosearch` View properties you can set when creating,
+  modifying, or linking collections to a View
 ---
 `arangosearch` Views enable sophisticated information retrieval queries such as
 full-text search for unstructured or semi-structured data over documents from
@@ -337,15 +339,6 @@ During view modification the following directives apply:
   The `storedValues` option is not to be confused with the `storeValues` option,
   which allows to store meta data about attribute values in the View index.
 
-An inverted index is the heart of `arangosearch` Views.
-The index consists of several independent segments and the index **segment**
-itself is meant to be treated as a standalone index. **Commit** is meant to be
-treated as the procedure of accumulating processed data creating new index
-segments. **Consolidation** is meant to be treated as the procedure of joining
-multiple index segments into a bigger one and removing garbage documents (e.g.
-deleted from a collection). **Cleanup** is meant to be treated as the procedure
-of removing unused segments after release of internal resources.
-
 - **cleanupIntervalStep** (_optional_; type: `integer`; default: `2`; to
   disable use: `0`)
 
@@ -356,11 +349,7 @@ of removing unused segments after release of internal resources.
   rarely merge segments (i.e. few inserts/deletes). A higher value impacts
   performance without any added benefits.
 
-  > With every **commit** or **consolidate** operation a new state of the view
-  > internal data-structures is created on disk. Old states/snapshots are
-  > released once there are no longer any users remaining. However, the files
-  > for the released states/snapshots are left on disk, and only removed by
-  > "cleanup" operation.
+  Also see [ArangoSearch cleanup](architecture.md#cleanup).
 
 - **commitIntervalMsec** (_optional_; type: `integer`; default: `1000`;
   to disable use: `0`)
@@ -374,16 +363,7 @@ of removing unused segments after release of internal resources.
   few inserts/updates because of synchronous locking, and it wastes disk space for
   each commit call.
 
-  > For data retrieval `arangosearch` Views follow the concept of
-  > "eventually-consistent", i.e. eventually all the data in ArangoDB is
-  > matched by corresponding query expressions.
-  > The concept of `arangosearch` View "commit" operation is introduced to
-  > control the upper-bound on the time until document addition/removals are
-  > actually reflected by corresponding query expressions.
-  > Once a "commit" operation is complete, all documents added/removed prior to
-  > the start of the "commit" operation are reflected by queries invoked in
-  > subsequent ArangoDB transactions. In-progress ArangoDB transactions
-  > still continue to return a repeatable-read state.
+  Also see [ArangoSearch commits](architecture.md#writing-and-commits).
 
 - **consolidationIntervalMsec** (_optional_; type: `integer`; default: `1000`;
   to disable use: `0`)
@@ -397,21 +377,13 @@ of removing unused segments after release of internal resources.
   impacts performance due to no segment candidates available for
   consolidation.
 
-  > For data modification `arangosearch` Views follow the concept of a
-  > "versioned data store". Thus old versions of data may be removed once there
-  > are no longer any users of the old data. The frequency of the cleanup and
-  > compaction operations are governed by `consolidationIntervalMsec` and the
-  > candidates for compaction are selected via `consolidationPolicy`.
-
-ArangoSearch performs operations in its index based on numerous writer
-objects that are mapped to processed segments. In order to control memory that
-is used by these writers (in terms of "writers pool") one can use
-`writebuffer*` properties of a view.
+  Also see [ArangoSearch consolidation](architecture.md#removals-and-consolidation).
 
 - **writebufferIdle** (_optional_; type: `integer`; default: `64`;
   to disable use: `0`; _immutable_)
 
   Maximum number of writers (segments) cached in the pool.
+  Also see [ArangoSearch write buffers](architecture.md#write-buffers).
 
 - **writebufferActive** (_optional_; type: `integer`; default: `0`;
   to disable use: `0`; _immutable_)
@@ -430,16 +402,7 @@ is used by these writers (in terms of "writers pool") one can use
 - **consolidationPolicy** (_optional_; type: `object`; default: `{}`)
 
   The consolidation policy to apply for selecting data store segment merge
-  candidates.
-
-  > With each ArangoDB transaction that inserts documents, one or more
-  > ArangoSearch internal segments gets created. Similarly, for removed
-  > documents the segments containing such documents have these documents
-  > marked as "deleted". Over time, this approach causes a lot of small and
-  > sparse segments to be created. A **consolidation** operation selects one or
-  > more segments and copies all of their valid documents into a single new
-  > segment, thereby allowing the search algorithm to perform more optimally and
-  > for extra file handles to be released once old segments are no longer used.
+  candidates. Also see [ArangoSearch consolidation](architecture.md#removals-and-consolidation).
 
   - **type** (_optional_; type: `string`; default: `"tier"`)
 
@@ -449,7 +412,8 @@ is used by these writers (in terms of "writers pool") one can use
 
     - `"bytes_accum"`: Consolidation is performed based on current memory
       consumption of segments and `threshold` property value.
-    - `"tier"`: Consolidate based on segment byte size and live document count
+    - `"tier"`: Consolidate based on segment byte size and the number of
+      entries that are not marked as deleted
       as dictated by the customization attributes.
 
     {{< warning >}}

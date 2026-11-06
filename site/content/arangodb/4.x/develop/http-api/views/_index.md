@@ -7,18 +7,18 @@ description: >-
 ---
 ## Addresses of Views
 
-All Views in ArangoDB have a unique identifier and a unique
-name. To access a View, use the View name to refer to it:
+All Views in ArangoDB have a name that is unique within a database.
+To access a View, use the View name to refer to it:
 
 ```
-http://server:port/_api/view/<view-name>
+http://server:port/_db/<database-name>/_api/view/<view-name>
 ```
 
-For example, assume that the View identifier is `7254820` and
-the View name is `demo`, then the URL of that View is:
+For example, assume ArangoDB runs locally, the View name is `demo`, and it is
+in the `mydb` database. The URL of that View is the following:
 
 ```
-http://localhost:8529/_api/view/demo
+http://localhost:8529/_db/mydb/_api/view/demo
 ```
 
 ## View types

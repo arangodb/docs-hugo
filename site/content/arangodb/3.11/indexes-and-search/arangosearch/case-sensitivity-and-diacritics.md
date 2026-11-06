@@ -13,7 +13,7 @@ description: >-
 
 ### Custom Analyzer
 
-Create a `norm` Analyzer in arangosh to normalize case to all lowercase and to
+Create a `norm` Analyzer in _arangosh_ to normalize case to all lowercase and to
 remove diacritics:
 
 ```js

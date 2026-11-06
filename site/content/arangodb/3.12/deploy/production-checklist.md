@@ -47,7 +47,7 @@ have been performed on your production system before you go live.
   personnel only. Implement proper authentication and authorization mechanisms.
 
 - **JWT authentication**: Enable JWT authentication for production
-  deployments. See [JWT authentication](../develop/http-api/authentication.md#jwt-user-tokens)
+  deployments. See [JWT authentication](../develop/http-api/authentication.md#bearer-token-authentication)
   for more details.
 
 - **Encryption**: Enable [Encryption at Rest](../operations/security/encryption-at-rest.md)

@@ -2,11 +2,11 @@
 title: Replication applier commands
 menuTitle: Replication Applier
 weight: 15
-description: ''
+description: >-
+  You can remotely start and stop the replication applier of a database, get and
+  set its configuration, query its state, and turn a server into a follower of
+  another
 ---
-The applier commands allow to remotely start, stop, and query the state and 
-configuration of an ArangoDB database's replication applier.
-
 ## Get the replication applier configuration
 
 ```openapi

@@ -1,7 +1,8 @@
 ---
-title: Update Policy Delete Binding with `oasisctl`
+title: Update Policy Delete Binding with _oasisctl_
 menuTitle: Update Policy Delete Binding
-weight: 21
+weight: 20
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete a role binding from a policy

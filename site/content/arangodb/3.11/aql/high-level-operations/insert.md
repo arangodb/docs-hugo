@@ -128,6 +128,10 @@ modes:
   fails. This is also the default behavior in case the overwrite mode is
   not set, and the `overwrite` flag is `false` or not set either.
 
+Note that operations with `overwriteMode` other than `"conflict"` require
+a `_key` attribute in the request payload, therefore they can only be
+performed on collections sharded by `_key`.
+
 The main use case of inserting documents with overwrite mode `ignore` is
 to make sure that certain documents exist in the cheapest possible way.
 In case the target document already exists, the `ignore` mode is most

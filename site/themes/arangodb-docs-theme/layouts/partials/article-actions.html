@@ -1,0 +1,10 @@
+{{- /* Edit link and back to top, after the previous/next links in the document
+  order (and visually on narrow screens), so that keyboard users reach them
+  after the content. In the column, they are fixed to the bottom of the
+  viewport below the table of contents. */ -}}
+<div class="article-actions">
+  <div class="article-actions-inner">
+    {{ partial "edit-link.html" . }}
+    {{ partial "back-to-top.html" . }}
+  </div>
+</div>

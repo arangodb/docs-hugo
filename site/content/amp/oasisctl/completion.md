@@ -1,7 +1,8 @@
 ---
-title: Completion with `oasisctl`
+title: Completion with _oasisctl_
 menuTitle: Completion
 weight: 7
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Generates bash completion scripts

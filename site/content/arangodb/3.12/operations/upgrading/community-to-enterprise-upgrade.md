@@ -46,12 +46,12 @@ For more information about setting a license key, see [License Management](../ad
 
 ### Procedure for a *Logical* Upgrade
 
-1. Use the tool [_arangodump_](../../components/tools/arangodump/_index.md) to **take a backup**
+1. Use the tool [arangodump](../../components/tools/arangodump/_index.md) to **take a backup**
    of your data stored by your Community Edition installation
 2. Uninstall the ArangoDB Community Edition package
 3. Install the ArangoDB Enterprise Edition package
    (and start your _Single Instance_ or _Cluster_)
-4. Restore the backup using the tool [_arangorestore_](../../components/tools/arangorestore/_index.md).
+4. Restore the backup using the tool [arangorestore](../../components/tools/arangorestore/_index.md).
 
 ### Procedure for an *In-Place* Upgrade
 

@@ -1,0 +1,8 @@
+{{- /* The links to pages by version as JSON for theme.js to pick from */ -}}
+{{- $links := dict }}
+{{- range $version, $page := . }}
+  {{- $links = merge $links (dict $version (dict
+    "href" $page.RelPermalink
+    "title" ($page.Params.menuTitle | markdownify))) }}
+{{- end }}
+{{- return jsonify $links -}}

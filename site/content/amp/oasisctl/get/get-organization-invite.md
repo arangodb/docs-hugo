@@ -1,7 +1,8 @@
 ---
-title: Get Organization Invite with `oasisctl`
+title: Get Organization Invite with _oasisctl_
 menuTitle: Get Organization Invite
-weight: 21
+weight: 20
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get an organization invite the authenticated user has access to

@@ -2,7 +2,9 @@
 title: Foxx Routers
 menuTitle: Routers
 weight: 20
-description: ''
+description: >-
+  Routers let you define routes that extend ArangoDB's HTTP API with custom
+  endpoints
 ---
 `const createRouter = require('@arangodb/foxx/router');`
 

@@ -1,0 +1,144 @@
+# Maps the package names used by the Arango Contextual Data Platform releases
+# (the `packages` keys of the files in `data/data_platform/`) to the features
+# they implement and the documentation pages that describe them.
+#
+# Rendered by the `service-versions` shortcode. A package that is shipped but
+# not listed here makes the build warn (or fail, with `failOnBrokenLinks`), so
+# add an entry HERE whenever a new service appears in a release file.
+#
+# Each entry has a `features` list, because a single package can ship several
+# of the features that the documentation describes separately (the platform UI
+# holds the Graph Visualizer and the Query Editor, the Control Plane holds the
+# Secrets Manager). Conversely, several packages can contribute to one feature;
+# add the part they contribute in parentheses so that the rows stay
+# distinguishable and sort next to each other.
+#
+# Each feature:
+#   name   the feature as it is called in the documentation. The first one also
+#          determines where the package sorts in the rendered table.
+#   link   path of the page that documents the feature, relative to the content
+#          root (no leading slash). The shortcode rewrites it to a path relative
+#          to the page it renders into, so the link is checked by the link
+#          render hook like any other Markdown link. Optional: omit it for a
+#          feature that has no page of its own, and the name is rendered as
+#          plain text.
+
+arangodb-platform-ui:
+  features:
+    - name: Web interface (frontend)
+      link: contextual-data-platform/web-interface/_index.md
+    - name: Graph Visualizer
+      link: contextual-data-platform/graph-visualizer.md
+    - name: Query Editor
+      link: contextual-data-platform/query-editor.md
+arangodb-platform-ui-server:
+  features:
+    - name: Web interface (backend)
+      link: contextual-data-platform/web-interface/_index.md
+arangodb-core-ui:
+  features:
+    # The legacy ArangoDB web interface, embedded in an iframe. It has no
+    # re-implementation in the platform UI yet, so it is documented with the
+    # database rather than with the platform.
+    - name: Web interface (embedded legacy UI)
+      link: arangodb/3.12/components/web-interface/_index.md
+
+arangodb-core-rbac-permissions:
+  features:
+    - name: ArangoDB RBAC Permissions
+
+arango-control-plane:
+  features:
+    - name: Arango Control Plane (ACP)
+      link: contextual-data-platform/control-plane-acp/_index.md
+    - name: Secrets Manager
+      link: contextual-data-platform/secrets-manager.md
+arango-user-defined:
+  features:
+    - name: Container Manager (BYOC)
+      link: contextual-data-platform/container-manager/_index.md
+file-manager:
+  features:
+    - name: File Manager
+      link: contextual-data-platform/file-manager/_index.md
+arango-cypher2aql:
+  features:
+    - name: Cypher to AQL
+      link: contextual-data-platform/cypher-to-aql.md
+platform-monitoring-grafana:
+  features:
+    - name: Monitoring (Grafana)
+      link: contextual-data-platform/monitoring.md
+platform-monitoring-prometheus:
+  features:
+    - name: Monitoring (Prometheus)
+      link: contextual-data-platform/monitoring.md
+
+arangodb-autograph:
+  features:
+    - name: AutoGraph
+      link: contextual-data-platform/autograph/_index.md
+arangodb-graphrag-importer:
+  features:
+    - name: Importer
+      link: contextual-data-platform/autograph/importer/_index.md
+arangodb-graphrag-retriever:
+  features:
+    - name: AutoRAG
+      link: contextual-data-platform/autorag/_index.md
+arangodb-file-parser:
+  features:
+    - name: File Parser
+      link: contextual-data-platform/autograph/document-conversion.md
+arangodb-graph-rag:
+  features:
+    - name: Natural Language to AQL (AQLizer)
+      link: contextual-data-platform/natural-language-to-aql/_index.md
+arangodb-reasoner:
+  features:
+    - name: Reasoner
+      link: contextual-data-platform/reasoner/_index.md
+arangodb-gral:
+  features:
+    - name: Graph Analytics
+      link: contextual-data-platform/graph-analytics/_index.md
+arangodb-ml-api:
+  features:
+    - name: GraphML (API)
+      link: contextual-data-platform/graphml/_index.md
+arangodb-featurization-cpu:
+  features:
+    - name: GraphML (featurization, CPU)
+      link: contextual-data-platform/graphml/_index.md
+arangodb-training-cpu:
+  features:
+    - name: GraphML (training, CPU)
+      link: contextual-data-platform/graphml/_index.md
+arangodb-training-gpu:
+  features:
+    - name: GraphML (training, GPU)
+      link: contextual-data-platform/graphml/_index.md
+arangodb-prediction-cpu:
+  features:
+    - name: GraphML (prediction, CPU)
+      link: contextual-data-platform/graphml/_index.md
+arangodb-prediction-gpu:
+  features:
+    - name: GraphML (prediction, GPU)
+      link: contextual-data-platform/graphml/_index.md
+arangodb-notebook-images:
+  features:
+    - name: Notebook Servers
+      link: contextual-data-platform/notebook-servers.md
+arangodb-mlflow:
+  features:
+    - name: MLflow
+#     link: agentic-ai-suite/private-llms/mlflow.md
+arangodb-llm-host:
+  features:
+    - name: Triton Inference Server
+#     link: agentic-ai-suite/private-llms/triton-inference-server.md
+arangodb-mcp-server:
+  features:
+    - name: ArangoDB MCP Server
+      link: ecosystem/arangodb-mcp-server.md

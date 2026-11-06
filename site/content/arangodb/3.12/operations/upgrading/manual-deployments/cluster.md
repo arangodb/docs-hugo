@@ -3,7 +3,7 @@ title: Manually Upgrading a _Cluster_ Deployment
 menuTitle: Cluster
 weight: 10
 description: >-
-  The server binaries need to be upgraded, requiring a restart of the `arangod`
+  The server binaries need to be upgraded, requiring a restart of the _arangod_
   processes and using the supervision maintenance mode
 ---
 To manually upgrade a [_cluster_](../../../deploy/cluster/_index.md)
@@ -18,7 +18,7 @@ for detailed information.
 ## Preparations
 
 The ArangoDB installation packages (e.g. for Debian or Ubuntu) set up a
-convenient standalone instance of `arangod`. During installation, this instance's
+convenient standalone instance of _arangod_. During installation, this instance's
 database will be upgraded (see [`--database.auto-upgrade`](../../../components/arangodb-server/options.md#--databaseauto-upgrade))
 and the service will be (re)started.
 
@@ -39,7 +39,7 @@ changes as possible to the running _cluster_.
 
 {{< warning >}}
 It is highly recommended to take a backup of your data before upgrading ArangoDB
-using [_arangodump_](../../../components/tools/arangodump/_index.md).
+using [arangodump](../../../components/tools/arangodump/_index.md).
 {{< /warning >}}
 
 ### Install the new ArangoDB version binary
@@ -148,13 +148,13 @@ you will find only one instance of each one running:
 ```
 ps -C arangod -fww
 UID        PID  PPID  C STIME TTY          TIME CMD
-max      29075  8072  0 13:50 pts/2    00:00:42 arangod --server.endpoint tcp://0.0.0.0:5001 --agency.my-address=tcp://127.0.0.1:5001 --server.authentication false --agency.activate true --agency.size 3 --agency.endpoint tcp://127.0.0.1:5001 --agency.supervision true --log.file a1 --javascript.app-path /tmp --database.directory agent1
-max      29208  8072  2 13:51 pts/2    00:02:08 arangod --server.endpoint tcp://0.0.0.0:5002 --agency.my-address=tcp://127.0.0.1:5002 --server.authentication false --agency.activate true --agency.size 3 --agency.endpoint tcp://127.0.0.1:5001 --agency.supervision true --log.file a2 --javascript.app-path /tmp --database.directory agent2
-max      29329 16224  0 13:51 pts/3    00:00:42 arangod --server.endpoint tcp://0.0.0.0:5003 --agency.my-address=tcp://127.0.0.1:5003 --server.authentication false --agency.activate true --agency.size 3 --agency.endpoint tcp://127.0.0.1:5001 --agency.supervision true --log.file a3 --javascript.app-path /tmp --database.directory agent3
-max      29461 16224  1 13:53 pts/3    00:01:11 arangod --server.authentication=false --server.endpoint tcp://0.0.0.0:6001 --cluster.my-address tcp://127.0.0.1:6001 --cluster.my-role PRIMARY --cluster.agency-endpoint tcp://127.0.0.1:5001 --cluster.agency-endpoint tcp://127.0.0.1:5002 --cluster.agency-endpoint tcp://127.0.0.1:5003 --log.file db1 --javascript.app-path /tmp --database.directory dbserver1
-max      29596  8072  0 13:54 pts/2    00:00:56 arangod --server.authentication=false --server.endpoint tcp://0.0.0.0:6002 --cluster.my-address tcp://127.0.0.1:6002 --cluster.my-role PRIMARY --cluster.agency-endpoint tcp://127.0.0.1:5001 --cluster.agency-endpoint tcp://127.0.0.1:5002 --cluster.agency-endpoint tcp://127.0.0.1:5003 --log.file db2 --javascript.app-path /tmp --database.directory dbserver2
-max      29824 16224  1 13:55 pts/3    00:01:53 arangod --server.authentication=false --server.endpoint tcp://0.0.0.0:7001 --cluster.my-address tcp://127.0.0.1:7001 --cluster.my-role COORDINATOR --cluster.agency-endpoint tcp://127.0.0.1:5001 --cluster.agency-endpoint tcp://127.0.0.1:5002 --cluster.agency-endpoint tcp://127.0.0.1:5003 --log.file c1 --javascript.app-path /tmp --database.directory coordinator1
-max      29938 16224  2 13:56 pts/3    00:02:13 arangod --server.authentication=false --server.endpoint tcp://0.0.0.0:7002 --cluster.my-address tcp://127.0.0.1:7002 --cluster.my-role COORDINATOR --cluster.agency-endpoint tcp://127.0.0.1:5001 --cluster.agency-endpoint tcp://127.0.0.1:5002 --cluster.agency-endpoint tcp://127.0.0.1:5003 --log.file c2 --javascript.app-path /tmp --database.directory coordinator2
+max      29075  8072  0 13:50 pts/2    00:00:42 arangod --server.endpoint http://0.0.0.0:5001 --agency.my-address=tcp://127.0.0.1:5001 --server.authentication false --agency.activate true --agency.size 3 --agency.endpoint tcp://127.0.0.1:5001 --agency.supervision true --log.file a1 --javascript.app-path /tmp --database.directory agent1
+max      29208  8072  2 13:51 pts/2    00:02:08 arangod --server.endpoint http://0.0.0.0:5002 --agency.my-address=tcp://127.0.0.1:5002 --server.authentication false --agency.activate true --agency.size 3 --agency.endpoint tcp://127.0.0.1:5001 --agency.supervision true --log.file a2 --javascript.app-path /tmp --database.directory agent2
+max      29329 16224  0 13:51 pts/3    00:00:42 arangod --server.endpoint http://0.0.0.0:5003 --agency.my-address=tcp://127.0.0.1:5003 --server.authentication false --agency.activate true --agency.size 3 --agency.endpoint tcp://127.0.0.1:5001 --agency.supervision true --log.file a3 --javascript.app-path /tmp --database.directory agent3
+max      29461 16224  1 13:53 pts/3    00:01:11 arangod --server.authentication=false --server.endpoint http://0.0.0.0:6001 --cluster.my-address tcp://127.0.0.1:6001 --cluster.my-role PRIMARY --cluster.agency-endpoint tcp://127.0.0.1:5001 --cluster.agency-endpoint tcp://127.0.0.1:5002 --cluster.agency-endpoint tcp://127.0.0.1:5003 --log.file db1 --javascript.app-path /tmp --database.directory dbserver1
+max      29596  8072  0 13:54 pts/2    00:00:56 arangod --server.authentication=false --server.endpoint http://0.0.0.0:6002 --cluster.my-address tcp://127.0.0.1:6002 --cluster.my-role PRIMARY --cluster.agency-endpoint tcp://127.0.0.1:5001 --cluster.agency-endpoint tcp://127.0.0.1:5002 --cluster.agency-endpoint tcp://127.0.0.1:5003 --log.file db2 --javascript.app-path /tmp --database.directory dbserver2
+max      29824 16224  1 13:55 pts/3    00:01:53 arangod --server.authentication=false --server.endpoint http://0.0.0.0:7001 --cluster.my-address tcp://127.0.0.1:7001 --cluster.my-role COORDINATOR --cluster.agency-endpoint tcp://127.0.0.1:5001 --cluster.agency-endpoint tcp://127.0.0.1:5002 --cluster.agency-endpoint tcp://127.0.0.1:5003 --log.file c1 --javascript.app-path /tmp --database.directory coordinator1
+max      29938 16224  2 13:56 pts/3    00:02:13 arangod --server.authentication=false --server.endpoint http://0.0.0.0:7002 --cluster.my-address tcp://127.0.0.1:7002 --cluster.my-role COORDINATOR --cluster.agency-endpoint tcp://127.0.0.1:5001 --cluster.agency-endpoint tcp://127.0.0.1:5002 --cluster.agency-endpoint tcp://127.0.0.1:5003 --log.file c2 --javascript.app-path /tmp --database.directory coordinator2
 
 ```
 

@@ -21,6 +21,10 @@ You can use inverted indexes as follows:
 - Add them to [`search-alias` Views](../../arangosearch/_index.md#getting-started-with-arangosearch)
   to search multiple collections at once and to rank search results by relevance.
 
+Inverted indexes are powered by the same search engine as `arangosearch` Views.
+See the [Architecture overview of ArangoSearch](../../arangosearch/architecture.md)
+for how such an index is structured and maintained.
+
 ## Defining inverted indexes
 
 Inverted indexes are defined per collection. You can add an arbitrary number of
@@ -30,7 +34,7 @@ with an [Analyzer](../../analyzers.md), for instance, to tokenize text into word
 ### Basic definition
 
 For example, you can create an inverted index for the attributes `value1` and
-`value2` with the following command in arangosh:
+`value2` with the following command in _arangosh_:
 
 ```js
 db.<collection>.ensureIndex({
@@ -122,6 +126,22 @@ db.<collection>.ensureIndex({ type: "inverted", fields: ["arr[*].name"] });
 ```
 
 You can only expand one level of arrays.
+
+{{< warning >}}
+A field that is defined without array expansion and with `searchField` disabled
+(the default) can only index primitive values. If you store an array or an
+object in such an attribute, the document write fails with a *not implemented*
+error, unless the Analyzer of the field accepts arrays or objects like the
+Geo Analyzers do. Creating such an index for a collection that already contains
+these values fails for the same reason.
+
+Conversely, a field defined with array expansion (`arr[*]`) only indexes array
+elements. Primitive values in that attribute are silently ignored and cannot be
+found with the index.
+
+Enable `searchField` for attributes that hold both, primitive values in some
+documents and arrays in others.
+{{< /warning >}}
 
 If you want to use the inverted index in a `search-alias` View and index primitive
 and array values like `arangosearch` Views do by default, then you can enable the
@@ -313,7 +333,7 @@ Also see [Dealing with eventual consistency](../../arangosearch/_index.md#dealin
 ## Examples
 
 The following examples demonstrate how you can set up and use inverted indexes
-with the JavaScript API of arangosh. See the
+with the JavaScript API of _arangosh_. See the
 [`ensureIndex()` method](_index.md#creating-an-index)
 description for details. 
 

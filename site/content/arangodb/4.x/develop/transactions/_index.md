@@ -241,7 +241,7 @@ for details.
 Transactions are executed until there is either an abort or a commit.
 
 The RocksDB storage engine applies operations of a transaction only in main memory
-until they are committed. In case of an an abort, the entire transaction
+until they are committed. In case of an abort, the entire transaction
 is just cleared, no extra rollback steps are required.
 
 <!-- TODO: point out data loss (query accepted by server, but will be lost) -->

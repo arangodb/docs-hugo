@@ -1,7 +1,8 @@
 ---
-title: List Regions with `oasisctl`
+title: List Regions with _oasisctl_
 menuTitle: List Regions
-weight: 36
+weight: 34
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List all regions of the given provider

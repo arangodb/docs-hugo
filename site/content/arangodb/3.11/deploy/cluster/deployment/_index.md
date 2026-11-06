@@ -1,16 +1,35 @@
 ---
-title: Cluster Deployment
+title: Cluster deployment options
 menuTitle: Deployment
 weight: 5
-description: ''
+description: >-
+  You can deploy an ArangoDB cluster with the ArangoDB Starter, by starting the
+  server processes manually, with the Kubernetes operator, or use the fully
+  managed Arango Managed Platform (AMP)
 ---
-You can deploy an ArangoDB cluster in different ways:
+{{< cards >}}
 
-- [Using the ArangoDB Starter](using-the-arangodb-starter.md)
-- [Manual Start](manual-start.md)
-- [Kubernetes](../../kubernetes.md)
-- [Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
-  fully managed, available on AWS and GCP
+{{% card title="ArangoDB Starter" link="using-the-arangodb-starter" %}}
+Start a cluster with one command per machine and let the Starter launch and
+supervise the Agents, DB-Servers, and Coordinators.
+{{% /card %}}
+
+{{% card title="Manual start" link="manual-start" %}}
+Start and configure the Agents, DB-Servers, and Coordinators yourself, directly
+on your machines or in containers.
+{{% /card %}}
+
+{{% card title="Kubernetes" link="../../kubernetes" %}}
+Deploy and manage clusters on Kubernetes with the ArangoDB Kubernetes Operator
+(kube-arangodb).
+{{% /card %}}
+
+{{% card title="Arango Managed Platform (AMP)" link="/amp/" %}}
+Use fully managed ArangoDB clusters on AWS and GCP without having to run the
+deployment yourself.
+{{% /card %}}
+
+{{< /cards >}}
 
 ## Preliminary Information For Debian/Ubuntu Systems
 
@@ -20,7 +39,7 @@ The configuration file used for the standalone instance is
 `/etc/arangodb3/arangod.conf` (on Linux), and you should use a different one for
 the cluster instance(s). If you are using the _Starter_ binary `arangodb`, that is
 automatically the case. Otherwise, you might have to copy the configuration
-somewhere else and pass it to your `arangod` cluster instance via
+somewhere else and pass it to your _arangod_ cluster instance via
 `--configuration`.
 
 ### Use a different data directory for the standalone instance

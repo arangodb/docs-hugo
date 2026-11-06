@@ -41,12 +41,11 @@ for details.
 Start a local (test) cluster. Since all servers are running on a single machine
 this is really not intended for production setups.
 
-- `--starter.mode=cluster|single|activefailover`
+- `--starter.mode=cluster|single`
 
 Select what kind of database configuration you want.
-This can be a `cluster` configuration (which is the default),
-a `single` server configuration or a `activefailover` configuration with
-2 single services configured to take over when needed.
+This can be a `cluster` configuration (which is the default) or a
+`single` server configuration.
 
 Note that when running a `single` server configuration you lose all
 high availability features that a cluster provides you.
@@ -84,7 +83,7 @@ unreachable for other starters, which is only allowed for
 
 `image` is the name of a Docker image to run instead of the normal
 executable. For each started instance a Docker container is launched.
-Usually one would use the Docker image `arangodb/arangodb`.
+You typically use the `arangodb/arangodb` Docker image.
 
 - `--docker.container=containerName`
 
@@ -163,7 +162,7 @@ the `--ssl.auto-key` option.
 
 ## Passing through other database options
 
-Options for `arangod` that are not supported by the starter can still be passed to
+Options for _arangod_ that are not supported by the starter can still be passed to
 the DB-Servers using a pass through option.
 Every option that start with a pass through prefix is passed through to the
 command-line of one or more server instances.
@@ -189,35 +188,10 @@ command like this:
 arangodb --args.coordinators.log.level=requests=debug
 ```
 
-## Passing through `arangosync` options
-
-Options for `arangosync` that are not supported by the starter can still be
-passed to the syncmasters & syncworkers using a pass through option.
-Every option that start with a pass through prefix is passed through to the
-command-line of one or more `arangosync` instances.
-
-- `--args.sync.<section>.<key>=<value>` is passed as
-  `--<section>.<key>=<value>` to all arangosync instances started by this starter.
-- `--args.syncmasters.<section>.<key>=<value>` is passed as
-  `--<section>.<key>=<value>` to all syncmasters started by this starter.
-- `--args.syncworkers.<section>.<key>=<value>` is passed as
-  `--<section>.<key>=<value>` to all syncworkers started by this starter.
-
-Some options are essential to the function of the starter.
-Therefore these options cannot be passed through like this.
-
-Example:
-
-To set a custom token TTL for direct message queue, use a command like this.
-
-```bash
-arangodb --args.syncmasters.mq.direct-token-ttl=12h ...
-```
-
 ## Passing environment variables
 
-Environment variables by default gonna be passed from arangodb process by
-default. However, variables can be overridden using arangodb command line option.
+Environment variables by default gonna be passed from _arangodb_ process by
+default. However, variables can be overridden using _arangodb_ command line option.
 
 - `--envs.<group>.<env name>=<value>`
 - `--envs.all.ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY=2G` sets
@@ -233,42 +207,6 @@ Example:
 arangodb --envs.all.ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY=2G --envs.coordinators.ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY=4G --envs.dbservers.ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY=8G ...
 ```
 
-## Datacenter-to-Datacenter Replication options
-
-- `--starter.sync=bool`
-
-If set, the Starter also starts `arangosync` instances.
-
-- `--sync.start-master=bool`
-
-Should an ArangoSync master instance be started (only relevant if `--starter.sync`
-is enabled, defaults to `true`)
-
-- `--sync.start-worker=bool`
-
-Should an ArangoSync worker instance be started (only relevant if `--starter.sync`
-is enabled, defaults to `true`)
-
-- `--sync.monitoring.token=<token>`
-
-Bearer token used to access ArangoSync monitoring endpoints.
-
-- `--sync.master.jwt-secret=<secret>`
-
-Path of file containing JWT secret used to access the Sync Master (from Sync Worker).
-
-- `--sync.mq.type=<message queue type>`
-
-Type of message queue used by the Sync Master (defaults to "direct").
-
-- `--sync.server.keyfile=<path of keyfile>`
-
-TLS keyfile of local sync master.
-
-- `--sync.server.client-cafile=<path of CA certificate>`
-
-CA Certificate used for client certificate verification.
-
 ## Miscellaneous options
 
 - `--version`
@@ -281,11 +219,11 @@ The network port for the Starter (default 8528).
 This is the port used for communication of the `arangodb` instances
 amongst each other.
 
-The Starter uses the subsequent ports for the `arangod` processes it starts.
+The Starter uses the subsequent ports for the _arangod_ processes it starts.
 
 - `--starter.disable-ipv6=bool`
 
-If disabled, the starter configures the `arangod` servers
+If disabled, the starter configures the _arangod_ servers
 to bind to address `0.0.0.0` (all IPv4 interfaces)
 instead of binding to `[::]` (all IPv4 and all IPv6 interfaces).
 
@@ -293,7 +231,7 @@ This is useful when IPv6 has actively been disabled on your machine.
 
 - `--server.arangod=path`
 
-The path to the `arangod` executable (default varies from platform to
+The path to the _arangod_ executable (default varies from platform to
 platform, an executable is searched in various places).
 
 This option only has to be specified if the standard search fails.
@@ -307,7 +245,7 @@ This option only has to be specified if the standard search fails.
 
 - `--server.storage-engine=rocksdb`
 
-Sets the storage engine used by the `arangod` servers.
+Sets the storage engine used by the _arangod_ servers.
 Defaults to `rocksdb`, which is also the only available option for
 ArangoDB v3.7 and above.
 

@@ -60,7 +60,7 @@ The first step is thus to make the two collections shard their data alike. This 
 be achieved by making the `distributeShardsLike` attribute of one of the collections
 refer to the other collection.
 
-Here is an example setup for this, using arangosh:
+Here is an example setup for this, using _arangosh_:
 
 ```js
 arangosh> db._create("c1", {numberOfShards: 4, shardKeys: ["_key"]});

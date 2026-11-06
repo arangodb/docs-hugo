@@ -1,7 +1,8 @@
 ---
-title: Delete Organization Members with `oasisctl`
+title: Delete Organization Members with _oasisctl_
 menuTitle: Delete Organization Members
-weight: 20
+weight: 19
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete members from organization

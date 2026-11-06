@@ -1,7 +1,8 @@
 ---
-title: Lock CA Certificate with `oasisctl`
+title: Lock CA Certificate with _oasisctl_
 menuTitle: Lock CA Certificate
 weight: 1
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Lock a CA certificate, so it cannot be deleted

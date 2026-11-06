@@ -1,5 +1,5 @@
 ---
-title: HTTP request handling in ArangoDB
+title: HTTP request handling
 menuTitle: General request handling
 weight: 5
 description: >-
@@ -77,7 +77,7 @@ Upgrading to HTTP 2 is supported according to the ways outlined in
 [RFC 7540 Section 3](https://tools.ietf.org/html/rfc7540#section-3),
 from non-encrypted connections as well as encrypted connections.
 
-On non-encrypted connections with `http` scheme in the URI clients may use
+On non-encrypted connections with `http` scheme in the URL clients may use
 HTTP 1.1 initially until an upgrade is performed. Upgrading the connection is
 initiated by sending a request with the `Upgrade: h2c` header and exactly one
 `HTTP2-Settings` header. The server will then respond with `101 Switching Protocols`
@@ -90,7 +90,7 @@ The server will check the first 24 octets received over the connection and compa
 it to the HTTP 2 connection preface `PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n`, as outlined
 in [Section 5](https://tools.ietf.org/html/rfc7540#section-5).
 
-On TLS encrypted connections with `https` scheme in the URI ArangoDB supports the
+On TLS encrypted connections with `https` scheme in the URL ArangoDB supports the
 ALPN extension with the `h2` protocol identifier. This means the connection may
 switch to using HTTP/2 right away after a successful TLS handshake.
 
@@ -352,7 +352,7 @@ credentials or handle cookies, ArangoDB needs to set the
 ArangoDB will automatically set this header to `true` if the value of the
 request's `origin` header matches a trusted origin in the `http.trusted-origin`
 configuration option. To make ArangoDB trust a certain origin, you can provide
-a startup option when running `arangod` like this:
+a startup option when running _arangod_ like this:
 
 `--http.trusted-origin "http://localhost:8529"`
 
@@ -453,16 +453,14 @@ These endpoints generally don't work well with load-balancers.
 
 ## Overload control
 
-<small>Introduced in: v3.9.0</small>
-
 _arangod_ returns an `x-arango-queue-time-seconds` HTTP
 header with all responses. This header contains the most recent request
 queueing/dequeuing time (in seconds) as tracked by the server's scheduler.
 This value can be used by client applications and drivers to detect server
 overload and react on it.
 
-The arangod startup option `--http.return-queue-time-header` can be set to
-`false` to suppress these headers in responses sent by arangod.
+The _arangod_ startup option `--http.return-queue-time-header` can be set to
+`false` to suppress these headers in responses sent by _arangod_.
 
 In a cluster, the value returned in the `x-arango-queue-time-seconds` header
 is the most recent queueing/dequeuing request time of the Coordinator the
@@ -471,16 +469,16 @@ another Coordinator. In that case, the value will indicate the current
 queueing/dequeuing time of the forwarded-to Coordinator.
 
 In addition, client applications and drivers can optionally augment the
-requests they send to arangod with the header `x-arango-queue-time-seconds`.
+requests they send to _arangod_ with the header `x-arango-queue-time-seconds`.
 If set, the value of the header should contain the maximum server-side
 queuing time (in seconds) that the client application is willing to accept.
-If the header is set in an incoming request, arangod will compare the current
+If the header is set in an incoming request, _arangod_ will compare the current
 dequeuing time from its scheduler with the maximum queue time value contained
 in the request header. If the current queueing time exceeds the value set
-in the header, arangod will reject the request and return HTTP 412
+in the header, _arangod_ will reject the request and return HTTP 412
 (precondition failed) with the error code 21004 (queue time violated). 
 Using a value of 0 or a non-numeric value in the header will lead to the
-header value being ignored by arangod.
+header value being ignored by _arangod_.
 
 There is also a metric `arangodb_scheduler_queue_time_violations_total`
 that is increased whenever a request is dropped because of the requested
@@ -501,13 +499,13 @@ to DB-Servers or Agency instances.
 
 <small>Introduced in: v3.10.0</small>
 
-By default, the HTTP REST interface of an _arangod_ instance is opened late
+By default, the HTTP interface of an _arangod_ instance is opened late
 during the startup sequence. The instance responds with HTTP 503
-(Service unavailable) until all REST APIs are available and usable.
+(Service unavailable) until all HTTP APIs are available and usable.
 
-You can optionally start the HTTP REST interface early in the startup sequence
+You can optionally start the HTTP interface early in the startup sequence
 by setting the `--server.early-connections` startup option to `true`.
-This configuration allows an instance to respond to a limited set of REST APIs
+This configuration allows an instance to respond to a limited set of HTTP APIs
 during the startup, even during the recovery procedure. This can be useful
 because the recovery procedure can take time proportional to the amount of data
 to be recovered.
@@ -515,10 +513,10 @@ to be recovered.
 The following APIs can reply early with an HTTP 200 status:
 
 - `GET /_api/version` and `GET /_admin/version`:
-  These APIs return the server version number, but can also be used as a
+  These endpoints return the server version number, but can also be used as a
   liveliness probe, to check if the instance is responding to incoming HTTP requests.
 - `GET /_admin/status`:
-  This API returns information about the instance's status, including the recovery
+  This endpoint returns information about the instance's status, including the recovery
   progress and information about which server feature is currently starting.
 
 During the early startup phase, all APIs other than the ones listed above are
@@ -556,7 +554,7 @@ The progress attributes can still be used to determine whether the instance has 
 progress between two calls: if `phase`, `feature`, and `recoveryTick` don't
 change, then there hasn't been progress. Note that this is only true if the
 instance is still starting up. Once the instance has fully started and has
-opened the complete REST interface, the values in the `progress` attribute are
+opened the complete HTTP interface, the values in the `progress` attribute are
 expected to not change until shutdown.
 
 Note that the `maintenance` attribute in responses to `GET /_admin/status` can

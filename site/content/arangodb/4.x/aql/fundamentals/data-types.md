@@ -270,7 +270,7 @@ computed attribute names must be enclosed in square brackets `[ … ]`:
 #### Duplicate attribute names
 
 If the same attribute name occurs more than once in an object literal, the
-**last occurrence** wins and determines the value of the attribute:
+**last occurrence** wins and determines the value of the attribute.
 
 ```aql
 ---

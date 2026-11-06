@@ -2,7 +2,8 @@
 title: _arangoimport_ Examples CSV / TSV
 menuTitle: Examples CSV
 weight: 10
-description: ''
+description: >-
+  How to import tabular data into ArangoDB on the command-line with _arangoimport_
 ---
 ## Importing CSV Data
 
@@ -126,7 +127,7 @@ that should be used in ArangoDB.
 
 A common use case is to rename an `id` column from the input file into `_key` as
 it is expected by ArangoDB. To do this, specify the following translation when
-invoking arangoimport:
+invoking _arangoimport_:
 
 ```
 arangoimport --file "data.csv" --type csv --translate "id=_key"
@@ -161,8 +162,6 @@ arangoimport --file "data.csv" --type csv --remove-attribute "_id"
 ```
 
 ## Overriding data types per attribute
-
-<small>Introduced in: v3.9.0</small>
 
 The `--datatype` startup option can be used to fix
 the datatypes for certain attributes in CSV/TSV imports. For example, in the
@@ -215,8 +214,6 @@ the datatype for non-string fields with `--datatype`:
 ```
 
 ## Merging Attributes
-
-<small>Introduced in: v3.9.0</small>
 
 _arangoimport_ supports creating additional attributes during the import
 process, which are concatenations of other attribute values and hard-coded
@@ -304,7 +301,7 @@ arangoimport --file data.csv.gz --type csv --collection "users"
 ```
 
 For other input formats it is possible to decompress the input file using another
-program and piping its output into arangoimport, e.g.
+program and piping its output into _arangoimport_, e.g.
 
 ```
 bzcat users.csv.bz2 | arangoimport --file "-" --type csv --collection "users"

@@ -105,16 +105,15 @@ whenever data from the SatelliteCollections is required.
 
 ## Disjoint SmartGraphs
 
-Disjoint SmartGraphs are are useful for use cases which have to deal with a
+Disjoint SmartGraphs are useful for use cases which have to deal with a
 large forest of graphs, when you have clearly separated subgraphs in your
 graph dataset. Disjoint SmartGraphs enable the automatic sharding of these
 subgraphs and prohibit edges connecting them.
 
 ![Disjoint SmartGraphs](../../../../images/SmartGraphs-Disjoint.png)
 
-_This ensures that graph traversals, shortest path, and k-shortest-paths queries
-can be executed locally on a DB-Server, achieving improved performance for
-these type of queries._
+_This ensures that graph traversals and path search queries can be executed
+locally on a DB-Server, achieving optimal performance for these type of queries._
 
 ## Disjoint SmartGraphs using SatelliteCollections
 

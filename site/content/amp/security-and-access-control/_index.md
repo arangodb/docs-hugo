@@ -120,6 +120,11 @@ Command to generate below list with (Git)Bash:
 
 export OASIS_TOKEN='<TOKEN>'
 ./oasisctl list roles --organization-id <ID> --format json | jq -r '.[] | select(.predefined == true) | "**\(.description)** (`\(.id)`):\n\(.permissions | split(", ") | map("- `\(.)`\n") | join(""))"'
+
+The API may still return roles for features that are no longer part of AMP.
+When regenerating this list, drop `notebook-admin`, `notebook-executor`,
+`notebook-viewer`, `graph-analytics-admin`, `graph-analytics-executor`, and
+`mlservices-admin` unless the features are back.
 {{% /comment %}}
 
 {{< details summary="List of predefined roles and their permissions" >}}
@@ -337,27 +342,6 @@ The roles below are described following this pattern:
 - `example.exampledatasetinstallation.get`
 - `example.exampledatasetinstallation.list`
 
-**Graph Analytics Administrator** (`graph-analytics-admin`):
-- `graphanalytics.engine.create`
-- `graphanalytics.engine.deleted`
-- `graphanalytics.engine.feature`
-- `graphanalytics.engine.get`
-- `graphanalytics.engine.list`
-- `graphanalytics.enginesize.list`
-- `graphanalytics.enginetype.list`
-
-**Graph Analytics Executor** (`graph-analytics-executor`):
-- `graphanalytics.engine.delete-graph`
-- `graphanalytics.engine.delete-job`
-- `graphanalytics.engine.get-graph`
-- `graphanalytics.engine.get-job`
-- `graphanalytics.engine.list-graphs`
-- `graphanalytics.engine.list-jobs`
-- `graphanalytics.engine.load-data`
-- `graphanalytics.engine.process`
-- `graphanalytics.engine.shutdown`
-- `graphanalytics.engine.store-results`
-
 **Group Administrator** (`group-admin`):
 - `iam.group.create`
 - `iam.group.delete`
@@ -405,29 +389,6 @@ The roles below are described following this pattern:
 - `replication.deploymentmigration.create`
 - `replication.deploymentmigration.delete`
 - `replication.deploymentmigration.get`
-
-**MLServices Admin** (`mlservices-admin`):
-- `ml.mlservices.get`
-- `ml.mlservices.update`
-- `ml.mlservicessize.list`
-
-**Notebook Administrator** (`notebook-admin`):
-- `notebook.model.list`
-- `notebook.notebook.create`
-- `notebook.notebook.delete`
-- `notebook.notebook.get`
-- `notebook.notebook.list`
-- `notebook.notebook.pause`
-- `notebook.notebook.resume`
-- `notebook.notebook.update`
-
-**Notebook Executor** (`notebook-executor`):
-- `notebook.notebook.execute`
-
-**Notebook Viewer** (`notebook-viewer`):
-- `notebook.model.list`
-- `notebook.notebook.get`
-- `notebook.notebook.list`
 
 **Organization Administrator** (`organization-admin`):
 - `billing.organization.get`
@@ -535,9 +496,13 @@ Permissions are solely defined by the AMP API.
 
 {{% comment %}}
 Retrieved with the below command, with manual adjustments:
-oasisctl list permissions
+`oasisctl list permissions`
 
 Note that if the tier is "internal", there is an `internal-dashboard` API that should be excluded in below list!
+
+The API may also still return permissions for features that are no longer part
+of AMP. When regenerating this list, drop the `notebook`, `graphanalytics`, and
+`ml` API rows unless the features are back.
 {{% /comment %}}
 
 | API                 | Kind                          | Verbs
@@ -576,22 +541,15 @@ Note that if the tier is "internal", there is an `internal-dashboard` API that s
 | `deploymentprofile` | `deploymentprofile`           | `list`
 | `example`           | `exampledatasetinstallation`  | `create`, `delete`, `get`, `list`, `update`
 | `example`           | `exampledataset`              | `get`, `list`
-| `graphanalytics`    | `enginesize`                  | `list`
-| `graphanalytics`    | `enginetype`                  | `list`
-| `graphanalytics`    | `engine`                      | `create`, `delete-graph`, `delete-job`, `deleted`, `feature`, `get`, `get-graph`, `get-job`, `list`, `list-graphs`, `list-jobs`, `load-data`, `process`, `shutdown`, `store-results`
 | `iam`               | `group`                       | `create`, `delete`, `get`, `list`, `update`
 | `iam`               | `policy`                      | `get`, `update`
 | `iam`               | `role`                        | `create`, `delete`, `get`, `list`, `update`
 | `iam`               | `user`                        | `get-personal-data`, `update`
 | `metrics`           | `endpoint`                    | `get`
 | `metrics`           | `token`                       | `create`, `delete`, `get`, `list`, `revoke`, `update`
-| `ml`                | `mlservicessize`              | `list`
-| `ml`                | `mlservices`                  | `get`, `update`
 | `monitoring`        | `logs`                        | `get`
 | `monitoring`        | `metrics`                     | `get`
 | `network`           | `privateendpointservice`      | `create`, `get`, `get-by-deployment-id`, `get-feature`, `update`
-| `notebook`          | `model`                       | `list`
-| `notebook`          | `notebook`                    | `create`, `delete`, `execute`, `get`, `list`, `pause`, `resume`, `update`
 | `notification`      | `deployment-notification`     | `list`, `mark-as-read`, `mark-as-unread`
 | `prepaid`           | `prepaiddeployment`           | `get`, `list`
 | `replication`       | `deploymentmigration`         | `create`, `delete`, `get`

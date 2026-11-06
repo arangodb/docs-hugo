@@ -97,7 +97,7 @@ coll.drop({ isSystem: true });
 Returns an object containing statistics about the collection.
 
 Setting `details` to `true` returns extended storage engine-specific
-details to the figures (introduced in v3.8.0). The details are intended for
+details to the figures. The details are intended for
 debugging ArangoDB itself and their format is subject to change. By default,
 `details` is set to `false`, so no details are returned and the behavior is
 identical to previous versions of ArangoDB.

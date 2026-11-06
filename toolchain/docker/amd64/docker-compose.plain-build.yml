@@ -23,6 +23,8 @@ services:
         ipv4_address: 192.168.130.129
     volumes:
       - ../../../:/home/
+      # Keep the Go build cache to compile arangoproxy faster (shared with the toolchain)
+      - go-cache:/root/.cache/go-build
     environment:
       HUGO_URL: ${HUGO_URL:-http://localhost/}
       HUGO_ENV: ${HUGO_ENV:-frontend}
@@ -38,3 +40,7 @@ networks:
           config:
               - subnet: "192.168.130.0/24"
                 gateway: "192.168.130.1"
+
+volumes:
+  go-cache:
+    name: docs_go_cache

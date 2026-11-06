@@ -33,7 +33,7 @@ It has a similar API and features type wrappers.
 
 {{< tab "python-arango" >}}
 The `python-arango` library can be used in any Python project that targets
-Python version 3.8 or later.
+Python version 3.10 or later.
 
 To install the library using PIP, run the following command in a terminal:
 

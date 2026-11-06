@@ -28,7 +28,7 @@ about the optimizer's view of the query.
 
 The `explain` method of `ArangoStatement` as shown in the next chapters creates very verbose output.
 You can work on the output programmatically, or use this handsome tool that we created
-to generate a more human readable representation.
+to generate a more human-readable representation.
 
 You may use it like this: (we disable syntax highlighting here)
 
@@ -537,7 +537,7 @@ query's execution plan for an `IndexNode`.
 
 #### Filter Projections Optimizations
 
-<small>Introduced: v3.10.0</small>
+<small>Introduced in: v3.10.0</small>
 
 If an index is used that does not cover all required attributes for the query,
 but if it is followed by filter conditions that only access attributes that are

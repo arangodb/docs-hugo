@@ -1,7 +1,8 @@
 ---
-title: Generate Documentation with `oasisctl`
+title: Generate Documentation with _oasisctl_
 menuTitle: Generate Documentation
 weight: 12
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Generate output

@@ -7,7 +7,7 @@ description: >-
   Analyzers
 ---
 The JavaScript API can be accessed via the `@arangodb/analyzers` module from
-both server-side and client-side code (arangosh, Foxx):
+both server-side and client-side code (_arangosh_, Foxx):
 
 ```js
 var analyzers = require("@arangodb/analyzers");

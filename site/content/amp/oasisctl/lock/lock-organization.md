@@ -1,7 +1,8 @@
 ---
-title: Lock Organization with `oasisctl`
+title: Lock Organization with _oasisctl_
 menuTitle: Lock Organization
 weight: 4
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Lock an organization, so it cannot be deleted

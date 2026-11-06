@@ -1,11 +1,12 @@
 ---
-title: Managing Users in the ArangoDB Shell
+title: Managing Users in the ArangoDB Shell (_arangosh_)
 menuTitle: In arangosh
 weight: 5
 description: >-
   The `@arangodb/users` module exposes a JavaScript API to manage user accounts
+  and access levels
 ---
-Connect with `arangosh` to the server or a Coordinator respectively.
+Connect with _arangosh_ to the server or a Coordinator respectively.
 The module `@arangodb/users` exposes a JavaScript API to manage user accounts.
 
 Please note, that for backward compatibility the server access levels
@@ -22,7 +23,7 @@ database and collection access levels is discouraged.
 
 **Example**
 
-Start *arangosh* and require the users module. Use it to create a new user:
+Start _arangosh_ and require the users module. Use it to create a new user:
 
 ```js
 arangosh --server.endpoint tcp://127.0.0.1:8529 ...
@@ -76,7 +77,7 @@ access level applies.
 {{< /info >}}
 
 Before we can grant *JohnSmith* access to a collection, we first have to
-connect to the new database and create a collection. Disconnect `arangosh`
+connect to the new database and create a collection. Disconnect _arangosh_
 by pressing Ctrl+C twice. Then reconnect, but to the database we created:
 
 ```js
@@ -145,6 +146,7 @@ to grant the access rights for one or more databases using
 name: USER_02_saveUser
 description: ''
 ---
+~addIgnoreUser("my-user");
 require('@arangodb/users').save('my-user', 'my-secret-password');
 ```
 
@@ -362,4 +364,6 @@ description: ''
 ---
 ~require("@arangodb/users").grantDatabase("my-user", "testdb");
 require("@arangodb/users").permission("my-user", "testdb");
+~require("@arangodb/users").remove("my-user");
+~removeIgnoreUser("my-user");
 ```

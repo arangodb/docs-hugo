@@ -1,13 +1,13 @@
 ---
 title: Feature list of the ArangoDB core database system
-menuTitle: Core Database
+menuTitle: Feature list
 weight: 5
 description: >-
   All features of the ArangoDB database system, available in both the
   Community Edition and Enterprise Edition
 aliases:
-  - community-edition # 3.11 -> 3.12
-  - enterprise-edition # 3.11 -> 3.12
+  - community-edition # 3.11 -> 3.11
+  - enterprise-edition # 3.11 -> 3.11
 ---
 ## General
 
@@ -111,8 +111,8 @@ aliases:
   match up documents from different collections, allowing normalized data models.
 
 - **Advanced Path-Finding with Multiple Algorithms**:
-  Graphs can be [traversed](../aql/graph-queries/traversals-explained.md) with AQL
-  in outbound, inbound, or both directions to retrieve direct and indirect
+  Multi-hop [graph traversal](../aql/graph-queries/traversals-explained.md) with
+  AQL in outbound, inbound, or both directions to retrieve direct and indirect
   neighbor nodes using a fixed or variable depth.
   The [traversal order](../aql/graph-queries/traversals.md) can be
   depth-first, breadth-first, or in order of increasing edge weights

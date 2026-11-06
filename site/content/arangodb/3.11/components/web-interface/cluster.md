@@ -2,7 +2,8 @@
 title: Cluster
 menuTitle: Cluster
 weight: 10
-description: ''
+description: >-
+  The cluster-specific screens in the ArangoDB web interface
 ---
 The web interface differs for cluster deployments and single-server instances.
 Instead of a single [Dashboard](dashboard.md), there

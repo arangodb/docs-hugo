@@ -61,7 +61,7 @@ for details.
 ## Inspect a query debug package with *arangosh*
 
 The debug package JSON is compactly formatted. To get a more readable output,
-you can use a tool for pretty-printing like [`jq`](https://stedolan.github.io/jq/),
+you can use a tool for pretty-printing like [`jq`](https://jqlang.github.io/jq/),
 or use the `inspectDump()` method of the explainer module for formatting.
 
 ```js

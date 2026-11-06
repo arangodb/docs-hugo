@@ -1,7 +1,8 @@
 ---
-title: Delete Backup with `oasisctl`
+title: Delete Backup with _oasisctl_
 menuTitle: Delete Backup
 weight: 6
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete a backup for a given ID.

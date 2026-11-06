@@ -1,7 +1,8 @@
 ---
-title: Rotate with `oasisctl`
+title: Rotate with _oasisctl_
 menuTitle: Rotate
 weight: 25
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Rotate resources

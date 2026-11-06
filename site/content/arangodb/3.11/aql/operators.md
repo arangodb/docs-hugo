@@ -65,7 +65,7 @@ The supported wildcards are `_` to match a single arbitrary character, and `%` t
 match any number of arbitrary characters. Literal `%` and `_` need to be escaped
 with a backslash. Backslashes need to be escaped themselves, which effectively
 means that two reverse solidus characters need to precede a literal percent sign
-or underscore. In arangosh, additional escaping is required, making it four
+or underscore. In _arangosh_, additional escaping is required, making it four
 backslashes in total preceding the to-be-escaped character.
 
 ```aql
