@@ -31,8 +31,20 @@ async function renderMermaidDiagrams() {
   }
 }
 
+// Expands or collapses a navigation section (the button announces the state)
+function setSectionExpanded(section, expanded) {
+    section.classList.toggle("expanded", expanded);
+    const button = section.querySelector(":scope > .nav-section-header > .expand-nav, :scope > .nav-section-sticky > .nav-section-header > .expand-nav");
+    if (button) button.setAttribute("aria-expanded", expanded);
+}
+
 function closeAllEntries() {
-    document.querySelectorAll(".main-nav-ol .expand-nav > input:checked").forEach(el => el.checked = false);
+    document.querySelectorAll(".main-nav .nav-section.expanded").forEach(section => setSectionExpanded(section, false));
+}
+
+// Expands the sections containing the current page (or its closest section)
+function expandCurrentPath() {
+    document.querySelectorAll(".main-nav .nav-section:is(:has(.link-nav-active), .nav-section-current)").forEach(section => setSectionExpanded(section, true));
 }
 
 function showSidebarHandler() {
@@ -64,6 +76,12 @@ function toggleSidebarCollapsed() {
     try {
         localStorage.setItem("docs-sidebar-collapsed", collapsed ? "1" : "0");
     } catch (e) {}
+    // The two buttons act as one: the focus moves to the other one, so that
+    // the sidebar can be collapsed and expanded again without tabbing
+    const toggle = document.querySelector(collapsed ? ".sidebar-expand" : ".sidebar-collapse");
+    if (toggle && document.activeElement?.matches(".sidebar-collapse, .sidebar-expand")) {
+        toggle.focus({ preventScroll: true });
+    }
 }
 
 
@@ -509,50 +527,116 @@ function getSelectedVersion() {
 function updateActiveNavItem(pathname, scrollIntoView) {
   // Remove all existing active states
   document.querySelectorAll(".link-nav-active").forEach(el => el.classList.remove("link-nav-active"));
-  
+  document.querySelectorAll(".nav-section-current").forEach(el => el.classList.remove("nav-section-current"));
+
   // Collapse all sections first
-  document.querySelectorAll(".main-nav-ol .expand-nav > input:checked").forEach(el => el.checked = false);
-  
+  closeAllEntries();
+
   // Find and activate the new item
-  const activeItem = document.querySelector(`.link-nav[href="${pathname}"]`);
+  const activeItem = document.querySelector(`.main-nav .link-nav[href="${pathname}"]`);
   if (activeItem) {
     activeItem.classList.add("link-nav-active");
-    // Expand all parent sections
-    document.querySelectorAll(".nav-section:has(.link-nav-active) > .nav-section-header > .expand-nav > input").forEach(el => el.checked = true);
-
-    if (scrollIntoView) {
-      activeItem.scrollIntoView({ behavior: "auto", block: "center" });
+    // A section's own page also shows its subpages
+    const ownSection = activeItem.parentElement.classList.contains("nav-section-header") && activeItem.closest(".nav-section");
+    if (ownSection) setSectionExpanded(ownSection, true);
+  } else {
+    // Pages without an entry, like the home pages of the ArangoDB versions:
+    // the section with the longest matching path contains the current page
+    const parts = pathname.split("/").filter(Boolean);
+    for (let i = parts.length - 1; i > 0; i--) {
+      const link = document.querySelector(`.main-nav .nav-section-header > .link-nav[href="/${parts.slice(0, i).join("/")}/"]`);
+      if (link) {
+        link.closest(".nav-section").classList.add("nav-section-current");
+        break;
+      }
     }
   }
+  expandCurrentPath();
+
+  // Centered by scrolling the navigation only. scrollIntoView() would also
+  // scroll the page and, in Chrome, move the starting point of sequential focus
+  // navigation, so that Tab would skip everything before the entry.
+  if (activeItem && scrollIntoView) {
+    const nav = activeItem.closest(".main-nav");
+    const navBox = nav.getBoundingClientRect();
+    const itemBox = activeItem.getBoundingClientRect();
+    nav.scrollTop += itemBox.top - navBox.top - (nav.clientHeight - itemBox.height) / 2;
+  }
+}
+
+/*
+ * Version selector: a disclosure menu of links to the same page in the other
+ * versions (or their home pages on unversioned pages).
+ */
+
+// Shows the version in the selector and its navigation, in the document or the fetched navigation
+function showVersion(root, version) {
+  const versionInfo = getVersionInfo(version);
+  const selector = root.querySelector(".version-selector");
+  if (!versionInfo || !selector) return;
+
+  const label = versionInfo.name + (versionInfo.label ? " " + versionInfo.label : "")
+    + (versionInfo.name != versionInfo.alias ? " (" + versionInfo.alias + ")" : "");
+  selector.querySelector(".version-selector-label").textContent = label;
+
+  const pathname = window.location.pathname;
+  const corePath = "/arangodb/";
+  const rest = pathname.startsWith(corePath) && getVersionFromURL() ? pathname.slice(pathname.indexOf("/", corePath.length)) : "/";
+  selector.querySelectorAll(".version-menu-item").forEach(item => {
+    item.setAttribute("href", corePath + item.dataset.version + rest);
+    if (item.dataset.version == versionInfo.alias) item.setAttribute("aria-current", "true");
+    else item.removeAttribute("aria-current");
+  });
+
+  selector.closest(".nav-section").querySelectorAll(":scope > .nav-ol").forEach(navList => {
+    navList.classList.toggle("selected-version", navList.dataset.version == version);
+  });
 }
 
 function updateVersionSelector() {
   const currentVersion = getVersionFromURL();
-  if (!currentVersion) return;
-  
-  const versionInfo = getVersionInfo(currentVersion);
-  if (!versionInfo) return;
-  
-  const versionSelector = document.querySelector(".version-selector");
-  if (!versionSelector) return;
-  
-  // Update the selector value
-  if (versionSelector.querySelector(`option[value="${versionInfo.alias}"]`)) {
-    versionSelector.value = versionInfo.alias;
-  }
-  
-  // Update which version's navigation list is visible
-  versionSelector.closest(".nav-section").querySelectorAll(":scope > .nav-ol").forEach(navList => {
-    if (navList.dataset.version == currentVersion) {
-      navList.classList.add("selected-version");
-    } else {
-      navList.classList.remove("selected-version");
-    }
-  });
-  
-  // Update localStorage
+  // Unversioned pages link to the home pages of the versions, for the stored version
+  showVersion(document, currentVersion || getSelectedVersion());
+  if (!currentVersion || !getVersionInfo(currentVersion)) return;
   localStorage.setItem('docs-version', currentVersion);
 }
+
+function setVersionMenuOpen(open) {
+  const button = document.querySelector(".version-selector-button");
+  const menu = document.querySelector(".version-menu");
+  if (!button || !menu) return;
+  button.setAttribute("aria-expanded", open);
+  menu.hidden = !open;
+}
+
+function switchVersion(version) {
+  localStorage.setItem('docs-version', version); // TODO: handle multiple
+  if (window.setupDocSearch) {
+    window.setupDocSearch(version);
+  }
+  showVersion(document, version);
+
+  const currentPath = window.location.pathname;
+  const corePath = "/arangodb/";
+  if (currentPath.startsWith(corePath) && currentPath !== corePath) {
+    const idx = currentPath.indexOf("/", corePath.length);
+    const newPath = window.location.origin + corePath + version + currentPath.slice(idx) + window.location.hash;
+    updateHistory(newPath);
+    loadPage(newPath);
+  } else {
+    // Potentially update links to versioned content on unversioned page
+    linkToVersionedContent();
+  }
+}
+
+document.addEventListener("keydown", event => {
+  if (event.key !== "Escape") return;
+  const button = document.querySelector(".version-selector-button[aria-expanded=true]");
+  if (button) {
+    setVersionMenuOpen(false);
+    button.focus();
+  }
+});
 
 async function loadNav() {
   const mainNavPlaceholder = document.querySelector(".main-nav");
@@ -577,29 +661,11 @@ async function loadNav() {
     }
 
     // TODO: Support multiple versions
-    const selectedVersion = getSelectedVersion();
-    const versionInfo = getVersionInfo(selectedVersion);
-    if (versionInfo) {
-      const selectedVersionAlias = versionInfo.alias;
-      const versionSelector = mainNavContent.querySelector(".version-selector");
-      if (versionSelector && versionSelector.querySelector(`option[value="${selectedVersionAlias}"]`)) {
-        versionSelector.value = selectedVersionAlias;
-        
-        versionSelector.parentElement.querySelectorAll(":scope > .nav-ol").forEach(navList => {
-          if (navList.dataset.version == selectedVersion) {
-            navList.classList.add("selected-version");
-          } else {  
-            navList.classList.remove("selected-version");
-          }
-        });
-      } else {
-        console.log("Selected/stored version not available in version selector");
-      }
-    } else {
-      console.log("Selected version not found in version info");
-    }
+    showVersion(mainNavContent, getSelectedVersion());
 
     mainNavPlaceholder.replaceChildren(mainNavContent);
+    observeScrollFade(mainNavPlaceholder);
+    observeStickyNavBackground(mainNavPlaceholder);
     
     // Set initial active state
     updateActiveNavItem(window.location.pathname, true);
@@ -639,6 +705,8 @@ function initArticle(url) {
   updateActiveNavItem(window.location.pathname, false);
   updateVersionSelector();
   setSearchShortcutLabels();
+  initToc();
+  observeBackToTop();
   renderMermaidDiagrams();
 }
 
@@ -664,61 +732,179 @@ window.addEventListener("hashchange", function () {
 
 */
 
+// The table of contents is a column from this width, and collapsible below the page title otherwise
+const TOC_COLUMN_QUERY = "(min-width: 1280px)";
+
+function initToc() {
+  const details = document.querySelector(".toc-details");
+  if (!details) return;
+  // Always open in the column, a closed bar with the current section otherwise
+  details.open = window.matchMedia(TOC_COLUMN_QUERY).matches;
+  // The column or the dropdown entries, whichever scrolls in the current layout
+  document.querySelectorAll(".toc, .toc-entries").forEach(observeScrollFade);
+  tocTarget = location.hash.slice(1) || null;
+  tocHiglighter();
+}
+
+/*
+ * Fades out the end of a scroll container while there is more to scroll to,
+ * by toggling the scroll-fade class (on the navigation and table of contents).
+ */
+// Observed element (the container or one of its children) → scroll container
+const scrollFadeContainers = new WeakMap();
+const scrollFadeObserver = new ResizeObserver(entries => {
+  const containers = new Set(entries.map(e => scrollFadeContainers.get(e.target)));
+  containers.forEach(el => el && updateScrollFade(el));
+});
+
+function observeScrollFade(el) {
+  if (el.dataset.scrollFade) return;
+  el.dataset.scrollFade = "observed";
+  el.addEventListener("scroll", () => updateScrollFade(el), { passive: true });
+  scrollFadeContainers.set(el, el);
+  scrollFadeObserver.observe(el);
+  // Also when the content changes size, like expanded navigation sections.
+  // The child resizes, but the fade belongs on the container.
+  for (const child of el.children) {
+    scrollFadeContainers.set(child, el);
+    scrollFadeObserver.observe(child);
+  }
+  updateScrollFade(el);
+}
+
+/*
+ * Keeps the background of the sticky navigation sections in line with the
+ * sidebar's gradient behind them, wherever the sections are in the sidebar.
+ */
+function observeStickyNavBackground(nav) {
+  const stickies = nav.querySelectorAll(".nav-section-sticky");
+  const sidebar = nav.closest(".sidebar");
+  if (!stickies.length || !sidebar) return;
+  let frame = 0;
+  const update = () => {
+    frame = 0;
+    const box = sidebar.getBoundingClientRect();
+    // Hidden, like the closed sidebar on mobile
+    if (!box.height) return;
+    for (const sticky of stickies) {
+      sticky.style.setProperty("--sidebar-height", `${box.height}px`);
+      sticky.style.setProperty("--sticky-offset", `${sticky.getBoundingClientRect().top - box.top}px`);
+    }
+  };
+  const schedule = () => frame ||= requestAnimationFrame(update);
+  nav.addEventListener("scroll", schedule, { passive: true });
+  // Also when the sidebar changes size (rotation, browser UI) or the entries
+  // above the section expand or collapse
+  const observer = new ResizeObserver(schedule);
+  observer.observe(sidebar);
+  observer.observe(nav);
+  for (const child of nav.children) observer.observe(child);
+}
+
+function updateScrollFade(el) {
+  const scrolls = /auto|scroll/.test(getComputedStyle(el).overflowY);
+  el.classList.toggle("scroll-fade", scrolls && el.scrollHeight - el.scrollTop - el.clientHeight > 1);
+}
+
+function closeTocDropdown() {
+  const details = document.querySelector(".toc-details");
+  if (details && details.open && !window.matchMedia(TOC_COLUMN_QUERY).matches) {
+    details.open = false;
+  }
+}
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeTocDropdown();
+});
+
+window.matchMedia(TOC_COLUMN_QUERY).addEventListener("change", initToc);
+
+// The heading jumped to (link or deep link). It stays the current one until it
+// is scrolled out of view, even if the page can't scroll far enough for it to
+// reach the top, like short sections at the end.
+let tocTarget = null;
+
+window.addEventListener("hashchange", () => {
+  tocTarget = location.hash.slice(1) || null;
+  tocHiglighter();
+});
+
 function getAllAnchors() {
     let tocIds = [];
     let headlineIds = [];
     // Exclude headline anchors that are not in the ToC
-    document.querySelectorAll(".TableOfContents a").forEach(e => { tocIds.push(e.getAttribute("href").slice(1)) });
+    document.querySelectorAll(".toc-body a").forEach(e => { tocIds.push(e.getAttribute("href").slice(1)) });
     document.querySelector("article").querySelectorAll("h2,h3,h4,h5,h6").forEach(a => { if (tocIds.indexOf(a.id) !== -1) { headlineIds.push(a); } });
     return headlineIds;
 }
-function removeActiveFromAllAnchors() {
-  var anchors = getAllAnchors();
-  anchors.forEach(anchor => {
-      var heading = anchor.getAttribute('id')
-      let oldHRef = document.querySelector('.TableOfContents a[href="#' + heading + '"]');
-      oldHRef.parentElement.classList.remove('is-active');
-  });
-}
+
+/*
+ * Marks the current section in the table of contents: the heading jumped to
+ * while it is in view, otherwise the last heading scrolled past, or Overview
+ * above the first one. At the end of the page, the last heading in view.
+ */
 function tocHiglighter() {
-  // only do this is screen width > 768px
-  if (window.innerWidth <= 768) return;
-  var anchors = getAllAnchors();
+  const toc = document.querySelector(".toc-body");
+  if (!toc) return;
+  const headings = getAllAnchors();
+  const threshold = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) + 16;
+  let current = null;
 
-  var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-  anchors.forEach(anchor => {
-    const rect = anchor.getBoundingClientRect();
-    const top = rect.top;
-    const id = anchor.id;
-    const currentHighlighted = document.querySelector('.TableOfContents .is-active a');
-    const currentHighlightedHref = currentHighlighted ? currentHighlighted.getAttribute('href') : null;
-    if (top < 240 && currentHighlightedHref !== '#' + id) {
-      removeActiveFromAllAnchors();
-      const highlightedHref = document.querySelector('.TableOfContents a[href="#' + id + '"]');
-      highlightedHref.parentElement.classList.add('is-active');
-      //highlightedHref.parentElement.scrollIntoView({behavior: "smooth", block: "nearest" });
+  const target = tocTarget && document.getElementById(tocTarget);
+  if (target && headings.includes(target)) {
+    const top = target.getBoundingClientRect().top;
+    if (top >= 0 && top < window.innerHeight) current = target;
+    else tocTarget = null;
+  }
+  if (!current) {
+    const atEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    for (const heading of headings) {
+      const top = heading.getBoundingClientRect().top;
+      if (top <= threshold || (atEnd && top < window.innerHeight)) current = heading;
+      else break;
     }
-  });
+  }
+
+  const entry = current
+    ? toc.querySelector('a[href="#' + CSS.escape(current.id) + '"]').parentElement
+    : toc.querySelector('a[href="#Top"]').parentElement;
+  if (entry.classList.contains("is-active")) return;
+  toc.querySelectorAll(".is-active").forEach(el => el.classList.remove("is-active"));
+  entry.classList.add("is-active");
+  // The bar on narrow screens shows the current section
+  const label = document.querySelector(".toc-current");
+  if (label) label.textContent = entry.textContent.trim();
+  if (!window.matchMedia(TOC_COLUMN_QUERY).matches) return;
+  // Keep it in view if the table of contents scrolls
+  const container = toc.closest(".toc");
+  const box = entry.getBoundingClientRect();
+  const view = container.getBoundingClientRect();
+  if (box.top < view.top || box.bottom > view.bottom) {
+    container.scrollTop += box.top - view.top - view.height / 2;
+  }
 }
 
 function throttle(callback, limit) {
   var waiting = false;
+  var pending = null;
   return function () {
-    if (!waiting) {
-      callback.apply(this, arguments);
-      waiting = true;
-      setTimeout(function () {
-        waiting = false;
-      }, limit);
+    if (waiting) {
+      pending = [this, arguments];
+      return;
     }
+    callback.apply(this, arguments);
+    waiting = true;
+    setTimeout(function () {
+      waiting = false;
+      if (pending) {
+        callback.apply(pending[0], pending[1]);
+        pending = null;
+      }
+    }, limit);
   }
 }
 
-window.addEventListener('scroll', throttle(function() {
-  tocHiglighter();
-  backToTopButton();
-}, 250));
+window.addEventListener('scroll', throttle(tocHiglighter, 150));
 
 /*
     Tabs
@@ -861,7 +1047,11 @@ function hideEmptyOpenapiDiv() {
   fragment = location.hash.replace("#", "")
   if (fragment) {
     var element = document.getElementById(fragment);
-    if (!element) return;
+    if (!element) {
+      // Like browsers, #top in any case is the top of the page (the Overview entry)
+      if (fragment.toLowerCase() === "top") window.scrollTo(window.scrollX, 0);
+      return;
+    }
 
     if (element.tagName == "DETAILS") {
       method = fragment.split("_").slice(0,2).join("_")
@@ -926,17 +1116,30 @@ function addShowMoreButton(parentElem) {
 
 */
 
-function backToTopButton() {
-    if (window.scrollY > 100) {
-        document.querySelector(".back-to-top").classList.remove("hidden");
-    } else {
-        document.querySelector(".back-to-top").classList.add("hidden");
-    }
+// Back to top is shown once the page title is scrolled out of view
+let backToTopObserver;
+function observeBackToTop() {
+  if (backToTopObserver) backToTopObserver.disconnect();
+  const button = document.querySelector(".back-to-top");
+  const title = document.querySelector("article hgroup");
+  if (!button || !title) return;
+  backToTopObserver = new IntersectionObserver(([entry]) => {
+    button.classList.toggle("hidden", entry.isIntersecting || entry.boundingClientRect.top > 0);
+  });
+  backToTopObserver.observe(title);
+}
+
+// Moves the keyboard focus to the start of the main content, so that tabbing
+// continues from there (the button hides itself at the top of the page)
+function focusMainContent(options) {
+  document.getElementById("main-content")?.focus(options);
 }
 
 const goToTop = (event) => {
-    if (event != undefined)       // Comes from the back-to-top button
+    if (event != undefined) {     // Comes from the back-to-top button
       window.scrollTo({top: 0});
+      focusMainContent({ preventScroll: true });
+    }
 
     if (window.location.hash.length == 0)
         window.scrollTo({top: 0});
@@ -947,7 +1150,11 @@ function copyURI(evt) {
     const href = link.getAttribute("href");
     const url = new URL(href, window.location.href).href;
 
-    navigator.clipboard.writeText(url).then(() => {}, () => {
+    navigator.clipboard.writeText(url).then(() => {
+      // CSS shows a checkmark
+      link.classList.add("tooltipped");
+      setTimeout(() => link.classList.remove("tooltipped"), 1500);
+    }, () => {
       console.log("clipboard copy failed");
     });
 
@@ -1025,41 +1232,13 @@ function linkToVersionedContent() {
         setLinkHref(el, newUrl);
       }
     });
-  }
-}
-
-function handleDocumentChange(event) {
-  const target = event.target;
-  if (target.classList.contains("version-selector")) {
-    const selectedVersion = target.value;
-    const currentPath = window.location.pathname;
-    //const versionedPath = target.dataset.path;
-
-    localStorage.setItem('docs-version', selectedVersion); // TODO: handle multiple
-    if (window.setupDocSearch) {
-      window.setupDocSearch(selectedVersion);
-    }
-    target.closest(".nav-section").querySelectorAll(":scope > .nav-ol").forEach(
-      el => {
-        if (el.dataset.version == selectedVersion) {
-          el.classList.add("selected-version");
-        } else {
-          el.classList.remove("selected-version");
-        }
-      }
-    );
-
-    const corePath = "/arangodb/";
-    if (currentPath.startsWith(corePath) && currentPath !== corePath) {
-      const idx = currentPath.indexOf("/", corePath.length);
-      const newPath = window.location.origin + corePath + selectedVersion + currentPath.slice(idx) + window.location.hash;
-      //console.log("handleDocumentChange: " + newPath);
-      updateHistory(newPath);
-      loadPage(newPath);
-    } else {
-      // Potentially update links to versioned content on unversioned page
-      linkToVersionedContent();
-    }
+    // Previous/next page links to the first or last page of the selected version
+    document.querySelectorAll(".nav-prev[data-versions], .nav-next[data-versions]").forEach(el => {
+      const link = JSON.parse(el.dataset.versions)[getSelectedVersion()];
+      if (!link) return;
+      setLinkHref(el, link.href);
+      el.querySelector("p").innerHTML = link.title;
+    });
   }
 }
 
@@ -1068,12 +1247,61 @@ function handleDocumentClick(event) {
     const target = event.target;
     const closest = (selector) => target.closest(selector);
 
-    if (target.classList.contains("expand-nav")) return;
+    // Skip link: past the navigation and breadcrumbs to the page title, without
+    // a fragment in the URL. Tabbing continues with the table of contents.
+    if (closest(".skip-link")) {
+        event.preventDefault();
+        const title = document.querySelector("#main-content h1");
+        if (title) {
+            title.tabIndex = -1;
+            title.focus();
+        } else {
+            focusMainContent();
+        }
+        return;
+    }
+
+    // Navigation sections
+    const expandButton = closest(".expand-nav");
+    if (expandButton) {
+        const section = expandButton.closest(".nav-section");
+        setSectionExpanded(section, !section.classList.contains("expanded"));
+        return;
+    }
+
+    // Version selector
+    if (closest(".version-selector-button")) {
+        setVersionMenuOpen(closest(".version-selector-button").getAttribute("aria-expanded") != "true");
+        return;
+    }
+    const versionItem = closest(".version-menu-item");
+    if (!versionItem) setVersionMenuOpen(false);
+
+    // Choosing an entry or clicking elsewhere closes the dropdown on narrow screens
+    if (!closest(".toc-details") || closest(".toc-body a")) {
+        closeTocDropdown();
+    }
+
+    // Also for the fragment that is already in the URL (no hashchange)
+    const tocLink = closest(".toc-body a");
+    if (tocLink) {
+        tocTarget = tocLink.getAttribute("href").slice(1);
+        setTimeout(tocHiglighter);
+    }
 
     // Allow browser default for non-primary buttons (middle/right) and modifier clicks
     // (Ctrl/Cmd = new tab, Shift = new window, Alt = download/new tab depending on browser)
     const openInNew = event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey;
   
+    // Versions open in a new tab or window like other links
+    if (versionItem) {
+        if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        setVersionMenuOpen(false);
+        switchVersion(versionItem.dataset.version);
+        return;
+    }
+
     // Menu link clicks
     const navLink = target.closest(".link-nav");
     if (navLink) {
@@ -1082,10 +1310,11 @@ function handleDocumentClick(event) {
         navLink.closest(".main-nav").classList.remove("active");
         document.querySelectorAll(".link-nav-active").forEach(el => el.classList.remove("link-nav-active"));
         navLink.classList.add("link-nav-active");
+        document.querySelectorAll(".nav-section-current").forEach(el => el.classList.remove("nav-section-current"));
         closeAllEntries();
-        document.querySelectorAll(".nav-section:has(.link-nav-active) > .nav-section-header > .expand-nav > input").forEach(el => el.checked = true);
+        expandCurrentPath();
         if (navLink.parentElement.classList.contains("nav-section-header")) {
-          navLink.parentElement.querySelector(".expand-nav > input").checked = true;
+          setSectionExpanded(navLink.closest(".nav-section"), true);
         }
         const href = navLink.getAttribute("href");
         if (href) {
@@ -1229,7 +1458,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add central click handler to document
     document.addEventListener("click", handleDocumentClick);
-    document.addEventListener("change", handleDocumentChange);
     document.addEventListener("keydown", handleTabKeydown);
 
     var isMobile = window.innerWidth <= 768;
@@ -1376,6 +1604,66 @@ function layoutZoomBadges() {
     }
     return true;
   });
+}
+
+/* Firefox doesn't scroll links in inline SVGs (diagrams) into view when they
+   get the keyboard focus, but (seemingly) to the top of the diagram, so the
+   focus can move out of sight. This scrolls them into view instead, or back
+   to where the page was if they were in view already. Not in the image viewer,
+   which doesn't scroll the page. */
+let _svgFocus = null;
+// The scroll position when Tab was pressed, as the browser may scroll before
+// the focusin event already
+let _tabScrollY = null;
+
+document.addEventListener('keydown', function (e) {
+  if (e.key !== 'Tab') return;
+  _tabScrollY = window.scrollY;
+  // The focus moves in the same task
+  setTimeout(function () { _tabScrollY = null; });
+}, true);
+
+document.addEventListener('focusin', function (e) {
+  let link = e.target;
+  if (!(link instanceof SVGAElement) || link.closest('.image-viewer')) return;
+  // Before the browser's own scrolling
+  _svgFocus = { link, scrollY: _tabScrollY ?? window.scrollY };
+  // If the browser doesn't scroll (at all, or not in this frame)
+  requestAnimationFrame(function () {
+    revealFocusedSvgLink();
+    _svgFocus = null;
+  });
+});
+
+// The browser's own scrolling is corrected in the same scroll event, before
+// the listener of the table of contents on the window sees the wrong position
+// (it would briefly mark the section of the diagram's top as the current one)
+document.addEventListener('scroll', revealFocusedSvgLink, { passive: true });
+
+function revealFocusedSvgLink() {
+  if (!_svgFocus) return;
+  // Undo the browser's scrolling, then scroll only as far as needed (if at all)
+  if (window.scrollY !== _svgFocus.scrollY) window.scrollTo(0, _svgFocus.scrollY);
+  let delta = svgLinkScrollDelta(_svgFocus.link);
+  if (delta) window.scrollBy(0, delta);
+  // Where it should stay, if this runs again for the same focus change
+  _svgFocus.scrollY = window.scrollY;
+}
+
+// How far to scroll for the link to be in view with some room around it, so
+// that it isn't at the very edge (or under the URL preview of the browser at
+// the bottom), and below the sticky table of contents on narrow screens (the
+// scroll padding, which is only for headings jumped to otherwise)
+function svgLinkScrollDelta(link) {
+  let box = link.getBoundingClientRect();
+  let margin = Math.max(48, window.innerHeight * 0.1);
+  let sticky = window.matchMedia(TOC_COLUMN_QUERY).matches ? 0
+    : parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+  let top = sticky + margin;
+  let bottom = window.innerHeight - margin;
+  if (box.top < top) return box.top - top;
+  if (box.bottom > bottom) return box.bottom - bottom;
+  return 0;
 }
 
 function zoomableCaption(el) {
@@ -1688,6 +1976,23 @@ function panImageViewer(dx, dy) {
   applyImageViewerTransform();
 }
 
+/** Pans as little as needed for the element to be in the free area, with some room around it. */
+function panImageViewerTo(el) {
+  let bounds = _viewer.stage.getBoundingClientRect();
+  let area = imageViewerArea();
+  let box = el.getBoundingClientRect();
+  let margin = 24;
+  let left = box.left - bounds.left;
+  let top = box.top - bounds.top;
+  let dx = 0, dy = 0;
+  // The start of the element wins if it is larger than the area
+  if (left + box.width > area.left + area.width - margin) dx = area.left + area.width - margin - (left + box.width);
+  if (left + dx < area.left + margin) dx = area.left + margin - left;
+  if (top + box.height > area.top + area.height - margin) dy = area.top + area.height - margin - (top + box.height);
+  if (top + dy < area.top + margin) dy = area.top + margin - top;
+  if (dx || dy) panImageViewer(dx, dy);
+}
+
 /* The illustration is resized rather than scaled with a CSS transform, so
    that browsers redraw vector graphics sharply at every zoom level. */
 function applyImageViewerTransform() {
@@ -1807,7 +2112,11 @@ function handleImageViewerKeydown(e) {
       if (!focusable.length) break;
       let index = focusable.indexOf(document.activeElement);
       let next = e.shiftKey ? index - 1 : index + 1;
-      focusable[(next + focusable.length) % focusable.length].focus();
+      let target = focusable[(next + focusable.length) % focusable.length];
+      // The illustration is moved with a transform, not scrolled, so the
+      // browser can't bring a link in it into view. It is panned instead.
+      target.focus({ preventScroll: true });
+      if (_viewer.content && _viewer.content.contains(target)) panImageViewerTo(target);
       break;
     }
     default: return;
