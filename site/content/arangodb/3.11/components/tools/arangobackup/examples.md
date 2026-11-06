@@ -5,6 +5,37 @@ weight: 5
 description: >-
   How to create a consistent snapshot with the _arangobackup_ tool
 ---
+## Connect and authenticate
+
+Without further startup options, _arangobackup_ connects to the ArangoDB server
+at the default endpoint `tcp://127.0.0.1:8529` as the `root` user and prompts
+you for the password. To connect to a different server or as a different user,
+use the following startup options:
+
+- `--server.endpoint <string>`: The endpoint to connect to. In a cluster,
+  specify a Coordinator.
+- `--server.username <string>`: The username.
+- `--server.password <string>`: The password. If you omit it, you are prompted
+  for the password.
+- `--server.authentication <bool>`: Whether to authenticate. Set it to
+  `false` if authentication is disabled on the server.
+
+For example, to list the Hot Backups of a server at a non-standard endpoint
+as the `backup` user:
+
+```
+arangobackup list --server.endpoint tcp://192.168.173.13:8531 --server.username backup
+```
+
+The user needs **Administrate** / `rw` access to the `_system` database. If the
+server's `--backup.api-enabled` startup option is set to `jwt`, Hot Backup
+operations require a JWT superuser token, which _arangobackup_ doesn't support.
+In this case, use the [HTTP API](../../../develop/http-api/hot-backups.md) instead.
+
+For details about the authentication and how to avoid exposing credentials in
+the process list, see
+[Connect to an ArangoDB server](../_index.md#connect-to-an-arangodb-server).
+
 ## Create
 
 Hot backups are created near instantaneously. The single server as
@@ -22,19 +53,28 @@ readily described as a consistent snapshot on the local file system.
 arangobackup create --server.endpoint tcp://myserver:8529 --label my-label 
 ```
 
-The above will create a hot backup with a unique identifier consisting
-of the UTC time according to the local computer clock output and the
-specified label and report the success like below.
+The above creates a hot backup and reports the success like below:
 
 ```
 2019-05-15T13:57:11Z [15213] INFO {backup} Server version: 3.5.1
 2019-05-15T14:20:16Z [15397] INFO {backup} Backup succeeded. Generated identifier '2019-05-15T14.20.15Z_my-label'
 ```
 
-{{< tip >}}
-If the `label` marker is omitted then a unique identifier string is
-generated instead.
-{{< /tip >}}
+The identifier of a hot backup consists of a timestamp and the label, separated
+by an underscore. The timestamp is the creation time in UTC according to the
+clock of the server (of the Coordinator in a cluster), in an ISO 8601 format
+with dots instead of colons, like `2019-05-15T14.20.15Z`. If you don't specify
+a `--label`, a random UUID is used as the label instead, for example,
+`2019-05-15T14.20.15Z_745a59f4-7246-495a-a086-1b003b7312ac`. Characters that
+are not allowed in directory names are replaced in the label.
+
+The hot backup is stored on the server, not on the machine where you run
+_arangobackup_. Its files are located in a directory named like the identifier
+in the `backups` folder of the server's database directory
+(`--database.directory`), for example,
+`/var/lib/arangodb3/backups/2019-05-15T14.20.15Z_my-label/`. In a cluster, each
+DB-Server stores its part of the hot backup in its own database directory under
+the same identifier.
 
 There are more options for the cluster mode regarding the acquisition of the
 global write transaction lock:
