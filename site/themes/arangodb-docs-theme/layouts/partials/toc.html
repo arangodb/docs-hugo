@@ -1,34 +1,32 @@
-<div class="toc-container">
-  <a
-  class="edit-page"
-  aria-label=""
-  href="https://github.com/arangodb/docs-hugo/edit/main/site/content/
-    {{- with .File }}
-      {{- $path := .Path }}
-      {{- if and (strings.HasPrefix $path "arangodb/") (ne $path "arangodb/_index.md") }}
-        {{- $splitPath := split $path "/" }}
-        {{- $versionAlias := index $splitPath 1 }}
-        {{- if or (eq $versionAlias "stable") (eq $versionAlias "devel") }}
-          {{- $versionName := (index (where (index hugo.Data.versions "/arangodb/") "alias" $versionAlias) 0).name }}
-          {{- $path = $path | replaceRE (printf "^arangodb/%s/" $versionAlias) (printf "arangodb/%s/" $versionName) }}
-        {{- end }}
-      {{- end }}
-      {{- $path }}
-    {{- end }}"
-  target="_blank">
-    <i class="fab fa-fw fa-github edit-page-icon"></i>
-  </a>
-  {{ if ge (.Page.Fragments.HeadingsMap | len) 2 }}
-    <div class="toc">
-      <div class="toc-content">
-        <div class="toc-header"><p>On this page</p></div>
-        <nav class="TableOfContents" >
-          {{ template "nestedHeadline" dict "headings" .Page.Fragments.Headings "level" 1 "maxLevel" .Page.Params.pageToc.maxHeadlineLevel }}
-        </nav>
-      </div>
-    </div>
-  {{ end }}
-</div>
+{{- /* The article's aside: the table of contents, in a column on wide screens
+  and as a dropdown below the page title otherwise. The scroll containers have
+  tabindex="-1", as Firefox would otherwise add them to the tab order (as an
+  invisible stop before the entries), but they can still be scrolled with the
+  keyboard once clicked into or when an entry is focused. */ -}}
+<aside class="article-aside">
+  {{- /* Sticks to the top, leaving room for the article actions at the bottom */}}
+  <div class="aside-sticky">
+    {{- if ge (.Page.Fragments.HeadingsMap | len) 2 }}
+    <nav class="toc" aria-labelledby="toc-title" tabindex="-1">
+      {{- /* The plain title in the column, the summary of the dropdown otherwise */}}
+      <p class="toc-title" id="toc-title">On this page</p>
+      <details class="toc-details" open>
+        <summary class="toc-header">On this page<span class="toc-current"></span></summary>
+        <div class="toc-body">
+          {{- /* Scrolls inside the box of the dropdown on narrow screens */}}
+          <div class="toc-entries" tabindex="-1">
+            {{- /* The content before the first heading, links to the top */}}
+            {{- /* Browsers scroll to the top for #top in any case if no element has that ID.
+                   Hugo generates lowercase heading IDs only, so #Top can't clash with one. */}}
+            <div class="level-2"><a href="#Top">Overview</a></div>
+            {{ template "nestedHeadline" dict "headings" .Page.Fragments.Headings "level" 1 "maxLevel" .Page.Params.pageToc.maxHeadlineLevel }}
+          </div>
+        </div>
+      </details>
+    </nav>
+    {{- end }}
+  </div>
+</aside>
 
 {{ define "nestedHeadline" -}}
   {{ $headings := .headings -}}
