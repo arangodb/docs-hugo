@@ -323,6 +323,11 @@ You cannot specify attribute values, `WHERE` conditions, or projections for a
 node pattern that refers to an existing variable. Use a `FILTER` operation
 instead.
 
+A node pattern without a label needs to refer to a variable that is already
+defined, either earlier in the `MATCH` operation or before it. Otherwise, the
+query fails with a parse error (*MATCH vertex variable '...' needs a label or
+has to be bound earlier*).
+
 Edge variables always need to be new. Using an edge variable name that is
 already defined raises a parse error.
 
@@ -402,7 +407,10 @@ Note the following about projections:
   operation, the value is `null` and the query raises a warning
   (error code `1596`, *attribute '...' was excluded by MATCH projection on
   variable '...'*).
-- The nodes and edges of a path variable are the projected documents.
+- The nodes and edges of a path variable are the projected documents. This
+  includes the nodes at both ends of a variable-length edge pattern. The nodes
+  and edges in between are always full documents because you cannot specify
+  projections for them.
 
 ### Use bind parameters for collections
 
