@@ -32,11 +32,17 @@ There are two syntax variants for `WINDOW` operations.
 
 **Row-based** (adjacent documents):
 
-<pre><code>WINDOW { preceding: <em>numPrecedingRows</em>, following: <em>numFollowingRows</em> } AGGREGATE <em>variableName</em> = <em>aggregateExpression</em></code></pre>
+```aql-syntax
+WINDOW { preceding: <numPrecedingRows>, following: <numFollowingRows> }
+AGGREGATE <variableName> = <aggregateExpression>
+```
 
 **Range-based** (value or duration range):
 
-<pre><code>WINDOW <em>rangeValue</em> WITH { preceding: <em>offsetPreceding</em>, following: <em>offsetFollowing</em> } AGGREGATE <em>variableName</em> = <em>aggregateExpression</em></code></pre>
+```aql-syntax
+WINDOW <rangeValue> WITH { preceding: <offsetPreceding>, following: <offsetFollowing> }
+AGGREGATE <variableName> = <aggregateExpression>
+```
 
 Calls to the following functions are supported in aggregation expressions:
 - `LENGTH()` / `COUNT()`

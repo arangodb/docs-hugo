@@ -8,9 +8,13 @@ description: >-
 ---
 ## Syntax
 
-The general syntax is:
+The general syntax is as follows:
 
-<pre><code>SORT <em>expression</em> <em>direction</em></code></pre>
+```aql-syntax
+SORT <expression> [<direction>] [… , <expressionN> [<directionN>]]
+```
+
+Each *direction* can be either `ASC` (default) or `DESC`.
 
 ## Usage
 

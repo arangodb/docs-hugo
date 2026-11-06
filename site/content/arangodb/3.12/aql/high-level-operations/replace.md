@@ -22,10 +22,15 @@ with a server-generated value.
 
 The two syntaxes for a replace operation are:
 
-<pre><code>REPLACE <em>document</em> IN <em>collection</em>
-REPLACE <em>keyExpression</em> WITH <em>document</em> IN <em>collection</em></code></pre>
+```aql-syntax
+REPLACE <document> IN <collection>
+[OPTIONS { … }]
+```
 
-Both variants can optionally end with an `OPTIONS { … }` clause.
+```aql-syntax
+REPLACE <keyExpression> WITH <document> IN <collection>
+[OPTIONS { … }]
+```
 
 `collection` must contain the name of the collection in which the document
 should be replaced.

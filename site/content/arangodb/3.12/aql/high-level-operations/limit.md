@@ -8,21 +8,21 @@ description: >-
 ---
 ## Syntax
 
-The general forms of `LIMIT` are:
+```aql-syntax
+LIMIT [<offset>,] <count>
+```
 
-<pre><code>LIMIT <em>count</em>
-LIMIT <em>offset</em>, <em>count</em>
-LIMIT <em>offset</em>, null</code></pre>
+You can specify either only the `count` value, or both `offset` and `count`.
 
-The first form allows specifying only the `count` value whereas the second form
-allows specifying both `offset` and `count`. The first form is identical using
-the second form with an `offset` value of `0`. The third form lets you specify
-an `offset` only, without limiting how many results are returned.
+- The `offset` value specifies how many elements of the result to skip.
+  It must be `0` or greater.
+- The `count` value specifies the maximum number of elements to return.
+  It must be `null`, or `0` or greater.
 
-The `offset` value specifies how many elements from the result shall be
-skipped. It must be `0` or greater. The `count` value specifies how many
-elements should be at most included in the result. It must be `0` or greater,
-or `null` to not restrict the number of results.
+`LIMIT <count>` is equivalent to `LIMIT 0, <count>`.
+
+Use `LIMIT <offset>, null` to apply an offset without restricting the number of
+results.
 
 {{< info >}}
 Subqueries as well as non-constant variables and expressions cannot be used for
@@ -41,12 +41,12 @@ FOR u IN users
   RETURN u
 ```
 
-Above query returns five documents of the `users` collection.
+The above query returns five documents of the `users` collection.
 It could also be written as `LIMIT 0, 5` for the same result.
 
 Which documents it returns is rather arbitrary because collections have no
 defined order for the documents they contain. A `LIMIT` operation should usually
-be accompanied with a `SORT` operation to explicitly specify a sorting order
+be accompanied by a `SORT` operation to explicitly specify a sorting order
 unless any five documents are acceptable for you.
 
 ### Skip results using an offset

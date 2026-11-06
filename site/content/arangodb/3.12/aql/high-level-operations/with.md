@@ -31,7 +31,9 @@ possibly access to avoid occasional query failures.
 
 ## Syntax
 
-<pre><code>WITH <em>collection1</em> [, <em>collection2</em> [, ... <em>collectionN</em> ] ]</code></pre>
+```aql-syntax
+WITH <collection1> [, <collection2> [, … <collectionN> ] ]
+```
 
 `WITH` is also a keyword that is used in other contexts, for example in `UPDATE`
 statements. To declare additional collections, you must place the `WITH` keyword
