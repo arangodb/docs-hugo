@@ -513,7 +513,7 @@ description: ''
 ---
 var coll = db._create("users", { keyOptions: { allowUserKeys: false } });
 db.users.save({ name: "user 1" });
-db.users.save({ name: "user 2", _key: "myuser" }); // xpError(ERROR_ARANGO_DOCUMENT_KEY_UNEXPECTED)
+db.users.save({ name: "user 2", _key: "myuser" }); // expectedError(ERROR_ARANGO_DOCUMENT_KEY_UNEXPECTED)
 db.users.save({ name: "user 3" });
 ~db._drop("users");
 ```
@@ -830,7 +830,7 @@ description: ''
 ~db._create("example");
 a1 = db.example.insert({ a : 1 });
 a2 = db._update(a1, { b : 2 });
-a3 = db._update(a1, { c : 3 }); // xpError(ERROR_ARANGO_CONFLICT);
+a3 = db._update(a1, { c : 3 }); // expectedError(ERROR_ARANGO_CONFLICT);
 ~db._drop("example");
 ```
 
@@ -916,7 +916,7 @@ description: ''
 ~db._create("example");
 a1 = db.example.insert({ a : 1 });
 a2 = db._replace(a1, { a : 2 });
-a3 = db._replace(a1, { a : 3 });  // xpError(ERROR_ARANGO_CONFLICT);
+a3 = db._replace(a1, { a : 3 });  // expectedError(ERROR_ARANGO_CONFLICT);
 ~db._drop("example");
 ```
 
@@ -998,8 +998,8 @@ description: ''
 ~db._create("example");
 a1 = db.example.insert({ a : 1 });
 db._remove(a1);
-db._remove(a1); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND);
-db._remove(a1, {overwrite: true}); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND);
+db._remove(a1); // expectedError(ERROR_ARANGO_DOCUMENT_NOT_FOUND);
+db._remove(a1, {overwrite: true}); // expectedError(ERROR_ARANGO_DOCUMENT_NOT_FOUND);
 ~db._drop("example");
 ```
 
@@ -1013,9 +1013,9 @@ description: ''
 ~db._create("example");
 a1 = db.example.insert({ a : 1 });
 a2 = db._replace(a1, { a : 2 });
-db._remove(a1); // xpError(ERROR_ARANGO_CONFLICT)
+db._remove(a1); // expectedError(ERROR_ARANGO_CONFLICT)
 db._remove(a1, {overwrite: true});
-db._document(a1); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND)
+db._document(a1); // expectedError(ERROR_ARANGO_DOCUMENT_NOT_FOUND)
 ~db._drop("example");
 ```
 

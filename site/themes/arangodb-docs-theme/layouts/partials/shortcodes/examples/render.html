@@ -20,6 +20,17 @@
 {{ transform.Highlight $bindVars "json" }}
 {{- end }}
 
+{{- if and (eq .language "aql") $options.options }}
+<strong>Query Options</strong>
+<br>
+{{- $queryOptions := $options.options | jsonify (dict "indent" "  ") }}
+{{ transform.Highlight $queryOptions "json" }}
+{{- end }}
+
 {{- $output := transform.Highlight $content.output $language }}
-<details><summary>Show output</summary>{{ $context.Page.RenderString $output }}</details>
+<details><summary>Show output</summary>{{ $context.Page.RenderString $output }}
+{{- with $content.warnings }}
+<strong>Warnings</strong>
+{{ transform.Highlight . "json" }}
+{{- end }}</details>
 <br>

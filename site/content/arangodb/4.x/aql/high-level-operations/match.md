@@ -167,35 +167,31 @@ An edge pattern with arrowheads on both sides (`<-[ ... ]->`) is invalid.
 The following query returns the people that Eve knows, together with the
 edges that connect them:
 
-```js
+```aql
 ---
 name: aqlMatch_outbound
 description: ''
+dataset: knows_graph
+options:
+  matchStatement: experimental
 ---
-~var examples = require("@arangodb/graph-examples/example-graph");
-~examples.loadGraph("knows_graph");
-db._query(`
-  MATCH (a:persons { _key: "eve" }) -[k:knows]-> (b:persons)
-    RETURN { from: a.name, edge: k._id, to: b.name }
-`, {}, { matchStatement: "experimental" }).toArray();
-~examples.dropGraph("knows_graph");
+MATCH (a:persons { _key: "eve" }) -[k:knows]-> (b:persons)
+  RETURN { from: a.name, edge: k._id, to: b.name }
 ```
 
 If you follow edges in any direction, then each edge is matched once from each
 side. The following query finds everyone that Bob knows or who knows Bob:
 
-```js
+```aql
 ---
 name: aqlMatch_any
 description: ''
+dataset: knows_graph
+options:
+  matchStatement: experimental
 ---
-~var examples = require("@arangodb/graph-examples/example-graph");
-~examples.loadGraph("knows_graph");
-db._query(`
-  MATCH (a:persons { name: "Bob" }) -[:knows]- (b:persons)
-    RETURN b.name
-`, {}, { matchStatement: "experimental" }).toArray();
-~examples.dropGraph("knows_graph");
+MATCH (a:persons { name: "Bob" }) -[:knows]- (b:persons)
+  RETURN b.name
 ```
 
 Edge patterns support attribute values in curly braces and `WHERE` conditions
@@ -216,18 +212,16 @@ You can specify multiple edge collections by separating them with `|`, like
 You can chain node and edge patterns to describe paths with multiple hops.
 The following query finds the people who are known by somebody that Eve knows:
 
-```js
+```aql
 ---
 name: aqlMatch_two_hops
 description: ''
+dataset: knows_graph
+options:
+  matchStatement: experimental
 ---
-~var examples = require("@arangodb/graph-examples/example-graph");
-~examples.loadGraph("knows_graph");
-db._query(`
-  MATCH (a:persons { _key: "eve" }) -[:knows]-> (b:persons) -[:knows]-> (c:persons)
-    RETURN [a.name, b.name, c.name]
-`, {}, { matchStatement: "experimental" }).toArray();
-~examples.dropGraph("knows_graph");
+MATCH (a:persons { _key: "eve" }) -[:knows]-> (b:persons) -[:knows]-> (c:persons)
+  RETURN [a.name, b.name, c.name]
 ```
 
 ### Match variable-length paths
@@ -236,18 +230,16 @@ To follow a variable number of edges, append `* min..max` to the edge
 collections. The following query finds everyone that Eve can reach with
 one to three hops:
 
-```js
+```aql
 ---
 name: aqlMatch_variable_length
 description: ''
+dataset: knows_graph
+options:
+  matchStatement: experimental
 ---
-~var examples = require("@arangodb/graph-examples/example-graph");
-~examples.loadGraph("knows_graph");
-db._query(`
-  MATCH (a:persons { _key: "eve" }) -[p:knows * 1..3]-> (b:persons)
-    RETURN { to: b.name, via: p.vertices[*].name }
-`, {}, { matchStatement: "experimental" }).toArray();
-~examples.dropGraph("knows_graph");
+MATCH (a:persons { _key: "eve" }) -[p:knows * 1..3]-> (b:persons)
+  RETURN { to: b.name, via: p.vertices[*].name }
 ```
 
 The variable of a variable-length edge pattern (`p` in the example above) holds
@@ -273,18 +265,16 @@ To get access to the entire path that a pattern describes, assign the pattern
 to a variable. The path variable holds an object with an `edges` and a
 `vertices` attribute, with the matched edges and nodes in the order of the path:
 
-```js
+```aql
 ---
 name: aqlMatch_path_variable
 description: ''
+dataset: knows_graph
+options:
+  matchStatement: experimental
 ---
-~var examples = require("@arangodb/graph-examples/example-graph");
-~examples.loadGraph("knows_graph");
-db._query(`
-  MATCH path = (a:persons { _key: "eve" }) -[:knows]-> (b:persons) -[:knows]-> (c:persons)
-    RETURN path.vertices[*].name
-`, {}, { matchStatement: "experimental" }).toArray();
-~examples.dropGraph("knows_graph");
+MATCH path = (a:persons { _key: "eve" }) -[:knows]-> (b:persons) -[:knows]-> (c:persons)
+  RETURN path.vertices[*].name
 ```
 
 Path variables also work with variable-length edge patterns. The path then
@@ -340,19 +330,17 @@ You can specify multiple patterns separated by commas. All patterns need to
 match, and you can connect them by referring to the same variables.
 The following query finds pairs of people `w` and `x` who both know `v`:
 
-```js
+```aql
 ---
 name: aqlMatch_multiple_patterns
 description: ''
+dataset: knows_graph
+options:
+  matchStatement: experimental
 ---
-~var examples = require("@arangodb/graph-examples/example-graph");
-~examples.loadGraph("knows_graph");
-db._query(`
-  MATCH (w:persons) -[:knows]-> (v:persons), (x:persons) -[:knows]-> (v)
-    FILTER w != x
-    RETURN [w.name, x.name, v.name]
-`, {}, { matchStatement: "experimental" }).toArray();
-~examples.dropGraph("knows_graph");
+MATCH (w:persons) -[:knows]-> (v:persons), (x:persons) -[:knows]-> (v)
+  FILTER w != x
+  RETURN [w.name, x.name, v.name]
 ```
 
 If the patterns don't share any variables, the result is the combination of
@@ -364,19 +352,17 @@ You can limit the attributes that a pattern variable holds by adding `RETURN`
 followed by a comma-separated list of attributes at the end of a node or edge
 pattern. This reduces the size of the variables and of the query result.
 
-```js
+```aql
 ---
 name: aqlMatch_projections
 description: ''
+dataset: knows_graph
+options:
+  matchStatement: experimental
 ---
-~var examples = require("@arangodb/graph-examples/example-graph");
-~examples.loadGraph("knows_graph");
-db._query(`
-  MATCH (a:persons { _key: "alice" } RETURN name, initial = LEFT(a.name, 1))
-        -[k:knows RETURN vertex]-> (b:persons RETURN name)
-    RETURN [a, k, b]
-`, {}, { matchStatement: "experimental" }).toArray();
-~examples.dropGraph("knows_graph");
+MATCH (a:persons { _key: "alice" } RETURN name, initial = LEFT(a.name, 1))
+      -[k:knows RETURN vertex]-> (b:persons RETURN name)
+  RETURN [a, k, b]
 ```
 
 A projection list can contain the following items:
@@ -457,7 +443,22 @@ AQL operations:
 
 You can see the resulting execution plan by
 [explaining the query](../execution-and-performance/explaining-queries.md)
-with the `matchStatement` option set.
+with the `matchStatement` option set. The following plan shows that the
+pattern becomes three nested loops, a primary index lookup for the start node
+followed by an edge index lookup and a primary index lookup for each match:
+
+```aql
+---
+name: aqlMatch_explain
+description: ''
+dataset: knows_graph
+explain: true
+options:
+  matchStatement: experimental
+---
+MATCH (a:persons { _key: "eve" }) -[:knows]-> (b:persons)
+  RETURN b.name
+```
 
 ### When to use `MATCH`
 
