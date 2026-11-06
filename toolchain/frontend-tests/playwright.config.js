@@ -10,6 +10,9 @@ module.exports = defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
+  // Playwright sees the host's cores in a CI container, not the 4 CPUs and
+  // 8 GB of the resource class, and too many browsers get the job killed
+  workers: process.env.CI ? 4 : undefined,
   reporter: process.env.CI
     ? [["list"], ["junit", { outputFile: "results/junit.xml" }], ["html", { outputFolder: "results/report", open: "never" }]]
     : [["list"], ["html", { outputFolder: "results/report", open: "never" }]],
