@@ -156,6 +156,14 @@ deprecated `Timestamp` sub-attribute of the last heartbeat received under
 
 ### Endpoints augmented
 
+#### Cursor API
+
+The `POST /_api/cursor` and `POST /_api/explain` endpoints support a new
+`matchStatement` query option. Set it to `"experimental"` to enable the
+experimental [`MATCH` operation](../../aql/high-level-operations/match.md)
+in AQL. Queries that use `MATCH` fail with error `9` (*not implemented*)
+unless you set this option.
+
 
 
 ### Endpoints moved

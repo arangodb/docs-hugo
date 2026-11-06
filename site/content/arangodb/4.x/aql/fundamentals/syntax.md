@@ -62,6 +62,7 @@ On the top level, AQL offers the following
 | `RETURN`  | Results projection
 | `FILTER`  | Non-View results filtering
 | `SEARCH`  | View results filtering
+| `MATCH`   | Graph pattern matching (experimental)
 | `SORT`    | Result sorting
 | `LIMIT`   | Result slicing
 | `LET`     | Variable assignment

@@ -581,6 +581,20 @@ Configure how long a DB-Server has time to bring the SatelliteCollections
 involved in the query into sync. The default value is `60.0` seconds.
 When the maximal time is reached, the query is stopped.
 
+#### `matchStatement`
+
+Set this option to `"experimental"` to enable the experimental
+[`MATCH` operation](../high-level-operations/match.md) for the query.
+Queries that use `MATCH` fail with error `9` (*not implemented*) unless you
+set this option. Any other value except an empty string raises an error.
+
+```js
+db._query(`
+  MATCH (a:persons) -[:knows]-> (b:persons)
+    RETURN [a._key, b._key]
+`, {}, { matchStatement: "experimental" }).toArray();
+```
+
 ## With `db._createStatement()` (ArangoStatement)
 
 The `_query()` method is a shorthand for creating an `ArangoStatement` object,

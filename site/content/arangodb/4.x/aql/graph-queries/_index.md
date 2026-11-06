@@ -29,6 +29,10 @@ make full use of optimizations and therefore best performance is to be expected:
   with multiple hops up to a configured, optionally variable depth. It can be
   combined with AQL filter conditions.
 
+- [AQL `MATCH`](../high-level-operations/match.md) (experimental) to find
+  all occurrences of a pattern of nodes and edges, described with a syntax
+  similar to Cypher.
+
 - [AQL Shortest Path](shortest-path.md) to find one shortest (or lightest) path
   between two given documents.
 
