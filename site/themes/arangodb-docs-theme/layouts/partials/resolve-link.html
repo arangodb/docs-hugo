@@ -1,0 +1,68 @@
+{{- /*
+  Resolves a link and checks that internal links and their fragments exist.
+  Used by the render-link hook for Markdown links and by layouts for links
+  given in front matter (e.g. the homepage).
+
+  Broken links are build errors if failOnBrokenLinks is set, warnings otherwise.
+  Pages under /arangodb/stable/ and /arangodb/devel/ are mounts of versioned
+  content that is already checked under its real path, so most of their links
+  are not checked again.
+
+  Context: dict "link" (string), "page" (the page that contains the link)
+  Returns: dict "href" (URL to use, empty if broken), "remote" (bool)
+*/ -}}
+{{- $link := .link }}
+{{- $page := .page }}
+{{- $url := urls.Parse $link }}
+{{- $fragment := "" }}
+{{- with $url.Fragment }}
+  {{- $fragment = printf "#%s" . }}
+{{- end }}
+
+{{- $href := "" }}
+{{- $remote := ne $url.Scheme "" }}
+{{- $broken := "" }}
+{{- $anchors := slice }}
+
+{{- if $remote }}
+  {{- $href = $link }}
+  {{- $isProduction := eq site.BaseURL "https://docs.arango.ai/" }}
+  {{- if and (not $isProduction) (eq $link "https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic") }}
+    {{- $href = "https://dashboard.arangodb.cloud/home" }}
+  {{- end }}
+{{- else }}
+  {{- $isMount := or (strings.HasPrefix $page.RelPermalink "/arangodb/stable/") (strings.HasPrefix $page.RelPermalink "/arangodb/devel/") }}
+  {{- if strings.HasPrefix $link "#" }}
+    {{- $href = $fragment }}
+    {{- if not ($page.Fragments.Identifiers.Contains $url.Fragment) }}
+      {{- $broken = printf "anchor link '%s'" $fragment }}
+      {{- $anchors = $page.Fragments.Identifiers }}
+    {{- end }}
+  {{- else }}
+    {{- with $page.GetPage $url.Path }}
+      {{- $href = printf "%s%s" .RelPermalink $fragment }}
+      {{- if and $fragment (not $isMount) (not (.Fragments.Identifiers.Contains $url.Fragment)) }}
+        {{- $broken = printf "anchor link '%s%s'" $url.Path $fragment }}
+        {{- $anchors = .Fragments.Identifiers }}
+      {{- end }}
+    {{- else }}
+      {{- if not $isMount }}
+        {{- $broken = printf "link '%s'" $link }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- with $broken }}
+  {{- $msg := printf "Broken %s found in %s" . $page.File.Path }}
+  {{- with $anchors }}
+    {{- $msg = printf "%s, available anchors:\n %s" $msg (delimit . ", ") }}
+  {{- end }}
+  {{- if site.Params.failOnBrokenLinks }}
+    {{- errorf "%s" $msg }}
+  {{- else }}
+    {{- warnf "%s" $msg }}
+  {{- end }}
+{{- end }}
+
+{{- return dict "href" $href "remote" $remote }}
