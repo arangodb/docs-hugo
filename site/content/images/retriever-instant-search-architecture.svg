@@ -2,20 +2,20 @@
   <title id="us-title">Unified Search architecture</title>
   <desc id="us-desc">A unified query is normalized and then retrieved in parallel: chunks with hybrid lexical and semantic search fused by RRF, and entities with local entity-centric retrieval. Both result sets are tagged, scored, merged into unified nodes, and used to generate the answer.</desc>
   <style>
-    text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2937; }
-    .frame { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1.5; }
-    .ftitle { font-size: 15px; font-weight: 700; fill: #334155; }
+    text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1d293d; }
+    .frame { fill: #f8fafc; stroke: #cad5e2; stroke-width: 1.5; }
+    .ftitle { font-size: 15px; font-weight: 700; fill: #314158; }
     .box { stroke-width: 2; }
     .btitle { font-size: 13.5px; font-weight: 700; }
     .bullet { font-size: 12.5px; }
-    .edge { fill: none; stroke: #64748b; stroke-width: 1.75; }
-    .elabel { font-size: 11px; fill: #475569; }
+    .edge { fill: none; stroke: #62748e; stroke-width: 1.75; }
+    .elabel { font-size: 11px; fill: #45556c; }
     .lbg-page { fill: #ffffff; }
     .lbg-frame { fill: #f8fafc; }
   </style>
   <defs>
     <marker id="us-arrow" markerWidth="10" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse">
-      <path d="M0,0 L10,4 L0,8 z" fill="#64748b"/>
+      <path d="M0,0 L10,4 L0,8 z" fill="#62748e"/>
     </marker>
   </defs>
   <rect width="900" height="1238" fill="#ffffff"/>
@@ -23,7 +23,7 @@
   <text class="ftitle" x="450.0" y="124.0" text-anchor="middle">1. Parallel Retrieval: Chunks (Hybrid) + Local Entities</text>
   <rect class="frame" x="16" y="827.0" width="868" height="393.0" rx="10"/>
   <text class="ftitle" x="450.0" y="855.0" text-anchor="middle">2. Unified Nodes &amp; Direct Answer</text>
-  <rect class="box" x="47.0" y="20" width="200" height="40" rx="20" fill="#dbeafe" stroke="#1d4ed8"/>
+  <rect class="box" x="47.0" y="20" width="200" height="40" rx="20" fill="#f1f5f9" stroke="#45556c"/>
   <text class="btitle" x="147.0" y="45" text-anchor="middle">Unified Query (text)</text>
   <path class="edge" d="M147.0,60.0 L147.0,138.0" marker-end="url(#us-arrow)"/>
   <path class="edge" d="M250.0,213.5 L339.0,213.5" marker-end="url(#us-arrow)"/>
@@ -45,14 +45,14 @@
   <path class="edge" d="M250.0,945.5 L339.0,945.5" marker-end="url(#us-arrow)"/>
   <path class="edge" d="M553.0,945.5 L642.0,945.5" marker-end="url(#us-arrow)"/>
   <path class="edge" d="M753.0,1014.0 L753.0,1038.0 Q753.0,1046.0 745.0,1046.0 L155.0,1046.0 Q147.0,1046.0 147.0,1054.0 L147.0,1070.0" marker-end="url(#us-arrow)"/>
-  <rect class="box" x="44" y="146.0" width="206" height="135.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <rect class="box" x="44" y="146.0" width="206" height="135.0" rx="8" fill="#e3eef0" stroke="#00576e"/>
   <text class="btitle" x="56" y="189.5">Normalize query &amp; limits</text>
   <text class="bullet" x="56" y="212.5">•</text>
   <text class="bullet" x="66" y="212.5">Validate / truncate text</text>
   <text class="bullet" x="56" y="231.5">•</text>
   <text class="bullet" x="66" y="231.5">Set chunk/entity limits</text>
   <text class="bullet" x="66" y="247.5">&amp; filtering flags</text>
-  <rect class="box" x="347" y="146.0" width="206" height="135.0" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <rect class="box" x="347" y="146.0" width="206" height="135.0" rx="8" fill="#eefbd5" stroke="#008236"/>
   <text class="btitle" x="359" y="173.0">Entity-centric retrieval</text>
   <text class="btitle" x="359" y="190.0">(LOCAL)</text>
   <text class="bullet" x="359" y="213.0">•</text>
@@ -61,48 +61,48 @@
   <text class="bullet" x="359" y="248.0">•</text>
   <text class="bullet" x="369" y="248.0">Fallback to vector-only</text>
   <text class="bullet" x="369" y="264.0">if needed</text>
-  <rect class="box" x="650" y="146.0" width="206" height="135.0" rx="8" fill="#fce7f3" stroke="#be185d"/>
+  <rect class="box" x="650" y="146.0" width="206" height="135.0" rx="8" fill="#e2e8f0" stroke="#002e3b"/>
   <text class="btitle" x="662" y="191.0">Entity centric nodes</text>
   <text class="bullet" x="662" y="214.0">•</text>
   <text class="bullet" x="672" y="214.0">Per-entity bundles with</text>
   <text class="bullet" x="672" y="230.0">chunks, reports,</text>
   <text class="bullet" x="672" y="246.0">relations</text>
-  <rect class="box" x="44" y="419.5" width="206" height="83.0" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <rect class="box" x="44" y="419.5" width="206" height="83.0" rx="8" fill="#eefbd5" stroke="#008236"/>
   <text class="btitle" x="56" y="446.5">Encode query for chunks</text>
   <text class="bullet" x="56" y="469.5">•</text>
   <text class="bullet" x="66" y="469.5">Generate dense</text>
   <text class="bullet" x="66" y="485.5">embedding once</text>
-  <rect class="box" x="347" y="345.0" width="206" height="100.0" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <rect class="box" x="347" y="345.0" width="206" height="100.0" rx="8" fill="#eefbd5" stroke="#008236"/>
   <text class="btitle" x="359" y="380.5">Lexical search on chunks</text>
   <text class="bullet" x="359" y="403.5">•</text>
   <text class="bullet" x="369" y="403.5">BM25 on content/chunk</text>
   <text class="bullet" x="369" y="419.5">fields</text>
-  <rect class="box" x="347" y="477.0" width="206" height="100.0" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <rect class="box" x="347" y="477.0" width="206" height="100.0" rx="8" fill="#eefbd5" stroke="#008236"/>
   <text class="btitle" x="359" y="504.0">Semantic search on</text>
   <text class="btitle" x="359" y="521.0">chunks</text>
   <text class="bullet" x="359" y="544.0">•</text>
   <text class="bullet" x="369" y="544.0">ANN over chunk</text>
   <text class="bullet" x="369" y="560.0">embeddings</text>
-  <rect class="box" x="650" y="410.0" width="206" height="102.0" rx="8" fill="#fce7f3" stroke="#be185d"/>
+  <rect class="box" x="650" y="410.0" width="206" height="102.0" rx="8" fill="#e2e8f0" stroke="#002e3b"/>
   <text class="btitle" x="662" y="437.0">RRF fusion for chunks</text>
   <text class="bullet" x="662" y="460.0">•</text>
   <text class="bullet" x="672" y="460.0">Combine lexical +</text>
   <text class="bullet" x="672" y="476.0">semantic scores</text>
   <text class="bullet" x="662" y="495.0">•</text>
   <text class="bullet" x="672" y="495.0">Keep top-N chunk docs</text>
-  <rect class="box" x="44" y="641.0" width="206" height="102.0" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <rect class="box" x="44" y="641.0" width="206" height="102.0" rx="8" fill="#eefbd5" stroke="#008236"/>
   <text class="btitle" x="56" y="677.5">Text-only chunk fallback</text>
   <text class="bullet" x="56" y="700.5">•</text>
   <text class="bullet" x="66" y="700.5">If Hybrid fails or</text>
   <text class="bullet" x="66" y="716.5">empty</text>
-  <rect class="box" x="347" y="641.0" width="206" height="102.0" rx="8" fill="#fce7f3" stroke="#be185d"/>
+  <rect class="box" x="347" y="641.0" width="206" height="102.0" rx="8" fill="#e2e8f0" stroke="#002e3b"/>
   <text class="btitle" x="359" y="668.0">Chunk candidates</text>
   <text class="bullet" x="359" y="691.0">•</text>
   <text class="bullet" x="369" y="691.0">Scored chunk docs</text>
   <text class="bullet" x="359" y="710.0">•</text>
   <text class="bullet" x="369" y="710.0">With stable_url via</text>
   <text class="bullet" x="369" y="726.0">PART_OF</text>
-  <rect class="box" x="44" y="877.0" width="206" height="137.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <rect class="box" x="44" y="877.0" width="206" height="137.0" rx="8" fill="#e3eef0" stroke="#00576e"/>
   <text class="btitle" x="56" y="913.5">Tag and score docs</text>
   <text class="bullet" x="56" y="936.5">•</text>
   <text class="bullet" x="66" y="936.5">Mark type =</text>
@@ -110,14 +110,14 @@
   <text class="bullet" x="56" y="971.5">•</text>
   <text class="bullet" x="66" y="971.5">Assign unified_score</text>
   <text class="bullet" x="66" y="987.5">per item</text>
-  <rect class="box" x="347" y="877.0" width="206" height="137.0" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <rect class="box" x="347" y="877.0" width="206" height="137.0" rx="8" fill="#e3eef0" stroke="#00576e"/>
   <text class="btitle" x="359" y="921.5">Merge and sort</text>
   <text class="bullet" x="359" y="944.5">•</text>
   <text class="bullet" x="369" y="944.5">Combine chunks +</text>
   <text class="bullet" x="369" y="960.5">entities</text>
   <text class="bullet" x="359" y="979.5">•</text>
   <text class="bullet" x="369" y="979.5">Sorted unified list</text>
-  <rect class="box" x="650" y="877.0" width="206" height="137.0" rx="8" fill="#fce7f3" stroke="#be185d"/>
+  <rect class="box" x="650" y="877.0" width="206" height="137.0" rx="8" fill="#e2e8f0" stroke="#002e3b"/>
   <text class="btitle" x="662" y="904.0">Unified nodes</text>
   <text class="bullet" x="662" y="927.0">•</text>
   <text class="bullet" x="672" y="927.0">Entity-style nodes for</text>
@@ -127,7 +127,7 @@
   <text class="bullet" x="662" y="981.0">•</text>
   <text class="bullet" x="672" y="981.0">Deduplicate chunks</text>
   <text class="bullet" x="672" y="997.0">where possible</text>
-  <rect class="box" x="44" y="1078.0" width="206" height="118.0" rx="8" fill="#ccfbf1" stroke="#0f766e"/>
+  <rect class="box" x="44" y="1078.0" width="206" height="118.0" rx="8" fill="#befe99" stroke="#014654"/>
   <text class="btitle" x="56" y="1105.0">Unified response</text>
   <text class="bullet" x="56" y="1128.0">•</text>
   <text class="bullet" x="66" y="1128.0">Uses unified nodes as</text>

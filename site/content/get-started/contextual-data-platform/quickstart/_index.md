@@ -24,7 +24,21 @@ Context Graph that you can ask questions in natural language:
   - macOS: [Docker Desktop](https://docs.docker.com/desktop/setup/install/mac-install/)
   - Linux: [Docker Engine](https://docs.docker.com/engine/install/)
 
-  Allocate at least 4 CPUs and 8 GB RAM to Docker.
+  Allocate at least 4 CPUs and 8 GB RAM to Docker. If you use rootless Podman
+  instead, for example on Fedora, see
+  [You use Podman instead of Docker](troubleshooting.md#you-use-podman-instead-of-docker).
+- **Linux kernel limits**: Running Kubernetes nodes as containers needs more
+  inotify instances and watches than many Linux distributions allow by default.
+  If they are too low, pods fail later with `too many open files`. Check the
+  current values before you start:
+
+  ```bash
+  sysctl fs.inotify.max_user_instances fs.inotify.max_user_watches
+  ```
+
+  Values of at least `512` and `524288` respectively are recommended. See
+  [Pods fail with `too many open files`](troubleshooting.md#pods-fail-with-too-many-open-files)
+  for how to raise them.
 - **Kubernetes** (optional): The installer uses whichever cluster your current
   `kubectl` context points to, local (Kind, minikube, k3d, Docker Desktop) or
   remote (EKS, GKE, AKS, OpenShift). Point `kubectl` at the cluster you want
@@ -214,8 +228,32 @@ source .venv/bin/activate
 ```
 
 The last command activates the virtual environment, so run the quick start
-below from the same shell. If `make install` fails with
-`uv: command not found`, install uv first.
+below from the same shell. The `activate` script is for Bash and Zsh. Other
+shells have their own variant in the same folder, for example
+`source .venv/bin/activate.fish` for Fish, `source .venv/bin/activate.csh` for
+csh and tcsh. On Windows, run `.venv\Scripts\activate` instead.
+
+If `make install` fails with `uv: command not found`, install uv first.
+
+### Run the Python code
+
+With the virtual environment active, `python` refers to the interpreter in
+`.venv` that has the SDK installed. There are two ways to run the code of the
+quick start:
+
+- **Step by step**: Start an interactive Python session by running `python`,
+  then paste each code block of the quick start in the order they appear. Later
+  blocks use variables that earlier ones define, such as `client`, `project`,
+  and `profile`, so keep the session open until you are done. Enter `exit()` to
+  leave it.
+- **All at once**: Save the [complete script](#complete-python-script) to a
+  file, for example `quickstart.py`, and run it with
+  `python quickstart.py`.
+
+If you open a new terminal, activate the virtual environment again first.
+Otherwise, `python` may refer to a different interpreter that does not have the
+SDK installed, and the import fails with
+`ModuleNotFoundError: No module named 'arango_ai_sdk'`.
 
 ## Quick Start
 
@@ -463,7 +501,17 @@ client.close()
 
 The following script combines all the steps above into a single file. It reads
 the database password and the LLM API key from the `ARANGODB_PASSWORD` and
-`LLM_API_KEY` environment variables:
+`LLM_API_KEY` environment variables. Save it as `quickstart.py` and run it
+from the shell in which you activated the virtual environment, setting both
+variables for the run:
+
+```bash
+ARANGODB_PASSWORD="test" LLM_API_KEY="YOUR_LLM_API_KEY" python quickstart.py
+```
+
+If you already went through the steps above, the `quickstart` project exists
+already, and `client.project.create()` fails. Change the project name in the
+script, for example to `quickstart2`, before you run it.
 
 ```python
 # Complete Quick Start Script

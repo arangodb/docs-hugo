@@ -4,7 +4,7 @@ setup: true
 
 orbs:
   continuation: circleci/continuation@0.4.0
-  trivy: arangodb/trivy-scan@1.1.2
+  trivy: arangodb/trivy-scan@1
 
 parameters:
   workflow:

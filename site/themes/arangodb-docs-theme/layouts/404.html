@@ -1,23 +1,13 @@
-{{/* Should match baseof.html but have breadcrumbs, toc, and main block removed */ -}}
-{{ partial "shortcodes/version.html" (dict "page" .Page) -}}
-{{ $isProduction := eq site.BaseURL "https://docs.arango.ai/" -}}
-
-<!DOCTYPE html>
-<html lang="{{ .Page.Language | default "en" }}">
-  {{ partial "head.html" . -}}
-  <body>
-    {{ if $isProduction }}{{ partialCached "tracking/body-start.html" . }}{{ end -}}
-    <noscript>You need to enable JavaScript to use the Arango documentation.</noscript>
-    <section class="page-main">
-      <section class="page-container">
-        {{ partialCached "header.html" . -}}
-        <nav class="main-nav" aria-label="Main"></nav>
-        <div class="container-main">
-          <div class="row-main"></div>
-        </div>
-      </section>
-    </section>
-    {{ partialCached "back-to-top.html" . -}}
-    {{ partialCached "search.html" . -}}
-  </body>
-</html>
+{{- /* Served by Netlify (and hugo server) with status 404 for unknown URLs, also
+       to in-app navigation, which shows it like any other page */ -}}
+{{ define "main" -}}
+  <article class="notfound">
+    <div class="notfound-404">
+      <p class="notfound-4">4</p>
+      <img class="notfound-image" src="{{ "sad-avocado.png" | relURL }}" alt="" width="489" height="568">
+      <p class="notfound-4">4</p>
+    </div>
+    <h1>Oops… Avocados are not growing here</h1>
+    <p><a href="{{ site.Home.RelPermalink }}" class="link">Back to Home</a></p>
+  </article>
+{{- end }}
