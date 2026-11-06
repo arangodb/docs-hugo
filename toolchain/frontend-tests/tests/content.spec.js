@@ -19,7 +19,8 @@ test.describe("tabs", () => {
     await page.reload();
     await open(page, PAGE);
     await expect(panel.locator("[role=tab]").nth(1)).toHaveAttribute("aria-selected", "true");
-    await expect(panel.locator(".tab-item.selected")).toHaveText(selectedText);
+    // innerText like above: textContent has no breaks between block elements
+    await expect(panel.locator(".tab-item.selected")).toHaveText(selectedText, { useInnerText: true });
   });
 });
 
