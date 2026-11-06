@@ -232,6 +232,49 @@ FOR n IN nodes
       RETURN [n, e, m]
 ```
 
+### Graph pattern matching with `MATCH` (experimental)
+
+AQL has a new, experimental `MATCH` operation that lets you query graphs by
+describing the pattern of nodes and edges that you want to find. The syntax is
+similar to the graph patterns of Cypher and GQL. You write nodes in parentheses and edges in square brackets
+with arrows, and you use collection names as labels:
+
+```aql
+MATCH (a:persons { name: "Eve" }) -[:knows]-> (b:persons) -[:knows]-> (c:persons)
+  RETURN [a.name, b.name, c.name]
+```
+
+The current implementation supports the following:
+
+- Outbound (`-[ ]->`), inbound (`<-[ ]-`), and any-direction (`-[ ]-`)
+  edge patterns, with multiple edge collections like `-[e:knows|follows]->`
+- Inline filters with attribute values (`(p:persons { name: "Eve" })`) and
+  `WHERE` conditions (`(p:persons WHERE p.age > 30)`)
+- Variable-length edge patterns like `-[p:knows * 1..3]->` whose variable
+  holds the path
+- Path variables like `MATCH path = (a:persons) -[:knows]-> (b:persons)`
+- Multiple comma-separated patterns that share variables
+- References to variables defined before the `MATCH` operation, like `(v)`
+- Projections that limit the attributes of the pattern variables, like
+  `(p:persons RETURN name, profile.age)`
+- Collection bind parameters as labels, like `(p:@@coll)`
+
+The feature is disabled by default. To try it out, set the new `matchStatement`
+query option to `"experimental"`:
+
+```js
+db._query(`
+  MATCH (a:persons) -[:knows]-> (b:persons)
+    RETURN [a._key, b._key]
+`, {}, { matchStatement: "experimental" }).toArray();
+```
+
+The syntax and behavior may change in future versions. Don't use it in
+production.
+
+See [`MATCH` operation in AQL](../../aql/high-level-operations/match.md)
+for details.
+
 ## Indexing
 
 ### Upgrading vector indexes
