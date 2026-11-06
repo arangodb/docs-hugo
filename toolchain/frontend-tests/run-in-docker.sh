@@ -6,7 +6,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 # Keep in sync with @playwright/test in package.json and .circleci/base_config.yml
-image="mcr.microsoft.com/playwright:v1.49.1-noble"
+image="mcr.microsoft.com/playwright:v1.64.1-noble"
 site_dir="$(realpath "${SITE_DIR:-../../site/public}")"
 
 docker run --rm --init --network host \

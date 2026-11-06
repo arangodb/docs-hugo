@@ -19,7 +19,9 @@ module.exports = defineConfig({
   outputDir: "results/artifacts",
   use: {
     baseURL,
-    trace: "retain-on-failure",
+    // Recording a trace slows WebKit down a lot on large pages (20s instead of
+    // 2s on example-graphs), so only record it for the retry of a failed test
+    trace: "on-first-retry",
     screenshot: "only-on-failure",
   },
   projects: [

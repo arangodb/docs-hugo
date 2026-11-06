@@ -566,7 +566,7 @@ jobs:
   frontend-tests:
     docker:
       # Keep the version in sync with @playwright/test in toolchain/frontend-tests/package.json
-      - image: mcr.microsoft.com/playwright:v1.49.1-noble
+      - image: mcr.microsoft.com/playwright:v1.64.1-noble
     resource_class: large
     steps:
       - attach_workspace:
