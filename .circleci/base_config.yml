@@ -1,286 +1,175 @@
 version: 2.1
 
 commands:
-  clone-arangodb:
-    description: "Clone ArangoDB Branch and Enterprise Branch"
+  resolve-arangodb:
+    description: "Determine the image (and commits) of an upstream reference"
     parameters:
-      branch:
+      ref:
         type: string
         default: ""
       version:
         type: string
         default: ""
-    steps:
-      - run:
-          name: Clone ArangoDB and Enterprise
-          command: |
-            branch_name=<< parameters.branch >>
-
-            echo "[SETUP] Setup server << parameters.branch >>"
-
-            # Image references (any registry) have a tag, branch names can't contain colons
-            if [[ "<< parameters.branch >>" == *:* ]]; then
-                echo "[SETUP] An image has been chosen"
-                echo "[SETUP] Using image tag as branch name (with hotfix suffixes removed)"
-                tag="<< parameters.branch >>"
-                tag="${tag##*:}"
-                # Digests (image@sha256:...) and references without a tag (a colon
-                # only in registry:port) don't identify a source branch
-                if [[ "<< parameters.branch >>" == *@* ]] || [[ "$tag" == */* ]]; then
-                    echo "[SETUP] ERROR: Can't derive the arangodb/arangodb branch from << parameters.branch >>,"
-                    echo "[SETUP] ERROR: which the metrics, error-codes, and exit-codes generators need. Use an image with a version tag."
-                    exit 1
-                fi
-                branch_name=$(echo "$tag" | cut -d- -f1 | sed -E 's/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
-            fi
-
-            echo "[SETUP] Git clone $branch_name"
-
-            git clone --depth 1 --branch $branch_name --recurse-submodules --shallow-submodules --jobs 8 https://github.com/arangodb/arangodb.git /root/project
-
-            if [ "<< parameters.version >>" = "3.10" ] || [ "<< parameters.version >>" = "3.11" ]; then
-                ENTERPRISE_BRANCH="<< parameters.version >>"
-            elif [ "<< parameters.version >>" = "4.x" ]; then
-                ENTERPRISE_BRANCH="4.0"
-            else
-                ENTERPRISE_BRANCH="devel"
-            fi
-            set +e
-            git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git $branch_name
-            if [ "$?" == "0" ] ; then
-                ENTERPRISE_BRANCH=$branch_name
-            fi
-            set -e
-            echo "Using enterprise branch $ENTERPRISE_BRANCH"
-            git clone --depth 1 --branch "$ENTERPRISE_BRANCH" git@github.com:arangodb/enterprise.git /root/project/enterprise
-
-            mkdir -p /tmp/<< parameters.version >>
-            cp -r /root/project/. /tmp/<< parameters.version >>
-
-            # Image reference for compiled branches, identified by the commits that are
-            # actually checked out (also of the enterprise fallback branch) instead of
-            # the branch name, which can contain characters that tags don't allow.
-            # Read by check-arangodb-image-exists, compile-and-dockerize-arangodb, and
-            # the generate job (generate_config.py). Keep in sync with
-            # compiled_image_ref in toolchain/scripts/toolchain.sh.
-            main_hash=$(git -C /root/project rev-parse HEAD | cut -c1-9)
-            enterprise_hash=$(git -C /root/project/enterprise rev-parse HEAD | cut -c1-9)
-            echo "arangodb/docs-hugo:<< parameters.version >>-$main_hash-$enterprise_hash" > /tmp/<< parameters.version >>/.docs-hugo-image
-            echo "[SETUP] Image for compiled branch: $(cat /tmp/<< parameters.version >>/.docs-hugo-image)"
-
-  update-openssl-workaround:
-    description: "Update OpenSSL in compiling"
-    parameters:
-      openssl:
+      enterprise:
+        type: string
+        default: ""
+      image-template:
         type: string
         default: ""
     steps:
       - run:
-          name: Update OpenSSL Workaround
+          name: Resolve upstream reference
+          # As environment variables so that they aren't parsed by the shell
+          environment:
+            REF: << parameters.ref >>
+            VERSION: << parameters.version >>
+            ENTERPRISE: << parameters.enterprise >>
+            IMAGE_TEMPLATE: << parameters.image-template >>
           command: |
-            if command -v apk &> /dev/null; then
-              apk --no-cache add perl
-            fi
-            set -e
+            set -eo pipefail
 
-            # Compile openssl library:
-            export OPENSSLVERSION=<< parameters.openssl >>
+            # The commit of a branch or tag of a repository
+            commit_of() {
+              local out ref sha
+              out=$(git ls-remote "$1" "refs/heads/$2" "refs/tags/$2") || return 1
+              for ref in "refs/heads/$2" "refs/tags/$2^{}" "refs/tags/$2"; do
+                sha=$(awk -v r="$ref" '$2 == r { print $1 }' \<<< "$out")
+                if [ -n "$sha" ]; then echo "$sha"; return 0; fi
+              done
+              return 1
+            }
 
-            echo $OPENSSLBRANCH
+            # The full arangodb/arangodb commit for an abbreviated one (with the
+            # token because of the low rate limit of unauthenticated requests)
+            full_commit() {
+              curl -fsS -H "Authorization: Bearer $CIRCLECI_GITHUB_READONLY" -H "Accept: application/vnd.github.sha" \
+                "https://api.github.com/repos/arangodb/arangodb/commits/$1"
+            }
 
-            echo "https://www.openssl.org/source/openssl-$OPENSSLVERSION.tar.gz"
+            dir="/tmp/$VERSION"
+            mkdir -p "$dir"
 
-            test -n "$OPENSSLVERSION"
-            export OPENSSLPATH=`echo $OPENSSLVERSION | sed 's/\.[0-9]*$//g'`
-            cd /tmp
-            curl -L -O https://www.openssl.org/source/openssl-$OPENSSLVERSION.tar.gz
-            tar xzvf openssl-$OPENSSLVERSION.tar.gz
-            cd openssl-$OPENSSLVERSION
-            # Install in the same dir as OpenSSL, otherwise the compiler won't find ldap.h!
-            ./config --prefix=/opt no-async no-shared
-            make build_libs -j `nproc`
-            make install_dev -j `nproc`
-            cd /tmp
-            rm -rf openssl-$OPENSSLVERSION.tar.gz openssl-$OPENSSLVERSION
-
-  check-arangodb-image-exists:
-    description: "Check ArangoDB branch docker image exists"
-    parameters:
-      branch:
-        type: string
-        default: ""
-      version:
-        type: string
-        default: ""
-    steps:
-      - run:
-          name: Check Branch Image already exists
-          command: |
-            # Image references (any registry, they have a tag) are used directly and are
-            # not compiled. Halt here so the shared compile-and-dockerize step (added to
-            # this job template whenever any version is branch-based) does not run for
-            # this version with an empty OpenSSL parameter.
-            if [[ "<< parameters.branch >>" == *:* || "<< parameters.branch >>" == *@* ]]; then
-              echo "[SETUP] Image-based upstream reference '<< parameters.branch >>'; skipping compilation."
-              circleci-agent step halt
-            fi
-
-            if command -v apk &> /dev/null; then
-              apk add skopeo
-            else
-              apt-get update
-              apt-get -y install skopeo
-            fi
-
-            image=$(cat /tmp/<< parameters.version >>/.docs-hugo-image)
-
-            set +e
-            skopeo inspect docker://"$image"
-            if [ "$?" != "0" ]; then
-              exit 0
-            fi 
-            circleci-agent step halt
-            
-  compile-and-dockerize-arangodb:
-    description: "Compile and create docker image of ArangoDB Branch"
-    parameters:
-      branch:
-        type: string
-        default: ""
-      version:
-        type: string
-        default: ""
-      openssl:
-        type: string
-        default: ""
-    steps:
-      - update-openssl-workaround:
-          openssl: << parameters.openssl >>
-      - run:
-          name: Configure
-          command: |
-            set +e
-            if [ "<< parameters.version >>" = "3.10" ]; then
-                cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off
-            elif [ "<< parameters.version >>" = "3.11" ]; then
-                # The OpenSSL dir that CMake discovers needs to be adjacent to where ldap.h is located, here: /opt
-                cmake --preset enterprise-pr -DCMAKE_C_COMPILER=/tools/clang -DCMAKE_CXX_COMPILER=/tools/clang++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DOPENSSL_ROOT_DIR=/opt -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off
-            else
-              # 4.0+ has no USE_FRONTEND
-              # 3.12/4.0 use "enterprise-pr-non-maintainer-x86_64" only temporarily
-              if cmake --list-presets | grep -q '"enterprise-pr-non-maintainer-x86_64"'; then
-                CONFIGURE_PRESET="enterprise-pr-non-maintainer-x86_64"
+            # Image references (any registry) have a tag or digest, branch names
+            # can't contain colons
+            if [[ "$REF" == *:* || "$REF" == *@* ]]; then
+              image="$REF"
+              tag="${REF##*:}"
+              # The source code for the generators that read it: the commit of
+              # images tagged with commits (upstream images, compiled ones), else
+              # the branch or tag of the version in the image tag, with anything
+              # after the first "-" and after the third version number removed
+              # (3.12-nightly -> 3.12, devel-nightly -> devel, 3.12.5.2 -> 3.12.5)
+              if [[ "$REF" == *@* ]]; then
+                source=""
+              elif [[ "$tag" =~ ^([0-9a-f]{7,40})_[0-9a-f]{7,40}(-|$) || "$tag" =~ ^[0-9]+\.[0-9x]+-([0-9a-f]{9,40})-[0-9a-f]{9,40}$ ]]; then
+                source=$(full_commit "${BASH_REMATCH[1]}")
               else
-                CONFIGURE_PRESET="pr-non-maintainer-x64"
+                source=$(echo "$tag" | cut -d- -f1 | sed -E 's/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
               fi
-              cmake --preset $CONFIGURE_PRESET -DCMAKE_C_COMPILER=/tools/clang -DCMAKE_CXX_COMPILER=/tools/clang++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DOPENSSL_ROOT_DIR=/opt -DUSE_FRONTEND=Off
-            fi
-            if [ "$?" != "0" ]; then
-              echo "<strong>ArangoDB Compile Error</strong><br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH'' --header 'docs-check-conclusion: failure'
-              exit 1
-            fi 
-            set -e
-      - run:
-          name: Build
-          command: |
-            set +e
-            # arangobench removed in ArangoDB 4.0.0
-            BUILD_TARGETS="arangod arangosh arangoimport arangoexport arangodump arangorestore arangobackup arangovpack"
-            if [[ "<< parameters.version >>" =~ ^3\. ]]; then
-              BUILD_TARGETS="$BUILD_TARGETS arangobench"
-            fi
-
-            # No enterprise-pr CMake preset in 3.12.10-devel anymore
-            if [ "<< parameters.version >>" = "3.10" ] || [ "<< parameters.version >>" = "3.11" ]; then
-              BUILD_PRESET="enterprise-pr"
-            # 3.12/4.0 use "enterprise-pr-non-maintainer-x86_64" only temporarily
-            elif cmake --list-presets=build | grep -q '"enterprise-pr-non-maintainer-x86_64"'; then
-              BUILD_PRESET="enterprise-pr-non-maintainer-x86_64"
             else
-              BUILD_PRESET="pr-non-maintainer-x64"
+              # A branch (or tag) of arangodb/arangodb: the image of its commit and
+              # of the arangodb/enterprise branch with the same name, or else of the
+              # default enterprise branch of the version (as in the upstream CI)
+              if ! main=$(commit_of https://github.com/arangodb/arangodb.git "$REF"); then
+                echo "[ERROR] There is no branch or tag '$REF' in arangodb/arangodb"
+                exit 1
+              fi
+              enterprise_branch="$REF"
+              if ! enterprise=$(commit_of git@github.com:arangodb/enterprise.git "$REF"); then
+                enterprise_branch="$ENTERPRISE"
+                enterprise=$(commit_of git@github.com:arangodb/enterprise.git "$ENTERPRISE")
+              fi
+              echo "[SETUP] arangodb/arangodb $REF: $main"
+              echo "[SETUP] arangodb/enterprise $enterprise_branch: $enterprise"
+              echo "$main" > "$dir/.main-commit"
+              echo "$enterprise" > "$dir/.enterprise-commit"
+
+              image="$IMAGE_TEMPLATE"
+              image="${image//\{main7\}/${main:0:7}}"
+              image="${image//\{main9\}/${main:0:9}}"
+              image="${image//\{enterprise7\}/${enterprise:0:7}}"
+              image="${image//\{enterprise9\}/${enterprise:0:9}}"
+              source="$main"
             fi
-            cmake --build --preset $BUILD_PRESET --parallel 8 --target $BUILD_TARGETS
 
-            if [ "$?" != "0" ]; then
-              echo "**ArangoDB Compile Error**<br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH'' --header 'docs-check-conclusion: failure'
-              exit 1
-            fi 
-            set -e
+            echo "[SETUP] Image for $VERSION: $image"
+            echo "$image" > "$dir/.arangodb-image"
+            echo "$source" > "$dir/.arangodb-source"
+
+  check-arangodb-image:
+    description: "Check whether the image of resolve-arangodb exists"
+    parameters:
+      version:
+        type: string
+        default: ""
+    steps:
       - run:
-          name: Size leaderboard
+          name: Check whether the image exists
+          environment:
+            VERSION: << parameters.version >>
           command: |
-            ls -Ssha build/bin/*.a
-      - run:
-          name: Cleanup build directory
-          command: |
-            find build/ -iname *.a -delete || true
-            find build/ -iname *.o -delete || true
-      - run:
-          name: SCCache Statistics
-          command: sccache -s
-      - run:
-          name: Create archive of compiled instance
-          command: |
-            STARTER_VERSION=$(awk -F\" '/^STARTER_REV/ {print $2}' VERSIONS)
-            curl -L -o build/bin/arangodb "https://github.com/arangodb-helper/arangodb/releases/download/$STARTER_VERSION/arangodb-linux-amd64"
-            chmod +x build/bin/arangodb
+            set -eo pipefail
 
-            # rclone-arangodb is needed for hot backup uploads and downloads (not part of the build).
-            # Same download as in the CircleCI config of arangodb/arangodb.
-            RCLONE_GO=$(awk -F\" '/^RCLONE_GO / {print $2}' VERSIONS)
-            RCLONE_VERSION=$(awk -F\" '/^RCLONE_VERSION / {print $2}' VERSIONS)
-            RCLONE_SHA256=$(awk -F\" '/^RCLONE_SHA256_AMD64 / {print $2}' VERSIONS)
-            MAJOR_MINOR=$(sed -E 's/^([0-9]+\.[0-9]+).*/\1/' ARANGO-VERSION)
-            curl -fL -o build/bin/rclone-arangodb "https://github.com/arangodb/rclone-arangodb/releases/download/golang-${RCLONE_GO}/golang-${RCLONE_GO}_${MAJOR_MINOR}_v${RCLONE_VERSION}_rclone-arangodb-linux-amd64"
-            if [ -n "$RCLONE_SHA256" ]; then
-              echo "$RCLONE_SHA256  build/bin/rclone-arangodb" | sha256sum -c -
-            fi
-            chmod +x build/bin/rclone-arangodb
+            # Whether an image exists, using an anonymous token of the registry
+            # (Docker Hub, public ECR, ...)
+            image_exists() {
+              local name tag registry repo url challenge realm service token code
+              if [[ "$1" == *@* ]]; then name="${1%@*}"; tag="${1#*@}"; else name="${1%:*}"; tag="${1##*:}"; fi
+              if [[ "${name%%/*}" == *.* || "${name%%/*}" == *:* ]]; then
+                registry="${name%%/*}"; repo="${name#*/}"
+              else
+                registry="registry-1.docker.io"; repo="$name"
+                [[ "$repo" == */* ]] || repo="library/$repo"
+              fi
+              url="https://$registry/v2/$repo/manifests/$tag"
+              challenge=$(curl -sSI "$url" | tr -d '\r' | sed -n 's/^[Ww]ww-[Aa]uthenticate: Bearer //p')
+              realm=$(echo "$challenge" | sed -n 's/.*realm="\([^"]*\)".*/\1/p')
+              service=$(echo "$challenge" | sed -n 's/.*service="\([^"]*\)".*/\1/p')
+              token=$(curl -sS "$realm?service=$service&scope=repository:$repo:pull" | sed -n 's/.*"token" *: *"\([^"]*\)".*/\1/p')
+              code=$(curl -sS -o /dev/null -w '%{http_code}' -I -H "Authorization: Bearer $token" \
+                -H "Accept: application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.list.v2+json,application/vnd.oci.image.manifest.v1+json,application/vnd.docker.distribution.manifest.v2+json" "$url")
+              [ "$code" = 200 ]
+            }
 
-            tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/ enterprise/
-      - run:
-          name: Create docker image
-          command: |
-            mkdir -p create-docker/
-
-            curl "https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_BRANCH/toolchain/scripts/compile/tar-to-docker.Dockerfile" > create-docker/tar-to-docker.Dockerfile
-            curl "https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_BRANCH/toolchain/scripts/compile/setup-tar-to-docker.sh" > create-docker/setup-tar-to-docker.sh
-            curl "https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_BRANCH/toolchain/scripts/compile/docker-entrypoint.sh" > create-docker/docker-entrypoint.sh
-
-            mv install.tar.gz create-docker/
-
-            image=$(cat /tmp/<< parameters.version >>/.docs-hugo-image)
-
-            cd create-docker
-            chmod +x setup-tar-to-docker.sh
-            chmod +x docker-entrypoint.sh
-
-            if command -v apk &> /dev/null; then
-              apk add docker-cli
+            image=$(cat "/tmp/$VERSION/.arangodb-image")
+            if image_exists "$image"; then
+              echo "[SETUP] Image $image exists"
+              echo true > "/tmp/$VERSION/.arangodb-image-exists"
             else
-              # Add Docker's official GPG key:
-              install -m 0755 -d /etc/apt/keyrings
-              curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-              chmod a+r /etc/apt/keyrings/docker.asc
-
-              # Add the repository to Apt sources:
-              echo \
-                "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-                $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-                tee /etc/apt/sources.list.d/docker.list > /dev/null
-              apt-get -y update
-
-              apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+              echo "[SETUP] Image $image not found"
+              echo false > "/tmp/$VERSION/.arangodb-image-exists"
             fi
 
-            # The branch names as labels for reference (not part of the tag)
-            docker build -t "$image" \
-              --label "org.arangodb.docs-hugo.branch=<< parameters.branch >>" \
-              --label "org.arangodb.docs-hugo.enterprise-branch=$(git -C /root/project/enterprise rev-parse --abbrev-ref HEAD)" \
-              --build-arg ARANGODB_VERSION=<< parameters.version >> --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
+  clone-arangodb-source:
+    description: "Clone the files of arangodb/arangodb that the generators read"
+    parameters:
+      version:
+        type: string
+        default: ""
+    steps:
+      - run:
+          name: Clone source code for generators
+          environment:
+            VERSION: << parameters.version >>
+          command: |
+            set -eo pipefail
+            cd "/tmp/$VERSION"
+            source=$(cat .arangodb-source)
+            if [ -z "$source" ]; then
+              echo "[ERROR] Can't derive the arangodb/arangodb source code from the image $(cat .arangodb-image),"
+              echo "[ERROR] which the metrics, error-codes, and exit-codes generators need. Use an image with a tag."
+              exit 1
+            fi
+            echo "[SETUP] Clone arangodb/arangodb $source"
 
-            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
-            docker push "$image"
+            # Only the files of the metrics, error-codes, and exit-codes generators
+            # (Documentation/Metrics/, lib/Basics/errors.dat, lib/Basics/exitcodes.dat)
+            git init -q
+            git remote add origin https://github.com/arangodb/arangodb.git
+            git sparse-checkout set lib/Basics Documentation/Metrics
+            git fetch -q --depth 1 --filter=blob:none origin "$source"
+            git checkout -q FETCH_HEAD
+            rm -rf .git
 
   launch-toolchain:
     description: "launch toolchain (extended by dynamic config)"
@@ -333,7 +222,7 @@ commands:
             conclusion=success
             REPORT_DIR=. DOCS_COMMIT=$CIRCLE_SHA1 python3 toolchain/scripts/report.py || conclusion=failure
 
-            cat report.md | curl -X POST --data-binary @- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-check-name: << parameters.summary-name >>'  --header 'docs-branch-name: '<< parameters.branch >>'' --header "docs-check-conclusion: $conclusion"
+            cat report.md | curl -X POST --data-binary @- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header "docs-webhook-token: $DOCS_WEBHOOK_TOKEN" --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-check-name: << parameters.summary-name >>'  --header 'docs-branch-name: '<< parameters.branch >>'' --header "docs-check-conclusion: $conclusion"
           when: always
 
   update-arangodb-release-version:
@@ -359,14 +248,23 @@ commands:
       - run: 
           name: Clone docs repo
           command: |
-           git clone git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
-           cd docs-hugo/
+           if [[ "$CIRCLE_BRANCH" =~ ^pull/[0-9]+/head$ ]]; then
+             # Pull requests from forks are built as pull/<number>/head, which isn't
+             # a branch (see the commit command for how their changes are committed)
+             git clone git@github.com:arangodb/docs-hugo.git
+             cd docs-hugo/
+             git fetch origin "$CIRCLE_BRANCH"
+             git checkout -q -b fork-pull-request FETCH_HEAD
+           else
+             git clone git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+             cd docs-hugo/
+             git fetch --all
+             git pull --all
+           fi
            # Use an email linked to a GitHub account so the CLA bot can identify
            # the merge and generated-files commits
            git config user.name "CircleCI Job"
            git config user.email "7819991+Simran-B@users.noreply.github.com"
-           git fetch --all
-           git pull --all
            git merge --no-edit -X theirs origin/main
            cd ../
 
@@ -383,18 +281,44 @@ commands:
       - run:
           name: Commit generated files
           command: |
+              cd /home/circleci/project/docs-hugo/site
+              git add data/ content/
+
               if [ "<< parameters.create-pr >>" = true ]; then
-                cd docs-hugo/
+                # No branch and pull request without changes (e.g. scheduled workflows)
+                if git diff --cached --quiet; then
+                  echo "No changes in the generated files, not creating a pull request"
+                  exit 0
+                fi
                 git checkout -b << parameters.pr-branch >>-$CIRCLE_BUILD_NUM
               fi
 
-              cd /home/circleci/project/docs-hugo/site
-              git add data/ content/
+              # The branch of a pull request from a fork can't be pushed to. Its
+              # changes and the generated files go to a new pull request instead.
+              if [ "<< parameters.create-pr >>" != true ] && [[ "$CIRCLE_BRANCH" =~ ^pull/([0-9]+)/head$ ]]; then
+                pr="${BASH_REMATCH[1]}"
+                if git diff --cached --quiet; then
+                  echo "No changes in the generated files, not creating a pull request for #$pr"
+                  exit 0
+                fi
+                branch="generated-pr-$pr-$CIRCLE_BUILD_NUM"
+                git commit -m "[skip ci] Automatic commit of generated files from CircleCI"
+                git push origin "HEAD:refs/heads/$branch"
+                curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci \
+                  --header "docs-webhook-token: $DOCS_WEBHOOK_TOKEN" \
+                  --header 'docs-webhook-event: scheduled-create-pr' \
+                  --header "docs-branch-name: $branch" \
+                  --header "docs-pr-title: [CircleCI Generated] #$pr with generated content" \
+                  --header "docs-pr-body: The changes of #$pr (from a fork) with the content generated by the CircleCI << pipeline.parameters.workflow >> workflow. Merge this pull request instead of #$pr."
+                exit 0
+              fi
+
               git commit --allow-empty -m "[skip ci] Automatic commit of generated files from CircleCI"
 
               if [ "<< parameters.create-pr >>" = true ]; then
                 git push -u origin << parameters.pr-branch >>-$CIRCLE_BUILD_NUM
                 curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci \
+                  --header "docs-webhook-token: $DOCS_WEBHOOK_TOKEN" \
                   --header 'docs-webhook-event: scheduled-create-pr' \
                   --header "docs-branch-name: << parameters.pr-branch >>-$CIRCLE_BUILD_NUM" \
                   --header "docs-pr-title: [CircleCI Generated] << parameters.pr-branch >>-$CIRCLE_BUILD_NUM" \
@@ -576,10 +500,86 @@ jobs:
           name: Deploy to netlify
           command:  /home/node/docker-netlify-cli/node_modules/.bin/netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN << parameters.deploy-args >>
           no_output_timeout: 1h
+      - run:
+          name: Comment the deploy preview link on the PR
+          shell: /bin/bash
+          environment:
+            DEPLOY_URL: << pipeline.parameters.deploy-url >>
+          command: |
+            # Only for the deploy previews of pull requests (deploy-preview-<number>),
+            # the docs-webhooks app comments once per pull request
+            if [[ "$DEPLOY_URL" =~ ^deploy-preview-([0-9]+)$ ]]; then
+              curl -fsS -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci \
+                --header "docs-webhook-token: $DOCS_WEBHOOK_TOKEN" \
+                --header 'docs-webhook-event: deploy-preview' \
+                --header "docs-pr-number: ${BASH_REMATCH[1]}" || echo "Failed to comment the deploy preview link"
+            fi
 
 
-  compile-linux:
-    description: "Compile Linux Job (extended by dynamic config)"
+  prepare-arangodb:
+    description: "Determine the image of an upstream reference and clone the source code for the generators"
+    parameters:
+      arangodb-ref:
+        type: string
+        default: ""
+      version:
+        type: string
+        default: ""
+      enterprise:
+        type: string
+        default: ""
+      image-template:
+        type: string
+        default: ""
+      # How to build the image if it doesn't exist, for the error message
+      image-hint:
+        type: string
+        default: ""
+      source:
+        type: boolean
+        default: false
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o" # arangodb/enterprise
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - resolve-arangodb:
+          ref: << parameters.arangodb-ref >>
+          version: << parameters.version >>
+          enterprise: << parameters.enterprise >>
+          image-template: << parameters.image-template >>
+      - check-arangodb-image:
+          version: << parameters.version >>
+      - run:
+          name: Require image
+          environment:
+            VERSION: << parameters.version >>
+            IMAGE_HINT: << parameters.image-hint >>
+          command: |
+            if [ "$(cat "/tmp/$VERSION/.arangodb-image-exists")" = true ]; then
+              exit 0
+            fi
+            message="The image $(cat "/tmp/$VERSION/.arangodb-image") for $VERSION doesn't exist. $IMAGE_HINT"
+            echo "[ERROR] $message"
+            echo "**Upstream image not found**<br><br>$message" | curl -X POST --data-binary @- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header "docs-webhook-token: $DOCS_WEBHOOK_TOKEN" --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-check-name: generate-summary' --header 'docs-branch-name: '$CIRCLE_BRANCH'' --header 'docs-check-conclusion: failure'
+            exit 1
+      - when:
+          condition: << parameters.source >>
+          steps:
+            - clone-arangodb-source:
+                version: << parameters.version >>
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - << parameters.version >>
+
+  # Compiles ArangoDB for versions without upstream images (3.11). The image is
+  # cached on Docker Hub, the generate workflow uses it for the branch name.
+  compile-arangodb:
+    description: "Compile ArangoDB and push it as image to Docker Hub"
     parameters:
       arangodb-branch:
         type: string
@@ -587,43 +587,150 @@ jobs:
       version:
         type: string
         default: ""
-      openssl:
+      enterprise:
+        type: string
+        default: ""
+      image-template:
         type: string
         default: ""
       build-image:
         type: string
-        default: "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
-      resource-class:
-        type: string
-        default: "xlarge" # for compiling, smaller if it only clones (images)
     docker:
       - image: << parameters.build-image >>
-    resource_class: << parameters.resource-class >>
+    resource_class: xlarge
     environment:
-      #GIT_SSH_COMMAND: ssh
       SCCACHE_ERROR_LOG: /tmp/sccache.log
       SCCACHE_LOG: info,sccache::cache=debug,sccache::compiler::compiler=debug
     steps:
-      - setup_remote_docker:
-          version: default # TODO: Does this need to match the installed docker-cli version?
       - add_ssh_keys:
           fingerprints:
-            #- "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk" # arangodb/docs-hugo
-            #- "SHA256:OE7k4elryS7yb1giEaxQkrAlFPM4fnKtz5G9Ft75x1c" # arangodb/arangodb
             - "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o" # arangodb/enterprise
-      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
-      - clone-arangodb:
-          branch: << parameters.arangodb-branch >>
+      - run: mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - resolve-arangodb:
+          ref: << parameters.arangodb-branch >>
           version: << parameters.version >>
-      - persist_to_workspace:
-          root: /tmp
-          paths:
-            - << parameters.version >>/*
+          enterprise: << parameters.enterprise >>
+          image-template: << parameters.image-template >>
+      - check-arangodb-image:
+          version: << parameters.version >>
+      - run:
+          name: Skip if compiled before
+          environment:
+            VERSION: << parameters.version >>
+          command: |
+            if [ "$(cat "/tmp/$VERSION/.arangodb-image-exists")" = true ]; then
+              echo "The image exists already, no need to compile. Upstream reference for docs PRs:"
+              echo "- $VERSION: $(cat "/tmp/$VERSION/.arangodb-image")"
+              circleci-agent step halt
+            fi
+      - run:
+          name: Clone ArangoDB and Enterprise
+          environment:
+            VERSION: << parameters.version >>
+          command: |
+            set -eo pipefail
+            main=$(cat "/tmp/$VERSION/.main-commit")
+            enterprise=$(cat "/tmp/$VERSION/.enterprise-commit")
 
+            # The resolved commits, in case the branches changed in the meantime
+            mkdir -p /root/project/enterprise
+            cd /root/project
+            git init -q
+            git remote add origin https://github.com/arangodb/arangodb.git
+            git fetch -q --depth 1 origin "$main"
+            git checkout -q FETCH_HEAD
+            git submodule update --init --recursive --depth 1 --jobs 8
 
+            cd enterprise
+            git init -q
+            git remote add origin git@github.com:arangodb/enterprise.git
+            git fetch -q --depth 1 origin "$enterprise"
+            git checkout -q FETCH_HEAD
+      - run:
+          name: Configure
+          working_directory: /root/project
+          command: |
+            # For the 3.11 build image (arangodb/ubuntubuildarangodb-311), which has
+            # OpenSSL and OpenLDAP in /opt and sccache as /tools/clang
+            cmake --preset enterprise-pr -DCMAKE_C_COMPILER=/tools/clang -DCMAKE_CXX_COMPILER=/tools/clang++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DOPENSSL_ROOT_DIR=/opt -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off
+      - run:
+          name: Build
+          working_directory: /root/project
+          command: |
+            cmake --build --preset enterprise-pr --parallel 8 --target arangod arangosh arangoimport arangoexport arangodump arangorestore arangobackup arangovpack arangobench
+      - run:
+          name: Cleanup build directory
+          working_directory: /root/project
+          command: |
+            find build/ -iname *.a -delete || true
+            find build/ -iname *.o -delete || true
+      - run:
+          name: SCCache Statistics
+          command: sccache -s
+      - run:
+          name: Create archive of compiled instance
+          working_directory: /root/project
+          command: |
+            set -eo pipefail
+            STARTER_VERSION=$(awk -F\" '/^STARTER_REV/ {print $2}' VERSIONS)
+            curl -fL -o build/bin/arangodb "https://github.com/arangodb-helper/arangodb/releases/download/$STARTER_VERSION/arangodb-linux-amd64"
+            chmod +x build/bin/arangodb
 
-      
+            # rclone-arangodb is needed for hot backup uploads and downloads (not part of the build).
+            # Same download as in the CircleCI config of arangodb/arangodb.
+            RCLONE_GO=$(awk -F\" '/^RCLONE_GO / {print $2}' VERSIONS)
+            RCLONE_VERSION=$(awk -F\" '/^RCLONE_VERSION / {print $2}' VERSIONS)
+            RCLONE_SHA256=$(awk -F\" '/^RCLONE_SHA256_AMD64 / {print $2}' VERSIONS)
+            MAJOR_MINOR=$(sed -E 's/^([0-9]+\.[0-9]+).*/\1/' ARANGO-VERSION)
+            curl -fL -o build/bin/rclone-arangodb "https://github.com/arangodb/rclone-arangodb/releases/download/golang-${RCLONE_GO}/golang-${RCLONE_GO}_${MAJOR_MINOR}_v${RCLONE_VERSION}_rclone-arangodb-linux-amd64"
+            if [ -n "$RCLONE_SHA256" ]; then
+              echo "$RCLONE_SHA256  build/bin/rclone-arangodb" | sha256sum -c -
+            fi
+            chmod +x build/bin/rclone-arangodb
 
+            tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/ enterprise/
+      - setup_remote_docker
+      - run:
+          name: Create and push docker image
+          working_directory: /root/project
+          environment:
+            VERSION: << parameters.version >>
+            BRANCH: << parameters.arangodb-branch >>
+          command: |
+            set -eo pipefail
+            mkdir -p create-docker/
+            mv install.tar.gz create-docker/
+            cd create-docker
+
+            # The files of the docs commit that this pipeline runs for
+            for file in tar-to-docker.Dockerfile setup-tar-to-docker.sh docker-entrypoint.sh; do
+              curl -fsS -o "$file" "https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_SHA1/toolchain/scripts/compile/$file"
+            done
+            chmod +x setup-tar-to-docker.sh docker-entrypoint.sh
+
+            # Add Docker's official GPG key and repository, install the client
+            install -m 0755 -d /etc/apt/keyrings
+            curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+            chmod a+r /etc/apt/keyrings/docker.asc
+            echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" \
+              > /etc/apt/sources.list.d/docker.list
+            apt-get -y update
+            apt-get -y install docker-ce-cli docker-buildx-plugin
+
+            image=$(cat "/tmp/$VERSION/.arangodb-image")
+
+            # The branch names as labels for reference (not part of the tag)
+            docker build -t "$image" \
+              --label "org.arangodb.docs-hugo.branch=$BRANCH" \
+              --label "org.arangodb.docs-hugo.main-commit=$(cat "/tmp/$VERSION/.main-commit")" \
+              --label "org.arangodb.docs-hugo.enterprise-commit=$(cat "/tmp/$VERSION/.enterprise-commit")" \
+              --build-arg ARANGODB_VERSION="$VERSION" --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
+
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
+            docker push "$image"
+
+            echo "Upstream reference for docs PRs (the branch name works, too):"
+            echo "- $VERSION: $image"
 
 
 workflows:
@@ -657,12 +764,8 @@ workflows:
           requires:
             - plain-build
 
-  generate:
-    when:
-      matches: { pattern: "^generate.*", value: << pipeline.parameters.workflow >> }    
-    jobs:
-      - approve-workflow:
-          type: approval
+  # generate (generate, generate-scheduled, generate-oasisctl) and compile are
+  # added by generate_config.py
 
   commmit-generated:
     when: { equal: [ commit-generated, << pipeline.parameters.workflow >> ] }

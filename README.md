@@ -253,16 +253,16 @@ The toolchain is configured with environment variables:
 - `GENERATORS`: the generators to run as a space-separated string (see below).
   All generators run if it is empty.
 - `ARANGODB_BRANCH_{VERSION}`: the ArangoDB Docker image to use for a docs version,
-  for example, `arangodb/enterprise-preview:devel-nightly`,
-  `arangodb/core-preview:4.0-nightly`, or `arangodb/enterprise:3.12.9`
+  for example, `arangodb/enterprise-preview:3.12-nightly`,
+  `arangodb/core-preview:devel-nightly`, or `arangodb/enterprise:3.12.9`
   (Docker Hub if no registry is given, other registries like
-  `gcr.io/gcr-for-testing/arangodb/core-preview:4.0-nightly` work, too),
+  `gcr.io/gcr-for-testing/arangodb/core-preview:devel-nightly` work, too),
   or the absolute path of a local build (see **Local builds** below).
-  It can also be a branch name of the `arangodb/arangodb` repository if CI
-  compiled it before: the toolchain then uses the cached image
-  `arangodb/docs-hugo:<version>-<arangodb commit>-<enterprise commit>` (see
-  [CIRCLECI.md](CIRCLECI.md#upstream-references)) for the commits checked out in
-  `ARANGODB_SRC_{VERSION}` (including its `enterprise` folder).
+  It can also be a branch name of the `arangodb/arangodb` repository if an image
+  was built for it (see [CIRCLECI.md](CIRCLECI.md#build-arangodb-images)): the
+  toolchain then uses the image of the commits checked out in
+  `ARANGODB_SRC_{VERSION}` (including its `enterprise` folder), named as
+  configured in `.circleci/upstream.yaml`.
   No server is started for a version if it is empty, and its content is not
   regenerated.
 - `ARANGODB_SRC_{VERSION}`: the absolute path to a working copy of the
@@ -296,14 +296,14 @@ so you can use one server per version.
 export GENERATORS="examples options optimizer"
 export ARANGODB_BRANCH_3_12="arangodb/enterprise:3.12.9"
 export ARANGODB_SRC_3_12="path/to/arangodb"
-export ARANGODB_BRANCH_4_X="arangodb/core-preview:4.0-nightly"
+export ARANGODB_BRANCH_4_X="arangodb/core-preview:devel-nightly"
 export ARANGODB_SRC_4_X="path/to/arangodb2"
 ```
 
 ```fish
 # Fish
 set -xg GENERATORS "examples options optimizer"
-set -xg ARANGODB_BRANCH_4_X arangodb/core-preview:4.0-nightly
+set -xg ARANGODB_BRANCH_4_X arangodb/core-preview:devel-nightly
 ```
 
 On Windows using PowerShell, use a Unix-like path:
@@ -340,7 +340,7 @@ OVERRIDE=".*" docker compose up   # Bash and Fish
 
 Starting with 4.x, the server (`arangod`, without V8) and the client tools
 (including `arangosh`) are in separate images, for example,
-`arangodb/core-preview:4.0-nightly` and `arangodb/client-tools-preview:4.0-nightly`.
+`arangodb/core-preview:devel-nightly` and `arangodb/client-tools-preview:devel-nightly`.
 Only specify the server image (`core`/`core-preview`). The toolchain derives the
 matching client tools image (`client-tools`/`client-tools-preview` in the same
 registry, with the same tag; generally, a repository name `core` or `core-<suffix>`
@@ -354,8 +354,8 @@ like the nightly images, pull it manually before running the toolchain. For
 versions with separate server and client tools images, pull both:
 
 ```sh
-docker pull arangodb/core-preview:4.0-nightly
-docker pull arangodb/client-tools-preview:4.0-nightly
+docker pull arangodb/core-preview:devel-nightly
+docker pull arangodb/client-tools-preview:devel-nightly
 ```
 
 The same applies to the images of the toolchain itself
@@ -1715,6 +1715,14 @@ It makes a warning show at the top of every page for that version.
    +    default: "undefined"
    ```
 
+   Under `jobs.generate-config.environment`, add an environment variable for
+   the parameter. Example:
+
+   ```diff
+         PARAM_ARANGODB_3_12: << pipeline.parameters.arangodb-3_12 >>
+   +     PARAM_ARANGODB_4_X: << pipeline.parameters.arangodb-4_x >>
+   ```
+
    Near the end of the file under `jobs.generate-config.steps[0].run.command`,
    find the line of code that calls `python3 generate_config.py`. In one of the
    following lines, a parameter for every version is passed as argument. Add one
@@ -1722,13 +1730,26 @@ It makes a warning show at the top of every page for that version.
 
    ```diff
                 python3 generate_config.py \
-                  --workflow << pipeline.parameters.workflow >> \
-   -              --arangodb-branches 3.11="<< pipeline.parameters.arangodb-3_11 >>" 3.12="<< pipeline.parameters.arangodb-3_12 >>" \
-   +              --arangodb-branches 3.11="<< pipeline.parameters.arangodb-3_11 >>" 3.12="<< pipeline.parameters.arangodb-3_12 >>" 4.x="<< pipeline.parameters.arangodb-4_x >>" \
+                  --workflow="$PARAM_WORKFLOW" \
+   -              --arangodb-branches 3.11="$PARAM_ARANGODB_3_11" 3.12="$PARAM_ARANGODB_3_12" \
+   +              --arangodb-branches 3.11="$PARAM_ARANGODB_3_11" 3.12="$PARAM_ARANGODB_3_12" 4.x="$PARAM_ARANGODB_4_X" \
    ```
 
    Each entry is `VERSION=REF`, with `VERSION` being the `name` of the version in
    `versions.yaml`. The order doesn't matter.
+
+   In the `.circleci/upstream.yaml` file, add an entry for the new version with
+   the default `arangodb/enterprise` branch, the naming of the images that the
+   CI of `arangodb/arangodb` builds for branches, and the nightly image (see the
+   comments in the file and [CIRCLECI.md](CIRCLECI.md#build-arangodb-images)).
+   Example:
+
+   ```yaml
+   "4.x":
+     enterprise: "devel"
+     image: "public.ecr.aws/b0b8h2r4/arangodb/core-preview:{main7}_{enterprise7}"
+     nightly: "arangodb/core-preview:devel-nightly"
+   ```
 
 3. In the `toolchain/docker/amd64/docker-compose.yml` file, add an entry under
    `services.toolchain.volumes` for the new version. Simply increment the value
@@ -1856,12 +1877,12 @@ It makes a warning show at the top of every page for that version.
     | Type | Name | Value |
     |:-----|:-----|:------|
     | string | `workflow` | `generate` |
-    | string | `arangodb-4_x` | Docker Hub image (e.g. `arangodb/core-preview:4.0-nightly`) or GitHub main repo PR link (e.g. `https://github.com/arangodb/arangodb/pull/123456`) |
+    | string | `arangodb-4_x` | Image (e.g. `arangodb/core-preview:devel-nightly`) or `arangodb/arangodb` branch with a built image (see [CIRCLECI.md](CIRCLECI.md#upstream-references)) |
     | string | `generators` | `examples metrics error-codes exit-codes optimizer options` |
     | string | `deploy-url` | `deploy-preview-{PR-number}` with the number of the docs PR |
     | boolean | `commit-generated` | `true` |
 
-    Approve the workflow in CircleCI. After a successful run, you should see a
+    After a successful run, you should see a
     commit in the docs PR with the updated data files, as well as an updated
     example cache file. The plain build should no longer fail and provide you
     with a Netlify preview.

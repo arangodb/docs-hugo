@@ -80,6 +80,23 @@ jobs:
     docker:
       - image: cimg/python:3.14.3
     executor: continuation/default
+    # The parameters as environment variables so that the shell doesn't interpret
+    # them (they can come from PR descriptions), generate_config.py validates them
+    environment:
+      PARAM_WORKFLOW: << pipeline.parameters.workflow >>
+      PARAM_ARANGODB_3_10: << pipeline.parameters.arangodb-3_10 >>
+      PARAM_ARANGODB_3_11: << pipeline.parameters.arangodb-3_11 >>
+      PARAM_ARANGODB_3_12: << pipeline.parameters.arangodb-3_12 >>
+      PARAM_ARANGODB_4_X: << pipeline.parameters.arangodb-4_x >>
+      PARAM_ARANGODB_BRANCH: << pipeline.parameters.arangodb-branch >>
+      PARAM_RELEASE_TYPE: << pipeline.parameters.release-type >>
+      PARAM_DOCS_VERSION: << pipeline.parameters.docs-version >>
+      PARAM_ARANGODB_VERSION: << pipeline.parameters.arangodb-version >>
+      PARAM_GENERATORS: << pipeline.parameters.generators >>
+      PARAM_OVERRIDE: << pipeline.parameters.override >>
+      PARAM_EXAMPLES_SCOPE: << pipeline.parameters.examples-scope >>
+      PARAM_DEPLOY_URL: << pipeline.parameters.deploy-url >>
+      PARAM_PR_BRANCH: << pipeline.parameters.pr-branch >>
     steps:
       - run:
           name: Checkout
@@ -115,17 +132,21 @@ jobs:
             echo "$urls" | xargs -n 1 curl -sS -O -H "Authorization: Bearer $CIRCLECI_GITHUB_READONLY"
             curl -sS -O -H "Authorization: Bearer $CIRCLECI_GITHUB_READONLY" https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_SHA1/site/data/versions.yaml
 
-            pip install pyyaml requests
+            pip install pyyaml
 
             # Upstream references as VERSION=REF, VERSION being a name in versions.yaml
             python3 generate_config.py \
-              --workflow << pipeline.parameters.workflow >> \
-              --arangodb-branches 3.10="<< pipeline.parameters.arangodb-3_10 >>" 3.11="<< pipeline.parameters.arangodb-3_11 >>" 3.12="<< pipeline.parameters.arangodb-3_12 >>" 4.x="<< pipeline.parameters.arangodb-4_x >>" \
-              --arangodb-branch << pipeline.parameters.arangodb-branch >> \
-              --release-type << pipeline.parameters.release-type >> \
-              --docs-version << pipeline.parameters.docs-version >> \
-              --arangodb-version << pipeline.parameters.arangodb-version >> \
-              --generators << pipeline.parameters.generators >>
+              --workflow="$PARAM_WORKFLOW" \
+              --arangodb-branches 3.10="$PARAM_ARANGODB_3_10" 3.11="$PARAM_ARANGODB_3_11" 3.12="$PARAM_ARANGODB_3_12" 4.x="$PARAM_ARANGODB_4_X" \
+              --arangodb-branch="$PARAM_ARANGODB_BRANCH" \
+              --release-type="$PARAM_RELEASE_TYPE" \
+              --docs-version="$PARAM_DOCS_VERSION" \
+              --arangodb-version="$PARAM_ARANGODB_VERSION" \
+              --generators="$PARAM_GENERATORS" \
+              --override="$PARAM_OVERRIDE" \
+              --examples-scope="$PARAM_EXAMPLES_SCOPE" \
+              --deploy-url="$PARAM_DEPLOY_URL" \
+              --pr-branch="$PARAM_PR_BRANCH"
 
             echo "Generated Configuration"
       - store_artifacts:

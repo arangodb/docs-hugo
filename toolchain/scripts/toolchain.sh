@@ -214,8 +214,8 @@ function log(){
 
 ### Print the ID of the image for a docs version, pulling it if necessary (locally).
 ### $1 is an image reference, or locally also an arangodb/arangodb branch name: then
-### the image that CI compiled for the commits of the working copy (ARANGODB_SRC_*,
-### see compiled_image_ref) is used if available.
+### the prebuilt image of the commits of the working copy (ARANGODB_SRC_*, see
+### upstream_image_ref) is used if available.
 function find_or_pull_image() {
   image="$1"
   version="$2"
@@ -226,12 +226,12 @@ function find_or_pull_image() {
     if docker pull "$image" >&2; then
       image_id=$(docker images -q "$image" | head -n1)
     else
-      compiled=$(compiled_image_ref "$version")
-      if [ -n "$compiled" ]; then
-        log "[find_or_pull_image] Not an image, try the image compiled by CI for branch $image: $compiled" >&2
-        image_id=$(docker images -q "$compiled" | head -n1)
-        if [ -z "$image_id" ] && docker pull "$compiled" >&2; then
-          image_id=$(docker images -q "$compiled" | head -n1)
+      prebuilt=$(upstream_image_ref "$version")
+      if [ -n "$prebuilt" ]; then
+        log "[find_or_pull_image] Not an image, try the prebuilt image for branch $image: $prebuilt" >&2
+        image_id=$(docker images -q "$prebuilt" | head -n1)
+        if [ -z "$image_id" ] && docker pull "$prebuilt" >&2; then
+          image_id=$(docker images -q "$prebuilt" | head -n1)
         fi
       fi
     fi
@@ -239,14 +239,21 @@ function find_or_pull_image() {
   echo "$image_id"
 }
 
-### The image reference that CI uses for compiled branches (see clone-arangodb in
-### .circleci/base_config.yml): <docs version>-<main commit>-<enterprise commit>
-function compiled_image_ref() {
+### The prebuilt image of the commits checked out in the working copy of a docs
+### version (ARANGODB_SRC_*, including its enterprise folder), built by the CI of
+### arangodb/arangodb or the compile workflow of the docs (image in
+### .circleci/upstream.yaml, see prepare-arangodb in .circleci/base_config.yml)
+function upstream_image_ref() {
   version="$1"
-  main_hash=$(awk 'END{print $2}' /tmp/$version/.git/logs/HEAD 2>/dev/null | cut -c1-9)
-  enterprise_hash=$(awk 'END{print $2}' /tmp/$version/enterprise/.git/logs/HEAD 2>/dev/null | cut -c1-9)
-  if [ -n "$main_hash" ] && [ -n "$enterprise_hash" ]; then
-    echo "arangodb/docs-hugo:$version-$main_hash-$enterprise_hash"
+  main=$(awk 'END{print $2}' /tmp/$version/.git/logs/HEAD 2>/dev/null)
+  enterprise=$(awk 'END{print $2}' /tmp/$version/enterprise/.git/logs/HEAD 2>/dev/null)
+  image=$(yq -r ".[\"$version\"].image // \"\"" ../../.circleci/upstream.yaml)
+  if [ -n "$main" ] && [ -n "$enterprise" ] && [ -n "$image" ]; then
+    image="${image//\{main7\}/${main:0:7}}"
+    image="${image//\{main9\}/${main:0:9}}"
+    image="${image//\{enterprise7\}/${enterprise:0:7}}"
+    image="${image//\{enterprise9\}/${enterprise:0:9}}"
+    echo "$image"
   fi
 }
 
@@ -469,7 +476,6 @@ function process_server() {
 ### in a separate image of the same registry ("client-tools...", same tag).
 ### Prints the client tools image for a split server image, nothing otherwise (also
 ### for digests, which differ per image).
-### Keep in sync with client_image_for() in .circleci/generate_config.py
 function client_image_for() {
   if [[ "$1" =~ ^(.*/)?core((-[^/:@]*)?)(:.*)$ ]]; then
     echo "${BASH_REMATCH[1]}client-tools${BASH_REMATCH[2]}${BASH_REMATCH[4]}"
@@ -782,7 +788,7 @@ function setup_client_container() {
   ## The client tools image of a split image pinned by digest can't be derived, as
   ## its digest differs
   if [ -z "$client_image" ] && [[ "$image" =~ ^(.*/)?core(-[^/:@]*)?@ ]]; then
-    abort_with_error "$image is a server image without client tools, pinned by digest. The matching client tools image can't be derived from it, use a tag instead (e.g. arangodb/core-preview:4.0-nightly)."
+    abort_with_error "$image is a server image without client tools, pinned by digest. The matching client tools image can't be derived from it, use a tag instead (e.g. arangodb/core-preview:devel-nightly)."
   fi
 
   if [ -n "$client_image" ]; then
