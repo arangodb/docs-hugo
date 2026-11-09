@@ -93,11 +93,13 @@ Alongside these components, you also get the following additional features:
 
 ## Licensing
 
-- {{< tag "Platform Suite" >}} Every deployment of the data platform includes
-  the Platform Suite. Its license also covers the ArangoDB Enterprise Edition
-  that the data platform runs on.
-- {{< tag "Agentic AI Suite" >}} The Agentic AI Suite requires a separate
-  license on top of the Platform Suite.
+- {{< tag "Platform Suite" >}}
+  Every deployment of the data platform includes the Platform Suite.
+  Its license also covers the ArangoDB Enterprise Edition that the data platform
+  runs on.
+
+- {{< tag "Agentic AI Suite" >}}
+  The Agentic AI Suite requires a separate license on top of the Platform Suite.
 
 Both the data platform and ArangoDB are activated through the same managed
 license service operated by Arango. The ArangoDB Kubernetes Operator activates

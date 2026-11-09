@@ -4,7 +4,7 @@ setup: true
 
 orbs:
   continuation: circleci/continuation@0.4.0
-  trivy: arangodb/trivy-scan@1.1.2
+  trivy: arangodb/trivy-scan@1
 
 parameters:
   workflow:
@@ -132,7 +132,7 @@ jobs:
             echo "$urls" | xargs -n 1 curl -sS -O -H "Authorization: Bearer $CIRCLECI_GITHUB_READONLY"
             curl -sS -O -H "Authorization: Bearer $CIRCLECI_GITHUB_READONLY" https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_SHA1/site/data/versions.yaml
 
-            pip install pyyaml
+            pip install pyyaml requests
 
             # Upstream references as VERSION=REF, VERSION being a name in versions.yaml
             python3 generate_config.py \
