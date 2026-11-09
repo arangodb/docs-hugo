@@ -1,9 +1,24 @@
-{{ $substitutedBrackets := .Inner | strings.ReplacePairs
+{{/* Alternatives: a parenthesized group with a single pipe inside, like
+  (OUTBOUND|INBOUND|ANY), is meta syntax because AQL has no `|` operator.
+  Parentheses without a single pipe inside are literal AQL. */ -}}
+{{ $inner := .Inner -}}
+{{ range findRE `\([^()]*\)` $inner -}}
+  {{ if and (strings.Contains . "|") (not (strings.Contains . "||")) -}}
+    {{ $group := . | strings.TrimPrefix "(" | strings.TrimSuffix ")" | strings.TrimSpace -}}
+    {{ $group = replaceRE `\s*\|\s*` " ⦙ " $group -}}
+    {{ $inner = replace $inner . (printf " ⦃ %s ⦄ " $group) -}}
+  {{ end -}}
+{{ end -}}
+
+{{/* Temporarily replace brackets so the highlighter doesn't colorize them, and
+  the whitespace around substitute characters ensures they are separate tokens */ -}}
+{{ $substitutedBrackets := $inner | strings.ReplacePairs
     "<" " ⟨ "
     ">" " ⟩ "
     "[" " ⟦ "
     "]" " ⟧ "
 -}}
+
 {{ $options := merge .Options (dict "wrapperClass" "highlight no-collapse") }}
 {{ $html := transform.Highlight $substitutedBrackets "aql" $options -}}
 
@@ -12,6 +27,9 @@
 {{ $html = $html | replaceRE ` <span class="?err"?>⟧</span> ` `</span>` -}}
 {{ $html = $html | replaceRE ` <span class="?err"?>⟨</span> ` `<span class="aql-syntax-placeholder" title="Replace with actual name respectively expression">` -}}
 {{ $html = $html | replaceRE ` <span class="?err"?>⟩</span> ` `</span>` -}}
+{{ $html = $html | replaceRE ` <span class="?err"?>⦃</span> ` `<span class="aql-syntax-choice" title="Use one of the alternatives"><span class="aql-syntax-alt">` -}}
+{{ $html = $html | replaceRE ` <span class="?err"?>⦙</span> ` `</span><span class="aql-syntax-sep">|</span><span class="aql-syntax-alt">` -}}
+{{ $html = $html | replaceRE ` <span class="?err"?>⦄</span> ` `</span></span>` -}}
 {{ $html = $html | replaceRE `<span class="?err"?>…</span>` `<span title="Omitted or repeated part">…</span>` }}
 
 {{ $html | safeHTML -}}

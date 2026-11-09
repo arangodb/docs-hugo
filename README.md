@@ -2281,12 +2281,20 @@ It uses the normal AQL syntax highlighting but additionally lets you use:
 - `<placeholders>` in angled brackets for variable names and expressions
 - `[ square brackets ]` for optional clauses
 - `…` for omitted or repeated parts
+- `(A|B|C)` for alternatives, of which exactly one needs to be used. Always
+  wrap alternatives in parentheses, also if they are already enclosed by
+  square brackets, like `[(OUTBOUND|INBOUND|ANY)]`
 
 Note that `<` `>` and `[` `]` must not occur as part of the regular AQL syntax
 or it gets specially formatted by accident or even break the HTML.
+Parentheses are treated as literal AQL unless they contain a single pipe
+character `|` (`||` is the AQL operator for logical OR and is not treated as
+an alternative).
 
 ````markdown
 ```aql-syntax
+FOR <node> IN (OUTBOUND|INBOUND|ANY) <startNode> GRAPH <graphName>
+
 COLLECT <var> = <expr> [… , <varN> = <exprN>]
 [AGGREGATE <aggVar> = <aggExpr> [… , <aggVarN> = <aggExprN>]]
 [INTO <groupsVar> [= <projectionExpr>]]
