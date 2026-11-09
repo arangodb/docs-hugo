@@ -1565,3 +1565,5 @@ Upgraded Rclone to version 1.75.1, compiled with Go version 1.26.10 and
 updated dependencies.
 
 Upgraded OpenSSL to version 3.5.9.
+
+Updated the timezone data (tzdata) to the version as of 2026-10-05.
