@@ -19,7 +19,7 @@ You can visually explore the created graphs in the
 of the web interface.
 
 You can take a look at the script that creates the example graphs on
-[GitHub](https://github.com/arangodb/arangodb/blob/devel/js/common/modules/%40arangodb/graph-examples/example-graph.js)
+[GitHub](https://github.com/arangodb/arangodb/blob/3.11/js/common/modules/%40arangodb/graph-examples/example-graph.js)
 for reference about how to manage graphs programmatically.
 
 ## Knows Graph
