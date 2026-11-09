@@ -71,7 +71,7 @@ FOR node[, edge]
 - `FOR`: Emits up to two variables:
   - **node** (object): The current node on the shortest path
   - **edge** (object, *optional*): The edge pointing to the node
-- `IN` `OUTBOUND|INBOUND|ANY`: Defines in which direction edges are followed
+- `IN` `OUTBOUND`/`INBOUND`/`ANY`: Defines in which direction edges are followed
   (outgoing, incoming, or both)
 - **startNode** `TO` **endNode** (both string\|object): The two nodes between
   which the shortest path is computed. This can be specified in the form of

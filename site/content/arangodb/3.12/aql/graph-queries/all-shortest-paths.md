@@ -54,7 +54,7 @@ FOR path
 
 - `FOR`: Emits the variable **path** which contains one shortest path as an
   object, with the `vertices` (nodes) and `edges` of the path.
-- `IN` `OUTBOUND|INBOUND|ANY`: Defines in which direction
+- `IN` `OUTBOUND`/`INBOUND`/`ANY`: Defines in which direction
   edges are followed (outgoing, incoming, or both)
 - `ALL_SHORTEST_PATHS`: The keyword to compute All Shortest Paths
 - **startNode** `TO` **endNode** (both string\|object): The two nodes between

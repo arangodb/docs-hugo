@@ -46,7 +46,7 @@ FOR <node> [, <edge> [, <path>]] IN [<min>[..<max>]]
   - **max** (number, *optional*): up to *max* length paths are traversed.
     If omitted, *max* defaults to *min*. Thus only the nodes and edges in
     the range of *min* are returned. *max* cannot be specified without *min*.
-- `OUTBOUND|INBOUND|ANY`: follow outgoing, incoming, or edges pointing in either
+- `OUTBOUND`/`INBOUND`/`ANY`: follow outgoing, incoming, or edges pointing in either
   direction in the traversal. Note that this can't be replaced by a bind parameter.
 - **startNode** (string\|object): a node where the traversal originates from.
   This can be specified in the form of an ID string or in the form of a document

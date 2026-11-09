@@ -99,7 +99,7 @@ FOR path
 
 - `FOR`: Emits the variable **path** which contains one path as an object containing 
    `vertices` (nodes), `edges`, and the `weight` of the path.
-- `IN` `OUTBOUND|INBOUND|ANY`: Defines in which direction
+- `IN` `OUTBOUND`/`INBOUND`/`ANY`: Defines in which direction
   edges are followed (outgoing, incoming, or both).
 - `K_SHORTEST_PATHS`: The keyword to compute k Shortest Paths
 - **startNode** `TO` **endNode** (both string\|object): The two nodes between
