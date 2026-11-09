@@ -3389,6 +3389,38 @@
     "section" : "http",
     "type" : "uint64"
   },
+  "http.decompressed-request-body-global-memory-limit" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 1646913126,
+    "deprecatedIn" : null,
+    "description" : "The maximum combined size of all decompressed request bodies held by the server at the same time (in bytes).",
+    "dynamic" : true,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.14"
+    ],
+    "longDescription" : "Each compressed request body (gzip, deflate or lz4)\nreserves its decompressed size from this budget until the request is finished.\nRequests that would exceed the budget are rejected with HTTP 503 and can be\nretried later.\n\nThe default is 10% of the physical memory. A value of `0` disables the limit.",
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "http",
+    "type" : "uint64"
+  },
   "http.handle-content-encoding-for-unauthenticated-requests" : {
     "category" : "option",
     "component" : [
