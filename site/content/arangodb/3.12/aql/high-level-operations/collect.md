@@ -3,9 +3,8 @@ title: '`COLLECT` operation in AQL'
 menuTitle: COLLECT
 weight: 40
 description: >-
-  The `COLLECT` operation can group data by one or multiple grouping criteria,
-  retrieve all distinct values, count how often values occur, and calculate
-  statistical properties efficiently
+  The `COLLECT` operation can group data, retrieve all distinct values, count
+  how often values occur, and calculate statistical properties efficiently
 ---
 The different variants of `COLLECT` cover most needs for grouping and aggregating
 data. For aggregation using a sliding window, see the [`WINDOW` operation](window.md).
@@ -14,30 +13,41 @@ data. For aggregation using a sliding window, see the [`WINDOW` operation](windo
 
 There are multiple syntax variants for `COLLECT` operations.
 
+Group by one or multiple criteria, optionally aggregate over the elements of
+each group, and optionally store the elements of each group in an array variable:
 
 ```aql-syntax
-COLLECT <var> = <expr> [… , <varN> = <exprN>]
-[AGGREGATE <aggVar> = <aggExpr> [… , <aggVarN> = <aggExprN>]]
+COLLECT <var> = <expr> [, … , <varN> = <exprN>]
+[AGGREGATE <aggVar> = <aggExpr> [, … , <aggVarN> = <aggExprN>]]
 [INTO <groupsVar> [= <projectionExpr>]]
 [OPTIONS { … }]
 ```
 
+Aggregate over all elements without grouping, and optionally store all elements
+in an array variable:
+
 ```aql-syntax
 COLLECT
-AGGREGATE <aggVar> = <aggExpr> [… , <aggVarN> = <aggExprN>]
+AGGREGATE <aggVar> = <aggExpr> [, … , <aggVarN> = <aggExprN>]
+[INTO <groupsVar> [= <projectionExpr>]]
 [OPTIONS { … }]
 ```
 
+Count the elements in total or per group:
+
 ```aql-syntax
-COLLECT [<var> = <expr> [… , <varN> = <exprN>]]
+COLLECT [<var> = <expr> [, … , <varN> = <exprN>]]
 WITH COUNT INTO <countVar>
 [OPTIONS { … }]
 ```
 
+Group by one or multiple criteria, store the elements of each group in an array
+variable, and limit which variables from the scope are stored for each element:
+
 ```aql-syntax
-COLLECT <var> = <expr> [… , <varN> = <exprN>]
+COLLECT <var> = <expr> [, … , <varN> = <exprN>]
 INTO <groupsVar>
-KEEP <keepVar> [… , <keepVarN>]
+KEEP <keepVar> [, … , <keepVarN>]
 [OPTIONS { … }]
 ```
 
@@ -46,15 +56,15 @@ The `COLLECT` operation eliminates all local variables in the current scope.
 After a `COLLECT`, only the variables introduced by `COLLECT` itself are available.
 {{< /info >}}
 
-## Grouping syntaxes
+## Grouping
 
-The first syntax form of `COLLECT` only groups the result by the defined group 
-criteria specified in *expression*. In order to further process the results 
-produced by `COLLECT`, a new variable (specified by *variableName*) is introduced. 
-This variable contains the group value.
+To group elements, specify one or more group criteria in the form of
+`<var> = <expr>` after the `COLLECT` keyword. `COLLECT` evaluates the
+expression for every element and returns one result per distinct value.
+The variable contains the group value and you can use it in later operations.
 
-Here's an example query that find the distinct values in `u.city` and makes
-them available in variable `city`:
+The following example query finds the distinct values in `u.city` and makes
+them available in the variable `city`:
 
 ```aql
 FOR u IN users
@@ -64,17 +74,34 @@ FOR u IN users
   }
 ```
 
-The second form does the same as the first form, but additionally introduces a
-variable (specified by *groupsVar*) that contains all elements that fell into the
-group. This works as follows: The *groupsVar* variable is an array containing 
-as many elements as there are in the group. Each member of that array is
-a JSON object in which the value of every variable that is defined in the 
-AQL query is bound to the corresponding attribute. Note that this considers
-all variables that are defined before the `COLLECT` statement, but not those on
-the top level (outside of any `FOR`), unless the `COLLECT` statement is itself
-on the top level, in which case all variables are taken. Furthermore note 
-that it is possible that the optimizer moves `LET` statements out of `FOR`
-statements to improve performance. 
+To group by multiple criteria, separate them with commas:
+
+```aql
+FOR u IN users
+  COLLECT country = u.country, city = u.city
+  RETURN { 
+    "country" : country, 
+    "city" : city
+  }
+```
+
+In the above example, the `users` are grouped by country first and then by
+city, and there is one result for each distinct combination of country and city.
+
+## Storing group elements (`INTO`)
+
+Grouping on its own only gives you the group values. To also access the
+elements that fell into each group, add an `INTO` clause with a variable name.
+This variable (*groupsVar*) is an array with as many elements as there are in
+the group. Each element of that array is an object with one attribute per
+variable that is defined in the query at this point, with the attribute name
+being the variable name and the attribute value being the variable value.
+
+Note that this considers all variables that are defined before the `COLLECT`
+operation, but not those on the top level (outside of any `FOR`), unless the
+`COLLECT` operation is itself on the top level, in which case all variables are
+taken. Furthermore, note that the optimizer may move `LET` operations out of
+`FOR` loops to improve performance.
 
 ```aql
 FOR u IN users
@@ -85,13 +112,14 @@ FOR u IN users
   }
 ```
 
-In the above example, the array `users` will be grouped by the attribute
-`city`. The result is a new array of documents, with one element per distinct
-`u.city` value. The elements from the original array (here: `users`) per city are
-made available in the variable `groups`. This is due to the `INTO` clause.
+In the above example, the `users` are grouped by the `city` attribute. The
+result is an array of objects, one for each distinct `u.city` value. The
+elements of the `users` array per city are available in the `groups` variable,
+each in the form `{ "u": … }` because `u` is the only variable in scope.
+For example, `groups[*].u.name` gives you the names of all users in a city.
 
-`COLLECT` also allows specifying multiple group criteria. Individual group
-criteria can be separated by commas:
+You can combine `INTO` with multiple group criteria and with an
+[`AGGREGATE` clause](#aggregation-aggregate):
 
 ```aql
 FOR u IN users
@@ -103,14 +131,11 @@ FOR u IN users
   }
 ```
 
-In the above example, the array `users` is grouped by country first and then
-by city, and for each distinct combination of country and city, the users
-will be returned.
+### Projections
 
-## Discarding obsolete variables
-
-The third form of `COLLECT` allows rewriting the contents of the *groupsVar* 
-using an arbitrary *projectionExpression*:
+Instead of storing all variables of the scope for each element, you can specify
+an arbitrary expression after `INTO <groupsVar> =` (*projectionExpr*). For each
+element, only the result of this expression is stored in the *groupsVar*:
 
 ```aql
 FOR u IN users
@@ -122,14 +147,16 @@ FOR u IN users
   }
 ```
 
-In the above example, only the *projectionExpression* is `u.name`. Therefore,
-only this attribute is copied into the *groupsVar* for each document. 
-This is probably much more efficient than copying all variables from the scope into 
-the *groupsVar* as it would happen without a *projectionExpression*.
+In the above example, the *projectionExpr* is `u.name`. Therefore, the
+*groupsVar* is an array of user names rather than an array of objects with
+a `u` attribute holding a full user document. This can be much more efficient
+than copying all variables of the scope into the *groupsVar*, which happens
+without a *projectionExpr*.
 
 {{< tip >}}
-You can also express such projections using an [Aggregation](#aggregation) with
-the `PUSH()` function (introduced in v3.12.4):
+You can also express such projections using an
+[Aggregation](#aggregation-aggregate) with the `PUSH()` function
+(introduced in v3.12.4):
 
 ```aql
 FOR u IN users
@@ -142,7 +169,7 @@ FOR u IN users
 ```
 {{< /tip >}}
 
-The expression following `INTO` can also be used for arbitrary computations:
+The *projectionExpr* can also be used for arbitrary computations:
 
 ```aql
 FOR u IN users
@@ -157,16 +184,18 @@ FOR u IN users
   }
 ```
 
-`COLLECT` also provides an optional `KEEP` clause that can be used to control
-which variables will be copied into the variable created by `INTO`. If no 
-`KEEP` clause is specified, all variables from the scope will be copied as 
-sub-attributes into the *groupsVar*. 
-This is safe but can have a negative impact on performance if there 
-are many variables in scope or the variables contain massive amounts of data. 
+### Discarding obsolete variables (`KEEP`)
 
-The following example limits the variables that are copied into the *groupsVar*
-to just `name`. The variables `u` and `someCalculation` also present in the scope
-will not be copied into *groupsVar* because they are not listed in the `KEEP` clause:
+Without a *projectionExpr*, all variables from the scope are copied into the
+*groupsVar*. This is safe but can have a negative impact on performance if
+there are many variables in scope or if the variables contain large amounts
+of data.
+
+You can add a `KEEP` clause to explicitly define which variables to copy into
+the *groupsVar*. The following example limits the variables that are copied
+to just `name`. The variables `u` and `someCalculation` that are also in scope
+are not copied into the *groupsVar* because they are not listed in the
+`KEEP` clause:
 
 ```aql
 FOR u IN users
@@ -179,17 +208,33 @@ FOR u IN users
   }
 ```
 
-`KEEP` is only valid in combination with `INTO`. Only valid variable names can
-be used in the `KEEP` clause. `KEEP` supports the specification of multiple 
-variable names.
+You can specify multiple variable names in the `KEEP` clause, separated by
+commas. `KEEP` is only valid in combination with `INTO`, and you cannot combine
+it with a *projectionExpr* or an `AGGREGATE` clause.
 
-## Group length calculation
+The query optimizer discards unused variables automatically in many cases
+(`remove-collect-variables` [optimizer rule](../execution-and-performance/query-optimization.md#optimizer-rules)):
 
-`COLLECT` also provides a special `WITH COUNT` clause that can be used to 
-determine the number of group members efficiently.
+- If the *groupsVar* isn't used after the `COLLECT` operation, the optimizer
+  removes the `INTO` clause altogether.
+- If the *groupsVar* is only accessed via specific variables later in the query,
+  like `groups[*].name` in the above example, the optimizer limits the copied
+  variables to the ones that are accessed, as if you had specified `KEEP`.
+  This also applies if the `COLLECT` operation has an `AGGREGATE` clause, where
+  you cannot use `KEEP` yourself.
 
-The simplest form just returns the number of items that made it into the
-`COLLECT`:
+The optimizer cannot apply the automatic restriction if it cannot determine
+which variables are accessed, for example, if you return the *groupsVar* as a
+whole or pass it to a function. Specify `KEEP` explicitly or use a
+*projectionExpr* in such cases to avoid copying unnecessary data.
+
+## Counting elements (`WITH COUNT INTO`)
+
+`COLLECT` provides a special `WITH COUNT INTO` clause to efficiently determine
+the number of elements.
+
+Without group criteria, it returns the number of elements that made it into the
+`COLLECT` operation:
 
 ```aql
 FOR u IN users
@@ -203,8 +248,7 @@ The above is equivalent to, but less efficient than:
 RETURN LENGTH(users)
 ```
 
-The `WITH COUNT` clause can also be used to efficiently count the number
-of items in each group:
+With group criteria, it counts the number of elements in each group:
 
 ```aql
 FOR u IN users
@@ -216,48 +260,18 @@ FOR u IN users
 ```
 
 {{< info >}}
-The `WITH COUNT` clause can only be used together with an `INTO` clause.
+`WITH COUNT` must always be followed by `INTO <countVar>`. You cannot combine
+it with an `AGGREGATE` clause or with `INTO <groupsVar>` to store the group
+elements. If you need the counts together with other aggregations or the group
+elements, see [From `WITH COUNT INTO` to `AGGREGATE`](#from-with-count-into-to-aggregate).
 {{< /info >}}
 
-## Aggregation
+## Aggregation (`AGGREGATE`)
 
 You can use `COLLECT` operations with an `AGGREGATE` clause to aggregate the
 data per group, such as determining the minimum, maximum, and average values,
-the sums, and more.
-
-To only determine the group lengths, you can use the `WITH COUNT INTO` variant of
-`COLLECT` as described above. However, you can also express the same as an aggregation:
-
-```aql
-FOR u IN users
-  COLLECT age = u.age AGGREGATE length = COUNT()  // or SUM(1)
-  RETURN {
-    "age" : age, 
-    "count" : length 
-  }
-```
-
-If you perform calculations on the results of a `COLLECT` operation, you may be
-able rewrite them to `COLLECT ... AGGREGATE`. The following example shows a
-post-aggregation where the calculation happens after grouping:
-
-```aql
-FOR u IN users
-  COLLECT ageGroup = FLOOR(u.age / 5) * 5 INTO g
-  RETURN { 
-    "ageGroup" : ageGroup,
-    "minAge" : MIN(g[*].u.age),
-    "maxAge" : MAX(g[*].u.age)
-  }
-```
-
-The above however requires storing all group values during the collect operation for 
-all groups, which can be inefficient. 
-
-The special `AGGREGATE` variant of `COLLECT` allows building the aggregate values 
-incrementally during the collect operation, and is therefore often more efficient.
-
-With the `AGGREGATE` variant, the above query becomes the following:
+the sums, and more. The aggregate values are built incrementally while the
+elements are grouped.
 
 ```aql
 FOR u IN users
@@ -270,9 +284,9 @@ FOR u IN users
   }
 ```
 
-The `AGGREGATE` keyword can only be used after the `COLLECT` keyword. If used, it 
-must directly follow the declaration of the grouping keys. If no grouping keys 
-are used, it must follow the `COLLECT` keyword directly:
+The `AGGREGATE` keyword must directly follow the group criteria. If there are
+no group criteria, it must directly follow the `COLLECT` keyword, and the
+aggregation is over all elements:
 
 ```aql
 FOR u IN users
@@ -282,6 +296,12 @@ FOR u IN users
     maxAge 
   }
 ```
+
+You can combine `AGGREGATE` with an `INTO` clause to also
+[store the group elements](#storing-group-elements-into), including with a
+[projection](#projections).
+
+### Aggregate expressions
 
 Only specific expressions are allowed on the right-hand side of each `AGGREGATE`
 assignment:
@@ -306,6 +326,80 @@ assignment:
   - `PUSH()` (introduced in v3.12.4)
 
 - An aggregate expression must not refer to variables introduced by the `COLLECT` itself.
+
+### `AGGREGATE` vs. post-aggregation
+
+Instead of using `AGGREGATE`, you can store the group elements using `INTO`
+and perform calculations on them after the grouping. The following example
+shows such a post-aggregation:
+
+```aql
+FOR u IN users
+  COLLECT ageGroup = FLOOR(u.age / 5) * 5 INTO g
+  RETURN { 
+    "ageGroup" : ageGroup,
+    "minAge" : MIN(g[*].u.age),
+    "maxAge" : MAX(g[*].u.age)
+  }
+```
+
+This produces the same result as the `AGGREGATE` example of the previous section
+but requires storing all elements of all groups during the `COLLECT` operation,
+which can be inefficient. With `AGGREGATE`, only the aggregate values are kept
+and updated for each element, which is therefore often more efficient.
+
+If you perform calculations on the results of a `COLLECT` operation, check
+whether you can rewrite them to use `COLLECT ... AGGREGATE`. Post-aggregation
+is still necessary if you need a calculation that is not covered by the
+[aggregate expressions](#aggregate-expressions), for example, to determine
+the median using `MEDIAN(g[*].u.age)`.
+
+### From `WITH COUNT INTO` to `AGGREGATE`
+
+`WITH COUNT INTO` is a convenient shorthand if all you need is the number of
+elements. You can express the same with the `COUNT()` aggregation function
+(or `LENGTH()`, or `SUM(1)`):
+
+```aql
+FOR u IN users
+  COLLECT age = u.age AGGREGATE length = COUNT()
+  RETURN {
+    "age" : age, 
+    "count" : length 
+  }
+```
+
+Unlike `WITH COUNT INTO`, the `AGGREGATE` variant lets you calculate further
+aggregate values at the same time. For example, to also get the cities the
+users of each age live in:
+
+```aql
+FOR u IN users
+  COLLECT age = u.age
+  AGGREGATE length = COUNT(), cities = UNIQUE(u.city)
+  RETURN {
+    "age" : age, 
+    "count" : length,
+    "cities" : cities
+  }
+```
+
+This also works without group criteria, so that you can replace
+`COLLECT WITH COUNT INTO length` with
+`COLLECT AGGREGATE length = COUNT(), avgAge = AVG(u.age)`, for example.
+
+If you need the group elements in addition to the counts, you can add an
+`INTO` clause to the `AGGREGATE` variant:
+
+```aql
+FOR u IN users
+  COLLECT age = u.age AGGREGATE length = COUNT() INTO groups = u.name
+  RETURN {
+    "age" : age, 
+    "count" : length,
+    "userNames" : groups
+  }
+```
 
 ## `COLLECT` vs. `RETURN DISTINCT`
 
@@ -332,7 +426,7 @@ different implementations of `COLLECT` that have different properties:
 - `COLLECT` **changes the order of results** (sorted or undefined), but it
   supports multiple values and is more flexible than `RETURN DISTINCT`.
 
-Aside from `COLLECT`s sophisticated grouping and aggregation capabilities, it
+Aside from its sophisticated grouping and aggregation capabilities, `COLLECT`
 allows you to place a `LIMIT` operation before `RETURN` to potentially stop the
 `COLLECT` operation early.
 
