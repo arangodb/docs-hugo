@@ -20,7 +20,7 @@ The syntax for AQL graph traversals using named graphs is as follows
 
 ```aql-syntax
 FOR <node> [, <edge> [, <path>]] IN [<min>[..<max>]]
-  OUTBOUND|INBOUND|ANY <startNode>
+  (OUTBOUND|INBOUND|ANY) <startNode>
   GRAPH <graphName>
   [PRUNE [<pruneVariable> = ]<pruneConditions>]
   [OPTIONS { … }]
@@ -87,12 +87,12 @@ The syntax for AQL graph traversals using collection sets is as follows
 (the pipe character `|` denotes alternatives):
 
 ```aql-syntax
-[WITH <nodeCollection1> [… , <nodeCollectionN>]]
+[WITH <nodeCollection1> [, … , <nodeCollectionN>]]
 
 FOR <node> [, <edge> [, <path>]] IN [<min>[..<max>]]
-  OUTBOUND|INBOUND|ANY <startNode>
-  [OUTBOUND|INBOUND|ANY] <edgeCollection1>
-  [… , [OUTBOUND|INBOUND|ANY] <edgeCollectionN>]
+  (OUTBOUND|INBOUND|ANY) <startNode>
+  [(OUTBOUND|INBOUND|ANY)] <edgeCollection1>
+  [, … , [(OUTBOUND|INBOUND|ANY)] <edgeCollectionN>]
   [PRUNE [<pruneVariable> = ]<pruneConditions>]
   [OPTIONS { … }]
 ```
@@ -352,9 +352,9 @@ In this case you can use `OUTBOUND` as general traversal direction and `ANY`
 specifically for *edges2* as follows:
 
 ```aql
-FOR node IN OUTBOUND
-  startNode
+FOR node, edge, path IN 1..3 OUTBOUND "places/A"
   edges1, ANY edges2, edges3
+  RETURN path
 ```
 
 All collections in the list that do not specify their own direction use the
