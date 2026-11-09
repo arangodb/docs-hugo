@@ -216,22 +216,29 @@ function log(){
 ### $1 is an image reference, or locally also an arangodb/arangodb branch name: then
 ### the prebuilt image of the commits of the working copy (ARANGODB_SRC_*, see
 ### upstream_image_ref) is used if available.
+### The ID of a local image, empty if it doesn't exist. Not `docker images -q`:
+### with the classic image store (e.g. CircleCI machine images), its reference
+### filter doesn't match fully qualified names like docker.io/arangodb/x:tag
+function local_image_id() {
+  docker image inspect --format '{{.Id}}' "$1" 2>/dev/null
+}
+
 function find_or_pull_image() {
   image="$1"
   version="$2"
 
-  image_id=$(docker images -q "$image" 2>/dev/null | head -n1)
+  image_id=$(local_image_id "$image")
   if [ -z "$image_id" ] && [ "$ENV" == "local" ]; then
     log "[find_or_pull_image] Pull image $image" >&2
     if docker pull "$image" >&2; then
-      image_id=$(docker images -q "$image" | head -n1)
+      image_id=$(local_image_id "$image")
     else
       prebuilt=$(upstream_image_ref "$version")
       if [ -n "$prebuilt" ]; then
         log "[find_or_pull_image] Not an image, try the prebuilt image for branch $image: $prebuilt" >&2
-        image_id=$(docker images -q "$prebuilt" | head -n1)
+        image_id=$(local_image_id "$prebuilt")
         if [ -z "$image_id" ] && docker pull "$prebuilt" >&2; then
-          image_id=$(docker images -q "$prebuilt" | head -n1)
+          image_id=$(local_image_id "$prebuilt")
         fi
       fi
     fi
