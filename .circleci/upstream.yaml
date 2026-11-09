@@ -18,8 +18,11 @@
 #   - 3.11: built by the compile workflow of the docs, as there are no public images
 #   Versions without it only accept image references (e.g. release images).
 # - nightly: the image for the scheduled workflow, none if there is no public one
-# - build-image: the image for compiling ArangoDB in the compile workflow, only
-#   for versions without upstream images
+# - build-image: the image repository for compiling ArangoDB in the compile
+#   workflow, only for versions without upstream images. The tag is determined
+#   per build: the one whose image has the OpenSSL version that the source code
+#   requires (OPENSSL_LINUX in its VERSIONS file), as CMake only accepts this
+#   exact version (oskar has a numbered tag per OpenSSL update)
 
 # Deprecated, only release images like arangodb/enterprise:3.10.14
 "3.10":
@@ -30,7 +33,7 @@
   branch: "3.11"
   enterprise: "3.11"
   image: "arangodb/docs-hugo:3.11-{main9}-{enterprise9}"
-  build-image: "arangodb/ubuntubuildarangodb-311:latest"
+  build-image: "arangodb/ubuntubuildarangodb-311"
 
 "3.12":
   branch: "3.12"

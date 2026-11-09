@@ -323,6 +323,53 @@ def workflow_release_arangodb(config):
     return config
 
 
+# The build image for the OpenSSL version that the source code of an arangodb/arangodb
+# branch or tag requires (OPENSSL_LINUX in VERSIONS), as CMake only accepts this
+# version. The numbered tags of the repository (one per OpenSSL update in oskar)
+# are checked from the newest, via the layer instructions on Docker Hub (the
+# OpenSSL installation, e.g. "/tools/install.sh 3.5 8"), which don't count as pulls
+def build_image_for(ref, repository):
+    url = f"https://raw.githubusercontent.com/arangodb/arangodb/{ref}/VERSIONS"
+    try:
+        r = requests.get(url, timeout=30)
+        r.raise_for_status()
+    except Exception as e:
+        sys.exit(f"Can't determine the OpenSSL version of {ref}, fetching {url} failed: {e}")
+    match = re.search(r'^OPENSSL_LINUX\s+"?([0-9.]+)"?', r.text, re.M)
+    if not match:
+        sys.exit(f"No OPENSSL_LINUX in the VERSIONS file of {ref}")
+    openssl = match.group(1)
+    print(f"{ref} requires OpenSSL {openssl}")
+
+    hub = f"https://hub.docker.com/v2/repositories/{repository}/tags"
+    try:
+        tags = []
+        page = f"{hub}?page_size=100"
+        while page:
+            r = requests.get(page, timeout=30)
+            r.raise_for_status()
+            data = r.json()
+            tags += [t["name"] for t in data["results"]]
+            page = data.get("next")
+        numbered = sorted((int(m.group(1)) for t in tags if (m := re.match(r"^(\d+)-x86_64$", t))), reverse=True)
+        found = {}
+        for number in numbered:
+            r = requests.get(f"{hub}/{number}-x86_64/images", timeout=30)
+            r.raise_for_status()
+            instructions = " ".join(layer.get("instruction", "") for image in r.json() for layer in image.get("layers", []))
+            installed = re.search(r"/tools/install\.sh\W+(\d+\.\d+)\W+(\d+)", instructions)
+            if not installed:
+                continue
+            version = f"{installed.group(1)}.{installed.group(2)}"
+            found[number] = version
+            if version == openssl:
+                return f"{repository}:{number}-x86_64"
+    except Exception as e:
+        sys.exit(f"Can't determine the build image tags of {repository} on Docker Hub: {e}")
+    sys.exit(f"No build image of {repository} with OpenSSL {openssl} (required by {ref}), "
+             f"found: {', '.join(f'{n} ({v})' for n, v in found.items())}")
+
+
 # Compiles an arangodb/arangodb branch of a version without upstream images (3.11)
 # and caches it on Docker Hub as the image of upstream.yaml, which the other
 # workflows then use for the branch name
@@ -339,7 +386,8 @@ def workflow_compile(config):
                      f"not by the compile workflow (see CIRCLECI.md)")
         sys.exit(f"The compile workflow doesn't support version {version}, use a release image")
 
-    print(f"Creating compile job for version {version} branch {branch}")
+    build_image = build_image_for(branch, settings["build-image"])
+    print(f"Creating compile job for version {version} branch {branch} with build image {build_image}")
     config["workflows"]["compile"] = {
         "jobs": [{
             "compile-arangodb": {
@@ -349,7 +397,7 @@ def workflow_compile(config):
                 "version": version,
                 "enterprise": settings["enterprise"],
                 "image-template": settings["image"],
-                "build-image": settings["build-image"],
+                "build-image": build_image,
             }
         }]
     }
