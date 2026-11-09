@@ -308,7 +308,7 @@ The `SEARCH` operation supports an optional `OPTIONS` clause to modify the
 behavior. The general syntax is as follows:
 
 ```aql-syntax
-SEARCH <expression> OPTIONS { <option>: <value> [… , <optionN>: <valueN>] }
+SEARCH <expression> OPTIONS { <option1>: <value1> [, … , <optionN>: <valueN>] }
 ```
 
 ### `collections`

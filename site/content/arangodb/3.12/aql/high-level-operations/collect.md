@@ -17,8 +17,8 @@ Group by one or multiple criteria, optionally aggregate over the elements of
 each group, and optionally store the elements of each group in an array variable:
 
 ```aql-syntax
-COLLECT <var> = <expr> [, … , <varN> = <exprN>]
-[AGGREGATE <aggVar> = <aggExpr> [, … , <aggVarN> = <aggExprN>]]
+COLLECT <var1> = <expr1> [, … , <varN> = <exprN>]
+[AGGREGATE <aggVar1> = <aggExpr1> [, … , <aggVarN> = <aggExprN>]]
 [INTO <groupsVar> [= <projectionExpr>]]
 [OPTIONS { … }]
 ```
@@ -28,7 +28,7 @@ in an array variable:
 
 ```aql-syntax
 COLLECT
-AGGREGATE <aggVar> = <aggExpr> [, … , <aggVarN> = <aggExprN>]
+AGGREGATE <aggVar1> = <aggExpr1> [, … , <aggVarN> = <aggExprN>]
 [INTO <groupsVar> [= <projectionExpr>]]
 [OPTIONS { … }]
 ```
@@ -36,7 +36,7 @@ AGGREGATE <aggVar> = <aggExpr> [, … , <aggVarN> = <aggExprN>]
 Count the elements in total or per group:
 
 ```aql-syntax
-COLLECT [<var> = <expr> [, … , <varN> = <exprN>]]
+COLLECT [<var1> = <expr1> [, … , <varN> = <exprN>]]
 WITH COUNT INTO <countVar>
 [OPTIONS { … }]
 ```
@@ -45,9 +45,9 @@ Group by one or multiple criteria, store the elements of each group in an array
 variable, and limit which variables from the scope are stored for each element:
 
 ```aql-syntax
-COLLECT <var> = <expr> [, … , <varN> = <exprN>]
+COLLECT <var1> = <expr1> [, … , <varN> = <exprN>]
 INTO <groupsVar>
-KEEP <keepVar> [, … , <keepVarN>]
+KEEP <keepVar1> [, … , <keepVarN>]
 [OPTIONS { … }]
 ```
 

@@ -116,7 +116,7 @@ clause to modify the behavior. The general syntax is as follows:
 
 ```aql-syntax
 FOR <variableName> IN <expression>
-OPTIONS { <option>: <value> [… , <optionN>: <valueN>] }
+OPTIONS { <option1>: <value1> [, … , <optionN>: <valueN>] }
 ```
 
 ### `indexHint`

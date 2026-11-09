@@ -32,7 +32,7 @@ possibly access to avoid occasional query failures.
 ## Syntax
 
 ```aql-syntax
-WITH <collection1> [, <collection2> [, … <collectionN> ] ]
+WITH <collection1> [, … , <collectionN>]
 ```
 
 `WITH` is also a keyword that is used in other contexts, for example in `UPDATE`
