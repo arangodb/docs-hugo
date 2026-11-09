@@ -11,10 +11,11 @@ description: >-
 The general syntax is as follows:
 
 ```aql-syntax
-SORT <expression> [<direction>] [… , <expressionN> [<directionN>]]
+SORT <expression1> [(ASC|DESC)] [, … , <expressionN> [(ASC|DESC)]]
 ```
 
-Each *direction* can be either `ASC` (default) or `DESC`.
+For each expression, you can optionally specify the sort direction, either
+`ASC` for ascending order (default) or `DESC` for descending order.
 
 ## Usage
 
@@ -29,11 +30,9 @@ FOR u IN users
   RETURN u
 ```
 
-Specifying the *direction* is optional. The default (implicit) direction for a
-sort expression is the ascending order. To explicitly specify the sort direction, 
-the keywords `ASC` (ascending) and `DESC` (descending) can be used. Multiple sort
-criteria can be separated using commas. In this case, the direction is specified
-for each expression separately.
+You can separate multiple sort criteria with commas. The direction applies to
+each expression separately, and expressions without an explicit direction are
+sorted in ascending order.
 
 The following example first sorts documents by `lastName` in ascending order and
 then by `firstName` in ascending order.
