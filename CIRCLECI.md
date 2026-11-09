@@ -334,12 +334,17 @@ first 9 characters of the commits):
 | Parameter type | Name | Value |
 |:---------------|:-----|:------|
 | string | `workflow` | `compile` |
-| string | `arangodb-branch` | The `arangodb/arangodb` branch or tag to compile, e.g. `3.11` or `v3.11.15` |
+| string | `arangodb-branch` | The `arangodb/arangodb` branch or tag to compile, e.g. `3.11.14` or `v3.11.14.6` |
 | string | `docs-version` | `3.11` (the default) |
 
 The workflow skips compiling if the image exists already. At the end, it prints
 the upstream reference to use, e.g. `- 3.11: arangodb/docs-hugo:3.11-94076126f-633a631f7`.
-The build image (`arangodb/ubuntubuildarangodb-311`) is set in `.circleci/upstream.yaml`.
+The build image (`arangodb/ubuntubuildarangodb-311`, set in
+`.circleci/upstream.yaml`) needs to have the OpenSSL version that the source code
+requires (`OPENSSL_LINUX` in the `VERSIONS` file), as CMake fails with any other
+version. oskar publishes a numbered tag per OpenSSL update, and the workflow uses
+the newest tag whose image installs the required version (determined from the
+image layers on Docker Hub).
 
 ## Release workflow for ArangoDB releases
 
@@ -360,8 +365,8 @@ steps below.
 | string | `workflow` | `release` |
 | string | `release-type` | `arangodb` |
 | string | `docs-version` | `3.11` (the docs version folder) |
-| string | `arangodb-branch` | The release image like `arangodb/enterprise:3.12.13`, or an `arangodb/arangodb` branch or tag like `v3.11.15` |
-| string | `arangodb-version` | `3.11.15` (updates the `versions.yaml` file) |
+| string | `arangodb-branch` | The release image like `arangodb/enterprise:3.12.13`, or an `arangodb/arangodb` branch or tag like `v3.11.14.6` |
+| string | `arangodb-version` | `3.11.14` (updates the `versions.yaml` file) |
 
 If the release images are already published, specify the image (e.g.
 `arangodb/enterprise:3.12.13`, or `arangodb/core:4.0.1` for 4.x). Otherwise,
@@ -371,7 +376,7 @@ to prepare the documentation before the images are published. Like for
 commit (see [Build ArangoDB images](#build-arangodb-images)).
 
 There are no public images of 3.11 releases, so run the `compile` workflow for
-the release tag (e.g. `v3.11.15`) first and then the release workflow with the
+the release tag (e.g. `v3.11.14.6`) first and then the release workflow with the
 same tag as `arangodb-branch`.
 
 The release workflow runs all generators for the version and regenerates all of
