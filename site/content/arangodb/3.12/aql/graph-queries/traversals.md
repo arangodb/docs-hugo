@@ -8,7 +8,7 @@ description: >-
 ---
 ## Syntax
 
-There are two slightly different syntaxes for traversals in AQL, one for
+There are two slightly different syntax variants for traversals in AQL, one for
 - [named graphs](../../graphs/_index.md#named-graphs) and another to
 - specify a [set of edge collections](#working-with-collection-sets)
   ([anonymous graph](../../graphs/_index.md#anonymous-graphs)).

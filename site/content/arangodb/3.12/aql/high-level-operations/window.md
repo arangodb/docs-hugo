@@ -64,7 +64,7 @@ Calls to the following functions are supported in aggregation expressions:
 
 ## Row-based Aggregation
 
-The first syntax form of `WINDOW` allows aggregating over a fixed number of
+The first syntax variant of `WINDOW` allows aggregating over a fixed number of
 rows, following or preceding the current row. It is also possible to define
 that **all** preceding or following rows should be aggregated (`"unbounded"`).
 The number of rows has to be determined at query compile time.
@@ -175,7 +175,7 @@ previous row into account that belongs to subject `st113`.
 
 ## Range-based Aggregation
 
-The second syntax form of `WINDOW` allows aggregating over a all documents
+The second syntax variant of `WINDOW` allows aggregating over all documents
 within a value range. Offsets are differences in attribute values from the
 current document.
 
@@ -236,7 +236,7 @@ of `20`).
 ## Duration-based Aggregation
 
 Aggregating by time intervals is a subtype of range-based aggregation that
-uses the second syntax form of `WINDOW` but with ISO durations.
+uses the second syntax variant of `WINDOW` but with ISO durations.
 
 To support `WINDOW` frames over time-series data the `WINDOW` operation may
 calculate timestamp offsets using positive ISO 8601 duration strings, like

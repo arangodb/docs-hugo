@@ -12,7 +12,7 @@ data. For aggregation using a sliding window, see the [`WINDOW` operation](windo
 
 ## Syntax
 
-There are multiple syntax variants for `COLLECT` operations:
+There are multiple syntax variants for `COLLECT` operations.
 
 
 ```aql-syntax
