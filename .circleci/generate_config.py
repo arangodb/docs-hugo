@@ -313,6 +313,12 @@ def workflow_release_arangodb(config):
         if isinstance(job, dict) and "plain-build" in job:
             job["plain-build"]["requires"] = ["approve-workflow"]
 
+    # Tag the deployed commit at the end, if the version for versions.yaml is known
+    if args.arangodb_version:
+        release_jobs.append({"tag-release": {"arangodb-version": args.arangodb_version, "requires": ["deploy"]}})
+    else:
+        print("No arangodb-version, the release isn't tagged")
+
     config["workflows"]["release"]["jobs"] = jobs + [generateJob, approvalJob] + release_jobs
     return config
 

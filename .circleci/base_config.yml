@@ -402,6 +402,8 @@ jobs:
             git clone git@github.com:arangodb/docs-hugo.git
             cd /home/circleci/project/docs-hugo
             git fetch origin $CIRCLE_BRANCH:$CIRCLE_SHA1 && git checkout $CIRCLE_SHA1
+            # The built commit, for tagging ArangoDB releases (tag-release)
+            git rev-parse HEAD > /home/circleci/project/build-commit
 
 
       - run:
@@ -421,6 +423,7 @@ jobs:
           paths:
             - docs-hugo/site/public
             - docs-hugo/toolchain/frontend-tests
+            - build-commit
 
 
 
@@ -548,6 +551,73 @@ jobs:
             fi
 
 
+  # Tags the commit that the release workflow of an ArangoDB release built and
+  # deployed (plain-build) as v<arangodb-version>, e.g. v3.12.13. Only for ArangoDB
+  # releases, which bump the version in versions.yaml, not for docs releases
+  tag-release:
+    parameters:
+      arangodb-version:
+        type: string
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    environment:
+      GIT_SSH_COMMAND: "ssh -o IdentitiesOnly=yes"
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk" # arangodb/docs-hugo
+      - run: mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - attach_workspace:
+          at: .
+      - run:
+          name: Tag the release
+          environment:
+            ARANGODB_VERSION: << parameters.arangodb-version >>
+          command: |
+            set -eo pipefail
+            commit=$(cat build-commit)
+            tag="v$ARANGODB_VERSION"
+            mkdir tag && cd tag
+            git init -q
+            git remote add origin git@github.com:arangodb/docs-hugo.git
+            # The commits without file contents, for the ancestry check below
+            git fetch -q --filter=blob:none origin main "$commit"
+
+            # Only commits with the version, as the release workflow sets it
+            if ! git show "$commit:site/data/versions.yaml" | grep -q "^ *version: \"$ARANGODB_VERSION\""; then
+              echo "[ERROR] versions.yaml of $commit doesn't have version $ARANGODB_VERSION, is the release pull request merged?"
+              exit 1
+            fi
+
+            # Another run of the release workflow for the same version (e.g. to fix
+            # the generated content) is the publication then, so an existing tag is
+            # moved forward to it, but not to an unrelated commit (the commit of an
+            # annotated tag is the peeled ^{} entry, a lightweight tag only has the
+            # other one)
+            existing=$(git ls-remote origin "refs/tags/$tag^{}" | awk '{ print $1 }')
+            if [ -z "$existing" ]; then
+              existing=$(git ls-remote origin "refs/tags/$tag" | awk '{ print $1 }')
+            fi
+            force=()
+            if [ "$existing" == "$commit" ]; then
+              echo "Tag $tag already exists for $commit"
+              exit 0
+            elif [ -n "$existing" ]; then
+              if ! git merge-base --is-ancestor "$existing" "$commit" 2>/dev/null; then
+                echo "[ERROR] Tag $tag already exists for $existing, which isn't an ancestor of $commit, not moving it"
+                exit 1
+              fi
+              echo "Moving tag $tag from $existing to $commit (another run of the release workflow)"
+              force=(--force)
+            fi
+
+            git config user.name "CircleCI Job"
+            git config user.email "7819991+Simran-B@users.noreply.github.com"
+            git tag -a "$tag" -m "ArangoDB $ARANGODB_VERSION documentation release" "$commit"
+            git push "${force[@]}" origin "refs/tags/$tag"
+            echo "Tagged $commit as $tag"
+
   prepare-arangodb:
     description: "Determine the image of an upstream reference and clone the source code for the generators"
     parameters:
@@ -555,6 +625,9 @@ jobs:
         type: string
         default: ""
       version:
+        type: string
+        default: ""
+      branch:
         type: string
         default: ""
       enterprise:
@@ -581,6 +654,7 @@ jobs:
       - resolve-arangodb:
           ref: << parameters.arangodb-ref >>
           version: << parameters.version >>
+          branch: << parameters.branch >>
           enterprise: << parameters.enterprise >>
           image-template: << parameters.image-template >>
       - check-arangodb-image:
@@ -619,9 +693,6 @@ jobs:
       version:
         type: string
         default: ""
-      branch:
-        type: string
-        default: ""
       enterprise:
         type: string
         default: ""
@@ -644,7 +715,6 @@ jobs:
       - resolve-arangodb:
           ref: << parameters.arangodb-branch >>
           version: << parameters.version >>
-          branch: << parameters.branch >>
           enterprise: << parameters.enterprise >>
           image-template: << parameters.image-template >>
       - check-arangodb-image:

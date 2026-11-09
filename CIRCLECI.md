@@ -385,6 +385,18 @@ The ArangoDB release workflow includes the following jobs:
   needs to be reviewed and merged on GitHub
 - once merged, the workflow in CircleCI needs to be approved to start
   deploying to production at <https://docs.arango.ai>
+- after the deployment, the built commit is tagged as `v<arangodb-version>`
+  (e.g. `v3.12.13`), if its `versions.yaml` has this version. If the workflow
+  runs again for the same version (e.g. to fix the generated content), the tag
+  moves forward to the new commit, but never to a commit that doesn't contain
+  the tagged one. Docs releases (`release-type` other than `arangodb`) and
+  hotfix releases that only add release notes aren't tagged
+
+The tags of the releases published before that (3.10.11, 3.11.4, and later,
+all with the release workflow) were created once with
+`toolchain/scripts/tag-past-releases.py`, for the merge commits of the last
+`RELEASE_<version>-<build>` pull request of every version. Earlier releases were
+published with the former Jekyll toolchain.
 
 If any of the examples or generated content fails, the workflow fails as well.
 The build report can be found in the `generate-summary` check on GitHub.
