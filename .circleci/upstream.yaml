@@ -2,6 +2,11 @@
 # (generate_config.py, base_config.yml) and by the toolchain (toolchain.sh).
 # Versions without an entry can't be generated.
 #
+# - branch: the arangodb/arangodb branch the version is based on, `devel` for the
+#   version in development (the one with the "devel" alias in versions.yaml).
+#   The generators read its source code for nightly images, and the OpenAPI
+#   descriptions link to its LICENSE file (arangoproxy). Update it when the
+#   version in development gets a branch of its own (e.g. 4.x when 5.x starts)
 # - enterprise: the arangodb/enterprise branch for arangodb/arangodb branches that
 #   don't have an enterprise branch with the same name, as in the upstream CI
 #   (the default enterprise branch of the upstream branch the version is based on)
@@ -18,19 +23,23 @@
 
 # Deprecated, only release images like arangodb/enterprise:3.10.14
 "3.10":
+  branch: "3.10"
   enterprise: "3.10"
 
 "3.11":
+  branch: "3.11"
   enterprise: "3.11"
   image: "arangodb/docs-hugo:3.11-{main9}-{enterprise9}"
   build-image: "arangodb/ubuntubuildarangodb-311:latest"
 
 "3.12":
+  branch: "3.12"
   enterprise: "3.12"
   image: "public.ecr.aws/b0b8h2r4/arangodb/enterprise-preview:{main7}_{enterprise7}"
   nightly: "arangodb/enterprise-preview:3.12-nightly"
 
 "4.x":
+  branch: "devel"
   enterprise: "devel"
   image: "public.ecr.aws/b0b8h2r4/arangodb/core-preview:{main7}_{enterprise7}"
   nightly: "arangodb/core-preview:devel-nightly"

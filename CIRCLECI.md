@@ -253,10 +253,14 @@ The `metrics`, `error-codes`, and `exit-codes` generators read files from the
 source code of the `arangodb/arangodb` repository, which is cloned for them:
 - For PRs and branches, the commit of the image.
 - For images tagged with commits (the images built for branches), this commit.
-- For other images, the branch or tag that the image tag indicates. Anything
+- For nightly images (tags containing `nightly`), the branch the docs version is
+  based on (`3.12` for 3.12, `devel` for 4.x, see `branch` in
+  `.circleci/upstream.yaml`), as the tags don't necessarily name a branch
+  (`4.0-nightly` is a build of `devel`).
+- For other images, the release tag that the image tag indicates. Anything
   after the first `-` and after the third version number is removed
-  (`3.12-nightly` → `3.12`, `devel-nightly` → `devel`, `3.12.5.2` → `3.12.5`), and
-  the result needs to exist as a branch or tag in `arangodb/arangodb`.
+  (`3.12.5-1` → `3.12.5`, `3.12.5.2` → `3.12.5`), and the result needs to exist
+  as a tag (or branch) in `arangodb/arangodb`.
 
 Images can come from any registry if they can be pulled without
 authentication, for example, from public ECR or GCR:

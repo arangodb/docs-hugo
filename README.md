@@ -393,6 +393,21 @@ becomes `client-tools` or `client-tools-<suffix>`), pulls it if necessary, and r
 `arangosh` and the other client tools in a separate container. For images that bundle the server and the client tools
 (like `arangodb/enterprise:3.12.9`), the client tools run in the server container.
 
+The nightly images are built from the `arangodb/arangodb` branches that the docs
+versions are based on:
+
+| Docs version | Branch  | Nightly image |
+|:-------------|:--------|:--------------|
+| 4.x          | `devel` | `arangodb/core-preview:devel-nightly` (also tagged `4.0-nightly`) with `arangodb/client-tools-preview:devel-nightly` |
+| 3.12         | `3.12`  | `arangodb/enterprise-preview:3.12-nightly` |
+| 3.11         | `3.11`  | None, use release images or build images (see [CIRCLECI.md](CIRCLECI.md#build-arangodb-images)) |
+
+`devel` is where the 4.0 development happens. It used to be the 3.12 development
+branch, so `arangodb/enterprise-preview:devel-nightly` is an outdated 3.12 image
+that is no longer updated. Use `arangodb/enterprise-preview:3.12-nightly` for 3.12
+instead. The toolchain checks that the version of the server in an image matches
+the docs version and aborts if not (e.g. a 3.12 image for 4.x).
+
 Images that exist locally are used as they are, otherwise the toolchain pulls
 them. To get the latest build of an image with a tag that is updated regularly,
 like the nightly images, pull it manually before running the toolchain. For
@@ -1787,13 +1802,15 @@ It makes a warning show at the top of every page for that version.
    `versions.yaml`. The order doesn't matter.
 
    In the `.circleci/upstream.yaml` file, add an entry for the new version with
-   the default `arangodb/enterprise` branch, the naming of the images that the
+   the `arangodb/arangodb` branch it is based on (`devel` for the version in
+   development), the default `arangodb/enterprise` branch, the naming of the images that the
    CI of `arangodb/arangodb` builds for branches, and the nightly image (see the
    comments in the file and [CIRCLECI.md](CIRCLECI.md#build-arangodb-images)).
    Example:
 
    ```yaml
    "4.x":
+     branch: "devel"
      enterprise: "devel"
      image: "public.ecr.aws/b0b8h2r4/arangodb/core-preview:{main7}_{enterprise7}"
      nightly: "arangodb/core-preview:devel-nightly"
@@ -1981,6 +1998,17 @@ version. In this example, you need to adjust the `alias` of the 4.x entry.
 The work-in-progress versions of the ArangoDB documentation need to have
 `inDevelopment` set to `true`. Make sure to change it to `false` for the former
 devel version when it becomes the new stable version.
+
+The version with the `"devel"` alias is the one developed in the `devel` branch
+of `arangodb/arangodb`. When the former devel version gets a branch of its own
+(e.g. 4.x when the 5.0 development starts in `devel`), update `.circleci/upstream.yaml`:
+set `branch` of the former devel version to its new branch, adjust `enterprise`,
+`image`, and `nightly` accordingly, and add an entry for the new devel version
+(see [Add a new version](#add-a-new-version)). Also update the links to the
+`devel` branch in the content of the former devel version, like the changelog in
+`release-notes/_index.md` and `CONTRIBUTING.md` and `LICENSE`
+(`git grep -E "arangodb/arangodb/(blob|tree)/devel|arangodb/arangodb/devel/" site/content/arangodb/4.x`),
+and copy them with `devel` to the new version.
 
 The final configuration would then look like this:
 

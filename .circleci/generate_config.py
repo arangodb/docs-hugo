@@ -398,6 +398,7 @@ def prepare_jobs(refs, source):
                 "name": f"prepare-{version}",
                 "arangodb-ref": ref,
                 "version": version,
+                "branch": settings["branch"],
                 "enterprise": settings["enterprise"],
                 "image-template": settings.get("image", ""),
                 "image-hint": hint,
