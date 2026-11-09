@@ -434,6 +434,9 @@ executables, and the toolchain warns about it.
   container (e.g. `arangodb/ubuntubuildarangodb-devel`) work, too.
 - The version of the build needs to match the docs version and the version of the
   source tree (major and minor version).
+- Up to 3.12, the servers need V8 for server-side JavaScript, so don't use the
+  `*-no-v8` presets of 3.12. 4.x is V8-free: only `arangosh` uses JavaScript, and
+  the presets don't have such variants.
 - Prefer release-like presets like `nightly-package-x64` or
   `pr-non-maintainer-x64`. Developer builds with maintainer mode and assertions
   (e.g. the `developer-x64` preset) work, but the example output can differ from

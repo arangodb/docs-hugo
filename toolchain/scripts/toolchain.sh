@@ -452,6 +452,7 @@ function process_server() {
       client_container="$container_name"
       IFS=$'\x1f' read -r -a client_args <<< "${LOCAL_CLIENT_ARGS[$version]}"
     else
+      check_image_version "$image" "$version" "$container_name"
       setup_client_container "$image" "$version" "$container_name"
     fi
 
@@ -686,7 +687,8 @@ function run_local_build_containers() {
   fi
 
   ## Version information (one line each): build version, maintainer mode, assertions,
-  ## source version, directory name (arangodb3, arangodb4, ...), enterprise JS present
+  ## source version, directory name (arangodb3, arangodb4, ...), enterprise JS present,
+  ## V8 version ("none" without V8)
   mapfile -t info < <(local_build_exec "$build_dir" "$src_dir" '
     if [ ! -x /arangodb-build/bin/arangod ] || [ ! -x /arangodb-build/bin/arangosh ]; then echo; exit; fi
     v=$(/arangodb-build/bin/arangod --version 2>/dev/null)
@@ -695,7 +697,8 @@ function run_local_build_containers() {
     echo "$v" | sed -n "s/^assertions: //p"
     cat /arangodb-src/ARANGO-VERSION
     echo "$(sed -n "s/^CMAKE_PROJECT_NAME:STATIC=//p" /arangodb-build/CMakeCache.txt 2>/dev/null)"
-    [ -d /arangodb-src/enterprise/js ] && echo yes || echo')
+    [ -d /arangodb-src/enterprise/js ] && echo yes || echo
+    echo "$(echo "$v" | sed -n "s/^v8-version: //p")"')
   build_version="${info[0]}"
   if [ -z "$build_version" ]; then
     abort_with_error "No arangod and arangosh executables found in $build_dir/bin (or they don't run, only static builds are supported)"
@@ -708,6 +711,11 @@ function run_local_build_containers() {
   docs_prefix="${version%.x}"
   if [[ "$build_version" != "$docs_prefix".* ]]; then
     abort_with_error "The local build $build_dir is version $build_version, which doesn't match the docs version $version"
+  fi
+  ## Up to 3.x, the examples need server-side JavaScript (V8). 3.12 has presets
+  ## without V8 (*-no-v8), 4.0+ is V8-free
+  if [ "${build_version%%.*}" -lt 4 ] && [ "${info[6]}" == "none" ]; then
+    abort_with_error "The local build $build_dir ($build_version) is without V8, which version $version requires for server-side JavaScript. Build with a preset that includes V8 (not *-no-v8), e.g. nightly-package-x64"
   fi
   if [ "${build_version%.*}" != "${src_version%.*}" ]; then
     abort_with_error "The local build $build_dir ($build_version) doesn't match the source tree $src_dir ($src_version), set $src_var to a matching working copy"
@@ -819,6 +827,24 @@ function setup_client_container() {
   fi
   printf -v shown_args '%s ' "${client_args[@]}"
   log "[setup_client_container] Client container: $client_container, arangosh args: $shown_args"
+}
+
+### Abort if the server of an image isn't of the docs version (e.g. 3.12 for 3.12.11,
+### 4.x for 4.0.0), like for local builds. Image tags that refer to branches don't
+### say which version they are, e.g. arangodb/enterprise-preview:devel-nightly is a
+### discontinued 3.12 image since devel became 4.0 (arangodb/core-preview:devel-nightly)
+function check_image_version() {
+  local image="$1"
+  local version="$2"
+  local server_version=$(docker exec "$3" wget -q -O - 'http://127.0.0.1:8529/_api/version' 2>/dev/null | tr -d ' \n' | sed -n 's/.*"version":"\([^"]*\)".*/\1/p')
+  if [ -z "$server_version" ]; then
+    log "[WARNING] Could not determine the server version of $image"
+    return
+  fi
+  log "[check_image_version] $image is version $server_version"
+  if [[ "$server_version" != "${version%.x}".* ]]; then
+    abort_with_error "The image $image is version $server_version, which doesn't match the docs version $version"
+  fi
 }
 
 ### Warn if the server is a developer build, whose output can differ from releases
