@@ -1,7 +1,7 @@
 ---
 title: '`MATCH` operation in AQL'
 menuTitle: MATCH
-weight: 80
+weight: 6
 description: >-
   The experimental `MATCH` operation lets you query graphs by describing the
   pattern of nodes and edges you want to find, similar to Cypher and GQL

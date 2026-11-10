@@ -59,10 +59,10 @@ On the top level, AQL offers the following
 | Operation | Description
 |:----------|:-----------
 | `FOR`     | Array iteration
+| `MATCH`   | Graph pattern matching (experimental)
 | `RETURN`  | Results projection
 | `FILTER`  | Non-View results filtering
 | `SEARCH`  | View results filtering
-| `MATCH`   | Graph pattern matching (experimental)
 | `SORT`    | Result sorting
 | `LIMIT`   | Result slicing
 | `LET`     | Variable assignment
@@ -192,6 +192,8 @@ based on the context:
   [All Shortest Paths](../graph-queries/all-shortest-paths.md) /
   [k Shortest Paths](../graph-queries/k-shortest-paths.md) /
   [k Paths](../graph-queries/k-paths.md)
+- `WHERE` –
+  [MATCH](../high-level-operations/match.md#match-nodes) operation
 
 Last but not least, there are special variables which are available in certain
 contexts. Unlike keywords, they are **case-sensitive**:
