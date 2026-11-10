@@ -13,7 +13,7 @@ Community Edition, starting with version 3.12.
 
 The Apache 2.0 license is replaced by the source-available
 Business Source License 1.1 (BUSL-1.1). The full license text is available on
-GitHub: <https://github.com/arangodb/arangodb/blob/devel/LICENSE>
+GitHub: <https://github.com/arangodb/arangodb/blob/3.12/LICENSE>
 
 The official, prepackaged ArangoDB Community Edition binaries are now governed
 by a new ArangoDB Community License, which limits deployments to a 100 GiB on

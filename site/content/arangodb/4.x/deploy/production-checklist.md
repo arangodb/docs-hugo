@@ -67,7 +67,7 @@ have been performed on your production system before you go live.
   production monitoring:
   - Set [`--server.export-metrics-api`](../components/arangodb-server/options.md#--serverexport-metrics-api)
     to `true` to enable the metrics endpoints.
-  - Enable [`--server.export-read-write-metrics`](../components/arangodb-server/options.md#--serverexport-read-write-metrics)
+  - Enable [`--rocksdb.export-read-write-metrics`](../components/arangodb-server/options.md#--rocksdbexport-read-write-metrics)
     for additional document read/write metrics.
   - Consider enabling [`--server.export-shard-usage-metrics`](../components/arangodb-server/options.md#--serverexport-shard-usage-metrics)
     for detailed shard usage tracking.
