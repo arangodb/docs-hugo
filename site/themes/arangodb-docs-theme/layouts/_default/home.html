@@ -1,8 +1,9 @@
 {{ define "main" -}}
-{{ $stable := "arangodb/stable/" -}}
-{{ $icons := "img/home/" -}}
+{{ $home := .Params.home -}}
 {{ $arrow := `<svg class="arr" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.333 8h9.334M8.667 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` | safeHTML -}}
 {{ $external := `<svg class="ext" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.667 11.333l6.666-6.666M4.667 4.667h6.666v6.666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` | safeHTML -}}
+{{ $versions := index hugo.Data.versions "/arangodb/" -}}
+{{ $stableVersion := (index (where $versions "alias" "stable") 0).name -}}
 <article class="home home-landing hd no-zoom">
   <style>
     .hd { --hd-ink: #0F172B; --hd-text: #1D293D; --hd-muted: #62748E; --hd-link: #00576E; --hd-soft: #F1F5F9; --hd-soft-hover: #E2E8F0; --hd-line: #E2E8F0; --hd-card-line: #D4D4D4; font-family: var(--font-content); color: var(--hd-text); }
@@ -79,120 +80,76 @@
     .hd-list.community a { font-weight: 600; gap: 6px; }
   </style>
 
+  {{- /* The content lives in the front matter of content/_index.md */}}
   <h1>{{ .Title | markdownify }}</h1>
   <p class="hd-sub">{{ .Description | markdownify }}</p>
   <button type="button" class="hd-search" data-open-search aria-label="Search the documentation">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M14 14l-2.9-2.9M12.667 7.333A5.333 5.333 0 1 1 2 7.333a5.333 5.333 0 0 1 10.667 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <span>Search in the docs</span><kbd data-search-kbd>Ctrl K</kbd>
   </button>
-  {{- /* Hardcoded from the docs analytics top pages and entry pages (Sep 2026) */}}
   <div class="hd-popular">
     <span class="lbl">Popular searches</span>
-    <a class="link" href="{{ (print $stable "aql/fundamentals/") | relURL }}">AQL fundamentals</a>
-    <a class="link" href="{{ (print $stable "aql/functions/") | relURL }}">AQL functions</a>
-    <a class="link" href="{{ (print $stable "aql/graph-queries/traversals/") | relURL }}">Graph traversals</a>
-    <a class="link" href="{{ "platform-suite/graph-visualizer/" | relURL }}">Graph Visualizer</a>
-    <a class="link" href="{{ "ecosystem/drivers/python/" | relURL }}">Python driver</a>
-    <a class="link" href="{{ "ecosystem/drivers/java/" | relURL }}">Java driver</a>
+    {{- range $home.popular }}
+    <a class="link" href="{{ (partial "resolve-link.html" (dict "link" .link "page" $)).href }}">{{ .title }}</a>
+    {{- end }}
   </div>
 
-  <div class="hd-sec"><h2 id="get-started">Get started in minutes</h2><a class="more link" href="{{ "get-started/" | relURL }}">All Get started guides{{ $arrow }}</a></div>
+  {{- with $home.start }}
+  <div class="hd-sec"><h2 id="get-started">{{ .title }}</h2>
+    {{- with .more }}<a class="more link" href="{{ (partial "resolve-link.html" (dict "link" .link "page" $)).href }}">{{ .title }}{{ $arrow }}</a>{{ end }}</div>
   <section class="hd-grid">
-    <a class="hd-start link" href="{{ "get-started/what-is-arango/" | relURL }}">
-      <span class="top"><img src="{{ (print $icons "start-what-is.svg") | relURL }}" alt=""><strong>What is Arango?</strong></span>
-      <span class="d">How the products fit together</span>
-      <span class="cta">Read the overview{{ $arrow }}</span>
+    {{- range .items }}
+    <a class="hd-start link" href="{{ (partial "resolve-link.html" (dict "link" .link "page" $)).href }}">
+      <span class="top"><img src="{{ .icon }}" alt=""><strong>{{ .title }}</strong></span>
+      <span class="d">{{ .description }}</span>
+      <span class="cta">{{ .cta }}{{ $arrow }}</span>
     </a>
-    <a class="hd-start link" href="{{ "get-started/contextual-data-platform/" | relURL }}">
-      <span class="top"><img src="{{ (print $icons "start-platform.svg") | relURL }}" alt=""><strong>Contextual Data Platform</strong></span>
-      <span class="d">About 10 minutes</span>
-      <span class="cta">Install the platform{{ $arrow }}</span>
-    </a>
-    <a class="hd-start link" href="{{ "get-started/arangodb/" | relURL }}">
-      <span class="top"><img src="{{ (print $icons "start-arangodb.svg") | relURL }}" alt=""><strong>ArangoDB</strong></span>
-      <span class="d">About 2 minutes in Docker</span>
-      <span class="cta">Run ArangoDB{{ $arrow }}</span>
-    </a>
+    {{- end }}
   </section>
+  {{- end }}
 
-  <div class="hd-sec"><h2 id="browse">Browse the documentation</h2></div>
+  {{- with $home.browse }}
+  <div class="hd-sec"><h2 id="browse">{{ .title }}</h2></div>
   <section class="hd-grid">
+    {{- range .items }}
+    {{- /* Keep the last word with the arrow so the arrow never wraps alone */}}
+    {{- $words := split .title " " }}
+    {{- $last := index (last 1 $words) 0 }}
+    {{- $rest := delimit (first (sub (len $words) 1) $words) " " }}
     <div class="hd-card card">
-      <h3><a class="link" href="{{ "agentic-ai-suite/autograph/" | relURL }}"><img src="{{ (print $icons "graph.svg") | relURL }}" alt=""><span class="t">AutoGraph{{ $arrow }}</span></a></h3>
-      <p>Turn documents into a knowledge graph and keep it current as your content changes.</p>
+      <h3><a class="link" href="{{ (partial "resolve-link.html" (dict "link" .link "page" $)).href }}"><img src="{{ .icon }}" alt=""><span class="t">{{ with $rest }}{{ . }} {{ end }}<span class="nw">{{ $last }}{{ $arrow }}</span></span></a></h3>
+      <p>{{ .description }}</p>
       <div class="hd-tags">
-        <a class="link" href="{{ "agentic-ai-suite/autograph/quick-start/" | relURL }}">Quick start</a>
-        <a class="link" href="{{ "agentic-ai-suite/autograph/web-interface/" | relURL }}">Web interface</a>
-        <a class="link" href="{{ "agentic-ai-suite/autograph/incremental-graph-updates/" | relURL }}">Incremental updates</a>
+        {{- range .tags }}
+        <a class="link" href="{{ (partial "resolve-link.html" (dict "link" .link "page" $)).href }}">{{ .title }}</a>
+        {{- end }}
       </div>
     </div>
-    <div class="hd-card card">
-      <h3><a class="link" href="{{ "agentic-ai-suite/autorag/" | relURL }}"><img src="{{ (print $icons "sparkles.svg") | relURL }}" alt=""><span class="t">AutoRAG{{ $arrow }}</span></a></h3>
-      <p>Retrieve graph-grounded context and answer questions over your knowledge graph.</p>
-      <div class="hd-tags">
-        <a class="link" href="{{ "agentic-ai-suite/autorag/quick-start/" | relURL }}">Quick start</a>
-        <a class="link" href="{{ "agentic-ai-suite/autorag/search-methods/" | relURL }}">Search methods</a>
-        <a class="link" href="{{ "agentic-ai-suite/autorag/executing-queries/" | relURL }}">Execute queries</a>
-      </div>
-    </div>
-    <div class="hd-card card">
-      <h3><a class="link" href="{{ "agentic-ai-suite/natural-language-to-aql/" | relURL }}"><img src="{{ (print $icons "assistant.svg") | relURL }}" alt=""><span class="t">Natural Language to <span class="nw">AQL{{ $arrow }}</span></span></a></h3>
-      <p>Ask questions of your data in plain language and get AQL queries and answers.</p>
-      <div class="hd-tags">
-        <a class="link" href="{{ "agentic-ai-suite/natural-language-to-aql/quick-start/" | relURL }}">Quick start</a>
-        <a class="link" href="{{ "agentic-ai-suite/natural-language-to-aql/web-interface/" | relURL }}">Web interface</a>
-      </div>
-    </div>
-    <div class="hd-card card">
-      <h3><a class="link" href="{{ "agentic-ai-suite/graphml/" | relURL }}"><img src="{{ (print $icons "analytics.svg") | relURL }}" alt=""><span class="t">GraphML &amp; Graph <span class="nw">Analytics{{ $arrow }}</span></span></a></h3>
-      <p>Train models and run analytics on graph structure.</p>
-      <div class="hd-tags">
-        <a class="link" href="{{ "agentic-ai-suite/graphml/quick-start/" | relURL }}">GraphML quick start</a>
-        <a class="link" href="{{ "agentic-ai-suite/graphml/ui/" | relURL }}">GraphML web interface</a>
-        <a class="link" href="{{ "agentic-ai-suite/graph-analytics/quick-start/" | relURL }}">Graph Analytics quick start</a>
-        <a class="link" href="{{ "agentic-ai-suite/graph-analytics/web-interface/" | relURL }}">Graph Analytics web interface</a>
-      </div>
-    </div>
-    <div class="hd-card card">
-      <h3><a class="link" href="{{ (print $stable) | relURL }}"><img src="{{ (print $icons "database.svg") | relURL }}" alt=""><span class="t">ArangoDB core{{ $arrow }}</span></a></h3>
-      <p>The multi-model database and its query language.</p>
-      <div class="hd-tags">
-        <a class="link" href="{{ (print $stable "aql/") | relURL }}">AQL</a>
-        <a class="link" href="{{ (print $stable "graphs/") | relURL }}">Graphs</a>
-        <a class="link" href="{{ (print $stable "indexes-and-search/") | relURL }}">Indexes and search</a>
-        <a class="link" href="{{ (print $stable "develop/http-api/") | relURL }}">HTTP API</a>
-      </div>
-    </div>
-    <div class="hd-card card">
-      <h3><a class="link" href="{{ "ecosystem/" | relURL }}"><img src="{{ (print $icons "layers.svg") | relURL }}" alt=""><span class="t">Ecosystem{{ $arrow }}</span></a></h3>
-      <p>Connect your applications with the AI SDK, official drivers, and integrations.</p>
-      <div class="hd-tags">
-        <a class="link" href="{{ "ecosystem/arango-ai-sdk/" | relURL }}">AI SDK</a>
-        <a class="link" href="{{ "ecosystem/drivers/" | relURL }}">Drivers</a>
-        <a class="link" href="{{ "ecosystem/integrations/" | relURL }}">Integrations</a>
-      </div>
-    </div>
+    {{- end }}
   </section>
+  {{- end }}
 
   <div class="hd-bottom">
+    {{- with $home.news }}
     <div>
-      <div class="hd-sec"><h2 id="whats-new">What's new</h2></div>
+      <div class="hd-sec"><h2 id="whats-new">{{ .title }}</h2></div>
       <nav class="hd-list">
-        {{- $versions := index hugo.Data.versions "/arangodb/" }}
-        {{- $stableVersion := (index (where $versions "alias" "stable") 0).name }}
-        <a class="link" data-unversioned href="{{ (print $stable "release-notes/") | relURL }}">ArangoDB {{ $stableVersion }} release notes <span class="hd-badge">Stable</span>{{ $arrow }}</a>
-        <a class="link" href="{{ "contextual-data-platform/release-notes/" | relURL }}">Contextual Data Platform release notes{{ $arrow }}</a>
-        <a class="link" href="{{ "ecosystem/arango-ai-sdk/" | relURL }}">Arango AI SDK <span class="hd-badge">New</span>{{ $arrow }}</a>
+        {{- range .items }}
+        <a class="link"{{ if .unversioned }} data-unversioned{{ end }} href="{{ (partial "resolve-link.html" (dict "link" .link "page" $)).href }}">{{ replace .title "{stable}" $stableVersion }}{{ with .badge }} <span class="hd-badge">{{ . }}</span>{{ end }}{{ $arrow }}</a>
+        {{- end }}
       </nav>
     </div>
+    {{- end }}
+    {{- with $home.community }}
     <div>
-      <div class="hd-sec"><h2 id="community">Community</h2></div>
+      <div class="hd-sec"><h2 id="community">{{ .title }}</h2></div>
       <nav class="hd-list community">
-        <a href="https://github.com/arangodb/arangodb" target="_blank" rel="noopener">GitHub{{ $external }}</a>
-        <a href="https://arango.ai/join-discord" target="_blank" rel="noopener">Discord{{ $external }}</a>
-        <a href="https://arango.ai/resources/" target="_blank" rel="noopener">Resources{{ $external }}</a>
+        {{- range .items }}
+        <a href="{{ .link }}" target="_blank" rel="noopener">{{ .title }}{{ $external }}</a>
+        {{- end }}
       </nav>
     </div>
+    {{- end }}
   </div>
 </article>
 {{ end -}}

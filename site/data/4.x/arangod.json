@@ -9624,7 +9624,7 @@
     "section" : "server",
     "type" : "boolean"
   },
-  "server.export-read-write-metrics" : {
+  "rocksdb.export-read-write-metrics" : {
     "category" : "option",
     "component" : [
       "dbserver",
