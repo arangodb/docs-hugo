@@ -114,10 +114,22 @@ Adding extracts the text, creates an embedding, stores the document, assigns the
 closest existing cluster, and adds the membership and similarity edges. It only
 changes the corpus graph. To add the document to the knowledge graph, start
 a [knowledge graph build](#build-the-knowledge-graph-for-changed-documents) with
-its `file_id`. AutoGraph resolves the partition itself, so you do not pass one.
-Because every added document has a File Manager ID, it can always be passed to
-the build, see
+its `file_id`. AutoGraph resolves the partition itself, so you do not pass one,
+see
 [Identifying documents for the knowledge graph](#identifying-documents-for-the-knowledge-graph).
+
+The build only processes a document that is in a cluster with a strategy. Check
+`cluster_key` and `rag_partition_id` in the response before you start it:
+
+| Response | What it means | What to do |
+|----------|---------------|------------|
+| Both are set | The document is in a cluster with a strategy. | Pass its `file_id` to the knowledge graph build. |
+| `cluster_key` is set, `rag_partition_id` is empty | The cluster has no strategy yet. The build skips the document. | Run the [RAG Strategizer](../reference/rag-strategizer.md) for the category, then start the build. |
+| Both are empty | No existing cluster is similar enough. The build skips the document. | Build the category again, see [When to use IGU](_index.md#when-to-use-igu). |
+
+The build lists skipped documents in `unmatched_file_ids`. If it skips all of
+them, it returns `409`, see
+[Telling the three `409` responses apart](../reference/orchestration.md#telling-the-three-409-responses-apart).
 
 | Status Code | Meaning |
 |-------------|---------|
@@ -357,7 +369,10 @@ have no `module` field at all.
 
 `accepted: true` means that replacing has been validated and started, not that
 it is done. Poll the `importerOrchestration` entry in the metadata of your
-platform project. Replacing goes through the following phases. In their
+platform project, which
+[`GET /_platform/acp/v1/project_by_name/{database}/{project}`](../../control-plane-acp/api.md#get-project-details)
+returns. The progress is in its `message` field, as a JSON string. Replacing
+goes through the following phases. In their
 names, `L3` stands for the knowledge graph and `L12` for the corpus graph:
 
 1. `DELETE_L3`: AutoGraph removes the old knowledge graph data with AQL queries
@@ -371,7 +386,7 @@ Replacing uses the same logic as a standalone [removal](#remove-documents).
 It saves a snapshot of the knowledge graph data and removes that data before it
 changes the corpus graph.
 
-A final status message looks like this:
+The final `message`, parsed, looks like this:
 
 ```json
 {

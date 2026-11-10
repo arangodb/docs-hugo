@@ -16,6 +16,12 @@ the [RAG Strategizer](../reference/rag-strategizer.md) do not run again, and
 the rest of the category stays as it is. This makes small changes much cheaper
 and faster than a rebuild.
 
+An AutoGraph project groups your documents into **categories**, which you
+define in the File Manager, such as `legal` or `finance`. When a category is
+built, AutoGraph sorts its documents into **clusters** of similar documents and
+chooses a retrieval strategy for each cluster. The part of the knowledge graph
+that is built from one cluster is a **partition**.
+
 {{< info >}}
 **IGU is API-only in Arango Contextual Data Platform 4.1.x.** You can add,
 remove, replace, and reorganize documents through the
@@ -36,17 +42,33 @@ category, run a [corpus build](../reference/corpus-build.md), the
 To get started, see the [Quick Start](quick-start.md). For the requests and
 responses, see the [API Reference](api-reference.md).
 
+## When to use IGU
+
+Use IGU for changes that are small compared to the size of the category. A
+batch of documents is fine. A large change raises the
+[divergence](divergence-and-reorganization.md) and leads to an expensive
+reorganization.
+
+In other cases, use one of the following:
+
+| Situation | Use instead |
+|-----------|-------------|
+| No knowledge graph exists yet | The [standard workflow](../reference/_index.md#standard-workflow) |
+| A new category | A [corpus build](../reference/corpus-build.md) with `incremental: false` for the new category, the RAG Strategizer, and a knowledge graph build |
+| Many new documents for an existing category | An [incremental corpus build](../reference/corpus-build.md#incremental-builds) with `incremental: true` |
+| A category has to be built again, for example because of wrong embeddings or clusters | A full build of only that category. [Delete the category](../reference/project-operations.md#delete-category) without `delete_files`, so that its files stay in the File Manager. Then run a corpus build with `incremental: false`, the RAG Strategizer, and a knowledge graph build, each with only this category in `categories`. The other categories do not change |
+| Only vectors on an existing collection | [`POST /v1/embed-field-in-collection`](../reference/embeddings.md) |
+
 ## Operations
 
 An AutoGraph project has two graphs, and IGU updates both of them:
 
 - The **corpus graph** is a map of your documents. It shows which documents are
-  similar to each other (similarity edges), and which **cluster** of similar
-  documents each one belongs to. Each cluster has a retrieval strategy.
+  similar to each other (similarity edges), and which cluster each one belongs
+  to.
 - The **knowledge graph** contains the **entities** found in the documents,
   such as people, products, or contracts, and the **relationships** between
-  them. The part of the knowledge graph that is built from one cluster is a
-  **partition**.
+  them.
 
 IGU has four operations. The API uses its own names for them.
 
@@ -166,20 +188,3 @@ IGU cannot change the strategy of a cluster or add strategies. If a category
 has changed a lot, or new documents cover new topics, build the category again,
 see [When to use IGU](#when-to-use-igu). For the full data model, see
 [Architecture](../architecture.md).
-
-## When to use IGU
-
-Use IGU for changes that are small compared to the size of the category. A
-batch of documents is fine. A large change raises the
-[divergence](divergence-and-reorganization.md) and leads to an expensive
-reorganization.
-
-In other cases, use one of the following:
-
-| Situation | Use instead |
-|-----------|-------------|
-| No knowledge graph exists yet | The [standard workflow](../reference/_index.md#standard-workflow) |
-| A new category | A [corpus build](../reference/corpus-build.md) with `incremental: false` for the new category, the RAG Strategizer, and a knowledge graph build |
-| Many new documents for an existing category | An [incremental corpus build](../reference/corpus-build.md#incremental-builds) with `incremental: true` |
-| A category has to be built again, for example because of wrong embeddings or clusters | A full build of only that category. [Delete the category](../reference/project-operations.md#delete-category) without `delete_files`, so that its files stay in the File Manager. Then run a corpus build with `incremental: false`, the RAG Strategizer, and a knowledge graph build, each with only this category in `categories`. The other categories do not change |
-| Only vectors on an existing collection | [`POST /v1/embed-field-in-collection`](../reference/embeddings.md) |
