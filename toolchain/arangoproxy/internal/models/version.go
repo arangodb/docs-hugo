@@ -22,3 +22,27 @@ func LoadVersions() map[string][]Version {
 
 	return versions
 }
+
+// The arangodb/arangodb branch each docs version is based on (e.g. "devel" for
+// the version in development), from the branch settings of .circleci/upstream.yaml
+func LoadUpstreamBranches() map[string]string {
+	branches := map[string]string{}
+	yamlFile, err := os.ReadFile("/home/.circleci/upstream.yaml")
+	if err != nil {
+		Logger.Printf("[WARNING] Reading .circleci/upstream.yaml: %s", err.Error())
+		return branches
+	}
+	settings := map[string]struct {
+		Branch string `yaml:"branch"`
+	}{}
+	if err := yaml.Unmarshal(yamlFile, &settings); err != nil {
+		Logger.Printf("[WARNING] Parsing .circleci/upstream.yaml: %s", err.Error())
+		return branches
+	}
+	for version, s := range settings {
+		if s.Branch != "" {
+			branches[version] = s.Branch
+		}
+	}
+	return branches
+}

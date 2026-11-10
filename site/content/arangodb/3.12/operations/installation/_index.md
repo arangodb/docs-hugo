@@ -20,7 +20,7 @@ see the [Docker](docker.md) section.
 {{< /tip >}}
 
 If you prefer to compile ArangoDB from source, please refer to the
-[Contributing guidelines](https://github.com/arangodb/arangodb/blob/devel/CONTRIBUTING.md).
+[Contributing guidelines](https://github.com/arangodb/arangodb/blob/3.12/CONTRIBUTING.md).
 
 For detailed information on how to deploy ArangoDB, once it has been installed,
 please refer to the [Deploy](../../deploy/_index.md) chapter.
