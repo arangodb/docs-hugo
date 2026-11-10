@@ -250,18 +250,27 @@ func init() {
 		2: " (API experimental)",
 	}
 
+	upstreamBranches := models.LoadUpstreamBranches()
+
 	for key, versionList := range Versions {
 		if key != "/arangodb/" {
 			continue
 		}
 		for _, version := range versionList {
+			// The LICENSE file of the arangodb/arangodb branch the version is based
+			// on (branch in .circleci/upstream.yaml, e.g. devel for the version in
+			// development), else of the branch with the version name
+			licenseBranch, ok := upstreamBranches[version.Name]
+			if !ok {
+				models.Logger.Printf("[WARNING] No branch for version %s in .circleci/upstream.yaml, linking the LICENSE file of branch %s", version.Name, version.Name)
+				licenseBranch = version.Name
+			}
 			license := map[string]interface{}{
 				"name": "Business Source License 1.1",
-				"url":  "https://github.com/arangodb/arangodb/blob/devel/LICENSE",
+				"url":  fmt.Sprintf("https://github.com/arangodb/arangodb/blob/%s/LICENSE", licenseBranch),
 			}
 			if version.Name == "3.10" || version.Name == "3.11" {
 				license["name"] = "Apache 2.0"
-				license["url"] = fmt.Sprintf("https://github.com/arangodb/arangodb/blob/%s/LICENSE", version.Name)
 			}
 			for _, apiIdx := range arangoDBAllowedAPIVersionIndices(version.Name) {
 				mapKey := fmt.Sprintf("%s_%d", version.Name, apiIdx)

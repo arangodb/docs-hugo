@@ -244,6 +244,51 @@ You can additionally set the `HUGO_URL` environment variable to
 `https://docs.arango.ai/` to create a production-like build that
 includes Google Analytics etc.
 
+#### Frontend tests
+
+Browser tests with [Playwright](https://playwright.dev/) check the
+functionality of the built site, like the navigation, version selector, copy
+buttons, tabs, image viewer, and keyboard access, in Chromium, Firefox, and WebKit on desktop and
+mobile viewports. They are in `toolchain/frontend-tests/`.
+
+CircleCI runs them before deploying a release, after scheduled and example
+generation builds, and after plain builds if the changes compared to `main`
+touch the theme, site configuration, static files, versions, the tests, or the
+CircleCI configuration (in parallel to the deploy preview).
+
+To run them locally, create a static build first (see [Plain build](#plain-build)
+with `ENV=static`) so that `site/public/` exists. Then install the dependencies
+and browsers once, and run the tests:
+
+```sh
+cd toolchain/frontend-tests
+npm ci
+npx playwright install chromium firefox   # add webkit if your system supports it
+npx playwright test --project chromium --project mobile-chromium --project firefox
+```
+
+The tests serve `site/public/` themselves. You can test another build with
+`SITE_DIR=path/to/public` or a deployed site, like a deploy preview, with
+`BASE_URL`:
+
+```sh
+BASE_URL=https://deploy-preview-1234--docs-hugo.netlify.app npx playwright test
+```
+
+To run all browsers including WebKit, which doesn't run natively on every Linux
+distribution, use the same Docker image as CircleCI. Arguments are passed to
+`playwright test`:
+
+```sh
+toolchain/frontend-tests/run-in-docker.sh
+toolchain/frontend-tests/run-in-docker.sh --project webkit -g "version selector"
+```
+
+After a run, `npm run report` opens the report with screenshots and traces of
+failed tests, and `npx playwright test --ui` lets you run and debug tests
+interactively. For writing tests and updating Playwright, see
+[toolchain/frontend-tests/README.md](toolchain/frontend-tests/README.md).
+
 #### Scheduled and example generation build
 
 **Configuration**
@@ -253,16 +298,16 @@ The toolchain is configured with environment variables:
 - `GENERATORS`: the generators to run as a space-separated string (see below).
   All generators run if it is empty.
 - `ARANGODB_BRANCH_{VERSION}`: the ArangoDB Docker image to use for a docs version,
-  for example, `arangodb/enterprise-preview:devel-nightly`,
-  `arangodb/core-preview:4.0-nightly`, or `arangodb/enterprise:3.12.9`
+  for example, `arangodb/enterprise-preview:3.12-nightly`,
+  `arangodb/core-preview:devel-nightly`, or `arangodb/enterprise:3.12.9`
   (Docker Hub if no registry is given, other registries like
-  `gcr.io/gcr-for-testing/arangodb/core-preview:4.0-nightly` work, too),
+  `gcr.io/gcr-for-testing/arangodb/core-preview:devel-nightly` work, too),
   or the absolute path of a local build (see **Local builds** below).
-  It can also be a branch name of the `arangodb/arangodb` repository if CI
-  compiled it before: the toolchain then uses the cached image
-  `arangodb/docs-hugo:<version>-<arangodb commit>-<enterprise commit>` (see
-  [CIRCLECI.md](CIRCLECI.md#upstream-references)) for the commits checked out in
-  `ARANGODB_SRC_{VERSION}` (including its `enterprise` folder).
+  It can also be a branch name of the `arangodb/arangodb` repository if an image
+  was built for it (see [CIRCLECI.md](CIRCLECI.md#build-arangodb-images)): the
+  toolchain then uses the image of the commits checked out in
+  `ARANGODB_SRC_{VERSION}` (including its `enterprise` folder), named as
+  configured in `.circleci/upstream.yaml`.
   No server is started for a version if it is empty, and its content is not
   regenerated.
 - `ARANGODB_SRC_{VERSION}`: the absolute path to a working copy of the
@@ -296,14 +341,14 @@ so you can use one server per version.
 export GENERATORS="examples options optimizer"
 export ARANGODB_BRANCH_3_12="arangodb/enterprise:3.12.9"
 export ARANGODB_SRC_3_12="path/to/arangodb"
-export ARANGODB_BRANCH_4_X="arangodb/core-preview:4.0-nightly"
+export ARANGODB_BRANCH_4_X="arangodb/core-preview:devel-nightly"
 export ARANGODB_SRC_4_X="path/to/arangodb2"
 ```
 
 ```fish
 # Fish
 set -xg GENERATORS "examples options optimizer"
-set -xg ARANGODB_BRANCH_4_X arangodb/core-preview:4.0-nightly
+set -xg ARANGODB_BRANCH_4_X arangodb/core-preview:devel-nightly
 ```
 
 On Windows using PowerShell, use a Unix-like path:
@@ -340,7 +385,7 @@ OVERRIDE=".*" docker compose up   # Bash and Fish
 
 Starting with 4.x, the server (`arangod`, without V8) and the client tools
 (including `arangosh`) are in separate images, for example,
-`arangodb/core-preview:4.0-nightly` and `arangodb/client-tools-preview:4.0-nightly`.
+`arangodb/core-preview:devel-nightly` and `arangodb/client-tools-preview:devel-nightly`.
 Only specify the server image (`core`/`core-preview`). The toolchain derives the
 matching client tools image (`client-tools`/`client-tools-preview` in the same
 registry, with the same tag; generally, a repository name `core` or `core-<suffix>`
@@ -348,14 +393,29 @@ becomes `client-tools` or `client-tools-<suffix>`), pulls it if necessary, and r
 `arangosh` and the other client tools in a separate container. For images that bundle the server and the client tools
 (like `arangodb/enterprise:3.12.9`), the client tools run in the server container.
 
+The nightly images are built from the `arangodb/arangodb` branches that the docs
+versions are based on:
+
+| Docs version | Branch  | Nightly image |
+|:-------------|:--------|:--------------|
+| 4.x          | `devel` | `arangodb/core-preview:devel-nightly` (also tagged `4.0-nightly`) with `arangodb/client-tools-preview:devel-nightly` |
+| 3.12         | `3.12`  | `arangodb/enterprise-preview:3.12-nightly` |
+| 3.11         | `3.11`  | None, use release images or build images (see [CIRCLECI.md](CIRCLECI.md#build-arangodb-images)) |
+
+`devel` is where the 4.0 development happens. It used to be the 3.12 development
+branch, so `arangodb/enterprise-preview:devel-nightly` is an outdated 3.12 image
+that is no longer updated. Use `arangodb/enterprise-preview:3.12-nightly` for 3.12
+instead. The toolchain checks that the version of the server in an image matches
+the docs version and aborts if not (e.g. a 3.12 image for 4.x).
+
 Images that exist locally are used as they are, otherwise the toolchain pulls
 them. To get the latest build of an image with a tag that is updated regularly,
 like the nightly images, pull it manually before running the toolchain. For
 versions with separate server and client tools images, pull both:
 
 ```sh
-docker pull arangodb/core-preview:4.0-nightly
-docker pull arangodb/client-tools-preview:4.0-nightly
+docker pull arangodb/core-preview:devel-nightly
+docker pull arangodb/client-tools-preview:devel-nightly
 ```
 
 The same applies to the images of the toolchain itself
@@ -389,6 +449,9 @@ executables, and the toolchain warns about it.
   container (e.g. `arangodb/ubuntubuildarangodb-devel`) work, too.
 - The version of the build needs to match the docs version and the version of the
   source tree (major and minor version).
+- Up to 3.12, the servers need V8 for server-side JavaScript, so don't use the
+  `*-no-v8` presets of 3.12. 4.x is V8-free: only `arangosh` uses JavaScript, and
+  the presets don't have such variants.
 - Prefer release-like presets like `nightly-package-x64` or
   `pr-non-maintainer-x64`. Developer builds with maintainer mode and assertions
   (e.g. the `developer-x64` preset) work, but the example output can differ from
@@ -1715,6 +1778,14 @@ It makes a warning show at the top of every page for that version.
    +    default: "undefined"
    ```
 
+   Under `jobs.generate-config.environment`, add an environment variable for
+   the parameter. Example:
+
+   ```diff
+         PARAM_ARANGODB_3_12: << pipeline.parameters.arangodb-3_12 >>
+   +     PARAM_ARANGODB_4_X: << pipeline.parameters.arangodb-4_x >>
+   ```
+
    Near the end of the file under `jobs.generate-config.steps[0].run.command`,
    find the line of code that calls `python3 generate_config.py`. In one of the
    following lines, a parameter for every version is passed as argument. Add one
@@ -1722,13 +1793,28 @@ It makes a warning show at the top of every page for that version.
 
    ```diff
                 python3 generate_config.py \
-                  --workflow << pipeline.parameters.workflow >> \
-   -              --arangodb-branches 3.11="<< pipeline.parameters.arangodb-3_11 >>" 3.12="<< pipeline.parameters.arangodb-3_12 >>" \
-   +              --arangodb-branches 3.11="<< pipeline.parameters.arangodb-3_11 >>" 3.12="<< pipeline.parameters.arangodb-3_12 >>" 4.x="<< pipeline.parameters.arangodb-4_x >>" \
+                  --workflow="$PARAM_WORKFLOW" \
+   -              --arangodb-branches 3.11="$PARAM_ARANGODB_3_11" 3.12="$PARAM_ARANGODB_3_12" \
+   +              --arangodb-branches 3.11="$PARAM_ARANGODB_3_11" 3.12="$PARAM_ARANGODB_3_12" 4.x="$PARAM_ARANGODB_4_X" \
    ```
 
    Each entry is `VERSION=REF`, with `VERSION` being the `name` of the version in
    `versions.yaml`. The order doesn't matter.
+
+   In the `.circleci/upstream.yaml` file, add an entry for the new version with
+   the `arangodb/arangodb` branch it is based on (`devel` for the version in
+   development), the default `arangodb/enterprise` branch, the naming of the images that the
+   CI of `arangodb/arangodb` builds for branches, and the nightly image (see the
+   comments in the file and [CIRCLECI.md](CIRCLECI.md#build-arangodb-images)).
+   Example:
+
+   ```yaml
+   "4.x":
+     branch: "devel"
+     enterprise: "devel"
+     image: "public.ecr.aws/b0b8h2r4/arangodb/core-preview:{main7}_{enterprise7}"
+     nightly: "arangodb/core-preview:devel-nightly"
+   ```
 
 3. In the `toolchain/docker/amd64/docker-compose.yml` file, add an entry under
    `services.toolchain.volumes` for the new version. Simply increment the value
@@ -1856,12 +1942,12 @@ It makes a warning show at the top of every page for that version.
     | Type | Name | Value |
     |:-----|:-----|:------|
     | string | `workflow` | `generate` |
-    | string | `arangodb-4_x` | Docker Hub image (e.g. `arangodb/core-preview:4.0-nightly`) or GitHub main repo PR link (e.g. `https://github.com/arangodb/arangodb/pull/123456`) |
+    | string | `arangodb-4_x` | Image (e.g. `arangodb/core-preview:devel-nightly`) or `arangodb/arangodb` branch with a built image (see [CIRCLECI.md](CIRCLECI.md#upstream-references)) |
     | string | `generators` | `examples metrics error-codes exit-codes optimizer options` |
     | string | `deploy-url` | `deploy-preview-{PR-number}` with the number of the docs PR |
     | boolean | `commit-generated` | `true` |
 
-    Approve the workflow in CircleCI. After a successful run, you should see a
+    After a successful run, you should see a
     commit in the docs PR with the updated data files, as well as an updated
     example cache file. The plain build should no longer fail and provide you
     with a Netlify preview.
@@ -1912,6 +1998,17 @@ version. In this example, you need to adjust the `alias` of the 4.x entry.
 The work-in-progress versions of the ArangoDB documentation need to have
 `inDevelopment` set to `true`. Make sure to change it to `false` for the former
 devel version when it becomes the new stable version.
+
+The version with the `"devel"` alias is the one developed in the `devel` branch
+of `arangodb/arangodb`. When the former devel version gets a branch of its own
+(e.g. 4.x when the 5.0 development starts in `devel`), update `.circleci/upstream.yaml`:
+set `branch` of the former devel version to its new branch, adjust `enterprise`,
+`image`, and `nightly` accordingly, and add an entry for the new devel version
+(see [Add a new version](#add-a-new-version)). Also update the links to the
+`devel` branch in the content of the former devel version, like the changelog in
+`release-notes/_index.md` and `CONTRIBUTING.md` and `LICENSE`
+(`git grep -E "arangodb/arangodb/(blob|tree)/devel|arangodb/arangodb/devel/" site/content/arangodb/4.x`),
+and copy them with `devel` to the new version.
 
 The final configuration would then look like this:
 
