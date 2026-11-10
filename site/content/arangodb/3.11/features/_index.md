@@ -49,7 +49,7 @@ selected feature enhancements.
 ### Fully managed cloud service
 
 The fully managed multi-cloud
-[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
+[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home)
 does not support the 3.11 OEM LTS version of ArangoDB.
 
 ### Self-managed in the cloud

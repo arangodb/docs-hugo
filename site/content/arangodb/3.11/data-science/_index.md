@@ -108,7 +108,7 @@ your running database from the **Examples** tab of your deployment.
 
 {{< tip >}}
 You can try out the Arango Managed Platform (AMP) free of charge for 14 days.
-Sign up at [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+Sign up at [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home).
 {{< /tip >}}
 
 The ArangoFlix demo uses five different recommendation methods:
