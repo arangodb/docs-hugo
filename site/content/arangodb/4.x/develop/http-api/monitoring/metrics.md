@@ -32,7 +32,7 @@ paths:
         Whether the endpoint is available depends on the setting of
         the [`--server.export-metrics-api` startup option](../../../components/arangodb-server/options.md#--serverexport-metrics-api).
         For additional document read and write metrics, the
-        [`--server.export-read-write-metrics` startup option](../../../components/arangodb-server/options.md#--serverexport-read-write-metrics)
+        [`--rocksdb.export-read-write-metrics` startup option](../../../components/arangodb-server/options.md#--rocksdbexport-read-write-metrics)
         needs to be enabled.
 
         The returned document collects all instance metrics, which are measured

@@ -1,0 +1,48 @@
+# How the docs versions map to arangodb/arangodb, used by the CircleCI workflows
+# (generate_config.py, base_config.yml) and by the toolchain (toolchain.sh).
+# Versions without an entry can't be generated.
+#
+# - branch: the arangodb/arangodb branch the version is based on, `devel` for the
+#   version in development (the one with the "devel" alias in versions.yaml).
+#   The generators read its source code for nightly images, and the OpenAPI
+#   descriptions link to its LICENSE file (arangoproxy). Update it when the
+#   version in development gets a branch of its own (e.g. 4.x when 5.x starts)
+# - enterprise: the arangodb/enterprise branch for arangodb/arangodb branches that
+#   don't have an enterprise branch with the same name, as in the upstream CI
+#   (the default enterprise branch of the upstream branch the version is based on)
+# - image: the prebuilt image of arangodb/arangodb commits, with {main7}/{main9}
+#   and {enterprise7}/{enterprise9} replaced by the first 7 or 9 characters of the
+#   arangodb/arangodb and arangodb/enterprise commits. Upstream references that
+#   are branch names use this image (see CIRCLECI.md):
+#   - 3.12 and later: built by the CircleCI pipeline of arangodb/arangodb
+#   - 3.11: built by the compile workflow of the docs, as there are no public images
+#   Versions without it only accept image references (e.g. release images).
+# - nightly: the image for the scheduled workflow, none if there is no public one
+# - build-image: the image repository for compiling ArangoDB in the compile
+#   workflow, only for versions without upstream images. The tag is determined
+#   per build: the one whose image has the OpenSSL version that the source code
+#   requires (OPENSSL_LINUX in its VERSIONS file), as CMake only accepts this
+#   exact version (oskar has a numbered tag per OpenSSL update)
+
+# Deprecated, only release images like arangodb/enterprise:3.10.14
+"3.10":
+  branch: "3.10"
+  enterprise: "3.10"
+
+"3.11":
+  branch: "3.11"
+  enterprise: "3.11"
+  image: "arangodb/docs-hugo:3.11-{main9}-{enterprise9}"
+  build-image: "arangodb/ubuntubuildarangodb-311"
+
+"3.12":
+  branch: "3.12"
+  enterprise: "3.12"
+  image: "public.ecr.aws/b0b8h2r4/arangodb/enterprise-preview:{main7}_{enterprise7}"
+  nightly: "arangodb/enterprise-preview:3.12-nightly"
+
+"4.x":
+  branch: "devel"
+  enterprise: "devel"
+  image: "public.ecr.aws/b0b8h2r4/arangodb/core-preview:{main7}_{enterprise7}"
+  nightly: "arangodb/core-preview:devel-nightly"

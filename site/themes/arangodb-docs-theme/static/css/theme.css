@@ -2285,12 +2285,14 @@ nav.pagination {
     margin-top: 48px;
     padding-top: 16px;
     border-top: 1px solid var(--gray-300);
-    container-type: inline-size;
 }
 
+/* Side by side, sharing the width equally, until both labels would be squeezed
+   below 8rem. Only then the links stack. A short label counts with its own
+   width, not 8rem, so it doesn't make them stack early. */
 nav.pagination > span {
     display: flex;
-    flex: 1 1 0;
+    flex: 1 1 8rem;
     max-width: max-content;
 }
 
@@ -2302,13 +2304,6 @@ nav.pagination > .next {
     justify-content: flex-end;
     margin-left: auto;
     text-align: right;
-}
-
-@container (width < 20rem) {
-    nav.pagination > span {
-        flex-basis: 100%;
-        max-width: none;
-    }
 }
 
 .nav-prev,

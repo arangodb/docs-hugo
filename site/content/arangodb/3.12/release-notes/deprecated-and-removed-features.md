@@ -132,7 +132,7 @@ detailed information about breaking changes before upgrading.
   Community Edition from v3.12.5 onward, but only in the prebuilt packages and
   official container images. The source code of these features is not public.
   For instructions to compile the public code, see
-  [`CONTRIBUTING.md`](https://github.com/arangodb/arangodb/blob/devel/CONTRIBUTING.md#building)
+  [`CONTRIBUTING.md`](https://github.com/arangodb/arangodb/blob/3.12/CONTRIBUTING.md#building)
   in the `arangodb/arangodb` repository.
 
 - **Fast cluster restore procedure**:\
