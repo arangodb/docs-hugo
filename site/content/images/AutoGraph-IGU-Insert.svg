@@ -1,0 +1,102 @@
+<svg viewBox="0 0 820 334" width="820" height="334"
+     xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .igui text { font-family: sans-serif; }
+    .igui .panel { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; }
+    .igui .ptitle { font-size: 14px; font-weight: bold; fill: #0b2e1e; }
+    .igui .psub { font-size: 11px; fill: #555; }
+    .igui .edge { stroke: #9ca3af; stroke-width: 1.2; }
+    .igui .edge-new { stroke: #d97706; stroke-width: 1.4; stroke-dasharray: 4 3; }
+    .igui .edge-gone { stroke: #d1d5db; stroke-width: 1; stroke-dasharray: 2 3; }
+    .igui .node { fill: #4ade80; stroke: #15803d; stroke-width: 1.5; }
+    .igui .node-new { fill: #fbbf24; stroke: #b45309; stroke-width: 1.5; }
+    .igui .node-del { fill: #f87171; stroke: #b91c1c; stroke-width: 1.5; }
+    .igui .node-gone { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; stroke-dasharray: 2 2; }
+    .igui .ring { fill: none; stroke: #d97706; stroke-width: 1.5; stroke-dasharray: 3 2; }
+    .igui .legend { font-size: 11px; fill: #333; }
+    .igui .note { font-size: 11px; fill: #666; }
+  </style>
+  <defs>
+    <marker id="igui-arrow" markerWidth="10" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <polygon points="0 0,10 4,0 8" fill="#15803d"/>
+    </marker>
+  </defs>
+  <g class="igui">
+    <rect width="820" height="334" fill="#f3f4f6" rx="6"/>
+    <rect class="panel" x="20" y="20" width="360" height="270" rx="8"/>
+    <text class="ptitle" x="36" y="44" text-anchor="start">Before</text>
+    <text class="psub" x="36" y="61" text-anchor="start">10 documents in the category</text>
+    <line class="edge" x1="174.0" y1="96.0" x2="112.0" y2="126.0"/>
+    <line class="edge" x1="174.0" y1="96.0" x2="238.0" y2="144.0"/>
+    <line class="edge" x1="112.0" y1="126.0" x2="72.0" y2="174.0"/>
+    <line class="edge" x1="112.0" y1="126.0" x2="164.0" y2="178.0"/>
+    <line class="edge" x1="238.0" y1="144.0" x2="164.0" y2="178.0"/>
+    <line class="edge" x1="238.0" y1="144.0" x2="286.0" y2="194.0"/>
+    <line class="edge" x1="72.0" y1="174.0" x2="102.0" y2="222.0"/>
+    <line class="edge" x1="164.0" y1="178.0" x2="102.0" y2="222.0"/>
+    <line class="edge" x1="164.0" y1="178.0" x2="220.0" y2="214.0"/>
+    <line class="edge" x1="220.0" y1="214.0" x2="286.0" y2="194.0"/>
+    <line class="edge" x1="102.0" y1="222.0" x2="142.0" y2="264.0"/>
+    <line class="edge" x1="220.0" y1="214.0" x2="142.0" y2="264.0"/>
+    <line class="edge" x1="220.0" y1="214.0" x2="250.0" y2="266.0"/>
+    <line class="edge" x1="142.0" y1="264.0" x2="250.0" y2="266.0"/>
+    <line class="edge" x1="286.0" y1="194.0" x2="250.0" y2="266.0"/>
+    <circle class="node" cx="174.0" cy="96.0" r="8"/>
+    <circle class="node" cx="112.0" cy="126.0" r="8"/>
+    <circle class="node" cx="238.0" cy="144.0" r="8"/>
+    <circle class="node" cx="72.0" cy="174.0" r="8"/>
+    <circle class="node" cx="164.0" cy="178.0" r="8"/>
+    <circle class="node" cx="102.0" cy="222.0" r="8"/>
+    <circle class="node" cx="220.0" cy="214.0" r="8"/>
+    <circle class="node" cx="286.0" cy="194.0" r="8"/>
+    <circle class="node" cx="142.0" cy="264.0" r="8"/>
+    <circle class="node" cx="250.0" cy="266.0" r="8"/>
+    <rect class="panel" x="440" y="20" width="360" height="270" rx="8"/>
+    <text class="ptitle" x="456" y="44" text-anchor="start">After POST /v1/graph/insert</text>
+    <text class="psub" x="456" y="61" text-anchor="start">4 new documents, linked to their nearest neighbours</text>
+    <line class="edge" x1="594.0" y1="96.0" x2="532.0" y2="126.0"/>
+    <line class="edge" x1="594.0" y1="96.0" x2="658.0" y2="144.0"/>
+    <line class="edge" x1="532.0" y1="126.0" x2="492.0" y2="174.0"/>
+    <line class="edge" x1="532.0" y1="126.0" x2="584.0" y2="178.0"/>
+    <line class="edge" x1="658.0" y1="144.0" x2="584.0" y2="178.0"/>
+    <line class="edge" x1="658.0" y1="144.0" x2="706.0" y2="194.0"/>
+    <line class="edge" x1="492.0" y1="174.0" x2="522.0" y2="222.0"/>
+    <line class="edge" x1="584.0" y1="178.0" x2="522.0" y2="222.0"/>
+    <line class="edge" x1="584.0" y1="178.0" x2="640.0" y2="214.0"/>
+    <line class="edge" x1="640.0" y1="214.0" x2="706.0" y2="194.0"/>
+    <line class="edge" x1="522.0" y1="222.0" x2="562.0" y2="264.0"/>
+    <line class="edge" x1="640.0" y1="214.0" x2="562.0" y2="264.0"/>
+    <line class="edge" x1="640.0" y1="214.0" x2="670.0" y2="266.0"/>
+    <line class="edge" x1="562.0" y1="264.0" x2="670.0" y2="266.0"/>
+    <line class="edge" x1="706.0" y1="194.0" x2="670.0" y2="266.0"/>
+    <circle class="node" cx="594.0" cy="96.0" r="8"/>
+    <circle class="node" cx="532.0" cy="126.0" r="8"/>
+    <circle class="node" cx="658.0" cy="144.0" r="8"/>
+    <circle class="node" cx="492.0" cy="174.0" r="8"/>
+    <circle class="node" cx="584.0" cy="178.0" r="8"/>
+    <circle class="node" cx="522.0" cy="222.0" r="8"/>
+    <circle class="node" cx="640.0" cy="214.0" r="8"/>
+    <circle class="node" cx="706.0" cy="194.0" r="8"/>
+    <circle class="node" cx="562.0" cy="264.0" r="8"/>
+    <circle class="node" cx="670.0" cy="266.0" r="8"/>
+    <line class="edge-new" x1="740.0" y1="122.0" x2="658.0" y2="144.0"/>
+    <line class="edge-new" x1="740.0" y1="122.0" x2="706.0" y2="194.0"/>
+    <line class="edge-new" x1="774.0" y1="184.0" x2="706.0" y2="194.0"/>
+    <line class="edge-new" x1="774.0" y1="184.0" x2="740.0" y2="122.0"/>
+    <line class="edge-new" x1="762.0" y1="246.0" x2="706.0" y2="194.0"/>
+    <line class="edge-new" x1="762.0" y1="246.0" x2="774.0" y2="184.0"/>
+    <line class="edge-new" x1="720.0" y1="280.0" x2="670.0" y2="266.0"/>
+    <line class="edge-new" x1="720.0" y1="280.0" x2="762.0" y2="246.0"/>
+    <circle class="node-new" cx="740.0" cy="122.0" r="8"/>
+    <circle class="node-new" cx="774.0" cy="184.0" r="8"/>
+    <circle class="node-new" cx="762.0" cy="246.0" r="8"/>
+    <circle class="node-new" cx="720.0" cy="280.0" r="8"/>
+    <path d="M 394 155 L 433 155" stroke="#15803d" stroke-width="2" fill="none" marker-end="url(#igui-arrow)"/>
+    <circle class="node" cx="27.0" cy="312.0" r="6"/>
+    <text class="legend" x="38" y="316" text-anchor="start">existing document</text>
+    <circle class="node-new" cx="175.0" cy="312.0" r="6"/>
+    <text class="legend" x="186" y="316" text-anchor="start">inserted document</text>
+    <line class="edge-new" x1="316" y1="312" x2="338" y2="312"/>
+    <text class="legend" x="346" y="316" text-anchor="start">new similarity edge</text>
+  </g>
+</svg>

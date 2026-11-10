@@ -116,7 +116,7 @@ drifted since it was last clustered and flags the ones that may need a refresh,
 but it never reclusters on its own. That decision, and the cost of it, is up to
 you.
 
-See [Incremental Graph Updates](incremental-graph-updates.md).
+See [Incremental Graph Updates](incremental-graph-updates/_index.md).
 
 ## What's next
 
