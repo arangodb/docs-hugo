@@ -50,7 +50,7 @@ aliases:
   or modified, using an AQL expression.
 
 - [**In the cloud or on-prem**](../features/_index.md#on-premises-versus-cloud):
-  Use ArangoDB as a [fully managed service](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
+  Use ArangoDB as a [fully managed service](https://dashboard.arangodb.cloud/home),
   self-managed in the cloud, or on-premises.
 
 - [**Multiple Environments**](../operations/installation/_index.md#supported-platforms-and-architectures):

@@ -26,10 +26,6 @@
 
 {{- if $remote }}
   {{- $href = $link }}
-  {{- $isProduction := eq site.BaseURL "https://docs.arango.ai/" }}
-  {{- if and (not $isProduction) (eq $link "https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic") }}
-    {{- $href = "https://dashboard.arangodb.cloud/home" }}
-  {{- end }}
 {{- else }}
   {{- $isMount := or (strings.HasPrefix $page.RelPermalink "/arangodb/stable/") (strings.HasPrefix $page.RelPermalink "/arangodb/devel/") }}
   {{- if strings.HasPrefix $link "#" }}

@@ -55,7 +55,7 @@ The official Linux release executables of ArangoDB require the operating system
 to use a page size of **4096 bytes** or less.
 
 {{< tip >}}
-[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
+[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home)
 is a fully-managed service and requires no installation. It's the easiest way
 to run ArangoDB in the cloud.
 {{< /tip >}}
