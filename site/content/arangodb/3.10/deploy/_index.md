@@ -36,7 +36,7 @@ If the leader fails, then a follower takes over seamlessly.
 operations and analytics, allowing you to scale elastically with your
 applications and data models. ArangoDB's synchronously-replicating cluster
 technology runs on premises, on Kubernetes, and in the cloud on
-[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic) - Arango's fully managed service.
+[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home) - Arango's fully managed service.
 
 Clustering ArangoDB not only delivers better performance and capacity improvements,
 but it also provides resilience through replication and automatic failover.
@@ -78,7 +78,7 @@ There are different ways to set up and operate ArangoDB.
   ArangoDB Kubernetes Operator (`kube-arangodb`).
 
 The fastest way to get ArangoDB up and running is to run it in the cloud - the
-[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
+[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home)
 offers a fully managed cloud service, available on AWS and GCP.
 
 ### Manual Deployment
@@ -136,7 +136,7 @@ If you want a specific version, download the precompiled executable via the
 ### Run in the cloud
 
 - [AWS and Azure](in-the-cloud.md)
-- [Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
+- [Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home),
   fully managed, available on AWS and GCP
 
 ### Run in Kubernetes

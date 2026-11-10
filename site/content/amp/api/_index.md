@@ -6,7 +6,7 @@ description: >-
   The interface to control all resources inside the Arango Managed Platform in
   a scriptable manner
 ---
-The [Arango Managed Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
+The [Arango Managed Platform](https://dashboard.arangodb.cloud/home),
 comes with its own API. This API enables you to control all
 resources inside AMP in a scriptable manner. Typical use cases are spinning
 up AMP deployments during continuous integration and infrastructure as code.
