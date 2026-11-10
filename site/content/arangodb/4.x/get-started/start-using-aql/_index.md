@@ -115,8 +115,8 @@ if err != nil {
 }
 ```
 
-See [`DatabaseQuery.Query()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseQuery)
-in the _go-driver_ v2 documentation for details.
+See [`DatabaseQuery.Query()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#DatabaseQuery)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}

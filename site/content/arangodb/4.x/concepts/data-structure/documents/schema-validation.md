@@ -170,8 +170,8 @@ err = coll.SetProperties(ctx, arangodb.SetCollectionPropertiesOptions{
 })
 ```
 
-See [`Collection.SetProperties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)
-in the _go-driver_ v2 documentation for details.
+See [`Collection.SetProperties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#Collection)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -301,8 +301,8 @@ err = coll.SetProperties(ctx, arangodb.SetCollectionPropertiesOptions{
 })
 ```
 
-See [`Collection.SetProperties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)
-in the _go-driver_ v2 documentation for details.
+See [`Collection.SetProperties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#Collection)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
