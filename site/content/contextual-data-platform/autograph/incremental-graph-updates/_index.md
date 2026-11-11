@@ -16,11 +16,13 @@ the [RAG Strategizer](../reference/rag-strategizer.md) do not run again, and
 the rest of the category stays as it is. This makes small changes much cheaper
 and faster than a rebuild.
 
-An AutoGraph project groups your documents into **categories**, which you
-define in the File Manager, such as `legal` or `finance`. When a category is
-built, AutoGraph sorts its documents into **clusters** of similar documents and
-chooses a retrieval strategy for each cluster. The part of the knowledge graph
-that is built from one cluster is a **partition**.
+An AutoGraph project groups your documents into
+[**categories**](../design-guide.md#layer-1---categories-your-design-choice),
+such as `legal` or `finance`. The category of a document is the label you give
+it when you upload it, the second part of its scope `[project, category]`. When
+a category is built, AutoGraph sorts its documents into **clusters** of similar
+documents and chooses a retrieval strategy for each cluster. The part of the
+knowledge graph that is built from one cluster is a **partition**.
 
 {{< info >}}
 **IGU is API-only in Arango Contextual Data Platform 4.1.x.** You can add,
@@ -75,7 +77,7 @@ IGU has four operations. The API uses its own names for them.
 | Operation | API name | What it does | Corpus graph | Knowledge graph |
 |-----------|----------|--------------|--------------|-----------------|
 | [Add](#add-documents) | insert | Adds new documents to an existing category | The documents join the closest existing cluster | Added afterwards, by a knowledge graph build that you start |
-| [Remove](#remove-documents) | delete | Removes documents that are in an existing category | The documents are removed | Their entities are removed first, in the same call |
+| [Remove](#remove-documents) | delete | Removes documents that are in an existing category, and deletes their files from the File Manager | The documents are removed | Their entities are removed first, in the same call |
 | [Replace](#replace-documents) | update | Replaces documents that are in an existing category with a new version | The old version is removed and the new one is added | The old entities are removed. The new ones are added afterwards, by a knowledge graph build that you start |
 | [Reorganize](#reorganize-the-knowledge-graph) | recluster | Rebuilds the communities of a partition that has changed a lot | Not changed | The communities of the partition are rebuilt |
 
@@ -110,6 +112,9 @@ graph. The other documents do not change.
 
 The response is the final result. You do not need to wait or run a knowledge
 graph build afterwards.
+
+Removing also deletes the files of the documents, with all their versions,
+from the File Manager. To add a removed document again later, upload it again.
 
 ### Replace documents
 
@@ -148,12 +153,15 @@ duplicates within one request are rejected, with `400`.
 
 In a partition with the FullGraphRAG strategy, closely related entities form
 **communities**, and each community has a summary of what its entities have in
-common. Adding, removing, and replacing documents changes the entities but not
-the communities, so the communities and their summaries no longer match the
-entities. **Reorganizing** groups the entities again, based on what the
-partition contains now.
+common. Adding, removing, and replacing documents changes the entities, but the
+existing communities are not grouped again. Removing entities does not update
+the communities they belonged to, and the knowledge graph build for added and
+replaced documents adds communities for the new entities next to the existing
+ones. Over time, the communities and their summaries no longer match the
+entities. **Reorganizing** groups all entities of the partition again, based on
+what it contains now.
 
-{{< embed-svg "AutoGraph-IGU-Reorganization" "Adding, removing, and replacing documents changes the entities but not the communities. Once a partition has changed a lot, reorganizing rebuilds its communities. They can grow, split, or shrink." >}}
+{{< embed-svg "AutoGraph-IGU-Reorganization" "Adding, removing, and replacing documents changes the entities, but the existing communities are not grouped again. Once a partition has changed a lot, reorganizing rebuilds its communities. They can grow, split, or shrink." >}}
 
 Reorganizing is expensive, so it does not run after every change. AutoGraph
 tracks how much each partition has changed since it was last organized, as its

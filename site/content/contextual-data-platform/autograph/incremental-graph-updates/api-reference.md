@@ -16,26 +16,33 @@ changed a lot. For when to use them, see
 [Quick Start](quick-start.md). For how the divergence is measured, see
 [Divergence and Reorganization](divergence-and-reorganization.md).
 
+The endpoints are relative to the path of the project's AutoGraph service,
+`https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}`.
+`service_id_postfix` is the end of the service ID, such as `vyk1t` for
+`arangodb-autograph-vyk1t`. The `serviceUrl` in the project metadata of
+[`GET /_platform/acp/v1/project_by_name/{database}/{project}`](../../control-plane-acp/api.md#get-project-details)
+ends with it, for example `.../autograph/vyk1t/`.
+
 | Endpoint | Operation | Purpose | Call |
 |----------|-----------|---------|------|
 | [`POST /v1/graph/insert`](#add-documents) | Add | Add new documents to an existing category | Synchronous |
-| [`POST /v1/graph/delete`](#remove-documents) | Remove | Remove documents that are in an existing category, with all their graph data | Synchronous |
+| [`POST /v1/graph/delete`](#remove-documents) | Remove | Remove documents that are in an existing category, with all their graph data and their files in the File Manager | Synchronous |
 | [`POST /v1/graph/update`](#replace-documents) | Replace | Replace documents that are in an existing category with a new version | Asynchronous |
 | [`POST /v1/graph/recluster`](#reorganize-partitions) | Reorganize | Rebuild the communities of a partition with the FullGraphRAG strategy that has changed a lot | Asynchronous |
 | [`POST /v1/orchestrate`](#build-the-knowledge-graph-for-changed-documents) with `file_ids` | Knowledge graph build | Add the added and replaced documents to the knowledge graph | Asynchronous |
 
 {{< info >}}
 The `/v1/graph/*` endpoints work on one existing category, which you set in
-`category`. A category is the second scope level of a project. It has the label
-you set as `module` when you imported the files, see
-[Import files](../reference/importing-files.md#parameters). The endpoints cannot
-create a category. To add one, build it, see
-[When to use IGU](_index.md#when-to-use-igu).
+`category`. A category is the label you give a document when you upload it to
+the File Manager, the second part of its scope `[project, category]`. Files
+imported with the legacy [`module`](../reference/importing-files.md#parameters)
+field use that label instead. The endpoints cannot create a category. To add
+one, build it, see [When to use IGU](_index.md#when-to-use-igu).
 {{< /info >}}
 
 ## Add documents
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/insert" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/graph/insert" >}}
 
 Adds new documents to an existing category. The API calls this operation
 insert. The call is synchronous.
@@ -154,18 +161,23 @@ curl -X POST \
     }],
     "category": "legal"
   }' \
-  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/insert
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/graph/insert
 ```
 
 ## Remove documents
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/delete" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/graph/delete" >}}
 
 Removes documents from an existing category. The API calls this operation
 delete. The call is synchronous and does the whole removal itself. It cleans up
 the knowledge graph first, then the corpus graph. No Importer worker is
 involved, and there is no background job to wait for. The response is the final
 result.
+
+Once the deletion has committed, AutoGraph also deletes the files of the removed
+documents, with all their versions, from the File Manager. To use a document
+again, upload it again. If deleting a file from the File Manager fails, the
+removal still reports success, and the file stays in the File Manager.
 
 Use File Manager IDs in `file_ids` if you can, as they are stable. Otherwise,
 provide `doc_names`, which are looked up in the requested category. You need to
@@ -216,28 +228,35 @@ request. There are no Importer jobs to start or to scale, unlike a
 
 ```json
 {
-  "delete_id": "delete_1711812345_a1b2c3d4",
   "results": [
     {
       "file_id": "<file-manager-file-id-1>",
       "status": "LAYER2_DELETE_STATUS_SUCCESS",
       "rag_partition_id": "legal_0_a",
       "cluster_key": "cluster_legal_0",
-      "similarity_edges_removed": 4,
+      "similarity_edges_removed": 8,
       "divergence_score": 0.31,
       "needs_reclustering": true
     }
   ],
   "affected_rag_partitions": ["legal_0_a"],
   "removed_rag_partitions": [],
-  "affected_cluster_ids": ["cluster_legal_0"],
-  "removed_cluster_ids": [],
   "layer3_results": [
     {
-      "status": "LAYER3_DELETE_STATUS_SUCCESS"
+      "rag_partition_id": "legal_0_a",
+      "status": "LAYER3_DELETE_STATUS_SUCCESS",
+      "documents_removed": 1,
+      "chunks_removed": 8,
+      "entities_removed": 490,
+      "communities_removed": 0,
+      "semantic_units_removed": 0,
+      "edges_removed": 0
     }
   ],
-  "overall_status": "COMMITTED"
+  "overall_status": "DELETE_OVERALL_STATUS_COMMITTED",
+  "affected_cluster_ids": ["cluster_legal_0"],
+  "removed_cluster_ids": [],
+  "delete_id": "del_1711812345_a1b2c3d4"
 }
 ```
 
@@ -249,8 +268,8 @@ standalone removal does not write one.
 |-------|---------|
 | `delete_id` | The ID of this deletion, and the key of the concurrency lock it holds. Log it, so that you can correlate a `409` from a parallel call with the deletion that was holding the lock. |
 | `overall_status` | How the deletion as a whole ended, see the table below. |
-| `results` | The corpus graph result of every file, with the cluster and partition it belonged to, the number of similarity edges that were removed, and the divergence of the partition. |
-| `layer3_results` | The knowledge graph result of the cleanup, with its `status` and the counts of what was removed. The counts are AutoGraph's own AQL totals, not Importer figures. |
+| `results` | The corpus graph result of every file, with the cluster and partition it belonged to, the number of similarity edges that were removed, and the divergence of the partition. If you removed documents by `doc_names`, `file_id` holds the file name. |
+| `layer3_results` | The knowledge graph result of the cleanup, per partition, with its `status` and the counts of what was removed. The counts are AutoGraph's own AQL totals, not Importer figures. |
 | `affected_rag_partitions` / `affected_cluster_ids` | The partitions and clusters the deletion touched. |
 | `removed_rag_partitions` / `removed_cluster_ids` | The partitions and clusters that became empty and have been dropped. |
 
@@ -258,9 +277,9 @@ standalone removal does not write one.
 
 | Value | Meaning |
 |-------|---------|
-| `COMMITTED` | The deletion succeeded in both the knowledge graph and the corpus graph. |
-| `ROLLED_BACK` | Something failed, and the state from before the call has been restored. The documents are still in the graph, and it is safe to retry the same batch. |
-| `FAILED` | Something failed, and the restore itself was incomplete. Do not retry right away. Inspect the corpus and the knowledge graph before you call again. |
+| `DELETE_OVERALL_STATUS_COMMITTED` | The deletion succeeded in both the knowledge graph and the corpus graph. |
+| `DELETE_OVERALL_STATUS_ROLLED_BACK` | Something failed, and the state from before the call has been restored. The documents are still in the graph, and it is safe to retry the same batch. |
+| `DELETE_OVERALL_STATUS_FAILED` | Something failed, and the restore itself was incomplete. Do not retry right away. Inspect the corpus and the knowledge graph before you call again. |
 
 In field and status names, `LAYER3` refers to the knowledge graph and `LAYER2`
 to the corpus graph. The `status` of a `layer3_results` entry is one of
@@ -271,7 +290,7 @@ to the corpus graph. The `status` of a `layer3_results` entry is one of
 **`NOT_ATTEMPTED` is a success case.** It means there were no knowledge graph
 collections for the deletion to work on, so there was nothing to clean up. The
 corpus graph removal still goes ahead, and `overall_status` can still be
-`COMMITTED`. Treat it as "nothing to do", not as an error.
+`DELETE_OVERALL_STATUS_COMMITTED`. Treat it as "nothing to do", not as an error.
 {{< /info >}}
 
 {{< tip >}}
@@ -279,15 +298,20 @@ corpus graph removal still goes ahead, and `overall_status` can still be
 data before it removes anything. If the knowledge graph cleanup fails, the
 snapshot is restored and the corpus graph does not change. If the corpus graph
 removal then fails, the knowledge graph snapshots are restored as well. A
-deletion that unwinds this way reports `ROLLED_BACK`, and the same batch is safe
-to send again. Only `FAILED` means the restore did not complete.
+deletion that unwinds this way reports `DELETE_OVERALL_STATUS_ROLLED_BACK`, and
+the same batch is safe to send again. Only `DELETE_OVERALL_STATUS_FAILED` means
+the restore did not complete.
 {{< /tip >}}
 
 When the deletion commits, AutoGraph calculates the divergence of every
 affected partition again and adds `divergence_score` and `needs_reclustering`
 to the result of each file. The fields are only present if `overall_status` is
-`COMMITTED`. A deletion that ends in `ROLLED_BACK` or `FAILED` reports no
-divergence. See
+`DELETE_OVERALL_STATUS_COMMITTED`. A deletion that is rolled back or fails
+reports no divergence.
+
+The removed documents can be in other partitions than the ones a later
+knowledge graph build processes, so keep `needs_reclustering` from this
+response. See
 [Where to read the divergence](divergence-and-reorganization.md#where-to-read-the-divergence).
 
 | Status Code | Meaning |
@@ -310,12 +334,12 @@ curl -X POST \
     "file_ids": ["<file-manager-file-id>"],
     "category": "legal"
   }' \
-  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/delete
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/graph/delete
 ```
 
 ## Replace documents
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/graph/update" >}}
 
 Replaces documents in an existing category with a new version. The API calls
 this operation update. The call is asynchronous.
@@ -371,8 +395,9 @@ have no `module` field at all.
 it is done. Poll the `importerOrchestration` entry in the metadata of your
 platform project, which
 [`GET /_platform/acp/v1/project_by_name/{database}/{project}`](../../control-plane-acp/api.md#get-project-details)
-returns. The progress is in its `message` field, as a JSON string. Replacing
-goes through the following phases. In their
+returns, under `projectMetadata.autographService.importerOrchestration`. The
+progress is in its `message` field, as a JSON string. Replacing goes through
+the following phases. In their
 names, `L3` stands for the knowledge graph and `L12` for the corpus graph:
 
 1. `DELETE_L3`: AutoGraph removes the old knowledge graph data with AQL queries
@@ -418,6 +443,14 @@ The final `message`, parsed, looks like this:
 Only `file` and `result` are always present. The service adds every other key
 conditionally, so read them as absent rather than empty when the value does not
 apply.
+
+{{< warning >}}
+**Wait for `phase: "DONE"`, not for `status: "completed"`.** The entry is shared
+with knowledge graph builds and reorganizations. Right after you start
+replacing, it can still hold the plain-text message of the previous build, such
+as `Orchestration completed: 11 succeeded, 0 failed`, with
+`status: "completed"`.
+{{< /warning >}}
 
 {{< warning >}}
 **Check the result of every file as well as the top-level `status`.** A run can
@@ -472,12 +505,12 @@ curl -X POST \
     }],
     "category": "legal"
   }' \
-  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/graph/update
 ```
 
 ## Reorganize partitions
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/recluster" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/graph/recluster" >}}
 
 Rebuilds the communities of up to five partitions with the FullGraphRAG strategy
 from their current entities. The API calls this operation recluster. The call
@@ -490,12 +523,15 @@ you decide to rebuild its communities, which is expensive. AutoGraph never
 reorganizes on its own. The flag is reported by
 [`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration),
 by a [removal](#remove-documents) once it has committed, and by the `rags`
-profile of the partition. Adding and replacing do not report it, see
+profile of the partition. Adding and replacing do not report it. If a replaced
+document moves to another cluster, the partition it left is reported nowhere
+but in its `rags` profile. See
 [Where to read the divergence](divergence-and-reorganization.md#where-to-read-the-divergence).
 
 Only partitions with the FullGraphRAG strategy have communities that can be
-rebuilt. A partition with the VectorRAG strategy has no `Entities` or `Communities`, so there is nothing to
-rebuild, and such a partition is never flagged.
+rebuilt. A partition with the VectorRAG strategy has no `Entities` or
+`Communities`, so there is nothing to rebuild, and such a partition is never
+flagged.
 
 The flag is set when the `divergence_score` is above the threshold,
 which is `0.25` and not configurable. For how the divergence is calculated,
@@ -615,12 +651,12 @@ curl -X POST \
   -d '{
     "partition_ids": ["legal_0_a"]
   }' \
-  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/recluster
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/graph/recluster
 ```
 
 ## Build the knowledge graph for changed documents
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/orchestrate" >}}
 
 Adding and replacing only change the corpus graph. To extract the entities and
 relationships of the new content and add them to the knowledge graph, call
@@ -690,8 +726,11 @@ reported on this response.
 Poll
 [`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration)
 until `status` leaves `running`. Each entry of `jobs` has the
-`divergence_score` and `needs_reclustering` of its partition, which is the
-value to act on after adding or replacing documents.
+`divergence_score` and `needs_reclustering` of its partition. `jobs` only lists
+the partitions that the build processed. The partitions of removed documents,
+and the partitions that replaced documents moved away from, are not in it. To
+see all of them, read the `rags` profiles, for example with
+[`GET /v1/rag-strategizer/strategy`](../reference/rag-strategizer.md#retrieve-rag-strategies).
 
 ### HTTP example
 
@@ -704,7 +743,7 @@ curl -X POST \
     "replicas": 1,
     "file_ids": ["<added-or-replaced-file-id>"]
   }' \
-  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/orchestrate
 ```
 
 For all steps in order, with example requests, see the
