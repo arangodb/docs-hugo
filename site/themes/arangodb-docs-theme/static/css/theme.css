@@ -2359,6 +2359,15 @@ nav.pagination > .next {
     color: var(--color-heading);
 }
 
+/* Consent preferences */
+.cky-btn-revisit-wrapper {
+    top: 5px !important;
+    right: 2px !important;
+    left: unset !important;
+    bottom: unset !important;
+}
+
+/* Algolia */
 .DocSearch.DocSearch-Container {
     z-index: 9999;
 }
