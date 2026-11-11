@@ -6,13 +6,19 @@ description: >-
   You can use Docker images to run ArangoDB in containers on Linux, macOS, and Windows
 ---
 The recommended way of using ArangoDB is via ArangoDB container images with,
-for instance, [Docker Desktop](https://www.docker.com/products/docker-desktop/). 
+for instance, [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+or [Podman](https://podman.io/). The commands below use the `docker` CLI, but
+you can substitute `podman` for `docker`.
 
-You can choose one of the following:
-- [`arangodb` official Docker images](https://hub.docker.com/_/arangodb),
-  verified and published by Docker.
-- [`arangodb/enterprise` Docker images](https://hub.docker.com/r/arangodb/enterprise), 
-  maintained and directly published by ArangoDB on a regular basis.
+ArangoDB provides the following images:
+- `arangodb/core`: The ArangoDB server (_arangod_) and the
+  [ArangoDB Starter](../../components/tools/arangodb-starter/_index.md).
+- `arangodb/client-tools`: The [client tools](../../components/tools/_index.md)
+  like the ArangoDB Shell (_arangosh_), _arangodump_, and _arangorestore_.
+
+The server image doesn't contain the client tools. To use them with a server
+that runs in a container, run them in a separate container of the
+`arangodb/client-tools` image.
 
 Check also the following resources:
 - [Manually starting a stand-alone instance via Docker](../../deploy/single-instance/manual-start.md#manual-start-in-docker)
@@ -23,7 +29,7 @@ Check also the following resources:
 In order to start an ArangoDB instance, run:
 
 ```
-docker run -e ARANGO_RANDOM_ROOT_PASSWORD=1 -d --name arangodb-instance arangodb
+docker run -e ARANGO_RANDOM_ROOT_PASSWORD=1 -d --name arangodb-instance arangodb/core:4.0.0
 ```
 
 {{< tip >}}
@@ -36,20 +42,13 @@ use `linux/amd64`. On ARM, especially Apple silicon with no emulation for the
 required AVX instruction set extension, use `linux/arm64/v8`:
 
 ```
-docker run --platform linux/arm64/v8 -p 8529:8529 -e ARANGO_RANDOM_ROOT_PASSWORD=1 arangodb-instance arangodb
+docker run --platform linux/arm64/v8 -p 8529:8529 -e ARANGO_RANDOM_ROOT_PASSWORD=1 --name arangodb-instance arangodb/core:4.0.0
 ```
 {{< /tip >}}
 
 This creates and launches the ArangoDB Docker instance as a background process.
 The identifier of the process is printed. By default, ArangoDB listens on port
-`8529` for requests and the image includes `EXPOSE 8529`. If you link an
-application container, it is automatically available in the linked container.
-
-In order to get the IP ArangoDB listens on, run:
-
-```
-docker inspect --format '{{ .NetworkSettings.IPAddress }}' arangodb-instance
-```
+`8529` for requests and the image includes `EXPOSE 8529`.
 
 ## Initialize the server language
 
@@ -63,32 +62,26 @@ server to on the first run in one of the following ways:
   into the container. For example, create a configuration file on your
   host system in which you set `icu-language = sv` at the top (before any
   `[section]`) and then mount the file over the default configuration file like
-  `docker run -v /your-host-path/arangod.conf:/etc/arangodb3/arangod.conf ...`.
+  `docker run -v /your-host-path/arangod.conf:/etc/arangodb4/arangod.conf ...`.
 
 Note that you cannot set the language using only a startup option on the
-command-line, like `docker run ... arangodb --icu-language sv`.
+command-line, like `docker run ... arangodb/core:4.0.0 --icu-language sv`.
 
 If you don't specify a language explicitly, the default is `en_US` up to
 ArangoDB v3.11 and `en_US_POSIX` from ArangoDB v3.12 onward.
 
 ## Using the instance
 
-To use the running instance from an application, link the container:
+To access the instance from other containers, like an application or the
+client tools, create a network and attach the containers to it. The containers
+can then reach the instance by its name. To also access the instance from the
+host machine, publish its port with `-p` in addition:
 
 ```
-docker run -e ARANGO_RANDOM_ROOT_PASSWORD=1 --name my-app --link arangodb-instance:db-link arangodb
-```
-
-This uses the instance named `arangodb-instance` and links it into the
-application container. The application container contains the following
-environment variables, which can be used to access the database.
-
-```
-DB_LINK_PORT_8529_TCP=tcp://172.17.0.17:8529
-DB_LINK_PORT_8529_TCP_ADDR=172.17.0.17
-DB_LINK_PORT_8529_TCP_PORT=8529
-DB_LINK_PORT_8529_TCP_PROTO=tcp
-DB_LINK_NAME=/naughty_ardinghelli/db-link
+docker network create arangodb-net
+docker run -e ARANGO_RANDOM_ROOT_PASSWORD=1 -d --name arangodb-instance --network arangodb-net -p 8529:8529 arangodb/core:4.0.0
+docker run -it --rm --network arangodb-net arangodb/client-tools:4.0.0 \
+  arangosh --server.endpoint http://arangodb-instance:8529
 ```
 
 ## Exposing the port to the outside world
@@ -96,15 +89,20 @@ DB_LINK_NAME=/naughty_ardinghelli/db-link
 If you want to expose the port to the outside world, run:
 
 ```
-docker run -e ARANGO_RANDOM_ROOT_PASSWORD=1 -p 8529:8529 -d arangodb
+docker run -e ARANGO_RANDOM_ROOT_PASSWORD=1 -p 8529:8529 -d arangodb/core:4.0.0
 ```
 
 ArangoDB listens on port `8529` for requests and the image includes `EXPOSE 8529`.
-The `-p 8529:8529` exposes this port on the host.
+The `-p 8529:8529` publishes this port on the host so that you can access the
+server from the host machine and, depending on your firewall, from other
+machines. Client tools in a container can also connect to a published port via
+the address of the host machine, for example, to a remote Coordinator. For
+containers on the same host machine, use a shared network as described in
+[Using the instance](#using-the-instance).
 
 ## Choosing an authentication method
 
-The ArangoDB image provides several authentication methods which can be
+The ArangoDB server image provides several authentication methods which can be
 specified via environment variables (-e) when using `docker run`.
 
 1. `ARANGO_RANDOM_ROOT_PASSWORD=1`
@@ -125,6 +123,11 @@ specified via environment variables (-e) when using `docker run`.
 
    Specify your own root password.
 
+4. `ARANGO_ROOT_PASSWORD_FILE=/path/to/file`
+
+   Read the root password from a file in the container, for example, a mounted
+   secret, so that the password doesn't appear in the container configuration.
+
 {{< tip >}}
 These authentication methods only apply to single server installations. For
 clusters you have to provision the users via the root user with an empty
@@ -137,35 +140,25 @@ You can pass arguments to the ArangoDB server by appending them at the end of
 the Docker command.
 
 ```
-docker run -e ARANGO_RANDOM_ROOT_PASSWORD=1 arangodb --help
+docker run -e ARANGO_RANDOM_ROOT_PASSWORD=1 arangodb/core:4.0.0 --help
 ```
 
 The entry point script starts the _arangod_ binary by default and forwards
 your arguments.
 
-You may also start other binaries, such as the ArangoDB Shell (_arangosh_):
+To use the ArangoDB Shell (_arangosh_) or other client tools, run them in a
+container of the `arangodb/client-tools` image. It starts _arangosh_ by default
+and runs as a non-root user. Attach it to the network of the server container
+as described in [Using the instance](#using-the-instance):
 
 ```
-docker run -it arangodb arangosh --server.database myDB ...
+docker run -it --rm --network arangodb-net arangodb/client-tools:4.0.0 \
+  arangosh --server.endpoint http://arangodb-instance:8529 --server.database myDB
 ```
 
-Note that you need to set up networking for containers if _arangod_ runs in one
-container and you want to access it with _arangosh_ running in another container.
-It is easier to execute it in the same container instead.
-Use `docker ps` to find out the container ID or the name of a running container:
-
-```
-docker ps
-CONTAINER ID   IMAGE     COMMAND                 CREATED      STATUS      PORTS                   NAMES
-1234567890ab   arangodb  "/entrypoint.sh aran…"  2 hours ago  Up 2 hours  0.0.0.0:8529->8529/tcp  jolly_joker
-```
-
-Then, use `docker exec` and the ID or name to run something inside of the
-existing container:
-
-```
-docker exec -it jolly_joker arangosh
-```
+Note that `localhost` inside a container refers to the container itself, so the
+client tools cannot reach a server container via a port that is only published
+on `localhost` of the host machine. Use a shared network instead.
 
 For more information, see the [Configuration](../administration/configuration.md) section.
 
@@ -211,52 +204,44 @@ restrict how much memory and how many CPU cores it should use.
 
 ## Using host directories
 
-You can map the container's volumes to a directory on the host, so that the data
-is kept between the runs of the container.
+You can map the database directory of the container to a directory on the host,
+so that the data is kept between the runs of the container.
 
 ```
 mkdir /tmp/arangodb
 docker run -e ARANGO_RANDOM_ROOT_PASSWORD=1 -p 8529:8529 -d \
-    -v /tmp/arangodb:/var/lib/arangodb3 \
-    arangodb
+    -v /tmp/arangodb:/var/lib/arangodb4 \
+    arangodb/core:4.0.0
 ```
 
-This uses the `/tmp/arangodb directory` of the host as database directory for
+This uses the `/tmp/arangodb` directory of the host as database directory for
 ArangoDB inside the container.
 
-## Using a data container
+## Using a named volume
 
-Alternatively, you can create a container holding the data and use this data
-container in your ArangoDB container.
-
-```
-docker create --name arangodb-persist arangodb true
-```
+Alternatively, you can create a named volume and use it as the database
+directory of your ArangoDB container:
 
 ```
-docker run -e ARANGO_RANDOM_ROOT_PASSWORD=1 --volumes-from arangodb-persist -p 8529:8529 arangodb
-```
-
-If you want to save a few bytes, you can alternatively use [busybox](https://hub.docker.com/_/busybox)
-or [alpine](https://hub.docker.com/_/alpine) for creating the volume containers. 
-Note that you need to provide the used volumes in this case.
-
-```
-docker run -d --name arangodb-persist -v /var/lib/arangodb3 busybox true
+docker volume create arangodb-data
+docker run -e ARANGO_RANDOM_ROOT_PASSWORD=1 -p 8529:8529 -d \
+    -v arangodb-data:/var/lib/arangodb4 \
+    arangodb/core:4.0.0
 ```
 
 ## Usage as a base image
 
-If you use the image as a base image, make sure to write any `CMD` instructions in the
-[*exec* form](https://docs.docker.com/engine/reference/builder/#cmd).
+If you use the server image as a base image, make sure to write any `CMD`
+instructions in the [*exec* form](https://docs.docker.com/engine/reference/builder/#cmd).
 Otherwise, the default entry point will not do its bootstrapping work.
 
 When deriving the image, you can control the instantiation via putting files
-into `/docker-entrypoint-initdb.d/`.
+into `/docker-entrypoint-initdb.d/`. Files with the extension `*.sh` are run as
+shell scripts when the database directory is initialized.
 
-- `*.sh` - files having this extension are run as a bash shell script.
-- `*.js` - files having this extension are executed with _arangosh_. You can
-  specify additional _arangosh_ arguments via the `ARANGOSH_ARGS` environment variable.
-- `dumps/` - in this directory you can place subdirectories containing database
-  dumps generated using [arangodump](../../components/tools/arangodump/_index.md).
-  They can be restored using [arangorestore](../../components/tools/arangorestore/_index.md).
+The server image doesn't contain _arangosh_ and _arangorestore_. Unlike in
+previous versions, you therefore cannot place `*.js` files for _arangosh_ or a
+`dumps/` directory with database dumps in `/docker-entrypoint-initdb.d/`. The
+initialization fails if any are present. To run JavaScript code or to restore
+[dumps](../../components/tools/arangodump/_index.md) after the server has
+started, use the `arangodb/client-tools` image.

@@ -109,6 +109,11 @@ You can also combine one of the supported comparison operators with the special
 to satisfy the condition to evaluate to `true`. You can use a static number or
 calculate it dynamically using an expression.
 
+The number needs to be a non-negative integer. Negative and non-numeric values
+are treated as `0` and fractional numbers are truncated, and the query raises a
+warning in these cases. If the number is greater than the length of the array,
+the condition evaluates to `false`.
+
 ```aql
 [ 1, 2, 3 ]  ALL IN  [ 2, 3, 4 ]  // false
 [ 1, 2, 3 ]  ALL IN  [ 1, 2, 3 ]  // true

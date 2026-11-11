@@ -35,8 +35,8 @@ paths:
     post:
       operationId: createUser
       description: |
-        Create a new user. You need server access level *Administrate* in order to
-        execute this REST call.
+        Create a new user. You need `rw` access to the `_system` database in order to
+        execute this action.
       parameters:
         - name: database-name
           in: path
@@ -44,8 +44,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
       requestBody:
@@ -87,11 +87,11 @@ paths:
             from the request.
         '401':
           description: |
-            Returned if you have *No access* database access level to the `_system`
+            Returned if you have `none` access to the `_system`
             database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have `none` access to the `_system` database.
         '409':
           description: |
             Returned if a user with the same name already exists.
@@ -126,8 +126,8 @@ paths:
       operationId: replaceUserData
       description: |
         Replaces the data of an existing user. This resets the user's
-        access levels for databases and collections. You need server access level
-        *Administrate* in order to execute this REST call. Additionally, users can
+        access levels for databases and collections. You need `rw` access to the `_system`
+        database in order to execute this action. Additionally, users can
         change their own data.
       parameters:
         - name: database-name
@@ -136,8 +136,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: user
@@ -179,11 +179,11 @@ paths:
             The JSON representation is malformed or mandatory data is missing from the request
         '401':
           description: |
-            Returned if you have *No access* database access level to the *_system*
+            Returned if you have `none` access to the `_system`
             database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have `none` access to the `_system` database.
         '404':
           description: |
             The specified user does not exist
@@ -220,8 +220,8 @@ paths:
     patch:
       operationId: updateUserData
       description: |
-        Partially modifies the data of an existing user. You need server access level
-        *Administrate* in order to execute this REST call. Additionally, users can
+        Partially modifies the data of an existing user. You need `rw` access to the `_system`
+        database in order to execute this action. Additionally, users can
         change their own data.
       parameters:
         - name: database-name
@@ -230,8 +230,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: user
@@ -270,11 +270,11 @@ paths:
             The JSON representation is malformed or mandatory data is missing from the request.
         '401':
           description: |
-            Returned if you have *No access* database access level to the *_system*
+            Returned if you have `none` access to the `_system`
             database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have `none` access to the `_system` database.
         '404':
           description: |
             The specified user does not exist
@@ -313,8 +313,8 @@ paths:
       description: |
         Removes an existing user, identified by `user`.
 
-        You need *Administrate* permissions for the server access level in order to
-        execute this REST call.
+        You need `rw` access to the `_system` database in order to
+        execute this action.
       parameters:
         - name: database-name
           in: path
@@ -322,8 +322,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: user
@@ -339,11 +339,11 @@ paths:
             Is returned if the user was removed by the server
         '401':
           description: |
-            Returned if you have *No access* database access level to the `_system`
+            Returned if you have `none` access to the `_system`
             database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have `none` access to the `_system` database.
         '404':
           description: |
             The specified user does not exist
@@ -379,8 +379,8 @@ paths:
       operationId: getUser
       description: |
         Fetches data about the specified user. You can fetch information about
-        yourself or you need the *Administrate* server access level in order to
-        execute this REST call.
+        yourself or you need `rw` access to the `_system` database in order to
+        execute this action.
       parameters:
         - name: database-name
           in: path
@@ -388,8 +388,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: user
@@ -405,11 +405,11 @@ paths:
             The user was found.
         '401':
           description: |
-            Returned if you have *No access* database access level to the `_system`
+            Returned if you have `none` access to the `_system`
             database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have `none` access to the `_system` database.
         '404':
           description: |
             The user with the specified name does not exist.
@@ -445,8 +445,8 @@ paths:
     get:
       operationId: listUsers
       description: |
-        Fetches data about all users. You need the *Administrate* server access level
-        in order to execute this REST call.  Otherwise, you will only get information
+        Fetches data about all users. You need `rw` access to the `_system` database
+        in order to execute this action.  Otherwise, you will only get information
         about yourself.
 
         The call will return a JSON object with at least the following
@@ -463,8 +463,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
       responses:
@@ -473,11 +473,11 @@ paths:
             The users that were found.
         '401':
           description: |
-            Returned if you have *No access* database access level to the `_system`
+            Returned if you have `none` access to the `_system`
             database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have `none` access to the `_system` database.
       tags:
         - Users
 ```
@@ -508,8 +508,7 @@ paths:
       operationId: setUserDatabasePermissions
       description: |
         Sets the database access levels for the database `dbname` of user `user`. You
-        need the *Administrate* server access level in order to execute this REST
-        call.
+        need `rw` access to the `_system` database in order to execute this action.
       requestBody:
         content:
           application/json:
@@ -520,9 +519,10 @@ paths:
               properties:
                 grant:
                   description: |
-                    - `"rw"`: Set the database access level to *Administrate*.
-                    - `"ro"`: Set the database access level to *Access*.
-                    - `"none"`: Set the database access level to *No access*.
+                    - `"rw"`: Administrate the database, such as creating and dropping collections.
+                    - `"ro"`: Access the database. The collection access levels determine what
+                      you can do with the data.
+                    - `"none"`: No access to the database.
                   type: string
                   enum: [rw, ro, none]
       parameters:
@@ -532,8 +532,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: user
@@ -560,11 +560,11 @@ paths:
             from the request.
         '401':
           description: |
-            Returned if you have *No access* database access level to the `_system`
+            Returned if you have `none` access to the `_system`
             database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have `none` access to the `_system` database.
       tags:
         - Users
 ```
@@ -599,8 +599,8 @@ paths:
       operationId: setUserCollectionPermissions
       description: |
         Sets the collection access level for the `collection` in the database `dbname`
-        for user `user`. You need the *Administrate* server access level in order to
-        execute this REST call.
+        for user `user`. You need `rw` access to the `_system` database in order to
+        execute this action.
       requestBody:
         content:
           application/json:
@@ -611,9 +611,9 @@ paths:
               properties:
                 grant:
                   description: |
-                    - `"rw"`: Set the collection access level to *Read/Write*.
-                    - `"ro"`: Set the collection access level to *Read Only*.
-                    - `"none"`: Set the collection access level to *No access*.
+                    - `"rw"`: Read and write access to the collection.
+                    - `"ro"`: Read-only access to the collection.
+                    - `"none"`: No access to the collection.
                   type: string
                   enum: [rw, ro, none]
       parameters:
@@ -623,8 +623,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: user
@@ -658,11 +658,11 @@ paths:
             from the request.
         '401':
           description: |
-            Returned if you have *No access* database access level to the `_system`
+            Returned if you have `none` access to the `_system`
             database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have `none` access to the `_system` database.
       tags:
         - Users
 ```
@@ -702,10 +702,10 @@ paths:
       description: |
         Clears the database access level for the database `dbname` of user `user`. As
         consequence, the default database access level is used. If there is no defined
-        default database access level, it defaults to *No access*.
+        default database access level, it defaults to `none`.
 
-        You need write permissions (*Administrate* access level) for the `_system`
-        database in order to execute this REST call.
+        You need `rw` access to the `_system`
+        database in order to execute this action.
       parameters:
         - name: database-name
           in: path
@@ -713,8 +713,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: user
@@ -775,10 +775,10 @@ paths:
         Clears the collection access level for the collection `collection` in the
         database `dbname` of user `user`. As consequence, the default collection
         access level is used. If there is no defined default collection access level,
-        it defaults to *No access*.
+        it defaults to `none`.
 
-        You need write permissions (*Administrate* access level) for the `_system`
-        database in order to execute this REST call.
+        You need `rw` access to the `_system`
+        database in order to execute this action.
       parameters:
         - name: database-name
           in: path
@@ -786,8 +786,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: user
@@ -857,8 +857,8 @@ paths:
       description: |
         Fetch the list of databases available to the specified `user`.
 
-        You need *Administrate* permissions for the server access level in order to
-        execute this REST call.
+        You need `rw` access to the `_system` database in order to
+        execute this action.
 
         The call will return a JSON object with the per-database access
         privileges for the specified user. The `result` object will contain
@@ -867,6 +867,10 @@ paths:
 
         In case you specified `full`, the result will contain the permissions
         for the databases as well as the permissions for the collections.
+
+        The access levels are `rw`, `ro`, and `none`. Collections without an
+        explicitly set access level are reported as `undefined`, in which case
+        the wildcard access level (`*`) applies.
       parameters:
         - name: database-name
           in: path
@@ -874,8 +878,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: user
@@ -902,11 +906,11 @@ paths:
             If the access privileges are not right etc.
         '401':
           description: |
-            Returned if you have *No access* database access level to the `_system`
+            Returned if you have `none` access to the `_system`
             database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have `none` access to the `_system` database.
       tags:
         - Users
 ```
@@ -968,8 +972,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: user
@@ -995,11 +999,11 @@ paths:
             If the access privileges are not right etc.
         '401':
           description: |
-            Returned if you have *No access* database access level to the `_system`
+            Returned if you have `none` access to the `_system`
             database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have `none` access to the `_system` database.
       tags:
         - Users
 ```
@@ -1041,8 +1045,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: user
@@ -1075,11 +1079,11 @@ paths:
             If the access privileges are not right etc.
         '401':
           description: |
-            Returned if you have *No access* database access level to the `_system`
+            Returned if you have `none` access to the `_system`
             database.
         '403':
           description: |
-            Returned if you have *No access* server access level.
+            Returned if you have `none` access to the `_system` database.
       tags:
         - Users
 ```

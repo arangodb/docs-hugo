@@ -20,7 +20,10 @@ disabled for custom Foxx apps. To toggle authentication for incoming
 requests to the internal database APIs, use the
 [`--server.authentication`](../../components/arangodb-server/options.md#--serverauthentication)
 startup option. This option is enabled by default so authentication is
-required for the database APIs.
+required for the database APIs. If you turn it off, the access requirements
+stated for the endpoints, including the need for a
+[superuser JWT](#jwt-superuser-tokens), generally don't apply. Any client that
+can reach the server has full access.
 
 {{< security >}}
 Requests using the HTTP `OPTIONS` method are answered by
@@ -111,26 +114,91 @@ ArangoDB servers using TLS for encryption in transit.
 
 ## Bearer Token Authentication
 
-ArangoDB uses a standard JWT-based authentication method.
-To authenticate via JWT, you must first obtain a JWT token with a signature
-generated via HMAC with SHA-256. The secret may either be set using
-`--server.jwt-secret` or it is randomly generated on server startup.
+ArangoDB supports authentication with JSON Web Tokens (JWT). For more
+information on JWT, please consult [RFC 7519](https://datatracker.ietf.org/doc/html/rfc7519)
+and [jwt.io](https://jwt.io).
 
-For more information on JWT please consult RFC7519 and [jwt.io](https://jwt.io).
-
-### JWT user tokens
-
-To authenticate with a specific user account, you need to supply a JWT token
-containing the `preferred_username` field with the username.
-You can either let ArangoDB generate this token for you via an API call
-or you can generate it yourself (only if you know the JWT secret).
-
-ArangoDB offers a RESTful API to generate user tokens for you if you know the
-username and password. To do so, send a POST request to this endpoint:
+To authenticate via JWT, send the token in the `Authorization` HTTP header of
+your requests:
 
 ```
-/_open/auth
+Authorization: Bearer eyJhbGciOiJIUzI1NiI..x6EfI
 ```
+
+The server signs tokens with its active JWT secret.
+You can set the JWT secrets on server startup in one of the following ways:
+- Set [`--server.jwt-secret-keyfile`](../../components/arangodb-server/options.md#--serverjwt-secret-keyfile)
+  to let the server read the JWT secret from the specified file.
+- Set [`--server.jwt-secret-folder`](../../components/arangodb-server/options.md#--serverjwt-secret-folder)
+  to specify a path and let the server read JWT secrets from multiple files
+  (only one is used for signing). This option is only available in the
+  Enterprise Edition.
+- Not specify either option to let the server generate a random JWT secret.
+- Don't use the deprecated `--server.jwt-secret` startup option to set a
+  JWT secret directly, as this may leak the secret (e.g. via the process list).
+
+The JWT secret is a shared secret with a length of up to 64 bytes. Tokens are
+signed via HMAC with SHA-256 (`HS256`).
+
+### JWT types
+
+ArangoDB distinguishes the following kinds of JWTs:
+
+| Type | How to obtain | Authenticates as | Expiry time |
+|:-----|:--------------|:-----------------|:------------|
+| [Session token](#jwt-session-tokens) | Request it from the server with a username and password. No JWT secret is needed. | The user, with the user's permissions | Always, after one hour by default |
+| [User token](#jwt-user-tokens) | Generate and sign it yourself using the active JWT secret. | The user, with the user's permissions | Optional, usually none |
+| [Superuser token](#jwt-superuser-tokens) | Generate and sign it yourself using the active JWT secret. | No user, with full access including internal APIs | Optional, usually none |
+
+The decoded payload of a JWT can contain the following fields (claims):
+
+| Claim | Description |
+|:------|:------------|
+| `iss` | Required. Must be the string `"arangodb"`. |
+| `preferred_username` | The name of the user account to authenticate as. Session tokens and user tokens contain it. The user account must exist. |
+| `server_id` | An arbitrary string identifier. Required if `preferred_username` is not set, which makes the token a superuser token. |
+| `exp` | The expiry time as Unix timestamp in seconds. Optional, but session tokens always have it. |
+| `iat` | The time the token has been issued as Unix timestamp in seconds. Optional. |
+| `allowed_paths` | An array of request paths that the token can be used for, without the `/_db/<database-name>` prefix, like `"/_api/version"`. Requests to other paths are rejected. Optional. |
+
+If you generate tokens yourself, set the `alg` field in the JWT header to `HS256`.
+
+### Validity and revocation of JWTs
+
+JWTs are stateless: the server doesn't store the tokens it issues. It accepts
+every token with a valid signature, and it cannot revoke individual tokens.
+A JWT is valid until one of the following happens:
+
+- It reaches its expiry time (`exp`), if it has one.
+- The server no longer has a JWT secret that can verify the token.
+  If you rotate the secret using the
+  [`--server.jwt-secret-folder`](../../components/arangodb-server/options.md#--serverjwt-secret-folder)
+  startup option, tokens signed with a previous secret remain valid as long as
+  the folder contains that secret as a passive secret. Any of the JWT secrets
+  can verify tokens, but only the active one signs them. You can
+  [hot-reload the JWT secrets](#hot-reload-jwt-secrets) without a restart.
+- For session tokens and user tokens, no active user account exists for the
+  username in the token's `preferred_username` field. This is the case if the
+  account has been removed.
+
+Changing the password of a user account doesn't invalidate tokens that have
+already been issued for it. Tokens also aren't bound to a particular user
+account instance, only to the username: if you remove a user account and later
+create a new account with the same username, previously issued tokens for that
+username become valid again, regardless of the new account's password. User
+tokens and superuser tokens without an expiry time stay valid until the JWT
+secret that signed them is removed, so treat them as sensitive as the JWT
+secrets themselves.
+
+### JWT session tokens
+
+A session token is a JWT that the server issues for a user account. You don't
+need to know the JWT secret, only the credentials of the user account. The web
+interface uses session tokens, for example.
+
+To obtain a session token, send a POST request to the following endpoint:
+
+{{< endpoint "POST" "/_open/auth" >}}
 
 The request body needs to contain the `username` and `password` JSON-encoded like so:
 
@@ -162,14 +230,13 @@ startup option.
 {{< /security >}}
 
 You can find the expiration date of the JWT token in the `exp` field, encoded as
-Unix timestamp in seconds.
-Please note that all JWT tokens must contain the `iss` field with string value
-`arangodb`. As an example the decoded JWT body would look like this:
+Unix timestamp in seconds. As an example, the decoded JWT body of a session
+token looks like this:
 
 ```json
 {
   "exp": 1540381557,
-  "iat": 1537789.55727901,
+  "iat": 1540377957,
   "iss": "arangodb",
   "preferred_username": "root"
 }
@@ -238,26 +305,68 @@ paths:
         - Authentication
 ```
 
+### JWT user tokens
+
+If you know the active JWT secret, you can generate and sign a token for a user
+account yourself. A user token authenticates as the user specified in the
+`preferred_username` field and grants the permissions of this user, the same as
+a session token.
+
+Unlike for session tokens, you decide which claims the token contains. In
+particular, a user token doesn't need an expiry time. Without one, it stays valid
+until the JWT secret that signed it is removed or the user account is removed. See
+[Validity and revocation of JWTs](#validity-and-revocation-of-jwts).
+
+{{< security >}}
+Anyone who knows any of the JWT secrets of the server, active or passive, can
+generate this JWT token, because the server accepts tokens signed with either.
+{{< /security >}}
+
+You can generate a user token with the
+[ArangoDB Starter CLI](../../components/tools/arangodb-starter/security.md#using-authentication-tokens)
+by specifying the user with the `--auth.user` option.
+
+Should you wish to generate the JWT token yourself with a tool of your choice,
+the body must contain the `iss` field with string value `arangodb` and the
+`preferred_username` field with the name of the user account:
+
+```json
+{
+  "iat": 1537800279,
+  "iss": "arangodb",
+  "preferred_username": "root"
+}
+```
+
+For example, to generate such a token via the
+[jwtgen tool](https://www.npmjs.com/package/jwtgen):
+
+```
+jwtgen -s <my-secret> -v -a "HS256" -c 'iss=arangodb' -c 'preferred_username=root'
+```
+
 ### JWT superuser tokens
 
 To access specific internal APIs as well as Agency and DB-Server instances a
-token generated via `POST /_open/auth` is not good enough. For these special
+session token or user token is not good enough. For these special
 APIs, you need to generate a special JWT token which grants superuser
 access. Note that using superuser access for normal database operations is
 **not advised**.
 
 {{< security >}}
-It is only possible to generate this JWT token with the knowledge of the
-JWT secret.
+Anyone who knows any of the JWT secrets of the server, active or passive, can
+generate this JWT token, because the server accepts tokens signed with either.
 {{< /security >}}
 
 For your convenience it is possible to generate this token via the
-[ArangoDB starter CLI](../../components/tools/arangodb-starter/security.md#using-authentication-tokens).
+[ArangoDB Starter CLI](../../components/tools/arangodb-starter/security.md#using-authentication-tokens).
 
 Should you wish to generate the JWT token yourself with a tool of your choice,
 you need to include the correct body. The body must contain the `iss` field
 with string value `arangodb` and the `server_id` field with an arbitrary string
-identifier:
+identifier, but no `preferred_username` field. The `exp` field is optional.
+Without it, the token stays valid until the JWT secret that signed it is removed.
+The following example body includes an expiry time:
 
 ```json
 {
@@ -282,21 +391,18 @@ curl -v -H "Authorization: bearer $(jwtgen -s <my-secret> -e 3600 -a "HS256" -c 
 {{< tag "ArangoDB Enterprise Edition" >}}
 
 To reload the JWT secrets of a local _arangod_ process without a restart, you
-may use the following RESTful API. A `POST` request reloads the secret, a
+may use the following HTTP API. A `POST` request reloads the secret, a
 `GET` request may be used to load information about the currently used secrets.
 
-### Get information about the loaded JWT secrets
+### Get the hashes of the loaded JWT secrets
 
 ```openapi
 paths:
   /_db/{database-name}/_admin/server/jwt:
     get:
-      operationId: getServerJwtSecrets
+      operationId: getServerJwtSecretHashes
       description: |
-        Get information about the currently loaded secrets.
-
-        To utilize the API a superuser JWT token is necessary, otherwise the response
-        will be _HTTP 403 Forbidden_.
+        Get the SHA-256 hashes of the currently loaded JWT secrets.
       parameters:
         - name: database-name
           in: path
@@ -304,9 +410,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
       responses:
@@ -371,13 +477,13 @@ paths:
       operationId: reloadServerJwtSecrets
       description: |
         Sending a request without payload to this endpoint reloads the JWT secret(s)
-        from disk. Only the files specified via the arangod startup option
+        from disk. Only the files specified via the _arangod_ startup option
         `--server.jwt-secret-keyfile` or `--server.jwt-secret-folder` are used.
         It is not possible to change the locations where files are loaded from
         without restarting the process.
 
-        To utilize the API a superuser JWT token is necessary, otherwise the response
-        will be _HTTP 403 Forbidden_.
+        This endpoint requires a [superuser JWT](#jwt-superuser-tokens). User accounts,
+        including `root`, are not sufficient.
       responses:
         '200':
           description: |
@@ -423,6 +529,41 @@ paths:
                         type: array
                         items:
                           type: object
+        '400':
+          description: |
+            The JWT secrets cannot be reloaded because no JWT secret file is
+            configured. This is the case if the server has been started with the
+            deprecated `--server.jwt-secret` startup option or with no JWT secret
+            at all.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                    example: 10
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '403':
           description: |
             if the request was not authenticated as a user with sufficient rights

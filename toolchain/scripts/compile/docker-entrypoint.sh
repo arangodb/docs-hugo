@@ -34,12 +34,21 @@ if [ -d /sys/devices/system/node/node1 -a -f /proc/self/numa_maps ]; then
 fi
 
 if [ "$1" = 'arangod' ]; then
-    # /var/lib/arangodb3 and /var/lib/arangodb3-apps must exist and
+    # The directory name follows the major version (arangodb3, arangodb4, ...).
+    # Detect it from the installed config (pick the highest if there are several).
+    ARANGO_CONF=$(ls -d /etc/arangodb*/arangod.conf 2>/dev/null | sort -V | tail -n 1)
+    if [ -z "$ARANGO_CONF" ]; then
+        echo >&2 "error: no arangod.conf found under /etc/arangodb*/"
+        exit 1
+    fi
+    ARANGO_NAME=$(basename "$(dirname "$ARANGO_CONF")")
+
+    # /var/lib/$ARANGO_NAME and /var/lib/$ARANGO_NAME-apps must exist and
     # be writable by the user under which we run the container.
 
     # Make a copy of the configuration file to patch it, note that this
     # must work regardless under which user we run:
-    cp /etc/arangodb3/arangod.conf /tmp/arangod.conf
+    cp "$ARANGO_CONF" /tmp/arangod.conf
 
     ARANGO_STORAGE_ENGINE=rocksdb
     if [ ! -z "$ARANGO_ENCRYPTION_KEYFILE" ]; then
@@ -47,7 +56,7 @@ if [ "$1" = 'arangod' ]; then
         sed -i /tmp/arangod.conf -e "s;^.*encryption-keyfile.*;encryption-keyfile=$ARANGO_ENCRYPTION_KEYFILE;"
     fi
 
-    if [ ! -f /var/lib/arangodb3/SERVER ] && [ "$SKIP_DATABASE_INIT" != "1" ]; then
+    if [ ! -f "/var/lib/$ARANGO_NAME/SERVER" ] && [ "$SKIP_DATABASE_INIT" != "1" ]; then
         if [ ! -z "$ARANGO_ROOT_PASSWORD_FILE" ]; then
             if [ -f "$ARANGO_ROOT_PASSWORD_FILE" ]; then
                 ARANGO_ROOT_PASSWORD="$(cat $ARANGO_ROOT_PASSWORD_FILE)"

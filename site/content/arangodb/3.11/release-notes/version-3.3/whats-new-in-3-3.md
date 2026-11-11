@@ -166,7 +166,7 @@ X-Arango-Endpoint: http://[::1]:8531
 ```
 
 Client applications can also detect who the current leader and the followers
-are by calling the `/_api/cluster/endpoints` REST API. This API is accessible
+are by calling the `/_api/cluster/endpoints` HTTP API. This API is accessible
 on leaders and followers alike.
 
 The ArangoDB starter supports starting two servers with asynchronous
@@ -224,9 +224,6 @@ The following options have been added to it:
   - `--ldap.roles-include`
   - `--ldap.roles-exclude`
   - `--ldap.superuser-role`
-
-  Please refer to [LDAP](../../components/arangodb-server/ldap.md) for a detailed
-  explanation.
 
 ## Miscellaneous features
 

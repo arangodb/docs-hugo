@@ -180,7 +180,7 @@ The default value of the startup option `--server.unavailability-queue-fill-grad
 has been changed from value `1` in previous versions to a value of `0.75` in ArangoDB
 3.8.
 
-This change has a consequence for the `/_admin/server/availability` REST API only,
+This change has a consequence for the `/_admin/server/availability` HTTP API only,
 which is often called by load-balancers and other availability probing systems.
 
 The `/_admin/server/availability` API will return HTTP 200 if the fill grade of the
@@ -310,7 +310,7 @@ To restore the pre-3.8 format, please set the option `--log.time-format` to
 `local-datestring`, which will make the audit logger (and all other server log
 messages) use the server's local time.
 
-## HTTP RESTful API
+## HTTP API
 
 ### Www-Authenticate response header
 
@@ -358,7 +358,7 @@ as a database only. It may have an effect for Foxx applications that use HTTP
   names and the new, corrected format of the output. Over time, you can
   then retire your old metrics collection process and dashboards.
 
-- Changed the encoding of revision IDs returned by the below listed REST APIs.
+- Changed the encoding of revision IDs returned by the below listed HTTP APIs.
 
   <small>Introduced in: v3.8.8</small>
 
@@ -371,11 +371,11 @@ as a database only. It may have an effect for Foxx applications that use HTTP
     that the `revision` attribute always contains a string value with
     either numeric encoding or HLC-encoding inside.
 
-### Optional lockdown of `/_admin/cluster` REST API
+### Optional lockdown of `/_admin/cluster` HTTP API
 
 ArangoDB 3.8 provides a new startup option `--cluster.api-jwt-policy` that
 allows *additional* checking for valid JWTs in all requests to sub-routes of
-the `/_admin/cluster` REST API endpoint.
+the `/_admin/cluster` HTTP API endpoint.
 This is a security option to restrict access to these cluster APIs to
 operator tools and privileged users.
 

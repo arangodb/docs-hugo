@@ -19,7 +19,7 @@ You can visually explore the created graphs in the
 of the web interface.
 
 You can take a look at the script that creates the example graphs on
-[GitHub](https://github.com/arangodb/arangodb/blob/devel/js/common/modules/%40arangodb/graph-examples/example-graph.js)
+[GitHub](https://github.com/arangodb/arangodb/blob/3.11/js/common/modules/%40arangodb/graph-examples/example-graph.js)
 for reference about how to manage graphs programmatically.
 
 ## Knows Graph
@@ -223,13 +223,7 @@ examples.dropGraph("routeplanner");
 
 ## Connected Components Graph
 
-A small example graph comprised of `components` (vertices) and `connections`
-(edges). Good for trying out Pregel algorithms such as Weakly Connected
-Components (WCC).
-
-Also see:
-- [Distributed Iterative Graph Processing (Pregel)](../data-science/pregel/_index.md)
-- [Pregel HTTP API](../develop/http-api/pregel.md)
+A small example graph comprised of `components` (vertices) and `connections` (edges).
 
 ![Three disjoint subgraphs with 36 nodes and edges in total](../../../images/connected_components.png)
 

@@ -6,12 +6,6 @@ description: >-
   The HTTP API for Views lets you manage `arangosearch` Views, including
   handling the general View properties and View links
 ---
-The data store that backs an `arangosearch` View is made up of segments whose
-creation and merging you can control with the `commitIntervalMsec`,
-`consolidationIntervalMsec`, and `consolidationPolicy` properties. To inspect
-the resulting segment layout, see the
-[ArangoSearch statistics HTTP API](../monitoring/arangosearch-statistics.md).
-
 ## Create an arangosearch View
 
 ```openapi
@@ -272,7 +266,7 @@ paths:
                     inserts/deletes), a higher value impacts performance without any added
                     benefits.
 
-                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#cleanup).
+                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/architecture.md#cleanup).
                   type: integer
                   default: 2
                 commitIntervalMsec:
@@ -285,7 +279,7 @@ paths:
                     few inserts/updates because of synchronous locking, and it wastes disk space for
                     each commit call.
 
-                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#commits).
+                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/architecture.md#writing-and-commits).
                   type: integer
                   default: 1000
                 consolidationIntervalMsec:
@@ -299,7 +293,7 @@ paths:
                     impacts performance due to no segment candidates being available for
                     consolidation.
 
-                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
                   type: integer
                   default: 5000
                 consolidationPolicy:
@@ -311,7 +305,10 @@ paths:
                       and `minScore` properties (up to v3.12.6).
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
-                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
+
+                    To inspect the segment layout, see the
+                    [ArangoSearch statistics HTTP API](../monitoring/arangosearch-statistics.md).
                   type: object
                   required:
                     - type
@@ -321,8 +318,9 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: Consolidate based on segment byte size skew and live
-                          document count as dictated by the customization attributes. 
+                        - `"tier"`: Consolidate based on segment byte size skew and the number
+                          of entries that are not marked as deleted, as dictated by the
+                          customization attributes.
                         - `"bytes_accum"`: Consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                           i.e. the sum of all candidate segment byte size is less than the total
@@ -410,19 +408,21 @@ paths:
                         in one or more segments to perform a cleanup of those segments.
                         It is a number between `0.0` and `1.0`.
 
-                        The deletion ratio is the percentage of deleted documents across one or
-                        more segment files and is calculated by dividing the number of deleted
-                        documents by the total number of documents in a segment or a group of
-                        segments. For example, if there is a segment with 1000 documents of which
-                        300 are deleted and another segment with 1000 documents of which 700 are
-                        deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+                        The deletion ratio is the percentage of index entries marked
+                        as deleted across one or more segment files and is calculated
+                        by dividing the number of deleted entries by the total number
+                        of entries in a segment or a group of segments. For example,
+                        if there is a segment with 1000 entries of which 300 are
+                        deleted and another segment with 1000 entries of which 700 are
+                        deleted, the deletion ratio is `0.5` (50%, calculated as `1000
+                        / 2000`).
 
                         The `minDeletionRatio` threshold must be carefully selected. A smaller
-                        value leads to earlier cleanup of deleted documents from segments and
+                        value leads to earlier cleanup of deleted entries from segments and
                         thus reclamation of disk space but it generates a higher write load.
                         A very large value lowers the write amplification but at the same time
                         the system can be left with a large number of segment files with a high
-                        percentage of deleted documents that occupy disk space unnecessarily.
+                        percentage of deleted entries that occupy disk space unnecessarily.
 
                         During cleanup, the segment files are first arranged in decreasing
                         order of their individual deletion ratios. Then the largest subset of
@@ -621,8 +621,9 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: Consolidate based on segment byte size skew and live
-                            document count as dictated by the customization attributes.
+                          - `"tier"`: Consolidate based on segment byte size skew and the number
+                            of entries that are not marked as deleted, as dictated by the
+                            customization attributes.
                           - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
@@ -702,19 +703,21 @@ paths:
                           in one or more segments to perform a cleanup of those segments.
                           It is a number between `0.0` and `1.0`.
 
-                          The deletion ratio is the percentage of deleted documents across one or
-                          more segment files and is calculated by dividing the number of deleted
-                          documents by the total number of documents in a segment or a group of
-                          segments. For example, if there is a segment with 1000 documents of which
-                          300 are deleted and another segment with 1000 documents of which 700 are
-                          deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+                          The deletion ratio is the percentage of index entries marked
+                          as deleted across one or more segment files and is
+                          calculated by dividing the number of deleted entries by the
+                          total number of entries in a segment or a group of segments.
+                          For example, if there is a segment with 1000 entries of
+                          which 300 are deleted and another segment with 1000 entries
+                          of which 700 are deleted, the deletion ratio is `0.5` (50%,
+                          calculated as `1000 / 2000`).
 
                           The `minDeletionRatio` threshold must be carefully selected. A smaller
-                          value leads to earlier cleanup of deleted documents from segments and
+                          value leads to earlier cleanup of deleted entries from segments and
                           thus reclamation of disk space but it generates a higher write load.
                           A very large value lowers the write amplification but at the same time
                           the system can be left with a large number of segment files with a high
-                          percentage of deleted documents that occupy disk space unnecessarily.
+                          percentage of deleted entries that occupy disk space unnecessarily.
 
                           During cleanup, the segment files are first arranged in decreasing
                           order of their individual deletion ratios. Then the largest subset of
@@ -1168,8 +1171,9 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: Consolidate based on segment byte size skew and live
-                            document count as dictated by the customization attributes.
+                          - `"tier"`: Consolidate based on segment byte size skew and the number
+                            of entries that are not marked as deleted, as dictated by the
+                            customization attributes.
                           - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
@@ -1249,19 +1253,21 @@ paths:
                           in one or more segments to perform a cleanup of those segments.
                           It is a number between `0.0` and `1.0`.
 
-                          The deletion ratio is the percentage of deleted documents across one or
-                          more segment files and is calculated by dividing the number of deleted
-                          documents by the total number of documents in a segment or a group of
-                          segments. For example, if there is a segment with 1000 documents of which
-                          300 are deleted and another segment with 1000 documents of which 700 are
-                          deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+                          The deletion ratio is the percentage of index entries marked
+                          as deleted across one or more segment files and is
+                          calculated by dividing the number of deleted entries by the
+                          total number of entries in a segment or a group of segments.
+                          For example, if there is a segment with 1000 entries of
+                          which 300 are deleted and another segment with 1000 entries
+                          of which 700 are deleted, the deletion ratio is `0.5` (50%,
+                          calculated as `1000 / 2000`).
 
                           The `minDeletionRatio` threshold must be carefully selected. A smaller
-                          value leads to earlier cleanup of deleted documents from segments and
+                          value leads to earlier cleanup of deleted entries from segments and
                           thus reclamation of disk space but it generates a higher write load.
                           A very large value lowers the write amplification but at the same time
                           the system can be left with a large number of segment files with a high
-                          percentage of deleted documents that occupy disk space unnecessarily.
+                          percentage of deleted entries that occupy disk space unnecessarily.
 
                           During cleanup, the segment files are first arranged in decreasing
                           order of their individual deletion ratios. Then the largest subset of
@@ -1556,7 +1562,7 @@ paths:
                     inserts/deletes), a higher value impacts performance without any added
                     benefits.
 
-                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#cleanup).
+                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/architecture.md#cleanup).
                   type: integer
                   default: 2
                 commitIntervalMsec:
@@ -1569,7 +1575,7 @@ paths:
                     few inserts/updates because of synchronous locking, and it wastes disk space for
                     each commit call.
 
-                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#commits).
+                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/architecture.md#writing-and-commits).
                   type: integer
                   default: 1000
                 consolidationIntervalMsec:
@@ -1583,7 +1589,7 @@ paths:
                     impacts performance due to no segment candidates being available for
                     consolidation.
 
-                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
                   type: integer
                   default: 5000
                 consolidationPolicy:
@@ -1595,7 +1601,10 @@ paths:
                       and `minScore` properties (up to v3.12.6).
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
-                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
+
+                    To inspect the segment layout, see the
+                    [ArangoSearch statistics HTTP API](../monitoring/arangosearch-statistics.md).
                   type: object
                   required:
                     - type
@@ -1605,8 +1614,9 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: Consolidate based on segment byte size skew and live
-                          document count as dictated by the customization attributes. 
+                        - `"tier"`: Consolidate based on segment byte size skew and the number
+                          of entries that are not marked as deleted, as dictated by the
+                          customization attributes.
                         - `"bytes_accum"`: Consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                           i.e. the sum of all candidate segment byte size is less than the total
@@ -1694,19 +1704,21 @@ paths:
                         in one or more segments to perform a cleanup of those segments.
                         It is a number between `0.0` and `1.0`.
 
-                        The deletion ratio is the percentage of deleted documents across one or
-                        more segment files and is calculated by dividing the number of deleted
-                        documents by the total number of documents in a segment or a group of
-                        segments. For example, if there is a segment with 1000 documents of which
-                        300 are deleted and another segment with 1000 documents of which 700 are
-                        deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+                        The deletion ratio is the percentage of index entries marked
+                        as deleted across one or more segment files and is calculated
+                        by dividing the number of deleted entries by the total number
+                        of entries in a segment or a group of segments. For example,
+                        if there is a segment with 1000 entries of which 300 are
+                        deleted and another segment with 1000 entries of which 700 are
+                        deleted, the deletion ratio is `0.5` (50%, calculated as `1000
+                        / 2000`).
 
                         The `minDeletionRatio` threshold must be carefully selected. A smaller
-                        value leads to earlier cleanup of deleted documents from segments and
+                        value leads to earlier cleanup of deleted entries from segments and
                         thus reclamation of disk space but it generates a higher write load.
                         A very large value lowers the write amplification but at the same time
                         the system can be left with a large number of segment files with a high
-                        percentage of deleted documents that occupy disk space unnecessarily.
+                        percentage of deleted entries that occupy disk space unnecessarily.
 
                         During cleanup, the segment files are first arranged in decreasing
                         order of their individual deletion ratios. Then the largest subset of
@@ -1883,8 +1895,9 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: Consolidate based on segment byte size skew and live
-                            document count as dictated by the customization attributes.
+                          - `"tier"`: Consolidate based on segment byte size skew and the number
+                            of entries that are not marked as deleted, as dictated by the
+                            customization attributes.
                           - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
@@ -1964,19 +1977,21 @@ paths:
                           in one or more segments to perform a cleanup of those segments.
                           It is a number between `0.0` and `1.0`.
 
-                          The deletion ratio is the percentage of deleted documents across one or
-                          more segment files and is calculated by dividing the number of deleted
-                          documents by the total number of documents in a segment or a group of
-                          segments. For example, if there is a segment with 1000 documents of which
-                          300 are deleted and another segment with 1000 documents of which 700 are
-                          deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+                          The deletion ratio is the percentage of index entries marked
+                          as deleted across one or more segment files and is
+                          calculated by dividing the number of deleted entries by the
+                          total number of entries in a segment or a group of segments.
+                          For example, if there is a segment with 1000 entries of
+                          which 300 are deleted and another segment with 1000 entries
+                          of which 700 are deleted, the deletion ratio is `0.5` (50%,
+                          calculated as `1000 / 2000`).
 
                           The `minDeletionRatio` threshold must be carefully selected. A smaller
-                          value leads to earlier cleanup of deleted documents from segments and
+                          value leads to earlier cleanup of deleted entries from segments and
                           thus reclamation of disk space but it generates a higher write load.
                           A very large value lowers the write amplification but at the same time
                           the system can be left with a large number of segment files with a high
-                          percentage of deleted documents that occupy disk space unnecessarily.
+                          percentage of deleted entries that occupy disk space unnecessarily.
 
                           During cleanup, the segment files are first arranged in decreasing
                           order of their individual deletion ratios. Then the largest subset of
@@ -2181,7 +2196,7 @@ paths:
                     inserts/deletes), a higher value impacts performance without any added
                     benefits.
 
-                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#cleanup).
+                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/architecture.md#cleanup).
                   type: integer
                 commitIntervalMsec:
                   description: |
@@ -2193,7 +2208,7 @@ paths:
                     few inserts/updates because of synchronous locking, and it wastes disk space for
                     each commit call.
 
-                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#commits).
+                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/architecture.md#writing-and-commits).
                   type: integer
                 consolidationIntervalMsec:
                   description: |
@@ -2206,7 +2221,7 @@ paths:
                     impacts performance due to no segment candidates being available for
                     consolidation.
 
-                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
                   type: integer
                 consolidationPolicy:
                   description: |
@@ -2217,7 +2232,10 @@ paths:
                       and `minScore` properties (up to v3.12.6).
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
-                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
+
+                    To inspect the segment layout, see the
+                    [ArangoSearch statistics HTTP API](../monitoring/arangosearch-statistics.md).
                   type: object
                   required:
                     - type
@@ -2227,8 +2245,9 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: Consolidate based on segment byte size skew and live
-                          document count as dictated by the customization attributes. 
+                        - `"tier"`: Consolidate based on segment byte size skew and the number
+                          of entries that are not marked as deleted, as dictated by the
+                          customization attributes.
                         - `"bytes_accum"`: Consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                           i.e. the sum of all candidate segment byte size is less than the total
@@ -2315,19 +2334,21 @@ paths:
                         in one or more segments to perform a cleanup of those segments.
                         It is a number between `0.0` and `1.0`.
 
-                        The deletion ratio is the percentage of deleted documents across one or
-                        more segment files and is calculated by dividing the number of deleted
-                        documents by the total number of documents in a segment or a group of
-                        segments. For example, if there is a segment with 1000 documents of which
-                        300 are deleted and another segment with 1000 documents of which 700 are
-                        deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+                        The deletion ratio is the percentage of index entries marked
+                        as deleted across one or more segment files and is calculated
+                        by dividing the number of deleted entries by the total number
+                        of entries in a segment or a group of segments. For example,
+                        if there is a segment with 1000 entries of which 300 are
+                        deleted and another segment with 1000 entries of which 700 are
+                        deleted, the deletion ratio is `0.5` (50%, calculated as `1000
+                        / 2000`).
 
                         The `minDeletionRatio` threshold must be carefully selected. A smaller
-                        value leads to earlier cleanup of deleted documents from segments and
+                        value leads to earlier cleanup of deleted entries from segments and
                         thus reclamation of disk space but it generates a higher write load.
                         A very large value lowers the write amplification but at the same time
                         the system can be left with a large number of segment files with a high
-                        percentage of deleted documents that occupy disk space unnecessarily.
+                        percentage of deleted entries that occupy disk space unnecessarily.
 
                         During cleanup, the segment files are first arranged in decreasing
                         order of their individual deletion ratios. Then the largest subset of
@@ -2504,8 +2525,9 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: Consolidate based on segment byte size skew and live
-                            document count as dictated by the customization attributes.
+                          - `"tier"`: Consolidate based on segment byte size skew and the number
+                            of entries that are not marked as deleted, as dictated by the
+                            customization attributes.
                           - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
@@ -2585,19 +2607,21 @@ paths:
                           in one or more segments to perform a cleanup of those segments.
                           It is a number between `0.0` and `1.0`.
 
-                          The deletion ratio is the percentage of deleted documents across one or
-                          more segment files and is calculated by dividing the number of deleted
-                          documents by the total number of documents in a segment or a group of
-                          segments. For example, if there is a segment with 1000 documents of which
-                          300 are deleted and another segment with 1000 documents of which 700 are
-                          deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+                          The deletion ratio is the percentage of index entries marked
+                          as deleted across one or more segment files and is
+                          calculated by dividing the number of deleted entries by the
+                          total number of entries in a segment or a group of segments.
+                          For example, if there is a segment with 1000 entries of
+                          which 300 are deleted and another segment with 1000 entries
+                          of which 700 are deleted, the deletion ratio is `0.5` (50%,
+                          calculated as `1000 / 2000`).
 
                           The `minDeletionRatio` threshold must be carefully selected. A smaller
-                          value leads to earlier cleanup of deleted documents from segments and
+                          value leads to earlier cleanup of deleted entries from segments and
                           thus reclamation of disk space but it generates a higher write load.
                           A very large value lowers the write amplification but at the same time
                           the system can be left with a large number of segment files with a high
-                          percentage of deleted documents that occupy disk space unnecessarily.
+                          percentage of deleted entries that occupy disk space unnecessarily.
 
                           During cleanup, the segment files are first arranged in decreasing
                           order of their individual deletion ratios. Then the largest subset of
@@ -2946,8 +2970,9 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: Consolidate based on segment byte size skew and live
-                            document count as dictated by the customization attributes.
+                          - `"tier"`: Consolidate based on segment byte size skew and the number
+                            of entries that are not marked as deleted, as dictated by the
+                            customization attributes.
                           - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
@@ -3027,19 +3052,21 @@ paths:
                           in one or more segments to perform a cleanup of those segments.
                           It is a number between `0.0` and `1.0`.
 
-                          The deletion ratio is the percentage of deleted documents across one or
-                          more segment files and is calculated by dividing the number of deleted
-                          documents by the total number of documents in a segment or a group of
-                          segments. For example, if there is a segment with 1000 documents of which
-                          300 are deleted and another segment with 1000 documents of which 700 are
-                          deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+                          The deletion ratio is the percentage of index entries marked
+                          as deleted across one or more segment files and is
+                          calculated by dividing the number of deleted entries by the
+                          total number of entries in a segment or a group of segments.
+                          For example, if there is a segment with 1000 entries of
+                          which 300 are deleted and another segment with 1000 entries
+                          of which 700 are deleted, the deletion ratio is `0.5` (50%,
+                          calculated as `1000 / 2000`).
 
                           The `minDeletionRatio` threshold must be carefully selected. A smaller
-                          value leads to earlier cleanup of deleted documents from segments and
+                          value leads to earlier cleanup of deleted entries from segments and
                           thus reclamation of disk space but it generates a higher write load.
                           A very large value lowers the write amplification but at the same time
                           the system can be left with a large number of segment files with a high
-                          percentage of deleted documents that occupy disk space unnecessarily.
+                          percentage of deleted entries that occupy disk space unnecessarily.
 
                           During cleanup, the segment files are first arranged in decreasing
                           order of their individual deletion ratios. Then the largest subset of

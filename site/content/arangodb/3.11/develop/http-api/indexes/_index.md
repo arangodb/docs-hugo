@@ -15,14 +15,15 @@ is prefixed with a collection name and a forward slash (`/`) to identify an
 index within a database.
 
 ```
-http://server:port/_api/index/<collection-name>/<index-identifier>
+http://server:port/_db/<database-name>/_api/index/<collection-name>/<index-identifier>
 ```
 
-For example, assume that the full index identifier is `demo/63563528`, then the
-URL of that index is as follows:
+For example, assume ArangoDB runs locally, the full index identifier is
+`demo/63563528`, and it is in the `mydb` database. The URL of that index is the
+following:
 
 ```
-http://localhost:8529/_api/index/demo/63563528
+http://localhost:8529/_db/mydb/_api/index/demo/63563528
 ```
 
 ## List all indexes of a collection

@@ -336,38 +336,35 @@ with `ARANGO_`, except if they contain `PASSWORD`. It excludes the variables
 use `[Pp][Aa][Ss][Ss][Ww][Oo][Rr][Dd]` for case-insensitive matching.
 
 You can test the allow-/denylisting in _arangosh_, here using the ArangoDB 4.0
-container image:
+client tools container image:
 
 ```sh
-docker run --rm -e ARANGO_ROOT_PASSWORD="secret" arangodb:4.0 \
-  arangosh --javascript.execute-string "print(process.env)"
+docker run --rm -e ARANGO_ROOT_PASSWORD="secret" arangodb/client-tools:4.0.0 \
+  arangosh --server.endpoint none --javascript.execute-string "print(process.env)"
 ```
 
 ```js
 {
   "HOSTNAME" : "0aea68ec522d",
-  "SHLVL" : "1",
-  "HOME" : "/root",
+  "HOME" : "/home/arangodb",
   "ARANGO_ROOT_PASSWORD" : "secret",
   "PATH" : "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-  "PWD" : "/",
-  "ICU_DATA_LEGACY" : "/usr/share/arangodb3/",
-  "ICU_DATA" : "/usr/share/arangodb3/"
+  "ICU_DATA_LEGACY" : "/usr/share/arangodb4/",
+  "ICU_DATA" : "/usr/share/arangodb4/"
 }
 ```
 
 ```sh
-docker run --rm -e ARANGO_ROOT_PASSWORD="secret" arangodb:4.0 \
-  arangosh --javascript.execute-string "print(process.env)" \
+docker run --rm -e ARANGO_ROOT_PASSWORD="secret" arangodb/client-tools:4.0.0 \
+  arangosh --server.endpoint none --javascript.execute-string "print(process.env)" \
   --javascript.environment-variables-allowlist "^(ARANGO|ICU)_" \
   --javascript.environment-variables-denylist "PASSWORD"
 ```
 
 ```js
-...
 [Object {
-  "ICU_DATA_LEGACY" : "/usr/share/arangodb3/",
-  "ICU_DATA" : "/usr/share/arangodb3/"
+  "ICU_DATA_LEGACY" : "/usr/share/arangodb4/",
+  "ICU_DATA" : "/usr/share/arangodb4/"
 }]
 ```
 

@@ -6,7 +6,7 @@ description: >-
   A summary of the changes to the HTTP API and other interfaces that are relevant
   for developers, like maintainers of drivers and integrations for ArangoDB
 ---
-## HTTP RESTful API
+## HTTP API
 
 ### Behavior changes
 
@@ -340,6 +340,136 @@ the request now fails with an HTTP `404 Not Found` error and the
 `ERROR_ARANGO_DATABASE_NOT_FOUND` (`1228`) error number. Up to v3.12.10, the
 request failed with an HTTP `401 Unauthorized` error and the `ERROR_FORBIDDEN`
 (`11`) error number.
+
+#### Validation of vector index factory strings
+
+<small>Introduced in: v3.12.12</small>
+
+The optional `factory` string of
+[vector indexes](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#vector-index-properties)
+is now validated when you create the index. Requests to
+[create a vector index](../../develop/http-api/indexes/vector.md) fail with an
+HTTP `400 Bad Request` error and the `ERROR_BAD_PARAMETER` (`10`) error number
+in the following cases:
+
+- The factory string cannot be parsed by the Faiss library.
+- It doesn't describe an inverted file (IVF) index.
+- It isn't compatible with the `dimension`.
+- It fixes a number of centroids that conflicts with the `nLists` value.
+
+Up to v3.12.11, such index definitions are accepted. The problem only surfaces
+during the training of the index, leaving behind an index with a
+`trainingState` of `"unusable"`.
+
+A consequence of the stricter validation is that a factory string with a fixed
+number of centroids like `"IVF100,Flat"` now requires you to set `nLists` to the
+same number. You cannot combine it with a scaling specification for `nLists`
+anymore, not even if the specification resolves to a matching number. As
+`nLists` defaults to a scaling specification from v3.12.10 onward, you need to
+set it explicitly in this case. Alternatively, use the `{}` placeholder as in
+`"IVF{},Flat"` to let the number of centroids be substituted.
+
+#### Sessions of deactivated user accounts
+
+<small>Introduced in: v3.12.12</small>
+
+If you deactivate a user account by setting `active` to `false` using the
+[User Management API](../../develop/http-api/users.md), the
+[JWT session tokens](../../develop/http-api/authentication.md#jwt-session-tokens)
+and [user tokens](../../develop/http-api/authentication.md#jwt-user-tokens) of
+this user account are now rejected. Requests that
+authenticate with such a token fail with an HTTP `401 Unauthorized` error.
+
+#### Per-user scoping of the query tracking API
+
+<small>Introduced in: v3.12.13</small>
+
+Listing and killing AQL queries is now limited to the queries of the user account
+you authenticate with. Previously, any user account with at least `ro` access
+to a database could list all running and slow queries of that database,
+including the query strings and bind variables of other users, and kill any of
+them.
+
+This affects the following endpoints of the
+[AQL query API](../../develop/http-api/queries/aql-queries.md#track-queries):
+
+- `GET /_api/query/current` and `GET /_api/query/slow` only return your own
+  queries.
+- `DELETE /_api/query/slow` only removes your own entries from the list of slow
+  queries.
+- `DELETE /_api/query/{query-id}` only kills your own queries. Requests to
+  kill a query of another user fail with an HTTP `403 Forbidden` error.
+
+Administrators can still list and kill the queries of all users and clear the
+entire list of slow queries. This requires `rw` access to the `_system`
+database (classic authorization) or the `coredb-admin` role (RBAC).
+Requests with a
+[superuser JWT](../../develop/http-api/authentication.md#jwt-superuser-tokens)
+are not affected.
+
+Using the `all` query parameter to target all databases remains unchanged and
+still requires a superuser JWT in the `_system` database.
+
+#### Permission checks for the query tracking properties
+
+<small>Introduced in: v3.12.13</small>
+
+Changing the query tracking properties of a database via the
+[`PUT /_api/query/properties` endpoint](../../develop/http-api/queries/aql-queries.md#update-the-aql-query-tracking-configuration)
+now requires `rw` access to the database the request targets (classic
+authorization). Previously, any user account with at least `ro` access to the
+database could change the properties, for example, to enable the tracking of
+bind variables.
+
+With RBAC, none of the predefined roles grants the permission to change the
+query tracking properties. Only requests with a
+[superuser JWT](../../develop/http-api/authentication.md#jwt-superuser-tokens)
+can change them.
+
+Changing the properties is also no longer possible in read-only mode, except
+with a superuser JWT.
+
+If you lack the required permission or if the server is in read-only mode,
+the request fails with an HTTP `403 Forbidden` error.
+
+#### Permission checks for reading index definitions
+
+<small>Introduced in: v3.12.13</small>
+
+Reading index definitions via the
+[`GET /_api/index` endpoint](../../develop/http-api/indexes/_index.md#list-all-indexes-of-a-collection)
+and the [`GET /_api/index/{index-id}` endpoint](../../develop/http-api/indexes/_index.md#get-an-index)
+now consistently requires at least `ro` access to the collection in all
+deployment modes. The index definitions include the names of the indexed
+attributes. Previously, Coordinators in cluster deployments didn't check the
+access level for all requests. Single servers are unaffected because they
+already enforced the check.
+
+This applies to both classic authorization and RBAC. If the user account you
+authenticate with has `none` access to the collection, the request fails with
+an HTTP `403 Forbidden` error.
+
+#### Maximum lifetime of replication batches
+
+<small>Introduced in: v3.12.13</small>
+
+The `ttl` of replication batches that you set when you
+[create a batch](../../develop/http-api/replication/replication-dump.md#create-a-new-dump-batch)
+or [extend its lifetime](../../develop/http-api/replication/replication-dump.md#extend-the-ttl-of-a-dump-batch)
+is now capped at `86400` seconds (24 hours). Previously, any value was accepted,
+and a batch with a very high `ttl` could prevent the RocksDB write-ahead log
+files from being released.
+
+#### Escaped label values in metrics
+
+<small>Introduced in: v3.12.13</small>
+
+The [Metrics API](../../develop/http-api/monitoring/metrics.md) now escapes
+backslashes, double quotes, and line feeds in label values as `\\`, `\"`, and
+`\n` according to the Prometheus text exposition format. This affects database
+and collection names, for example, which can contain such characters if you use
+extended names. Previously, these characters were output as-is, resulting in
+invalid metrics output.
 
 ### Endpoint return value changes
 
@@ -1239,6 +1369,21 @@ curl -uroot:v1.7b2265...71227d http://localhost:8529/_api/database
 Note that it is recommended to use access tokens for creating
 [JWT session tokens](../../develop/http-api/authentication.md#create-a-jwt-session-token).
 
+#### Custom expiry time for session tokens
+
+<small>Introduced in: v3.12.6</small>
+
+The `POST /_open/auth` endpoint accepts a new optional `expiryTime` attribute
+in the request body to request a session token with a lifetime (in seconds)
+different from the default of the `--server.session-timeout` startup option.
+The value needs to be within the bounds of the new
+`--auth.minimal-jwt-expiry-time` (default: `10`) and
+`--auth.maximal-jwt-expiry-time` (default: `3600`) startup options, otherwise
+the request is rejected with an HTTP `400 Bad Request` error.
+
+See [JWT session tokens](../../develop/http-api/authentication.md#jwt-session-tokens)
+for details.
+
 #### Activities API (experimental)
 
 ##### Threads of an activity
@@ -1278,14 +1423,14 @@ are unaffected.
 #### JavaScript-based traversal using `/_api/traversal`
 
 The long-deprecated JavaScript-based traversal functionality has been removed
-in v3.12.0, including the REST API endpoint `/_api/traversal`.
+in v3.12.0, including the HTTP API endpoint `/_api/traversal`.
 
 The functionality provided by this API was deprecated and unmaintained since
 v3.4.0. JavaScript-based traversals have been replaced with AQL traversals in
-v2.8.0. Additionally, the JavaScript-based traversal REST API could not handle
+v2.8.0. Additionally, the JavaScript-based traversal HTTP API could not handle
 larger amounts of data and was thus very limited.
 
-Users of the `/_api/traversal` REST API should use
+Users of the `/_api/traversal` HTTP API should use
 [AQL traversal queries](../../aql/graph-queries/traversals.md) instead.
 
 #### Pregel API

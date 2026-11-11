@@ -141,15 +141,14 @@ to elect a leader for the runtime phase.
 The _Starter_ can also be used to launch clusters based on ArangoDB
 _Docker_ containers.
 
-If you use the `arangodb/arangodb-starter` Docker image, it runs all servers in a container
-using the `arangodb/arangodb:latest` Docker image by default. If you wish to run
-a specific Docker image for the servers, specify it using the `--docker.image`
-option.
+If you use the `arangodb/arangodb-starter` Docker image, it runs all servers in
+containers of the Docker image that you specify with the `--docker.image` option.
+For ArangoDB 4.x, use an `arangodb/core` image, like
+`--docker.image=arangodb/core:4.0.0`.
 
 {{< info >}}
-From ArangoDB version 3.12.5 onward, no new `arangodb/arangodb` images are
-published anymore. Use the `arangodb/enterprise` images instead, e.g.
-`--docker.image arangodb/enterprise:latest`.
+Always specify the `--docker.image` option. Otherwise, the Starter uses the
+`arangodb/arangodb:latest` image, which doesn't contain ArangoDB 4.x.
 {{< /info >}}
 
 If you use Docker, it is important to care about the volume mappings on
@@ -163,6 +162,7 @@ docker run -it --name=adb1 --rm -p 8528:8528 \
     -v arangodb1:/data \
     -v /var/run/docker.sock:/var/run/docker.sock \
     arangodb/arangodb-starter \
+    --docker.image=arangodb/core:4.0.0 \
     --starter.address=$IP \
     --docker.net-mode=default
 ```
@@ -181,6 +181,7 @@ docker run -it --name=adbN --rm -p 8528:8528 \
     -v arangodbN:/data \
     -v /var/run/docker.sock:/var/run/docker.sock \
     arangodb/arangodb-starter \
+    --docker.image=arangodb/core:4.0.0 \
     --starter.address=$IP \
     --starter.join A \
     --docker.net-mode=default
@@ -215,6 +216,7 @@ docker run -it --name=adbN --rm -p 8528:8528 \
     -e DOCKER_TLS_VERIFY=1 \
     -e DOCKER_CERT_PATH=$DOCKER_CERT_PATH \
     arangodb/arangodb-starter \
+    --docker.image=arangodb/core:4.0.0 \
     --starter.address=$IP \
     --docker.net-mode=default
 ```
@@ -234,6 +236,7 @@ docker run -it --name=adbN --rm -p 8528:8528 \
     -v /path/to/cert:/root/.docker \
     -e DOCKER_TLS_VERIFY=1 \
     arangodb/arangodb-starter \
+    --docker.image=arangodb/core:4.0.0 \
     --starter.address=$IP \
     --docker.net-mode=default
 ```

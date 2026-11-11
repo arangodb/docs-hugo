@@ -4,12 +4,12 @@ setup: true
 
 orbs:
   continuation: circleci/continuation@0.4.0
-  trivy: arangodb/trivy-scan@1.1.2
+  trivy: arangodb/trivy-scan@1
 
 parameters:
   workflow:
     type: enum
-    enum: [no-op, plain-build, generate, api-docs, release, compile, generate-scheduled, commit-generated, generate-oasisctl, create-docs-images-amd64, create-docs-images-arm64]
+    enum: [no-op, plain-build, generate, release, compile, generate-scheduled, commit-generated, generate-oasisctl, create-docs-images-amd64, create-docs-images-arm64]
     default: no-op
   
   deploy-url:
@@ -24,7 +24,8 @@ parameters:
     type: string
     default: ""
 
-  version:
+  # "all" or "changed" (see EXAMPLES_SCOPE in the README), empty for the default
+  examples-scope:
     type: string
     default: ""
 
@@ -73,15 +74,29 @@ parameters:
     type: string
     default: ""
 
-  tag:
-    type: string
-    default: ""
 
 jobs:
   generate-config:
     docker:
       - image: cimg/python:3.14.3
     executor: continuation/default
+    # The parameters as environment variables so that the shell doesn't interpret
+    # them (they can come from PR descriptions), generate_config.py validates them
+    environment:
+      PARAM_WORKFLOW: << pipeline.parameters.workflow >>
+      PARAM_ARANGODB_3_10: << pipeline.parameters.arangodb-3_10 >>
+      PARAM_ARANGODB_3_11: << pipeline.parameters.arangodb-3_11 >>
+      PARAM_ARANGODB_3_12: << pipeline.parameters.arangodb-3_12 >>
+      PARAM_ARANGODB_4_X: << pipeline.parameters.arangodb-4_x >>
+      PARAM_ARANGODB_BRANCH: << pipeline.parameters.arangodb-branch >>
+      PARAM_RELEASE_TYPE: << pipeline.parameters.release-type >>
+      PARAM_DOCS_VERSION: << pipeline.parameters.docs-version >>
+      PARAM_ARANGODB_VERSION: << pipeline.parameters.arangodb-version >>
+      PARAM_GENERATORS: << pipeline.parameters.generators >>
+      PARAM_OVERRIDE: << pipeline.parameters.override >>
+      PARAM_EXAMPLES_SCOPE: << pipeline.parameters.examples-scope >>
+      PARAM_DEPLOY_URL: << pipeline.parameters.deploy-url >>
+      PARAM_PR_BRANCH: << pipeline.parameters.pr-branch >>
     steps:
       - run:
           name: Checkout
@@ -119,14 +134,19 @@ jobs:
 
             pip install pyyaml requests
 
-            # The list of branches needs to be sorted by name (based on the `name` field in versions.yaml)!
+            # Upstream references as VERSION=REF, VERSION being a name in versions.yaml
             python3 generate_config.py \
-              --workflow << pipeline.parameters.workflow >> \
-              --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_x >> \
-              --arangodb-branch << pipeline.parameters.arangodb-branch >> \
-              --release-type << pipeline.parameters.release-type >> \
-              --docs-version << pipeline.parameters.docs-version >> \
-              --arangodb-version << pipeline.parameters.arangodb-version >>
+              --workflow="$PARAM_WORKFLOW" \
+              --arangodb-branches 3.10="$PARAM_ARANGODB_3_10" 3.11="$PARAM_ARANGODB_3_11" 3.12="$PARAM_ARANGODB_3_12" 4.x="$PARAM_ARANGODB_4_X" \
+              --arangodb-branch="$PARAM_ARANGODB_BRANCH" \
+              --release-type="$PARAM_RELEASE_TYPE" \
+              --docs-version="$PARAM_DOCS_VERSION" \
+              --arangodb-version="$PARAM_ARANGODB_VERSION" \
+              --generators="$PARAM_GENERATORS" \
+              --override="$PARAM_OVERRIDE" \
+              --examples-scope="$PARAM_EXAMPLES_SCOPE" \
+              --deploy-url="$PARAM_DEPLOY_URL" \
+              --pr-branch="$PARAM_PR_BRANCH"
 
             echo "Generated Configuration"
       - store_artifacts:

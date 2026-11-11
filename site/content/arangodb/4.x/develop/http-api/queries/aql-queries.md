@@ -2646,6 +2646,15 @@ paths:
       description: |
         Modify one or more query tracking properties at runtime for the
         specified database.
+
+        From v3.12.13 onward, the user account you authenticate with needs
+        `rw` access to the specified database (classic authorization).
+        With RBAC, none of the predefined roles grants the permission to change
+        the query tracking properties, so only requests with a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens) can do so.
+        Changing the properties is not possible in read-only mode, except with a
+        superuser JWT. Up to v3.12.12, any user account with at least `ro`
+        access to the database could change the properties.
       parameters:
         - name: database-name
           in: path
@@ -2824,6 +2833,39 @@ paths:
                     description: |
                       A descriptive error message.
                     type: string
+        '403':
+          description: |
+            The user account you authenticate with lacks `rw` access to
+            the specified database, or the server is in read-only mode
+            (from v3.12.13 onward).
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Queries
 ```
@@ -2845,6 +2887,14 @@ paths:
         `PUT /_db/{database-name}/_api/query/properties` endpoint.
         If query tracking is disabled for the current database,
         an **empty list** is returned.
+
+        From v3.12.13 onward, only the queries of the user account you
+        authenticate with are returned, unless you are an administrator.
+        Administrators get the queries of all users.
+        Being an administrator means that the user account you authenticate with
+        has `rw` access to the `_system` database (classic authorization) or the
+        `coredb-admin` role (RBAC). Requests with a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens) are not restricted.
       parameters:
         - name: database-name
           in: path
@@ -2860,8 +2910,8 @@ paths:
           description: |
             If set to `true`, will return the currently running queries in all databases,
             not just the selected one.
-            Using the parameter is only allowed in the `_system` database and with superuser
-            privileges.
+            Using the parameter is only allowed in the `_system` database and with a
+            [superuser JWT](../authentication.md#jwt-superuser-tokens).
           schema:
             type: boolean
             default: false
@@ -3028,8 +3078,8 @@ paths:
         '403':
           description: |
             Returned when the `all` parameter is used but the request was made
-            in a database other than `_system`, or by a user without superuser
-            privileges.
+            in a database other than `_system`, or without a
+            superuser JWT.
           content:
             application/json:
               schema:
@@ -3091,6 +3141,14 @@ paths:
         startup options or at runtime with the `slowQueryThreshold` and
         `slowStreamingQueryThreshold` query tracking properties of the
         `PUT /_db/{database-name}/_api/query/properties` endpoint.
+
+        From v3.12.13 onward, only the slow queries of the user account you
+        authenticate with are returned, unless you are an administrator.
+        Administrators get the slow queries of all users.
+        Being an administrator means that the user account you authenticate with
+        has `rw` access to the `_system` database (classic authorization) or the
+        `coredb-admin` role (RBAC). Requests with a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens) are not restricted.
       parameters:
         - name: database-name
           in: path
@@ -3106,8 +3164,8 @@ paths:
           description: |
             If set to `true`, returns the slow queries from all databases, not just
             the specified one.
-            Using the parameter is only allowed in the `_system` database and with superuser
-            privileges.
+            Using the parameter is only allowed in the `_system` database and with a
+            [superuser JWT](../authentication.md#jwt-superuser-tokens).
           schema:
             type: boolean
             default: false
@@ -3266,8 +3324,8 @@ paths:
         '403':
           description: |
             Returned when the `all` parameter is used but the request was made
-            in a database other than `_system`, or by a user without superuser
-            privileges.
+            in a database other than `_system`, or without a
+            superuser JWT.
           content:
             application/json:
               schema:
@@ -3309,6 +3367,14 @@ paths:
       operationId: clearSlowAqlQueryList
       description: |
         Clears the list of slow AQL queries for the current database.
+
+        From v3.12.13 onward, only the entries of the user account you
+        authenticate with are removed from the list, unless you are an
+        administrator. Administrators clear the entire list.
+        Being an administrator means that the user account you authenticate with
+        has `rw` access to the `_system` database (classic authorization) or the
+        `coredb-admin` role (RBAC). Requests with a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens) are not restricted.
       parameters:
         - name: database-name
           in: path
@@ -3324,8 +3390,8 @@ paths:
           description: |
             If set to `true`, clears the slow query history in all databases, not just
             the specified one.
-            Using the parameter is only allowed in the `_system` database and with superuser
-            privileges.
+            Using the parameter is only allowed in the `_system` database and with a
+            [superuser JWT](../authentication.md#jwt-superuser-tokens).
           schema:
             type: boolean
             default: false
@@ -3403,6 +3469,14 @@ paths:
       description: |
         Kills a running query in the currently selected database. The query will be
         terminated at the next cancellation point.
+
+        From v3.12.13 onward, you can only kill queries of the user account you
+        authenticate with, unless you are an administrator. Administrators can
+        kill the queries of all users.
+        Being an administrator means that the user account you authenticate with
+        has `rw` access to the `_system` database (classic authorization) or the
+        `coredb-admin` role (RBAC). Requests with a
+        [superuser JWT](../authentication.md#jwt-superuser-tokens) are not restricted.
       parameters:
         - name: database-name
           in: path
@@ -3425,8 +3499,8 @@ paths:
           description: |
             If set to `true`, attempt to kill the specified query in all databases,
             not just the selected one.
-            Using the parameter is only allowed in the `_system` database and with superuser
-            privileges.
+            Using the parameter is only allowed in the `_system` database and with a
+            [superuser JWT](../authentication.md#jwt-superuser-tokens).
           schema:
             type: boolean
             default: false
@@ -3442,6 +3516,10 @@ paths:
           description: |
             In case the `all` parameter is used but the request was made in a
             different database than `_system`, or by a non-privileged user.
+
+            Also returned if the query belongs to a different user and the user
+            account you authenticate with lacks `rw` access to the `_system`
+            database (from v3.12.13 onward).
         '404':
           description: |
             A query with the specified identifier cannot be found.
@@ -3839,7 +3917,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -3927,7 +4005,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string

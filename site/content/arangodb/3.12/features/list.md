@@ -1,13 +1,13 @@
 ---
 title: Feature list of the ArangoDB core database system
-menuTitle: Core Database
+menuTitle: Feature list
 weight: 5
 description: >-
   All features of the ArangoDB database system, available in both the
   Community Edition and Enterprise Edition
 aliases:
-  - community-edition # 3.11 -> 3.12
-  - enterprise-edition # 3.11 -> 3.12
+  - community-edition # 3.11 -> 3.11
+  - enterprise-edition # 3.11 -> 3.11
 ---
 {{< info >}}
 Feature parity between the Community Edition and the Enterprise Edition is
@@ -56,7 +56,7 @@ available from v3.12.5 onward. See
   or modified, using an AQL expression.
 
 - [**In the cloud or on-prem**](../features/_index.md#on-premises-versus-cloud):
-  Use ArangoDB as a [fully managed service](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
+  Use ArangoDB as a [fully managed service](https://dashboard.arangodb.cloud/home),
   self-managed in the cloud, or on-premises.
 
 - [**Multiple Environments**](../operations/installation/_index.md#supported-platforms-and-architectures):

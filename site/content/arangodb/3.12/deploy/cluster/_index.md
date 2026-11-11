@@ -347,7 +347,7 @@ This allows you to scale down an ArangoDB Cluster without service interruption,
 loss of fault tolerance or data loss. Furthermore, one can re-balance the
 distribution of the _shards_, either manually or automatically.
 
-All these operations can be triggered via a REST/JSON API or via the
+All these operations can be triggered via an HTTP API or via the
 graphical web interface. All fail-over operations are completely handled within
 the ArangoDB Cluster.
 
@@ -380,7 +380,7 @@ See the [Cluster Deployment](deployment/_index.md)
 chapter for instructions.
 
 ArangoDB is also available as a cloud service, the
-[**Arango Managed Platform (AMP)**](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+[**Arango Managed Platform (AMP)**](https://dashboard.arangodb.cloud/home).
 
 ## Cluster ID
 

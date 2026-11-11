@@ -51,9 +51,9 @@ below:
   [ArangoDB authentication methods](../../arangodb/3.12/develop/http-api/authentication.md)
   work. With RBAC enabled, only JWTs are accepted.
 - **Other data platform endpoints**: everything else the gateway exposes,
-  including the [Platform Suite](../../platform-suite/_index.md) services and
-  the [Agentic AI Suite](../../agentic-ai-suite/_index.md) services. They only
-  accept JWTs, independent of whether RBAC is enabled.
+  including the Platform Suite services and the Agentic AI Suite services, like
+  paths that start with `/_platform`, `/autograph`, or `/gral`. They only accept
+  JWTs, independent of whether RBAC is enabled.
 
 A session token is therefore the credential that works everywhere. You can
 obtain it once and reuse it for all services until it expires.
@@ -79,8 +79,7 @@ The login screen asks for the following:
 4. **Select a database**: the database you want to start in. Only the databases
    your account has access to are listed in the dropdown menu. You can quickly
    switch between databases later.
-5. Click **Log in** to get to the **Home** screen of the
-   Arango Contextual Data Platform web interface.
+5. Click **Log in** to open the Arango Contextual Data Platform web interface.
 
 What you can see and do is governed by the [roles](rbac.md) assigned to the user
 if RBAC is enabled. If RBAC is off, the
@@ -90,12 +89,12 @@ at the level of databases and collections.
 ## Authenticate requests to data platform services
 
 The services of the data platform accept **only** `Bearer` tokens, regardless of
-whether RBAC is enabled. This applies to the
-[Platform Suite](../../platform-suite/_index.md) services such as the Control
-Plane, File Manager, and Container Manager, to the
-[Agentic AI Suite](../../agentic-ai-suite/_index.md) services such as AutoGraph,
-AutoRAG (Retriever), and Graph Analytics, and to built-in services provided by
-the ArangoDB Kubernetes operator (`kube-arangodb`) like for configuring RBAC.
+whether RBAC is enabled. This applies to the Platform Suite services such as the
+Control Plane, File Manager, and Container Manager, to the Agentic AI Suite
+services such as AutoGraph, AutoRAG (Retriever), and Graph Analytics, and to
+built-in services provided by the ArangoDB Kubernetes operator (`kube-arangodb`).
+You can find links to the endpoint documentation on the
+[API references](../reference.md) page.
 
 A JWT is accepted by every part of the data platform, including the endpoints of
 the ArangoDB core database system. The database system is only special in that

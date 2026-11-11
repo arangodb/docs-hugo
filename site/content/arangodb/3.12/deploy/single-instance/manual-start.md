@@ -11,7 +11,7 @@ description: >-
 We will assume that your IP is 127.0.0.1 and that the port 8529 is free:
 
 ```bash
-arangod --server.endpoint tcp://0.0.0.0:8529 \
+arangod --server.endpoint http://0.0.0.0:8529 \
   --database.directory standalone &
 ```
 
@@ -21,7 +21,7 @@ Manually starting a stand-alone instance via Docker is basically the same as des
 in the paragraph above. 
 
 A bit of extra care has to be invested due to the way in which Docker isolates its network. 
-By default it fully isolates the network and by doing so an endpoint like `--server.endpoint tcp://0.0.0.0:8529`
+By default it fully isolates the network and by doing so an endpoint like `--server.endpoint http://0.0.0.0:8529`
 will only bind to all interfaces inside the Docker container which does not include
 any external interface on the host machine. This may be sufficient if you just want
 to access it locally but in case you want to expose it to the outside you must
@@ -36,7 +36,7 @@ An example configuration might look like this:
 
 ```bash
 docker run -e ARANGO_NO_AUTH=1 -p 192.168.1.1:10000:8529 arangodb/enterprise arangod \
-  --server.endpoint tcp://0.0.0.0:8529\
+  --server.endpoint http://0.0.0.0:8529\
 ```
 
 This will start a single server within a Docker container with an isolated network. 

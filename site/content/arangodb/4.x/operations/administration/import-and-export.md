@@ -9,4 +9,4 @@ Imports and exports can be done with the command-line tools
 [arangoimport](../../components/tools/arangoimport/_index.md) and
 [arangoexport](../../components/tools/arangoexport/_index.md).
 
-{{% comment %}}TODO: Importing from files, Bulk import via HTTP API, Export to files, Bulk export via HTTP API, Syncing with 3rd party systems?{{% /comment %}}
+{{% comment %}}TODO: Importing from files, Bulk import via an HTTP API, Export to files, Bulk export via an HTTP API, Syncing with 3rd party systems?{{% /comment %}}

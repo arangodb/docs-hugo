@@ -240,7 +240,7 @@ previous = db.collection.insert(doc, { overwrite: true, returnOld: true }).old;
 ```
 
 The same functionality is available for the document insert method in the
-HTTP REST API. The HTTP endpoint for `POST /_api/document` will now accept the
+HTTP API. The HTTP endpoint for `POST /_api/document` will now accept the
 optional URL parameters `overwrite` and `returnOld`.
 
 AQL also supports making an INSERT a conditional REPSERT. In contrast to regular
@@ -262,7 +262,7 @@ to be sharded by `_key`.
 
 ### Graph API extensions
 
-The REST APIs for modifying graphs at endpoint `/_api/gharial` now support returning
+The HTTP APIs for modifying graphs at endpoint `/_api/gharial` now support returning
 the old revision of vertices / edges after modifying them. The APIs also supports
 returning the just-inserted vertex / edge. This is in line with the already existing
 single-document functionality provided at endpoint `/_api/document`.
@@ -434,7 +434,7 @@ files, it also reduces the possibility of data corruption on Coordinator nodes.
 When starting a _DB-Server_, the value `DBSERVER` can now be specified (as alias of
 `PRIMARY`) in the option `--cluster.my-role`. The value `PRIMARY` is still accepted.
 
-All REST APIs that currently return "PRIMARY" as _role_, will continue to return
+All HTTP APIs that currently return "PRIMARY" as _role_, will continue to return
 "PRIMARY".
 
 ## AQL
@@ -890,7 +890,7 @@ This will show all query results currently stored in the query results cache of
 the current database, along with their query strings, sizes, number of results
 and original query run times.
 
-The functionality is also available via HTTP REST APIs.
+The functionality is also available via an HTTP APIs.
 
 ### Miscellaneous changes
 
@@ -979,7 +979,7 @@ The following internal and user-facing functionality has been ported from
 JavaScript-based implementations to C++-based implementations in ArangoDB 3.4:
 
 - the statistics gathering background thread
-- the REST APIs for
+- the HTTP APIs for
   - managing user defined AQL functions
   - graph management  at `/_api/gharial` that also does:
     - vertex management

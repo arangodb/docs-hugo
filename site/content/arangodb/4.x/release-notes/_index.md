@@ -34,7 +34,7 @@ For a detailed list of changes to the ArangoDB core programs and tools,
 please refer to the version specific changelogs:
 
 - Changelogs 4.x:
-  [4.0](https://raw.githubusercontent.com/arangodb/arangodb/4.0/CHANGELOG)
+  [4.0](https://raw.githubusercontent.com/arangodb/arangodb/devel/CHANGELOG)
 
 - Changelogs 3.x:
   [3.12](https://raw.githubusercontent.com/arangodb/arangodb/{{< full-version "3.12" >}}/CHANGELOG),

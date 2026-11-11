@@ -336,7 +336,7 @@ Also see [What's New in 3.4](../release-notes/version-3.4/whats-new-in-3-4.md).
 
 **Enterprise Edition**
 
-- [**Datacenter-to-Datacenter Replication**](../deploy/arangosync/deployment/_index.md):
+- **Datacenter-to-Datacenter Replication**:
   Replicate the entire structure and content of an ArangoDB cluster
   asynchronously to another cluster in a different datacenter with ArangoSync.
   Multi-datacenter support means you can fallback to a replica of your cluster
@@ -369,7 +369,7 @@ Also see [What's New in 3.3](../release-notes/version-3.3/whats-new-in-3-3.md).
   as much data in ArangoDB as you can fit on your disk. Plus, you can enjoy
   performance boosts on writes by having only document-level locks.
 
-- [**Pregel**](../data-science/pregel/_index.md):
+- **Pregel**:
   We implemented distributed graph processing with Pregel to discover hidden
   patterns, identify communities and perform in-depth analytics of large graph
   data sets.
@@ -382,7 +382,7 @@ Also see [What's New in 3.3](../release-notes/version-3.3/whats-new-in-3-3.md).
 
 **Enterprise Edition**
 
-- [**LDAP integration**](../components/arangodb-server/ldap.md): Users and permissions
+- **LDAP integration**: Users and permissions
   can be managed from outside ArangoDB with an LDAP server in different
   authentication configurations.
 

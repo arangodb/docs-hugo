@@ -10,7 +10,7 @@ description: >-
 The core component of ArangoDB is the [ArangoDB server](../components/arangodb-server/_index.md)
 (_arangod_) that stores data and handles requests. You have different options
 for talking to the server, through the web interface, command-line tools, 
-drivers, and the server's REST API.
+drivers, and the server's HTTP API.
 
 ### Web Interface
 
@@ -41,11 +41,10 @@ programming language, and do all the talking to the server.
 Integrations combine a third-party technology with ArangoDB and can be seen as
 a translation layer that takes over the low-level communication with the server.
 
-### HTTP REST API
+### HTTP API
 
-Under the hood, all interactions with the server make use of its RESTful HTTP API.
-A [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)-based
-API is an application programming interface using the HTTP protocol, the
+Under the hood, all interactions with the server make use of its HTTP API.
+It is an application programming interface using the HTTP protocol, the
 protocol that powers the world wide web.
 
 All requests from the outside to the server need to made against the respective
@@ -61,8 +60,7 @@ about the API, how requests are handled, and what endpoints are available.
 
 [ArangoDB Starter](../components/tools/arangodb-starter/_index.md) (`arangodb` binary) helps you set up
 and deploy ArangoDB instances on bare-metal servers and supports all ArangoDB
-deployment modes, such as a single server instance, Active Failover, and cluster
-(including Datacenter-to-Datacenter Replication).
+deployment modes (single server instance, cluster).
 
 In addition to the Starter, there are also other ways that you can use to deploy
 ArangoDB:

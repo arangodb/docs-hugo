@@ -247,7 +247,7 @@ paths:
                     inserts/deletes), a higher value impacts performance without any added
                     benefits.
 
-                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#cleanup).
+                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/architecture.md#cleanup).
                   type: integer
                   default: 2
                 commitIntervalMsec:
@@ -260,7 +260,7 @@ paths:
                     few inserts/updates because of synchronous locking, and it wastes disk space for
                     each commit call.
 
-                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#commits).
+                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/architecture.md#writing-and-commits).
                   type: integer
                   default: 1000
                 consolidationIntervalMsec:
@@ -274,7 +274,7 @@ paths:
                     impacts performance due to no segment candidates being available for
                     consolidation.
 
-                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
                   type: integer
                   default: 10000
                 consolidationPolicy:
@@ -284,7 +284,7 @@ paths:
                     - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
-                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
                   type: object
                   required:
                     - type
@@ -294,8 +294,9 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: Consolidate based on segment byte size and live
-                          document count as dictated by the customization attributes. 
+                        - `"tier"`: Consolidate based on segment byte size and the number of
+                          entries that are not marked as deleted, as dictated by the
+                          customization attributes.
                         - `"bytes_accum"`: Consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                           i.e. the sum of all candidate segment byte size is less than the total
@@ -518,8 +519,9 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: Consolidate based on segment byte size and live
-                            document count as dictated by the customization attributes.
+                          - `"tier"`: Consolidate based on segment byte size and the number of
+                            entries that are not marked as deleted, as dictated by the
+                            customization attributes.
                           - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
@@ -991,8 +993,9 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: Consolidate based on segment byte size and live
-                            document count as dictated by the customization attributes.
+                          - `"tier"`: Consolidate based on segment byte size and the number of
+                            entries that are not marked as deleted, as dictated by the
+                            customization attributes.
                           - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
@@ -1314,7 +1317,7 @@ paths:
                     inserts/deletes), a higher value impacts performance without any added
                     benefits.
 
-                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#cleanup).
+                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/architecture.md#cleanup).
                   type: integer
                   default: 2
                 commitIntervalMsec:
@@ -1327,7 +1330,7 @@ paths:
                     few inserts/updates because of synchronous locking, and it wastes disk space for
                     each commit call.
 
-                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#commits).
+                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/architecture.md#writing-and-commits).
                   type: integer
                   default: 1000
                 consolidationIntervalMsec:
@@ -1341,7 +1344,7 @@ paths:
                     impacts performance due to no segment candidates being available for
                     consolidation.
 
-                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
                   type: integer
                   default: 10000
                 consolidationPolicy:
@@ -1351,7 +1354,7 @@ paths:
                     - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
-                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
                   type: object
                   required:
                     - type
@@ -1361,8 +1364,9 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: Consolidate based on segment byte size and live
-                          document count as dictated by the customization attributes. 
+                        - `"tier"`: Consolidate based on segment byte size and the number of
+                          entries that are not marked as deleted, as dictated by the
+                          customization attributes.
                         - `"bytes_accum"`: Consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                           i.e. the sum of all candidate segment byte size is less than the total
@@ -1563,8 +1567,9 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: Consolidate based on segment byte size and live
-                            document count as dictated by the customization attributes.
+                          - `"tier"`: Consolidate based on segment byte size and the number of
+                            entries that are not marked as deleted, as dictated by the
+                            customization attributes.
                           - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
@@ -1796,7 +1801,7 @@ paths:
                     inserts/deletes), a higher value impacts performance without any added
                     benefits.
 
-                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#cleanup).
+                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/architecture.md#cleanup).
                   type: integer
                 commitIntervalMsec:
                   description: |
@@ -1808,7 +1813,7 @@ paths:
                     few inserts/updates because of synchronous locking, and it wastes disk space for
                     each commit call.
 
-                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#commits).
+                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/architecture.md#writing-and-commits).
                   type: integer
                 consolidationIntervalMsec:
                   description: |
@@ -1821,7 +1826,7 @@ paths:
                     impacts performance due to no segment candidates being available for
                     consolidation.
 
-                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
                   type: integer
                 consolidationPolicy:
                   description: |
@@ -1830,7 +1835,7 @@ paths:
                     - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
-                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
                   type: object
                   required:
                     - type
@@ -1840,8 +1845,9 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: Consolidate based on segment byte size and live
-                          document count as dictated by the customization attributes. 
+                        - `"tier"`: Consolidate based on segment byte size and the number of
+                          entries that are not marked as deleted, as dictated by the
+                          customization attributes.
                         - `"bytes_accum"`: Consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                           i.e. the sum of all candidate segment byte size is less than the total
@@ -2041,8 +2047,9 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: Consolidate based on segment byte size and live
-                            document count as dictated by the customization attributes.
+                          - `"tier"`: Consolidate based on segment byte size and the number of
+                            entries that are not marked as deleted, as dictated by the
+                            customization attributes.
                           - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
@@ -2409,8 +2416,9 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: Consolidate based on segment byte size and live
-                            document count as dictated by the customization attributes.
+                          - `"tier"`: Consolidate based on segment byte size and the number of
+                            entries that are not marked as deleted, as dictated by the
+                            customization attributes.
                           - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total

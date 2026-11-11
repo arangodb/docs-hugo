@@ -122,7 +122,7 @@ permitted by your contract.
 #### Platform CLI tool
 
 1. Download the Platform CLI tool `arangodb_operator_platform` from
-   <https://github.com/arangodb/kube-arangodb/releases>.
+   <https://github.com/arangodb/kube-arangodb/releases/latest>.
    It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
    architecture (e.g. `arangodb_operator_platform_linux_amd64`).
 
@@ -274,7 +274,7 @@ configuration options that let you tune TTL and grace periods.
 ## Generate a license key
 
 1. Download the Platform CLI tool `arangodb_operator_platform` from
-   <https://github.com/arangodb/kube-arangodb/releases>.
+   <https://github.com/arangodb/kube-arangodb/releases/latest>.
    It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
    architecture (e.g. `arangodb_operator_platform_linux_amd64`).
 
@@ -884,3 +884,21 @@ and restored with any of the above mechanisms.
 Make sure that you store your license in a safe place, and potentially the
 email with which you received it, should you require the license key to
 re-activate a deployment.
+
+### Move a license to a different deployment
+
+A license activation or generated license key is bound to the deployment ID
+of the deployment it was created for. If you want to use your license
+credentials for a different deployment instead, for example, because you
+replace an existing deployment with a new one, the old deployment needs to be
+deactivated first.
+
+Deactivating a deployment is not self-service. To have a deployment
+deactivated, raise a support ticket with Arango and include the deployment ID
+of the deployment you no longer want to license.
+
+Once the deactivation is complete, the license is not transferred
+automatically. You need to recreate the license for the new deployment by
+[activating it](#activate-a-deployment) or
+[generating a license key](#generate-a-license-key) for it, using the
+deployment ID of the new deployment.

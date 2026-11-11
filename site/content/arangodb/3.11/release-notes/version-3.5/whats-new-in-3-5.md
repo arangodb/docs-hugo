@@ -402,7 +402,7 @@ Also see the [`db` object](../../develop/javascript-api/@arangodb/db-object.md#d
 
 ### Extended index API
 
-The HTTP API for creating indexes at POST `/_api/index` has been extended two-fold:
+The HTTP API for creating indexes at `POST /_api/index` has been extended two-fold:
 
 - to create a TTL (time-to-live) index, it is now possible to specify a value of `ttl`
   in the `type` attribute. When creating a TTL index, the attribute `expireAfter` is 
@@ -413,10 +413,10 @@ The HTTP API for creating indexes at POST `/_api/index` has been extended two-fo
 
 ### API for querying the responsible shard
 
-The HTTP API for collections has got an additional route for retrieving the responsible
-shard for a document at PUT `/_api/collection/<name>/responsibleShard`.
+The HTTP API for collections has got an additional endpoint for retrieving the responsible
+shard for a document at `PUT /_api/collection/<name>/responsibleShard`.
 
-When calling this route, the request body is supposed to contain the document for which
+When calling this endpoint, the request body is supposed to contain the document for which
 the responsible shard should be determined. The response will contain an attribute `shardId`
 containing the ID of the shard that is responsible for that document.
 
@@ -556,7 +556,7 @@ Additionally there are options to restrict outbound HTTP connections from JavaSc
 applications to certain endpoints and to restrict filesystem access from JavaScript
 applications to certain directories only.
 
-Finally there are startup options to turn off the REST APIs for managing Foxx
+Finally there are startup options to turn off the HTTP APIs for managing Foxx
 services, which can be used to prevent installation and uninstallation of Foxx
 applications on a server. A separate option is provided to turn off access and
 connections to the central Foxx app store via the web interface.
