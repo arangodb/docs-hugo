@@ -16,6 +16,8 @@ paths:
       description: |
         Creates a new View with a given name and properties if it does not
         already exist.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -216,6 +218,10 @@ paths:
       operationId: getViewSearchAlias
       description: |
         Returns the basic information about a specific View.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -355,6 +361,10 @@ paths:
       operationId: getViewPropertiesSearchAlias
       description: |
         Returns an object containing the definition of the View identified by `view-name`.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -538,6 +548,10 @@ paths:
       description: |
         Returns an object containing a listing of all Views in the current database,
         regardless of their type.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -633,6 +647,9 @@ paths:
       operationId: replaceViewPropertiesSearchAlias
       description: |
         Replaces the list of indexes of a `search-alias` View.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -822,6 +839,9 @@ paths:
       operationId: updateViewPropertiesSearchAlias
       description: |
         Updates the list of indexes of a `search-alias` View.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -1022,6 +1042,8 @@ paths:
         {{</* info */>}}
         Renaming Views is not supported in cluster deployments.
         {{</* /info */>}}
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -1191,6 +1213,8 @@ paths:
       operationId: deleteView
       description: |
         Deletes the View identified by `view-name`.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path

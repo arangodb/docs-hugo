@@ -38,6 +38,8 @@ paths:
         - `tickMax`: maximum tick available
         - `time`: the server time as string in format `YYYY-MM-DDTHH:MM:SSZ`
         - `server`: An object with fields `version` and `serverId`
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -102,6 +104,8 @@ paths:
         {{</* info */>}}
         This method is not supported on a Coordinator in a cluster deployment.
         {{</* /info */>}}
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -255,6 +259,8 @@ paths:
         {{</* info */>}}
         This method is not supported on a Coordinator in a cluster deployment.
         {{</* /info */>}}
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path

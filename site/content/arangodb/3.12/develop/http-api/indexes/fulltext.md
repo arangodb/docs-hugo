@@ -24,6 +24,8 @@ paths:
         Creates a fulltext index for the collection `collection-name`, if
         it does not already exist. The call expects an object containing the index
         details.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path

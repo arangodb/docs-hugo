@@ -15,6 +15,8 @@ paths:
       description: |
         Creates a time-to-live (TTL) index for the collection `collection-name` if it
         does not already exist.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
