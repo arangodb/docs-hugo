@@ -52,8 +52,8 @@ below:
   work. With RBAC enabled, only JWTs are accepted.
 - **Other data platform endpoints**: everything else the gateway exposes,
   including the Platform Suite services and the Agentic AI Suite services, like
-  paths that start with `/_platform`, `/autograph`, or `/gral`. They only accept
-  JWTs, independent of whether RBAC is enabled.
+  paths that start with `/_platform`, `/_management`, `/autograph`, or `/gral`.
+  They only accept JWTs, independent of whether RBAC is enabled.
 
 A session token is therefore the credential that works everywhere. You can
 obtain it once and reuse it for all services until it expires.

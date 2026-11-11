@@ -51,8 +51,11 @@ Every request is reduced to who wants to do what, and where:
 - The **user** the request is made on behalf of, taken from the token that
   [authenticates](authentication.md) it.
 - The **action** to perform, named `<namespace>:<name>`, for example
-  `database:read` or `collection:write`.
-- The **resource** to perform it on, for example a database or a collection.
+  `db:Read` or `db:WriteData`. The `db` namespace holds the actions of the
+  ArangoDB core database system.
+- The **resource** to perform it on, for example a database
+  (`db:database:<database>`) or a collection
+  (`db:collection:<database>:<collection>`).
 
 What may be done is expressed in **policies**. A policy is a list of
 **statements**, and every statement combines an effect with the actions and the
@@ -64,9 +67,12 @@ resources it covers:
 | `actions` | The actions the statement applies to |
 | `resources` | The resources the actions may be performed on |
 
-Actions and resources both support wildcard patterns. A `*` matches everything,
-`database:*` matches every action of the `database` namespace, and `reports-*`
-matches every resource whose name starts with `reports-`.
+Actions and resources both support wildcard patterns. They are matched per
+`:`-separated segment, where a segment can be `*`, a prefix like `report_*`, a
+suffix like `*_daily`, or an exact name. A trailing `*` segment also matches all
+further segments. A `*` on its own thus matches everything, `db:*` matches every
+action of the `db` namespace, and `db:collection:reports:*` matches every
+collection of the `reports` database.
 
 These objects form a chain from a user to the actions that user may perform:
 
@@ -128,6 +134,11 @@ user automatically and rejects any attempt to assign it to somebody else, so
 it appears in the lists with `root` as its holder but cannot be handed out.
 {{< /info >}}
 
+For the endpoints of the ArangoDB core database system, the
+[HTTP API documentation](../../arangodb/4.x/develop/http-api/_index.md) lists
+which predefined roles grant access to each endpoint, under
+**Predefined roles (RBAC)**.
+
 The data platform denies everything by default. A role grants nothing until it
 is assigned to a user together with a scope, and a user's effective permissions
 are the union of all of their assignments, evaluated as described in
@@ -146,16 +157,21 @@ They are maintained by the data platform, so leave them untouched.
 
 The page has two tabs that show the same information from two directions:
 
-- **Users**, listing every account and the roles it holds.
-- **Roles**, listing every role and the users that hold it.
+- **Users**, listing every account and the roles it holds. See
+  [List the roles of a user](#list-the-roles-of-a-user).
+- **Roles**, listing every role and the users that hold it. See
+  [List the roles](#list-the-roles).
 
 Both tab labels include a count, for example **Users (5)** and **Roles (10)**.
 Which tab you start from only decides the direction of the assignment - both
 end in the same dialog.
 
-## The Users tab
+## List the roles of a user
 
-The Users tab shows a table with a **User** column and a **Roles** column.
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+The **Users** tab shows a table with a **User** column and a **Roles** column.
 Both carry a sort toggle next to the header label. Each row lists the roles of
 that user as chips:
 
@@ -175,9 +191,48 @@ assignment.
 
 If the user has no roles yet, the panel shows an empty state instead, headed
 *No roles assigned to this user*, with an **Assign role** button.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl -H "Authorization: Bearer <JWT>" \
+  https://<EXTERNAL_ENDPOINT>:8529/_management/permissions/user/alice/role
+```
+
+The response lists the role assignments of the user, each with its scope:
+
+```json
+{
+  "bindings": [
+    {
+      "role": "managed:predefined:coredb-reader",
+      "scope": {
+        "statements": [
+          {
+            "effect": "Allow",
+            "resources": ["db:apiversion:*", "db:database:reports", "db:*:reports:*"],
+            "actions": ["*"],
+            "description": ""
+          }
+        ],
+        "description": ""
+      }
+    }
+  ]
+}
+```
+
+See the [`GET /_management/permissions/user/{user}/role`](#get-the-role-assignments-of-a-user)
+endpoint in the HTTP API reference for details.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Assign a role to a user
 
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
 1. In the **Users** tab, select the user to open the details panel.
 2. Select **Assign role**. The **Assign roles to `<user>`** dialog opens.
 3. Pick a role from the **Add role** combobox. It is added to the
@@ -194,6 +249,24 @@ scope underneath, for example `Everything`. The trash icon next to an entry
 removes that role from the assignment.
 
 **Cancel** discards every change made in the dialog.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl -X POST -H "Authorization: Bearer <JWT>" \
+  https://<EXTERNAL_ENDPOINT>:8529/_management/permissions/user/alice/role/managed:predefined:coredb-reader \
+  -d '{"scope":{"statements":[{"effect":"Allow","actions":["*"],"resources":["db:apiversion:*","db:database:reports","db:*:reports:*"]}]}}'
+```
+
+This assigns the `coredb-reader` role to the user `alice` and limits it to the
+`reports` database and everything in it. See
+[Scopes in the HTTP API](#scopes-in-the-http-api) for how to express a scope.
+
+See the [`POST /_management/permissions/user/{user}/role/{role}`](#create-a-role-assignment)
+endpoint in the HTTP API reference for details.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Assign a user to a role
 
@@ -210,6 +283,9 @@ in front:
 4. Select **Next**. The **Assign roles to `<user>`** dialog opens with the role
    already in the **Assigned** list, and the flow continues exactly as in
    [Assign a role to a user](#assign-a-role-to-a-user).
+
+This is only a different way to get to the same dialog. The result is the same
+role assignment, so there is no separate HTTP API endpoint for it.
 
 ## Scope a role assignment
 
@@ -280,6 +356,9 @@ Resolve every flagged item, or delete it, before saving.
 
 ## Edit or remove an assignment
 
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
 Open the details panel of a user and select the pencil icon on a role card.
 The same dialog reopens as **Edit roles for `<user>`**, where you can:
 
@@ -290,6 +369,30 @@ The same dialog reopens as **Edit roles for `<user>`**, where you can:
 
 The pencil icons in the Roles tab panel work the same way, so you can adjust a
 user's assignment from either direction without switching tabs.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+To change the scope of an existing assignment, replace it as a whole:
+
+```sh
+curl -X PUT -H "Authorization: Bearer <JWT>" \
+  https://<EXTERNAL_ENDPOINT>:8529/_management/permissions/user/alice/role/managed:predefined:coredb-reader \
+  -d '{"scope":{"statements":[{"effect":"Allow","actions":["*"],"resources":["*"]}]}}'
+```
+
+To remove a role from a user:
+
+```sh
+curl -X DELETE -H "Authorization: Bearer <JWT>" \
+  https://<EXTERNAL_ENDPOINT>:8529/_management/permissions/user/alice/role/managed:predefined:coredb-reader
+```
+
+See the [`PUT /_management/permissions/user/{user}/role/{role}`](#replace-the-scope-of-a-role-assignment)
+and [`DELETE /_management/permissions/user/{user}/role/{role}`](#delete-a-role-assignment)
+endpoints in the HTTP API reference for details.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Saving and enforcement
 
@@ -299,9 +402,12 @@ the notification states that enforcement can take up to about 30 seconds. Keep
 that delay in mind when verifying a change, and when revoking access that must
 take effect right away.
 
-## The Roles tab
+## List the roles
 
-The Roles tab lists every role in a table with two sortable columns:
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+The **Roles** tab lists every role in a table with two sortable columns:
 
 | Column | Description |
 |--------|-------------|
@@ -316,6 +422,45 @@ name and an **Assign user** button, and lists the users that hold the role,
 each with the number of roles that user has in total, for example
 `testuser - 1 role`. The pencil icon on a user card opens the assignment dialog
 for that user, and the chevron expands the card.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl -H "Authorization: Bearer <JWT>" \
+  https://<EXTERNAL_ENDPOINT>:8529/_management/permissions/role
+```
+
+The response contains the fully qualified role names, including the
+`managed:operator:<uuid>` roles, and the total number of roles:
+
+```json
+{
+  "names": [
+    "managed:operator:3f6c0d2e-8a1b-4c5d-9e7f-1a2b3c4d5e6f",
+    "managed:predefined:ai-developer",
+    "managed:predefined:ai-user",
+    "managed:predefined:coredb-admin",
+    "managed:predefined:coredb-developer",
+    "managed:predefined:coredb-reader",
+    "managed:predefined:platform-operator",
+    "managed:predefined:secret-admin",
+    "managed:predefined:super-admin",
+    "managed:predefined:tenant-admin"
+  ],
+  "page": {
+    "items": 10,
+    "page": 1
+  }
+}
+```
+
+The HTTP API has no endpoint for listing the users that hold a role.
+
+See the [`GET /_management/permissions/role`](#get-all-roles) endpoint in the
+HTTP API reference for details.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Troubleshoot denied access
 
@@ -331,3 +476,602 @@ Remember that an assignment grants only what its role and its scope allow at
 the same time, so a role that covers the action is still not enough if the
 scope leaves the resource out. Also give a recent change time to propagate, as
 [enforcement](#saving-and-enforcement) can lag by up to about 30 seconds.
+
+Users can check whether they are allowed to perform an action on a resource
+with the HTTP API, using their own session token. No particular role is
+required for this:
+
+```sh
+curl -X POST -H "Authorization: Bearer <JWT>" \
+  https://<EXTERNAL_ENDPOINT>:8529/_management/permissions/validate \
+  -d '{"action":"db:WriteData","resource":"db:collection:reports:orders"}'
+```
+
+```json
+{
+  "message": "rpc error: code = PermissionDenied desc = Permission denied",
+  "effect": "Deny"
+}
+```
+
+Note that this checks a single action on a single resource, whereas a request
+to the ArangoDB core database system involves multiple checks. For example,
+writing a document into the `orders` collection of the `reports` database also
+requires `db:UseApiVersion` on `db:apiversion:<version>` and `db:Read` on
+`db:database:reports` and `db:collection:reports:orders`. An `Allow` for one
+of them doesn't guarantee that the request succeeds. See the
+[`POST /_management/permissions/validate`](#check-a-permission) endpoint in the
+HTTP API reference for details.
+
+## HTTP API
+
+You can manage role assignments with the HTTP API of the authorization service
+of the data platform, which is what the web interface uses, too. Its endpoints
+are available under `/_management/permissions/` on the data platform endpoint,
+for example
+`https://<EXTERNAL_ENDPOINT>:8529/_management/permissions/role`.
+
+- **Authentication**: Send a [session token](authentication.md#obtain-a-session-token)
+  in the `Authorization: Bearer <JWT>` HTTP header.
+- **Permissions**: Of the predefined roles, only `super-admin` grants access
+  to these endpoints, so use a session token of the `root` user (or a
+  [superuser token](authentication.md#superuser-tokens)).
+  {{< comment >}}
+  Every endpoint requires an action of the `rbac` namespace, such as
+  `rbac:AssignUserRole`, which only `super-admin` grants. The
+  `POST /_management/permissions/validate` endpoint requires none.
+  {{< /comment >}}
+- **Role names**: The endpoints expect the fully qualified role names, such as
+  `managed:predefined:coredb-reader`. The authorization service does not check
+  whether a role exists when you assign it, so double-check the spelling.
+- **Propagation**: Changes are enforced after up to about 30 seconds, as
+  described in [Saving and enforcement](#saving-and-enforcement).
+- **Errors**: Error responses have a JSON body with a numeric `code`, a
+  `message`, and a `details` array. The `code` is a gRPC status code, not the
+  HTTP status code.
+
+### Scopes in the HTTP API
+
+The scope of a role assignment is a policy, an object with a `statements` array.
+Each statement has an `effect`, a list of `actions`, and a list of `resources`.
+A role assignment grants an action on a resource only if both the role and the
+scope allow it. The scope can therefore restrict the actions as well as the
+resources, but you typically allow all actions in the scope and restrict the
+resources:
+
+```json
+{
+  "statements": [
+    {
+      "effect": "Allow",
+      "actions": ["*"],
+      "resources": ["db:apiversion:*", "db:database:reports", "db:*:reports:*"]
+    }
+  ]
+}
+```
+
+- Set the `effect` explicitly. If you omit it, it defaults to `Deny`.
+- **Everything** corresponds to `"actions": ["*"]` and `"resources": ["*"]`.
+- The ArangoDB core database system checks the `db:UseApiVersion` action on the
+  `db:apiversion:<version>` resource for every request. Include
+  `db:apiversion:*` in every scope for the `coredb-*` and `tenant-admin` roles,
+  or the scope denies all ArangoDB requests.
+- Access to anything in a database also requires the database itself, for
+  example `db:database:reports`. `db:*:reports:*` covers the collections,
+  Views, Analyzers, and graphs of the `reports` database, and
+  `db:collection:reports:orders` a single collection.
+- User accounts are resources of the form `db:user:<username>`.
+- Administrative actions, such as creating backups, do not operate on a
+  specific resource. Only a scope with the `*` resource covers them.
+
+### Get all roles
+
+```openapi
+---
+service: rbac
+---
+paths:
+  /_management/permissions/role:
+    get:
+      operationId: listRbacRoles
+      # Hidden until the rbac:* actions are documented: requires the rbac:ListRole action
+      description: |
+        Returns the names of all roles, including the predefined roles and the
+        roles that the data platform maintains for its own identities.
+      parameters:
+        - name: page
+          in: query
+          required: false
+          description: |
+            The page of results to return, starting at `1`. If you set it to
+            `0`, the response contains no role names but only the total number
+            of roles.
+          schema:
+            type: integer
+            default: 1
+        - name: items_per_page
+          in: query
+          required: false
+          description: |
+            The maximum number of role names per page.
+          schema:
+            type: integer
+            default: 128
+      responses:
+        '200':
+          description: |
+            The role names.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  names:
+                    description: |
+                      The fully qualified names of the roles on the requested page.
+                    type: array
+                    items:
+                      type: string
+                  page:
+                    description: |
+                      Information about the pagination.
+                    type: object
+                    properties:
+                      items:
+                        description: |
+                          The total number of roles.
+                        type: integer
+                      page:
+                        description: |
+                          The returned page.
+                        type: integer
+        '401':
+          description: |
+            The request does not contain a valid token.
+        '403':
+          description: |
+            The user of the token is not permitted to use this endpoint.
+        '503':
+          description: |
+            The authorization service is not ready.
+```
+
+### Get the role assignments of a user
+
+```openapi
+---
+service: rbac
+---
+paths:
+  /_management/permissions/user/{user}/role:
+    get:
+      operationId: listRbacUserRoleBindings
+      # Hidden until the rbac:* actions are documented: requires the rbac:ListUserRoleBinding action
+      description: |
+        Returns the roles assigned to a user, together with the scope of each
+        assignment.
+      parameters:
+        - name: user
+          in: path
+          required: true
+          description: |
+            The name of the user.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            The role assignments of the user. The list is empty if the user has
+            no roles or doesn't exist.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bindings:
+                    description: |
+                      The role assignments.
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        role:
+                          description: |
+                            The fully qualified name of the role.
+                          type: string
+                        scope:
+                          description: |
+                            The scope of the assignment.
+                          type: object
+                          properties:
+                            statements:
+                              description: |
+                                The statements of the scope.
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  effect:
+                                    description: |
+                                      Whether the statement allows or denies.
+                                    type: string
+                                    enum: [Allow, Deny]
+                                  actions:
+                                    description: |
+                                      The action patterns.
+                                    type: array
+                                    items:
+                                      type: string
+                                  resources:
+                                    description: |
+                                      The resource patterns.
+                                    type: array
+                                    items:
+                                      type: string
+                                  description:
+                                    description: |
+                                      An optional description of the statement.
+                                    type: string
+                            description:
+                              description: |
+                                An optional description of the scope.
+                              type: string
+        '400':
+          description: |
+            The user name is empty.
+        '401':
+          description: |
+            The request does not contain a valid token.
+        '403':
+          description: |
+            The user of the token is not permitted to use this endpoint.
+        '503':
+          description: |
+            The authorization service is not ready.
+```
+
+### Create a role assignment
+
+```openapi
+---
+service: rbac
+---
+paths:
+  /_management/permissions/user/{user}/role/{role}:
+    post:
+      operationId: createRbacUserRoleBinding
+      # Hidden until the rbac:* actions are documented: requires the rbac:AssignUserRole action
+      description: |
+        Assigns a role to a user, restricted to the given scope.
+      parameters:
+        - name: user
+          in: path
+          required: true
+          description: |
+            The name of the user.
+          schema:
+            type: string
+        - name: role
+          in: path
+          required: true
+          description: |
+            The fully qualified name of the role, for example
+            `managed:predefined:coredb-reader`.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - scope
+              properties:
+                scope:
+                  description: |
+                    The scope of the assignment. See
+                    [Scopes in the HTTP API](#scopes-in-the-http-api).
+                  type: object
+                  required:
+                    - statements
+                  properties:
+                    statements:
+                      description: |
+                        The statements of the scope. An empty list grants
+                        nothing.
+                      type: array
+                      items:
+                        type: object
+                        required:
+                          - effect
+                          - actions
+                          - resources
+                        properties:
+                          effect:
+                            description: |
+                              Whether the statement allows or denies the actions
+                              on the resources. Defaults to `Deny` if omitted.
+                            type: string
+                            enum: [Allow, Deny]
+                          actions:
+                            description: |
+                              The action patterns, `*` or `<namespace>:<name>`,
+                              for example `db:Read` or `db:*`.
+                            type: array
+                            items:
+                              type: string
+                          resources:
+                            description: |
+                              The resource patterns, for example
+                              `db:database:reports` or `*`.
+                            type: array
+                            items:
+                              type: string
+                          description:
+                            description: |
+                              An optional description of the statement.
+                            type: string
+                    description:
+                      description: |
+                        An optional description of the scope.
+                      type: string
+      responses:
+        '200':
+          description: |
+            The role has been assigned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    description: |
+                      The name of the user.
+                    type: string
+                  role:
+                    description: |
+                      The fully qualified name of the role.
+                    type: string
+                  scope:
+                    description: |
+                      The scope of the assignment.
+                    type: object
+                  index:
+                    description: |
+                      The sequence number of the change.
+                    type: integer
+        '400':
+          description: |
+            The scope is missing or contains an invalid action or resource.
+        '401':
+          description: |
+            The request does not contain a valid token.
+        '403':
+          description: |
+            The user of the token is not permitted to use this endpoint.
+        '409':
+          description: |
+            The role is already assigned to the user. Use the `PUT` method to
+            change the scope.
+        '503':
+          description: |
+            The authorization service is not ready.
+```
+
+### Replace the scope of a role assignment
+
+```openapi
+---
+service: rbac
+---
+paths:
+  /_management/permissions/user/{user}/role/{role}:
+    put:
+      operationId: replaceRbacUserRoleBinding
+      # Hidden until the rbac:* actions are documented: requires the rbac:ReplaceUserRoleScope action
+      description: |
+        Replaces the scope of an existing role assignment.
+      parameters:
+        - name: user
+          in: path
+          required: true
+          description: |
+            The name of the user.
+          schema:
+            type: string
+        - name: role
+          in: path
+          required: true
+          description: |
+            The fully qualified name of the role, for example
+            `managed:predefined:coredb-reader`.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - scope
+              properties:
+                scope:
+                  description: |
+                    The new scope of the assignment, in the same format as for
+                    [creating a role assignment](#create-a-role-assignment).
+                    It replaces the previous scope entirely.
+                  type: object
+      responses:
+        '200':
+          description: |
+            The scope has been replaced. The response has the same format as
+            for creating a role assignment.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    description: |
+                      The name of the user.
+                    type: string
+                  role:
+                    description: |
+                      The fully qualified name of the role.
+                    type: string
+                  scope:
+                    description: |
+                      The new scope of the assignment.
+                    type: object
+                  index:
+                    description: |
+                      The sequence number of the change.
+                    type: integer
+        '400':
+          description: |
+            The scope is missing or contains an invalid action or resource.
+        '401':
+          description: |
+            The request does not contain a valid token.
+        '403':
+          description: |
+            The user of the token is not permitted to use this endpoint.
+        '404':
+          description: |
+            The role is not assigned to the user. Use the `POST` method to
+            assign it.
+        '503':
+          description: |
+            The authorization service is not ready.
+```
+
+### Delete a role assignment
+
+```openapi
+---
+service: rbac
+---
+paths:
+  /_management/permissions/user/{user}/role/{role}:
+    delete:
+      operationId: deleteRbacUserRoleBinding
+      # Hidden until the rbac:* actions are documented: requires the rbac:RemoveUserRole action
+      description: |
+        Removes a role from a user.
+      parameters:
+        - name: user
+          in: path
+          required: true
+          description: |
+            The name of the user.
+          schema:
+            type: string
+        - name: role
+          in: path
+          required: true
+          description: |
+            The fully qualified name of the role, for example
+            `managed:predefined:coredb-reader`.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            The role has been removed from the user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    description: |
+                      The name of the user.
+                    type: string
+                  role:
+                    description: |
+                      The fully qualified name of the role.
+                    type: string
+                  scope:
+                    description: |
+                      Always `null`.
+                    type: 'null'
+                  index:
+                    description: |
+                      The sequence number of the change.
+                    type: integer
+        '401':
+          description: |
+            The request does not contain a valid token.
+        '403':
+          description: |
+            The user of the token is not permitted to use this endpoint.
+        '404':
+          description: |
+            The role is not assigned to the user.
+        '503':
+          description: |
+            The authorization service is not ready.
+```
+
+### Check a permission
+
+```openapi
+---
+service: rbac
+---
+paths:
+  /_management/permissions/validate:
+    post:
+      operationId: validateRbacPermission
+      description: |
+        Checks whether the user of the token is allowed to perform an action on
+        a resource, based on the role assignments of the user.
+
+        This evaluates a single action on a single resource. Requests to the
+        ArangoDB core database system involve multiple such checks.
+      # No rbac:* action required
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - action
+                - resource
+              properties:
+                action:
+                  description: |
+                    The action to check, for example `db:Read`.
+                  type: string
+                resource:
+                  description: |
+                    The resource to check, for example
+                    `db:collection:reports:orders`.
+                  type: string
+      responses:
+        '200':
+          description: |
+            The result of the check. This status code is also returned if the
+            action is denied.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  effect:
+                    description: |
+                      Whether the action is allowed on the resource.
+                    type: string
+                    enum: [Allow, Deny]
+                  message:
+                    description: |
+                      The reason for a denial. Empty if the action is allowed.
+                    type: string
+        '401':
+          description: |
+            The request does not contain a valid token.
+        '503':
+          description: |
+            The authorization service is not ready.
+```
