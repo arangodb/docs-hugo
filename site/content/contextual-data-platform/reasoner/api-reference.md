@@ -211,8 +211,9 @@ returns a generated AQL query, the rows it returned, and a short answer in
 natural language.
 
 Every request requires a valid JWT in the `Authorization: Bearer <token>`
-header. The generated query runs with this token, so it is subject to your
-permissions in the database.
+header. The Reasoner uses this token for all database access during the
+request, including the template lookup and the generated query, so it is
+subject to your permissions in the database.
 
 ### How a request is processed
 
