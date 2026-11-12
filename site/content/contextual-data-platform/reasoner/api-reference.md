@@ -346,6 +346,10 @@ ends with the `Can not add template` error. If no query is generated, for
 example because the database has no data for the question, nothing is saved
 and `added_template_id` is `null`.
 
+Templates require an embedding API key to be configured for the service.
+Without it, the Reasoner always writes a new query, and saving templates fails
+with the `Can not add template` error.
+
 The Reasoner and MCP endpoints don't let you list or delete saved templates.
 To manage them, query the `Tools` collection directly, for example with AQL.
 
