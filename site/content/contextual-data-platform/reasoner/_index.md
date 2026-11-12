@@ -38,7 +38,7 @@ integrations.
 |---|---|
 | **Database Exploration** | Discover collections, graphs, schemas, and document structures without prior knowledge of the database |
 | **Query Optimization** | Submit an AQL query and receive a validated, faster version with a detailed performance comparison report |
-| **Text-to-AQL** | Ask a question in natural language and receive an AQL query, its results, and a short answer (API only) |
+| **Text-to-AQL** | Ask a question in natural language and receive an AQL query, its results, and a short answer. Save queries as templates to reuse them for similar questions (API only) |
 | **Real-Time Streaming** | Receive results progressively via Server-Sent Events (SSE) as the Reasoner works through each phase (API only) |
 
 ## How the Reasoner works
@@ -87,10 +87,16 @@ flowchart TD
 
 For questions sent to the `POST /txt2aql` endpoint, the Reasoner first looks
 for a saved query template that matches the question. If it finds a close
-match, it fills in the template's bind parameters from your question. If there
-is no close match, or filling in the template fails, it writes a new query and
-uses any templates it found as examples. It then runs the query and returns the
-query, up to 50 result rows, and a short answer in natural language.
+match, it adapts the template to your question, mainly by filling in its bind
+parameters. If there is no close match, or filling in the template fails, it
+writes a new query and uses any templates it found as examples. It then runs
+the query and returns the query, up to 50 result rows, and a short answer in
+natural language.
+
+You can save a query as a template when you send a question. Over time, this
+builds up a set of queries for the questions your users ask. When a new
+question closely matches one of them, the Reasoner adapts the saved query
+instead of sampling the database and writing a new one.
 
 See [Text-to-AQL](api-reference.md#text-to-aql) in the API reference for the
 details.

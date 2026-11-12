@@ -219,7 +219,8 @@ subject to your permissions in the database.
 
 1. The Reasoner looks up saved query templates in the `Tools` collection.
 2. If the best matching template has a score of at least `0.85`, the Reasoner
-   fills in its bind parameters from your question and runs it.
+   adapts it to your question, mainly by filling in its bind parameters, and
+   runs it.
 3. If no template scores that high, or filling in the template does not
    succeed, the Reasoner writes a new query. Any templates it found are used
    as examples. If the filled-in template writes data, or saving it as a
@@ -341,14 +342,29 @@ Two cases return no rows without an error:
 
 Set `add_template` to `true` to save the query as a template in the `Tools`
 collection, so that the Reasoner can reuse it for similar questions. This
-requires write access to the `Tools` collection. If saving fails, the request
-ends with the `Can not add template` error. If no query is generated, for
-example because the database has no data for the question, nothing is saved
-and `added_template_id` is `null`.
+requires write access to the `Tools` collection.
+
+Templates help in two ways:
+
+- When a question closely matches a saved template, the Reasoner adapts the
+  template to the question, mainly by filling in its bind parameters. This
+  takes fewer steps than writing a new query, where the Reasoner first samples
+  the collections and, if needed, looks up values in the database.
+- When no template matches closely enough, the most similar templates still
+  serve as examples for writing the new query.
+
+The template is saved with your question as its description, and new
+questions are matched against these descriptions. The `Tools` collection is
+created if it doesn't exist. If the same query with the same bind parameters
+is already saved, `added_template_id` is the ID of the existing template.
+
+If saving fails, the request ends with the `Can not add template` error. If no
+query is generated, for example because the database has no data for the
+question, nothing is saved and `added_template_id` is `null`.
 
 Templates require an embedding API key to be configured for the service.
-Without it, the Reasoner always writes a new query, and saving templates fails
-with the `Can not add template` error.
+Without it, the Reasoner always writes a new query, and saving new templates
+fails with the `Can not add template` error.
 
 The Reasoner and MCP endpoints don't let you list or delete saved templates.
 To manage them, query the `Tools` collection directly, for example with AQL.
