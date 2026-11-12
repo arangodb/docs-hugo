@@ -1455,7 +1455,7 @@ article.default > * {
 
     .back-to-top {
         position: fixed;
-        right: 16px;
+        right: calc(16px + 45px + 8px);
         bottom: 16px;
         z-index: 99;
         box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -2361,10 +2361,11 @@ nav.pagination > .next {
 
 /* Consent preferences */
 .cky-btn-revisit-wrapper {
-    top: 5px !important;
-    right: 2px !important;
+    bottom: 10px !important;
+    right: 10px !important;
+    top: unset !important;
     left: unset !important;
-    bottom: unset !important;
+    z-index: 9997 !important;
 }
 
 /* Algolia */
