@@ -16,8 +16,8 @@ endpoints:
 
 - `POST /query` for database exploration and query optimization, for example
   `POST https://<EXTERNAL_ENDPOINT>:8080/query`.
-- `POST /txt2aql` for turning a natural-language question into AQL. See
-  [Text-to-AQL](#text-to-aql).
+- `POST /txt2aql` for answering a natural-language question with a generated
+  AQL query, its results, and a short answer. See [Text-to-AQL](#text-to-aql).
 
 Both endpoints support two response modes: streaming and non-streaming.
 
