@@ -390,7 +390,6 @@ is a string:
 | `"foo" + 123`   | `123`              | `"foo123"`              |
 | `"123" + 200`   | `323`              | `"123200"`              |
 | `1 + "99"`      | `100`              | `"199"`                 |
-{.fixed}
 
 Expressions where both operands are non-string values are not affected and still
 perform arithmetic addition, for example, `1 + 2` still evaluates to `3`.
