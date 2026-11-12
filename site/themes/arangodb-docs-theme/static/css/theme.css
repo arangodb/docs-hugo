@@ -1455,7 +1455,7 @@ article.default > * {
 
     .back-to-top {
         position: fixed;
-        right: 16px;
+        right: calc(16px + 45px + 8px);
         bottom: 16px;
         z-index: 99;
         box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -2359,6 +2359,16 @@ nav.pagination > .next {
     color: var(--color-heading);
 }
 
+/* Consent preferences */
+.cky-btn-revisit-wrapper {
+    bottom: 10px !important;
+    right: 10px !important;
+    top: unset !important;
+    left: unset !important;
+    z-index: 9997 !important;
+}
+
+/* Algolia */
 .DocSearch.DocSearch-Container {
     z-index: 9999;
 }
