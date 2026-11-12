@@ -87,10 +87,10 @@ flowchart TD
 
 For questions sent to the `POST /txt2aql` endpoint, the Reasoner first looks
 for a saved query template that matches the question. If it finds a close
-match, it fills in the template's bind parameters from your question.
-Otherwise, it writes a new query and uses any templates it found as examples.
-It then runs the query and returns the query, up to 50 result rows, and a short
-answer in natural language.
+match, it fills in the template's bind parameters from your question. If there
+is no close match, or filling in the template fails, it writes a new query and
+uses any templates it found as examples. It then runs the query and returns the
+query, up to 50 result rows, and a short answer in natural language.
 
 See [Text-to-AQL](api-reference.md#text-to-aql) in the API reference for the
 details.
