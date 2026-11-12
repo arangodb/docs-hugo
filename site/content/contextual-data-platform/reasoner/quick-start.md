@@ -56,8 +56,6 @@ request:
 {{< step "Send an optimization request" >}}
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8080/query" >}}
 
-Include your JWT in the `Authorization: Bearer <token>` header.
-
 ```json
 {
   "request": "Optimize this query: FOR u IN users FILTER u.status == 'active' SORT u.created_at DESC RETURN u",
@@ -78,6 +76,8 @@ To have the Reasoner write a query for you instead, send a question in natural
 language to the text-to-AQL endpoint:
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8080/txt2aql" >}}
+
+Include your JWT in the `Authorization: Bearer <token>` header.
 
 ```json
 {

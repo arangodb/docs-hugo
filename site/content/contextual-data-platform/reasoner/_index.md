@@ -191,9 +191,7 @@ The pipeline runs through the following stages automatically:
 
 The optimization pipeline operates in strict **read-only mode**. The Reasoner
 rejects any optimization attempt that includes write operations, ensuring the
-optimizer never modifies your data or schema. If you submit a query that writes
-data, the request ends with the message
-`This is a write query. Only read-only queries can be optimized or run.`
+optimizer never modifies your data or schema.
 
 Text-to-AQL is read-only as well. A generated query that writes data, for
 example with `INSERT`, `UPDATE`, `REPLACE`, `UPSERT`, or `REMOVE`, is rejected

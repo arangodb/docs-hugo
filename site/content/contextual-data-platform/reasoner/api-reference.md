@@ -21,18 +21,6 @@ endpoints:
 
 Both endpoints support two response modes: streaming and non-streaming.
 
-## Authentication
-
-Requests to `POST /query` and `POST /txt2aql` require a valid JWT in the
-`Authorization` header:
-
-```
-Authorization: Bearer <token>
-```
-
-Queries that the Reasoner runs on your behalf use this token, so they are
-subject to your permissions in the database.
-
 ## Optimization example
 
 The following example shows how to submit an optimization request via the web
@@ -111,9 +99,6 @@ phase. Events are delivered over a persistent Server-Sent Events (SSE)
 connection, allowing the client to display progress in real time.
 
 > **Note:** Streaming is only available via the API.
-
-If the client closes the connection, the Reasoner stops processing the request.
-This applies to both `POST /query` and `POST /txt2aql`.
 
 **General query - request:**
 
@@ -219,15 +204,15 @@ attempt did not pass. Common scenarios:
 | `content_match: false` | Row counts match but the content did not |
 | `improvement_pct` below threshold | The optimization is valid but the improvement is less than the minimum required (5%); the Reasoner retries with a different approach |
 
-If the query you submit writes data, the request ends with the message
-`This is a write query. Only read-only queries can be optimized or run.`
-The Reasoner does not retry in this case.
-
 ## Text-to-AQL
 
 The `POST /txt2aql` endpoint accepts a question in natural language and
 returns a generated AQL query, the rows it returned, and a short answer in
 natural language.
+
+Every request requires a valid JWT in the `Authorization: Bearer <token>`
+header. The generated query runs with this token, so it is subject to your
+permissions in the database.
 
 ### How a request is processed
 
@@ -241,10 +226,6 @@ natural language.
 A query that writes data, for example with `INSERT`, `UPDATE`, `REPLACE`,
 `UPSERT`, or `REMOVE`, is rejected before it runs. Read-only queries run with
 your access token.
-
-Text-to-AQL takes longer than the
-[Natural Language to AQL](../natural-language-to-aql/_index.md) service but is
-more accurate on average.
 
 ### `POST /txt2aql` - request parameters
 
@@ -300,6 +281,8 @@ with the same event names as `POST /query`:
 | `tool_result` | A database tool returned a result |
 | `done` | The final `aql`, `json`, `nl`, and `added_template_id` |
 | `error` | Generation or execution failed; the data includes `message` and `error` |
+
+If the client closes the connection, the Reasoner stops processing the request.
 
 ### Row limit
 
