@@ -280,7 +280,7 @@ The language model writes the `nl` answer, so its wording varies.
 ### Streaming response
 
 With `"stream": true`, the endpoint returns a Server-Sent Events (SSE) stream
-with the same event names as `POST /query`:
+in the same format as `POST /query`, with the following events:
 
 | Event | Description |
 |---|---|
@@ -288,8 +288,12 @@ with the same event names as `POST /query`:
 | `text` | Partial text from the language model |
 | `tool_call` | A database tool was called |
 | `tool_result` | A database tool returned a result |
-| `done` | The final `aql`, `json`, `nl`, and `added_template_id` |
+| `done` | The final result: `aql`, `json`, `nl`, `error` (`null`), and `added_template_id` |
 | `error` | Generation or execution failed; the data includes `message` and `error` |
+
+While the request is in progress, the stream sends an SSE comment
+(`: heartbeat`) every 5 seconds to keep the connection open. Standard SSE
+clients ignore comments.
 
 If the client closes the connection, the Reasoner stops processing the request.
 
