@@ -85,26 +85,12 @@ flowchart TD
 
 ### Text-to-AQL
 
-For questions sent to the `POST /txt2aql` endpoint, such as "What are the top 5
-stores by revenue?":
-
-```mermaid
-flowchart TD
-    A([Question received]) --> B["`**Find templates**
-      Saved query templates that match the question are looked up`"]
-    B --> C{Close match?}
-    C -->|Yes| D["`**Fill template**
-      Bind parameters are filled in from the question`"]
-    C -->|No| E["`**Write query**
-      A new query is written, using any templates
-      found as examples`"]
-    D --> F["`**Check and run**
-      Queries that write data are rejected;
-      read-only queries run with your access token`"]
-    E --> F
-    F --> G(["`**Answer**: the query, up to 50 result rows,
-      and a natural-language answer are returned`"])
-```
+For questions sent to the `POST /txt2aql` endpoint, the Reasoner first looks
+for a saved query template that matches the question. If it finds a close
+match, it fills in the template's bind parameters from your question.
+Otherwise, it writes a new query and uses any templates it found as examples.
+It then runs the query and returns the query, up to 50 result rows, and a short
+answer in natural language.
 
 See [Text-to-AQL](api-reference.md#text-to-aql) in the API reference for the
 details.
