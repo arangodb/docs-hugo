@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 330" width="800" height="330" role="img" aria-labelledby="rbac-title rbac-desc">
-  <title id="rbac-title">RBAC concepts: user, role assignment, role, and scope</title>
-  <desc id="rbac-desc">The user alice has one role assignment. The assignment binds the coredb-reader role, which defines what alice may do, and carries a scope of two collections, sales/orders and sales/customers, which defines where. Alice can read these two collections. The collection hr/salaries is not in the scope, so alice has no access to it.</desc>
+  <title id="rbac-title">RBAC concepts: user, role binding, role, and scope</title>
+  <desc id="rbac-desc">The user alice has one role binding. The binding assigns the coredb-reader role, which defines what alice may do, and carries a scope of two collections, sales/orders and sales/customers, which defines where. Alice can read these two collections. The collection hr/salaries is not in the scope, so alice has no access to it.</desc>
   <defs>
     <marker id="rbac-arrow" viewBox="0 0 10 8" markerWidth="10" markerHeight="8" markerUnits="userSpaceOnUse" refX="2" refY="4" orient="auto">
       <path d="M0,0 L10,4 L0,8 z" fill="#00576E"/>
@@ -9,7 +9,8 @@
   <style>
     text { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
     .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-    .heading { font-size: 13px; font-weight: 600; fill: #45556C; }
+    .heading { font-size: 13px; font-weight: 600; fill: #1D293D; }
+    .pill { fill: #F1F5F9; stroke: #90A1B9; stroke-width: 1; }
     .label { font-size: 11px; font-weight: 600; fill: #45556C; }
     .name { font-size: 14px; fill: #1D293D; }
   </style>
@@ -17,8 +18,11 @@
   <rect x="0" y="0" width="800" height="330" fill="#FFFFFF"/>
 
   <!-- Column headings -->
+  <rect class="pill" x="55" y="8" width="70" height="24" rx="12"/>
   <text class="heading" x="90" y="24" text-anchor="middle">User</text>
-  <text class="heading" x="375" y="24" text-anchor="middle">Role assignment</text>
+  <rect class="pill" x="317" y="8" width="116" height="24" rx="12"/>
+  <text class="heading" x="375" y="24" text-anchor="middle">Role binding</text>
+  <rect class="pill" x="640" y="8" width="100" height="24" rx="12"/>
   <text class="heading" x="690" y="24" text-anchor="middle">Resources</text>
 
   <!-- User -->
@@ -27,11 +31,11 @@
   <path d="M42,182 a14,12 0 0 1 28,0 z" fill="#BEFE99"/>
   <text x="82" y="170" font-size="15" font-weight="600" fill="#FFFFFF">alice</text>
 
-  <!-- User is assigned the role assignment -->
+  <!-- User has the role binding -->
   <line x1="160" y1="165" x2="222" y2="165" stroke="#00576E" stroke-width="1.5" marker-end="url(#rbac-arrow)"/>
   <text x="195" y="156" font-size="12" fill="#45556C" text-anchor="middle">has</text>
 
-  <!-- Role assignment frame -->
+  <!-- Role binding frame -->
   <rect x="230" y="40" width="290" height="238" rx="12" fill="#FFFFFF" stroke="#00576E" stroke-width="1.5"/>
 
   <!-- Role: what -->
@@ -56,7 +60,7 @@
   <text class="label" x="616" y="171">Collection</text>
   <text class="mono name" x="616" y="192">sales/customers</text>
 
-  <!-- The assignment grants access to the in-scope resources -->
+  <!-- The binding grants access to the in-scope resources -->
   <line x1="520" y1="150" x2="593.29" y2="102.36" stroke="#00576E" stroke-width="1.5" marker-end="url(#rbac-arrow)"/>
   <line x1="520" y1="178" x2="592" y2="178" stroke="#00576E" stroke-width="1.5" marker-end="url(#rbac-arrow)"/>
 
