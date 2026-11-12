@@ -9,13 +9,21 @@ description: >-
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 
-The Reasoner exposes an HTTP API for programmatic access. The service listens on
-port `8080`, so the base URL is `https://<EXTERNAL_ENDPOINT>:8080` (or
-`http://localhost:8080` when accessed locally). The Reasoner provides two main
-endpoints:
+The Reasoner exposes an HTTP API for programmatic access. Like the other
+services, you reach it through the data platform, which forwards requests under
+`/reasoner/<SERVICE_ID_POSTFIX>/` to the Reasoner. The base URL is
+`https://<EXTERNAL_ENDPOINT>:8529/reasoner/<SERVICE_ID_POSTFIX>`, where
+`<SERVICE_ID_POSTFIX>` is the trailing segment of the service ID. The endpoints
+have no version prefix such as `/v1`.
+
+The Reasoner listens on port `8080` inside its container. You can't reach this
+port from outside, but you can use `http://localhost:8080` if you forward the
+port to your machine, as in the [health check](#health-and-monitoring) examples.
+
+The Reasoner provides two main endpoints:
 
 - `POST /query` for database exploration and query optimization, for example
-  `POST https://<EXTERNAL_ENDPOINT>:8080/query`.
+  `POST https://<EXTERNAL_ENDPOINT>:8529/reasoner/<SERVICE_ID_POSTFIX>/query`.
 - `POST /txt2aql` for answering a natural-language question with a generated
   AQL query, its results, and a short answer. See [Text-to-AQL](#text-to-aql).
 
@@ -217,14 +225,17 @@ subject to your permissions in the database.
 
 ### How a request is processed
 
-1. The Reasoner looks up saved query templates in the `Tools` collection.
+1. The Reasoner looks up saved query templates in the `Tools` collection. It
+   compares meaning, not wording: it turns your question into an embedding
+   vector and ranks the templates by the cosine similarity between this vector
+   and the vector of each template's description.
 2. If the best matching template has a score of at least `0.85`, the Reasoner
    adapts it to your question, mainly by filling in its bind parameters, and
    runs it.
 3. If no template scores that high, or filling in the template does not
-   succeed, the Reasoner writes a new query. Any templates it found are used
-   as examples. If the filled-in template writes data, or saving it as a
-   template fails, the request ends with an error instead.
+   succeed, the Reasoner writes a new query. The most similar templates, up to
+   3, are used as examples. If the filled-in template writes data, or saving
+   it as a template fails, the request ends with an error instead.
 
 A query that writes data, for example with `INSERT`, `UPDATE`, `REPLACE`,
 `UPSERT`, or `REMOVE`, is rejected before it runs.
@@ -244,7 +255,7 @@ Note that the default for `stream` is `false`, unlike for `POST /query`.
 **Request:**
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8080/txt2aql \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/reasoner/<SERVICE_ID_POSTFIX>/txt2aql \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
   -d '{"query": "What are the top 5 performing stores based on revenue?", "stream": false, "add_template": false}'
@@ -353,16 +364,18 @@ Templates help in two ways:
 - When no template matches closely enough, the most similar templates still
   serve as examples for writing the new query.
 
-The template is saved with your question as its description, and new
-questions are matched against these descriptions. The `Tools` collection is
-created if it doesn't exist. If the same query with the same bind parameters
-is already saved, `added_template_id` is the ID of the existing template.
+The template is saved with your question as its description. The Reasoner
+also stores an embedding vector of the description, which it compares with
+new questions. The `Tools` collection is created if it doesn't exist. If the
+same query with the same bind parameters is already saved, `added_template_id`
+is the ID of the existing template.
 
 If saving fails, the request ends with the `Can not add template` error. If no
 query is generated, for example because the database has no data for the
 question, nothing is saved and `added_template_id` is `null`.
 
-Templates require an embedding API key to be configured for the service.
+Templates require an embedding API key. Set it as `embedding_api_key` in the
+`env` of the Reasoner's MCP server when you start it through the platform API.
 Without it, the Reasoner always writes a new query, and saving new templates
 fails with the `Can not add template` error.
 

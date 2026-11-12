@@ -48,13 +48,14 @@ Read the **AI Reasoning Response** with the optimization report, then click
 {{< /tab >}}
 
 {{< tab "HTTP API" >}}
-With the Reasoner service running (port `8080`, MCP connected), send your
-request:
+With the Reasoner service running and its MCP server connected, send your
+request. Replace `<SERVICE_ID_POSTFIX>` with the trailing segment of the
+Reasoner's service ID:
 
 {{< steps >}}
 
 {{< step "Send an optimization request" >}}
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8080/query" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/reasoner/<SERVICE_ID_POSTFIX>/query" >}}
 
 Include your JWT in the `Authorization: Bearer <token>` header.
 
@@ -77,7 +78,7 @@ report.
 To have the Reasoner answer a question for you instead, send it in natural
 language to the text-to-AQL endpoint:
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8080/txt2aql" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/reasoner/<SERVICE_ID_POSTFIX>/txt2aql" >}}
 
 Include your JWT in the `Authorization: Bearer <token>` header.
 

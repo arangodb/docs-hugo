@@ -101,6 +101,24 @@ instead of sampling the database and writing a new one.
 See [Text-to-AQL](api-reference.md#text-to-aql) in the API reference for the
 details.
 
+### Reasoner and AQLizer
+
+The [AQLizer](../natural-language-to-aql/_index.md) also turns questions into
+AQL. The two features work differently:
+
+| | AQLizer | Reasoner text-to-AQL |
+|---|---|---|
+| Access | Query Editor and HTTP API | HTTP API only |
+| How it writes a query | Translates the question in one step, based on the database schema | Explores the database with tools, then writes the query, or adapts a saved template |
+| Query templates | No | Yes, saved queries are reused for similar questions |
+| Language models | OpenAI and OpenAI-compatible services, including self-hosted models | OpenAI |
+| Service | Separate service with its own setup | Part of the Reasoner, which also optimizes queries |
+
+Use the AQLizer to generate queries in the Query Editor, or if you need a
+language model other than OpenAI. Use the Reasoner for applications that
+answer the same kinds of questions repeatedly, so that saved templates speed
+up later answers, or if you already run the Reasoner to optimize queries.
+
 ## Architecture overview
 
 From a user perspective, the Reasoner is a single service that you start, stop,
