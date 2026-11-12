@@ -96,7 +96,9 @@ CATEGORY="tech_articles"
 ```
 
 AutoGraph accepts request fields in snake_case or camelCase, and its responses
-use camelCase. The `-k` option of `curl` accepts a self-signed certificate.
+use camelCase. The `-s` and `-S` options of `curl` hide the progress bar but
+still show errors, such as a refused connection. The errors go to the
+terminal, not to `jq`. The `-k` option accepts a self-signed certificate.
 
 {{< steps >}}
 
@@ -106,7 +108,7 @@ use camelCase. The `-k` option of `curl` accepts a self-signed certificate.
 Get a JWT session token:
 
 ```bash
-TOKEN=$(curl -sk -X POST "$ENDPOINT/_open/auth" \
+TOKEN=$(curl -sSk -X POST "$ENDPOINT/_open/auth" \
   -d '{"username": "root", "password": "<your-password>"}' | jq -r .jwt)
 echo "$TOKEN" | cut -c1-20
 ```
@@ -119,7 +121,7 @@ request returns `Unauthorized`, the token has expired. Run this command again.
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project" >}}
 
 ```bash
-curl -sk -X POST "$ENDPOINT/_platform/acp/v1/project" \
+curl -sSk -X POST "$ENDPOINT/_platform/acp/v1/project" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"project_name\": \"$PROJECT\",
@@ -144,7 +146,7 @@ List the [Secrets Manager](../secrets-manager.md) profiles that can hold your
 LLM API key:
 
 ```bash
-curl -sk "$ENDPOINT/_platform/acp/v1/secrets" \
+curl -sSk "$ENDPOINT/_platform/acp/v1/secrets" \
   -H "Authorization: Bearer $TOKEN" \
   | jq '[.. | objects | select(has("profile_id") or has("profileId"))
          | {profile_id: (.profile_id // .profileId), name, provider}]'
@@ -175,7 +177,7 @@ For all install keys, see
 [Install the service](reference/_index.md#install-the-service).
 
 ```bash
-curl -sk -X POST "$ENDPOINT/_platform/acp/v1/autograph" \
+curl -sSk -X POST "$ENDPOINT/_platform/acp/v1/autograph" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"env\": {
@@ -225,7 +227,7 @@ https://<EXTERNAL_ENDPOINT>:8529/autograph/vyk1t
 Repeat this command until it returns the following:
 
 ```bash
-curl -sk "$AG/v1/health" -H "Authorization: Bearer $TOKEN" | jq
+curl -sSk "$AG/v1/health" -H "Authorization: Bearer $TOKEN" | jq
 ```
 
 ```json
@@ -245,7 +247,7 @@ Upload every article to the
 
 ```bash
 for f in ./files/tech_articles/*.md; do
-  curl -sk -X POST "$ENDPOINT/_platform/filemanager/_db/$DB/rag-input" \
+  curl -sSk -X POST "$ENDPOINT/_platform/filemanager/_db/$DB/rag-input" \
     -H "Authorization: Bearer $TOKEN" \
     -F "name=$(basename "$f")" \
     -F "scope=$PROJECT" \
@@ -271,7 +273,7 @@ AutoGraph reads the documents, links similar ones, and groups them into
 clusters. See [Create Corpus Build](reference/corpus-build.md#create-corpus-build).
 
 ```bash
-CB_ID=$(curl -sk -X POST "$AG/v1/corpus/builds" \
+CB_ID=$(curl -sSk -X POST "$AG/v1/corpus/builds" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"categories\": [\"$CATEGORY\"], \"incremental\": false}" \
@@ -282,11 +284,11 @@ echo "$CB_ID"
 Wait until the build is done:
 
 ```bash
-while curl -sk "$AG/v1/corpus/builds/$CB_ID" -H "Authorization: Bearer $TOKEN" \
+while curl -sSk "$AG/v1/corpus/builds/$CB_ID" -H "Authorization: Bearer $TOKEN" \
   | jq -e '.status == "pending" or .status == "running"' > /dev/null; do
   sleep 10
 done
-curl -sk "$AG/v1/corpus/builds/$CB_ID" -H "Authorization: Bearer $TOKEN" \
+curl -sSk "$AG/v1/corpus/builds/$CB_ID" -H "Authorization: Bearer $TOKEN" \
   | jq '{status, message, documentCount, clusterCount, error}'
 ```
 
@@ -316,18 +318,18 @@ FullGraphRAG, see
 [How `complexity` is applied](reference/rag-strategizer.md#how-complexity-is-applied).
 
 ```bash
-JOB_ID=$(curl -sk -X POST "$AG/v1/rag-strategizer/analyze" \
+JOB_ID=$(curl -sSk -X POST "$AG/v1/rag-strategizer/analyze" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"project\": \"$PROJECT\",
        \"complexity\": \"very_high\",
        \"categories\": [\"$CATEGORY\"]}" | jq -r .strategizeJobId)
 
-while curl -sk "$AG/v1/rag-strategizer/jobs/$JOB_ID" -H "Authorization: Bearer $TOKEN" \
+while curl -sSk "$AG/v1/rag-strategizer/jobs/$JOB_ID" -H "Authorization: Bearer $TOKEN" \
   | jq -e '.status == "pending" or .status == "running"' > /dev/null; do
   sleep 10
 done
-curl -sk "$AG/v1/rag-strategizer/jobs/$JOB_ID" -H "Authorization: Bearer $TOKEN" \
+curl -sSk "$AG/v1/rag-strategizer/jobs/$JOB_ID" -H "Authorization: Bearer $TOKEN" \
   | jq '{status, clustersDone, clustersTotal, message}'
 ```
 
@@ -353,7 +355,7 @@ each cluster. See
 [Trigger Orchestration](reference/orchestration.md#trigger-orchestration).
 
 ```bash
-ORCH_ID=$(curl -sk -X POST "$AG/v1/orchestrate" \
+ORCH_ID=$(curl -sSk -X POST "$AG/v1/orchestrate" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"project\": \"$PROJECT\",
@@ -365,13 +367,13 @@ echo "$ORCH_ID"
 Wait until the build is done. This prints the progress every minute:
 
 ```bash
-while [ "$(curl -sk "$AG/v1/orchestrate/$ORCH_ID" \
+while [ "$(curl -sSk "$AG/v1/orchestrate/$ORCH_ID" \
   -H "Authorization: Bearer $TOKEN" | jq -r .status)" = "running" ]; do
-  curl -sk "$AG/v1/orchestrate/$ORCH_ID" -H "Authorization: Bearer $TOKEN" \
+  curl -sSk "$AG/v1/orchestrate/$ORCH_ID" -H "Authorization: Bearer $TOKEN" \
     | jq -r '"\(.phase): \(.completedJobs)/\(.totalJobs) parts done"'
   sleep 60
 done
-curl -sk "$AG/v1/orchestrate/$ORCH_ID" -H "Authorization: Bearer $TOKEN" \
+curl -sSk "$AG/v1/orchestrate/$ORCH_ID" -H "Authorization: Bearer $TOKEN" \
   | jq '{status, message, totalJobs, completedJobs, failedJobs}'
 ```
 

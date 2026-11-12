@@ -24,6 +24,16 @@ a category is built, AutoGraph sorts its documents into **clusters** of similar
 documents and chooses a retrieval strategy for each cluster. The part of the
 knowledge graph that is built from one cluster is a **partition**.
 
+**IGU only works in categories that already exist.** Every document you add
+goes into an existing category, and every document you remove or replace has to
+be in an existing category already. IGU cannot create a category. To add a new
+category, run a [corpus build](../reference/corpus-build.md), the
+[RAG Strategizer](../reference/rag-strategizer.md), and a
+[knowledge graph build](../reference/orchestration.md) for it. Within a
+category, a document you add joins an existing cluster and gets its strategy.
+[Reorganizing](#reorganize-the-knowledge-graph) works on partitions: it
+rebuilds the communities of a partition that has changed a lot.
+
 {{< info >}}
 **IGU is API-only in Arango Contextual Data Platform 4.1.x.** You can add,
 remove, replace, and reorganize documents through the
@@ -31,15 +41,6 @@ remove, replace, and reorganize documents through the
 [web interface](../web-interface.md) does not offer these operations in
 4.1.x.
 {{< /info >}}
-
-{{< warning >}}
-**IGU only works in categories that already exist.** Every document you add
-goes into an existing category, and every document you remove or replace has to
-be in an existing category already. IGU cannot create a category. To add a new
-category, run a [corpus build](../reference/corpus-build.md), the
-[RAG Strategizer](../reference/rag-strategizer.md), and a
-[knowledge graph build](../reference/orchestration.md) for it.
-{{< /warning >}}
 
 To get started, see the [Quick Start](quick-start.md). For the requests and
 responses, see the [API Reference](api-reference.md).
@@ -114,7 +115,8 @@ The response is the final result. You do not need to wait or run a knowledge
 graph build afterwards.
 
 Removing also deletes the files of the documents, with all their versions,
-from the File Manager. To add a removed document again later, upload it again.
+from the File Manager. To add a removed document again later, upload it
+once more.
 
 ### Replace documents
 

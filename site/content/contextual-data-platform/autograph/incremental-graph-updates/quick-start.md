@@ -73,14 +73,16 @@ ENDPOINT="https://<EXTERNAL_ENDPOINT>:8529"
 DB="_system"
 PROJECT="enterprise-docs-api"
 CATEGORY="tech_articles"
-TOKEN=$(curl -sk -X POST "$ENDPOINT/_open/auth" \
+TOKEN=$(curl -sSk -X POST "$ENDPOINT/_open/auth" \
   -d '{"username": "root", "password": "<your-password>"}' | jq -r .jwt)
 echo "$TOKEN" | cut -c1-20
 ```
 
 If the output is `null`, the user name or password is wrong. If a later
 request returns `Unauthorized`, the token has expired. Run this command again.
-The `-k` option of `curl` accepts a self-signed certificate.
+The `-s` and `-S` options of `curl` hide the progress bar but still show
+errors, such as a refused connection. The errors go to the terminal, not to
+`jq`. The `-k` option accepts a self-signed certificate.
 {{< /step >}}
 
 {{< step "Find the AutoGraph service of the project" >}}
@@ -88,7 +90,7 @@ The path of the AutoGraph API contains the ID of the project's service. Read it
 from the project metadata:
 
 ```bash
-SERVICE_URL=$(curl -sk "$ENDPOINT/_platform/acp/v1/project_by_name/$DB/$PROJECT" \
+SERVICE_URL=$(curl -sSk "$ENDPOINT/_platform/acp/v1/project_by_name/$DB/$PROJECT" \
   -H "Authorization: Bearer $TOKEN" \
   | jq -r .projectMetadata.autographService.serviceUrl)
 AG="$ENDPOINT/autograph/$(basename "$SERVICE_URL")"
@@ -102,7 +104,7 @@ https://<EXTERNAL_ENDPOINT>:8529/autograph/vyk1t
 
 {{< step "Check the starting point" >}}
 ```bash
-curl -sk "$AG/v1/projects/$PROJECT/overview" \
+curl -sSk "$AG/v1/projects/$PROJECT/overview" \
   -H "Authorization: Bearer $TOKEN" \
   | jq '{documents: .corpusGraph.documentCount,
          knowledge_graph: .knowledgeGraph.status,
@@ -154,7 +156,7 @@ the `id` of each file:
 
 ```bash
 for f in anthropic openai; do
-  curl -sk -X POST "$ENDPOINT/_platform/filemanager/_db/$DB/rag-input" \
+  curl -sSk -X POST "$ENDPOINT/_platform/filemanager/_db/$DB/rag-input" \
     -H "Authorization: Bearer $TOKEN" \
     -F "name=$f.md" \
     -F "scope=$PROJECT" \
@@ -185,7 +187,7 @@ file that is already in the category. It keeps the `id` of that file.
 
 {{< step "Add the new article" >}}
 ```bash
-curl -sk -X POST "$AG/v1/graph/insert" \
+curl -sSk -X POST "$AG/v1/graph/insert" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"category\": \"$CATEGORY\",
@@ -213,7 +215,7 @@ partition, the knowledge graph build skips the article, see
 
 {{< step "Replace the revised article" >}}
 ```bash
-curl -sk -X POST "$AG/v1/graph/update" \
+curl -sSk -X POST "$AG/v1/graph/update" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"category\": \"$CATEGORY\",
@@ -234,14 +236,14 @@ Replacing runs in the background. Its progress is in the
 `message`. Wait until its `phase` is `DONE`:
 
 ```bash
-until curl -sk "$ENDPOINT/_platform/acp/v1/project_by_name/$DB/$PROJECT" \
+until curl -sSk "$ENDPOINT/_platform/acp/v1/project_by_name/$DB/$PROJECT" \
     -H "Authorization: Bearer $TOKEN" \
     | jq -e '.projectMetadata.autographService.importerOrchestration.message
              | (fromjson? // {}) | .phase == "DONE"' > /dev/null; do
   echo "replacing..."
   sleep 5
 done
-curl -sk "$ENDPOINT/_platform/acp/v1/project_by_name/$DB/$PROJECT" \
+curl -sSk "$ENDPOINT/_platform/acp/v1/project_by_name/$DB/$PROJECT" \
   -H "Authorization: Bearer $TOKEN" \
   | jq '.projectMetadata.autographService.importerOrchestration.message | fromjson'
 ```
@@ -278,7 +280,7 @@ build, such as `Orchestration completed: 11 succeeded, 0 failed`, with
 
 {{< step "Remove the outdated article" >}}
 ```bash
-curl -sk -X POST "$AG/v1/graph/delete" \
+curl -sSk -X POST "$AG/v1/graph/delete" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"category\": \"$CATEGORY\", \"doc_names\": [\"motorola_mobility.md\"]}" \
@@ -313,7 +315,7 @@ Start a knowledge graph build for the added and the replaced article. Removed
 articles need no build.
 
 ```bash
-ORCH_ID=$(curl -sk -X POST "$AG/v1/orchestrate" \
+ORCH_ID=$(curl -sSk -X POST "$AG/v1/orchestrate" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"project\": \"$PROJECT\", \"replicas\": 1,
@@ -335,12 +337,12 @@ If `unmatchedFileIds` lists any IDs, the build skips those articles, see
 [Add documents](api-reference.md#add-documents). Wait until the build is done:
 
 ```bash
-while [ "$(curl -sk "$AG/v1/orchestrate/$ORCH_ID" \
+while [ "$(curl -sSk "$AG/v1/orchestrate/$ORCH_ID" \
   -H "Authorization: Bearer $TOKEN" | jq -r .status)" = "running" ]; do
   echo "still running"
   sleep 30
 done
-curl -sk "$AG/v1/orchestrate/$ORCH_ID" -H "Authorization: Bearer $TOKEN" \
+curl -sSk "$AG/v1/orchestrate/$ORCH_ID" -H "Authorization: Bearer $TOKEN" \
   | jq '{status, message,
          jobs: [.jobs[] | {ragPartitionId, status, divergenceScore, needsReclustering}]}'
 ```
@@ -368,7 +370,7 @@ Each response so far reported only some of the changed partitions. The
 strategy profiles hold the current values of all of them:
 
 ```bash
-curl -sk "$AG/v1/rag-strategizer/strategy" -H "Authorization: Bearer $TOKEN" \
+curl -sSk "$AG/v1/rag-strategizer/strategy" -H "Authorization: Bearer $TOKEN" \
   | jq '[.. | objects | select(has("parameters") and has("ragPartitionId"))
          | {ragPartitionId, divergence_score: .parameters.divergence_score,
             needs_reclustering: .parameters.needs_reclustering}
@@ -412,7 +414,7 @@ To rebuild the communities of the flagged partitions, pass their
 `ragPartitionId` values:
 
 ```bash
-curl -sk -X POST "$AG/v1/graph/recluster" \
+curl -sSk -X POST "$AG/v1/graph/recluster" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"partition_ids": ["enterprise-docs-api_tech=uarticles_4_a",
