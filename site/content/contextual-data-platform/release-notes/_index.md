@@ -8,6 +8,10 @@ description: >-
 pageToc:
   maxHeadlineLevel: 2
 ---
+## v4.2.0 (November 2026)
+
+
+
 ## v4.2.0-beta (October 2026)
 
 This release makes the web interface easier to navigate and improves the
