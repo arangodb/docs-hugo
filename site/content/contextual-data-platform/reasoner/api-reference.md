@@ -253,13 +253,21 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8080/txt2aql \
 
 ```json
 {
-  "aql": "FOR s IN stores SORT s.revenue DESC LIMIT 5 RETURN s",
-  "json": [{"name": "North"}],
-  "nl": "North is the top store by revenue.",
+  "aql": "FOR s IN stores SORT s.revenue DESC LIMIT 5 RETURN { name: s.name, revenue: s.revenue }",
+  "json": [
+    {"name": "North", "revenue": 1250000},
+    {"name": "Central", "revenue": 1180000},
+    {"name": "East", "revenue": 970000},
+    {"name": "West", "revenue": 940000},
+    {"name": "South", "revenue": 880000}
+  ],
+  "nl": "The top 5 stores by revenue are North (1,250,000), Central (1,180,000), East (970,000), West (940,000), and South (880,000). This answer is based on 5 rows.",
   "error": null,
   "added_template_id": null
 }
 ```
+
+The language model writes the `nl` answer, so its wording varies.
 
 | Field | Type | Description |
 |---|---|---|
