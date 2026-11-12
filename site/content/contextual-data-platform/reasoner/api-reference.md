@@ -291,9 +291,9 @@ in the same format as `POST /query`, with the following events:
 | `done` | The final result: `aql`, `json`, `nl`, `error` (`null`), and `added_template_id` |
 | `error` | Generation or execution failed; the data includes `message` and `error` |
 
-While the request is in progress, the stream sends an SSE comment
-(`: heartbeat`) every 5 seconds to keep the connection open. Standard SSE
-clients ignore comments.
+If no event is sent for 5 seconds, the stream sends an SSE comment
+(`: heartbeat`) to keep the connection open. Standard SSE clients ignore
+comments.
 
 If the client closes the connection, the Reasoner stops processing the request.
 
