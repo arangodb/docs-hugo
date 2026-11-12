@@ -56,6 +56,8 @@ request:
 {{< step "Send an optimization request" >}}
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8080/query" >}}
 
+Include your JWT in the `Authorization: Bearer <token>` header.
+
 ```json
 {
   "request": "Optimize this query: FOR u IN users FILTER u.status == 'active' SORT u.created_at DESC RETURN u",
@@ -71,6 +73,23 @@ receive a single JSON response whose `result` field holds the full markdown
 report.
 {{< /step >}}
 
+{{< step "Optional: Generate AQL from a question" >}}
+To have the Reasoner write a query for you instead, send a question in natural
+language to the text-to-AQL endpoint:
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8080/txt2aql" >}}
+
+```json
+{
+  "query": "What are the top 5 performing stores based on revenue?",
+  "stream": false
+}
+```
+
+The response contains the generated query in `aql`, up to 50 result rows in
+`json`, and a short answer in `nl`.
+{{< /step >}}
+
 {{< /steps >}}
 {{< /tab >}}
 
@@ -84,4 +103,5 @@ rewritten query, and validation that it returns identical results.
 ## Next steps
 
 - [Web Interface](web-interface.md): The full guided experience.
-- [API Reference](api-reference.md): Endpoints, streaming, and event types.
+- [API Reference](api-reference.md): Endpoints, streaming, event types, and
+  text-to-AQL.

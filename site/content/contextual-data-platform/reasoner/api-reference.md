@@ -3,17 +3,35 @@ title: Reasoner API Reference
 menuTitle: API Reference
 weight: 20
 description: >-
-  Use the Reasoner programmatically via its HTTP API, with support for
-  streaming (SSE) and non-streaming response modes
+  Use the Reasoner programmatically via its HTTP API to optimize queries and
+  generate AQL from natural language, with streaming (SSE) and non-streaming
+  response modes
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 
 The Reasoner exposes an HTTP API for programmatic access. The service listens on
 port `8080`, so the base URL is `https://<EXTERNAL_ENDPOINT>:8080` (or
-`http://localhost:8080` when accessed locally). All optimization requests are
-sent to `POST /query`, for example
-`POST https://<EXTERNAL_ENDPOINT>:8080/query`. The service supports two response
-modes: streaming and non-streaming.
+`http://localhost:8080` when accessed locally). The Reasoner provides two main
+endpoints:
+
+- `POST /query` for database exploration and query optimization, for example
+  `POST https://<EXTERNAL_ENDPOINT>:8080/query`.
+- `POST /txt2aql` for turning a natural-language question into AQL. See
+  [Text-to-AQL](#text-to-aql).
+
+Both endpoints support two response modes: streaming and non-streaming.
+
+## Authentication
+
+Requests to `POST /query` and `POST /txt2aql` require a valid JWT in the
+`Authorization` header:
+
+```
+Authorization: Bearer <token>
+```
+
+Queries that the Reasoner runs on your behalf use this token, so they are
+subject to your permissions in the database.
 
 ## Optimization example
 
@@ -93,6 +111,9 @@ phase. Events are delivered over a persistent Server-Sent Events (SSE)
 connection, allowing the client to display progress in real time.
 
 > **Note:** Streaming is only available via the API.
+
+If the client closes the connection, the Reasoner stops processing the request.
+This applies to both `POST /query` and `POST /txt2aql`.
 
 **General query - request:**
 
@@ -197,6 +218,128 @@ attempt did not pass. Common scenarios:
 | `rows_match: false` | The rewritten query returns a different number of results; the optimization may have altered the query's logic |
 | `content_match: false` | Row counts match but the content did not |
 | `improvement_pct` below threshold | The optimization is valid but the improvement is less than the minimum required (5%); the Reasoner retries with a different approach |
+
+If the query you submit writes data, the request ends with the message
+`This is a write query. Only read-only queries can be optimized or run.`
+The Reasoner does not retry in this case.
+
+## Text-to-AQL
+
+The `POST /txt2aql` endpoint accepts a question in natural language and
+returns a generated AQL query, the rows it returned, and a short answer in
+natural language.
+
+### How a request is processed
+
+1. The Reasoner looks up saved query templates in the `Tools` collection.
+2. If the best matching template has a score of at least `0.85`, the Reasoner
+   fills in its bind parameters from your question and runs it.
+3. If no template scores that high, or filling in the template does not
+   succeed, the Reasoner writes a new query. Any templates it found are used
+   as examples.
+
+A query that writes data, for example with `INSERT`, `UPDATE`, `REPLACE`,
+`UPSERT`, or `REMOVE`, is rejected before it runs. Read-only queries run with
+your access token.
+
+Text-to-AQL takes longer than the
+[Natural Language to AQL](../natural-language-to-aql/_index.md) service but is
+more accurate on average.
+
+### `POST /txt2aql` - request parameters
+
+| Field | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `query` | string | Yes | - | The question in natural language |
+| `stream` | boolean | No | `false` | `true` returns an SSE stream; `false` returns a JSON response after completion |
+| `add_template` | boolean | No | `false` | `true` saves the query as a template in the `Tools` collection after it runs, and sets `added_template_id` in the response |
+
+Note that the default for `stream` is `false`, unlike for `POST /query`.
+
+### Non-streaming response
+
+**Request:**
+
+```bash
+curl -X POST https://<EXTERNAL_ENDPOINT>:8080/txt2aql \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <token>" \
+  -d '{"query": "What are the top 5 performing stores based on revenue?", "stream": false, "add_template": false}'
+```
+
+**Response:**
+
+```json
+{
+  "aql": "FOR s IN stores SORT s.revenue DESC LIMIT 5 RETURN s",
+  "json": [{"name": "North"}],
+  "nl": "North is the top store by revenue.",
+  "error": null,
+  "added_template_id": null
+}
+```
+
+| Field | Type | Description |
+|---|---|---|
+| `aql` | string | The generated AQL query |
+| `json` | array of objects | The rows returned by the query, at most 50 |
+| `nl` | string | The answer in natural language |
+| `error` | string or null | Set when no answer is produced |
+| `added_template_id` | string or null | The ID of the saved template in the `Tools` collection, set when `add_template` is `true` |
+
+### Streaming response
+
+With `"stream": true`, the endpoint returns a Server-Sent Events (SSE) stream
+with the same event names as `POST /query`:
+
+| Event | Description |
+|---|---|
+| `phase` | The processing phase changed (`executing`) |
+| `text` | Partial text from the language model |
+| `tool_call` | A database tool was called |
+| `tool_result` | A database tool returned a result |
+| `done` | The final `aql`, `json`, `nl`, and `added_template_id` |
+| `error` | Generation or execution failed; the data includes `message` and `error` |
+
+### Row limit
+
+The response contains at most 50 rows. The `nl` answer ends by stating how
+many rows it is based on. If the query finds more than 50 rows, `json` holds
+the first 50 and `nl` states that the answer is based on only the first 50
+rows.
+
+For questions that match many documents, ask for a count, a total, or a top N
+instead of the full list.
+
+### Errors and empty results
+
+If no answer can be produced, the endpoint still returns HTTP status `200`,
+with `error` set and `aql`, `json`, and `nl` empty. In non-streaming mode, an
+unexpected failure returns HTTP status `500` instead.
+
+| `error` | Meaning |
+|---|---|
+| `Can not generate AQL` | Text-to-AQL is not available because no MCP server is configured |
+| `Can not add template` | `add_template` was `true` but the query could not be saved, for example because you don't have write access to the `Tools` collection |
+| A message naming a write operation | The query would modify data, so it did not run |
+| `I can only answer questions about the data in this database.` | The question is not about the data in the database |
+
+Two cases return no rows without an error:
+
+- If the database has no data for what the question asks for, `aql` and `json`
+  are empty and `nl` explains what is missing.
+- If the query runs but finds nothing, `aql` contains the query, `json` is
+  empty, and `nl` is `The query found no matching data.`
+
+### Save queries as templates
+
+Set `add_template` to `true` to save the query as a template in the `Tools`
+collection, so that the Reasoner can reuse it for similar questions. This
+requires write access to the `Tools` collection. If saving fails, the request
+ends with the `Can not add template` error.
+
+The Reasoner and MCP endpoints don't let you list or delete saved templates.
+To manage them, query the `Tools` collection directly, for example with AQL.
 
 ## Health and monitoring
 
