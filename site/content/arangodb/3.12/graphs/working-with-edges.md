@@ -30,7 +30,7 @@ _node collections_ or vertex collections in this context), edges form graphs.
 Edges are normal documents but additionally have a `_from` and a `_to` attribute
 that you need to set.
 You can update the `_from` and `_to` attributes like any other document attribute
-using the [Documents API](../develop/javascript-api/@arangodb/collection-object.md#documents).
+using the [Documents API](../javascript-api/@arangodb/collection-object.md#documents).
 
 For methods you can call on edge collections, see the edge document methods of
-the [_collection_ object](../develop/javascript-api/@arangodb/collection-object.md#edge-documents).
+the [_collection_ object](../javascript-api/@arangodb/collection-object.md#edge-documents).

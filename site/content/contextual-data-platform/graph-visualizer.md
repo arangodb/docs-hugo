@@ -31,7 +31,7 @@ You can use the Graph Visualizer to do the following:
 {{< info >}}
 Graph creation is **not** performed within the Graph Visualizer. Graphs must be
 created in the **Management** section under **Graphs** of the second-level
-navigation in the [web interface](../arangodb/3.12/components/web-interface/graphs.md). Once
+navigation in the [web interface](../arangodb/3.12/web-interface/graphs.md). Once
 created, you can select a graph from the list for exploration and visualization.
 {{< /info >}}
 {{< /comment >}}

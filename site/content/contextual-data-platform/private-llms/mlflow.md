@@ -103,7 +103,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_open/auth \
 
 This returns a JWT token that you can use as your Bearer token.
 For more details about ArangoDB authentication and JWT tokens, see the
-[ArangoDB Authentication](../../arangodb/3.12/develop/http-api/authentication.md#jwt-user-tokens)
+[ArangoDB Authentication](../../arangodb/3.12/http-api/authentication.md#jwt-user-tokens)
 documentation.
 
 ## Installation

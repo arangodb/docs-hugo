@@ -1,7 +1,8 @@
 ---
 title: AQL Documentation
 menuTitle: AQL
-weight: 70
+weight: 300
+group: Query & search
 description: >-
   The ArangoDB Query Language (AQL) lets you store, retrieve, and modify data
   in various ways in ArangoDB
@@ -32,5 +33,5 @@ The general workflow when executing a query is as follows:
    the client can process and react to. If the query can be executed
    successfully, the server returns the query results (if any) to the client.
 
-For example queries, see the [Data Queries](data-queries.md) and
-[Examples & Query Patterns](examples-and-query-patterns/_index.md) chapters.
+For example queries, see the [Data Queries](high-level-operations/data-modification.md) and
+[Examples & Query Patterns](query-patterns/_index.md) chapters.

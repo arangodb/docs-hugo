@@ -184,7 +184,7 @@ for this reason if your deployment is at or above the configured maximum. Exampl
 
 #### Adjustable Stream Transaction size
 
-The [Stream Transactions HTTP API](../../develop/http-api/transactions/stream-transactions.md)
+The [Stream Transactions HTTP API](../../http-api/transactions/stream-transactions.md)
 may now allow larger transactions or be limited to smaller transactions because
 the maximum transaction size can now be configured with the
 `--transaction.streaming-max-transaction-size` startup option.
@@ -193,7 +193,7 @@ From v3.12.4 onward, the default value is 512 MiB.
 
 #### Analyzer API
 
-The [`/_api/analyzer` endpoints](../../develop/http-api/analyzers.md) supports
+The [`/_api/analyzer` endpoints](../../http-api/analyzers.md) supports
 a new `multi_delimiter` Analyzer that accepts an array of strings in a
 `delimiters` attribute of the `properties` object.
 
@@ -210,7 +210,7 @@ either case.
 
 #### Log API
 
-The [`/_admin/log/*` endpoints](../../develop/http-api/monitoring/logs.md) no
+The [`/_admin/log/*` endpoints](../../http-api/monitoring/logs.md) no
 longer use the `ldap` log topic. Changing the log level of the `ldap` topic or
 any other unknown topic is not an error, however. Also see
 [Incompatible changes in ArangoDB 3.12](incompatible-changes-in-3-12.md#ldap-authentication-support-removed).
@@ -237,17 +237,17 @@ for this topic are ignored.
 <small>Introduced in: v3.12.10-1</small>
 
 Operations that you execute as part of a
-[Stream Transaction](../../develop/http-api/transactions/stream-transactions.md)
+[Stream Transaction](../../http-api/transactions/stream-transactions.md)
 by setting the `x-arango-trx-id` header now explicitly check whether you have
 the required
-[collection access level](../../operations/administration/user-management/_index.md#actions-and-access-levels).
+[collection access level](../../security/user-management/_index.md#actions-and-access-levels).
 This closes a gap in cluster deployments for collections that are not declared
 in the `collections` attribute when beginning the transaction. It affects the
 following operations:
 
-- All operations of the [Document API](../../develop/http-api/documents.md)
+- All operations of the [Document API](../../http-api/documents.md)
 - Getting the document count and truncating a collection via the
-  [Collection API](../../develop/http-api/collections.md)
+  [Collection API](../../http-api/collections.md)
 
 If you don't have the required access level for the collection, these requests
 now fail with an HTTP `403 Forbidden` error and the `ERROR_FORBIDDEN` (`11`)
@@ -269,7 +269,7 @@ Stream Transactions as well as AQL queries are unaffected, too.
 <small>Introduced in: v3.12.10-1</small>
 
 When requesting a personal access token via the
-[`POST /_api/token/{user}` endpoint](../../develop/http-api/authentication.md#access-tokens),
+[`POST /_api/token/{user}` endpoint](../../http-api/authentication.md#access-tokens),
 the server may not honor the requested `valid_until` timestamp and issue the
 access token with a shorter validity. The maximum lifetime (in seconds) is
 controlled by the new `--auth.maximal-access-token-expiry-time` _arangod_
@@ -304,7 +304,7 @@ The superuser is not restricted by the read-only mode.
 ##### Access token management in read-only mode
 
 The following endpoints for managing
-[access tokens](../../develop/http-api/authentication.md#access-tokens) now
+[access tokens](../../http-api/authentication.md#access-tokens) now
 respect the read-only mode of the server:
 
 - `POST /_api/token/{user}`
@@ -320,7 +320,7 @@ read-only mode.
 ##### Permission checks for the AQL query results cache API
 
 The following endpoints of the
-[AQL query results cache API](../../develop/http-api/queries/aql-query-results-cache.md)
+[AQL query results cache API](../../http-api/queries/aql-query-results-cache.md)
 now require at least read access to the `_system` database, in addition to the
 read access to the specified database that was already required before:
 
@@ -335,7 +335,7 @@ HTTP `403 Forbidden` error.
 
 If the user account you authenticate with has no access to the database you
 target with the experimental
-[`GET /_arango/experimental/_admin/activities` endpoint](../../develop/http-api/monitoring/activities.md),
+[`GET /_arango/experimental/_admin/activities` endpoint](../../http-api/monitoring/activities.md),
 the request now fails with an HTTP `404 Not Found` error and the
 `ERROR_ARANGO_DATABASE_NOT_FOUND` (`1228`) error number. Up to v3.12.10, the
 request failed with an HTTP `401 Unauthorized` error and the `ERROR_FORBIDDEN`
@@ -346,9 +346,9 @@ request failed with an HTTP `401 Unauthorized` error and the `ERROR_FORBIDDEN`
 <small>Introduced in: v3.12.12</small>
 
 The optional `factory` string of
-[vector indexes](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#vector-index-properties)
+[vector indexes](../../indexes/vector-indexes.md#vector-index-properties)
 is now validated when you create the index. Requests to
-[create a vector index](../../develop/http-api/indexes/vector.md) fail with an
+[create a vector index](../../http-api/indexes/vector.md) fail with an
 HTTP `400 Bad Request` error and the `ERROR_BAD_PARAMETER` (`10`) error number
 in the following cases:
 
@@ -374,9 +374,9 @@ set it explicitly in this case. Alternatively, use the `{}` placeholder as in
 <small>Introduced in: v3.12.12</small>
 
 If you deactivate a user account by setting `active` to `false` using the
-[User Management API](../../develop/http-api/users.md), the
-[JWT session tokens](../../develop/http-api/authentication.md#jwt-session-tokens)
-and [user tokens](../../develop/http-api/authentication.md#jwt-user-tokens) of
+[User Management API](../../http-api/users.md), the
+[JWT session tokens](../../http-api/authentication.md#jwt-session-tokens)
+and [user tokens](../../http-api/authentication.md#jwt-user-tokens) of
 this user account are now rejected. Requests that
 authenticate with such a token fail with an HTTP `401 Unauthorized` error.
 
@@ -391,7 +391,7 @@ including the query strings and bind variables of other users, and kill any of
 them.
 
 This affects the following endpoints of the
-[AQL query API](../../develop/http-api/queries/aql-queries.md#track-queries):
+[AQL query API](../../http-api/queries/aql-queries.md#track-queries):
 
 - `GET /_api/query/current` and `GET /_api/query/slow` only return your own
   queries.
@@ -404,7 +404,7 @@ Administrators can still list and kill the queries of all users and clear the
 entire list of slow queries. This requires `rw` access to the `_system`
 database (classic authorization) or the `coredb-admin` role (RBAC).
 Requests with a
-[superuser JWT](../../develop/http-api/authentication.md#jwt-superuser-tokens)
+[superuser JWT](../../http-api/authentication.md#jwt-superuser-tokens)
 are not affected.
 
 Using the `all` query parameter to target all databases remains unchanged and
@@ -415,7 +415,7 @@ still requires a superuser JWT in the `_system` database.
 <small>Introduced in: v3.12.13</small>
 
 Changing the query tracking properties of a database via the
-[`PUT /_api/query/properties` endpoint](../../develop/http-api/queries/aql-queries.md#update-the-aql-query-tracking-configuration)
+[`PUT /_api/query/properties` endpoint](../../http-api/queries/aql-queries.md#update-the-aql-query-tracking-configuration)
 now requires `rw` access to the database the request targets (classic
 authorization). Previously, any user account with at least `ro` access to the
 database could change the properties, for example, to enable the tracking of
@@ -423,7 +423,7 @@ bind variables.
 
 With RBAC, none of the predefined roles grants the permission to change the
 query tracking properties. Only requests with a
-[superuser JWT](../../develop/http-api/authentication.md#jwt-superuser-tokens)
+[superuser JWT](../../http-api/authentication.md#jwt-superuser-tokens)
 can change them.
 
 Changing the properties is also no longer possible in read-only mode, except
@@ -437,8 +437,8 @@ the request fails with an HTTP `403 Forbidden` error.
 <small>Introduced in: v3.12.13</small>
 
 Reading index definitions via the
-[`GET /_api/index` endpoint](../../develop/http-api/indexes/_index.md#list-all-indexes-of-a-collection)
-and the [`GET /_api/index/{index-id}` endpoint](../../develop/http-api/indexes/_index.md#get-an-index)
+[`GET /_api/index` endpoint](../../http-api/indexes/_index.md#list-all-indexes-of-a-collection)
+and the [`GET /_api/index/{index-id}` endpoint](../../http-api/indexes/_index.md#get-an-index)
 now consistently requires at least `ro` access to the collection in all
 deployment modes. The index definitions include the names of the indexed
 attributes. Previously, Coordinators in cluster deployments didn't check the
@@ -454,8 +454,8 @@ an HTTP `403 Forbidden` error.
 <small>Introduced in: v3.12.13</small>
 
 The `ttl` of replication batches that you set when you
-[create a batch](../../develop/http-api/replication/replication-dump.md#create-a-new-dump-batch)
-or [extend its lifetime](../../develop/http-api/replication/replication-dump.md#extend-the-ttl-of-a-dump-batch)
+[create a batch](../../http-api/replication/replication-dump.md#create-a-new-dump-batch)
+or [extend its lifetime](../../http-api/replication/replication-dump.md#extend-the-ttl-of-a-dump-batch)
 is now capped at `86400` seconds (24 hours). Previously, any value was accepted,
 and a batch with a very high `ttl` could prevent the RocksDB write-ahead log
 files from being released.
@@ -464,7 +464,7 @@ files from being released.
 
 <small>Introduced in: v3.12.13</small>
 
-The [Metrics API](../../develop/http-api/monitoring/metrics.md) now escapes
+The [Metrics API](../../http-api/monitoring/metrics.md) now escapes
 backslashes, double quotes, and line feeds in label values as `\\`, `\"`, and
 `\n` according to the Prometheus text exposition format. This affects database
 and collection names, for example, which can contain such characters if you use
@@ -486,7 +486,7 @@ invalid metrics output.
 
 <small>Introduced in: v3.12.8</small>
 
-The [`GET /_api/engine/stats` endpoint](../../develop/http-api/administration.md#get-the-storage-engine-statistics)
+The [`GET /_api/engine/stats` endpoint](../../http-api/administration.md#get-the-storage-engine-statistics)
 previously returned hard-to-read strings under `columnFamilies.*.dbstats`:
 
 ```json
@@ -542,11 +542,11 @@ The new `GET /_admin/options` and `GET /_admin/options-description` HTTP API
 endpoints allow you to return the effective configuration and the available
 startup options of the queried _arangod_ instance.
 
-Previously, it was only possible to [fetch the current configuration](../../operations/administration/configuration.md#fetch-current-configuration-options)
+Previously, it was only possible to [fetch the current configuration](../../configuration/_index.md#fetch-current-configuration-options)
 on single servers and Coordinators using a JavaScript transaction, and to list
 the available startup options with `--dump-options`.
 
-See the [HTTP interface for administration](../../develop/http-api/administration.md#startup-options)
+See the [HTTP interface for administration](../../http-api/administration.md#startup-options)
 for details.
 
 #### Available key generators
@@ -554,7 +554,7 @@ for details.
 You can now retrieve the available key generators for collections using the new
 `GET /_api/key-generators` endpoint.
 
-See the [HTTP API description](../../develop/http-api/collections.md#get-the-available-key-generators)
+See the [HTTP API description](../../http-api/collections.md#get-the-available-key-generators)
 
 #### Shard usage metrics
 
@@ -566,7 +566,7 @@ startup option to `enabled-per-shard` to make DB-Servers collect per-shard
 usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
 usage metrics per shard and per user whenever a shard is accessed.
 
-For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-the-usage-metrics)
+For more information, see the [HTTP API description](../../http-api/monitoring/metrics.md#get-the-usage-metrics)
 and [Monitoring per collection/database/user](../version-3.12/whats-new-in-3-12.md#monitoring-per-collectiondatabaseuser).
 
 #### Reset log levels
@@ -579,7 +579,7 @@ tools that temporarily change log levels but do not want to fetch and remember
 the previous log levels settings. Such tools can now simply call this new
 endpoint to restore the original log levels.
 
-See the [Log API](../../develop/http-api/monitoring/logs.md#reset-the-server-log-levels)
+See the [Log API](../../http-api/monitoring/logs.md#reset-the-server-log-levels)
 for details.
 
 #### Query plan cache API
@@ -592,7 +592,7 @@ for AQL execution plans. Query plan caching works on a per-database basis.
 - `GET /_api/query-plan-cache`
 - `DELETE /_api/query-plan-cache`
 
-See [HTTP interface for the query plan cache](../../develop/http-api/queries/aql-query-plan-cache.md)
+See [HTTP interface for the query plan cache](../../http-api/queries/aql-query-plan-cache.md)
 for details.
 
 #### API call recording
@@ -603,7 +603,7 @@ A new `/_admin/server/api-calls` endpoint has been added to let you retrieve a
 list of the most recent requests with a timestamp and the endpoint. This feature
 is for debugging purposes.
 
-See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-api-calls)
+See [HTTP interface for server logs](../../http-api/monitoring/logs.md#get-recent-api-calls)
 for details.
 
 #### AQL query recording
@@ -614,7 +614,7 @@ A new `/_admin/server/aql-queries` endpoint has been added to let you retrieve a
 list of the most recent AQL queries with a timestamp and information about the
 submitted queries. This feature is for debugging purposes.
 
-See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-aql-queries)
+See [HTTP interface for server logs](../../http-api/monitoring/logs.md#get-recent-aql-queries)
 for details.
 
 #### Access tokens
@@ -627,7 +627,7 @@ New endpoints have been added to let you manage access tokens.
 - `GET /_api/token/{user}`
 - `DELETE /_api/token/{user}/{token-id}`
 
-See the [HTTP API](../../develop/http-api/authentication.md#access-tokens)
+See the [HTTP API](../../http-api/authentication.md#access-tokens)
 documentation.
 
 Also see [Authentication with access tokens](#authentication-with-access-tokens)
@@ -639,14 +639,14 @@ for related API changes.
 
 Licenses are now bound to specific deployments. Each deployment has a unique
 identifier that you can retrieve via a new
-[`GET /_admin/deployment/id` endpoint](../../develop/http-api/administration.md#get-the-deployment-id)
+[`GET /_admin/deployment/id` endpoint](../../http-api/administration.md#get-the-deployment-id)
 in the HTTP API.
 
 #### Get public options configuration
 
 <small>Introduced in: v3.12.8</small>
 
-A new [`/_admin/options-public` endpoint](../../develop/http-api/administration.md#get-the-public-startup-option-configuration)
+A new [`/_admin/options-public` endpoint](../../http-api/administration.md#get-the-public-startup-option-configuration)
 has been added for retrieving a small, curated subset of the configured server
 startup options that are safe to expose to any authenticated user.
 
@@ -661,7 +661,7 @@ New endpoints for viewing and managing crash dumps have been added to the HTTP A
   in `<database-directory>/crashes/<uuid>/`.
 - `DELETE /_admin/crashes/{id}`: Delete a specific crash dump.
 
-See [Crash dump management](../../develop/http-api/administration.md#crash-dump-management)
+See [Crash dump management](../../http-api/administration.md#crash-dump-management)
 for details.
 
 #### Activities API (experimental)
@@ -669,7 +669,7 @@ for details.
 <small>Introduced in: v3.12.8</small>
 
 A new activities API has been added as an observability feature.
-See the [HTTP interface for server activities](../../develop/http-api/monitoring/activities.md)
+See the [HTTP interface for server activities](../../http-api/monitoring/activities.md)
 for details.
 
 #### Activities of all servers (experimental)
@@ -681,7 +681,7 @@ You can call it on a Coordinator to get the activities of every server of a
 cluster deployment, grouped by server ID. The activities are returned in an
 `activities_per_server` object.
 
-See [Get the activities of all servers](../../develop/http-api/monitoring/activities.md#get-the-activities-of-all-servers-experimental)
+See [Get the activities of all servers](../../http-api/monitoring/activities.md#get-the-activities-of-all-servers-experimental)
 for details.
 
 #### ArangoSearch statistics API (experimental)
@@ -709,7 +709,7 @@ In v3.12.11, the statistics of a single, arbitrary data store were returned as a
 flat object, and an empty object if the database had no `arangosearch` View and
 no inverted index.
 
-See the [HTTP interface for ArangoSearch statistics](../../develop/http-api/monitoring/arangosearch-statistics.md)
+See the [HTTP interface for ArangoSearch statistics](../../http-api/monitoring/arangosearch-statistics.md)
 for details.
 
 ### Endpoints augmented
@@ -722,7 +722,7 @@ Views of type `arangosearch` accept a new `optimizeTopK` View property for the
 ArangoSearch WAND optimization. It is an immutable array of strings, optional,
 and defaults to `[]`.
 
-See the [`optimizeTopK` View property](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
+See the [`optimizeTopK` View property](../../arangosearch/arangosearch-views-reference.md#view-properties)
 for details.
 
 ##### Changed consolidation defaults for `arangosearch` Views
@@ -774,7 +774,7 @@ If set, the attribute with the name specified by the option is looked up in the
 stored document and the attribute value is compared numerically to the value of
 the versioning attribute in the supplied document that is supposed to update/replace it.
 The document is only changed if the new number is higher. See the
-[Document API](../../develop/http-api/documents.md#create-a-document) for details.
+[Document API](../../http-api/documents.md#create-a-document) for details.
 
 #### Cursor API
 
@@ -838,14 +838,14 @@ query option in the `options` object:
 An error is raised if `usePlanCache` is set to `true` but the query is not
 eligible for plan caching (a new error code
 `ERROR_QUERY_NOT_ELIGIBLE_FOR_PLAN_CACHING` with the number `1584`). See
-[The execution plan cache for AQL queries](../../aql/execution-and-performance/caching-query-plans.md)
+[The execution plan cache for AQL queries](../../aql/query-optimization/caching-query-plans.md)
 for details. 
 
 If a cached query plan is utilized, the above endpoints include a new
 `planCacheKey` attribute at the top-level of the response with the key of the
 cached plan (string).
 
-See [HTTP interfaces for AQL queries](../../develop/http-api/queries/aql-queries.md#cursors)
+See [HTTP interfaces for AQL queries](../../http-api/queries/aql-queries.md#cursors)
 for details.
 
 #### Index API
@@ -856,7 +856,7 @@ Indexes of type `inverted` accept a new `optimizeTopK` property for the
 ArangoSearch WAND optimization. It is an array of strings, optional, and
 defaults to `[]`.
 
-See the [inverted index `optimizeTopK` property](../../develop/http-api/indexes/inverted.md)
+See the [inverted index `optimizeTopK` property](../../http-api/indexes/inverted.md)
 for details.
 
 ##### Multi-dimensional indexes
@@ -876,7 +876,7 @@ Both multi-dimensional index variants now support a `sparse` setting (boolean)
 and `storedValues` setting (array of strings) that were not supported by the
 `zkd` index type in previous versions.
 
-See [Working with multi-dimensional indexes](../../indexes-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md)
+See [Working with multi-dimensional indexes](../../indexes/multi-dimensional-indexes.md)
 for details.
 
 ##### Progress indication on the index generation
@@ -899,7 +899,7 @@ curl "http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
 <small>Introduced in: v3.12.4</small>
 
 A new `vector` index type has been added.
-See [HTTP interface for vector indexes](../../develop/http-api/indexes/vector.md)
+See [HTTP interface for vector indexes](../../http-api/indexes/vector.md)
 for details.
 
 ---
@@ -1023,7 +1023,7 @@ and the reason for the failed training in the `errorMessage` attribute:
 Errors that are not related to the training outcome, like a timeout while
 waiting for the index or a server shutdown, are still reported as errors.
 
-See the [`inBackground` option of vector indexes](../../develop/http-api/indexes/vector.md)
+See the [`inBackground` option of vector indexes](../../http-api/indexes/vector.md)
 for details.
 
 ##### Changed consolidation defaults for inverted indexes
@@ -1279,7 +1279,7 @@ A `skipFastLockRound` option has been added to the `POST /_api/transaction/begin
 endpoint that lets you disable the fast lock round for Stream Transactions.
 The option defaults to `false` so that fast locking is tried.
 
-See the [HTTP API](../../develop/http-api/transactions/stream-transactions.md#begin-a-stream-transaction)
+See the [HTTP API](../../http-api/transactions/stream-transactions.md#begin-a-stream-transaction)
 for details.
 
 #### Log API
@@ -1367,7 +1367,7 @@ curl -uroot:v1.7b2265...71227d http://localhost:8529/_api/database
 ```
 
 Note that it is recommended to use access tokens for creating
-[JWT session tokens](../../develop/http-api/authentication.md#create-a-jwt-session-token).
+[JWT session tokens](../../http-api/authentication.md#create-a-jwt-session-token).
 
 #### Custom expiry time for session tokens
 
@@ -1381,7 +1381,7 @@ The value needs to be within the bounds of the new
 `--auth.maximal-jwt-expiry-time` (default: `3600`) startup options, otherwise
 the request is rejected with an HTTP `400 Bad Request` error.
 
-See [JWT session tokens](../../develop/http-api/authentication.md#jwt-session-tokens)
+See [JWT session tokens](../../http-api/authentication.md#jwt-session-tokens)
 for details.
 
 #### Activities API (experimental)
@@ -1406,7 +1406,7 @@ background consolidation of `arangosearch` View and inverted index data.
 Such activities have the type `ArangoSearchConsolidation` and their `data`
 object lists the index segments that are being merged.
 
-See [ArangoSearch consolidation activities](../../develop/http-api/monitoring/activities.md#arangosearchconsolidation)
+See [ArangoSearch consolidation activities](../../http-api/monitoring/activities.md#arangosearchconsolidation)
 for details.
 
 ### Endpoints deprecated
@@ -1447,7 +1447,7 @@ The `/_api/batch` endpoints that let you send multiple operations in a single
 HTTP request was deprecated in v3.8.0 and has now been removed.
 
 To send multiple documents at once to an ArangoDB instance, please use the
-[HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
+[HTTP interface for documents](../../http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
 #### Obsolete replication APIs
@@ -1509,7 +1509,7 @@ If set, the attribute with the name specified by the option is looked up in the
 stored document and the attribute value is compared numerically to the value of
 the versioning attribute in the supplied document that is supposed to update/replace it.
 The document is only changed if the new number is higher. See the
-[JavaScript API](../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
+[JavaScript API](../../javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
 for details.
 
 ### `@arangodb/pregel` removed
@@ -1545,7 +1545,7 @@ A `skipFastLockRound` option has been added to the `db._createTransaction()`
 method that lets you disable the fast lock round for Stream Transactions.
 The option defaults to `false` so that fast locking is tried.
 
-See the [JavaScript API](../../develop/transactions/stream-transactions.md#javascript-api)
+See the [JavaScript API](../../transactions/stream-transactions.md#javascript-api)
 for details.
 
 ### Query plan cache module
@@ -1555,7 +1555,7 @@ for details.
 The new `@arangodb/aql/plan-cache` module lets you list the entries (`.toArray()`)
 and clear (`.clear()`) the AQL execution plan cache in the JavaScript API.
 
-See [The execution plan cache for AQL queries](../../aql/execution-and-performance/caching-query-plans.md#interfaces)
+See [The execution plan cache for AQL queries](../../aql/query-optimization/caching-query-plans.md#interfaces)
 for details.
 
 ### Stricter JavaScript security defaults

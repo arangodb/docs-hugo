@@ -99,7 +99,7 @@ Optimization rules applied:
   3   handle-arangosearch-views
 ```
 
-See [ArangoSearch Views](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties).
+See [ArangoSearch Views](../../arangosearch/arangosearch-views-reference.md#view-properties).
 
 ### Stemming support for more languages
 
@@ -140,7 +140,7 @@ db._query(`RETURN TOKENS("αυτοκινητουσ πρωταγωνιστούσ�
 // [ [ "αυτοκινητ", "πρωταγωνιστ" ] ]
 ```
 
-Also see [Analyzers: Supported Languages](../../indexes-and-search/analyzers.md#supported-languages)
+Also see [Analyzers: Supported Languages](../../analyzers.md#supported-languages)
 
 ### Condition Optimization Option
 
@@ -183,7 +183,7 @@ creation to enable or disable the compression of the primary sort data:
 It defaults to LZ4 compression (`"lz4"`), which was already used in ArangoDB
 v3.5 and v3.6. Set it to `"none"` on View creation to trade space for speed.
 
-See [ArangoSearch Views](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties).
+See [ArangoSearch Views](../../arangosearch/arangosearch-views-reference.md#view-properties).
 
 ## SatelliteGraphs
 
@@ -430,7 +430,7 @@ significantly thanks to a specialized parser, replacing a regular expression.
 
 ### Ternary operator
 
-Improved the lazy evaluation capabilities of the [ternary operator](../../aql/operators.md#ternary-operator).
+Improved the lazy evaluation capabilities of the [ternary operator](../../aql/language-basics/operators.md#ternary-operator).
 If the second operand is left out, the expression of the condition is only
 evaluated once now, instead of once more for the true branch.
 
@@ -544,7 +544,7 @@ validation level, which can be `none` (off), `new` (insert only), `moderate`
 (on insert and modification, but existing documents can remain invalid)
 or `strict` (always).
 
-See: [Schema Validation](../../concepts/data-structure/documents/schema-validation.md)
+See: [Schema Validation](../../documents/schema-validation.md)
 
 ### HTTP/2 support
 
@@ -555,13 +555,13 @@ and modern cloud platforms like Kubernetes.
 We also expect improved request throughput in cases where there are many
 concurrent requests.
 
-See: [HTTP Switching Protocols](../../develop/http-api/general-request-handling.md#switch-protocols)
+See: [HTTP Switching Protocols](../../http-api/general-request-handling.md#switch-protocols)
 
 ### Server Name Indication (Enterprise Edition)
 
 Sometimes it is desirable to have the same server use different server keys
 and certificates when it is contacted under different names. This is possible
-with the [Server Name Indication](../../components/arangodb-server/options.md#--sslserver-name-indication)
+with the [Server Name Indication](../../configuration/options.md#--sslserver-name-indication)
 (SNI) TLS extension. It is now supported by ArangoDB using a new startup option
 `--ssl.server-name-indication`.
 
@@ -572,7 +572,7 @@ There are now new APIs and startup options for JWT secrets. The new option
 JWT secret file.
 
 Additionally the `/_admin/server/jwt` API can be used to
-[reload the JWT secrets](../../develop/http-api/authentication.md#hot-reload-jwt-secrets)
+[reload the JWT secrets](../../http-api/authentication.md#hot-reload-jwt-secrets)
 of a local _arangod_ process without having to restart it (hot-reload).
 This may be used to roll out new JWT secrets throughout an ArangoDB cluster.
 
@@ -587,13 +587,13 @@ Furthermore, one can query the current TLS setup at runtime with the
 SHA-256 hash of the private key is returned.
 
 This allows
-[rotation of TLS keys and certificates](../../develop/http-api/security.md#encryption-in-transit)
+[rotation of TLS keys and certificates](../../http-api/security.md#encryption-in-transit)
 without a server restart.
 
 ### Encryption at rest key rotation (Enterprise Edition)
 
 It is possible to change the user supplied encryption key via the
-[HTTP API](../../develop/http-api/security.md#encryption-at-rest)
+[HTTP API](../../http-api/security.md#encryption-at-rest)
 by sending a POST request without payload to the new endpoint
 `/_admin/server/encryption`. The file supplied via `--rocksdb.encryption-keyfile`
 will be reloaded and the internal encryption key will be re-encrypted with the
@@ -632,8 +632,8 @@ introduced to control the type of the overwrite operation in case of colliding
 primary keys during the insert.
 
 The query options are available in [AQL](../../aql/high-level-operations/insert.md#query-options),
-the [JS API](../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options) and
-[HTTP API](../../develop/http-api/documents.md#create-a-document).
+the [JS API](../../javascript-api/@arangodb/collection-object.md#collectioninsertdata--options) and
+[HTTP API](../../http-api/documents.md#create-a-document).
 
 ### Override detected total memory and CPU cores
 
@@ -648,7 +648,7 @@ set to restrict the amount of memory it will detect (also available in v3.6.3).
 An environment variable `ARANGODB_OVERRIDE_DETECTED_NUMBER_OF_CORES` can be
 set to restrict the number of CPU cores that are visible to _arangod_.
 
-See [ArangoDB Server Environment Variables](../../components/arangodb-server/environment-variables.md)
+See [ArangoDB Server Environment Variables](../../configuration/environment-variables.md)
 
 ### RocksDB storage engine options exposed
 
@@ -779,9 +779,9 @@ Also see:
 
 ### JavaScript APIs
 
-The [`query` helper](../../develop/javascript-api/@arangodb/_index.md#the-query-helper)
+The [`query` helper](../../javascript-api/@arangodb/_index.md#the-query-helper)
 was extended to support passing
-[query options](../../aql/how-to-invoke-aql/with-arangosh.md#main-query-options):
+[query options](../../aql/run-queries/with-arangosh.md#main-query-options):
 
 ```js
 require("@arangodb").query( { maxRuntime: 1 } )`RETURN SLEEP(2)`
@@ -800,7 +800,7 @@ also been backported to ArangoDB v3.6.4.
 The amount of exported metrics for monitoring has been extended and is now 
 available in a format compatible with Prometheus. You can now easily scrape 
 on `/_admin/metrics`.
-See [Metrics HTTP API](../../develop/http-api/monitoring/metrics.md).
+See [Metrics HTTP API](../../http-api/monitoring/metrics.md).
 
 The following metrics have been added in ArangoDB 3.7:
 
@@ -972,8 +972,8 @@ The crash handler can be disabled at server start by setting the environment
 variable `ARANGODB_OVERRIDE_CRASH_HANDLER` to an empty string, `0` or `off`.
 
 Also see:
-- [Troubleshooting _arangod_](../../operations/troubleshooting/arangod.md#other-crashes)
-- [Server environment variables](../../components/arangodb-server/environment-variables.md)
+- [Troubleshooting _arangod_](../../troubleshooting/arangod.md#other-crashes)
+- [Server environment variables](../../configuration/environment-variables.md)
 
 ### Supported compilers
 

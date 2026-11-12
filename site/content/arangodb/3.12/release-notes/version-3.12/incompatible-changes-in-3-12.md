@@ -45,7 +45,7 @@ deployment that was previously on version 3.11.
 ## Access tokens should be recreated
 
 In ArangoDB versions before 3.12.10-1, expired
-[access tokens](../../develop/http-api/authentication.md#access-tokens) may have
+[access tokens](../../http-api/authentication.md#access-tokens) may have
 been used to successfully request new access tokens for a user account. It is
 recommended to upgrade to v3.12.10-1 or later and revoke all access tokens to
 ensure that no user is in possession of non-expired access tokens who shouldn't
@@ -98,7 +98,7 @@ deployment offline to perform the upgrade procedure in the safest possible manne
 
 | Current version | Resolved version | Steps to take |
 |-----------------|------------------|---------------|
-| 3.11.10 (or older) | 3.11.11 (or newer 3.11.x) | Create a backup, upgrade normally (following the standard [Upgrade path](../../operations/upgrading/_index.md#upgrade-paths) all the way to the latest 3.11.x version), then check for [affected numbers in indexes](#corrected-sorting-order-for-numbers-in-velocypack-indexes) and fix them. |
+| 3.11.10 (or older) | 3.11.11 (or newer 3.11.x) | Create a backup, upgrade normally (following the standard [Upgrade path](../../upgrading/_index.md#upgrade-paths) all the way to the latest 3.11.x version), then check for [affected numbers in indexes](#corrected-sorting-order-for-numbers-in-velocypack-indexes) and fix them. |
 | 3.11.11 (or newer 3.11.x) | 3.12.4 (or newer) | **Do not upgrade to version 3.12.0, 3.12.1, 3.12.2, or 3.12.3**. Create a backup, upgrade to the latest 3.11.x version first, then check for [affected numbers in indexes](#corrected-sorting-order-for-numbers-in-velocypack-indexes), fix them (if you haven't done so already or created the deployment with 3.11.11 or a later 3.11.x version), and finally upgrade to version 3.12.4 or later. |
 | 3.12.0 or 3.12.1 | 3.12.4 (or newer) | **Do not upgrade to version 3.12.1, 3.12.2, or 3.12.3**. Create a backup, then upgrade to version 3.12.4 or later. Check for [affected strings in indexes](#corrected-sorting-order-for-strings-in-velocypack-indexes). If affected, create a new deployment using 3.12.4 or later and restore the backup. |
 | 3.12.2 or 3.12.3 | 3.12.4 (or newer) | Create a backup, then check for [affected numbers in indexes](#corrected-sorting-order-for-numbers-in-velocypack-indexes) and fix them. Restore a backup to a **test deployment**, upgrade it to version 3.12.4 (or later), and check for [affected strings in indexes](#corrected-sorting-order-for-strings-in-velocypack-indexes). Drop affected indexes in the **production deployment** before you upgrade it. See the link for details. |
@@ -135,11 +135,11 @@ in the server and client tools has now been removed.
 Running a single server with asynchronous replication to one or more passive
 single servers for automatic failover is no longer supported from v3.12 onward.
 
-You can use [cluster deployments](../../deploy/cluster/_index.md) instead, which
+You can use [cluster deployments](../../deployment-modes/cluster/_index.md) instead, which
 offer better resilience and synchronous replication. Also see the
-[OneShard](../../deploy/oneshard.md) feature.
+[OneShard](../../deployment-modes/oneshard.md) feature.
 
-See [Single instance vs. Cluster deployments](../../deploy/single-instance-vs-cluster.md)
+See [Single instance vs. Cluster deployments](../../deployment-modes/single-instance-vs-cluster.md)
 for details about how a cluster deployment differs and how to migrate to it.
 
 ## Datacenter-to-Datacenter Replication (DC2DC) removed
@@ -211,7 +211,7 @@ on-disk is in use, so users that still use this format
 
 The migration can be performed as follows:
 
-1. Create a full logical backup of the database using [arangodump](../../components/tools/arangodump/_index.md)
+1. Create a full logical backup of the database using [arangodump](../../tools/arangodump/_index.md)
 2. Stop the database servers in the deployment
 3. Wipe the existing database directories
 4. Restart the servers in the deployment
@@ -271,7 +271,7 @@ Server-side transactions written in JavaScript and executed via the
 `POST /_api/transaction` endpoint of the HTTP API are deprecated from v3.12.0
 onward and will be removed in a future version.
 
-You can use [Stream Transactions](../../develop/transactions/stream-transactions.md)
+You can use [Stream Transactions](../../transactions/stream-transactions.md)
 instead in most cases, and in some cases AQL can be sufficient.
 
 ## Default server language changed
@@ -281,7 +281,7 @@ for the first time, typically when creating a new deployment. You can specify
 a locale for the initialization with the `--icu-language` startup option (or with
 the deprecated `--default-language` startup option). The server language that
 you set this way affects the sorting and comparison behavior for text globally,
-with a few exceptions like the [`collation` Analyzer](../../indexes-and-search/analyzers.md#collation).
+with a few exceptions like the [`collation` Analyzer](../../analyzers.md#collation).
 
 If you don't specify a language using a startup option, the `LANG` environment
 variable is checked. If it's not set or has an invalid value, the effective
@@ -300,7 +300,7 @@ when initializing the v3.12 instance to retain a specific sorting behavior.
 ## Incompatibilities with Unicode text between core and JavaScript
 
 ArangoDB 3.12 uses the ICU library for Unicode handling in version 64 for its core
-(ArangoSearch, AQL, RocksDB) but version 73 in [JavaScript contexts](../../develop/javascript-api/_index.md).
+(ArangoSearch, AQL, RocksDB) but version 73 in [JavaScript contexts](../../javascript-api/_index.md).
 If you compare or sort string values with JavaScript and with the core, the values
 may not match between the two or have a different order. This is due to changes
 in the Unicode standard and the binary representation of strings for comparisons.
@@ -340,7 +340,7 @@ reflected in the `arangodb_aql_global_memory_usage` metric. Memory used for
 ArangoSearch `SEARCH` operations is now also accounted for in the metric.
 
 You may need to adjust affected queries to use less memory or increase the
-per-query limit with the [`memoryLimit` query option](../../aql/how-to-invoke-aql/with-arangosh.md#memorylimit)
+per-query limit with the [`memoryLimit` query option](../../aql/run-queries/with-arangosh.md#memorylimit)
 or its default using the `--query.memory-limit` startup option. You can adjust
 the global limit with the `--query.global-memory-limit` startup option.
 
@@ -355,7 +355,7 @@ exceeding the memory limit as a result of the improved tracking.
 
 ## Adjustable Stream Transaction size
 
-[Stream Transactions](../../develop/transactions/stream-transactions.md) may
+[Stream Transactions](../../transactions/stream-transactions.md) may
 now be limited to smaller transaction sizes because the maximum transaction size
 can now be configured with the `--transaction.streaming-max-transaction-size`
 startup option. The default value remains 128 MiB (up to v3.12.3) but configuring
@@ -444,7 +444,7 @@ RETURN RAND() > 0.5 && tmp
 ```
 
 Also see [What's New in 3.12](whats-new-in-3-12.md#short-circuiting-subquery-evaluation)
-and [Evaluation of subqueries](../../aql/fundamentals/subqueries.md#evaluation-of-subqueries)
+and [Evaluation of subqueries](../../aql/language-basics/subqueries.md#evaluation-of-subqueries)
 for more information.
 
 ## Corrected sorting order for numbers in VelocyPack indexes
@@ -601,7 +601,7 @@ created with v3.11.11, v3.12.2, or any later version.
    
 3. Call the `PUT /_admin/cluster/vpackSortMigration/migrate` endpoint to mark
    the deployment as having the correct sorting order. This requires
-   [superuser permissions](../../develop/http-api/authentication.md#jwt-superuser-tokens)
+   [superuser permissions](../../http-api/authentication.md#jwt-superuser-tokens)
    unless authentication is disabled.
 
    ```shell
@@ -635,7 +635,7 @@ the following steps.
 1. This step depends on the deployment mode:
 
    - **Single server**: Create a new server. Then create a full dump with
-     [arangodump](../../components/tools/arangodump/_index.md) of the old server,
+     [arangodump](../../tools/arangodump/_index.md) of the old server,
      using the `--all-databases` and `--include-system-collections` startup options
      and a user account with administrate access to the `_system` database and
      at least read access to all other databases to ensure all data including
@@ -864,7 +864,7 @@ created with v3.12.4 or any later version.
    If there are affected indexes, continue with the next step.
 
 6. Drop the affected indexes in your **production deployment**, then trigger a full
-   compaction using the [HTTP API](../../develop/http-api/administration.md#compact-all-databases),
+   compaction using the [HTTP API](../../http-api/administration.md#compact-all-databases),
    setting the `compactBottomMostLevel` option to `true`:
 
    ```shell
@@ -1061,7 +1061,7 @@ The activation and license keys are now typically short-lived and need to be
 renewed periodically. Old license keys remain valid until their regular
 expiration.
 
-See [Enterprise Edition License Management](../../operations/administration/license-management.md)
+See [Enterprise Edition License Management](../../license-management.md)
 for details.
 
 ## Added and removed consolidation options for inverted indexs and `arangosearch` Views
@@ -1084,8 +1084,8 @@ values of the new options are acceptable or if you need to tune them according t
 your workload.
 
 For details, see:
-- [HTTP interface for inverted indexes](../../develop/http-api/indexes/inverted.md)
-- [`arangosearch` View properties](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
+- [HTTP interface for inverted indexes](../../http-api/indexes/inverted.md)
+- [`arangosearch` View properties](../../arangosearch/arangosearch-views-reference.md#view-properties)
 
 ## Rclone upgrades possibly requiring configuration changes
 
@@ -1198,7 +1198,7 @@ set to `true`. Up to v3.12.9, the request can fail if the training of a shard's
 index fails while the Coordinator is still waiting for all shards to report the
 new index. From v3.12.10 onward, it succeeds in this case, too.
 
-See [Vector index properties](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#vector-index-properties)
+See [Vector index properties](../../indexes/vector-indexes.md#vector-index-properties)
 for details.
 
 ## Corrected results for graph traversal path filters
@@ -1210,7 +1210,7 @@ traversals return incorrect results. Affected queries now return the same
 results as they do with the optimizer rule disabled.
 
 - Path filters using an array expansion with an
-  [inline `FILTER`](../../aql/operators.md#inline-filter), like
+  [inline `FILTER`](../../aql/language-basics/operators.md#inline-filter), like
   `FILTER p.edges[* FILTER CURRENT.validUntil != null].validUntil ALL > DATE_NOW()`,
   were applied to the paths after the traversal emitted them. In combination
   with the `uniqueVertices: "global"` traversal option, this could drop results.
@@ -1234,9 +1234,9 @@ results as they do with the optimizer rule disabled.
 <small>Introduced in: v3.12.12</small>
 
 The optional `factory` string of
-[vector indexes](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#vector-index-properties)
+[vector indexes](../../indexes/vector-indexes.md#vector-index-properties)
 is now validated when you create the index. Requests to
-[create a vector index](../../develop/http-api/indexes/vector.md) fail with an
+[create a vector index](../../http-api/indexes/vector.md) fail with an
 HTTP `400 Bad Request` error and the `ERROR_BAD_PARAMETER` (`10`) error number
 in the following cases:
 
@@ -1262,8 +1262,8 @@ set it explicitly in this case. Alternatively, use the `{}` placeholder as in
 <small>Introduced in: v3.12.12</small>
 
 If you deactivate a user account, the
-[JWT session tokens](../../develop/http-api/authentication.md#jwt-session-tokens)
-and [user tokens](../../develop/http-api/authentication.md#jwt-user-tokens) of
+[JWT session tokens](../../http-api/authentication.md#jwt-session-tokens)
+and [user tokens](../../http-api/authentication.md#jwt-user-tokens) of
 this user account are now rejected. Requests that
 authenticate with such a token fail with an HTTP `401 Unauthorized` error.
 
@@ -1293,7 +1293,7 @@ warning in this case.
 
 <small>Introduced in: v3.12.13</small>
 
-The [`AT LEAST (<number>)`](../../aql/operators.md#array-comparison-operators)
+The [`AT LEAST (<number>)`](../../aql/language-basics/operators.md#array-comparison-operators)
 array comparison operator now evaluates to `false` if the number is greater than
 the length of the array. Up to v3.12.12, it can evaluate to `true` in this case
 if all array elements satisfy the condition, including for empty arrays. For
@@ -1402,7 +1402,7 @@ The `/_api/batch` endpoints that let you send multiple operations in a single
 HTTP request was deprecated in v3.8.0 and has now been removed.
 
 To send multiple documents at once to an ArangoDB instance, please use the
-[HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
+[HTTP interface for documents](../../http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
 ### Obsolete replication APIs removed
@@ -1437,17 +1437,17 @@ deployment modes, both for single servers.
 <small>Introduced in: v3.12.10-1</small>
 
 Operations that you execute as part of a
-[Stream Transaction](../../develop/http-api/transactions/stream-transactions.md)
+[Stream Transaction](../../http-api/transactions/stream-transactions.md)
 by setting the `x-arango-trx-id` header now explicitly check whether you have
 the required
-[collection access level](../../operations/administration/user-management/_index.md#actions-and-access-levels).
+[collection access level](../../security/user-management/_index.md#actions-and-access-levels).
 This closes a gap in cluster deployments for collections that are not declared
 in the `collections` attribute when beginning the transaction. It affects the
 following operations:
 
-- All operations of the [Document API](../../develop/http-api/documents.md)
+- All operations of the [Document API](../../http-api/documents.md)
 - Getting the document count and truncating a collection via the
-  [Collection API](../../develop/http-api/collections.md)
+  [Collection API](../../http-api/collections.md)
 
 If you don't have the required access level for the collection, these requests
 now fail with an HTTP `403 Forbidden` error and the `ERROR_FORBIDDEN` (`11`)
@@ -1469,7 +1469,7 @@ Stream Transactions as well as AQL queries are unaffected, too.
 <small>Introduced in: v3.12.10-1</small>
 
 When requesting a personal access token via the
-[`POST /_api/token/{user}` endpoint](../../develop/http-api/authentication.md#access-tokens),
+[`POST /_api/token/{user}` endpoint](../../http-api/authentication.md#access-tokens),
 the server may not honor the requested `valid_until` timestamp and issue the
 access token with a shorter validity. The maximum lifetime (in seconds) is
 controlled by the new `--auth.maximal-access-token-expiry-time` _arangod_
@@ -1504,7 +1504,7 @@ The superuser is not restricted by the read-only mode.
 #### Access token management in read-only mode
 
 The following endpoints for managing
-[access tokens](../../develop/http-api/authentication.md#access-tokens) now
+[access tokens](../../http-api/authentication.md#access-tokens) now
 respect the read-only mode of the server:
 
 - `POST /_api/token/{user}`
@@ -1520,7 +1520,7 @@ read-only mode.
 #### Permission checks for the AQL query results cache API
 
 The following endpoints of the
-[AQL query results cache API](../../develop/http-api/queries/aql-query-results-cache.md)
+[AQL query results cache API](../../http-api/queries/aql-query-results-cache.md)
 now require at least read access to the `_system` database, in addition to the
 read access to the specified database that was already required before:
 
@@ -1535,7 +1535,7 @@ HTTP `403 Forbidden` error.
 
 If the user account you authenticate with has no access to the database you
 target with the experimental
-[`GET /_arango/experimental/_admin/activities` endpoint](../../develop/http-api/monitoring/activities.md),
+[`GET /_arango/experimental/_admin/activities` endpoint](../../http-api/monitoring/activities.md),
 the request now fails with an HTTP `404 Not Found` error and the
 `ERROR_ARANGO_DATABASE_NOT_FOUND` (`1228`) error number. Up to v3.12.10, the
 request failed with an HTTP `401 Unauthorized` error and the `ERROR_FORBIDDEN`
@@ -1552,7 +1552,7 @@ including the query strings and bind variables of other users, and kill any of
 them.
 
 This affects the following endpoints of the
-[AQL query API](../../develop/http-api/queries/aql-queries.md#track-queries):
+[AQL query API](../../http-api/queries/aql-queries.md#track-queries):
 
 - `GET /_api/query/current` and `GET /_api/query/slow` only return your own
   queries.
@@ -1565,7 +1565,7 @@ Administrators can still list and kill the queries of all users and clear the
 entire list of slow queries. This requires `rw` access to the `_system`
 database (classic authorization) or the `coredb-admin` role (RBAC).
 Requests with a
-[superuser JWT](../../develop/http-api/authentication.md#jwt-superuser-tokens)
+[superuser JWT](../../http-api/authentication.md#jwt-superuser-tokens)
 are not affected.
 
 Using the `all` query parameter to target all databases remains unchanged and
@@ -1576,7 +1576,7 @@ still requires a superuser JWT in the `_system` database.
 <small>Introduced in: v3.12.13</small>
 
 Changing the query tracking properties of a database via the
-[`PUT /_api/query/properties` endpoint](../../develop/http-api/queries/aql-queries.md#update-the-aql-query-tracking-configuration)
+[`PUT /_api/query/properties` endpoint](../../http-api/queries/aql-queries.md#update-the-aql-query-tracking-configuration)
 now requires `rw` access to the database the request targets (classic
 authorization). Previously, any user account with at least `ro` access to the
 database could change the properties, for example, to enable the tracking of
@@ -1584,7 +1584,7 @@ bind variables.
 
 With RBAC, none of the predefined roles grants the permission to change the
 query tracking properties. Only requests with a
-[superuser JWT](../../develop/http-api/authentication.md#jwt-superuser-tokens)
+[superuser JWT](../../http-api/authentication.md#jwt-superuser-tokens)
 can change them.
 
 Changing the properties is also no longer possible in read-only mode, except
@@ -1598,8 +1598,8 @@ the request fails with an HTTP `403 Forbidden` error.
 <small>Introduced in: v3.12.13</small>
 
 Reading index definitions via the
-[`GET /_api/index` endpoint](../../develop/http-api/indexes/_index.md#list-all-indexes-of-a-collection)
-and the [`GET /_api/index/{index-id}` endpoint](../../develop/http-api/indexes/_index.md#get-an-index)
+[`GET /_api/index` endpoint](../../http-api/indexes/_index.md#list-all-indexes-of-a-collection)
+and the [`GET /_api/index/{index-id}` endpoint](../../http-api/indexes/_index.md#get-an-index)
 now consistently requires at least `ro` access to the collection in all
 deployment modes. The index definitions include the names of the indexed
 attributes. Previously, Coordinators in cluster deployments didn't check the
@@ -1796,7 +1796,7 @@ to match request URLs, for instance `^tcp://example\.com:80$` to
 until you upgrade to v3.12.10 or later, to work around the issue of having to
 match both the normalized endpoint and full request URL.
 
-See [Security options](../../operations/security/security-options.md#url-access)
+See [Security options](../../security/security-options.md#url-access)
 for detailed examples.
 
 ### Replication startup option obsolete

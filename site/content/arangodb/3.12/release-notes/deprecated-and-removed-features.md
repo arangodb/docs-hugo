@@ -63,7 +63,7 @@ detailed information about breaking changes before upgrading.
 - **Active Failover deployment mode**:\
   Running a single server with asynchronous replication to one or more passive
   single servers for automatic failover is no longer supported from v3.12.0 onward.
-  You can use [cluster deployments](../deploy/cluster/_index.md) instead, which
+  You can use [cluster deployments](../deployment-modes/cluster/_index.md) instead, which
   offer better resilience and synchronous replication.
 
 - **Datacenter-to-Datacenter Replication (DC2DC)**:\
@@ -112,7 +112,7 @@ detailed information about breaking changes before upgrading.
   but you cannot perform reads after writes for a given collection.
   
   To port more complex transactions, you may use
-  [Stream Transactions](../develop/transactions/stream-transactions.md).
+  [Stream Transactions](../transactions/stream-transactions.md).
   The main operations they support are document CRUD and AQL queries. Unlike
   with JavaScript Transactions, you can start a Stream Transaction, then issue
   individual operations, and eventually decide whether to abort or commit the
@@ -141,7 +141,7 @@ detailed information about breaking changes before upgrading.
   multiple collections (from version 3.3 onward) as well as single collections
   (from version 3.8 onward using the non-enveloped format). For even faster
   restoration with zero downtime, you can use _arangobackup_ for
-  [Hot Backups](../operations/backup-and-restore.md/#hot-backups).
+  [Hot Backups](../backup-and-restore.md#hot-backups).
 
 - **C# / .NET driver**:\
   The [arangodb-net-standard](https://github.com/ArangoDB-Community/arangodb-net-standard)
@@ -155,7 +155,7 @@ detailed information about breaking changes before upgrading.
 - **Skiplist and hash indexes**:\
   Skiplist and hash indexes have been deprecated in 3.9 and are removed in
   ArangoDB v4.0. They were merely aliases for the
-  [`persistent` index type](../indexes-and-search/indexing/basics.md#persistent-index)
+  [`persistent` index type](../indexes/basics.md#persistent-index)
   with the RocksDB storage engine.
 
 - **Bundled NPM modules**:\
@@ -164,17 +164,17 @@ detailed information about breaking changes before upgrading.
   `js-yaml`, `lodash`, `minimatch`, `qs`, `semver`, `sinon`, and `timezone`
   have been deprecated in 3.9 and will be removed in a future version of ArangoDB.
   If you want to use NPM modules in your Foxx service, please refer to the
-  [Foxx guide](../develop/foxx-microservices/guides/using-node-modules.md).
+  [Foxx guide](../foxx-microservices/guides/using-node-modules.md).
 
 - **Batch Requests API**:\
-  The [batch request HTTP API](../develop/http-api/batch-requests.md) was deprecated
+  The [batch request HTTP API](../http-api/batch-requests.md) was deprecated
   in v3.8.0 and has been removed in v3.12.3. Instead of using this API, please use the
-  [HTTP interface for documents](../develop/http-api/documents.md#multiple-document-operations)
+  [HTTP interface for documents](../http-api/documents.md#multiple-document-operations)
   that can insert, update, replace or remove arrays of documents.
 
 - **PUT method in Cursor API**:\
   The HTTP API endpoint `PUT /_api/cursor/<cursor-id>` in the
-  [Cursor HTTP API](../develop/http-api/queries/aql-queries.md) is deprecated and will be
+  [Cursor HTTP API](../http-api/queries/aql-queries.md) is deprecated and will be
   removed in a future version. Please use the drop-in replacement
   `POST /_api/cursor/<cursor-id>` instead. The POST endpoint is functionally
   equivalent to the PUT endpoint, but does not violate idempotency requirements
@@ -182,7 +182,7 @@ detailed information about breaking changes before upgrading.
 
 - **Fulltext indexes**:\
   The fulltext index type is deprecated from version 3.10 onwards.
-  It is recommended to use [ArangoSearch](../indexes-and-search/arangosearch/_index.md) for advanced full-text search capabilities.
+  It is recommended to use [ArangoSearch](../arangosearch/_index.md) for advanced full-text search capabilities.
 
 - **Simple Queries**:\
   Idiomatic interface in _arangosh_ to perform trivial queries.
@@ -242,7 +242,7 @@ detailed information about breaking changes before upgrading.
 - **Actions**:\
   Snippets of JavaScript code on the server-side for minimal
   custom endpoints. Since the Foxx revamp in 3.0, it became really easy to
-  write [Foxx Microservices](../develop/foxx-microservices/_index.md), which allow you to define
+  write [Foxx Microservices](../foxx-microservices/_index.md), which allow you to define
   custom endpoints even with complex business logic.
 
   From v3.5.0 onward, the system collections `_routing` and `_modules` are not
@@ -343,4 +343,4 @@ detailed information about breaking changes before upgrading.
   Instead of using these methods, you should use the generic
   `collection.ensureIndex(...)` method, which provides a superset of all the
   deprecated methods. Also see
-  [Creating an index](../indexes-and-search/indexing/working-with-indexes/_index.md#creating-an-index).
+  [Creating an index](../indexes/working-with-indexes.md#creating-an-index).

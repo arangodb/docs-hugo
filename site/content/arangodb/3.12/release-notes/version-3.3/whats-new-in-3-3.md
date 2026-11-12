@@ -91,7 +91,7 @@ Note that encrypted backups can be used together with the already existing
 RocksDB encryption-at-rest feature, but they can also be used for the MMFiles
 engine, which does not have encryption-at-rest.
 
-[Encrypted backups](../../components/tools/arangodump/examples.md#encryption) are available
+[Encrypted backups](../../tools/arangodump/examples.md#encryption) are available
 in the *Enterprise Edition*.
 
 ## Server-level replication

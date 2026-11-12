@@ -35,4 +35,4 @@ For more information see
 [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home)
 
 For quick start guide, see
-[Use ArangoDB in the Cloud](../arangodb/3.12/get-started/set-up-a-cloud-instance.md).
+[Use ArangoDB in the Cloud](../get-started/arango-managed-platform.md).

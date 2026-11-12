@@ -49,7 +49,7 @@ If an EdgeDefinition contains a collection name that is also contained in the
 `satellites` option, the collection will be created as a SatelliteCollection.
 Otherwise, it will be ignored. This option only takes effect using SmartGraphs.
 
-Also see [Graph Management](../../develop/http-api/graphs/named-graphs.md#management).
+Also see [Graph Management](../../http-api/graphs/named-graphs.md#management).
 
 #### Extended naming convention for databases
 
@@ -79,7 +79,7 @@ but will become the norm in a future version. Check if your drivers and
 client applications are prepared for this feature before enabling it.
 {{< /info >}}
 
-Also see [Database names](../../concepts/data-structure/databases.md#database-names).
+Also see [Database names](../../databases.md#database-names).
 
 #### Overload control
 
@@ -201,7 +201,7 @@ is made available. This option can have the following values:
 #### License Management (Enterprise Edition)
 
 Two endpoints were added for the new
-[License Management](../../operations/administration/license-management.md). They can be called on
+[License Management](../../license-management.md). They can be called on
 single servers, Coordinators and DB-Servers:
 
 - `GET /_admin/license`: Query license information and status.
@@ -323,7 +323,7 @@ options, and you can change the `cache` View link/field property with the
 `PUT /_api/view/<view-name>/properties` and `PATCH /_api/view/<view-name>/properties`
 endpoints.
 
-See the [`arangosearch` Views Reference](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+See the [`arangosearch` Views Reference](../../arangosearch/arangosearch-views-reference.md#link-properties)
 for details.
 
 #### Document API

@@ -11,7 +11,7 @@ weight: 97
 Get an overview of ArangoDB's features and deployment options.
 {{% /card %}}
 
-{{% card title="Get started" link="get-started/" %}}
+{{% card title="Get started" link="../../get-started/concepts/coming-from-sql/" %}}
 Learn about ArangoDB's core concepts, how to interact with the database system,
 and get a server instance up and running.
 {{% /card %}}
@@ -25,11 +25,11 @@ vector, and geo-spatial data via a single, composable query language.
 What are graphs and how do the different types of graphs work in ArangoDB?
 {{% /card %}}
 
-{{% card title="Deploy" link="deploy/" %}}
+{{% card title="Deploy" link="deployment-modes/" %}}
 Find the right deployment mode and set up your ArangoDB instance.
 {{% /card %}}
 
-{{% card title="Develop" link="develop/" %}}
+{{% card title="Develop" link="http-api/" %}}
 See the in-depth feature and API documentation to start developing applications
 with ArangoDB as your backend.
 {{% /card %}}

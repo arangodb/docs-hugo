@@ -1,7 +1,8 @@
 ---
 title: Graphs
 menuTitle: Graphs
-weight: 75
+weight: 230
+group: Model data
 description: >-
   Graphs let you represent things and the relationships between them using
   vertices and edges, to naturally model knowledge, social networks, cash flows,
@@ -191,11 +192,11 @@ could be dangling edges after all. The graph modules guarantee to not introduce
 new inconsistencies only.
 
 You can create and manage named graphs in the following ways:
-- With the [web interface](../components/web-interface/graphs.md)
+- With the [web interface](../web-interface/graphs.md)
   in the **Graphs** section
 - In _arangosh_ using the respective graph-related modules of the
   JavaScript API (see the above links of the named graph types)
-- Using the [Gharial HTTP API](../develop/http-api/graphs/named-graphs.md)
+- Using the [Gharial HTTP API](../http-api/graphs/named-graphs.md)
 
 #### When to use General Graphs
 
@@ -368,7 +369,7 @@ to update edges more easily and you can even assign multiple types to a single
 edge.
 
 The multiple edge collections approach is limited by the number of collections
-that can be used in one query, see [Known limitations for AQL queries](../aql/fundamentals/limitations.md).
+that can be used in one query, see [Known limitations for AQL queries](../aql/language-basics/limitations.md).
 Every collection used in a query requires some resources inside of ArangoDB and
 the number is therefore limited to cap the resource requirements. You may also
 have constraints on other edge attributes, such as a persistent index with a
@@ -406,8 +407,8 @@ combine with geo, search, ...
 
 ## Back up and restore graph
 
-For backups of your graph data, you can use [arangodump](../components/tools/arangodump/_index.md)
-to create the backup, and [arangorestore](../components/tools/arangorestore/_index.md) to
+For backups of your graph data, you can use [arangodump](../tools/arangodump/_index.md)
+to create the backup, and [arangorestore](../tools/arangorestore/_index.md) to
 restore a backup. However, note the following:
 
 - You need to include the `_graphs` system collection if you want to back up

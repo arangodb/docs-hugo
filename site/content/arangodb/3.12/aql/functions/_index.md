@@ -1,7 +1,8 @@
 ---
 title: AQL functions
 menuTitle: Functions
-weight: 30
+weight: 220
+group: Reference
 description: >-
   AQL offers an extensive set of functions to allow for complex computations
   and it supports user-defined functions
@@ -34,4 +35,4 @@ i.e. `LENGTH(foo)` and `length(foo)` are equivalent.
 
 It is possible to extend AQL with user-defined functions. These functions need to
 be written in JavaScript, and have to be registered before they can be used in a query.
-Please refer to [Extending AQL](../user-defined-functions.md) for more details.
+Please refer to [Extending AQL](user-defined-functions.md) for more details.

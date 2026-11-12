@@ -2,6 +2,7 @@
 title: '`COLLECT` operation in AQL'
 menuTitle: COLLECT
 weight: 40
+group: Read
 description: >-
   The `COLLECT` operation can group data by one or multiple grouping criteria,
   retrieve all distinct values, count how often values occur, and calculate

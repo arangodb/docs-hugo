@@ -17,10 +17,10 @@ The views in this section work with the database that is selected in the
 
 | Icon | Entry | What you do there | Learn more |
 |:----:|:------|:------------------|:-----------|
-| {{< icon "platform-ui/layout-dashboard" >}} | **Dashboard** | Check the health of the deployment, such as the status of the Coordinators, DB-Servers, and Agents, and how shards are distributed. | [Cluster](../../arangodb/3.12/components/web-interface/cluster.md) |
+| {{< icon "platform-ui/layout-dashboard" >}} | **Dashboard** | Check the health of the deployment, such as the status of the Coordinators, DB-Servers, and Agents, and how shards are distributed. | [Cluster](../../arangodb/3.12/web-interface/cluster.md) |
 | {{< icon "platform-ui/message-square-code" >}} | **Query Editor** | Write, run, explain, and profile AQL queries in tabs, save queries, and generate or optimize queries with AI assistance. | [Query Editor](../query-editor.md) |
 | {{< image src="../../images/platform-ui-icons/graphs.png" alt="Graphs icon" style="width: 24px; margin: 0;" >}} | **Graphs** | List, create, and delete named graphs, and open a graph in the Graph Visualizer. | [Graph Visualizer](../graph-visualizer.md) |
-| {{< icon "platform-ui/settings" >}} | **Management** | Open the administration views of the ArangoDB core database system, see [Management menu](#management-menu). | [Web Interface (ArangoDB)](../../arangodb/3.12/components/web-interface/_index.md) |
+| {{< icon "platform-ui/settings" >}} | **Management** | Open the administration views of the ArangoDB core database system, see [Management menu](#management-menu). | [Web Interface (ArangoDB)](../../arangodb/3.12/web-interface/_index.md) |
 
 ## Agentic AI Suite
 
@@ -47,7 +47,7 @@ These entries have sub-entries. Click an entry to expand it in the sidebar.
 
 | Icon | Entry | What you do there | Learn more |
 |:----:|:------|:------------------|:-----------|
-| {{< icon "platform-ui/database" >}} | **Databases** | List, create, and delete databases. | [Databases](../../arangodb/3.12/concepts/data-structure/databases.md) |
+| {{< icon "platform-ui/database" >}} | **Databases** | List, create, and delete databases. | [Databases](../../arangodb/3.12/databases.md) |
 | {{< icon "platform-ui/key-round" >}} | **Secrets** | Store API keys and credentials, for example, for LLM providers, so that services can use them without exposing them. | [Secrets Manager](../secrets-manager.md) |
 | {{< icon "platform-ui/file-up" >}} | **File Manager** | Review uploaded service packages and RAG input files, and delete the ones no service uses anymore. | [File Manager](../file-manager/_index.md) |
 | {{< icon "platform-ui/container" >}} | **Container Manager** | Deploy your own services from code packages or container images and manage running instances. | [Container Manager web interface](../container-manager/web-interface.md) |
@@ -62,15 +62,15 @@ with the database selected in the [database selector](_index.md#database-selecto
 
 | Icon | Entry | What you do there | Learn more |
 |:----:|:------|:------------------|:-----------|
-| {{< icon "aardvark/circle-o" >}} | **Cluster** | View statistics and the health of the cluster. | [Cluster](../../arangodb/3.12/components/web-interface/cluster.md) |
-| {{< icon "aardvark/server" >}} | **Nodes** | List the Coordinators, DB-Servers, and Agents with their endpoints, versions, and status, and see how shards are distributed. | [Cluster](../../arangodb/3.12/components/web-interface/cluster.md) |
-| {{< icon "aardvark/folder" >}} | **Collections** | List, create, and configure collections, and browse their documents. | [Collections](../../arangodb/3.12/components/web-interface/collections.md) |
-| {{< icon "aardvark/cog" >}} | **Analyzers** | List and create Analyzers for full-text search. | [Analyzers](../../arangodb/3.12/indexes-and-search/analyzers.md) |
-| {{< icon "aardvark/eye" >}} | **Views** | List and create `arangosearch` and `search-alias` Views. | [ArangoSearch](../../arangodb/3.12/indexes-and-search/arangosearch/_index.md) |
-| {{< icon "aardvark/bolt" >}} | **Queries** | Run AQL queries and review running and slow queries. | [Queries](../../arangodb/3.12/components/web-interface/queries.md) |
-| {{< icon "aardvark/sitemap" >}} | **Graphs** | List and create named graphs, including SmartGraphs, SatelliteGraphs, and EnterpriseGraphs. | [Graphs](../../arangodb/3.12/components/web-interface/graphs.md) |
-| {{< icon "aardvark/cogs" >}} | **Services** | Install and manage Foxx microservices. | [Services](../../arangodb/3.12/components/web-interface/services.md) |
-| {{< icon "aardvark/users" >}} | **Users** | Create user accounts and manage their permissions. | [Users](../../arangodb/3.12/components/web-interface/users.md) |
+| {{< icon "aardvark/circle-o" >}} | **Cluster** | View statistics and the health of the cluster. | [Cluster](../../arangodb/3.12/web-interface/cluster.md) |
+| {{< icon "aardvark/server" >}} | **Nodes** | List the Coordinators, DB-Servers, and Agents with their endpoints, versions, and status, and see how shards are distributed. | [Cluster](../../arangodb/3.12/web-interface/cluster.md) |
+| {{< icon "aardvark/folder" >}} | **Collections** | List, create, and configure collections, and browse their documents. | [Collections](../../arangodb/3.12/web-interface/collections.md) |
+| {{< icon "aardvark/cog" >}} | **Analyzers** | List and create Analyzers for full-text search. | [Analyzers](../../arangodb/3.12/analyzers.md) |
+| {{< icon "aardvark/eye" >}} | **Views** | List and create `arangosearch` and `search-alias` Views. | [ArangoSearch](../../arangodb/3.12/arangosearch/_index.md) |
+| {{< icon "aardvark/bolt" >}} | **Queries** | Run AQL queries and review running and slow queries. | [Queries](../../arangodb/3.12/web-interface/queries.md) |
+| {{< icon "aardvark/sitemap" >}} | **Graphs** | List and create named graphs, including SmartGraphs, SatelliteGraphs, and EnterpriseGraphs. | [Graphs](../../arangodb/3.12/web-interface/graphs.md) |
+| {{< icon "aardvark/cogs" >}} | **Services** | Install and manage Foxx microservices. | [Services](../../arangodb/3.12/web-interface/services.md) |
+| {{< icon "aardvark/users" >}} | **Users** | Create user accounts and manage their permissions. | [Users](../../arangodb/3.12/web-interface/users.md) |
 | {{< icon "aardvark/support" >}} | **Support** | Find links to the documentation, community, and support channels, and browse the HTTP API. | |
 | {{< icon "aardvark/keyboard-o" >}} | **Shortcuts** | Look up the keyboard shortcuts of the web interface. | |
 

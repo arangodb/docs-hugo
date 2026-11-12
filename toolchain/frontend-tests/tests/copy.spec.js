@@ -1,7 +1,7 @@
 const { test, expect, open, copied, matchesMedia } = require("./fixtures");
 
-const CODE_PAGE = "/arangodb/stable/aql/how-to-invoke-aql/with-arangosh/";
-const ENDPOINT_PAGE = "/arangodb/stable/develop/http-api/batch-requests/";
+const CODE_PAGE = "/arangodb/stable/aql/run-queries/with-arangosh/";
+const ENDPOINT_PAGE = "/arangodb/stable/http-api/batch-requests/";
 
 const opacity = locator => locator.evaluate(el => Number(getComputedStyle(el).opacity));
 

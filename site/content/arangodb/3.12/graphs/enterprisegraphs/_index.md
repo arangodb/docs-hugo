@@ -44,7 +44,7 @@ accidental co-location of nodes on the same DB-Server, which General Graphs cann
 
 ## EnterpriseGraphs using SatelliteCollections
 
-EnterpriseGraphs are capable of using [SatelliteCollections](../../develop/satellitecollections.md)
+EnterpriseGraphs are capable of using [SatelliteCollections](../../collections/satellitecollections.md)
 within their graph definition. Therefore, edge definitions defined between 
 EnterpriseCollections and SatelliteCollections can be created. As SatelliteCollections
 (and the edge collections between EnterpriseGraph collections and SatelliteCollections)

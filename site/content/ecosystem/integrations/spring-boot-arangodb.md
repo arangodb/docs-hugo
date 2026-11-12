@@ -1046,7 +1046,7 @@ When it comes to more complex use cases where a derived method would get way too
 long and become unreadable, queries using the [ArangoDB Query Language (AQL)](../../../arangodb/3.12/aql/_index.md)
 can be supplied with the `@Query` annotation on methods in your repositories.
 
-AQL supports the usage of [bind parameters](../../../arangodb/3.12/aql/fundamentals/bind-parameters.md),
+AQL supports the usage of [bind parameters](../../arangodb/3.12/aql/language-basics/bind-parameters.md),
 thus allowing to separate the query text from literal values used in the query.
 There are three ways of passing bind parameters to the query in the `@Query`
 annotation that are described below.

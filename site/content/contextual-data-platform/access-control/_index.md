@@ -17,7 +17,7 @@ Authentication establishes who a caller is. It has to prove its identity with
 credentials that the data platform can verify, and requests with missing or
 invalid credentials are rejected.
 
-Identities are [ArangoDB user accounts](../../arangodb/3.12/operations/administration/user-management/_index.md).
+Identities are [ArangoDB user accounts](../../arangodb/3.12/security/user-management/_index.md).
 Authentication is handled centrally in the data platform, and a token obtained
 from the credentials of an account is accepted by every service as well as by
 the core database system. You therefore don't need to maintain separate accounts
