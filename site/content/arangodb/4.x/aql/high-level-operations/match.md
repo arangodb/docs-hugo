@@ -69,46 +69,86 @@ assigned to a path variable:
 
 <pre><code>[<em>pathVar</em> =] <em>node</em> [ <em>edge</em> <em>node</em> ... ]</code></pre>
 
-A _node pattern_ has the following form:
-
-<pre><code>( [<em>nodeVar</em>]:<em>collection</em> [{ <em>attribute</em>: <em>value</em>, ... }] [WHERE <em>condition</em>] [RETURN <em>projection</em>, ... ] )</code></pre>
-
-Alternatively, a node pattern can refer to a variable that is already defined:
-
-<pre><code>( <em>nodeVar</em> )</code></pre>
-
-An _edge pattern_ has one of the following forms, depending on the direction:
-
-<pre><code>-[ [<em>edgeVar</em>]:<em>edgeCollection</em> [| <em>edgeCollection</em> ... ] [{ <em>attribute</em>: <em>value</em>, ... }] [WHERE <em>condition</em>] [RETURN <em>projection</em>, ... ] ]->
-<-[ ... ]-
--[ ... ]-</code></pre>
-
-A variable-length edge pattern has one of the following forms:
-
-<pre><code>-[ [<em>pathVar</em>]:<em>edgeCollection</em> [| <em>edgeCollection</em> ... ] * <em>min</em>..<em>max</em> ]->
-<-[ ... ]-
--[ ... ]-</code></pre>
-
-- `nodeVar`, `edgeVar`, `pathVar` (optional): variable names that let you
-  access the matched node, edge, or path after the `MATCH` operation.
-  If you omit the name, you still need to write the colon before the label,
-  like `(:persons)` and `-[:knows]->`.
-- `collection` (required): the name of a document collection that the node
-  needs to be stored in. You can use a collection bind parameter (`@@coll`).
-- `edgeCollection` (required): the name of an edge collection that the edge
-  needs to be stored in. You can list multiple edge collections separated by
-  `|` to match edges from any of them. You can use collection bind parameters
-  (`@@coll`).
-- `{ attribute: value, ... }` (optional): attribute values the node or edge
-  needs to have. Each pair is an equality condition.
-- `WHERE condition` (optional): an arbitrary AQL condition that the node or edge
-  needs to fulfill.
-- `RETURN projection, ...` (optional): the attributes to keep in the variable.
-  See [Projections](#projections).
-- `min..max` (required for variable-length edges): the minimum and maximum
-  number of edges to follow.
+- `pathVar` (optional): a variable name for the entire path that the pattern
+  matches. See [Use path variables](#use-path-variables).
 - `OPTIONS {}` (optional): reserved for future options. Only an empty object is
   accepted at this time. Any attribute raises an error.
+
+In the following, all parentheses `( )`, square brackets `[ ]`, and curly
+braces `{ }` are part of the syntax.
+
+### Node patterns
+
+A _node pattern_ is enclosed in parentheses. Inside, it consists of the
+following parts, in this order:
+
+| Part | Required | Example | Description |
+|:-----|:---------|:--------|:------------|
+| <code><em>nodeVar</em></code> | no | `p` | A variable name to access the matched node after the `MATCH` operation. |
+| <code>:<em>collection</em></code> | yes | `:persons` | The document collection that the node needs to be stored in (its label). You can use a collection bind parameter like `:@@coll`. Write the colon even if you omit the variable name. |
+| <code>{ <em>attribute</em>: <em>value</em>, ... }</code> | no | `{ name: "Alice" }` | Attribute values that the node needs to have. Each pair is an equality condition. |
+| <code>WHERE <em>condition</em></code> | no | `WHERE p.age > 30` | An arbitrary AQL condition that the node needs to fulfill. |
+| <code>RETURN <em>projection</em>, ...</code> | no | `RETURN name, age` | The attributes to keep in the variable. See [Projections](#projections). |
+
+Examples, from minimal to complete:
+
+```aql
+(:persons)
+(p:persons)
+(p:persons { name: "Alice" })
+(p:persons { name: "Alice" } WHERE p.age > 30 RETURN name, age)
+```
+
+Alternatively, a node pattern can only consist of the name of a variable that
+is already defined, like `(p)`. See [Reuse variables](#reuse-variables).
+
+### Edge patterns
+
+An _edge pattern_ is enclosed in square brackets. Dashes and an arrowhead
+around the brackets indicate the direction, with `...` standing for the content
+of the brackets:
+
+| Direction | Edge pattern | Usage | Matches edges |
+|:----------|:-------------|:------|:--------------|
+| Outbound  | `-[ ... ]->` | `(a) -[ ... ]-> (b)` | from `a` to `b` |
+| Inbound   | `<-[ ... ]-` | `(a) <-[ ... ]- (b)` | from `b` to `a` |
+| Any       | `-[ ... ]-`  | `(a) -[ ... ]- (b)`  | in either direction |
+
+Inside the brackets, an edge pattern consists of the following parts, in this
+order:
+
+| Part | Required | Example | Description |
+|:-----|:---------|:--------|:------------|
+| <code><em>edgeVar</em></code> | no | `k` | A variable name to access the matched edge after the `MATCH` operation. |
+| <code>:<em>edgeCollection</em></code> | yes | `:knows` | The edge collection that the edge needs to be stored in (its label). You can list multiple edge collections separated by `\|`, like `:knows\|follows`, to match edges from any of them. You can use collection bind parameters like `:@@coll`. Write the colon even if you omit the variable name. |
+| <code>{ <em>attribute</em>: <em>value</em>, ... }</code> | no | `{ since: 2020 }` | Attribute values that the edge needs to have. Each pair is an equality condition. |
+| <code>WHERE <em>condition</em></code> | no | `WHERE k.weight > 0.5` | An arbitrary AQL condition that the edge needs to fulfill. |
+| <code>RETURN <em>projection</em>, ...</code> | no | `RETURN since` | The attributes to keep in the variable. See [Projections](#projections). |
+
+Examples, from minimal to complete:
+
+```aql
+-[:knows]->
+<-[k:knows|follows]-
+-[k:knows { since: 2020 } WHERE k.weight > 0.5 RETURN since]-
+```
+
+### Variable-length edge patterns
+
+A _variable-length edge pattern_ follows multiple edges. It uses the same
+brackets and arrows as an edge pattern but consists of the following parts:
+
+| Part | Required | Example | Description |
+|:-----|:---------|:--------|:------------|
+| <code><em>pathVar</em></code> | no | `p` | A variable name to access the path that the edges form after the `MATCH` operation. |
+| <code>:<em>edgeCollection</em></code> | yes | `:knows` | Same as for edge patterns. |
+| <code>* <em>min</em>..<em>max</em></code> | yes | `* 1..3` | An asterisk followed by the minimum and maximum number of edges to follow. |
+
+Example:
+
+```aql
+-[p:knows * 1..3]->
+```
 
 ## Usage
 
