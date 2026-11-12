@@ -222,11 +222,11 @@ subject to your permissions in the database.
    fills in its bind parameters from your question and runs it.
 3. If no template scores that high, or filling in the template does not
    succeed, the Reasoner writes a new query. Any templates it found are used
-   as examples.
+   as examples. If the filled-in template writes data, or saving it as a
+   template fails, the request ends with an error instead.
 
 A query that writes data, for example with `INSERT`, `UPDATE`, `REPLACE`,
-`UPSERT`, or `REMOVE`, is rejected before it runs. Read-only queries run with
-your access token.
+`UPSERT`, or `REMOVE`, is rejected before it runs.
 
 ### `POST /txt2aql` - request parameters
 
