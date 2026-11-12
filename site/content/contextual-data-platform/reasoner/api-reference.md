@@ -309,9 +309,18 @@ instead of the full list.
 
 ### Errors and empty results
 
-If no answer can be produced, the endpoint still returns HTTP status `200`,
-with `error` set and `aql`, `json`, and `nl` empty. In non-streaming mode, an
-unexpected failure returns HTTP status `500` instead.
+If no answer can be produced, the request still succeeds with HTTP status
+`200`. In non-streaming mode, the response has `error` set and `aql`, `json`,
+and `nl` empty. In streaming mode, the stream ends with an `error` event with
+the same fields.
+
+| Code | Description |
+|---|---|
+| `200` | The request completed, with an answer or with `error` set |
+| `401` | The `Authorization` header is missing or does not use the Bearer scheme, or the token is invalid or expired |
+| `422` | The request body is invalid, for example `query` is empty |
+| `500` | An unexpected failure occurred. In streaming mode, failures during processing are reported as an `error` event instead |
+| `503` | The authentication service is unavailable |
 
 | `error` | Meaning |
 |---|---|
@@ -333,7 +342,9 @@ Two cases return no rows without an error:
 Set `add_template` to `true` to save the query as a template in the `Tools`
 collection, so that the Reasoner can reuse it for similar questions. This
 requires write access to the `Tools` collection. If saving fails, the request
-ends with the `Can not add template` error.
+ends with the `Can not add template` error. If no query is generated, for
+example because the database has no data for the question, nothing is saved
+and `added_template_id` is `null`.
 
 The Reasoner and MCP endpoints don't let you list or delete saved templates.
 To manage them, query the `Tools` collection directly, for example with AQL.
