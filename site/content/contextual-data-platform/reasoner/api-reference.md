@@ -313,7 +313,8 @@ unexpected failure returns HTTP status `500` instead.
 |---|---|
 | `Can not generate AQL` | Text-to-AQL is not available because no MCP server is configured |
 | `Can not add template` | `add_template` was `true` but the query could not be saved, for example because you don't have write access to the `Tools` collection |
-| A message naming a write operation | The query would modify data, so it did not run |
+| `Can not change data: text-to-AQL only reads` | The question asks to add, change, or delete data |
+| `Query contains write operation '<OPERATION>'`, followed by a snippet of the query | The query would modify data, so it did not run |
 | `I can only answer questions about the data in this database.` | The question is not about the data in the database |
 
 Two cases return no rows without an error:
