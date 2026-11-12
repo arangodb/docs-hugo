@@ -73,7 +73,7 @@ receive a single JSON response whose `result` field holds the full markdown
 report.
 {{< /step >}}
 
-{{< step "Optional: Generate AQL from a question" >}}
+{{< step "Optional: Ask a question in natural language" >}}
 To have the Reasoner answer a question for you instead, send it in natural
 language to the text-to-AQL endpoint:
 
