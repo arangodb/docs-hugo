@@ -2,15 +2,18 @@
   (theme.js sets the links and the current version) */ -}}
 {{- $versions := index hugo.Data.versions "/arangodb/" -}}
 <div class="version-selector">
-  <button type="button" class="version-selector-button" aria-expanded="false" aria-controls="version-menu">
+  <button type="button" class="version-selector-button" aria-expanded="false" aria-controls="version-menu" aria-label="Version">
     <span class="version-selector-label">Version</span><i class="icon icon-chevrons-up-down" aria-hidden="true"></i>
   </button>
-  <ul class="version-menu" id="version-menu" hidden>
+  <ul class="version-menu" id="version-menu" aria-label="Versions" hidden>
+    <li class="version-menu-label" aria-hidden="true">Versions</li>
     {{- range $versions }}
     <li><a class="version-menu-item" href="/arangodb/{{ .alias }}/" data-version="{{ .alias }}">
       {{- .name }}{{ with .label }} {{ . }}{{ end }}
       {{- if ne .name .alias }} <span class="version-alias">({{ .alias }})</span>{{ end -}}
       <i class="icon icon-check" aria-hidden="true"></i></a></li>
     {{- end }}
+    <li><a class="version-menu-link" href="https://arango.ai/arangodb-product-support-end-of-life-announcements/" target="_blank" rel="noopener noreferrer">
+      End-of-life dates<i class="icon icon-arrow-up-right" aria-hidden="true"></i></a></li>
   </ul>
 </div>

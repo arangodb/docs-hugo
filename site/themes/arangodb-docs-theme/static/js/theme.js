@@ -578,6 +578,8 @@ function showVersion(root, version) {
   const label = versionInfo.name + (versionInfo.label ? " " + versionInfo.label : "")
     + (versionInfo.name != versionInfo.alias ? " (" + versionInfo.alias + ")" : "");
   selector.querySelector(".version-selector-label").textContent = label;
+  // Like the database selector of the web UI, which also shows only the value
+  selector.querySelector(".version-selector-button").setAttribute("aria-label", "Version: " + label);
 
   const pathname = window.location.pathname;
   const corePath = "/arangodb/";

@@ -2914,6 +2914,15 @@ body.sidebar-collapsed .main-nav-ol.shimmer {
     box-shadow: 0 8px 24px rgb(0 0 0 / 0.45);
 }
 
+/* Says what the menu is about without taking space in the sidebar */
+.version-menu > .version-menu-label {
+    padding: 2px 8px 6px;
+    color: var(--sidebar-muted);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+}
+
 .version-menu > li {
     margin: 0;
     line-height: 20px;
@@ -2932,6 +2941,29 @@ body.sidebar-collapsed .main-nav-ol.shimmer {
     color: var(--sidebar-text);
     font-weight: 400;
     transition: none;
+}
+
+/* Like the New database link of the web UI's database selector */
+.version-menu-link,
+.version-menu-link:is(:hover, :visited, :focus) {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0;
+    padding: 8px;
+    border-bottom: 0;
+    border-radius: 8px;
+    color: var(--sidebar-lime);
+    font-weight: 600;
+    transition: none;
+}
+
+.version-menu-link:hover {
+    text-decoration: underline;
+}
+
+.version-menu-link .icon {
+    font-size: 16px;
 }
 
 .version-menu-item:hover,
