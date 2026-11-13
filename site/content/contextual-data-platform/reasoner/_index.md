@@ -50,6 +50,11 @@ flowchart TD
     B --> C(["`**Respond** — results returned in a clear, formatted answer`"])
 ```
 
+By default, a query that the Reasoner runs returns at most 50 rows. If a query
+matches more rows, the answer is designed to indicate that it only shows the
+first 50 rows. For large result sets, ask for a count, a total, or the top
+entries instead of the full list.
+
 ### Query optimization
 
 For requests that mention terms such as `optimize`, `slow`, `performance`,
@@ -155,9 +160,17 @@ The pipeline runs through the following stages automatically:
 
 ### Safety guarantees
 
-The optimization pipeline operates in strict **read-only mode**. The Reasoner
-rejects any optimization attempt that includes write operations, ensuring the
-optimizer never modifies your data or schema.
+The Reasoner only runs and optimizes read-only queries. If you submit a query
+that writes data, for example with `INSERT`, `UPDATE`, `REPLACE`, `UPSERT`, or
+`REMOVE`, the Reasoner does not run it and ends the request with the following
+message:
+
+```
+This is a write query. Only read-only queries can be optimized or run.
+```
+
+During validation, the Reasoner also rejects any optimization attempt that
+includes write operations, so the optimizer never modifies your data or schema.
 
 ## What's next
 

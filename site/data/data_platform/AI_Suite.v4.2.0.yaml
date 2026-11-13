@@ -1,9 +1,9 @@
 ---
 
-# ArangoDB AI Suite Release v4.2.0-beta
+# ArangoDB AI Suite Release v4.2.0
 
-version: 4.2.0-beta
-date: October 2026
+version: 4.2.0
+date: November 2026
 
 packages:
   arangodb-platform-ui:
@@ -19,7 +19,7 @@ packages:
   arangodb-graphrag-retriever:
     version: v0.0.25
   arangodb-graphrag-importer:
-    version: v0.0.42
+    version: v0.0.43
   arangodb-file-parser:
     version: v0.1.9
   arangodb-gral:
@@ -45,19 +45,19 @@ packages:
   arango-cypher2aql:
     version: v0.9.9
   arangodb-autograph:
-    version: v0.0.24
+    version: v0.0.25
   arango-user-defined:
     version: v0.0.11
   arangodb-reasoner:
-    version: v0.0.17
-  arangodb-mcp-server:
     version: v0.0.18
+  arangodb-mcp-server:
+    version: v0.0.19
   platform-monitoring-prometheus:
     version: v0.0.10
   platform-monitoring-grafana:
     version: v0.0.10
   arangodb-core-rbac-permissions:
-    version: v0.0.3
+    version: v0.0.4
 releases:
   arangodb-platform-ui:
     package: arangodb-platform-ui

@@ -90,7 +90,8 @@ FOR u IN users
 
 Streaming mode returns results progressively as the Reasoner works through each
 phase. Events are delivered over a persistent Server-Sent Events (SSE)
-connection, allowing the client to display progress in real time.
+connection, allowing the client to display progress in real time. Closing the
+connection stops the request.
 
 > **Note:** Streaming is only available via the API.
 
