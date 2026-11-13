@@ -12,10 +12,8 @@ description: >-
 
 - An **Arango Contextual Data Platform** deployment with a valid Agentic AI
   Suite license.
-- A **project** in your target database (keeps datasets isolated).
-  See [Projects](../control-plane-acp/_index.md#projects).
 - **LLM and embedding API access** (OpenAI-compatible).
-- A **valid JWT** for the API (`Authorization: Bearer ...`).
+- For the HTTP API, the user name and password of a database user.
 
 ## Build your knowledge base
 
@@ -73,96 +71,343 @@ source documents they came from.
 {{< info >}}
 To add, remove, or replace individual documents later, use the API. The web
 interface does not offer these operations in Arango Contextual Data Platform
-4.1.0. See [Incremental Graph Updates](incremental-graph-updates.md).
+4.1.x. See [Incremental Graph Updates](incremental-graph-updates/_index.md).
 {{< /info >}}
 {{< /tab >}}
 
 {{< tab "HTTP API" >}}
-First, install the AutoGraph service through the
-[Arango Control Plane](../control-plane-acp/_index.md):
+This example builds a knowledge graph from the 50 tech articles of
+[tutorial 2](../../get-started/contextual-data-platform/build-with-autograph.md)
+in the project `enterprise-docs-api`, with the category `tech_articles`. It uses
+`curl` and [`jq`](https://jqlang.org/). Responses are shortened where marked
+with `…`.
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/autograph" >}}
+Download the articles and set the connection details. Run all commands in the
+same shell, from the directory that contains `./files`:
 
-For an example install request and the required keys, see
-[Install the service](reference/_index.md#install-the-service).
+```bash
+curl -L https://github.com/arangodb/docs-tutorials/releases/download/autograph-v1/corpus.zip -o corpus.zip
+unzip -o corpus.zip -d ./files
 
-Then run the pipeline. Every call uses an `Authorization: Bearer <token>`
-header. Each step below links to the endpoint's full reference, and the
-[Reference](reference/_index.md) section lists every endpoint in one table.
+ENDPOINT="https://<EXTERNAL_ENDPOINT>:8529"
+DB="_system"
+PROJECT="enterprise-docs-api"
+CATEGORY="tech_articles"
+```
+
+AutoGraph accepts request fields in snake_case or camelCase, and its responses
+use camelCase. The `-s` and `-S` options of `curl` hide the progress bar but
+still show errors, such as a refused connection. The errors go to the
+terminal, not to `jq`. The `-k` option accepts a self-signed certificate.
 
 {{< steps >}}
 
-{{< step "Check the service is ready" >}}
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/health" >}}
-Confirm AutoGraph is up before you start. It is a liveness and token check, so
-a `200` here does not mean the model providers or the File Manager are reachable.
-See [Endpoints](reference/_index.md#endpoints).
+{{< step "Sign in" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_open/auth" >}}
+
+Get a JWT session token:
+
+```bash
+TOKEN=$(curl -sSk -X POST "$ENDPOINT/_open/auth" \
+  -d '{"username": "root", "password": "<your-password>"}' | jq -r .jwt)
+echo "$TOKEN" | cut -c1-20
+```
+
+If the output is `null`, the user name or password is wrong. If a later
+request returns `Unauthorized`, the token has expired. Run this command again.
 {{< /step >}}
 
-{{< step "Upload your files" >}}
+{{< step "Create the project" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project" >}}
+
+```bash
+curl -sSk -X POST "$ENDPOINT/_platform/acp/v1/project" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d "{\"project_name\": \"$PROJECT\",
+       \"project_type\": \"autograph\",
+       \"project_db_name\": \"$DB\"}" | jq
+```
+
+```json
+{
+  "projectName": "enterprise-docs-api",
+  "projectType": "autograph",
+  "projectDbName": "_system",
+  "projectFiles": []
+}
+```
+{{< /step >}}
+
+{{< step "Pick the secret profile of your LLM key" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets" >}}
+
+List the [Secrets Manager](../secrets-manager.md) profiles that can hold your
+LLM API key:
+
+```bash
+curl -sSk "$ENDPOINT/_platform/acp/v1/secrets" \
+  -H "Authorization: Bearer $TOKEN" \
+  | jq '[.. | objects | select(has("profile_id") or has("profileId"))
+         | {profile_id: (.profile_id // .profileId), name, provider}]'
+```
+
+```json
+[
+  {
+    "profile_id": "73d06448-…",
+    "name": "openai-key",
+    "provider": "openai"
+  }
+]
+```
+
+Set the ID of the profile to use. If you have none yet, store your key first,
+see [How to use the secrets manager API](../secrets-manager.md#how-to-use-the-secrets-manager-api).
+
+```bash
+PROFILE_ID="<profile-id>"
+```
+{{< /step >}}
+
+{{< step "Deploy the AutoGraph service" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/autograph" >}}
+
+For all install keys, see
+[Install the service](reference/_index.md#install-the-service).
+
+```bash
+curl -sSk -X POST "$ENDPOINT/_platform/acp/v1/autograph" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d "{\"env\": {
+         \"db_name\": \"$DB\",
+         \"genai_project_name\": \"$PROJECT\",
+         \"fps_recovery_username\": \"root\",
+         \"chat_api_provider\": \"openai\",
+         \"chat_secret_profile_id\": \"$PROFILE_ID\",
+         \"chat_model\": \"gpt-5.4-nano\",
+         \"embedding_api_provider\": \"openai\",
+         \"embedding_secret_profile_id\": \"$PROFILE_ID\",
+         \"embedding_model\": \"text-embedding-3-small\"}}" \
+  | tee autograph.json | jq
+```
+
+```json
+{
+  "serviceInfo": {
+    "serviceId": "arangodb-autograph-vyk1t",
+    "description": "Install complete",
+    "status": "DEPLOYED",
+    "namespace": "arango",
+    "dbName": "_system",
+    "managingEntity": "ACP",
+    "genaiProjectName": "enterprise-docs-api"
+  }
+}
+```
+
+The AutoGraph API of this project is at `/autograph/{service_id_postfix}`,
+where `service_id_postfix` is the end of the `serviceId`, `vyk1t` in this
+example. Keep the path in a variable:
+
+```bash
+AG="$ENDPOINT/autograph/$(jq -r .serviceInfo.serviceId autograph.json | sed 's/^arangodb-autograph-//')"
+echo "$AG"
+```
+
+```text
+https://<EXTERNAL_ENDPOINT>:8529/autograph/vyk1t
+```
+{{< /step >}}
+
+{{< step "Wait until the service is ready" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/health" >}}
+
+Repeat this command until it returns the following:
+
+```bash
+curl -sSk "$AG/v1/health" -H "Authorization: Bearer $TOKEN" | jq
+```
+
+```json
+{
+  "status": "SERVING",
+  "message": "Service is healthy"
+}
+```
+{{< /step >}}
+
+{{< step "Upload the documents" >}}
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input" >}}
-Upload your documents to the [File Manager](../file-manager/api.md#upload-a-rag-input-file)
-under the scope `[project, category]`, one category per knowledge domain, for
-example `legal` and `engineering`.
+
+Upload every article to the
+[File Manager](../file-manager/api.md#upload-a-rag-input-file). The scope
+`[project, category]` puts the files into the category `tech_articles`:
+
+```bash
+for f in ./files/tech_articles/*.md; do
+  curl -sSk -X POST "$ENDPOINT/_platform/filemanager/_db/$DB/rag-input" \
+    -H "Authorization: Bearer $TOKEN" \
+    -F "name=$(basename "$f")" \
+    -F "scope=$PROJECT" \
+    -F "scope=$CATEGORY" \
+    -F "file=@$f" | jq -c '{name, version}'
+done
+```
+
+```json
+{"name":"activision_blizzard.md","version":1}
+{"name":"alphabet_inc.md","version":1}
+{"name":"amazon.md","version":1}
+…
+```
+
+No collections exist in the database yet.
 {{< /step >}}
 
-{{< step "Build the corpus" >}}
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds" >}}
-List your category labels in `categories`. Builds the Corpus Graph and discovers
-domain clusters. Returns `202` with a `corpus_build_id`. See
-[Create Corpus Build](reference/corpus-build.md#create-corpus-build).
+{{< step "Build the corpus graph" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/corpus/builds" >}}
 
-Poll [`GET /v1/corpus/builds/{corpus_build_id}`](reference/corpus-build.md#monitoring-build-status)
-until `status` is `completed` before moving on, and check `error_code` even
-then, see [Build error codes](reference/corpus-build.md#build-error-codes).
+AutoGraph reads the documents, links similar ones, and groups them into
+clusters. See [Create Corpus Build](reference/corpus-build.md#create-corpus-build).
+
+```bash
+CB_ID=$(curl -sSk -X POST "$AG/v1/corpus/builds" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d "{\"categories\": [\"$CATEGORY\"], \"incremental\": false}" \
+  | jq -r .corpusBuildId)
+echo "$CB_ID"
+```
+
+Wait until the build is done:
+
+```bash
+while curl -sSk "$AG/v1/corpus/builds/$CB_ID" -H "Authorization: Bearer $TOKEN" \
+  | jq -e '.status == "pending" or .status == "running"' > /dev/null; do
+  sleep 10
+done
+curl -sSk "$AG/v1/corpus/builds/$CB_ID" -H "Authorization: Bearer $TOKEN" \
+  | jq '{status, message, documentCount, clusterCount, error}'
+```
+
+```json
+{
+  "status": "completed",
+  "message": "Build completed successfully!",
+  "documentCount": 50,
+  "clusterCount": 11,
+  "error": ""
+}
+```
+
+The database now has the corpus graph collections, such as
+`enterprise-docs-api_sources` with the 50 documents,
+`enterprise-docs-api_similarities` with the links between similar documents,
+and `enterprise-docs-api_domains` with the 11 clusters. If the build fails, see
+[Build error codes](reference/corpus-build.md#build-error-codes).
 {{< /step >}}
 
-{{< step "Generate RAG strategies" >}}
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/rag-strategizer/analyze" >}}
-Assigns each domain a strategy (FullGraphRAG or VectorRAG) and an ontology.
-`project` and `complexity` are required; send `complexity: "very_high"` if every
-domain has to answer entity-based questions, see
+{{< step "Generate the strategies" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/rag-strategizer/analyze" >}}
+
+The RAG Strategizer picks a strategy for each cluster, FullGraphRAG or
+VectorRAG, and the entity types to extract. `very_high` gives every cluster
+FullGraphRAG, see
 [How `complexity` is applied](reference/rag-strategizer.md#how-complexity-is-applied).
-Run this only after the corpus build has completed. See
-[Trigger RAG Strategizer](reference/rag-strategizer.md#trigger-rag-strategizer).
 
-Poll [`GET /v1/rag-strategizer/jobs/{strategize_job_id}`](reference/rag-strategizer.md#monitor-a-strategizer-job)
-until `status` is `completed`.
+```bash
+JOB_ID=$(curl -sSk -X POST "$AG/v1/rag-strategizer/analyze" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d "{\"project\": \"$PROJECT\",
+       \"complexity\": \"very_high\",
+       \"categories\": [\"$CATEGORY\"]}" | jq -r .strategizeJobId)
+
+while curl -sSk "$AG/v1/rag-strategizer/jobs/$JOB_ID" -H "Authorization: Bearer $TOKEN" \
+  | jq -e '.status == "pending" or .status == "running"' > /dev/null; do
+  sleep 10
+done
+curl -sSk "$AG/v1/rag-strategizer/jobs/$JOB_ID" -H "Authorization: Bearer $TOKEN" \
+  | jq '{status, clustersDone, clustersTotal, message}'
+```
+
+```json
+{
+  "status": "completed",
+  "clustersDone": 11,
+  "clustersTotal": 11,
+  "message": "Analyzed 11 clusters: 11 stored"
+}
+```
+
+The strategies are stored in the new `enterprise-docs-api_rags` collection, one
+per cluster. See
+[Trigger RAG Strategizer](reference/rag-strategizer.md#trigger-rag-strategizer).
 {{< /step >}}
 
-{{< step "Orchestrate the import" >}}
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate" >}}
-Spawns the per-domain Importer workers to build the knowledge graph. Run this
-only after the strategizer has finished. Returns `202` with an
-`orchestration_id`. See
+{{< step "Build the knowledge graph" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/orchestrate" >}}
+
+AutoGraph starts Importer workers that extract the entities and relationships of
+each cluster. See
 [Trigger Orchestration](reference/orchestration.md#trigger-orchestration).
 
-Poll [`GET /v1/orchestrate/{orchestration_id}`](reference/orchestration.md#monitor-an-orchestration)
-until it reports a terminal status. Only `completed` means the knowledge graph
-is ready.
-{{< /step >}}
+```bash
+ORCH_ID=$(curl -sSk -X POST "$AG/v1/orchestrate" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d "{\"project\": \"$PROJECT\",
+       \"replicas\": 1,
+       \"categories\": [\"$CATEGORY\"]}" | jq -r .orchestrationId)
+echo "$ORCH_ID"
+```
 
-{{< step "Keep the graph up-to-date (optional)" >}}
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update" >}}
-Once the graph is built, you can add, remove, or replace individual documents
-with [`/v1/graph/insert`](reference/orchestration.md#insert-documents),
-[`/v1/graph/delete`](reference/orchestration.md#delete-documents), and
-[`/v1/graph/update`](reference/orchestration.md#update-documents) instead of
-rebuilding the corpus. After an insert or update, call
-[`/v1/orchestrate`](reference/orchestration.md#trigger-orchestration) again with
-the `file_ids` of the changed documents so that the change reaches the knowledge
-graph. See [Incremental Graph Updates](incremental-graph-updates.md).
+Wait until the build is done. This prints the progress every minute:
+
+```bash
+while [ "$(curl -sSk "$AG/v1/orchestrate/$ORCH_ID" \
+  -H "Authorization: Bearer $TOKEN" | jq -r .status)" = "running" ]; do
+  curl -sSk "$AG/v1/orchestrate/$ORCH_ID" -H "Authorization: Bearer $TOKEN" \
+    | jq -r '"\(.phase): \(.completedJobs)/\(.totalJobs) parts done"'
+  sleep 60
+done
+curl -sSk "$AG/v1/orchestrate/$ORCH_ID" -H "Authorization: Bearer $TOKEN" \
+  | jq '{status, message, totalJobs, completedJobs, failedJobs}'
+```
+
+```json
+{
+  "status": "completed",
+  "message": "Orchestration completed: 11 succeeded, 0 failed",
+  "totalJobs": 11,
+  "completedJobs": 11,
+  "failedJobs": 0
+}
+```
+
+Only `completed` means that the knowledge graph is ready. It is stored in new
+collections such as `enterprise-docs-api_Documents`,
+`enterprise-docs-api_Entities`, `enterprise-docs-api_Relations`, and
+`enterprise-docs-api_Communities`.
+
+If the build fails with `no importer worker became ready`, the deployment does
+not have enough free resources for the Importer workers.
 {{< /step >}}
 
 {{< /steps >}}
 
+To add, remove, or replace documents in this knowledge graph later, continue
+with the [Incremental Graph Updates Quick Start](incremental-graph-updates/quick-start.md).
+
 {{< info >}}
 Insert and update identify every document by its File Manager `file_id`, which
-is why step 2 uploads through the File Manager. The deprecated
+is why the example uploads through the File Manager. The deprecated
 [`POST /v1/import-multiple`](reference/importing-files.md) path uploads files
 directly to the service, but a corpus built that way cannot be changed document
 by document. See
-[Identifying documents for Layer 3](incremental-graph-updates.md#identifying-documents-for-layer-3).
+[Identifying documents for the knowledge graph](incremental-graph-updates/api-reference.md#identifying-documents-for-the-knowledge-graph).
 {{< /info >}}
 
 {{< tip >}}
@@ -186,8 +431,9 @@ source. To query it programmatically, see [AutoRAG](../autorag/quick-start.md).
 ## Next steps
 
 - [Use Cases](use-cases.md): Real-world enterprise scenarios.
-- [Incremental Graph Updates](incremental-graph-updates.md): Add, remove, and
-  replace documents in a knowledge graph that has already been built.
+- [Incremental Graph Updates](incremental-graph-updates/_index.md): Add, remove, and
+  replace documents in the existing categories of a knowledge graph that has
+  already been built.
 - [Architecture](architecture.md): The three-layer knowledge graph and
   resulting collections.
 - [Design Guide](design-guide.md): Structure data with categories, layers, and
