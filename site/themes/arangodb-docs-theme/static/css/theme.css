@@ -2421,9 +2421,11 @@ nav.pagination > .next {
     padding: 20px 0;
     border-radius: 4px;
     margin-bottom: 36px;
-    background: linear-gradient(40deg, var(--color-teal-ink) 50%, var(--color-link));
+    /* Teal 900 to 700 in both modes (literal values, as the link color
+       turns lime in dark mode), with the light text of teal surfaces */
+    background: linear-gradient(40deg, #014654 50%, #00576e);
     background-position: center;
-    color: var(--gray-50)
+    color: #f8fafc;
 }
 
 .ag-banner .title {
@@ -2442,8 +2444,17 @@ nav.pagination > .next {
     color: white;
 }
 
-.ag-banner a:hover{
+/* The lime underline of links on dark surfaces, like in dark mode and the
+   sidebar, as the teal one doesn't stand out on the teal banner */
+.ag-banner .link,
+.ag-banner .link:visited {
+    border-bottom-color: #befe99;
+}
+
+.ag-banner a:hover,
+.ag-banner .link:is(:hover, :focus) {
     color: white;
+    border-bottom-color: #b0eb8f;
 }
 .ag-banner .logo {
     height: 36px !important;
