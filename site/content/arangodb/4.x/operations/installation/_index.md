@@ -46,16 +46,32 @@ You can run ArangoDB on Linux, including production environments, on the
 x86-64 and ARM architectures.
 
 - **x86-64**: The processor(s) must support the **x86-64** / **AMD64** architecture
-  with the **SSE 4.2**, **AVX**, **AVX2**, **BMI1**, **BMI2**, **FMA3**, **ABM**,
-  **PCLMUL**, **CX16**, **F16C**, and **MOVBE** instruction set extensions.
+  with the following instruction set extensions:
+  - **SSE 4.2**
+  - **AVX**
+  - **AVX2**
+  - **BMI1**
+  - **BMI2**
+  - **FMA3**
+  - **ABM**
+  - **PCLMUL**
+  - **CX16**
+  - **F16C**
+  - **MOVBE**
+
   That is, CPU microarchitectures Intel Haswell (2013) or better,
   AMD Excavator (2015) or better, etc.
 
 - **ARM**: The processor(s) must be 64-bit ARM chips (**AArch64**). The minimum
-  requirement is **ARMv8.2-A** with **NEON** (SIMD extension), **FP16**,
-  **LSE** (Large System Extensions), **Crypto** extension, ARMv8.3 **RCPC**,
-  and ARMv8.4 **dot product** (SDOT/UDOT). That is, CPUs like AWS Graviton2
-  with ARM Neoverse N1 cores.
+  requirement is **ARMv8.2-A** with the following:
+  - **NEON** (SIMD extension)
+  - **FP16**
+  - **LSE** (Large System Extensions)
+  - **Crypto** extension
+  - ARMv8.3 **RCPC**
+  - ARMv8.4 **dot product** (SDOT/UDOT)
+  
+  That is, CPUs like AWS Graviton2 with ARM Neoverse N1 cores.
 
 The official Linux release executables of ArangoDB require the operating system
 to use a page size of **4096 bytes** or less.
