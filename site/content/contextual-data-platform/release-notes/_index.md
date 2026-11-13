@@ -10,7 +10,33 @@ pageToc:
 ---
 ## v4.2.0 (November 2026)
 
+This release makes the web interface easier to navigate and improves the
+AutoGraph Studio experience, along with bug and security fixes. It includes all
+features of [v4.2.0-beta](#v420-beta-october-2026), now with improved
+stability, and adds multiple improvements for project management in
+AutoGraph Studio.
 
+### AutoGraph Studio
+
+{{< tag "Agentic AI Suite" >}}
+
+- Projects can be deleted and created again under the same name, and the new
+  project builds its Knowledge Graph on the first attempt without manual
+  cleanup.
+- Document updates complete in full even when AutoGraph restarts during the
+  update. Only the new file version remains in the graph, so retrieval reflects
+  your latest documents.
+- Deleting a project removes everything it created and confirms the deletion
+  clearly.
+
+### Security
+
+- Improved read-only safeguard for AI-assisted queries: every query the AI runs
+  through the MCP Server is checked before it runs, and only queries that read
+  data are executed.
+- Dependencies are updated with the latest security patches, including eight
+  critical and high severity CVE fixes in the MCP Server and a patched
+  dependency in the AutoGraph Studio importer.
 
 ## v4.2.0-beta (October 2026)
 
