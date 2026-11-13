@@ -228,6 +228,16 @@ server runs until you press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 
 The site will be available at `http://localhost:1313`.
 
+The `stable` and `devel` paths are second mounts of the version folders they
+point to (see `module.mounts` in `site/config/_default/config.yaml`). When you
+edit a file in one of these folders, the live server only rebuilds the page
+under the alias path. For example, if `stable` is 3.12, an edit to
+`site/content/arangodb/3.12/aql/_index.md` shows up at
+`http://localhost:1313/arangodb/stable/aql/` but not at
+`http://localhost:1313/arangodb/3.12/aql/`, which keeps the old content until
+you restart the server. Preview such changes under the alias path. Static builds
+render both paths correctly.
+
 To make the documentation tooling not start a live server in watch mode but
 rather create a static build and exit, set the environment variable `ENV` to
 any value other than `local` before calling `docker compose ...`:
