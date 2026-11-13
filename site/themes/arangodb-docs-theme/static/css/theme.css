@@ -3064,25 +3064,18 @@ body.sidebar-collapsed .main-nav-ol.shimmer {
 }
 
 .svg-figure,
-.diagram-figure {
+.img-figure {
     margin: 2rem 0;
     text-align: center;
 }
 
 .svg-figure figcaption,
-.diagram-figure figcaption {
+.img-figure figcaption {
     font-size: 0.9em;
     color: var(--gray-700);
     margin-top: 0.5rem;
     text-wrap: balance;
     font-style: italic;
-}
-
-.diagram-figure img {
-    max-width: 100%;
-    height: auto;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
 }
 
 /* SVGs inlined with the embed-svg shortcode keep their width and height

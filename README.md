@@ -697,19 +697,26 @@ Use the native Markdown syntax for including images, using a relative file path:
 ![Description](../images/file.png)
 ```
 
-If you need more control over the styling of a specific image, you can use the
-`image` shortcode:
+If you need a caption or more control over the styling of a specific image, you
+can use the `image` shortcode:
 
 ```markdown
 {{< image src="../images/file.png" alt="Description" class="inline-img" style="max-height: 50vh" >}}
+{{< image src="../images/file.png" alt="Description" caption="Text below the image, with **Markdown**" >}}
 ```
 
 Available attributes:
 
 - `src`: location of the image file
 - `alt`: image description for accessibility
+- `caption`: text to show below the image (renders a `<figure>` with a
+  `<figcaption>`, also shown in the image viewer)
 - `class`: CSS classes to apply
 - `style`: CSS inline styles to apply
+
+At least one of `caption`, `class`, and `style` is required. Otherwise, use the
+Markdown syntax. For diagrams in SVG format, use the `embed-svg` shortcode
+instead (see [Embedded SVGs](#embedded-svgs)).
 
 ##### Image compression
 
