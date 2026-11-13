@@ -1,75 +1,80 @@
-<svg viewBox="0 0 760 490"
+<svg class="dg-asidx keep-colors" viewBox="0 0 760 490"
      xmlns="http://www.w3.org/2000/svg"
-     style="display:block;width:100%;max-width:760px;margin:0 auto">
+     style="display:block;width:100%;max-width:760px;margin:0 auto" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
   <style>
     .asx .seg     { fill: #ffffff; stroke: #90a1b9; stroke-width: 1.5; }
     .asx .part    { fill: #eefbd5; stroke: #90a1b9; stroke-width: 1; }
     .asx .meta    { fill: #befe99; stroke: #00576e; stroke-width: 1.5; }
-    .asx .h       { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: bold; fill: #014654; }
-    .asx .l       { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 11px; font-weight: bold; fill: #014654; }
+    .asx .h       { font-size: 13px; font-weight: bold; fill: #014654; }
+    .asx .l       { font-size: 11px; font-weight: bold; fill: #014654; }
     .asx .card:hover .seg     { fill: #eefbd5; stroke: #00576e; }
     .asx .card:hover .part    { fill: #eefbd5; stroke: #00576e; }
     .asx .card:hover .meta    { fill: #ffffff; stroke: #00576e; }
+
+    /* Dark mode of the docs: role classes (dark.css), except the opacity of the store
+       and the labels of the parts, which turn from lime to white on hover */
+    :root[data-theme="dark"] .dg-asidx .asx > rect[fill="#ffffff"][stroke="#90a1b9"] { fill-opacity: 0.5; }
+    :root[data-theme="dark"] .dg-asidx .asx .card:hover .part + .l { fill: var(--dg-text) !important; }
   </style>
 
   <g class="asx">
-    <rect width="760" height="490" fill="#f1f5f9" rx="6"/>
+    <rect width="760" height="490" fill="#f1f5f9" rx="6" class="dg-f-canvas"/>
 
     <rect x="20" y="46" width="720" height="420" rx="14" fill="#ffffff" fill-opacity="0.55"
-          stroke="#90a1b9" stroke-width="1" stroke-dasharray="4 3"/>
-    <text x="380" y="72" text-anchor="middle" class="h">ArangoSearch data store</text>
-    <text x="380" y="90" text-anchor="middle" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="10" font-style="italic" fill="#014654">one per link or inverted index</text>
+          stroke="#90a1b9" stroke-width="1" stroke-dasharray="4 3" class="dg-f-node dg-s-line"/>
+    <text x="380" y="72" text-anchor="middle" class="h dg-f-text">ArangoSearch data store</text>
+    <text x="380" y="90" text-anchor="middle" font-size="10" font-style="italic" fill="#014654" class="dg-f-text">one per link or inverted index</text>
 
     <g class="card">
-      <rect x="40" y="104" width="200" height="300" rx="10" class="seg"/>
-      <text x="140" y="128" text-anchor="middle" class="h">Segment 0</text>
-      <rect x="52" y="138" width="176" height="42" rx="6" class="part"/>
-      <text x="140" y="164" text-anchor="middle" class="l">Term dictionary</text>
-      <rect x="52" y="190" width="176" height="42" rx="6" class="part"/>
-      <text x="140" y="216" text-anchor="middle" class="l">Posting lists</text>
-      <rect x="52" y="242" width="176" height="42" rx="6" class="part"/>
-      <text x="140" y="268" text-anchor="middle" class="l">Segment metadata</text>
-      <rect x="52" y="294" width="176" height="42" rx="6" class="part"/>
-      <text x="140" y="320" text-anchor="middle" class="l">Tombstones</text>
-      <rect x="52" y="346" width="176" height="42" rx="6" class="part"/>
-      <text x="140" y="372" text-anchor="middle" class="l">Column store</text>
+      <rect x="40" y="104" width="200" height="300" rx="10" class="seg dg-f-node dg-s-line dg-h-raised"/>
+      <text x="140" y="128" text-anchor="middle" class="h dg-f-text">Segment 0</text>
+      <rect x="52" y="138" width="176" height="42" rx="6" class="part dg-f-tag dg-s-line dg-h-raised"/>
+      <text x="140" y="164" text-anchor="middle" class="l dg-f-lime">Term dictionary</text>
+      <rect x="52" y="190" width="176" height="42" rx="6" class="part dg-f-tag dg-s-line dg-h-raised"/>
+      <text x="140" y="216" text-anchor="middle" class="l dg-f-lime">Posting lists</text>
+      <rect x="52" y="242" width="176" height="42" rx="6" class="part dg-f-tag dg-s-line dg-h-raised"/>
+      <text x="140" y="268" text-anchor="middle" class="l dg-f-lime">Segment metadata</text>
+      <rect x="52" y="294" width="176" height="42" rx="6" class="part dg-f-tag dg-s-line dg-h-raised"/>
+      <text x="140" y="320" text-anchor="middle" class="l dg-f-lime">Tombstones</text>
+      <rect x="52" y="346" width="176" height="42" rx="6" class="part dg-f-tag dg-s-line dg-h-raised"/>
+      <text x="140" y="372" text-anchor="middle" class="l dg-f-lime">Column store</text>
     </g>
 
     <g class="card">
-      <rect x="280" y="104" width="200" height="300" rx="10" class="seg"/>
-      <text x="380" y="128" text-anchor="middle" class="h">Segment 1</text>
-      <rect x="292" y="138" width="176" height="42" rx="6" class="part"/>
-      <text x="380" y="164" text-anchor="middle" class="l">Term dictionary</text>
-      <rect x="292" y="190" width="176" height="42" rx="6" class="part"/>
-      <text x="380" y="216" text-anchor="middle" class="l">Posting lists</text>
-      <rect x="292" y="242" width="176" height="42" rx="6" class="part"/>
-      <text x="380" y="268" text-anchor="middle" class="l">Segment metadata</text>
-      <rect x="292" y="294" width="176" height="42" rx="6" class="part"/>
-      <text x="380" y="320" text-anchor="middle" class="l">Tombstones</text>
-      <rect x="292" y="346" width="176" height="42" rx="6" class="part"/>
-      <text x="380" y="372" text-anchor="middle" class="l">Column store</text>
+      <rect x="280" y="104" width="200" height="300" rx="10" class="seg dg-f-node dg-s-line dg-h-raised"/>
+      <text x="380" y="128" text-anchor="middle" class="h dg-f-text">Segment 1</text>
+      <rect x="292" y="138" width="176" height="42" rx="6" class="part dg-f-tag dg-s-line dg-h-raised"/>
+      <text x="380" y="164" text-anchor="middle" class="l dg-f-lime">Term dictionary</text>
+      <rect x="292" y="190" width="176" height="42" rx="6" class="part dg-f-tag dg-s-line dg-h-raised"/>
+      <text x="380" y="216" text-anchor="middle" class="l dg-f-lime">Posting lists</text>
+      <rect x="292" y="242" width="176" height="42" rx="6" class="part dg-f-tag dg-s-line dg-h-raised"/>
+      <text x="380" y="268" text-anchor="middle" class="l dg-f-lime">Segment metadata</text>
+      <rect x="292" y="294" width="176" height="42" rx="6" class="part dg-f-tag dg-s-line dg-h-raised"/>
+      <text x="380" y="320" text-anchor="middle" class="l dg-f-lime">Tombstones</text>
+      <rect x="292" y="346" width="176" height="42" rx="6" class="part dg-f-tag dg-s-line dg-h-raised"/>
+      <text x="380" y="372" text-anchor="middle" class="l dg-f-lime">Column store</text>
     </g>
 
-    <text x="500" y="260" text-anchor="middle" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="20" font-weight="bold" fill="#00576e">&#8943;</text>
+    <text x="500" y="260" text-anchor="middle" font-size="20" font-weight="bold" fill="#00576e" class="dg-f-accent">&#8943;</text>
 
     <g class="card">
-      <rect x="520" y="104" width="200" height="300" rx="10" class="seg"/>
-      <text x="620" y="128" text-anchor="middle" class="h">Segment N</text>
-      <rect x="532" y="138" width="176" height="42" rx="6" class="part"/>
-      <text x="620" y="164" text-anchor="middle" class="l">Term dictionary</text>
-      <rect x="532" y="190" width="176" height="42" rx="6" class="part"/>
-      <text x="620" y="216" text-anchor="middle" class="l">Posting lists</text>
-      <rect x="532" y="242" width="176" height="42" rx="6" class="part"/>
-      <text x="620" y="268" text-anchor="middle" class="l">Segment metadata</text>
-      <rect x="532" y="294" width="176" height="42" rx="6" class="part"/>
-      <text x="620" y="320" text-anchor="middle" class="l">Tombstones</text>
-      <rect x="532" y="346" width="176" height="42" rx="6" class="part"/>
-      <text x="620" y="372" text-anchor="middle" class="l">Column store</text>
+      <rect x="520" y="104" width="200" height="300" rx="10" class="seg dg-f-node dg-s-line dg-h-raised"/>
+      <text x="620" y="128" text-anchor="middle" class="h dg-f-text">Segment N</text>
+      <rect x="532" y="138" width="176" height="42" rx="6" class="part dg-f-tag dg-s-line dg-h-raised"/>
+      <text x="620" y="164" text-anchor="middle" class="l dg-f-lime">Term dictionary</text>
+      <rect x="532" y="190" width="176" height="42" rx="6" class="part dg-f-tag dg-s-line dg-h-raised"/>
+      <text x="620" y="216" text-anchor="middle" class="l dg-f-lime">Posting lists</text>
+      <rect x="532" y="242" width="176" height="42" rx="6" class="part dg-f-tag dg-s-line dg-h-raised"/>
+      <text x="620" y="268" text-anchor="middle" class="l dg-f-lime">Segment metadata</text>
+      <rect x="532" y="294" width="176" height="42" rx="6" class="part dg-f-tag dg-s-line dg-h-raised"/>
+      <text x="620" y="320" text-anchor="middle" class="l dg-f-lime">Tombstones</text>
+      <rect x="532" y="346" width="176" height="42" rx="6" class="part dg-f-tag dg-s-line dg-h-raised"/>
+      <text x="620" y="372" text-anchor="middle" class="l dg-f-lime">Column store</text>
     </g>
 
     <g class="card">
-      <rect x="40" y="416" width="680" height="34" rx="8" class="meta"/>
-      <text x="380" y="438" text-anchor="middle" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" font-weight="bold" fill="#014654">Index metadata &#183; which segments form the committed state</text>
+      <rect x="40" y="416" width="680" height="34" rx="8" class="meta dg-h-lime"/>
+      <text x="380" y="438" text-anchor="middle" font-size="11" font-weight="bold" fill="#014654">Index metadata &#183; which segments form the committed state</text>
     </g>
   </g>
 </svg>

@@ -1,5 +1,5 @@
 /* Syntax highlighting, based on tango */
-/* Background */ .chroma { background-color: #EEEEEE }
+/* Background: the code block color (theme.css, dark.css) */ .chroma { background-color: var(--code-bg) }
 /* Other */ .chroma .x { color: #000000 }
 /* Error */ .chroma .err { color: #a40000 }
 /* LineTableTD */ .chroma .lntd { vertical-align: top; padding: 0; margin: 0; border: 0; }

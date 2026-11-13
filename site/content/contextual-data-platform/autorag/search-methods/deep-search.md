@@ -25,8 +25,7 @@ You can also send [`"mode": "DEEP_SEARCH"`](../parameters.md#mode) instead of
 setting `query_type` and `use_llm_planner`. The service then uses Custom
 Retriever tools when they are available, and Local Search otherwise.
 
-{{< diagram src="/images/retriever-deep-search-architecture.svg"
-            alt="Deep Search Architecture showing LLM-guided research process" >}}
+{{< embed-svg "retriever-deep-search-architecture" >}}
 
 {{< info >}}
 Deep Search is also available via the
@@ -77,8 +76,7 @@ search across multiple steps.
 You can optionally provide `custom_tools` to limit which tools are available.
 If omitted, all tools are auto-loaded from the `Tools` collection.
 
-{{< diagram src="/images/custom-retriever-deep-search.svg"
-            alt="Custom Deep Search: resolve the tool list, read global context, create the plan, match tools in two passes, execute the steps in order with a completion check, and synthesize the answer; a direct path matches and runs tools when global context is empty" >}}
+{{< embed-svg "custom-retriever-deep-search" >}}
 
 ## How Deep Search works
 

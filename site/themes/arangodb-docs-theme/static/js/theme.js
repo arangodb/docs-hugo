@@ -578,6 +578,8 @@ function showVersion(root, version) {
   const label = versionInfo.name + (versionInfo.label ? " " + versionInfo.label : "")
     + (versionInfo.name != versionInfo.alias ? " (" + versionInfo.alias + ")" : "");
   selector.querySelector(".version-selector-label").textContent = label;
+  // Like the database selector of the web UI, which also shows only the value
+  selector.querySelector(".version-selector-button").setAttribute("aria-label", "Version: " + label);
 
   const pathname = window.location.pathname;
   const corePath = "/arangodb/";
@@ -600,6 +602,41 @@ function updateVersionSelector() {
   if (!currentVersion || !getVersionInfo(currentVersion)) return;
   localStorage.setItem('docs-version', currentVersion);
 }
+
+/*
+ * Light/dark mode. head.html sets data-theme on <html> before the styles load,
+ * from the stored choice or else the OS setting, which is followed until the
+ * switch is used.
+ */
+function setTheme(theme, remember) {
+  // Switch all colors at once: without this, the page background changes
+  // instantly while components with color transitions fade after it
+  const root = document.documentElement;
+  root.classList.add("theme-switching");
+  root.dataset.theme = theme;
+  root.offsetHeight; // apply the new colors while transitions are off
+  requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("theme-switching")));
+  if (remember) {
+    try { localStorage.setItem("docs-theme", theme); } catch (e) {}
+  }
+  updateThemeToggles();
+}
+
+function updateThemeToggles() {
+  const label = document.documentElement.dataset.theme == "dark" ? "Switch to light mode" : "Switch to dark mode";
+  document.querySelectorAll(".theme-toggle").forEach(button => {
+    button.setAttribute("aria-label", label);
+    button.setAttribute("title", label);
+  });
+}
+
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", event => {
+  let stored = null;
+  try { stored = localStorage.getItem("docs-theme"); } catch (e) {}
+  if (!stored) setTheme(event.matches ? "dark" : "light", false);
+});
+
+document.addEventListener("DOMContentLoaded", updateThemeToggles);
 
 function setVersionMenuOpen(open) {
   const button = document.querySelector(".version-selector-button");
@@ -1100,7 +1137,7 @@ function addShowMoreButton(parentElem) {
         root.querySelectorAll("pre > code").forEach(code => {
             // n-times line-height * root em, larger than to-be-applied max-height to always reveal some lines
             // False for currently collapsed code ("Show output" with display: none)
-            if (!code.classList.contains("code-long") && code.scrollHeight > 20 * 1.8 * 16) {
+            if (!code.classList.contains("code-long") && code.scrollHeight > 20 * 1.5 * 16) {
                 code.classList.add("code-long");
                 const showMore = document.createElement("button");
                 showMore.className = "code-show-more";
@@ -1266,6 +1303,12 @@ function handleDocumentClick(event) {
     if (expandButton) {
         const section = expandButton.closest(".nav-section");
         setSectionExpanded(section, !section.classList.contains("expanded"));
+        return;
+    }
+
+    // Light/dark switch
+    if (closest(".theme-toggle")) {
+        setTheme(document.documentElement.dataset.theme == "dark" ? "light" : "dark", true);
         return;
     }
 

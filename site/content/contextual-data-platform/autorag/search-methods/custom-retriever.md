@@ -42,8 +42,7 @@ tool goes through the 3-stage pipeline described below; a `local`, `global`, or
 tools are renumbered so they never collide, and the LLM synthesizes the merged
 results into one answer.
 
-{{< diagram src="/images/custom-retriever-standard-run.svg"
-            alt="Standard Custom Retriever run: query request, optional cache check, partition routing, loading tool configs, parallel tool execution by tool type, merging results, LLM synthesis, and the answer" >}}
+{{< embed-svg "custom-retriever-standard-run" >}}
 
 Each `custom_retriever` tool uses a **3-stage pipeline**:
 
@@ -64,8 +63,7 @@ Each `custom_retriever` tool uses a **3-stage pipeline**:
    Deduplicate chunks, create citation mappings, and format context data with
    `[CITE:X]` markers.
 
-{{< diagram src="/images/custom-retriever-tool-pipeline.svg"
-            alt="Inside one custom_retriever tool: stage 1 searches for starting nodes with lexical, semantic, or hybrid search; stage 2 expands them with an AQL template or falls back to raw documents; stage 3 deduplicates chunks, builds citations, and formats the tool result" >}}
+{{< embed-svg "custom-retriever-tool-pipeline" >}}
 
 If the relations collection is missing, the AQL query fails, or it returns no
 results, the tool falls back to the plain starting documents. A template without
