@@ -1,9 +1,9 @@
 ---
-title: HTTP API for Graph Analytics Engines
+title: Graph Analytics Engines HTTP API
 menuTitle: API Reference
 weight: 20
 description: >-
-  Use the HTTP APIs to programmatically manage Graph Analytics Engines,
+  Use the HTTP interface to programmatically manage Graph Analytics Engines,
   load data, run algorithms, and store results
 ---
 {{< tag "Agentic AI Suite" >}}
