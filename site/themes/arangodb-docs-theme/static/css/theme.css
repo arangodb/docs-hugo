@@ -1885,64 +1885,85 @@ ol > li {
 }
 
 
-/* Hints */
+/* Hints (admonitions): the alerts of the design system, 1px border, 8px
+   radius, a tinted fill and a 16px icon at the first line. The type shows
+   through the icon and color (a hidden label names it for screen readers),
+   the text keeps the body color for readability. Dark values in dark.css */
+
+:root {
+    --note-info-bg: rgb(0 0 0 / 0.025);
+    --note-info-border: #45556c;             /* info-ring */
+    --note-info-icon: #62748e;               /* muted-foreground */
+    --note-tip-bg: #dcfce7;                  /* success-subtle */
+    --note-tip-border: #a4f4cf;              /* success-ring */
+    --note-tip-icon: #00a63e;                /* success */
+    --note-warning-bg: #ffedd4;              /* warning-subtle */
+    --note-warning-border: #ffd6a7;          /* warning-ring */
+    --note-warning-icon: #ca3500;            /* warning-text */
+    --note-danger-bg: rgb(231 0 11 / 0.05);  /* destructive alert */
+    --note-danger-border: rgb(251 44 54 / 0.4);
+    --note-danger-icon: #fb2c36;             /* destructive */
+    --note-code-bg: rgb(255 255 255 / 0.6);
+}
 
 div.box {
-    border-radius: 7px;
-    margin-bottom: 1rem;
-    margin-top: 1rem;
-    border: 3px solid black;
+    margin: 1rem 0;
+    border: 1px solid var(--note-border);
+    border-radius: 8px;
+    background: var(--note-bg);
 }
 
 div.box.info {
-    border-color: var(--state-info-dark);
-}
-
-div.box.warning,
-div.box.security {
-    border-color: var(--state-warning-dark);
-}
-
-div.box.danger {
-    border-color: var(--state-danger);
+    --note-bg: var(--note-info-bg);
+    --note-border: var(--note-info-border);
+    --note-icon: var(--note-info-icon);
 }
 
 div.box.tip {
-    border-color: var(--state-success-dark);
+    --note-bg: var(--note-tip-bg);
+    --note-border: var(--note-tip-border);
+    --note-icon: var(--note-tip-icon);
+}
+
+div.box:is(.warning, .security) {
+    --note-bg: var(--note-warning-bg);
+    --note-border: var(--note-warning-border);
+    --note-icon: var(--note-warning-icon);
+}
+
+div.box.danger {
+    --note-bg: var(--note-danger-bg);
+    --note-border: var(--note-danger-border);
+    --note-icon: var(--note-danger-icon);
 }
 
 div.box-content {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    gap: 12px;
 }
 
-div.box.info > .box-content-container > .box-content > i {
-    color: var(--state-info-dark);
-    font-size: 1.2em;
-}
-
-div.box.warning > .box-content-container > .box-content > i,
-div.box.security > .box-content-container > .box-content > i {
-    color: var(--state-warning-dark);
-    font-size: 1.2em;
-}
-
-div.box.danger > .box-content-container > .box-content > i {
-    color: var(--state-danger);
-    font-size: 1.2em;
-}
-
-div.box.tip > .box-content-container > .box-content > i {
-    color: var(--state-success-dark);
-    font-size: 1.2em;
+/* Centered on the first line of text (24px) */
+div.box > .box-content-container > .box-content > i {
+    flex: none;
+    margin-top: 4px;
+    font-size: 16px;
+    color: var(--note-icon);
 }
 
 div > .box-content-container {
-    padding: 0 0 0 12px;
+    padding: 12px 16px;
+}
+
+/* Inline code takes on the tint of the box instead of a gray chip */
+div.box code {
+    background: var(--note-code-bg);
+    border-color: var(--note-border);
 }
 
 .box-text {
-    padding: 24px;
+    flex: 1;
+    min-width: 0;
 }
 
 .box-text > .visually-hidden + * {
