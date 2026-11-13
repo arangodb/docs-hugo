@@ -2121,12 +2121,24 @@ summary {
     list-style: none;
     cursor: pointer;
     user-select: none;
-    font-size: 1.1rem;
     font-weight: 500;
     margin-top: 1rem;
 }
 
-summary:hover, summary:focus-visible {
+/* Like the accordion trigger of the design system: a medium-weight label at
+   the size of the text around it, underlined on hover. The chevron stays in
+   front of the label, close to it in the wide text column */
+summary:not(.openapi-prop) {
+    width: fit-content;
+    color: var(--color-heading);
+    text-underline-offset: 4px;
+}
+
+summary:not(.openapi-prop):hover {
+    text-decoration: underline;
+}
+
+summary.openapi-prop:hover, summary.openapi-prop:focus-visible {
     color: var(--color-link);
 }
 
