@@ -1102,7 +1102,7 @@ function addShowMoreButton(parentElem) {
         root.querySelectorAll("pre > code").forEach(code => {
             // n-times line-height * root em, larger than to-be-applied max-height to always reveal some lines
             // False for currently collapsed code ("Show output" with display: none)
-            if (!code.classList.contains("code-long") && code.scrollHeight > 20 * 1.8 * 16) {
+            if (!code.classList.contains("code-long") && code.scrollHeight > 20 * 1.5 * 16) {
                 code.classList.add("code-long");
                 const showMore = document.createElement("button");
                 showMore.className = "code-show-more";

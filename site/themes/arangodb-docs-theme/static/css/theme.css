@@ -43,7 +43,15 @@
 
     --font-headlines: "Urbanist", sans-serif;
     --font-content: "Inter", sans-serif;
-    --font-code: Consolas, "liberation mono", Menlo, Courier, monospace;
+    --font-code: "Geist Mono", ui-monospace, Menlo, Consolas, monospace;
+
+    /* Code blocks and inline code. Neutral grays like the table header, not
+       the bluish muted of the design system. Dark values in dark.css,
+       syntax colors in chroma.css */
+    --code-bg: #f0f0f0;                     /* gray-100 */
+    --code-ring: rgb(0 0 0 / 0.06);
+    --code-inline-border: #d9d9d9;
+    --code-text: rgb(45 49 56);
 
     --padding-1: 8px;
     --padding-2: 16px;
@@ -188,6 +196,15 @@
     src: url("../fonts/inter-v12-latin-600.woff2") format("woff2");
 }
 
+/* Geist Mono v1.3.1 (SIL Open Font License 1.1), variable weight */
+@font-face {
+    font-display: swap;
+    font-family: "Geist Mono";
+    font-style: normal;
+    font-weight: 100 900;
+    src: url("../fonts/GeistMono-Variable.woff2") format("woff2");
+}
+
 @font-face {
     font-display: swap;
     font-family: "Urbanist";
@@ -313,8 +330,12 @@ h4 { font-size: 1.8rem; }
 h5 { font-size: 1.4rem; }
 h6 { font-size: 0.9rem; }
 
-code, pre {
-    font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+/* Geist Mono has ligatures (e.g. for => and !=), which must not change how
+   code reads */
+code, pre, kbd {
+    font-family: var(--font-code);
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "calt" 0, "dlig" 0;
 }
 
 summary {
@@ -606,7 +627,7 @@ hr {
 
 pre {
     background-color: var(--CODEBLOCK-BACKGROUND-COLOR);
-    line-height: 1.8rem;
+    line-height: 1.5rem;
     position: relative;
     padding: 0;
     display: flex;
@@ -1248,6 +1269,17 @@ article.default > * {
 .toc-body .level-5 > a { padding-left: 48px; }
 .toc-body .level-6 > a { padding-left: 60px; }
 
+/* Plain monospace text in the breadcrumbs and the previous/next links,
+   which are not code samples */
+:is(.breadcrumbs, nav.pagination) code {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font-size: 0.9em;
+    white-space: normal;
+}
+
 /* Plain monospace text in the list, breaking long names only where needed */
 .toc-body code {
     padding: 0;
@@ -1692,28 +1724,33 @@ article ul li {
     font-size: 12px;
 }
 
-/* Codeblocks */
+/* Codeblocks: a gray fill with a faint ring, the shape of the code block of
+   the design system. Unlike there, code wraps instead of scrolling */
 pre {
-    border-radius: 7px;
-    background: var(--gray-100);
+    border: 1px solid var(--code-ring);
+    border-radius: 8px;
+    background: var(--code-bg);
     box-shadow: none;
     position: relative;
 }
 
+/* Inline code, like IDs and keys in the design system (Geist Mono) on a
+   gray chip. Slightly smaller than the text around it, as the mono font
+   looks bigger at the same size */
 code, p code {
-    font-size: 14px;
+    font-size: 0.875em;
     overflow: auto;
     word-wrap: break-word;
     margin: 0;
-    padding: 2px 3px;
+    padding: 1px 4px;
     word-break: break-word;
     white-space: pre-wrap;
-    border: 1px solid #c6c6c6;
-    border-radius: 5px;
-    background: var(--gray-100);
+    border: 1px solid var(--code-inline-border);
+    border-radius: 4px;
+    background: var(--code-bg);
     box-shadow: none;
-    color: var(--gray-950);
-    vertical-align: middle;
+    color: var(--code-text);
+    vertical-align: baseline;
 }
 
 li > code {
@@ -1783,14 +1820,14 @@ pre > code {
     background: transparent;
     word-break: break-word;
     white-space: break-spaces;
-    color: var(--CODEBLOCK-TEXT-COLOR);
+    color: var(--code-text);
     font-family: var(--font-code);
-    padding: 28px;
-    font-size: 1rem;
+    padding: 20px 24px;
+    font-size: 14px;
 }
 
 .code-long {
-    max-height: calc(15 * 1.8rem);
+    max-height: calc(15 * 1.5rem);
     /* clip, not hidden: hidden is a scroll container and so gets a useless tab stop */
     overflow: clip;
 }
