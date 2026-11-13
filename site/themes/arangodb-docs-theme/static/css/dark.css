@@ -1,0 +1,371 @@
+/* Dark mode (prototype). Active when <html data-theme="dark">, which the
+   script in head.html sets from the stored choice or the OS setting.
+   Colors are the dark tokens of the Arango design system. The sidebar is
+   the same in both modes. DocSearch has its own dark styles for
+   html[data-theme="dark"]. */
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    /* Focus ring: the dark ring token. The dark teal of light mode is
+       1.9:1 on the dark page */
+    --focus-ring: #befe99;
+
+    /* Arango dark tokens */
+    --dm-background: #020618;
+    --dm-foreground: #f8fafc;
+    --dm-text: #e2e8f0;
+    --dm-card: #0f172b;
+    --dm-muted: #1d293d;
+    --dm-muted-foreground: #90a1b9;
+    --dm-border: rgb(255 255 255 / 0.10);
+    --dm-input: rgb(255 255 255 / 0.15);
+    --dm-primary: #befe99;
+    --dm-primary-hover: #b0eb8f;
+
+    --text-color: var(--dm-text);
+    --CONTENT-BACKGROUND-COLOR: var(--dm-background);
+    --HEADER-BACKGROUND-COLOR: var(--dm-background);
+    --H2-COLOR: var(--dm-text);
+    --TOC-ENTRY-COLOR: var(--dm-muted-foreground);
+    --CODEBLOCK-BACKGROUND-COLOR: var(--dm-card);
+    --CODEBLOCK-TEXT-COLOR: var(--dm-text);
+
+    --color-heading: var(--dm-foreground);
+    --color-muted: var(--dm-muted-foreground);
+    --color-link: var(--dm-primary);
+    --color-link-hover: var(--dm-primary-hover);
+    --color-lime-tint: rgb(190 254 153 / 0.12);
+
+    /* The gray ramp flipped, as the rules use it for text, fills and borders */
+    --gray-50: #0f172b;
+    --gray-100: #0f172b;
+    --gray-200: #1d293d;
+    --gray-300: #1d293d;
+    --gray-400: #45556c;
+    --gray-500: #62748e;
+    --gray-600: #90a1b9;
+    --gray-700: #90a1b9;
+    --gray-800: #cad5e2;
+    --gray-900: #e2e8f0;
+    --gray-950: #f8fafc;
+    --neutral-white: #0f172b;
+    --neutral-black: #f8fafc;
+    --neutral-gray-lighter: #1d293d;
+    --neutral-gray-darkest: #e2e8f0;
+
+    /* Status colors, dark values (info, warning, destructive, success) */
+    --state-info-dark: #74d4ff;
+    --state-warning-dark: #ff8904;
+    --state-danger: #ff6467;
+    --state-danger-dark: #ff6467;
+    --state-success-dark: #05df72;
+}
+
+/* Things that use hardcoded light colors */
+
+/* Headings in the foreground color: lime is for links and the selected entry */
+:root[data-theme="dark"] :is(hgroup > h1, .article-body > :is(h2, h3, h4, h5, h6), article.notfound > h1, .hd h1) {
+    color: var(--dm-foreground);
+}
+
+:root[data-theme="dark"] .article-body > :is(h2, h3, h4, h5, h6) > code {
+    color: var(--dm-foreground);
+}
+
+:root[data-theme="dark"] hr {
+    background-color: var(--dm-border);
+}
+
+:root[data-theme="dark"] .card {
+    border-color: var(--dm-border);
+}
+
+:root[data-theme="dark"] blockquote {
+    color: var(--dm-muted-foreground);
+    border-left-color: var(--dm-muted);
+}
+
+:root[data-theme="dark"] .link-external {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f8fafc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 7h10v10'/%3E%3Cpath d='M7 17 17 7'/%3E%3C/svg%3E");
+}
+
+/* Method badges keep their light fills, which carry white text */
+:root[data-theme="dark"] .endpoint-method-get { background: #006585; }
+:root[data-theme="dark"] .endpoint-method-post { background: #3b7044; }
+:root[data-theme="dark"] .endpoint-method-put { background: #dc6409; }
+:root[data-theme="dark"] .endpoint-method-delete { background: #8f001d; }
+
+:root[data-theme="dark"] :is(.openapi-property-name, .openapi-property-label) {
+    color: var(--dm-text);
+}
+
+:root[data-theme="dark"] .openapi-property-name,
+:root[data-theme="dark"] .openapi-content-type,
+:root[data-theme="dark"] .openapi-prop-content {
+    border-color: var(--dm-border);
+}
+
+:root[data-theme="dark"] .openapi-property-type {
+    color: var(--dm-muted-foreground);
+}
+
+:root[data-theme="dark"] .openapi-prop-content {
+    box-shadow: none;
+}
+
+:root[data-theme="dark"] .response-code.clicked {
+    background-color: var(--dm-muted);
+}
+
+:root[data-theme="dark"] :is(pre.mermaid, .image-viewer-content.mermaid-diagram) {
+    background: var(--dm-card);
+}
+
+:root[data-theme="dark"] .image-viewer-content {
+    background: var(--dm-card);
+}
+
+/* Home page */
+:root[data-theme="dark"] .hd {
+    --hd-ink: var(--dm-foreground);
+    --hd-text: var(--dm-text);
+    --hd-muted: var(--dm-muted-foreground);
+    --hd-link: var(--dm-primary);
+    --hd-soft: var(--dm-muted);
+    --hd-soft-hover: #314158;
+    --hd-line: var(--dm-border);
+    --hd-card-line: var(--dm-border);
+}
+
+:root[data-theme="dark"] .hd-search {
+    background: var(--dm-card);
+}
+
+:root[data-theme="dark"] .hd-badge {
+    color: var(--dm-muted);
+}
+
+/* Code: the dark code colors of the design system, on the card color */
+:root[data-theme="dark"] {
+    --code-bg: var(--dm-card);
+    --code-ring: rgb(248 250 252 / 0.10);
+    --code-inline-border: var(--dm-border);
+    --code-text: var(--dm-text);
+}
+
+/* Syntax highlighting: the dark syntax-* tokens of the design system, with
+   the weights of the light theme (chroma.css) */
+:root[data-theme="dark"] .chroma :is(.x, .n, .nc, .no, .nf, .fm, .nn, .py, .nv, .vc, .vg, .vi, .vm, .l, .ld, .g, .ge, .go, .gs, .gl, .p) { color: var(--dm-text); }
+:root[data-theme="dark"] .chroma :is(.k, .kc, .kd, .kn, .kp, .kr, .kt, .ow, .nb, .bp, .nx) { color: #ff6467; }
+:root[data-theme="dark"] .chroma :is(.s, .sa, .sb, .sc, .dl, .s2, .se, .sh, .si, .sx, .sr, .s1, .ss, .nt) { color: #74d4ff; }
+:root[data-theme="dark"] .chroma :is(.nd, .na) { color: #c4b4ff; }
+:root[data-theme="dark"] .chroma :is(.m, .mb, .mf, .mh, .mi, .il, .mo, .o, .ni, .nl) { color: #8ec5ff; }
+:root[data-theme="dark"] .chroma :is(.c, .ch, .cm, .c1, .cs, .cp, .cpf, .sd, .gp) { color: #90a1b9; }
+:root[data-theme="dark"] .chroma :is(.err, .gd, .gt, .ne, .gr) { color: #ff6467; }
+:root[data-theme="dark"] .chroma .gi { color: #05df72; }
+:root[data-theme="dark"] .chroma :is(.gh, .gu) { color: var(--dm-text); }
+:root[data-theme="dark"] .chroma .hl { background-color: rgb(248 250 252 / 0.05); }
+:root[data-theme="dark"] .chroma :is(.lnt, .ln) { color: #62748e; }
+
+/* Images and diagrams.
+   Diagrams (SVG files, inlined SVGs, Mermaid) are drawn on white in the brand
+   colors. Inverting the lightness and turning the hue back keeps the hues,
+   so teal stays teal and lime stays lime, but white becomes dark.
+   Screenshots (raster images) can't be inverted without looking wrong, so
+   they are dimmed and get their full brightness on hover and in the viewer.
+   Add the class keep-colors to an image to opt out. */
+
+:root[data-theme="dark"] .article-body :is(img[src$=".svg"], .svg-figure > svg, pre.mermaid > svg):not(.keep-colors),
+:root[data-theme="dark"] .image-viewer-content :is(img[src$=".svg"], svg.mermaid-diagram) {
+    filter: invert(0.92) hue-rotate(180deg);
+}
+
+:root[data-theme="dark"] .article-body img:not([src$=".svg"], .keep-colors) {
+    filter: brightness(0.8);
+    transition: filter 0.2s;
+}
+
+:root[data-theme="dark"] .article-body img:not([src$=".svg"], .keep-colors):hover {
+    filter: none;
+}
+
+/* Theme switch: a ghost icon button with a moon in light mode, a sun in dark mode */
+
+.sidebar-top-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    min-height: 0;
+    margin: 2px 0 0;
+    padding: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--sidebar-text, #f8fafc);
+    letter-spacing: normal;
+    transition: none;
+}
+
+.theme-toggle:hover {
+    background: var(--sidebar-hover, #06838a);
+}
+
+.theme-toggle:focus-visible {
+    outline: 3px solid var(--focus-ring, rgb(190 254 153 / 0.64));
+    outline-offset: 0;
+}
+
+/* In the top bar of narrow screens, on the page background */
+.header .theme-toggle {
+    width: 36px;
+    height: 36px;
+    margin: 0 0 0 auto;
+    color: var(--gray-950);
+}
+
+.header .theme-toggle:hover {
+    background: var(--gray-200);
+}
+
+:root[data-theme="dark"] .header .theme-toggle:hover {
+    background: var(--dm-muted);
+}
+
+.theme-toggle .theme-icon-sun,
+:root[data-theme="dark"] .theme-toggle .theme-icon-moon {
+    display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle .theme-icon-sun {
+    display: block;
+}
+
+/* The top bar of narrow screens uses the logo with the white wordmark */
+:root[data-theme="dark"] .header-logo img {
+    content: url("/img/arango-logo-white.svg");
+}
+
+/* Set by theme.js for the moment of a mode switch, so that everything
+   changes color at once */
+.theme-switching,
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+    transition: none !important;
+}
+
+
+/* Diagram tokens for the dark mode rules inside embedded SVGs (embed-svg).
+   Teal surfaces (#012d3a, #014654, #00576e) and the text on them keep their
+   colors in both modes, like the sidebar. Diagrams that use these tokens
+   have the keep-colors class, so the filter above leaves them alone. */
+:root[data-theme="dark"] {
+    --dg-canvas: #0f172b;            /* card */
+    --dg-node: #1d293d;              /* muted: white boxes */
+    --dg-node-raised: #314158;       /* light gray boxes, hover */
+    --dg-node-raised-top: #45556c;
+    --dg-line: #62748e;              /* outlines and dashed group borders */
+    --dg-arrow: #90a1b9;             /* dark gray arrows */
+    --dg-accent-line: #06838a;       /* teal 700 strokes and arrows (teal 600) */
+    --dg-text: #f8fafc;              /* foreground */
+    --dg-text-muted: #90a1b9;        /* muted foreground */
+    --dg-tag: rgb(190 254 153 / 0.12);
+    --dg-tag-text: #befe99;
+}
+
+/* Diagram roles: classes on the elements of embedded SVGs, so that the dark
+   colors are defined once here. The files keep their light colors as
+   attributes, which is all they need on their own (opened directly, in
+   previews). One fill and one stroke role per element at most.
+   !important: they must win over the presentation attributes and over the
+   light-mode CSS in the files, including its hover rules. */
+:root[data-theme="dark"] {
+    --dg-tag-solid: color-mix(in srgb, var(--dg-tag-text) 12%, var(--dg-canvas));
+}
+
+/* Fills (shapes, marker arrowheads, text) */
+:root[data-theme="dark"] .dg-f-canvas { fill: var(--dg-canvas) !important; }
+:root[data-theme="dark"] .dg-f-node { fill: var(--dg-node) !important; }
+:root[data-theme="dark"] .dg-f-raised { fill: var(--dg-node-raised) !important; }
+:root[data-theme="dark"] .dg-f-raised-top { fill: var(--dg-node-raised-top) !important; }
+:root[data-theme="dark"] .dg-f-tag { fill: var(--dg-tag) !important; }
+/* The tag color made opaque, for labels on top of lines */
+:root[data-theme="dark"] .dg-f-tag-solid { fill: var(--dg-tag-solid) !important; }
+:root[data-theme="dark"] .dg-f-line { fill: var(--dg-line) !important; }
+:root[data-theme="dark"] .dg-f-arrow { fill: var(--dg-arrow) !important; }
+:root[data-theme="dark"] .dg-f-accent { fill: var(--dg-accent-line) !important; }
+:root[data-theme="dark"] .dg-f-text { fill: var(--dg-text) !important; }
+:root[data-theme="dark"] .dg-f-muted { fill: var(--dg-text-muted) !important; }
+:root[data-theme="dark"] .dg-f-lime { fill: var(--dg-tag-text) !important; }
+:root[data-theme="dark"] .dg-f-success { fill: #05df72 !important; }
+:root[data-theme="dark"] .dg-f-warning { fill: #ff8904 !important; }
+:root[data-theme="dark"] .dg-f-info { fill: #74d4ff !important; }
+
+/* Strokes (outlines, lines, edges) */
+:root[data-theme="dark"] .dg-s-canvas { stroke: var(--dg-canvas) !important; }
+:root[data-theme="dark"] .dg-s-line { stroke: var(--dg-line) !important; }
+:root[data-theme="dark"] .dg-s-arrow { stroke: var(--dg-arrow) !important; }
+:root[data-theme="dark"] .dg-s-raised { stroke: var(--dg-node-raised) !important; }
+:root[data-theme="dark"] .dg-s-accent { stroke: var(--dg-accent-line) !important; }
+:root[data-theme="dark"] .dg-s-text { stroke: var(--dg-text) !important; }
+:root[data-theme="dark"] .dg-s-lime { stroke: var(--dg-tag-text) !important; }
+:root[data-theme="dark"] .dg-s-success { stroke: #05df72 !important; }
+:root[data-theme="dark"] .dg-s-warning { stroke: #ff8904 !important; }
+:root[data-theme="dark"] .dg-s-info { stroke: #74d4ff !important; }
+:root[data-theme="dark"] .dg-s-none { stroke: none !important; }
+
+/* Hover and keyboard focus of linked or interactive parts (.card, .card-link):
+   lime boxes one step lighter like the dark primary button (lime 200), other
+   boxes raised with a teal outline */
+:root[data-theme="dark"] :is(.card:hover, .card-link:is(:hover, :focus-visible)) .dg-h-lime {
+    fill: #b0eb8f !important;
+    stroke: #00576e !important;
+}
+:root[data-theme="dark"] :is(.card:hover, .card-link:is(:hover, :focus-visible)) .dg-h-raised {
+    fill: var(--dg-node-raised) !important;
+    stroke: var(--dg-accent-line) !important;
+}
+:root[data-theme="dark"] :is(.card:hover, .card-link:is(:hover, :focus-visible)) .dg-h-raised-top {
+    fill: var(--dg-node-raised-top) !important;
+    stroke: var(--dg-accent-line) !important;
+}
+
+/* Home page: the dark teal tiles of the Get started icons are part of the
+   image files and disappear on the hovered card (about 1:1). A ring like the
+   card borders keeps their edge, only then. It is on the edge of the tile,
+   not around it, so it doesn't grow, and fades in with the card background
+   (.hd a in home.html) */
+:root[data-theme="dark"] .hd-start .top img {
+    border-radius: 12px;
+    outline: 1px solid transparent;
+    outline-offset: -1px;
+    transition: opacity 0.5s, outline-color 0.12s;
+}
+
+:root[data-theme="dark"] .hd-start:is(:hover, :focus-visible) .top img {
+    outline-color: rgb(248 250 252 / 0.15);
+}
+
+/* Admonitions: the dark alert colors of the design system */
+:root[data-theme="dark"] {
+    --note-info-bg: rgb(29 41 61 / 0.5);     /* muted at 50% */
+    --note-info-border: #90a1b9;             /* info-ring */
+    --note-info-icon: #90a1b9;
+    --note-tip-bg: #032e15;                  /* success-subtle */
+    --note-tip-border: #006045;              /* success-ring */
+    --note-tip-icon: #05df72;
+    --note-warning-bg: rgb(255 137 4 / 0.10);
+    --note-warning-border: rgb(255 137 4 / 0.30);
+    --note-warning-icon: #ff8904;
+    --note-danger-bg: rgb(255 100 103 / 0.10);
+    --note-danger-border: rgb(255 100 103 / 0.40);
+    --note-danger-icon: #ff6467;
+    --note-code-bg: rgb(2 6 24 / 0.4);
+}

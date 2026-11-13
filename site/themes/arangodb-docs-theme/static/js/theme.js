@@ -603,6 +603,41 @@ function updateVersionSelector() {
   localStorage.setItem('docs-version', currentVersion);
 }
 
+/*
+ * Light/dark mode. head.html sets data-theme on <html> before the styles load,
+ * from the stored choice or else the OS setting, which is followed until the
+ * switch is used.
+ */
+function setTheme(theme, remember) {
+  // Switch all colors at once: without this, the page background changes
+  // instantly while components with color transitions fade after it
+  const root = document.documentElement;
+  root.classList.add("theme-switching");
+  root.dataset.theme = theme;
+  root.offsetHeight; // apply the new colors while transitions are off
+  requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("theme-switching")));
+  if (remember) {
+    try { localStorage.setItem("docs-theme", theme); } catch (e) {}
+  }
+  updateThemeToggles();
+}
+
+function updateThemeToggles() {
+  const label = document.documentElement.dataset.theme == "dark" ? "Switch to light mode" : "Switch to dark mode";
+  document.querySelectorAll(".theme-toggle").forEach(button => {
+    button.setAttribute("aria-label", label);
+    button.setAttribute("title", label);
+  });
+}
+
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", event => {
+  let stored = null;
+  try { stored = localStorage.getItem("docs-theme"); } catch (e) {}
+  if (!stored) setTheme(event.matches ? "dark" : "light", false);
+});
+
+document.addEventListener("DOMContentLoaded", updateThemeToggles);
+
 function setVersionMenuOpen(open) {
   const button = document.querySelector(".version-selector-button");
   const menu = document.querySelector(".version-menu");
@@ -1268,6 +1303,12 @@ function handleDocumentClick(event) {
     if (expandButton) {
         const section = expandButton.closest(".nav-section");
         setSectionExpanded(section, !section.classList.contains("expanded"));
+        return;
+    }
+
+    // Light/dark switch
+    if (closest(".theme-toggle")) {
+        setTheme(document.documentElement.dataset.theme == "dark" ? "light" : "dark", true);
         return;
     }
 
