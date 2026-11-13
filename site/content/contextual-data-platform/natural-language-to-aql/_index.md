@@ -61,10 +61,6 @@ primary capability for querying your data without knowing AQL.
 Ask general questions and get LLM-powered responses without querying your database.
 Useful for general knowledge questions, text analysis, and AQL-related explanations.
 
-The [Reasoner](../reasoner/_index.md) can also turn questions into AQL. See
-[Reasoner and AQLizer](../reasoner/_index.md#reasoner-and-aqlizer) for how the
-two differ and when to use which.
-
 ## Key features
 
 - **Natural language to AQL translation**: Describe your data needs in plain language
