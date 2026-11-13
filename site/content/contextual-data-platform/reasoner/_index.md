@@ -4,8 +4,9 @@ menuTitle: Reasoner
 group: Query & explore
 weight: 230
 description: >-
-  Analyze and optimize AQL queries using AI-powered reasoning with the Reasoner
-  feature of the Agentic AI Suite
+  Analyze and optimize AQL queries and generate AQL from natural-language
+  questions using AI-powered reasoning with the Reasoner feature of the
+  Agentic AI Suite
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 
@@ -22,6 +23,11 @@ does not produce a meaningful improvement, it retries with a different approach
 identical results to the original. The Reasoner is currently limited to
 read-only query execution.
 
+The Reasoner can also turn a question in natural language into AQL. It
+generates a query, runs it, and returns the query, the results, and a short
+answer. This text-to-AQL feature is currently available through the HTTP API
+only.
+
 You can interact with the Reasoner directly from the **Query Editor** in the
 Arango Contextual Data Platform, or through its HTTP API for programmatic
 integrations.
@@ -32,6 +38,7 @@ integrations.
 |---|---|
 | **Database Exploration** | Discover collections, graphs, schemas, and document structures without prior knowledge of the database |
 | **Query Optimization** | Submit an AQL query and receive a validated, faster version with a detailed performance comparison report |
+| **Text-to-AQL** | Ask a question in natural language and receive an AQL query, its results, and a short answer. Save queries as templates to reuse them for similar questions (API only) |
 | **Real-Time Streaming** | Receive results progressively via Server-Sent Events (SSE) as the Reasoner works through each phase (API only) |
 
 ## How the Reasoner works
@@ -81,6 +88,24 @@ flowchart TD
       performance comparison and the final optimized query`"]
 ```
 
+### Text-to-AQL
+
+For questions sent to the `POST /txt2aql` endpoint, the Reasoner first looks
+for a saved query template that matches the question. If it finds a close
+match, it adapts the template to your question, mainly by filling in its bind
+parameters. If there is no close match, or filling in the template fails, it
+writes a new query and uses any templates it found as examples. It then runs
+the query and returns the query, up to 50 result rows, and a short answer in
+natural language.
+
+You can save a query as a template when you send a question. Over time, this
+builds up a set of queries for the questions your users ask. When a new
+question closely matches one of them, the Reasoner adapts the saved query
+instead of sampling the database and writing a new one.
+
+See [Text-to-AQL](api-reference.md#text-to-aql) in the API reference for the
+details.
+
 ## Architecture overview
 
 From a user perspective, the Reasoner is a single service that you start, stop,
@@ -107,7 +132,8 @@ for the Reasoner.
 ```mermaid
 flowchart TD
     Client["Client Request
-      <code>POST /query</code>"] --> ReasonerPort
+      <code>POST /query</code>
+      <code>POST /txt2aql</code>"] --> ReasonerPort
 
     subgraph ReasonerService["Reasoner Service (managed by the data platform)"]
         ReasonerPort["Reasoner
@@ -172,10 +198,15 @@ This is a write query. Only read-only queries can be optimized or run.
 During validation, the Reasoner also rejects any optimization attempt that
 includes write operations, so the optimizer never modifies your data or schema.
 
+Text-to-AQL is read-only as well. A generated query that writes data, for
+example with `INSERT`, `UPDATE`, `REPLACE`, `UPSERT`, or `REMOVE`, is rejected
+before it runs.
+
 ## What's next
 
 - **[Web Interface](web-interface.md)**: Step-by-step instructions for using
   the Reasoner from the Query Editor in the Arango Contextual Data Platform.
 - **[API Reference](api-reference.md)**: Use the Reasoner programmatically via
-  its HTTP API, including streaming and non-streaming modes.
+  its HTTP API, including streaming and non-streaming modes and the text-to-AQL
+  endpoint.
 

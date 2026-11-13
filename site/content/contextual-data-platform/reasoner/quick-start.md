@@ -48,13 +48,16 @@ Read the **AI Reasoning Response** with the optimization report, then click
 {{< /tab >}}
 
 {{< tab "HTTP API" >}}
-With the Reasoner service running (port `8080`, MCP connected), send your
-request:
+With the Reasoner service running and its MCP server connected, send your
+request. Replace `<SERVICE_ID_POSTFIX>` with the trailing segment of the
+Reasoner's service ID:
 
 {{< steps >}}
 
 {{< step "Send an optimization request" >}}
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8080/query" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/reasoner/<SERVICE_ID_POSTFIX>/query" >}}
+
+Include your JWT in the `Authorization: Bearer <token>` header.
 
 ```json
 {
@@ -71,6 +74,25 @@ receive a single JSON response whose `result` field holds the full markdown
 report.
 {{< /step >}}
 
+{{< step "Optional: Ask a question in natural language" >}}
+To have the Reasoner answer a question for you instead, send it in natural
+language to the text-to-AQL endpoint:
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/reasoner/<SERVICE_ID_POSTFIX>/txt2aql" >}}
+
+Include your JWT in the `Authorization: Bearer <token>` header.
+
+```json
+{
+  "query": "What are the top 5 performing stores based on revenue?",
+  "stream": false
+}
+```
+
+The response contains the generated query in `aql`, up to 50 result rows in
+`json`, and a short answer in `nl`.
+{{< /step >}}
+
 {{< /steps >}}
 {{< /tab >}}
 
@@ -84,4 +106,5 @@ rewritten query, and validation that it returns identical results.
 ## Next steps
 
 - [Web Interface](web-interface.md): The full guided experience.
-- [API Reference](api-reference.md): Endpoints, streaming, and event types.
+- [API Reference](api-reference.md): Endpoints, streaming, event types, and
+  text-to-AQL.
