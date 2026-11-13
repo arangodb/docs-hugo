@@ -861,9 +861,14 @@ svg a.card-link {
 
 /* Tabs */
 
+/* The line tabs of the design system (a foreground label and an underline
+   in the primary color for the active tab, muted labels otherwise), on a
+   gray strip at the top of a bordered panel, so that it is clear where the
+   tabbed content ends. The gray ramp and colors switch in dark mode */
+
 .tab-panel .tab-item {
     display: none;
-    margin: 1rem;
+    margin: 16px;
 }
 
 .tab-panel .tab-item.selected {
@@ -872,12 +877,17 @@ svg a.card-link {
 
 .tab-panel {
     margin: 1rem 0;
-    border: 2px solid var(--gray-300);
-    border-radius: 7px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
 }
 
 .tab-nav {
-    border-bottom: 2px solid var(--gray-300);
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 8px;
+    border-bottom: 1px solid var(--gray-200);
+    border-radius: 8px 8px 0 0;
+    background: var(--gray-50);
 }
 
 .tab-content {
@@ -885,7 +895,7 @@ svg a.card-link {
 }
 
 .tab-nav-button {
-    margin-bottom: -2px;
+    margin-bottom: -1px;
     position: relative;
     max-width: 300px;
     background-color: transparent;
@@ -896,21 +906,28 @@ svg a.card-link {
     overflow: hidden;
     text-overflow: ellipsis;
     transition-duration: 0s;
-    color: var(--color-teal-ink);
-    padding: 12px 16px;
+    color: var(--color-muted);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: normal;
+    padding: 10px 12px;
 }
 
+.tab-nav-button:hover,
 .tab-nav-button.selected {
-    font-weight: 700;
+    color: var(--color-heading);
 }
+
 .tab-nav-button.selected::after {
     content: "";
     position: absolute;
-    left: 0;
-    right: 0;
+    left: 12px;
+    right: 12px;
     bottom: 0;
     height: 2px;
-    background-color: var(--color-teal-ink)
+    border-radius: 1px;
+    background-color: var(--color-link);
 }
 
 .tab-nav-button > span {
