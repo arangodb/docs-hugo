@@ -8,9 +8,11 @@ description: >-
 ---
 ## Syntax
 
-<pre><code>FILTER <em>expression</em></code></pre>
+```aql-syntax
+FILTER <expression>
+```
 
-*expression* must be a condition that evaluates to either `false` or `true`.
+The *expression* must be a condition that evaluates to either `false` or `true`.
 
 ## Usage
 

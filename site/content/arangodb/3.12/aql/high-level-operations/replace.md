@@ -20,12 +20,17 @@ with a server-generated value.
 
 ## Syntax
 
-The two syntaxes for a replace operation are:
+The two syntax variants for a replace operation are:
 
-<pre><code>REPLACE <em>document</em> IN <em>collection</em>
-REPLACE <em>keyExpression</em> WITH <em>document</em> IN <em>collection</em></code></pre>
+```aql-syntax
+REPLACE <document> IN <collection>
+[OPTIONS { … }]
+```
 
-Both variants can optionally end with an `OPTIONS { … }` clause.
+```aql-syntax
+REPLACE <keyExpression> WITH <document> IN <collection>
+[OPTIONS { … }]
+```
 
 `collection` must contain the name of the collection in which the document
 should be replaced.
@@ -108,9 +113,9 @@ LET key = PARSE_IDENTIFIER("users/john").key
 REPLACE key WITH { ... } IN users
 ```
 
-### Comparison of the syntaxes
+### Comparison of the syntax variants
 
-Both syntaxes of the `REPLACE` operation allow you to define the document to
+Both syntax variants of the `REPLACE` operation allow you to define the document to
 modify and the attributes to set. The document to update is effectively
 identified by a document key in combination with the specified collection.
 
@@ -142,7 +147,7 @@ FOR u IN users
 ## Dynamic key expressions
 
 A `REPLACE` operation may replace arbitrary documents, using either of the two
-syntaxes:
+syntax variants:
 
 ```aql
 FOR i IN 1..1000

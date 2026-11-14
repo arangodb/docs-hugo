@@ -23,21 +23,15 @@ traversal operations, or AQL functions that can read documents.
 This syntax can only look up documents by exact-value matching using an
 object literal and does not support arbitrary filter conditions.
 
-The syntax for an upsert operation:
+The syntax for an upsert (`UPDATE`) or repsert (`REPLACE`) operation:
 
-<pre><code>UPSERT <em>searchExpression</em>
-INSERT <em>insertExpression</em>
-UPDATE <em>updateExpression</em>
-IN <em>collection</em></code></pre>
-
-The syntax for a repsert operation:
-
-<pre><code>UPSERT <em>searchExpression</em>
-INSERT <em>insertExpression</em>
-REPLACE <em>updateExpression</em>
-IN <em>collection</em></code></pre>
-
-Both variants can optionally end with an `OPTIONS { … }` clause.
+```aql-syntax
+UPSERT <lookupExpression>
+INSERT <insertExpression>
+(UPDATE|REPLACE) <updateExpression>
+IN <collection>
+[OPTIONS { … }]
+```
 
 When using the `UPDATE` variant of the `UPSERT` operation, the found document
 is partially updated, meaning only the attributes specified in
@@ -49,19 +43,19 @@ Updating a document modifies the document's revision number with a server-genera
 The system attributes `_id`, `_key`, and `_rev` cannot be updated, but `_from` and `_to`
 can be modified.
 
-The *searchExpression* contains the document to be looked for. It must be an
+The *lookupExpression* contains the document to be looked for. It must be an
 **object literal** (`UPSERT { <key>: <value>, ... } ...`) without dynamic
-attribute names. In case no such document can be found in *collection*, a new
+attribute names. In case no such document can be found in `collection`, a new
 document is inserted into the collection as specified in the *insertExpression*.
 
-In case at least one document in *collection* matches the *searchExpression*, it is
+In case at least one document in `collection` matches the *lookupExpression*, it is
 updated using the *updateExpression*. When more than one document in the collection
-matches the *searchExpression*, it is undefined which of the matching documents is
+matches the *lookupExpression*, it is undefined which of the matching documents is
 updated. It is therefore often sensible to make sure by other means (such as unique
-indexes, application logic etc.) that at most one document matches *searchExpression*.
+indexes, application logic etc.) that at most one document matches *lookupExpression*.
 
 The following query looks for a document in the `users` collection with a specific
-`name` attribute value. If the document exists, its *logins* attribute is increased
+`name` attribute value. If the document exists, its `logins` attribute is increased
 by one. If it does not exist, a new document is inserted, consisting of the
 attributes `name`, `logins`, and `dateCreated`:
 
@@ -79,21 +73,15 @@ document using the `OLD` pseudo-value.
 The alternative syntax for `UPSERT` operations allows you to use more flexible
 filter conditions beyond equality matches to look up documents.
 
-The syntax for an upsert operation:
+The syntax for an upsert (`UPDATE`) or repsert (`REPLACE`) operation:
 
-<pre><code>UPSERT FILTER<em> filter-condition</em>
-INSERT <em>insertExpression</em>
-UPDATE <em>updateExpression</em>
-IN <em>collection</em></code></pre>
-
-The syntax for a repsert operation:
-
-<pre><code>UPSERT FILTER<em> filter-condition</em>
-INSERT <em>insertExpression</em>
-REPLACE <em>updateExpression</em>
-IN <em>collection</em></code></pre>
-
-Both variants can optionally end with an `OPTIONS { … }` clause.
+```aql-syntax
+UPSERT FILTER <filterCondition>
+INSERT <insertExpression>
+(UPDATE|REPLACE) <updateExpression>
+IN <collection>
+[OPTIONS { … }]
+```
 
 The filter condition for the lookup can make use of the `CURRENT` pseudo-variable
 to access the lookup document. Example:
@@ -186,10 +174,10 @@ FOR i IN 1..1000
 
 {{< info >}}
 You need to add the `_rev` value in the *updateExpression*. It is not used
-within the *searchExpression*. Even worse, if you use an outdated `_rev` in the
-*searchExpression*, `UPSERT` triggers the `INSERT` path instead of the
+within the *lookupExpression*. Even worse, if you use an outdated `_rev` in the
+*lookupExpression*, `UPSERT` triggers the `INSERT` path instead of the
 `UPDATE` path, because it has not found a document exactly matching the
-*searchExpression*.
+*lookupExpression*.
 {{< /info >}}
 
 ### `exclusive`
@@ -298,7 +286,7 @@ RETURN { doc: NEW, type: OLD ? 'update' : 'insert' }
   atomicity of this operation cannot be guaranteed anymore and ArangoDB cannot
   guarantee that "read your own writes" in upserts work.
 
-  This is only an issue if you write a query where your search condition would
+  This is only an issue if you write a query where your lookup condition would
   hit the same document multiple times, and only if you have large transactions.
   You can adjust the behavior of the RocksDB storage engine by increasing the
   `intermediateCommit` thresholds for data size and operation counts.
@@ -337,6 +325,6 @@ RETURN { doc: NEW, type: OLD ? 'update' : 'insert' }
   version of the document from before the query even if it has been modified
   by `UPSERT` in the meantime.
 
-- The lookup attribute(s) from the search expression should be indexed in order
-  to improve the `UPSERT` performance. Ideally, the search expression contains the
+- The lookup attribute(s) from the lookup expression should be indexed in order
+  to improve the `UPSERT` performance. Ideally, the lookup expression contains the
   shard key, as this allows the lookup to be restricted to a single shard.

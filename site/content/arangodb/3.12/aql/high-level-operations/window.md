@@ -32,11 +32,17 @@ There are two syntax variants for `WINDOW` operations.
 
 **Row-based** (adjacent documents):
 
-<pre><code>WINDOW { preceding: <em>numPrecedingRows</em>, following: <em>numFollowingRows</em> } AGGREGATE <em>variableName</em> = <em>aggregateExpression</em></code></pre>
+```aql-syntax
+WINDOW { preceding: <numPrecedingRows>, following: <numFollowingRows> }
+AGGREGATE <variableName> = <aggregateExpression>
+```
 
 **Range-based** (value or duration range):
 
-<pre><code>WINDOW <em>rangeValue</em> WITH { preceding: <em>offsetPreceding</em>, following: <em>offsetFollowing</em> } AGGREGATE <em>variableName</em> = <em>aggregateExpression</em></code></pre>
+```aql-syntax
+WINDOW <rangeValue> WITH { preceding: <offsetPreceding>, following: <offsetFollowing> }
+AGGREGATE <variableName> = <aggregateExpression>
+```
 
 Calls to the following functions are supported in aggregation expressions:
 - `LENGTH()` / `COUNT()`
@@ -58,7 +64,7 @@ Calls to the following functions are supported in aggregation expressions:
 
 ## Row-based Aggregation
 
-The first syntax form of `WINDOW` allows aggregating over a fixed number of
+The first syntax variant of `WINDOW` allows aggregating over a fixed number of
 rows, following or preceding the current row. It is also possible to define
 that **all** preceding or following rows should be aggregated (`"unbounded"`).
 The number of rows has to be determined at query compile time.
@@ -169,7 +175,7 @@ previous row into account that belongs to subject `st113`.
 
 ## Range-based Aggregation
 
-The second syntax form of `WINDOW` allows aggregating over a all documents
+The second syntax variant of `WINDOW` allows aggregating over all documents
 within a value range. Offsets are differences in attribute values from the
 current document.
 
@@ -230,7 +236,7 @@ of `20`).
 ## Duration-based Aggregation
 
 Aggregating by time intervals is a subtype of range-based aggregation that
-uses the second syntax form of `WINDOW` but with ISO durations.
+uses the second syntax variant of `WINDOW` but with ISO durations.
 
 To support `WINDOW` frames over time-series data the `WINDOW` operation may
 calculate timestamp offsets using positive ISO 8601 duration strings, like

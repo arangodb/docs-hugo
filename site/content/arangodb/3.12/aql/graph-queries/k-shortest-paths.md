@@ -37,11 +37,7 @@ Let us assume that you want to go from **Aberdeen** to **London** by train.
 
 You expect to see the following nodes on *the* shortest path, in this order:
 
-1. Aberdeen
-2. Leuchars
-3. Edinburgh
-4. York
-5. London
+- Aberdeen → Leuchars → Edinburgh → York → London
 
 By the way, the weight of the path is: 1.5 + 1.5 + 3.5 + 1.8 = **8.3**.
 
@@ -49,26 +45,14 @@ Let us look at alternative paths next, for example because you know that the
 direct connection between York and London does not operate currently.
 An alternative path, which is slightly longer, goes like this:
 
-1. Aberdeen
-2. Leuchars
-3. Edinburgh
-4. York
-5. **Carlisle**
-6. **Birmingham**
-7. London
+- Aberdeen → Leuchars → Edinburgh → York → **Carlisle** → **Birmingham** → London
 
 Its weight is: 1.5 + 1.5 + 3.5 + 2.0 + 1.5 = **10.0**.
 
 Another route goes via Glasgow. There are seven stations on the path as well,
 however, it is quicker if you compare the edge weights:
 
-1. Aberdeen
-2. Leuchars
-3. Edinburgh
-4. **Glasgow**
-5. Carlisle
-6. Birmingham
-7. London
+- Aberdeen → Leuchars → Edinburgh → **Glasgow** → Carlisle → Birmingham → London
 
 The path weight is lower: 1.5 + 1.5 + 1.0 + 1.0 + 2.0 + 1.5 = **8.5**.
 
@@ -88,18 +72,18 @@ graphs it can return a large number of paths, or perform an expensive
 
 ### Working with named graphs
 
-```aql
-FOR path
-  IN OUTBOUND|INBOUND|ANY K_SHORTEST_PATHS
-  startNode TO endNode
-  GRAPH graphName
-  [OPTIONS options]
-  [LIMIT offset, count]
+```aql-syntax
+FOR <path>
+  IN (OUTBOUND|INBOUND|ANY) K_SHORTEST_PATHS
+  <startNode> TO <endNode>
+  GRAPH <graphName>
+  [OPTIONS { … }]
+  [LIMIT [<offset>,] <count>]
 ```
 
 - `FOR`: Emits the variable **path** which contains one path as an object containing 
    `vertices` (nodes), `edges`, and the `weight` of the path.
-- `IN` `OUTBOUND|INBOUND|ANY`: Defines in which direction
+- `IN` `OUTBOUND`/`INBOUND`/`ANY`: Defines in which direction
   edges are followed (outgoing, incoming, or both).
 - `K_SHORTEST_PATHS`: The keyword to compute k Shortest Paths
 - **startNode** `TO` **endNode** (both string\|object): The two nodes between
@@ -124,13 +108,14 @@ number, then the query is aborted with an error.
 
 ### Working with collection sets
 
-```aql
-FOR path
-  IN OUTBOUND|INBOUND|ANY K_SHORTEST_PATHS
-  startNode TO endNode
-  edgeCollection1, ..., edgeCollectionN
-  [OPTIONS options]
-  [LIMIT offset, count]
+```aql-syntax
+FOR <path>
+  IN (OUTBOUND|INBOUND|ANY) K_SHORTEST_PATHS
+  <startNode> TO <endNode>
+  [(OUTBOUND|INBOUND|ANY)] <edgeCollection1>
+  [, … , [(OUTBOUND|INBOUND|ANY)] <edgeCollectionN>]
+  [OPTIONS { … }]
+  [LIMIT [<offset>,] <count>]
 ```
 
 Instead of `GRAPH graphName` you can specify a list of edge collections.
@@ -177,9 +162,11 @@ account. In this case you can use `OUTBOUND` as general search direction and `AN
 specifically for *edges2* as follows:
 
 ```aql
-FOR node IN OUTBOUND K_SHORTEST_PATHS
-  startNode TO endNode
+FOR path IN OUTBOUND K_SHORTEST_PATHS
+  "places/A" TO "places/B"
   edges1, ANY edges2, edges3
+  LIMIT 3
+  RETURN path
 ```
 
 All collections in the list that do not specify their own direction use the

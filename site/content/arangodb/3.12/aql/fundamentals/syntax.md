@@ -154,10 +154,10 @@ without having to quote them. The query parser can identify them as keyword-like
 based on the context:
 
 - `KEEP` –
-  [COLLECT](../high-level-operations/collect.md#discarding-obsolete-variables)
+  [COLLECT](../high-level-operations/collect.md#discarding-obsolete-variables-keep)
   operation variant
 - `COUNT` –
-  [COLLECT](../high-level-operations/collect.md#group-length-calculation)
+  [COLLECT](../high-level-operations/collect.md#counting-elements-with-count-into)
   operation variant (`WITH COUNT INTO`)
 - `OPTIONS` –
   [FOR](../high-level-operations/for.md#options) /

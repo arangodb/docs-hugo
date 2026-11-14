@@ -2092,7 +2092,7 @@ Releases are sorted by their `version` key, newest first, and the rows of each
 table by the first feature of the package, so the order of the files and of the
 keys inside them does not matter.
 
-### Add a new arangosh example
+### Add an *arangosh* example
 
 A complete example:
 
@@ -2254,7 +2254,7 @@ This does not apply to backslashes in bind variables:
 db._query(`RETURN REGEX_SPLIT(@t, @r)`, {t: "foo\t bar\r baz\n foob", r: "\\s+|(?:b\\b)"}).toArray();
 ```
 
-### Add a new AQL example
+### Add an AQL example
 
 Complete example:
 
@@ -2324,6 +2324,36 @@ FOR doc IN @@coll
   RETURN doc.@attr
 ```
 
+### Add an AQL syntax description
+
+You can use a fenced codeblock with the `aql-syntax` language to describe an
+AQL language construct.
+
+It uses the normal AQL syntax highlighting but additionally lets you use:
+- `<placeholders>` in angled brackets for variable names and expressions
+- `[ square brackets ]` for optional clauses
+- `…` for omitted or repeated parts
+- `(A|B|C)` for alternatives, of which exactly one needs to be used. Always
+  wrap alternatives in parentheses, also if they are already enclosed by
+  square brackets, like `[(OUTBOUND|INBOUND|ANY)]`
+
+Note that `<` `>` and `[` `]` must not occur as part of the regular AQL syntax
+or it gets specially formatted by accident or even break the HTML.
+Parentheses are treated as literal AQL unless they contain a single pipe
+character `|` (`||` is the AQL operator for logical OR and is not treated as
+an alternative).
+
+````markdown
+```aql-syntax
+FOR <node> IN (OUTBOUND|INBOUND|ANY) <startNode> GRAPH <graphName>
+
+COLLECT <var> = <expr> [… , <varN> = <exprN>]
+[AGGREGATE <aggVar> = <aggExpr> [… , <aggVarN> = <aggExprN>]]
+[INTO <groupsVar> [= <projectionExpr>]]
+[OPTIONS { … }]
+```
+````
+
 #### Backslashes in AQL examples
 
 The query is handed to _arangosh_ as a JavaScript string literal, so the AQL
@@ -2373,7 +2403,7 @@ returns the three-character string `a\b` renders like this:
 ]
 ```
 
-### Add a new OpenAPI endpoint description
+### Add an OpenAPI endpoint description
 
 Used to describe an HTTP API endpoint using the
 [OpenAPI Specification](https://spec.openapis.org/oas/latest.html) standard in
@@ -2566,7 +2596,7 @@ and you also need to update `allowedAPIVersions` fields for affected versions in
 [`versions.yaml`](site/data/versions.yaml), as well as add a new file with the
 OpenAPI tags (`site/data/openapi_tags/arangodb_#.yaml`).
 
-### Add a new cURL example
+### Add a cURL example
 
 Complete example:
 
