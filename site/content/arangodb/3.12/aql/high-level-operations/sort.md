@@ -2,6 +2,7 @@
 title: '`SORT` operation in AQL'
 menuTitle: SORT
 weight: 25
+group: Read
 description: >-
   The `SORT` operation allows you to specify one or multiple sort criteria and
   directions to control the order of query results or the elements of arrays

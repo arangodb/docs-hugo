@@ -2,6 +2,7 @@
 title: '`SEARCH` operation in AQL'
 menuTitle: SEARCH
 weight: 20
+group: Read
 description: >-
   The `SEARCH` operation lets you filter Views, accelerated by the underlying
   indexes
@@ -26,8 +27,8 @@ The optional `SEARCH` operation provides the capabilities to:
 - sort the result set based on how closely each document matched the
   search conditions
 
-See [`arangosearch` Views](../../indexes-and-search/arangosearch/arangosearch-views-reference.md) and
-[`search-alias` Views](../../indexes-and-search/arangosearch/search-alias-views-reference.md) on how to set up Views.
+See [`arangosearch` Views](../../arangosearch/arangosearch-views-reference.md) and
+[`search-alias` Views](../../arangosearch/search-alias-views-reference.md) on how to set up Views.
 
 ## Syntax
 
@@ -69,7 +70,7 @@ Logical or Boolean operators allow you to combine multiple search conditions.
 - `OR`, `||` (disjunction)
 - `NOT`, `!` (negation / inversion)
 
-[Operator precedence](../operators.md#operator-precedence) needs to be taken
+[Operator precedence](../language-basics/operators.md#operator-precedence) needs to be taken
 into account and can be controlled with parentheses.
 
 Consider the following contrived expression:
@@ -121,14 +122,14 @@ FOR doc IN viewName
 The alphabetical order of characters is not taken into account by ArangoSearch,
 i.e. range queries in SEARCH operations against Views will not follow the
 language rules as per the defined Analyzer locale (except for the
-[`collation` Analyzer](../../indexes-and-search/analyzers.md#collation)) nor the server language
+[`collation` Analyzer](../../analyzers.md#collation)) nor the server language
 (startup option `--default-language`)!
 Also see [Known Issues](../../release-notes/version-3.12/known-issues-in-3-12.md#arangosearch).
 {{< /warning >}}
 
 ### Array comparison operators
 
-[Array comparison operators](../operators.md#array-comparison-operators) are
+[Array comparison operators](../language-basics/operators.md#array-comparison-operators) are
 supported:
 
 ```aql
@@ -162,8 +163,8 @@ different outside of `SEARCH`, where `IN` needs to be followed by an array.
 
 ### Question mark operator
 
-You can use the [Question mark operator](../operators.md#question-mark-operator)
-to perform [Nested searches with ArangoSearch](../../indexes-and-search/arangosearch/nested-search.md)
+You can use the [Question mark operator](../language-basics/operators.md#question-mark-operator)
+to perform [Nested searches with ArangoSearch](../../arangosearch/nested-search.md)
 :
 
 ```aql
@@ -175,9 +176,9 @@ FOR doc IN myView
 It allows you to match nested objects in arrays that satisfy multiple conditions
 each, and optionally define how often these conditions should be fulfilled for
 the entire array. You need to configure the View specifically for this type of
-search using the `nested` property in [`arangosearch` Views](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
-or in the definition of [Inverted Indexes](../../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search)
-that you can add to [`search-alias` Views](../../indexes-and-search/arangosearch/search-alias-views-reference.md).
+search using the `nested` property in [`arangosearch` Views](../../arangosearch/arangosearch-views-reference.md#link-properties)
+or in the definition of [Inverted Indexes](../../indexes/inverted-indexes.md#nested-search)
+that you can add to [`search-alias` Views](../../arangosearch/search-alias-views-reference.md).
 
 ## Handling of non-indexed fields
 
@@ -233,7 +234,7 @@ FOR doc IN myView
 ```
 
 You can use the special `includeAllFields`
-[`arangosearch` View property](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+[`arangosearch` View property](../../arangosearch/arangosearch-views-reference.md#link-properties)
 to index all (sub-)attributes of the source documents if desired.
 
 ## `SEARCH` with `SORT`
@@ -249,7 +250,7 @@ FOR doc IN viewName
 ```
 
 If the (left-most) fields and their sorting directions match up with the
-[primary sort order](../../indexes-and-search/arangosearch/performance.md#primary-sort-order) definition
+[primary sort order](../../arangosearch/performance.md#primary-sort-order) definition
 of the View then the `SORT` operation is optimized away.
 
 Apart from simple sorting, it is possible to sort the matched View documents by
@@ -317,7 +318,7 @@ search criteria get optimized:
 - `"none"`: search the index without optimizing the conditions.
 <!-- Internal only: nodnf, noneg -->
 
-See [Optimizing View and inverted index query performance](../../indexes-and-search/arangosearch/performance.md#condition-optimization-options)
+See [Optimizing View and inverted index query performance](../../arangosearch/performance.md#condition-optimization-options)
 for an example.
 
 ### `countApproximate`
@@ -333,7 +334,7 @@ You can set it to one of the following values:
   only (e.g. `SEARCH doc.field == "value"`), the usual eventual consistency
   of Views aside.
 
-See [Optimizing View and inverted index query performance](../../indexes-and-search/arangosearch/performance.md#count-approximation)
+See [Optimizing View and inverted index query performance](../../arangosearch/performance.md#count-approximation)
 for an example.
 
 ### `parallelism`
@@ -343,12 +344,12 @@ multiple threads. This can speed up search queries but increases CPU and memory
 utilization.
 
 If you omit the `parallelism` option, then the default parallelism as defined by
-the [`--arangosearch.default-parallelism` startup option](../../components/arangodb-server/options.md#--arangosearchdefault-parallelism)
+the [`--arangosearch.default-parallelism` startup option](../../configuration/options.md#--arangosearchdefault-parallelism)
 is used. If you set it to a value of `1`, the search execution is not
 parallelized. If the value is greater than `1`, then up to that many worker
 threads can be used for concurrently processing index segments. The maximum
 number of total parallel execution threads is defined by the
-[`--arangosearch.execution-threads-limit` startup option](../../components/arangodb-server/options.md#--arangosearchexecution-threads-limit)
+[`--arangosearch.execution-threads-limit` startup option](../../configuration/options.md#--arangosearchexecution-threads-limit)
 that defaults to twice the number of CPU cores.
 
 {{< info >}}

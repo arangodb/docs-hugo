@@ -78,7 +78,7 @@ are *null* themselves. It is also known as `COALESCE()` in SQL.
 ### Ternary operator
 
 For conditional evaluation, check out the
-[ternary operator](../operators.md#ternary-operator).
+[ternary operator](../language-basics/operators.md#ternary-operator).
 
 ## Database functions
 
@@ -205,12 +205,12 @@ can be computed at runtime.
 {{< info >}}
 It is recommended to use subqueries with the [`FOR` operation](../high-level-operations/for.md)
 and filters over `DOCUMENT()` whenever the collections are known in advance,
-especially for [joins](../examples-and-query-patterns/joins.md), because they perform better, you
+especially for [joins](../query-patterns/joins.md), because they perform better, you
 can add additional filters, and combine it with sorting to get an array of
 documents in a guaranteed order.
 
 Queries that use the `DOCUMENT()` function cannot be
-[**cached**](../execution-and-performance/caching-query-results.md), each lookup is executed as
+[**cached**](../query-optimization/caching-query-results.md), each lookup is executed as
 a single operation, the lookups need to be executed on Coordinators for
 sharded collections in cluster deployments, and only primary indexes and no
 projections can be utilized.
@@ -579,7 +579,7 @@ FOR i IN 1..3 FILTER WARN(i < 2, "i is not smaller 2") RETURN i
 
 Returns true if *value* is greater than (or equal to) *low* and less than
 (or equal to) *high*. The values can be of different types. They are compared
-as described in [Type and value order](../fundamentals/type-and-value-order.md) and
+as described in [Type and value order](../language-basics/type-and-value-order.md) and
 is thus identical to the comparison operators `<`, `<=`, `>` and `>=` in
 behavior.
 

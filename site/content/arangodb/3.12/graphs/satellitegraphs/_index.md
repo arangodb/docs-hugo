@@ -14,7 +14,7 @@ graph traversals locally. This includes shortest path and k-shortest paths
 computations, and possibly even joins with traversals. They greatly improve
 the performance of such queries.
 
-They are the natural extension of the [SatelliteCollections](../../develop/satellitecollections.md)
+They are the natural extension of the [SatelliteCollections](../../collections/satellitecollections.md)
 concept to graphs. The same benefits and caveats apply.
 
 ![ArangoDB SatelliteGraphs](../../../../images/SatelliteGraphs.webp)

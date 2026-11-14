@@ -1,7 +1,7 @@
 const { test, expect, open, matchesMedia } = require("./fixtures");
 
 // A page with an entry in the navigation and a table of contents
-const PAGE = "/arangodb/stable/aql/fundamentals/subqueries/";
+const PAGE = "/arangodb/stable/aql/language-basics/subqueries/";
 
 // The table of contents is a column from this width, a dropdown otherwise
 const TOC_COLUMN = "(min-width: 1280px)";

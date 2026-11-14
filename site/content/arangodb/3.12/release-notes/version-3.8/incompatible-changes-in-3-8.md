@@ -92,7 +92,7 @@ separately. If either `--arangosearch.commit-threads` or
 `--arangosearch.consolidation-threads` is set, then both deprecated options are
 ignored. If only the legacy options are set, then they are used to calculate
 the thread count. See
-[ArangoDB Server ArangoSearch Options](../../components/arangodb-server/options.md#arangosearch).
+[ArangoDB Server ArangoSearch Options](../../configuration/options.md#arangosearch).
 
 ### Changed default values
 

@@ -28,7 +28,7 @@ word stemming, remove user-defined stop-words, split by a delimiting
 character only, perform case conversion and/or removal of diacritic
 characters against the full input without tokenization and more.
 
-See [Analyzers](../../indexes-and-search/analyzers.md) for all available options.
+See [Analyzers](../../analyzers.md) for all available options.
 
 ### Sorted Index
 
@@ -99,7 +99,7 @@ Note that the `primarySort` option is immutable: it cannot be changed after
 View creation. It is therefore not possible to configure it through the Web UI.
 The View needs to be created via the HTTP or JavaScript API (_arangosh_) to set it.
 
-See [Primary Sort Order](../../indexes-and-search/arangosearch/performance.md#primary-sort-order)
+See [Primary Sort Order](../../arangosearch/performance.md#primary-sort-order)
 of ArangoSearch Views.
 
 ### AQL Integration
@@ -169,7 +169,7 @@ reduce memory usage and, for some queries, also execution time for the sorting.
 If the optimization is applied, it will show as "sort-limit" rule in the query execution
 plan.
 
-Also see [AQL Optimizer Rules](../../aql/execution-and-performance/query-optimization.md#optimizer-rules)
+Also see [AQL Optimizer Rules](../../aql/query-optimization/query-optimization.md#optimizer-rules)
   (`sort-limit` rule).
 
 ### Index hints in AQL
@@ -218,7 +218,7 @@ AQL now allows the usage of floating point values without leading zeros, e.g.
 `.1234`. Previous versions of ArangoDB required a leading zero in front of
 the decimal separator, i.e `0.1234`.
 
-Also see: [AQL Numeric Literals](../../aql/fundamentals/data-types.md#numeric-literals)
+Also see: [AQL Numeric Literals](../../aql/language-basics/data-types.md#numeric-literals)
 
 ### k Shortest Paths queries
 
@@ -306,7 +306,7 @@ of data around for performing the join, but that will filter out most of the dat
 after the join. In this case SmartJoins should greatly outperform the general join,
 as they will eliminate most of the inter-node data shipping overhead.
 
-Also see the [SmartJoins documentation](../../develop/smartjoins.md).
+Also see the [SmartJoins documentation](../../aql/query-optimization/smartjoins.md).
 
 ## Background Index Creation
 
@@ -355,7 +355,7 @@ Please note that background index creation is useful only in combination with th
 storage engine. With the MMFiles storage engine, creating an index will always block any
 other operations on the collection.
 
-Also see: [Creating Indexes in Background](../../indexes-and-search/indexing/basics.md#creating-indexes-in-background)
+Also see: [Creating Indexes in Background](../../indexes/basics.md#creating-indexes-in-background)
 
 ## TTL (time-to-live) Indexes
 
@@ -377,7 +377,7 @@ always numerical version of the index attribute value even if it was originally 
 as a datestring. As a result TTL indexes will likely not be used for filtering and sort 
 operations in user-land AQL queries.
 
-Also see: [TTL Indexes](../../indexes-and-search/indexing/working-with-indexes/ttl-indexes.md)
+Also see: [TTL Indexes](../../indexes/ttl-indexes.md)
 
 ## Collections
 
@@ -396,7 +396,7 @@ In more detail:
 The feature is used to reduce the diverging of data in case of server failures
 and to help new followers to catch up.
 
-Also see the [`db` object](../../develop/javascript-api/@arangodb/db-object.md#db_createcollection-name--properties--type--options)
+Also see the [`db` object](../../javascript-api/@arangodb/db-object.md#db_createcollection-name--properties--type--options)
 
 ## HTTP API extensions
 
@@ -428,8 +428,8 @@ is determined from the document's attribute values only.
 Please note that this API is only meaningful and available on a cluster coordinator.
 
 See:
-- [Get responsible shard in JS API](../../develop/javascript-api/@arangodb/collection-object.md#collectiongetresponsiblesharddocument)
-- [Get responsible shard in HTTP API](../../develop/http-api/collections.md#get-the-responsible-shard-for-a-document)
+- [Get responsible shard in JS API](../../javascript-api/@arangodb/collection-object.md#collectiongetresponsiblesharddocument)
+- [Get responsible shard in HTTP API](../../http-api/collections.md#get-the-responsible-shard-for-a-document)
 
 ### Foxx API for running tests
 
@@ -463,7 +463,7 @@ applications due to programming errors or that were left over because client
 connections were interrupted. Also see
 [Known Issues](known-issues-in-3-5.md#stream-transactions)
 
-See: [Stream Transaction HTTP API](../../develop/http-api/transactions/stream-transactions.md)
+See: [Stream Transaction HTTP API](../../http-api/transactions/stream-transactions.md)
 
 ### Minimal replication Factor
 
@@ -562,7 +562,7 @@ applications on a server. A separate option is provided to turn off access and
 connections to the central Foxx app store via the web interface.
 
 A complete overview of the security options can be found in
-[Security Options](../../operations/security/security-options.md).
+[Security Options](../../security/security-options.md).
 
 ### Foxx
 
@@ -633,8 +633,8 @@ _arangorestore_. Please note that in this case a database user must be used that
 access to the `_system` database, in order to create the databases on restore. 
 
 Also see:
-- [arangodump](../../components/tools/arangodump/_index.md)
-- [arangorestore](../../components/tools/arangorestore/_index.md)
+- [arangodump](../../tools/arangodump/_index.md)
+- [arangorestore](../../tools/arangorestore/_index.md)
 
 ### Warning if connected to DB-Server
 

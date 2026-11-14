@@ -245,7 +245,7 @@ See [String Functions](string.md#is_ipv4).
 
 Check whether *value* is a string that can be used as a
 document key, i.e. as the value of the *_key* attribute.
-See [Document keys](../../concepts/data-structure/documents/_index.md#document-keys).
+See [Document keys](../../documents/_index.md#document-keys).
 
 - **str** (string): document key to test
 - returns **bool** (boolean): whether *str* can be used as document key

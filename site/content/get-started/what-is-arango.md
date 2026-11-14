@@ -18,7 +18,7 @@ The data platform consists of three modules: the Agentic AI Suite, the Platform
 Suite, and ArangoDB. Every service in the data platform reads and writes through
 ArangoDB, and agents and applications access the context layer through the
 [ArangoDB Query Language (AQL)](../arangodb/3.12/aql/_index.md), the
-[HTTP API](../arangodb/3.12/develop/http-api/_index.md), or the
+[HTTP API](../arangodb/3.12/http-api/_index.md), or the
 [Model Context Protocol (MCP)](../ecosystem/arangodb-mcp-server.md).
 
 {{< embed-svg "Arango-Contextual-Data-Platform-Overview" >}}
@@ -92,7 +92,7 @@ no cross-system join by ID.
 
 A single AQL query can start from a full-text match, walk the graph, filter on
 document attributes, and rank by
-[vector similarity](../arangodb/3.12/indexes-and-search/indexing/working-with-indexes/vector-indexes.md):
+[vector similarity](../arangodb/3.12/indexes/vector-indexes.md):
 
 ```aql
 FOR article IN articlesView

@@ -39,7 +39,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_open/auth \
 
 This returns a JWT token to use as the Bearer token in all subsequent API calls.
 For more details, see the
-[ArangoDB Authentication](../../arangodb/3.12/develop/http-api/authentication.md/#jwt-user-tokens)
+[ArangoDB Authentication](../../arangodb/3.12/http-api/authentication.md#jwt-user-tokens)
 documentation.
 
 ## Start the service

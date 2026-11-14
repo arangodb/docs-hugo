@@ -269,7 +269,7 @@ FOR d IN myView
 The respective optimizer rules are called `late-document-materialization`
 (collection source) and `late-document-materialization-arangosearch`
 (ArangoSearch View source). If applied, you will find `MaterializeNode`s
-in [execution plans](../../aql/execution-and-performance/query-optimization.md#execution-nodes).
+in [execution plans](../../aql/query-optimization/query-optimization.md#execution-nodes).
 
 ### Parallelization of cluster AQL queries
 
@@ -439,9 +439,9 @@ In addition, ArangoDB 3.6 provides the following new AQL functionality:
 - a function `GEO_AREA()` for [area calculations](../../aql/functions/geo.md#geo_area)
   (also added to v3.5.1)
 
-- a [`maxRuntime` query option](../../aql/how-to-invoke-aql/with-arangosh.md#maxruntime)
+- a [`maxRuntime` query option](../../aql/run-queries/with-arangosh.md#maxruntime)
   to restrict the execution to a given time in seconds (also added to v3.5.4).
-  Also see [HTTP interfaces for AQL queries](../../develop/http-api/queries/aql-queries.md#create-a-cursor).
+  Also see [HTTP interfaces for AQL queries](../../http-api/queries/aql-queries.md#create-a-cursor).
 
 - a startup option `--query.optimizer-rules` to turn certain AQL query optimizer
   rules off (or on) by default. This can be used to turn off certain optimizations
@@ -452,7 +452,7 @@ In addition, ArangoDB 3.6 provides the following new AQL functionality:
 ### Analyzers
 
 - Added UTF-8 support and ability to mark beginning/end of the sequence to
-  the [`ngram` Analyzer type](../../indexes-and-search/analyzers.md#ngram).
+  the [`ngram` Analyzer type](../../analyzers.md#ngram).
 
   The following optional properties can be provided for an `ngram` Analyzer
   definition:
@@ -466,7 +466,7 @@ In addition, ArangoDB 3.6 provides the following new AQL functionality:
   - `streamType` : `"binary"|"utf8"`, default: "binary"\
     type of the input stream (support for UTF-8 is new)
 
-- Added _edge n-gram_ support to the [`text` Analyzer type](../../indexes-and-search/analyzers.md#text).
+- Added _edge n-gram_ support to the [`text` Analyzer type](../../analyzers.md#text).
   The input gets tokenized as usual, but then _n_-grams are generated from each
   token. UTF-8 encoding is assumed (whereas the `ngram` Analyzer has a
   configurable stream type and defaults to binary).
@@ -554,7 +554,7 @@ FOR doc IN myView SEARCH PHRASE(doc.title, "quick", 1, "fox", 0, "jumps", "text_
 
 ### SmartJoins and Views
 
-ArangoSearch Views are now eligible for [SmartJoins](../../develop/smartjoins.md) in AQL,
+ArangoSearch Views are now eligible for [SmartJoins](../../aql/query-optimization/smartjoins.md) in AQL,
 provided that their underlying collections are eligible too.
 
 All collections forming the View must be sharded equally. The other join
@@ -583,14 +583,14 @@ only the final result. This can drastically reduce resource consumption and
 communication effort for the Coordinator.
 
 An entire cluster, selected databases or selected collections can be made
-eligible for the OneShard optimization. See [OneShard cluster architecture](../../deploy/oneshard.md)
+eligible for the OneShard optimization. See [OneShard cluster architecture](../../deployment-modes/oneshard.md)
 for details and usage examples.
 
 ## HTTP API
 
 The following APIs have been expanded / changed:
 
-- [Database creation API](../../develop/http-api/databases.md#create-a-database),\
+- [Database creation API](../../http-api/databases.md#create-a-database),\
   HTTP endpoint `POST /_api/database`
 
   The database creation API now handles the `replicationFactor`, `writeConcern`
@@ -612,26 +612,26 @@ The following APIs have been expanded / changed:
   that database via the web UI, _arangosh_ or drivers (unless the startup option
   `--cluster.force-one-shard` is enabled).
 
-- [Database properties API](../../develop/http-api/databases.md#get-information-about-the-current-database),\
+- [Database properties API](../../http-api/databases.md#get-information-about-the-current-database),\
   HTTP endpoint `GET /_api/database/current`
 
   The database properties endpoint returns the new additional attributes
   `replicationFactor`, `writeConcern` and `sharding` in a cluster.
   A description of these attributes can be found above.
 
-- [Collection](../../develop/http-api/collections.md) / [Graph APIs](../../develop/http-api/graphs/named-graphs.md#management),\
+- [Collection](../../http-api/collections.md) / [Graph APIs](../../http-api/graphs/named-graphs.md#management),\
   HTTP endpoints `POST /_api/collection`, `GET /_api/collection/{collection-name}/properties`
   and various `/_api/gharial/*` endpoints
 
   `minReplicationFactor` has been renamed to `writeConcern` for consistency.
   The old attribute name is still accepted and returned for compatibility.
 
-- [Hot Backup API](../../develop/http-api/hot-backups.md#create-a-backup),\
+- [Hot Backup API](../../http-api/hot-backups.md#create-a-backup),\
   HTTP endpoint `POST /_admin/backup/create`
 
   New attribute `force`, see [Hot Backup](#hot-backup) below.
 
-- New [Metrics API](../../develop/http-api/monitoring/metrics.md#get-the-metrics),\
+- New [Metrics API](../../http-api/monitoring/metrics.md#get-the-metrics),\
   HTTP endpoint `GET /_admin/metrics`
 
   Returns the instance's current metrics in Prometheus format. The returned
@@ -657,13 +657,13 @@ collections created in the new database, unless explicitly overridden.
 
 ### Metrics API option
 
-The new [option](../../components/arangodb-server/options.md#--serverexport-metrics-api)
+The new [option](../../configuration/options.md#--serverexport-metrics-api)
 `--server.export-metrics-api` allows you to disable the metrics API by setting
 it to `false`, which is otherwise turned on by default.
 
 ### OneShard cluster option
 
-The [option](../../components/arangodb-server/options.md#--clusterforce-one-shard)
+The [option](../../configuration/options.md#--clusterforce-one-shard)
 `--cluster.force-one-shard` enables the new OneShard feature for the entire
 cluster deployment. It forces the cluster into creating all future collections
 with only a single shard and using the same DB-Server as these collections'
@@ -673,7 +673,7 @@ transactional guarantees.
 
 ### Cluster upgrade option
 
-The new [option](../../components/arangodb-server/options.md#--clusterupgrade) `--cluster.upgrade`
+The new [option](../../configuration/options.md#--clusterupgrade) `--cluster.upgrade`
 toggles the cluster upgrade mode for Coordinators. It supports the following
 values:
 
@@ -697,7 +697,7 @@ have any affect on single servers, Agents or DB-Servers.
 
 ### Other cluster options
 
-The following [options](../../components/arangodb-server/options.md#cluster) have been added:
+The following [options](../../configuration/options.md#cluster) have been added:
 
 - `--cluster.max-replication-factor`: maximum replication factor for new
   collections. A value of `0` means that there is no restriction.
@@ -724,7 +724,7 @@ Note that the above options only have an effect when set for Coordinators, and
 only for collections that are created after the options have been set. They do
 not affect already existing collections.
 
-Furthermore, the following network related [options](../../components/arangodb-server/options.md#network)
+Furthermore, the following network related [options](../../configuration/options.md#network)
 have been added:
 
 - `--network.idle-connection-ttl`: default time-to-live for idle cluster-internal
@@ -765,7 +765,7 @@ For example, to turn off the rule `use-indexes-for-sort`, use
 --query.optimizer-rules "-use-indexes-for-sort"
 ```
 
-The purpose of this [startup option](../../components/arangodb-server/options.md#--queryoptimizer-rules)
+The purpose of this [startup option](../../configuration/options.md#--queryoptimizer-rules)
 is to be able to enable potential future experimental optimizer rules, which
 may be shipped in a disabled-by-default state.
 
@@ -774,13 +774,13 @@ may be shipped in a disabled-by-default state.
 - Force Backup
 
   When creating backups there is an additional option `--force` for
-  [arangobackup](../../components/tools/arangobackup/examples.md) and in the HTTP API.
+  [arangobackup](../../tools/arangobackup/examples.md) and in the HTTP API.
   This option **aborts** ongoing write transactions to obtain the global lock
   for creating the backup. Most likely this is _not_ what you want to do
   because it will abort valid ongoing write operations, but it makes sure that
   backups can be acquired more quickly. The force flag currently only aborts
-  [Stream Transactions](../../develop/http-api/transactions/stream-transactions.md) but no
-  [JavaScript Transactions](../../develop/http-api/transactions/javascript-transactions.md).
+  [Stream Transactions](../../http-api/transactions/stream-transactions.md) but no
+  [JavaScript Transactions](../../http-api/transactions/javascript-transactions.md).
 
 - View Data
 
@@ -789,7 +789,7 @@ may be shipped in a disabled-by-default state.
 
 ## TLS v1.3
 
-Added support for TLS 1.3 for the [_arangod_ server](../../components/arangodb-server/options.md#--sslprotocol)
+Added support for TLS 1.3 for the [_arangod_ server](../../configuration/options.md#--sslprotocol)
 and the client tools (also added to v3.5.1).
 
 The _arangod_ server can be started with option `--ssl.protocol 6` to make it require
@@ -824,7 +824,7 @@ server, dynamically choosing the **highest** mutually supported version of TLS.
   if all sharding keys are specified. Should the sharding keys not match the
   values in the actual document, a not found error will be returned.
 
-- [Collection names](../../concepts/data-structure/collections.md#collection-names)
+- [Collection names](../../collections/_index.md#collection-names)
   in ArangoDB can now be up to 256 characters long, instead of 64 characters in
   previous versions.
 

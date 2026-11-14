@@ -1,7 +1,7 @@
 const { test, expect, open } = require("./fixtures");
 
 test.describe("tabs", () => {
-  const PAGE = "/arangodb/stable/aql/fundamentals/subqueries/";
+  const PAGE = "/arangodb/stable/aql/language-basics/subqueries/";
 
   test("switch the panel and remember the selection", async ({ page }) => {
     await open(page, PAGE);
@@ -38,11 +38,11 @@ test("long code blocks can be expanded", async ({ page }) => {
 
 test.describe("deep links to OpenAPI properties", () => {
   for (const [path, id, parents] of [
-    ["/arangodb/stable/develop/http-api/batch-requests/", "execute-a-batch-request_res_200", []],
+    ["/arangodb/stable/http-api/batch-requests/", "execute-a-batch-request_res_200", []],
     // Nested property
-    ["/arangodb/stable/develop/http-api/collections/", "create-a-collection_body_keyOptions_type", ["create-a-collection_body_keyOptions"]],
+    ["/arangodb/stable/http-api/collections/", "create-a-collection_body_keyOptions_type", ["create-a-collection_body_keyOptions"]],
     // Array items (double underscore)
-    ["/arangodb/stable/develop/http-api/queries/aql-query-results-cache/", "list-the-entries-of-the-aql-query-results-cache_res_200__hash", ["list-the-entries-of-the-aql-query-results-cache_res_200"]],
+    ["/arangodb/stable/http-api/queries/aql-query-results-cache/", "list-the-entries-of-the-aql-query-results-cache_res_200__hash", ["list-the-entries-of-the-aql-query-results-cache_res_200"]],
   ]) {
     test(`open the property and its parents: ${id}`, async ({ page }) => {
       await open(page, `${path}#${id}`);
@@ -58,8 +58,8 @@ test.describe("deep links to OpenAPI properties", () => {
 test.describe("deep links", () => {
   for (const target of [
     "/arangodb/stable/graphs/example-graphs/#city-graph",
-    "/arangodb/stable/indexes-and-search/arangosearch/geospatial-search/#search-for-polygons-within-polygons",
-    "/arangodb/stable/develop/http-api/batch-requests/#execute-a-batch-request_res_200",
+    "/arangodb/stable/arangosearch/geospatial-search/#search-for-polygons-within-polygons",
+    "/arangodb/stable/http-api/batch-requests/#execute-a-batch-request_res_200",
   ]) {
     test(`scroll to the target: ${target}`, async ({ page }) => {
       await open(page, target);

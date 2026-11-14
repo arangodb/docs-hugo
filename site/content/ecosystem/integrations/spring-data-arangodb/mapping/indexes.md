@@ -17,9 +17,9 @@ aliases:
   - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/mapping/indexes
 ---
 Indexes can be ensured using the following annotations. For reference see the
-[indexing](../../../../../arangodb/3.12/indexes-and-search/indexing/_index.md) documentation
+[indexing](../../../../arangodb/3.12/indexes/_index.md) documentation
 and specific aspects that apply to
-[indexes on shards](../../../../../arangodb/3.12/deploy/architecture/data-sharding.md#indexes-on-shards).
+[indexes on shards](../../../../arangodb/3.12/deployment-modes/cluster/data-sharding.md#indexes-on-shards).
 
 ## Annotation @\<IndexType\>Indexed
 

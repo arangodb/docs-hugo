@@ -15,7 +15,7 @@ SmartGraphs have been extended with a new option to create SmartGraphs
 using SatelliteCollections.
 These SmartGraphs are capable of using SatelliteCollections within their graph
 definition and therefore can make use of all the benefits of
-[SatelliteCollections](../../develop/satellitecollections.md).
+[SatelliteCollections](../../collections/satellitecollections.md).
 
 Edge definitions can now be created between SmartCollections and
 SatelliteCollections. As SatelliteCollections are globally replicated to each
@@ -57,8 +57,8 @@ tokens. This makes comparisons follow the rules of the respective language,
 most notable in range queries against Views.
 
 See:
-- [`segmentation` Analyzer](../../indexes-and-search/analyzers.md#segmentation)
-- [`collation` Analyzer](../../indexes-and-search/analyzers.md#collation)
+- [`segmentation` Analyzer](../../analyzers.md#segmentation)
+- [`collation` Analyzer](../../analyzers.md#collation)
 
 ### Analyzer locale normalization
 
@@ -110,10 +110,10 @@ The cache size can be controlled with the new `--arangosearch.columns-cache-limi
 startup option and monitored via the new `arangodb_search_columns_cache_size`
 metric.
 
-[ArangoSearch caching](../../indexes-and-search/arangosearch/arangosearch-views-reference.md) is only available in the
+[ArangoSearch caching](../../arangosearch/arangosearch-views-reference.md) is only available in the
 Enterprise Edition.
 
-See [Optimizing View query performance](../../indexes-and-search/arangosearch/performance.md)
+See [Optimizing View query performance](../../arangosearch/performance.md)
 for examples.
 
 ## UI
@@ -582,7 +582,7 @@ Also see:
 - [AQL `UPDATE` operation](../../aql/high-level-operations/update.md#refillindexcaches)
 - [AQL `REPLACE` operation](../../aql/high-level-operations/replace.md#refillindexcaches)
 - [AQL `REMOVE` operation](../../aql/high-level-operations/remove.md#refillindexcaches)
-- [Document HTTP API](../../develop/http-api/documents.md)
+- [Document HTTP API](../../http-api/documents.md)
 - [Edge cache refill options](#edge-cache-refill-options)
 
 ## Multi-dimensional Indexes (experimental)
@@ -618,7 +618,7 @@ the emerging performance is much more dependent on the distribution of the
 dataset, making it less predictable. A third limitation is that `zkd` indexes
 can only be created for index values which are IEEE 754 doubles.
 
-[Multi-dimensional Indexes](../../indexes-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md) are an experimental feature.
+[Multi-dimensional Indexes](../../indexes/multi-dimensional-indexes.md) are an experimental feature.
 
 ## Server options
 
@@ -661,7 +661,7 @@ Coordinators and DB-Servers of the cluster. Otherwise the startup will be
 refused. In DC2DC setups it is also required to use the same database naming
 convention for both datacenters to avoid incompatibilities.
 
-Also see [Database names](../../concepts/data-structure/databases.md#database-names).
+Also see [Database names](../../databases.md#database-names).
 
 ### ICU Language
 
@@ -671,7 +671,7 @@ A new server startup option for setting the language was added. The new
 `--icu-language` option will replace the existing `--default-language` option,
 and only one of the two can be set.
 
-Also see [ArangoDB Server General Options](../../components/arangodb-server/options.md#--icu-language).
+Also see [ArangoDB Server General Options](../../configuration/options.md#--icu-language).
 
 ### Logging
 
@@ -710,7 +710,7 @@ should be used.
   The default value for this flag is set to `false` for compatibility with
   previous versions.
 
-Also see [Logging](../../components/arangodb-server/options.md#log).
+Also see [Logging](../../configuration/options.md#log).
 
 ### Version information
 
@@ -780,7 +780,7 @@ whether the Linux-specific `splice()` syscall should be used for copying file
 contents. Set it to `false` to use a less efficient, but more portable user-space
 file copying method, which should work on all file systems.
 
-See [ArangoDB Server Options](../../components/arangodb-server/options.md#--use-splice-syscall)
+See [ArangoDB Server Options](../../configuration/options.md#--use-splice-syscall)
 for details.
 
 ### AQL query logging
@@ -954,8 +954,8 @@ db._setLicense("<license-string>");
 There are two new HTTP API routes to do the same, `GET /_admin/license` and
 `PUT /_admin/license`.
 
-See [License Management](../../operations/administration/license-management.md) and the
-[License Management HTTP API](../../develop/http-api/administration.md#license).
+See [License Management](../../license-management.md) and the
+[License Management HTTP API](../../http-api/administration.md#license).
 
 ## Miscellaneous changes
 
@@ -1051,7 +1051,7 @@ This is particularly beneficial for the RocksDB buffer cache.
 You can now configure the option by setting a `CACHE_OBLIVIOUS` environment
 variable to the string `true` or `false` before starting ArangoDB.
 
-See [ArangoDB Server environment variables](../../components/arangodb-server/environment-variables.md)
+See [ArangoDB Server environment variables](../../configuration/environment-variables.md)
 for details.
 
 ### WAL file tracking metrics
@@ -1121,7 +1121,7 @@ arangoimport \
   ...
 ```
 
-Also see [Merging Attributes](../../components/tools/arangoimport/examples-csv.md#merging-attributes).
+Also see [Merging Attributes](../../tools/arangoimport/examples-csv.md#merging-attributes).
 
 _arangoimport_ also provides a new `--datatype` startup option, in order to fix
 the datatypes for certain attributes in CSV/TSV imports. For example, in the
@@ -1150,7 +1150,7 @@ This will turn the numeric-looking values in the `key` attribute into strings
 but treat the attributes `price` and `weight` as numbers. Finally, the values in
 attribute `fk` will be treated as strings again.
 
-See [Overriding data types per attribute](../../components/tools/arangoimport/examples-csv.md#overriding-data-types-per-attribute).
+See [Overriding data types per attribute](../../tools/arangoimport/examples-csv.md#overriding-data-types-per-attribute).
 
 ### arangobench
 
@@ -1178,7 +1178,7 @@ arangobench \
 This does not compromise the use of the other client tools, that preserve
 the behavior of having one Coordinator and one endpoint.
 
-Also see [_arangobench_ Options](../../components/tools/arangobench/_index.md#general-configuration)
+Also see [_arangobench_ Options](../../tools/arangobench/_index.md#general-configuration)
 
 ### arangodump
 
@@ -1196,7 +1196,7 @@ arangodump \
 This does not compromise the use of the other client tools that preserve
 the behavior of having one Coordinator and one endpoint.
 
-Also see [_arangodump_ examples](../../components/tools/arangodump/examples.md)
+Also see [_arangodump_ examples](../../tools/arangodump/examples.md)
 
 ### arangorestore
 
@@ -1229,7 +1229,7 @@ missing. If you set the option to `false`, the attributes are not added to the
 collection structure. If the attributes are already present in the dump data, they
 are not modified by _arangorestore_, irrespective of the setting of this option.
 
-Also see [_arangorestore_ examples](../../components/tools/arangorestore/examples.md).
+Also see [_arangorestore_ examples](../../tools/arangorestore/examples.md).
 
 ### arangovpack
 
@@ -1242,7 +1242,7 @@ the input and output types:
 - `--output-type` (`json`, `json-pretty`, `vpack`, `vpack-hex`)
 
 The former option `--print-non-json` has been replaced with the new option
-`--fail-on-non-json` which makes [arangovpack](../../components/tools/arangovpack/_index.md)
+`--fail-on-non-json` which makes [arangovpack](../../tools/arangovpack/_index.md)
 fail when trying to emit non-JSON types to JSON output.
 
 ## Internal changes

@@ -54,8 +54,8 @@ Coordinators and DB-Servers of the cluster. Otherwise, the startup is
 refused.
 
 Also see:
-- [Collection names](../../concepts/data-structure/collections.md#collection-names)
-- [View names](../../concepts/data-structure/views.md#view-names)
+- [Collection names](../../collections/_index.md#collection-names)
+- [View names](../../arangosearch/views.md#view-names)
 - Index names have the same character restrictions as collection names
 
 #### Stricter validation of Unicode surrogate values in JSON data
@@ -414,7 +414,7 @@ to extend the timeout.
 
 The maintenance mode ends automatically after the defined timeout.
 
-Also see the [HTTP interface for cluster maintenance](../../develop/http-api/cluster.md#get-the-maintenance-status-of-a-db-server).
+Also see the [HTTP interface for cluster maintenance](../../http-api/cluster.md#get-the-maintenance-status-of-a-db-server).
 
 #### Shard usage metrics
 
@@ -428,7 +428,7 @@ startup option to `enabled-per-shard` to make DB-Servers collect per-shard
 usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
 usage metrics per shard and per user whenever a shard is accessed.
 
-For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-the-usage-metrics)
+For more information, see the [HTTP API description](../../http-api/monitoring/metrics.md#get-the-usage-metrics)
 and [Monitoring per collection/database/user](../version-3.11/whats-new-in-3-11.md#monitoring-per-collectiondatabaseuser).
 
 ### Endpoints augmented
@@ -496,14 +496,14 @@ and [Monitoring per collection/database/user](../version-3.11/whats-new-in-3-11.
 The `/_api/analyzer` endpoint supports a new Analyzer type in the
 Enterprise Edition:
 
-- [`geo_s2`](../../indexes-and-search/analyzers.md#geo_s2) (introduced in v3.10.5):
+- [`geo_s2`](../../analyzers.md#geo_s2) (introduced in v3.10.5):
   Like the existing `geojson` Analyzer, but with an additional `format` property
   that can be set to `"latLngDouble"` (default), `"latLngInt"`, or `"s2Point"`.
 
 #### Query API
 
-The [`GET /_api/query/current`](../../develop/http-api/queries/aql-queries.md#list-the-running-aql-queries)
-and [`GET /_api/query/slow`](../../develop/http-api/queries/aql-queries.md#list-the-slow-aql-queries)
+The [`GET /_api/query/current`](../../http-api/queries/aql-queries.md#list-the-running-aql-queries)
+and [`GET /_api/query/slow`](../../http-api/queries/aql-queries.md#list-the-slow-aql-queries)
 endpoints include a new numeric `peakMemoryUsage` attribute.
 
 ---
@@ -543,7 +543,7 @@ preceding or trailing colon using the `POST /_api/index` endpoint.
 
 <small>Introduced in: v3.10.2</small>
 
-[Inverted indexes](../../develop/http-api/indexes/inverted.md) support new
+[Inverted indexes](../../http-api/indexes/inverted.md) support new
 caching options in the Enterprise Edition.
 
 - A new `cache` option for inverted indexes as the default (boolean, default:
@@ -593,7 +593,7 @@ You may use a shorthand notations on `arangosearch` View creation or the
 `storedValues` option, like `["attr1", "attr2"]`, instead of using an array of
 objects.
 
-See the [`arangosearch` Views Reference](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+See the [`arangosearch` Views Reference](../../arangosearch/arangosearch-views-reference.md#link-properties)
 for details.
 
 #### Pregel API
@@ -808,14 +808,14 @@ every optimizer rule that briefly explains what it does.
 
 <small>Introduced in: v3.11.14-4</small>
 
-The previously fixed limit of 128 MiB for [Stream Transactions](../../develop/transactions/stream-transactions.md)
+The previously fixed limit of 128 MiB for [Stream Transactions](../../transactions/stream-transactions.md)
 can now be configured with the new `--transaction.streaming-max-transaction-size`
 startup option. The default value remains 128 MiB.
 
 When beginning a Stream Transaction, you can now specify a `maxTransactionSize`
 for that particular transaction. The default value as well as the maximum value
 are defined by the `--transaction.streaming-max-transaction-size` startup option.
-See [HTTP interface for Stream Transactions](../../develop/http-api/transactions/stream-transactions.md#begin-a-stream-transaction).
+See [HTTP interface for Stream Transactions](../../http-api/transactions/stream-transactions.md#begin-a-stream-transaction).
 
 ### Endpoints deprecated
 

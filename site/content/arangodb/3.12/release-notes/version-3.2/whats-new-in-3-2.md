@@ -118,7 +118,7 @@ executes the query, locally. With this approach, network hops during join
 operations on sharded collections can be avoided and response times can be close to
 that of a single instance.
 
-[SatelliteCollections](../../develop/satellitecollections.md)
+[SatelliteCollections](../../collections/satellitecollections.md)
 are available in the *Enterprise Edition*.
 
 ## Memory management
@@ -207,7 +207,7 @@ are available in the *Enterprise Edition*.
 
 ## Foxx
 
-- There is now an [official HTTP API for managing services](../../develop/http-api/foxx.md),
+- There is now an [official HTTP API for managing services](../../http-api/foxx.md),
   allowing services to be installed, modified, uninstalled and reconfigured without
   the administrative web interface.
 
@@ -348,16 +348,16 @@ are available in the *Enterprise Edition*.
 - added read only mode for users
 - collection level authorization rights
 
-Read more in the [overview](../../operations/administration/user-management/_index.md).
+Read more in the [overview](../../security/user-management/_index.md).
 
 ## Foxx and authorization
 
-- the [cookie session transport](../../develop/foxx-microservices/reference/sessions-middleware/session-transports/cookie-transport.md) now supports
-  all options supported by the [cookie method of the response object](../../develop/foxx-microservices/reference/routers/response.md#cookie).
+- the [cookie session transport](../../foxx-microservices/reference/sessions-middleware/session-transports/cookie-transport.md) now supports
+  all options supported by the [cookie method of the response object](../../foxx-microservices/reference/routers/response.md#cookie).
 
-- it's now possible to provide your own version of the `graphql-sync` module when using the [GraphQL extensions for Foxx](../../develop/foxx-microservices/reference/related-modules/graphql.md) by passing a copy of the module using the new _graphql_ option.
+- it's now possible to provide your own version of the `graphql-sync` module when using the [GraphQL extensions for Foxx](../../foxx-microservices/reference/related-modules/graphql.md) by passing a copy of the module using the new _graphql_ option.
 
-- custom API endpoints can now be tagged using the [tag method](../../develop/foxx-microservices/reference/routers/endpoints.md#tag) to generate a cleaner Swagger documentation.
+- custom API endpoints can now be tagged using the [tag method](../../foxx-microservices/reference/routers/endpoints.md#tag) to generate a cleaner Swagger documentation.
 
 ## Miscellaneous Changes
 

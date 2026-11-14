@@ -2,6 +2,7 @@
 title: '`UPSERT` operation in AQL'
 menuTitle: UPSERT
 weight: 70
+group: Write
 description: >-
   An `UPSERT` operation either modifies an existing document, or creates a new
   document if it does not exist
@@ -13,7 +14,7 @@ These subtypes are called **upsert** (update or insert) and **repsert**
 (replace or insert).
 
 Each `UPSERT` operation is restricted to a single collection, and the 
-[collection name](../../concepts/data-structure/collections.md#collection-names) must not be dynamic.
+[collection name](../../collections/_index.md#collection-names) must not be dynamic.
 Only a single `UPSERT` statement per collection is allowed per AQL query, and 
 it cannot be followed by read or write operations that access the same collection, by
 traversal operations, or AQL functions that can read documents.

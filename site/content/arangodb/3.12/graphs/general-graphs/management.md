@@ -123,7 +123,7 @@ graph_module._relation("has_bought", ["Customer", "Company"], ["Groceries", "Ele
 The following edge definition options are supported:
 
 - `satellites` (array, _optional_):
-  An array of collection names that is used to create [SatelliteCollections](../../develop/satellitecollections.md)
+  An array of collection names that is used to create [SatelliteCollections](../../collections/satellitecollections.md)
   for a (Disjoint) SmartGraph using SatelliteCollections.
   Each array element must be a string and a valid collection name. The collection
   type cannot be modified later.
@@ -599,7 +599,7 @@ Create a new node in `vertexCollectionName`:
 - `data` (object):
   JSON data of node.
 - `options` (object, _optional_):
-  See the [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectionreplacedocument-data--options)
+  See the [_collection_ object](../../javascript-api/@arangodb/collection-object.md#collectionreplacedocument-data--options)
 
 **Examples**
 
@@ -625,7 +625,7 @@ Replaces the data of a node in collection `vertexCollectionName`:
 - `data` (object):
   JSON data of node.
 - `options` (object, _optional_):
-  See the [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectionreplacedocument-data--options)
+  See the [_collection_ object](../../javascript-api/@arangodb/collection-object.md#collectionreplacedocument-data--options)
 
 **Examples**
 
@@ -652,7 +652,7 @@ Updates the data of a node in collection `vertexCollectionName`.
 - `data` (object):
   JSON data of node.
 - `options` (object, _optional_):
-  See the [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectionupdatedocument-data--options)
+  See the [_collection_ object](../../javascript-api/@arangodb/collection-object.md#collectionupdatedocument-data--options)
 
 **Examples**
 
@@ -678,7 +678,7 @@ incoming and outgoing edges of the node.
 - `vertexId` (string):
   `_id` attribute of the node
 - `options` (object, _optional_):
-  See the [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectionremoveobject)
+  See the [_collection_ object](../../javascript-api/@arangodb/collection-object.md#collectionremoveobject)
 
 **Examples**
 
@@ -710,7 +710,7 @@ Creates an edge from node `data._from` to node `data._to` in collection
   identifier of the source node and a `_to` attribute with the document
   identifier of the target node.
 - `options` (object, _optional_):
-  See the [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
+  See the [_collection_ object](../../javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
 
 **Examples**
 
@@ -757,7 +757,7 @@ Note that `_from` and `_to` are mandatory.
 - `data` (object, _optional_):
   JSON data of the edge
 - `options` (object, _optional_):
-  See the [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectionreplacedocument-data--options)
+  See the [_collection_ object](../../javascript-api/@arangodb/collection-object.md#collectionreplacedocument-data--options)
 
 **Examples**
 
@@ -786,7 +786,7 @@ Updates the data of an edge in collection `edgeCollectionName`.
 - `data` (object, _optional_):
   JSON data of the edge
 - `options` (object, _optional_):
-  See the [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectionupdatedocument-data--options)
+  See the [_collection_ object](../../javascript-api/@arangodb/collection-object.md#collectionupdatedocument-data--options)
 
 **Examples**
 
@@ -814,7 +814,7 @@ that directly reference this edge like a node are removed, too.
 - `edgeId` (string):
   `_id` attribute of the edge
 - `options` (object, _optional_):
-  See the [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectionremoveobject)
+  See the [_collection_ object](../../javascript-api/@arangodb/collection-object.md#collectionremoveobject)
 
 **Examples**
 

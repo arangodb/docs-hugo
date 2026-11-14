@@ -21,7 +21,7 @@ The official ArangoDB low-level JavaScript client.
 {{< info >}}
 If you are looking for the ArangoDB JavaScript API used in the _arangosh_ interactive
 shell (and up to ArangoDB v3.12 also in Foxx), please refer to the documentation about the
-[`@arangodb` module](../../arangodb/3.12/develop/javascript-api/@arangodb/_index.md) instead.
+[`@arangodb` module](../../arangodb/3.12/javascript-api/@arangodb/_index.md) instead.
 
 The JavaScript driver is **only** meant to be used when accessing ArangoDB from
 **outside** the database.
@@ -198,7 +198,7 @@ injection attacks.
 
 ## Stream Transactions
 
-[Stream Transactions](../../arangodb/3.12/develop/transactions/stream-transactions.md)
+[Stream Transactions](../../arangodb/3.12/transactions/stream-transactions.md)
 let you run multiple document operations or AQL queries in one transaction.
 Declare the collections you want to write to when you begin the transaction with
 `db.beginTransaction()`, then call `trx.commit()` or `trx.abort()` when the
@@ -333,13 +333,13 @@ operation per `step` can continue using `step` and `withTransaction`.
 For further examples, migration guidance, and troubleshooting, see the
 [arangojs Stream Transactions guide](https://github.com/arangodb/arangojs/blob/main/docs/stream-transactions.md).
 For server behavior and limitations, see the
-[Stream Transactions documentation](../../arangodb/3.12/develop/transactions/stream-transactions.md).
+[Stream Transactions documentation](../../arangodb/3.12/transactions/stream-transactions.md).
 
 ## Error responses
 
 If the server returns an ArangoDB error response, arangojs throws an `ArangoError`
 with an `errorNum` property indicating the
-[ArangoDB error code](../../arangodb/3.12/develop/error-codes.md) and expose the response body
+[ArangoDB error code](../../arangodb/3.12/error-codes.md) and expose the response body
 as the response property of the error object.
 
 For all other errors during the request/response cycle arangojs throws a

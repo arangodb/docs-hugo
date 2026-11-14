@@ -241,7 +241,7 @@ versus the whole document.
 <small>Introduced in: v3.12.1</small>
 
 You can provide index hints for traversals to let the optimizer prefer
-the [vertex-centric indexes](../../indexes-and-search/indexing/working-with-indexes/vertex-centric-indexes.md)
+the [vertex-centric indexes](../../indexes/vertex-centric-indexes.md)
 you specify over the regular edge index.
 
 This is useful for cases where the selectively estimate of the edge index
@@ -605,7 +605,7 @@ FOR v,e,p IN 2..3 OUTBOUND "places/London" GRAPH "kShortestPathsGraph"
 ```
 
 The problem is that `null`, `false`, and `true` are all less than any number (`< 2.5`)
-because of AQL's [Type and value order](../fundamentals/type-and-value-order.md), and
+because of AQL's [Type and value order](../language-basics/type-and-value-order.md), and
 because the edge at depth 0 is always `null`. The prune condition is accidentally
 fulfilled at the start node, stopping the traversal too early. This similarly
 happens if you check an edge attribute for inequality (`!=`) and compare it to
@@ -652,7 +652,7 @@ functions cannot be used in the expression:
 - `WITHIN()`
 - `WITHIN_RECTANGLE()`
 - `FULLTEXT()`
-- [User-defined functions (UDFs)](../user-defined-functions.md)
+- [User-defined functions (UDFs)](../functions/user-defined-functions.md)
 {{< /warning >}}
 
 ## Using filters
@@ -786,7 +786,7 @@ All of the above filters can be defined on nodes in the exact same way.
 <small>Introduced in: v3.12.11</small>
 
 An array expansion in a path filter can contain an
-[inline `FILTER`](../operators.md#inline-filter) to restrict which nodes or
+[inline `FILTER`](../language-basics/operators.md#inline-filter) to restrict which nodes or
 edges the array comparison operator applies to. This is useful if a condition
 is only meaningful for some of the path elements, for instance because an
 attribute is optional:
@@ -822,7 +822,7 @@ post-filter that is applied to the paths the traversal emits:
   isn't available when the traversal evaluates a single node or edge. It may
   refer to `CURRENT` and to variables defined before the traversal, however.
 - The inline `FILTER` condition doesn't use the
-  [question mark operator](../operators.md#question-mark-operator).
+  [question mark operator](../language-basics/operators.md#question-mark-operator).
 
 Conditions that can be evaluated during the traversal:
 
@@ -856,7 +856,7 @@ FILTER p.edges[* FILTER CURRENT.weight > LENGTH(p.vertices)].weight ALL <= 10
 ```
 
 To check whether a condition is evaluated during the traversal, inspect the
-[execution plan](../execution-and-performance/query-optimization.md#execution-plans).
+[execution plan](../query-optimization/query-optimization.md#execution-plans).
 If the `optimize-traversals` rule can move the condition into the traversal,
 no `FilterNode` remains for it.
 
@@ -1065,7 +1065,7 @@ Please note that the direction can't be passed in by a bind parameter.
 ## Use the AQL explainer for optimizations
 
 Now let's have a look what the optimizer does behind the curtain and inspect
-traversal queries using [the explainer](../execution-and-performance/query-optimization.md):
+traversal queries using [the explainer](../query-optimization/query-optimization.md):
 
 ```aql
 ---
@@ -1113,7 +1113,7 @@ examples.dropGraph("traversalGraph");
 
 If this traversal is not powerful enough for your needs, like you cannot describe
 your conditions as AQL filter statements, then you might want to have a look at
-the [edge collection methods](../../develop/javascript-api/@arangodb/collection-object.md#edge-documents)
+the [edge collection methods](../../javascript-api/@arangodb/collection-object.md#edge-documents)
 in the JavaScript API.
 
-Also see how to [combine graph traversals](../examples-and-query-patterns/traversals.md).
+Also see how to [combine graph traversals](../query-patterns/traversals.md).

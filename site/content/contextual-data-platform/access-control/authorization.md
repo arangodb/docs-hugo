@@ -37,7 +37,7 @@ level for the `_system` database is *Administrate*.
 
 You can manage the access levels in the web interface, in _arangosh_, and with
 the HTTP API. For the full rules and how to grant the levels, see
-[Managing Users](../../arangodb/3.12/operations/administration/user-management/_index.md).
+[Managing Users](../../arangodb/3.12/security/user-management/_index.md).
 
 ## Particularities
 

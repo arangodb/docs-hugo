@@ -1,7 +1,8 @@
 ---
 title: Release Notes
 menuTitle: Release Notes
-weight: 285
+weight: 730
+group: Tools & reference
 description: >-
   You can directly navigate to the information about changes in a specific
   version of ArangoDB by following the links of this overview

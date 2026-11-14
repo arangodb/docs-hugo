@@ -2,6 +2,7 @@
 title: '`LET` operation in AQL'
 menuTitle: LET
 weight: 35
+group: Read
 description: >-
   You can use the `LET` operation to assign an arbitrary value to a variable
 ---
@@ -14,7 +15,7 @@ You cannot change the value once assigned.
 
 *expression* can be a simple expression or a subquery.
 
-For allowed variable names [AQL Syntax](../fundamentals/syntax.md#names).
+For allowed variable names [AQL Syntax](../language-basics/syntax.md#names).
 
 ## Usage
 
