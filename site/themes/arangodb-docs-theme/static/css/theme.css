@@ -737,14 +737,6 @@ tr {
 
 /* Content-specific utility classes */
 
-table.fixed {
-    table-layout: fixed;
-}
-
-table.fixed code {
-    white-space: pre-wrap;
-}
-
 .columns-3 {
     -webkit-column-count: 3;
     -moz-column-count: 3;

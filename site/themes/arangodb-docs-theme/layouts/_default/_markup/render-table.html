@@ -1,0 +1,39 @@
+<table
+  {{- range $k, $v := .Attributes }}
+    {{- if $v }}
+      {{- printf " %s=%q" $k $v | safeHTMLAttr }}
+    {{- end }}
+  {{- end }}>
+  <thead>
+    {{- range .THead }}
+      <tr>
+        {{- range . }}
+          {{- $inlineCode := strings.Contains .Text "<code" }}
+          <th
+            {{- with .Alignment }}
+              {{- printf " style=%q" (printf "text-align: %s" .) | safeHTMLAttr }}
+            {{- end -}}
+          >{{ if $inlineCode }}<div style="min-width: {{ math.Min 20 (.Text | plainify | len | add 2) }}ch">{{ end }}
+            {{- .Text -}}
+          {{ if $inlineCode }}</div>{{ end }}</th>
+        {{- end }}
+      </tr>
+    {{- end }}
+  </thead>
+  <tbody>
+    {{- range .TBody }}
+      <tr>
+        {{- range . }}
+          {{- $inlineCode := strings.Contains .Text "<code" }}
+          <td
+            {{- with .Alignment }}
+              {{- printf " style=%q" (printf "text-align: %s" .) | safeHTMLAttr }}
+            {{- end -}}
+          >{{ if $inlineCode }}<div style="min-width: {{ math.Min 20 (.Text | plainify | len | add 2) }}ch">{{ end }}
+            {{- .Text -}}
+          {{ if $inlineCode }}</div>{{ end }}</td>
+        {{- end }}
+      </tr>
+    {{- end }}
+  </tbody>
+</table>

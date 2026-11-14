@@ -153,12 +153,12 @@ reserved keywords. You can use them as collection or attribute names
 without having to quote them. The query parser can identify them as keyword-like
 based on the context:
 
-- `KEEP` –
-  [COLLECT](../high-level-operations/collect.md#discarding-obsolete-variables)
-  operation variant
 - `COUNT` –
   [COLLECT](../high-level-operations/collect.md#group-length-calculation)
   operation variant (`WITH COUNT INTO`)
+- `KEEP` –
+  [COLLECT](../high-level-operations/collect.md#discarding-obsolete-variables)
+  operation variant
 - `OPTIONS` –
   [FOR](../high-level-operations/for.md#options) /
   [SEARCH](../high-level-operations/search.md#search-options) /

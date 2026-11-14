@@ -2107,7 +2107,7 @@ db.ids.ensureIndex({ type: "persistent", fields: [ "myId" ], unique: true });
 db.ids.save({ "myId": 123 });
 db.ids.save({ 
   "myId": 123
-}); // xpError(ERROR_ARANGO_UNIQUE_CONSTRAINT_VIOLATED)
+}); // expectedError(ERROR_ARANGO_UNIQUE_CONSTRAINT_VIOLATED)
 ~db._drop("ids");
 ```
 ````
@@ -2233,13 +2233,25 @@ If a statement is expected to fail (e.g. to demonstrate the error case), then
 this has to be indicated with a special JavaScript comment:
 
 ```js
-db._document("collection/does_not_exist"); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND)
+db._document("collection/does_not_exist"); // expectedError(ERROR_ARANGO_DOCUMENT_NOT_FOUND)
 ```
 
 This will make the example generation continue despite the error. See
 [Error codes and meanings](https://docs.arango.ai/arangodb/stable/develop/error-codes/)
-for a list of all error codes and their names. If a unexpected error is raised,
-then the example generation will abort with an error.
+for a list of all error codes and their names. The error is shown in a short
+form in the output, e.g. `[ArangoError 1202: document not found]`, and the
+output of the following statements is shown as usual.
+
+The example generation fails with an error if:
+
+- an error is raised that the example doesn't declare (including JavaScript
+  errors like a `ReferenceError`),
+- a declared error is not raised, or
+- a declared error name is unknown.
+
+The check covers the whole example rather than individual statements, so the
+comment can follow a statement that spans multiple lines. If an example
+expects multiple different errors, add a comment for each of them.
 
 Every backslash in a query needs to be escaped with another backslash, i.e.
 JSON escape sequences require two backslashes, and literal backslashes four:
@@ -2293,7 +2305,7 @@ for the available datasets.
 
 To get the query explain output including the execution plan instead of the
 actual query result, you can optionally specify the `explain` option in the
-front matter:
+front matter. The output is the same as of `db._explain()` in arangosh:
 
 ```yaml
 explain: true
@@ -2322,6 +2334,43 @@ bindVars:
 ---
 FOR doc IN @@coll
   RETURN doc.@attr
+```
+
+The query can optionally set query options via the `options` key in the
+front matter. It corresponds to the `options` object of the cursor API, i.e.
+it accepts the sub-options like `maxRuntime`, `optimizer`, or `fullCount`, but
+not the attributes at the top level of the request body like `count` or
+`batchSize`. The options are shown below the query like the bind parameters:
+
+```yaml
+---
+...
+options:
+  matchStatement: experimental
+  optimizer:
+    rules: ["-all"]
+# or using JSON notation:
+#options: { "matchStatement": "experimental", "optimizer": { "rules": ["-all"] } }
+---
+MATCH (a:persons) -[:knows]-> (b:persons)
+  RETURN [a._key, b._key]
+```
+
+The bind parameters and query options are also used if you set `explain: true`.
+
+If the query produces warnings, they are shown below the query result.
+
+If a query is expected to fail, indicate this with an AQL comment like in
+JavaScript examples. It is not shown in the rendered example:
+
+```aql
+---
+name: aqlMatchUnboundVariable
+description: ''
+options:
+  matchStatement: experimental
+---
+MATCH (a) RETURN a // expectedError(ERROR_QUERY_PARSE)
 ```
 
 #### Backslashes in AQL examples

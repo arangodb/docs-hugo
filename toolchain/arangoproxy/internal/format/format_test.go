@@ -276,42 +276,84 @@ func TestAQLFormatterRequestCode(t *testing.T) {
 	formatter := AQLFormatter{}
 
 	tests := []struct {
-		name     string
-		code     string
-		bindVars map[string]interface{}
-		want     string
+		name         string
+		code         string
+		bindVars     map[string]interface{}
+		queryOptions map[string]interface{}
+		explain      bool
+		want         string
 	}{
 		{
 			name: "plain query",
 			code: "RETURN 1",
-			want: `db._query("RETURN 1").toArray();`,
+			want: `__docsQuery(db._query("RETURN 1"));`,
 		},
 		{
 			name: "backslashes reach AQL unchanged",
 			code: `RETURN REGEX_TEST("a1", "\\d")`,
-			want: `db._query("RETURN REGEX_TEST(\"a1\", \"\\\\d\")").toArray();`,
+			want: `__docsQuery(db._query("RETURN REGEX_TEST(\"a1\", \"\\\\d\")"));`,
 		},
 		{
 			name: "dollar brace is not interpolated",
 			code: `RETURN REGEX_REPLACE("Jane Roe", "(?<f>\\w+) (?<l>\\w+)", "${l}, ${f}")`,
-			want: `db._query("RETURN REGEX_REPLACE(\"Jane Roe\", \"(?<f>\\\\w+) (?<l>\\\\w+)\", \"${l}, ${f}\")").toArray();`,
+			want: `__docsQuery(db._query("RETURN REGEX_REPLACE(\"Jane Roe\", \"(?<f>\\\\w+) (?<l>\\\\w+)\", \"${l}, ${f}\")"));`,
 		},
 		{
 			name: "backtick does not terminate the literal",
-			want: "db._query(\"RETURN `filter`\").toArray();",
+			want: "__docsQuery(db._query(\"RETURN `filter`\"));",
 			code: "RETURN `filter`",
 		},
 		{
 			name:     "bind variables are appended",
 			code:     "RETURN @value",
 			bindVars: map[string]interface{}{"value": 1},
-			want:     `db._query("RETURN @value", {"value":1}).toArray();`,
+			want:     `__docsQuery(db._query("RETURN @value", {"value":1}));`,
+		},
+		{
+			name:     "bind variable values are not HTML-escaped",
+			code:     "RETURN @value",
+			bindVars: map[string]interface{}{"value": "<a&b>"},
+			want:     `__docsQuery(db._query("RETURN @value", {"value":"<a&b>"}));`,
+		},
+		{
+			name:         "query options without bind variables",
+			code:         "MATCH (v:coll) RETURN v",
+			queryOptions: map[string]interface{}{"matchStatement": "experimental"},
+			want:         `__docsQuery(db._query("MATCH (v:coll) RETURN v", {}, {"matchStatement":"experimental"}));`,
+		},
+		{
+			name:         "bind variables and nested query options",
+			code:         "RETURN @value",
+			bindVars:     map[string]interface{}{"value": 1},
+			queryOptions: map[string]interface{}{"optimizer": map[string]interface{}{"rules": []interface{}{"-all"}}, "maxRuntime": 5},
+			want:         `__docsQuery(db._query("RETURN @value", {"value":1}, {"maxRuntime":5,"optimizer":{"rules":["-all"]}}));`,
+		},
+		{
+			name:    "explain",
+			code:    "RETURN 1",
+			explain: true,
+			want:    `db._explain("RETURN 1", {}, {"colors":false});`,
+		},
+		{
+			name:         "explain forwards bind variables and query options",
+			code:         "MATCH (v:@@coll) RETURN v",
+			bindVars:     map[string]interface{}{"@coll": "persons"},
+			queryOptions: map[string]interface{}{"matchStatement": "experimental"},
+			explain:      true,
+			want:         `db._explain("MATCH (v:@@coll) RETURN v", {"@coll":"persons"}, {"colors":false,"matchStatement":"experimental"});`,
+		},
+		{
+			name:         "explain does not show colors even if requested",
+			code:         "RETURN 1",
+			queryOptions: map[string]interface{}{"colors": true},
+			explain:      true,
+			want:         `db._explain("RETURN 1", {}, {"colors":false});`,
 		},
 	}
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			if got := formatter.FormatRequestCode(test.code, test.bindVars); got != test.want {
+			if got := formatter.FormatRequestCode(test.code, test.bindVars, test.queryOptions, test.explain); got != test.want {
 				t.Errorf("FormatRequestCode()\n got: %s\nwant: %s", got, test.want)
 			}
 		})
@@ -321,15 +363,17 @@ func TestAQLFormatterRequestCode(t *testing.T) {
 func TestAdjustCodeForArangoshKeepsAQL(t *testing.T) {
 	formatter := AQLFormatter{}
 	code := "LET x = 1\nlet y = 2\nRETURN assert(\n  true,\n  \"const failure\"\n)"
-	query := formatter.FormatRequestCode(code, nil)
+	for _, explain := range []bool{false, true} {
+		query := formatter.FormatRequestCode(code, nil, nil, explain)
 
-	got := AdjustCodeForArangosh(query)
-	if !strings.Contains(got, query) {
-		t.Errorf("AdjustCodeForArangosh() changed the query\n got: %s\nwant it to contain: %s", got, query)
+		got := AdjustCodeForArangosh(query)
+		if !strings.Contains(got, query) {
+			t.Errorf("AdjustCodeForArangosh() changed the query\n got: %s\nwant it to contain: %s", got, query)
+		}
 	}
 
 	// JavaScript is still rewritten
-	got = AdjustCodeForArangosh("const a = 1;\nassert(a === 1);")
+	got := AdjustCodeForArangosh("const a = 1;\nassert(a === 1);")
 	if !strings.Contains(got, "var a = 1;") || !strings.Contains(got, "assert(a === 1, 'a === 1');") {
 		t.Errorf("AdjustCodeForArangosh() did not rewrite JavaScript\n got: %s", got)
 	}
