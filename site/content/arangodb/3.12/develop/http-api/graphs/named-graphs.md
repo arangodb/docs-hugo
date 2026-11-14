@@ -35,6 +35,10 @@ paths:
       operationId: listGraphs
       description: |
         Lists all graphs stored in this database.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -219,6 +223,8 @@ paths:
       description: |
         The creation of a graph requires the name of the graph and a
         definition of its edges.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -967,6 +973,10 @@ paths:
         Selects information for a given graph.
         Returns the edge definitions as well as the orphan collections,
         or returns an error if the graph does not exist.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -1192,6 +1202,8 @@ paths:
         Drops an existing graph object by name.
         Optionally all collections not used by other graphs
         can be dropped as well.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -1339,6 +1351,10 @@ paths:
       operationId: listVertexCollections
       description: |
         Lists all node collections within this graph, including orphan collections.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -1454,6 +1470,8 @@ paths:
       description: |
         Adds a node collection to the set of orphan collections of the graph.
         If the collection does not exist, it is created.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -1906,6 +1924,10 @@ paths:
         edge definitions of the graph. You need to modify or remove the
         edge definition first in order to fully remove a node collection from
         the graph.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -2356,6 +2378,10 @@ paths:
       operationId: listEdgeCollections
       description: |
         Lists all edge collections within this graph.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -2474,6 +2500,8 @@ paths:
         "v1" to "v2".
 
         Additionally, collection creation options can be set.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -2945,6 +2973,8 @@ paths:
       description: |
         Change the node collections of one specific edge definition.
         This modifies all occurrences of this definition in all graphs known to your database.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -3435,6 +3465,8 @@ paths:
         edge collection from the graph definition. The node collections of the
         edge definition become orphan collections but otherwise remain untouched
         and can still be used in your queries.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -3844,6 +3876,9 @@ paths:
       operationId: createVertex
       description: |
         Adds a node to the given collection.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -4169,6 +4204,10 @@ paths:
       operationId: getVertex
       description: |
         Gets a node from the given collection.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -4471,6 +4510,9 @@ paths:
       operationId: updateVertex
       description: |
         Updates the data of the specific node in the collection.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -4916,6 +4958,9 @@ paths:
       operationId: replaceVertex
       description: |
         Replaces the data of a node in the collection.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -5363,6 +5408,9 @@ paths:
       description: |
         Removes a node from a collection of the named graph. Additionally removes all
         incoming and outgoing edges of the node.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -5698,6 +5746,9 @@ paths:
         Creates a new edge in the specified collection.
         Within the body the edge has to contain a `_from` and `_to` value referencing to valid nodes in the graph.
         Furthermore, the edge has to be valid according to the edge definitions.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -6116,6 +6167,10 @@ paths:
       operationId: getEdge
       description: |
         Gets an edge from the given collection.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -6429,6 +6484,9 @@ paths:
       operationId: updateEdge
       description: |
         Partially modify the data of the specific edge in the collection.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -6935,6 +6993,9 @@ paths:
       operationId: replaceEdge
       description: |
         Replaces the data of an edge in the collection.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -7459,6 +7520,9 @@ paths:
       description: |
         Removes an edge from an edge collection of the named graph. Any other edges
         that directly reference this edge like a node are removed, too.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)

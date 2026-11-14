@@ -94,6 +94,9 @@
       <div class="openapi-description regular-font">
         {{- $items.description | $page.RenderString }}
       </div>
+      {{- if isset $items "x-rbac-predefined-roles" }}
+        {{- template "renderRbacRoles" dict "roles" (index $items "x-rbac-predefined-roles") "page" $page }}
+      {{- end }}
       {{- with .parameters }}
         {{- template "renderParameters" dict "title" $title "content" . "page" $page }}
       {{- end }}
@@ -105,6 +108,39 @@
       {{- end }}
     {{- end }}
   {{- end }}
+  </div>
+{{- end }}
+
+{{- /* x-rbac-predefined-roles: the predefined roles of the data platform's RBAC
+  that each grant access to the endpoint on their own (assuming the scope of the
+  role assignment covers the resources). A list of role names, where an item can
+  also be a single-key map from the role name to a remark, e.g.
+  `- coredb-reader: Only your own queries`. An empty list means that no
+  predefined role grants access. How to read this is explained in
+  arangodb/<version>/develop/http-api/_index.md. */}}
+{{- define "renderRbacRoles" }}
+  {{- $roles := .roles }}
+  {{- $page := .page }}
+  {{- if not (reflect.IsSlice $roles) }}
+    {{- errorf "OpenAPI: x-rbac-predefined-roles must be a list, got %T: %v" $roles $roles }}
+  {{- end }}
+  <div class="openapi-parameters openapi-rbac regular-font">
+    <div class="openapi-table-title">Predefined roles (RBAC)</div>
+    {{- if eq (len $roles) 0 }}
+    <p class="regular-font">None</p>
+    {{- else }}
+    <ul>
+      {{- range $roles }}
+        {{- if reflect.IsMap . }}
+          {{- range $role, $remark := . }}
+      <li><code>{{ $role }}</code>{{ with $remark }}: {{ . | $page.RenderString }}{{ end }}</li>
+          {{- end }}
+        {{- else }}
+      <li><code>{{ . }}</code></li>
+        {{- end }}
+      {{- end }}
+    </ul>
+    {{- end }}
   </div>
 {{- end }}
 

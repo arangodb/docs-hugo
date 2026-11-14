@@ -23,6 +23,10 @@ paths:
       description: |
         Returns metadata about the AQL query results currently stored in the query results cache
         of the selected database. The cached result data itself isn't included.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -146,6 +150,8 @@ paths:
       operationId: deleteAqlQueryCache
       description: |
         Clears all results stored in the AQL query results cache for the selected database.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -218,6 +224,10 @@ paths:
       operationId: getQueryCacheProperties
       description: |
         Returns the global AQL query results cache configuration.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -310,6 +320,8 @@ paths:
         Adjusts the global properties for the AQL query results cache.
 
         Changing the properties may invalidate all results currently in the cache.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path

@@ -2501,6 +2501,62 @@ entirely in many cases. The defaults are:
 - `apiVersions: [v0, v1]` for ArangoDB 3.12
 - `apiVersions: [v1]` for ArangoDB 4.x
 
+#### Predefined RBAC roles
+
+ArangoDB endpoints can state which predefined roles of the role-based access
+control (RBAC) of the Arango Contextual Data Platform grant access to them,
+using the `x-rbac-predefined-roles` OpenAPI extension. Place it after the
+`description` and before `parameters`, `requestBody`, and `responses`:
+
+```yaml
+paths:
+  /_db/{database-name}/_api/query/current:
+    get:
+      operationId: listAqlQueries
+      description: |
+        ...
+      x-rbac-predefined-roles:
+        - coredb-reader: Only your own queries
+        - coredb-developer: Only your own queries
+        - coredb-admin
+      parameters:
+        ...
+```
+
+- The value is a list of role names without the `managed:predefined:` prefix,
+  ordered from the least to the most privileged role: `coredb-reader`,
+  `coredb-developer`, `coredb-admin`, `tenant-admin`.
+- List every predefined role that grants access to the endpoint **on its own**,
+  i.e. when it is the only role assigned to a user, with a scope that covers
+  the resources of the request (the database, collection, etc. in the URL).
+- Leave out `super-admin`. It is reserved for the `root` user and grants access
+  to all endpoints except for those that require a superuser token. The
+  `_index.md` page of the HTTP API explains this to readers.
+- To note a limitation for a role, use a single-key object with the role name
+  as the key and a short remark as the value instead of the plain name, like
+  `- coredb-reader: Only your own queries`. Use remarks for cases where a role
+  grants access but with a restriction, for example, it only lets you see your
+  own queries or transactions, it only allows read-only queries, or a query
+  parameter like `details=true` has no effect. Behavior that applies regardless
+  of the role belongs in the `description` instead.
+- Use an empty list (`x-rbac-predefined-roles: []`) if no predefined role grants
+  access, for example, because the endpoint requires a superuser token or is
+  not available with RBAC. Explain the reason in the `description`.
+- Omit the extension for endpoints that require no authentication, and for
+  endpoints for which the required permissions haven't been determined yet.
+
+Which roles grant access to an endpoint depends on the permission checks the
+ArangoDB server performs for the endpoint, and on the policies of the
+predefined roles, which are defined in the
+[`arangodb-core-rbac-permissions`](https://github.com/arangodb/arangodb-core-rbac-permissions/blob/main/charts/arangodb-core-rbac-permissions/templates/predefined_roles_coredb.yaml)
+Helm chart. If either of them changes, the role lists need to be reviewed.
+The checks can differ between ArangoDB versions, so determine them per version
+folder.
+
+The roles are rendered as a **Predefined roles (RBAC)** section between the
+endpoint description and the parameters, and they are included in the
+generated `openapi.json` files.
+
 ### Configure the OpenAPI metadata and API versions
 
 **`site/data/versions.yaml`**

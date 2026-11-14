@@ -42,6 +42,10 @@ paths:
         The user account you authenticate with needs at least `ro` access to
         the collection. In cluster deployments, Coordinators didn't check
         this access level for all requests up to v3.12.12.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -139,6 +143,10 @@ paths:
         The user account you authenticate with needs at least `ro` access to
         the collection. In cluster deployments, Coordinators didn't check
         this access level for all requests up to v3.12.12.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -274,6 +282,8 @@ paths:
         The optional attribute **inBackground** can be set to `true` to keep the
         collection/shards available for write operations by not using an exclusive
         write lock for the duration of the index creation.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -325,6 +335,8 @@ paths:
       operationId: deleteIndex
       description: |
         Deletes an index with `index-id`.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path

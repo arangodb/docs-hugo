@@ -500,6 +500,9 @@ paths:
         Creating access tokens is not possible if the server is in read-only
         mode, unless you authenticate with a [superuser JWT](#jwt-superuser-tokens)
         (introduced in v3.12.11).
+      x-rbac-predefined-roles:
+        - coredb-admin
+        - tenant-admin
       parameters:
         - name: user
           in: path
@@ -786,6 +789,9 @@ paths:
         to the `_system` database if you want to list the access tokens for a
         different user. You can always list your own access tokens,
         regardless of database access levels.
+      x-rbac-predefined-roles:
+        - coredb-admin
+        - tenant-admin
       parameters:
         - name: user
           in: path
@@ -978,6 +984,9 @@ paths:
         Deleting access tokens is not possible if the server is in read-only
         mode, unless you authenticate with a [superuser JWT](#jwt-superuser-tokens)
         (introduced in v3.12.11).
+      x-rbac-predefined-roles:
+        - coredb-admin
+        - tenant-admin
       parameters:
         - name: user
           in: path
@@ -1147,6 +1156,10 @@ paths:
       operationId: getServerJwtSecretHashes
       description: |
         Get the SHA-256 hashes of the currently loaded JWT secrets.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -1228,6 +1241,7 @@ paths:
 
         This endpoint requires a [superuser JWT](#jwt-superuser-tokens). User accounts,
         including `root`, are not sufficient.
+      x-rbac-predefined-roles: []
       responses:
         '200':
           description: |

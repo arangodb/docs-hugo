@@ -37,6 +37,8 @@ paths:
         API is enabled, accessing it requires admin privileges, or a
         [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
         the value of the `--log.api-enabled` startup option.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: upto
           in: query
@@ -142,6 +144,8 @@ paths:
         API is enabled, accessing it requires admin privileges, or a
         [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
         the value of the `--log.api-enabled` startup option.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: serverId
           in: query
@@ -239,6 +243,8 @@ paths:
         API is enabled, accessing it requires admin privileges, or a
         [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
         the value of the `--log.api-enabled` startup option.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: serverId
           in: query
@@ -590,6 +596,8 @@ paths:
         API is enabled, accessing it requires admin privileges, or a
         [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
         the value of the `--log.api-enabled` startup option.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: serverId
           in: query
@@ -627,6 +635,8 @@ paths:
         API is enabled, accessing it requires admin privileges, or a
         [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
         the value of the `--log.api-enabled` startup option.
+      x-rbac-predefined-roles:
+        - coredb-admin
       responses:
         '200':
           description: |
@@ -664,6 +674,8 @@ paths:
         API is enabled, accessing it requires admin privileges, or a
         [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
         the value of the `--log.api-enabled` startup option.
+      x-rbac-predefined-roles:
+        - coredb-admin
       requestBody:
         content:
           application/json:
@@ -718,6 +730,8 @@ paths:
         Whether API calls are recorded is independently controlled by the
         `--server.api-call-recording` startup option.
         The endpoint returns an empty list of calls if turned off.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -956,6 +970,8 @@ paths:
         Whether AQL queries are recorded is independently controlled by the
         `--server.aql-query-recording` startup option.
         The endpoint returns an empty list of queries if turned off.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path

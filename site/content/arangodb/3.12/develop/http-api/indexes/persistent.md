@@ -35,6 +35,8 @@ paths:
         {{</* info */>}}
         Unique indexes on non-shard keys are not supported in cluster deployments.
         {{</* /info */>}}
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path

@@ -19,6 +19,8 @@ paths:
         Geo indexes are always sparse, meaning that documents that do not contain
         the index attributes or have non-numeric values in the index attributes
         will not be indexed.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path

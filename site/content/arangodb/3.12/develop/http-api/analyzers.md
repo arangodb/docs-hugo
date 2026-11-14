@@ -18,6 +18,9 @@ paths:
 
         See the description of [Analyzers](../../indexes-and-search/analyzers.md)
         for an introduction and the available types, properties and features.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -114,6 +117,10 @@ paths:
         - `type`: the Analyzer type
         - `properties`: the properties used to configure the specified type
         - `features`: the set of features to set on the Analyzer generated fields
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -178,6 +185,10 @@ paths:
         - `type`: the Analyzer type
         - `properties`: the properties used to configure the specified type
         - `features`: the set of features to set on the Analyzer generated fields
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -225,6 +236,9 @@ paths:
         the following attributes:
         - `error`: `false`
         - `name`: The name of the removed Analyzer
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
