@@ -17,7 +17,7 @@ However, as shown in this example based on the
 [Knows Graph](../../graphs/example-graphs.md#knows-graph), a query for this 
 use case can be created.
 
-![Example Graph](../../../../images/knows_graph.png)
+{{< embed-svg "knows-graph" >}}
 
 When deleting vertex **eve** from the graph, we also want the edges
 `eve -> alice` and `eve -> bob` to be removed.

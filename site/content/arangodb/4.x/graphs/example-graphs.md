@@ -25,7 +25,7 @@ for reference about how to manage graphs programmatically.
 
 The `knows` graph is a set of persons knowing each other:
 
-![Persons relation Example Graph](../../../images/knows_graph.png)
+{{< embed-svg "knows-graph" >}}
 
 The graph consists of a `persons` node collection connected via a `knows`
 edge collection.
