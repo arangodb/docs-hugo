@@ -15,8 +15,8 @@
   <line class="dg-s-accent" x1="400.0" y1="214.0" x2="439.0" y2="214.0" stroke="#00576e" stroke-width="2" marker-end="url(#traversal-explained-a)"/>
   <path class="dg-s-accent" d="M400.0,302.0 H404.0 Q412.0,302.0 412.0,294.0 V288.0 Q412.0,280.0 420.0,280.0 H439.0" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#traversal-explained-a)"/>
   <path class="dg-s-accent" d="M400.0,302.0 H404.0 Q412.0,302.0 412.0,310.0 V338.0 Q412.0,346.0 420.0,346.0 H439.0" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#traversal-explained-a)"/>
-  <path class="dg-s-line" d="M545.0,280.0 H549.0 Q557.0,280.0 557.0,272.0 V266.0 Q557.0,258.0 565.0,258.0 H584.0" fill="none" stroke="#90a1b9" stroke-width="2" marker-end="url(#traversal-explained-g)" stroke-dasharray="2 3"/>
-  <path class="dg-s-line" d="M545.0,280.0 H549.0 Q557.0,280.0 557.0,288.0 V294.0 Q557.0,302.0 565.0,302.0 H584.0" fill="none" stroke="#90a1b9" stroke-width="2" marker-end="url(#traversal-explained-g)" stroke-dasharray="2 3"/>
+  <path class="dg-s-line" d="M545.0,280.0 H559.0 Q567.0,280.0 567.0,272.0 V266.0 Q567.0,258.0 575.0,258.0 H584.0" fill="none" stroke="#90a1b9" stroke-width="2" marker-end="url(#traversal-explained-g)" stroke-dasharray="2 3" stroke-dashoffset="0.8"/>
+  <path class="dg-s-line" d="M545.0,280.0 H559.0 Q567.0,280.0 567.0,288.0 V294.0 Q567.0,302.0 575.0,302.0 H584.0" fill="none" stroke="#90a1b9" stroke-width="2" marker-end="url(#traversal-explained-g)" stroke-dasharray="2 3" stroke-dashoffset="0.8"/>
   <text class="dg-f-muted" x="60.0" y="34.0" text-anchor="middle" font-size="12" font-weight="600" fill="#45556c">depth 0</text>
   <text class="dg-f-muted" x="205.0" y="34.0" text-anchor="middle" font-size="12" font-weight="600" fill="#45556c">depth 1</text>
   <text class="dg-f-muted" x="350.0" y="34.0" text-anchor="middle" font-size="12" font-weight="600" fill="#45556c">depth 2</text>
