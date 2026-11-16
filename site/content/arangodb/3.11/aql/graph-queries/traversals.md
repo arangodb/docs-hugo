@@ -558,8 +558,9 @@ FOR v, e, p IN 0..10 OUTBOUND "places/Toronto" GRAPH "kShortestPathsGraph"
   RETURN CONCAT_SEPARATOR(" -- ", p.vertices[*].label)
 ```
 
-The above example shows a graph traversal using a
-[train station and connections dataset](../../graphs/example-graphs.md#k-shortest-paths-graph):
+The above example shows a graph traversal using the North American part of the
+[`kShortestPathsGraph`](../../graphs/example-graphs.md#k-shortest-paths-graph)
+example graph, a network of train stations and connections:
 
 {{< embed-svg "train-map-north-america" >}}
 
@@ -573,6 +574,8 @@ The traversal along paths is stopped as soon as the prune expression evaluates
 to `true` for a given path. The current depth is still included in the result,
 however. This can be seen in the query result of the example which includes the
 Edmonton vertex at which it stopped.
+
+The next examples use the European part of the same example graph:
 
 {{< embed-svg "train-map-europe" >}}
 

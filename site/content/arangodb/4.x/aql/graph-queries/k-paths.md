@@ -18,7 +18,9 @@ Every such path is returned as a JSON object with two components:
 
 **Example**
 
-Here is an example graph to explain how the k Paths algorithm works:
+The following explanation of how the k Paths algorithm works uses the European
+part of the [`kShortestPathsGraph`](../../graphs/example-graphs.md#k-shortest-paths-graph)
+example graph, a network of train stations and connections:
 
 {{< embed-svg "train-map-europe" >}}
 
@@ -242,7 +244,8 @@ data sources in addition to automatically deduced collections.
 
 ## Examples
 
-You can load the `kShortestPathsGraph` example graph to get a named graph that
+You can load the [`kShortestPathsGraph`](../../graphs/example-graphs.md#k-shortest-paths-graph)
+example graph to get a named graph that
 reflects some possible train connections in Europe and North America.
 
 {{< embed-svg "train-map-europe" >}}

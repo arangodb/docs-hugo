@@ -17,7 +17,9 @@ Every returned path is a JSON object with two attributes:
 
 **Example**
 
-A visual representation of the example graph:
+The following example uses the European part of the
+[`kShortestPathsGraph`](../../graphs/example-graphs.md#k-shortest-paths-graph)
+example graph, a network of train stations and connections:
 
 {{< embed-svg "train-map-europe" >}}
 
@@ -119,8 +121,9 @@ collection of the start vertex as well if it's not declared already
 
 ## Examples
 
-Load an example graph to get a named graph that reflects some possible
-train connections in Europe and North America:
+Load the [`kShortestPathsGraph`](../../graphs/example-graphs.md#k-shortest-paths-graph)
+example graph to get a named graph that reflects some possible train connections
+in Europe and North America:
 
 {{< embed-svg "train-map-europe" >}}
 
