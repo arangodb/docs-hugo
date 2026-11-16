@@ -123,6 +123,13 @@ aliases:
   and to enumerate all paths between two nodes
   ("[k Paths](../aql/graph-queries/k-paths.md)") are available, too.
 
+{{% comment %}} Experimental feature
+- [**Graph Pattern Matching**](../aql/high-level-operations/match.md):
+  Describe the nodes and edges you want to find as a pattern with a syntax
+  similar to Cypher and GQL, like `(a:persons) -[:knows]-> (b:persons)`, and
+  find all occurrences in your data with the AQL `MATCH` operation.
+{{% /comment %}}
+
 - [**ArangoSearch for Text Search and Ranking**](../indexes-and-search/arangosearch/_index.md):
   A built-in search engine for full-text, complex data structures, and more.
   Exact value matching, range queries, prefix matching, case-insensitive and

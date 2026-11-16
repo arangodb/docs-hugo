@@ -129,8 +129,10 @@ Examples, from minimal to complete:
 
 ```aql
 -[:knows]->
+<-[k:knows]-
 <-[k:knows|follows]-
--[k:knows { since: 2020 } WHERE k.weight > 0.5 RETURN since]-
+-[k:knows|follows { since: 2020 }]-
+-[k:knows|follows { since: 2020 } WHERE k.weight > 0.5 RETURN since]-
 ```
 
 ### Variable-length edge patterns
@@ -141,14 +143,36 @@ brackets and arrows as an edge pattern but consists of the following parts:
 | Part | Required | Example | Description |
 |:-----|:---------|:--------|:------------|
 | <code><em>pathVar</em></code> | no | `p` | A variable name to access the path that the edges form after the `MATCH` operation. |
-| <code>:<em>edgeCollection</em></code> | yes | `:knows` | Same as for edge patterns. |
+| <code>:<em>edgeCollection</em></code> | yes | `:knows` | The edge collection that the edges need to be stored in (its label). You can list multiple edge collections separated by `\|`, like `:knows\|follows`, to follow edges from any of them. You can use collection bind parameters like `:@@coll`. Write the colon even if you omit the variable name. |
 | <code>* <em>min</em>..<em>max</em></code> | yes | `* 1..3` | An asterisk followed by the minimum and maximum number of edges to follow. |
 
-Example:
+Examples:
 
 ```aql
--[p:knows * 1..3]->
+-[:knows * 1..3]->
+-[p:knows * 2..2]-
+<-[p:knows|follows * 0..2]-
 ```
+
+If `min` and `max` are equal, like `* 2..2`, the pattern follows exactly this
+many edges. This is a shorter way to write a chain of edge and node patterns,
+but there are differences. See
+[Match a fixed number of edges](#match-a-fixed-number-of-edges).
+
+Unlike in edge patterns, you cannot specify attribute values, `WHERE`
+conditions, or projections. The variable refers to the entire path rather than
+an edge, so it would be ambiguous whether such conditions need to be fulfilled
+by every edge of the path, by any edge, or by the path itself. The following
+variable-length edge patterns are therefore invalid:
+
+```aql
+-[p:knows * 1..3 { since: 2020 }]->       // invalid
+-[p:knows * 1..3 WHERE p.weight > 0.5]->  // invalid
+-[p:knows * 1..3 RETURN since]->          // invalid
+```
+
+To set conditions on the edges and nodes of the path, use a `FILTER` operation
+instead. See [Filter variable-length paths](#filter-variable-length-paths).
 
 ## Usage
 
@@ -166,18 +190,33 @@ edges:
 ### Match nodes
 
 The simplest pattern is a single node pattern. It iterates over a collection,
-similar to a `FOR` loop:
+similar to a `FOR` loop.
 
 ```aql
+---
+name: aqlMatch_nodes
+description: |
+  Return the names of all persons:
+dataset: knows_graph
+options:
+  matchStatement: experimental
+---
 MATCH (p:persons)
   RETURN p.name
 ```
 
 You can restrict the matched documents with attribute values in curly braces
-or with a `WHERE` condition, or with both. The following query returns the
-persons whose name is `Alice` or starts with `D`:
+or with a `WHERE` condition, or with both.
 
 ```aql
+---
+name: aqlMatch_nodes_where
+description: |
+  Return the persons whose name is `Alice` or starts with `D`:
+dataset: knows_graph
+options:
+  matchStatement: experimental
+---
 MATCH (p:persons WHERE p.name == "Alice" OR p.name LIKE "D%")
   RETURN p.name
 ```
@@ -191,7 +230,8 @@ attributes. The following two node patterns are equivalent:
 ```
 
 The values can be arbitrary expressions, including bind parameters and
-references to other pattern variables.
+references to pattern variables that are declared earlier. See
+[Refer to other pattern variables](#refer-to-other-pattern-variables).
 
 ### Match edges
 
@@ -204,13 +244,11 @@ patterns. The arrow indicates the direction of the edge:
 
 An edge pattern with arrowheads on both sides (`<-[ ... ]->`) is invalid.
 
-The following query returns the people that Eve knows, together with the
-edges that connect them:
-
 ```aql
 ---
 name: aqlMatch_outbound
-description: ''
+description: |
+  Return the people that Eve knows, together with the edges that connect them:
 dataset: knows_graph
 options:
   matchStatement: experimental
@@ -220,12 +258,13 @@ MATCH (a:persons { _key: "eve" }) -[k:knows]-> (b:persons)
 ```
 
 If you follow edges in any direction, then each edge is matched once from each
-side. The following query finds everyone that Bob knows or who knows Bob:
+side.
 
 ```aql
 ---
 name: aqlMatch_any
-description: ''
+description: |
+  Find everyone that Bob knows or who knows Bob:
 dataset: knows_graph
 options:
   matchStatement: experimental
@@ -235,14 +274,43 @@ MATCH (a:persons { name: "Bob" }) -[:knows]- (b:persons)
 ```
 
 Edge patterns support attribute values in curly braces and `WHERE` conditions
-like node patterns. A `WHERE` condition can also refer to variables of other
-elements in the pattern, for example, to compare attributes of the edge with
-attributes of the nodes it connects:
+like node patterns.
+
+### Refer to other pattern variables
+
+The attribute values and `WHERE` conditions of node and edge patterns can refer
+to the variables of elements that are declared earlier, either in the same
+pattern or in a preceding pattern of the same `MATCH` operation. For example,
+the condition of an edge can compare attributes of the edge with attributes of
+the node it starts from.
+
+The edges of the `knows_graph` store the document key of the node they point
+away from in a `vertex` attribute.
 
 ```aql
-MATCH (a:persons) -[k:knows WHERE k.vertex == a._key]-> (b:persons)
-  RETURN [a.name, b.name]
+---
+name: aqlMatch_edge_where
+description: |
+  Follow the edges of Bob in any direction but only keep the ones that point
+  away from Bob, by comparing the `vertex` attribute of the edges with the key
+  of the node that is matched first. Compared to the previous example, only the
+  people that Bob knows remain:
+dataset: knows_graph
+options:
+  matchStatement: experimental
+---
+MATCH (a:persons { name: "Bob" }) -[k:knows WHERE k.vertex == a._key]- (b:persons)
+  RETURN b.name
 ```
+
+You cannot refer to variables of elements that come later. For example,
+`(a:persons WHERE a.name == b.name) -[:knows]- (b:persons)` is invalid because
+`b` is not declared yet when the condition of `a` is evaluated. AQL then
+interprets `b` as the name of a collection or View, and the query fails with the
+error *collection or view not found: b*. If a collection with this name exists,
+the query fails with a different error at runtime, or, for example with
+`LENGTH(b)`, uses the collection and returns unintended results. Move the condition to the
+later element instead, like `(a:persons) -[:knows]- (b:persons WHERE b.name == a.name)`.
 
 You can specify multiple edge collections by separating them with `|`, like
 `-[e:knows|follows]->`. Edges from any of the collections can then match.
@@ -250,12 +318,12 @@ You can specify multiple edge collections by separating them with `|`, like
 ### Match longer patterns
 
 You can chain node and edge patterns to describe paths with multiple hops.
-The following query finds the people who are known by somebody that Eve knows:
 
 ```aql
 ---
 name: aqlMatch_two_hops
-description: ''
+description: |
+  Find the people who are known by somebody that Eve knows:
 dataset: knows_graph
 options:
   matchStatement: experimental
@@ -267,13 +335,13 @@ MATCH (a:persons { _key: "eve" }) -[:knows]-> (b:persons) -[:knows]-> (c:persons
 ### Match variable-length paths
 
 To follow a variable number of edges, append `* min..max` to the edge
-collections. The following query finds everyone that Eve can reach with
-one to three hops:
+collections.
 
 ```aql
 ---
 name: aqlMatch_variable_length
-description: ''
+description: |
+  Find everyone that Eve can reach with one to three hops:
 dataset: knows_graph
 options:
   matchStatement: experimental
@@ -293,22 +361,115 @@ Note the following about variable-length edge patterns:
   than `max`. You can use bind parameters and constant expressions.
   A `min` of `0` includes the start node itself as a match with an empty path.
 - You cannot specify attribute values, `WHERE` conditions, or projections for
-  variable-length edge patterns.
+  variable-length edge patterns. This is not supported by design: the variable
+  holds a path rather than an edge, so a condition like `WHERE p.weight > 0.5`
+  would be ambiguous. It could mean that every edge needs to fulfill it, that
+  any edge needs to fulfill it, or that it applies to the path object. See
+  [Filter variable-length paths](#filter-variable-length-paths) for how to
+  state such conditions explicitly.
 - The collection labels of the node patterns only apply to the nodes at both
-  ends. The nodes in between can be stored in any collection.
+  ends. The nodes in between can be stored in any collection that the edges
+  point to.
 - A path never contains the same edge twice, but it can contain the same node
   multiple times.
+
+### Match a fixed number of edges
+
+If you set `min` and `max` to the same value, a variable-length edge pattern
+follows exactly this number of edges. You can use this to avoid repeating the
+same edge and node patterns. For example, the following two patterns both match
+paths with two `knows` edges from Bob:
+
+```aql
+(a:persons { name: "Bob" }) -[:knows]- (b:persons) -[:knows]- (c:persons)
+(a:persons { name: "Bob" }) -[p:knows * 2..2]- (c:persons)
+```
+
+The patterns are not equivalent, however:
+
+- A chain of edge patterns can match the same edge multiple times. In the example
+  above, the first pattern also matches Bob → Charlie → Bob via the same edge
+  in both directions, whereas the variable-length edge pattern only matches
+  paths without repeated edges, like Bob → Eve → Alice.
+- In a chain, every node needs to fulfill the label of its node pattern. In a
+  variable-length edge pattern, only the labels of the nodes at both ends apply.
+- In a chain, you can specify a variable, attribute values, `WHERE` conditions,
+  and projections for every node and edge.
+- A chain is executed as joins, whereas a variable-length edge pattern is
+  executed as a graph traversal. See [How `MATCH` is executed](#how-match-is-executed).
+
+### Filter variable-length paths
+
+To set conditions that every edge or every node of a variable-length path needs
+to fulfill, add a `FILTER` operation after the `MATCH` operation and use the
+[array comparison operators](../operators.md#array-comparison-operators)
+on the path variable.
+
+The following examples use the [`routeplanner`](../../graphs/example-graphs.md#city-graph)
+example graph. It has `germanCity` and `frenchCity` node collections and
+`germanHighway`, `frenchHighway`, and `internationalHighway` edge collections.
+The edges have a `distance` attribute.
+
+```aql
+---
+name: aqlMatch_filter_path_edges
+description: |
+  Find routes from Berlin to any French city with up to three highway sections
+  but only keep routes where every section is shorter than 1000 kilometers:
+dataset: routeplanner
+options:
+  matchStatement: experimental
+---
+MATCH (a:germanCity { _key: "Berlin" })
+      -[p:germanHighway|frenchHighway|internationalHighway * 1..3]->
+      (b:frenchCity)
+  FILTER p.edges[*].distance ALL < 1000
+  LET distance = SUM(p.edges[*].distance)
+  SORT distance
+  RETURN { route: p.vertices[*]._key, distance }
+```
+
+The labels of the node patterns only apply to the start and end node, so the
+nodes in between can be stored in any of the node collections. To restrict
+them to certain collections, check the collection names of the nodes in between
+with [`PARSE_COLLECTION()`](../functions/document-object.md#parse_collection).
+`SLICE(p.vertices, 1, -1)` returns the nodes of the path without the first and
+the last one.
+
+```aql
+---
+name: aqlMatch_filter_path_nodes
+description: |
+  Find routes from Berlin to Lyon that only pass through German cities:
+dataset: routeplanner
+options:
+  matchStatement: experimental
+---
+MATCH (a:germanCity { _key: "Berlin" })
+      -[p:germanHighway|frenchHighway|internationalHighway * 1..3]->
+      (b:frenchCity { _key: "Lyon" })
+  FILTER SLICE(p.vertices, 1, -1)[* RETURN PARSE_COLLECTION(CURRENT)] ALL == "germanCity"
+  RETURN p.vertices[*]._key
+```
+
+Routes via Paris, like Berlin → Paris → Lyon, are not part of the result
+because Paris is stored in the `frenchCity` collection.
+
+To restrict the edges to certain collections, list only these collections in
+the edge pattern instead of filtering the path.
 
 ### Use path variables
 
 To get access to the entire path that a pattern describes, assign the pattern
 to a variable. The path variable holds an object with an `edges` and a
-`vertices` attribute, with the matched edges and nodes in the order of the path:
+`vertices` attribute, with the matched edges and nodes in the order of the path.
 
 ```aql
 ---
 name: aqlMatch_path_variable
-description: ''
+description: |
+  Assign a two-hop pattern to the variable `path` and return the names of the
+  nodes along each path:
 dataset: knows_graph
 options:
   matchStatement: experimental
@@ -338,20 +499,45 @@ MATCH (v:persons) -[e:knows]-> (v)
 Writing `(v:persons) -[e:knows]-> (v:persons)` instead raises a parse error
 because it attempts to declare `v` a second time.
 
-You can also refer to variables that you defined before the `MATCH` operation,
-for example, by a `FOR` loop or a `LET` operation. The variable needs to
-contain a document (or an object with an `_id` attribute):
+You cannot specify attribute values, `WHERE` conditions, or projections for a
+node pattern that refers to an existing variable. The variable already refers
+to a specific node, so its conditions belong to where the variable is declared.
+Otherwise, the conditions for the same node would be split up across the pattern
+and could even contradict each other, and a projection would change what the
+variable holds in the middle of the pattern. Such node patterns raise a parse
+error (*filters or constraints are not allowed on MATCH pattern reference '...'*):
 
 ```aql
+// invalid: can never match because 'a' is the same node in both places
+MATCH (a:persons { name: "Alice" }) -[:knows]-> (b:persons) -[:knows]-> (a { name: "Bob" })
+
+// invalid: the conditions for 'a' are split up
+MATCH (a:persons WHERE a.name LIKE "A%") -[:knows]-> (b:persons) -[:knows]-> (a WHERE LENGTH(a.name) == 5)
+
+// valid: all conditions for 'a' are in its declaration
+MATCH (a:persons WHERE a.name LIKE "A%" AND LENGTH(a.name) == 5) -[:knows]-> (b:persons) -[:knows]-> (a)
+```
+
+You can also refer to variables that you defined before the `MATCH` operation,
+for example, by a `FOR` loop or a `LET` operation. The variable needs to
+contain a document (or an object with an `_id` attribute). To set conditions
+for such a node, use a `FILTER` operation before the `MATCH` operation. This
+way, only the nodes that fulfill the conditions are used to match the pattern.
+
+```aql
+---
+name: aqlMatch_filter_before_match
+description: |
+  Iterate over all persons but only match the pattern for Alice and Eve:
+dataset: knows_graph
+options:
+  matchStatement: experimental
+---
 FOR start IN persons
   FILTER start.name IN ["Alice", "Eve"]
   MATCH (start) -[:knows]-> (b:persons)
   RETURN [start.name, b.name]
 ```
-
-You cannot specify attribute values, `WHERE` conditions, or projections for a
-node pattern that refers to an existing variable. Use a `FILTER` operation
-instead.
 
 A node pattern without a label needs to refer to a variable that is already
 defined, either earlier in the `MATCH` operation or before it. Otherwise, the
@@ -368,12 +554,12 @@ use as labels, like `(persons:persons)`.
 
 You can specify multiple patterns separated by commas. All patterns need to
 match, and you can connect them by referring to the same variables.
-The following query finds pairs of people `w` and `x` who both know `v`:
 
 ```aql
 ---
 name: aqlMatch_multiple_patterns
-description: ''
+description: |
+  Find pairs of people `w` and `x` who both know `v`:
 dataset: knows_graph
 options:
   matchStatement: experimental
@@ -395,7 +581,9 @@ pattern. This reduces the size of the variables and of the query result.
 ```aql
 ---
 name: aqlMatch_projections
-description: ''
+description: |
+  Only keep the `name` attribute of the persons, add an `initial` attribute to
+  Alice, and only keep the `vertex` attribute of the edges:
 dataset: knows_graph
 options:
   matchStatement: experimental
@@ -445,17 +633,42 @@ parameters (`@@name`). Value bind parameters (`@name`) are not supported in
 this place.
 
 ```aql
-MATCH (a:@@nodeColl { _key: @key }) -[:@@edgeColl1|@@edgeColl2]-> (b:@@nodeColl)
-  RETURN b
+---
+name: aqlMatch_bind_parameters
+description: |
+  Find the French cities that are directly connected to Berlin, with the
+  collections of the `routeplanner` graph specified via bind parameters:
+dataset: routeplanner
+bindVars:
+  {
+    "@startColl": "germanCity",
+    "key": "Berlin",
+    "@edgeColl1": "germanHighway",
+    "@edgeColl2": "internationalHighway",
+    "@targetColl": "frenchCity"
+  }
+options:
+  matchStatement: experimental
+---
+MATCH (a:@@startColl { _key: @key }) -[:@@edgeColl1|@@edgeColl2]-> (b:@@targetColl)
+  RETURN b._key
 ```
 
 ### Combine `MATCH` with other operations
 
 `MATCH` is a high-level operation like `FOR`. You can combine it with other
 operations like `FILTER`, `SORT`, `LIMIT`, `COLLECT`, and `RETURN`, and you can
-use it inside of `FOR` loops and subqueries:
+use it inside of `FOR` loops and subqueries.
 
 ```aql
+---
+name: aqlMatch_collect
+description: |
+  Count how many people know each person and sort by this number:
+dataset: knows_graph
+options:
+  matchStatement: experimental
+---
 MATCH (a:persons) -[:knows]-> (b:persons)
   COLLECT name = b.name WITH COUNT INTO knownBy
   SORT knownBy DESC
@@ -483,14 +696,15 @@ AQL operations:
 
 You can see the resulting execution plan by
 [explaining the query](../execution-and-performance/explaining-queries.md)
-with the `matchStatement` option set. The following plan shows that the
-pattern becomes three nested loops, a primary index lookup for the start node
-followed by an edge index lookup and a primary index lookup for each match:
+with the `matchStatement` option set.
 
 ```aql
 ---
 name: aqlMatch_explain
-description: ''
+description: |
+  The pattern becomes three nested loops: a primary index lookup for the start
+  node, followed by an edge index lookup and a primary index lookup for each
+  match:
 dataset: knows_graph
 explain: true
 options:
@@ -555,6 +769,8 @@ The following restrictions apply to the experimental `MATCH` operation:
 - Labels need to be collection names or collection bind parameters. Views are
   not supported. Node labels need to be document collections, and edge labels
   need to be edge collections.
+- A node pattern can only have a single collection label. Unlike for edge
+  patterns, you cannot list alternatives like `(c:germanCity|frenchCity)`.
 - In cluster deployments, a `MATCH` operation with variable-length edge
   patterns or multiple edge collections can access node collections that it
   doesn't know about at query compile time. Declare all node collections that

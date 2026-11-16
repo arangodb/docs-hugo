@@ -6,6 +6,23 @@ description: >-
   You can traverse named graphs and anonymous graphs with a native AQL
   language construct
 ---
+A graph traversal starts at a node and follows the edges connected to it, then
+the edges of the nodes it reaches, and so on, up to a maximum depth. In AQL,
+you write a traversal as a special form of a `FOR` loop that emits the visited
+nodes, as well as the edges and paths that lead to them. Nodes that are reached
+with fewer edges than a minimum depth are not emitted.
+You can control the direction of the edges, the order of the traversal, and
+when to stop following a path. For a step-by-step explanation, see
+[AQL graph traversals explained](traversals-explained.md).
+
+{{< info >}}
+Alternatively, you can describe the nodes and edges you want to find as a
+pattern with a syntax similar to Cypher and GQL, using the
+[`MATCH` operation](../high-level-operations/match.md). For the differences
+between the two approaches, see
+[`MATCH` compared to graph traversals](../high-level-operations/match.md#match-compared-to-graph-traversals).
+{{< /info >}}
+
 ## Syntax
 
 There are two slightly different syntaxes for traversals in AQL, one for
