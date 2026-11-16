@@ -7,10 +7,18 @@ description: >-
 ---
 ## General query idea
 
-This type of query finds the shortest path between two given documents
-(*startVertex* and *targetVertex*) in your graph. If there are multiple
-shortest paths, the path with the lowest weight or a random one (in case
-of a tie) is returned.
+This type of query finds a path between two given documents
+(*startVertex* and *targetVertex*) in your graph.
+
+By default, a path with the fewest edges is returned. If there are multiple
+paths of this length, then it is undefined which one of them you get.
+
+If you set the [`weightAttribute` option](#weightattribute), a path with the
+lowest sum of edge weights is returned instead. Such a path is not necessarily
+one of the paths with the fewest edges. It can comprise more edges but have a
+lower total weight than a path of shorter length, so this mode finds the
+*lightest* path rather than the shortest one. If there are multiple paths with
+the lowest weight, then it is undefined which one of them you get.
 
 The shortest path search emits the following two variables for every step of
 the path:

@@ -982,12 +982,12 @@ FOR v, e, p IN 1..3 OUTBOUND "services/api" GRAPH "serviceGraph"
 ---
 name: GRAPHTRAV_graphFilterPathEdges
 description: |
-  Only follow the paths on which none of the calls are AQL queries
-  (`aql` protocol):
+  Only follow the paths on which none of the calls use the `http` protocol,
+  which leaves out the requests to the database:
 dataset: serviceGraph
 ---
 FOR v, e, p IN 1..3 OUTBOUND "services/api" GRAPH "serviceGraph"
-  FILTER p.edges[*].protocol NONE == "aql"
+  FILTER p.edges[*].protocol NONE == "http"
   RETURN { services: p.vertices[*]._key, protocols: p.edges[*].protocol }
 ```
 

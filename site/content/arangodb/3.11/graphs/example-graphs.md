@@ -132,12 +132,12 @@ var calls = [
   { _from: "services/api", _to: "services/auth", protocol: "grpc", latencyMs: 5 },
   { _from: "services/api", _to: "services/catalog", protocol: "grpc", latencyMs: 8 },
   { _from: "services/api", _to: "services/orders", protocol: "grpc", latencyMs: 6 },
-  { _from: "services/auth", _to: "services/db", protocol: "aql", latencyMs: 25 },
+  { _from: "services/auth", _to: "services/db", protocol: "http", latencyMs: 25 },
   { _from: "services/catalog", _to: "services/cache", protocol: "tcp", latencyMs: 1 },
-  { _from: "services/catalog", _to: "services/db", protocol: "aql", latencyMs: 30 },
+  { _from: "services/catalog", _to: "services/db", protocol: "http", latencyMs: 30 },
   { _from: "services/orders", _to: "services/inventory", protocol: "grpc", latencyMs: 4 },
   { _from: "services/orders", _to: "services/payments", protocol: "grpc", latencyMs: 10 },
-  { _from: "services/inventory", _to: "services/db", protocol: "aql", latencyMs: 3 },
+  { _from: "services/inventory", _to: "services/db", protocol: "http", latencyMs: 3 },
   { _from: "services/payments", _to: "services/bank", protocol: "https", latencyMs: 120 },
   { _from: "services/payments", _to: "services/orders", protocol: "https", latencyMs: 15 }
 ];
