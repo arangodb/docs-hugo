@@ -205,14 +205,15 @@ examples.dropGraph("mps_graph");
 
 ## World Graph
 
-The `worldCountry` graph has as node structure as follows:
+The `worldCountry` graph is a hierarchy of the world, continents, countries,
+and capitals, stored as vertices in a `worldVertices` collection. The edges in
+the `worldEdges` collection have the type `is-in` and point from each capital
+to its country, from each country to its continent, and from each continent
+to the world:
 
-world → continent → country → capital
+capital → country → continent → world
 
 {{< embed-svg "world-graph" >}}
-
-In some cases, edge directions aren't forward. Therefore, it may get displayed
-disjunct in the graph viewer.
 
 You can create the graph as a named graph using the name `worldCountry`, or as
 an anonymous graph (node and edge collections only) using the name
