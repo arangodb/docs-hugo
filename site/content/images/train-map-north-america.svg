@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" class="keep-colors" viewBox="-21 -10 956 100" width="956" height="100" role="img" aria-labelledby="train-map-north-america-t train-map-north-america-d" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" class="keep-colors" viewBox="-21 -9 956 97" width="956" height="97" role="img" aria-labelledby="train-map-north-america-t train-map-north-america-d" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
   <title id="train-map-north-america-t">Train connections in North America</title>
   <desc id="train-map-north-america-d">The North American part of the kShortestPathsGraph example graph, a line of stations with an edge in both directions per connection, labeled with the travel time in hours: Toronto and Winnipeg (36 and 35), Winnipeg and Saskatoon (12 and 5), Saskatoon and Edmonton (12 and 17), Edmonton and Jasper (6 and 5), Jasper and Vancouver (12 and 13).</desc>
   <defs><marker id="train-map-north-america-a" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path class="dg-f-accent" d="M0,0 L8,4 L0,8 z" fill="#00576e"/></marker><marker id="train-map-north-america-g" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path class="dg-f-arrow" d="M0,0 L8,4 L0,8 z" fill="#90a1b9"/></marker></defs>
-  <rect class="dg-f-canvas" x="-21" y="-10" width="956" height="100" rx="6" fill="#f1f5f9"/>
+  <rect class="dg-f-canvas" x="-21" y="-9" width="956" height="97" rx="6" fill="#f1f5f9"/>
   <path class="dg-s-accent" d="M83.4,43.1 Q120.4,58.0 151.8,45.4" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-north-america-a)"/>
   <path class="dg-s-accent" d="M157.4,36.9 Q120.4,22.0 89.0,34.6" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-north-america-a)"/>
   <path class="dg-s-accent" d="M252.6,43.1 Q285.4,58.0 312.7,45.6" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-north-america-a)"/>
@@ -13,16 +13,16 @@
   <path class="dg-s-accent" d="M660.8,36.9 Q621.7,22.0 588.2,34.7" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-north-america-a)"/>
   <path class="dg-s-accent" d="M739.2,43.1 Q776.2,58.0 807.6,45.4" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-north-america-a)"/>
   <path class="dg-s-accent" d="M813.2,36.9 Q776.2,22.0 744.8,34.6" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-north-america-a)"/>
-  <text class="dg-f-lime" x="120.4" y="68.3" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">36</text>
-  <text class="dg-f-lime" x="120.4" y="21.1" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">35</text>
-  <text class="dg-f-lime" x="285.4" y="68.3" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">12</text>
-  <text class="dg-f-lime" x="285.4" y="21.1" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">5</text>
-  <text class="dg-f-lime" x="454.6" y="68.3" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">12</text>
-  <text class="dg-f-lime" x="454.6" y="21.1" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">17</text>
-  <text class="dg-f-lime" x="621.7" y="68.3" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">6</text>
-  <text class="dg-f-lime" x="621.7" y="21.1" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">5</text>
-  <text class="dg-f-lime" x="776.2" y="68.3" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">12</text>
-  <text class="dg-f-lime" x="776.2" y="21.1" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">13</text>
+  <text class="dg-f-lime" x="120.4" y="66.8" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">36</text>
+  <text class="dg-f-lime" x="120.4" y="22.6" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">35</text>
+  <text class="dg-f-lime" x="285.4" y="66.8" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">12</text>
+  <text class="dg-f-lime" x="285.4" y="22.6" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">5</text>
+  <text class="dg-f-lime" x="454.6" y="66.8" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">12</text>
+  <text class="dg-f-lime" x="454.6" y="22.6" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">17</text>
+  <text class="dg-f-lime" x="621.7" y="66.8" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">6</text>
+  <text class="dg-f-lime" x="621.7" y="22.6" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">5</text>
+  <text class="dg-f-lime" x="776.2" y="66.8" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">12</text>
+  <text class="dg-f-lime" x="776.2" y="22.6" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">13</text>
   <rect class="" x="-1.4" y="23.0" width="82.8" height="34.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
   <text x="40.0" y="44.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">Toronto</text>
   <rect class="" x="159.4" y="23.0" width="91.2" height="34.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
