@@ -865,11 +865,12 @@ FOR v, e, p IN 1..3 OUTBOUND "services/api" GRAPH "serviceGraph"
 ---
 name: GRAPHTRAV_graphFilterPathEdges
 description: |
-  Only follow the paths on which none of the calls use the `sql` protocol:
+  Only follow the paths on which none of the calls are AQL queries
+  (`aql` protocol):
 dataset: serviceGraph
 ---
 FOR v, e, p IN 1..3 OUTBOUND "services/api" GRAPH "serviceGraph"
-  FILTER p.edges[*].protocol NONE == "sql"
+  FILTER p.edges[*].protocol NONE == "aql"
   RETURN { services: p.vertices[*]._key, protocols: p.edges[*].protocol }
 ```
 
@@ -1006,7 +1007,7 @@ Note again, as soon as a filter is not fulfilled for any of the three elements
 `v`, `e` or `p`, the complete set of these is excluded from the result.
 
 We also may combine several filters, for instance to filter out the `orders`
-branch as well as the calls to the cache, which use the `redis` protocol.
+branch as well as the calls to the cache, which use the `tcp` protocol.
 
 ```aql
 ---
@@ -1017,7 +1018,7 @@ dataset: serviceGraph
 ---
 FOR v, e, p IN 1..3 OUTBOUND "services/api" GRAPH "serviceGraph"
   FILTER p.vertices[1]._key != "orders"
-  FILTER p.edges[1].protocol != "redis"
+  FILTER p.edges[1].protocol != "tcp"
   RETURN v._key
 ```
 
@@ -1029,7 +1030,7 @@ description: |
 dataset: serviceGraph
 ---
 FOR v, e, p IN 1..3 OUTBOUND "services/api" GRAPH "serviceGraph"
-  FILTER p.vertices[1]._key != "orders" AND p.edges[1].protocol != "redis"
+  FILTER p.vertices[1]._key != "orders" AND p.edges[1].protocol != "tcp"
   RETURN v._key
 ```
 

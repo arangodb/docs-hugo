@@ -272,3 +272,20 @@ FOR a IN services
     FOR v, e IN OUTBOUND SHORTEST_PATH a TO b GRAPH "serviceGraph"
       RETURN { service: v._key, latencyMs: e.latencyMs }
 ```
+
+If you set the [`weightAttribute` option](#weightattribute), you get the path
+with the lowest sum of edge weights instead. From `web` to `db`, the paths via
+`auth` and `catalog` have the fewest edges, but the path via `orders` and
+`inventory` has the lowest total latency.
+
+```aql
+---
+name: GRAPHSP_04_web_to_db_weighted
+description: |
+  Find the path from `web` to `db` with the lowest total latency:
+dataset: serviceGraph
+---
+FOR v, e IN OUTBOUND SHORTEST_PATH "services/web" TO "services/db" GRAPH "serviceGraph"
+  OPTIONS { weightAttribute: "latencyMs" }
+  RETURN { service: v._key, latencyMs: e.latencyMs }
+```
