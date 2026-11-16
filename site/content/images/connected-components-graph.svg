@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="keep-colors" viewBox="-22 -14 793 716" width="793" height="716" role="img" aria-labelledby="connected-components-graph-t connected-components-graph-d" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="connected-components-graph-t">The connectedComponentsGraph example graph</title>
+  <desc id="connected-components-graph-d">Three disjoint subgraphs with 36 nodes in the components collection: A1 to A4 form a cycle, B1 to B22 form a larger connected structure, and C1 to C10 form a third one. No edge connects nodes of different subgraphs.</desc>
+  <defs><marker id="connected-components-graph-a" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path class="dg-f-accent" d="M0,0 L8,4 L0,8 z" fill="#00576e"/></marker><marker id="connected-components-graph-g" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path class="dg-f-arrow" d="M0,0 L8,4 L0,8 z" fill="#90a1b9"/></marker></defs>
+  <rect class="dg-f-canvas" x="-22" y="-14" width="793" height="716" rx="6" fill="#f1f5f9"/>
+  <line class="dg-s-accent" x1="592.6" y1="122.2" x2="579.6" y2="95.4" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="583.5" y1="61.6" x2="609.4" y2="38.5" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="637.5" y1="32.9" x2="655.0" y2="64.8" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="650.4" y1="97.6" x2="622.4" y2="118.2" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="113.0" y1="161.5" x2="124.6" y2="222.3" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="101.5" y1="386.1" x2="81.7" y2="357.2" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="144.8" y1="232.3" x2="168.1" y2="215.2" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="76.3" y1="323.4" x2="115.0" y2="264.9" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="57.7" y1="349.8" x2="36.9" y2="377.3" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="213.4" y1="198.4" x2="254.5" y2="199.1" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="291.1" y1="186.6" x2="317.5" y2="125.3" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="276.8" y1="186.5" x2="244.6" y2="137.8" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="273.0" y1="212.7" x2="238.1" y2="249.4" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="296.7" y1="212.9" x2="360.8" y2="288.5" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="215.0" y1="379.7" x2="218.6" y2="290.9" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="237.8" y1="490.2" x2="219.7" y2="414.5" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="299.8" y1="592.4" x2="254.6" y2="523.9" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="330.5" y1="608.0" x2="394.8" y2="615.3" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="351.3" y1="557.7" x2="326.3" y2="585.7" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="402.8" y1="504.7" x2="382.4" y2="525.1" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="398.7" y1="480.4" x2="372.8" y2="463.4" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="457.2" y1="435.6" x2="430.9" y2="471.3" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="483.2" y1="434.2" x2="534.2" y2="471.3" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="388.2" y1="321.8" x2="451.1" y2="402.1" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="439.6" y1="606.0" x2="462.9" y2="584.8" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="440.9" y1="631.1" x2="464.6" y2="650.3" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="430.5" y1="132.0" x2="466.1" y2="173.1" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="495.6" y1="206.2" x2="547.7" y2="262.4" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="577.5" y1="295.3" x2="606.2" y2="328.2" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="640.4" y1="359.7" x2="673.8" y2="382.7" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="643.2" y1="339.2" x2="699.9" y2="313.1" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="701.9" y1="412.3" x2="716.1" y2="458.5" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="701.9" y1="386.3" x2="721.2" y2="322.0" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="716.8" y1="287.1" x2="698.1" y2="264.4" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="663.4" y1="233.7" x2="647.9" y2="224.6" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <line class="dg-s-accent" x1="686.1" y1="231.1" x2="692.0" y2="214.6" stroke="#00576e" stroke-width="2" marker-end="url(#connected-components-graph-a)"/>
+  <rect class="" x="575.9" y="121.3" width="46.0" height="28.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="598.9" y="139.5" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">A1</text>
+  <rect class="" x="546.2" y="60.2" width="46.0" height="28.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="569.2" y="78.5" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">A2</text>
+  <rect class="" x="607.3" y="5.8" width="46.0" height="28.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="630.3" y="24.0" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">A3</text>
+  <rect class="" x="643.6" y="71.8" width="46.0" height="28.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="666.6" y="90.0" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">A4</text>
+  <rect class="dg-f-node dg-s-accent" x="87.5" y="134.5" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="110.5" y="152.7" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B1</text>
+  <rect class="dg-f-node dg-s-accent" x="105.7" y="230.2" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="128.7" y="248.4" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B3</text>
+  <rect class="dg-f-node dg-s-accent" x="44.6" y="322.6" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="67.6" y="340.8" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B4</text>
+  <rect class="dg-f-node dg-s-accent" x="-1.6" y="383.6" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="21.4" y="401.8" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B5</text>
+  <rect class="dg-f-node dg-s-accent" x="87.5" y="385.3" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="110.5" y="403.5" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B2</text>
+  <rect class="dg-f-node dg-s-accent" x="168.4" y="184.0" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="191.4" y="202.2" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B6</text>
+  <rect class="dg-f-node dg-s-accent" x="262.4" y="185.6" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="285.4" y="203.8" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B7</text>
+  <rect class="dg-f-node dg-s-accent" x="303.7" y="89.9" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="326.7" y="108.1" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B8</text>
+  <rect class="dg-f-node dg-s-accent" x="208.0" y="103.1" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="231.0" y="121.3" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B9</text>
+  <rect class="dg-f-node dg-s-accent" x="196.4" y="254.9" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="219.4" y="273.1" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B10</text>
+  <rect class="dg-f-node dg-s-accent" x="191.5" y="378.7" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="214.5" y="396.9" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B11</text>
+  <rect class="dg-f-node dg-s-accent" x="217.9" y="489.2" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="240.9" y="507.4" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B12</text>
+  <rect class="dg-f-node dg-s-accent" x="285.6" y="591.5" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="308.6" y="609.8" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B13</text>
+  <rect class="dg-f-node dg-s-accent" x="340.0" y="530.5" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="363.0" y="548.7" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B14</text>
+  <rect class="dg-f-node dg-s-accent" x="392.8" y="477.7" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="415.8" y="495.9" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B15</text>
+  <rect class="dg-f-node dg-s-accent" x="325.1" y="433.1" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="348.1" y="451.3" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B16</text>
+  <rect class="dg-f-node dg-s-accent" x="443.9" y="408.4" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="466.9" y="426.6" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B17</text>
+  <rect class="dg-f-node dg-s-accent" x="534.7" y="474.4" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="557.7" y="492.6" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B18</text>
+  <rect class="dg-f-node dg-s-accent" x="354.8" y="294.6" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="377.8" y="312.8" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B19</text>
+  <rect class="dg-f-node dg-s-accent" x="402.7" y="604.8" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="425.7" y="623.0" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B20</text>
+  <rect class="dg-f-node dg-s-accent" x="460.4" y="551.9" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="483.4" y="570.1" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B21</text>
+  <rect class="dg-f-node dg-s-accent" x="463.8" y="654.2" width="46.0" height="28.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="486.8" y="672.5" text-anchor="middle" font-size="12" font-weight="700" fill="#014654">B22</text>
+  <rect class="" x="396.1" y="104.8" width="46.0" height="28.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="419.1" y="123.0" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">C1</text>
+  <rect class="" x="460.4" y="179.0" width="46.0" height="28.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="483.4" y="197.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">C2</text>
+  <rect class="" x="542.9" y="268.1" width="46.0" height="28.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="565.9" y="286.3" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">C3</text>
+  <rect class="" x="600.7" y="334.1" width="46.0" height="28.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="623.7" y="352.3" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">C4</text>
+  <rect class="" x="674.9" y="385.3" width="46.0" height="28.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="697.9" y="403.5" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">C5</text>
+  <rect class="" x="699.7" y="466.1" width="46.0" height="28.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="722.7" y="484.3" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">C6</text>
+  <rect class="" x="704.6" y="286.3" width="46.0" height="28.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="727.6" y="304.5" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">C7</text>
+  <rect class="" x="658.4" y="230.2" width="46.0" height="28.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="681.4" y="248.4" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">C8</text>
+  <rect class="" x="599.0" y="195.5" width="46.0" height="28.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="622.0" y="213.7" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">C9</text>
+  <rect class="" x="676.6" y="179.0" width="46.0" height="28.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="699.6" y="197.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">C10</text>
+</svg>

@@ -18,7 +18,7 @@ The examples use the following example graphs:
 
 [_Social Graph_](../../../graphs/example-graphs.md#social-graph):
 
-![Social Example Graph](../../../../../images/social_graph.png)
+{{< embed-svg "social-graph" >}}
 
 [_Knows Graph_](../../../graphs/example-graphs.md#knows-graph):
 

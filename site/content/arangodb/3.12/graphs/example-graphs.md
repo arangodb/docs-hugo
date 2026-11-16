@@ -181,7 +181,7 @@ The example graph consists of nodes in the `mps_verts` collection and edges
 in the `mps_edges` collection. It is a simple traversal graph with start node
 *A* and end node *C*.
 
-![Mps Graph](../../../images/mps_graph.png)
+{{< embed-svg "mps-graph" >}}
 
 With the [Shortest Path](../aql/graph-queries/shortest-path.md) algorithm, you either
 get the shortest path *A* - *B* - *C* or *A* - *D* - *C*. With the
@@ -209,7 +209,7 @@ The `worldCountry` graph has as node structure as follows:
 
 world → continent → country → capital
 
-![World Graph](../../../images/world_graph.png)
+{{< embed-svg "world-graph" >}}
 
 In some cases, edge directions aren't forward. Therefore, it may get displayed
 disjunct in the graph viewer.
@@ -238,7 +238,7 @@ The `social` graph is a set of persons and their relations. The graph has
 `female` and `male` persons as nodes in two node collections.
 The edges are their connections and stored in the `relation` edge collection.
 
-![Social Example Graph](../../../images/social_graph.png)
+{{< embed-svg "social-graph" >}}
 
 Example of how to create the graph, inspect its nodes and edges, and delete
 it again:
@@ -264,7 +264,7 @@ multiple node collections (`germanCity` and `frenchCity`). The edges are their
 interconnections in several edge collections (`frenchHighway`, `germanHighway`,
 `internationalHighway`).
 
-![Cities Example Graph](../../../images/cities_graph.png)
+{{< embed-svg "city-graph" >}}
 
 Example of how to create the graph, inspect its edges and nodes, and delete
 it again:
@@ -290,7 +290,7 @@ A small example graph comprised of `components` (nodes) and `connections`
 (edges). Good for trying out graph algorithms such as Weakly Connected
 Components (WCC).
 
-![Three disjoint subgraphs with 36 nodes and edges in total](../../../images/connected_components.png)
+{{< embed-svg "connected-components-graph" >}}
 
 ```js
 ---

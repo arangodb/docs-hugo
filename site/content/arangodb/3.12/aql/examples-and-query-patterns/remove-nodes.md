@@ -61,7 +61,7 @@ For example, the [City Graph](../../graphs/example-graphs.md#city-graph)
 contains several node collections - `germanCity` and `frenchCity` and several 
 edge collections -  `french / german / international Highway`.
 
-![Example Graph2](../../../../images/cities_graph.png)
+{{< embed-svg "city-graph" >}}
 
 To delete city **Berlin** all edge collections `french / german / international Highway` 
 have to be considered. The **REMOVE** operation has to be applied on all edge
