@@ -19,9 +19,9 @@ Every returned path is a JSON object with two attributes:
 
 A visual representation of the example graph:
 
-![Train Connection Map](../../../../images/train_map.png)
+{{< embed-svg "train-map-europe" >}}
 
-Each ellipse stands for a train station with the name of the city written inside
+Each box stands for a train station with the name of the city written inside
 of it. They are the nodes of the graph. Arrows represent train connections
 between cities and are the edges of the graph.
 
@@ -174,7 +174,9 @@ data sources in addition to automatically deduced collections.
 Load an example graph to get a named graph that reflects some possible
 train connections in Europe and North America:
 
-![Train Connection Map](../../../../images/train_map.png)
+{{< embed-svg "train-map-europe" >}}
+
+{{< embed-svg "train-map-north-america" >}}
 
 ```js
 ---

@@ -111,7 +111,7 @@ aliases:
   match up documents from different collections, allowing normalized data models.
 
 - **Advanced Path-Finding with Multiple Algorithms**:
-  Multi-hop [graph traversal](../aql/graph-queries/traversals-explained.md) with
+  Multi-hop [graph traversal](../aql/graph-queries/traversals.md#how-traversals-work) with
   AQL in outbound, inbound, or both directions to retrieve direct and indirect
   neighbor nodes using a fixed or variable depth.
   The [traversal order](../aql/graph-queries/traversals.md) can be

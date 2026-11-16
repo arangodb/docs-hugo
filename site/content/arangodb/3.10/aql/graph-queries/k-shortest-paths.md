@@ -25,9 +25,9 @@ If no `weightAttribute` is specified, the weight of the path is just its length.
 
 Here is an example graph to explain how the k Shortest Paths algorithm works:
 
-![Train Connection Map](../../../../images/train_map.png)
+{{< embed-svg "train-map-europe" >}}
 
-Each ellipse stands for a train station with the name of the city written inside
+Each box stands for a train station with the name of the city written inside
 of it. They are the vertices of the graph. Arrows represent train connections
 between cities and are the edges of the graph. The numbers near the arrows
 describe how long it takes to get from one station to another. They are used
@@ -182,7 +182,9 @@ direction for each collection in your path search.
 You can load the `kShortestPathsGraph` example graph to get a named graph that
 reflects some possible train connections in Europe and North America.
 
-![Train Connection Map](../../../../images/train_map.png)
+{{< embed-svg "train-map-europe" >}}
+
+{{< embed-svg "train-map-north-america" >}}
 
 ```js
 ---

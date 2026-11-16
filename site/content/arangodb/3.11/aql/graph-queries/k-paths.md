@@ -20,9 +20,9 @@ Every such path is returned as a JSON object with two components:
 
 Here is an example graph to explain how the k Paths algorithm works:
 
-![Train Connection Map](../../../../images/train_map.png)
+{{< embed-svg "train-map-europe" >}}
 
-Each ellipse stands for a train station with the name of the city written inside
+Each box stands for a train station with the name of the city written inside
 of it. They are the vertices of the graph. Arrows represent train connections
 between cities and are the edges of the graph. The numbers near the arrows
 describe how long it takes to get from one station to another.
@@ -192,7 +192,9 @@ collection of the start vertex as well if it's not declared already
 You can load the `kShortestPathsGraph` example graph to get a named graph that
 reflects some possible train connections in Europe and North America.
 
-![Train Connection Map](../../../../images/train_map.png)
+{{< embed-svg "train-map-europe" >}}
+
+{{< embed-svg "train-map-north-america" >}}
 
 ```js
 ---

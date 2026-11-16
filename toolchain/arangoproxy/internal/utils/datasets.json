@@ -3,6 +3,12 @@
       "create":  "~examples.loadGraph('traversalGraph');",
       "remove": "~examples.dropGraph('traversalGraph');"
     },
+    "serviceGraph": {
+      "create":
+        "~var gm = require('@arangodb/general-graph');gm._create('serviceGraph', [gm._relation('calls', 'services', 'services')]);db.services.save([{_key: 'web', tier: 'frontend'},{_key: 'api', tier: 'backend'},{_key: 'auth', tier: 'backend'},{_key: 'catalog', tier: 'backend'},{_key: 'orders', tier: 'backend'},{_key: 'inventory', tier: 'backend'},{_key: 'payments', tier: 'backend'},{_key: 'cache', tier: 'data'},{_key: 'db', tier: 'data'},{_key: 'bank', tier: 'external'}]);[['web', 'api', 'https', 20],['api', 'auth', 'grpc', 5],['api', 'catalog', 'grpc', 8],['api', 'orders', 'grpc', 6],['auth', 'db', 'sql', 25],['catalog', 'cache', 'redis', 1],['catalog', 'db', 'sql', 30],['orders', 'inventory', 'grpc', 4],['orders', 'payments', 'grpc', 10],['inventory', 'db', 'sql', 3],['payments', 'bank', 'https', 120],['payments', 'orders', 'https', 15]].forEach(function (c) {db.calls.save({_from: 'services/' + c[0], _to: 'services/' + c[1], protocol: c[2], latencyMs: c[3]});});",
+      "remove":
+        "~require('@arangodb/general-graph')._drop('serviceGraph', true);"
+    },
     "kShortestPathsGraph": {
       "create":  
         "~examples.loadGraph('kShortestPathsGraph');",

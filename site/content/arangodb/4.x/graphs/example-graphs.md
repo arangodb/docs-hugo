@@ -62,7 +62,7 @@ The `traversalGraph` has been designed to demonstrate filters in traversals.
 It has some labels to filter on it. The graph's nodes are in a collection
 called `circles`, and it has an edge collection `edges` to connect them.
 
-![Traversal Graph](../../../images/traversal_graph.png)
+{{< embed-svg "traversal-graph" >}}
 
 Circles have unique numeric labels. Edges have two boolean attributes
 (`theFalse` always being `false`, `theTruth` always being `true`) and a label
@@ -86,13 +86,76 @@ examples.dropGraph("traversalGraph");
 **Note:** With the default traversal depth of 2 of the graph viewer, you may not
 see all edges of this graph by default.
 
+## Service Graph
+
+The `serviceGraph` is a set of services of an application that call each other.
+The services are the nodes of the graph, stored in a `services` collection, with
+a `tier` attribute (`frontend`, `backend`, `data`, or `external`). The calls are
+the edges, stored in a `calls` edge collection, with the `protocol` and the
+latency in milliseconds (`latencyMs`) of the call.
+
+{{< embed-svg "service-graph" >}}
+
+The `db` service can be reached via multiple paths, and `orders` and `payments`
+call each other, which forms a cycle. This makes the graph suitable to
+demonstrate how traversals and path searches work. See
+[Graph traversals in AQL](../aql/graph-queries/traversals.md) for query examples.
+
+Unlike the other example graphs, you cannot load the `serviceGraph` with
+`loadGraph()` or create it in the web interface. You can create it with the
+following code:
+
+```js
+---
+name: graph_create_service_sample
+description: ''
+---
+var graphModule = require("@arangodb/general-graph");
+var graph = graphModule._create("serviceGraph", [
+  graphModule._relation("calls", "services", "services")
+]);
+var services = [
+  { _key: "web", tier: "frontend" },
+  { _key: "api", tier: "backend" },
+  { _key: "auth", tier: "backend" },
+  { _key: "catalog", tier: "backend" },
+  { _key: "orders", tier: "backend" },
+  { _key: "inventory", tier: "backend" },
+  { _key: "payments", tier: "backend" },
+  { _key: "cache", tier: "data" },
+  { _key: "db", tier: "data" },
+  { _key: "bank", tier: "external" }
+];
+var calls = [
+  { _from: "services/web", _to: "services/api", protocol: "https", latencyMs: 20 },
+  { _from: "services/api", _to: "services/auth", protocol: "grpc", latencyMs: 5 },
+  { _from: "services/api", _to: "services/catalog", protocol: "grpc", latencyMs: 8 },
+  { _from: "services/api", _to: "services/orders", protocol: "grpc", latencyMs: 6 },
+  { _from: "services/auth", _to: "services/db", protocol: "sql", latencyMs: 25 },
+  { _from: "services/catalog", _to: "services/cache", protocol: "redis", latencyMs: 1 },
+  { _from: "services/catalog", _to: "services/db", protocol: "sql", latencyMs: 30 },
+  { _from: "services/orders", _to: "services/inventory", protocol: "grpc", latencyMs: 4 },
+  { _from: "services/orders", _to: "services/payments", protocol: "grpc", latencyMs: 10 },
+  { _from: "services/inventory", _to: "services/db", protocol: "sql", latencyMs: 3 },
+  { _from: "services/payments", _to: "services/bank", protocol: "https", latencyMs: 120 },
+  { _from: "services/payments", _to: "services/orders", protocol: "https", latencyMs: 15 }
+];
+services.forEach(doc => db.services.save(doc));
+calls.forEach(doc => db.calls.save(doc));
+db.services.toArray();
+db.calls.toArray();
+~graphModule._drop("serviceGraph", true);
+```
+
 ## k Shortest Paths Graph
 
 The nodes in the `kShortestPathsGraph` graph are train stations of cities in
 Europe and North America. The edges represent train connections between them,
 with the travel time for both directions as edge weight.
 
-![Train Connection Map](../../../images/train_map.png)
+{{< embed-svg "train-map-europe" >}}
+
+{{< embed-svg "train-map-north-america" >}}
 
 See the [k Shortest Paths page](../aql/graph-queries/k-shortest-paths.md) for query examples.
 
