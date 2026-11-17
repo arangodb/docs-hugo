@@ -3,17 +3,21 @@ title: AutoGraph Design Guide
 menuTitle: Design Guide
 weight: 65
 description: >-
-  What AutoGraph does to your data in ArangoDB, collection by collection, and
+  How AutoGraph handles your data in ArangoDB, collection by collection, and
   how to choose the categories that drive it
 ---
 {{< tag "Agentic AI Suite" >}}
 
 AutoGraph turns your files into documents in ArangoDB collections and connects
-them in two named graphs. If you already work with ArangoDB, you can open these
-collections in the web interface and compare them with the tables below.
+them in two named graphs. You can view these collections and their documents in
+the ArangoDB web interface and compare them with the tables below.
 
 You decide how to split your files into categories. AutoGraph derives
-everything else from that choice.
+everything else from that choice. Put files in the same category if they should
+be compared and clustered with each other, for example the documentation of one
+product version, and in different categories if they belong to separate domains,
+such as legal contracts and engineering specifications. See
+[Designing categories](#designing-categories) for more guidance.
 
 ## ArangoDB terms used in this guide
 
@@ -25,9 +29,14 @@ everything else from that choice.
 | Named graph | A set of edge definitions, each saying which collections an edge collection connects. | `{project}_CorpusGraph` and `{project}_kg` |
 | SmartGraph | A named graph that is sharded by the value of one node attribute, so nodes with the same value are stored together. | `{project}_kg`, sharded by `partition_id` |
 
-Every collection and graph name starts with your project name. In a project
-called `my-sample-project`, the `sources` collection is
-`my-sample-project_sources`. The collection names in this guide leave out that
+The examples in this guide use the project `quickstart` and the category
+`physicists` from the
+[Contextual Data Platform Quickstart](../../get-started/contextual-data-platform/quickstart/_index.md),
+unless they say otherwise.
+
+Every collection and graph name starts with your project name. In the project
+`quickstart`, the `sources` collection is
+`quickstart_sources`. The collection names in this guide leave out that
 prefix.
 
 ## The three layers
@@ -56,15 +65,26 @@ file's scope, `[project, category]`.
 The corpus build writes one document per category to the `modules` document
 collection. Its `_key` is `module_<stored label>`, where the stored label is the
 project and category joined with an underscore. For the category
-`ArangoDB-3-12` in the project `my-sample-project`:
+`physicists` in the project `quickstart`:
 
 ```json
 {
-  "_key": "module_my-sample-project_ArangoDB-3-12",
-  "name": "my-sample-project_ArangoDB-3-12",
-  "clusters": ["my-sample-project_domains/cluster_my-sample-project_ArangoDB-3-12_0", "..."]
+  "_key": "module_quickstart_physicists",
+  "name": "quickstart_physicists",
+  "clusters": ["quickstart_domains/cluster_quickstart_physicists_0", "..."]
 }
 ```
+
+Files you upload without a category, with only the project in their scope, are
+built as the `default` category (`categories: ["default"]`). `default` does not
+appear in any key: the stored label is the project name alone. In a project
+called `wiki`, the category document is `module_wiki`, and the clusters are
+`cluster_wiki_0`, `cluster_wiki_1`, and so on.
+
+The `default` category covers every file of the project, including the files of
+named categories. Do not mix unlabeled files and named categories in one
+project: if a named category is already built, building `default` fails because
+that category is already in the corpus.
 
 A category is the unit of isolation:
 
@@ -76,17 +96,17 @@ A category is the unit of isolation:
 **`module` is the internal name for a category.** The collection is called
 `modules`, and documents in other collections store their category in a
 `module` field. That field always contains the stored label (for example
-`my-sample-project_ArangoDB-3-12`), never the bare category name you send in
+`quickstart_physicists`), never the bare category name you send in
 requests.
 {{< /info >}}
 
 ### Layer 2: Corpus Graph
 
 The corpus build reads every file of a category and creates an embedding for
-it. An embedding is a list of numbers that represents the meaning of a text.
-Texts about similar things get similar numbers, so AutoGraph can find similar
-files by comparing their embeddings. The corpus build then writes the
-following:
+it. An embedding is a vector, a list of numbers that places the meaning of a
+text as a direction in a space with many dimensions. Texts about similar things
+point in similar directions, so AutoGraph finds similar files by comparing the
+directions of their embeddings. The corpus build then writes the following:
 
 | Collection | Type | One document per | `_key` | What it connects |
 |------------|------|------------------|--------|------------------|
@@ -98,10 +118,10 @@ following:
 
 Read the edges the same way as any ArangoDB edge. An edge in
 `corpus_relations` with
-`_from: "my-sample-project_modules/module_my-sample-project_ArangoDB-3-12"`,
-`_to: "my-sample-project_domains/cluster_my-sample-project_ArangoDB-3-12_13"`,
-and `label: "HAS_CLUSTER"` says that the category `ArangoDB-3-12` has
-cluster 13.
+`_from: "quickstart_modules/module_quickstart_physicists"`,
+`_to: "quickstart_domains/cluster_quickstart_physicists_0"`,
+and `label: "HAS_CLUSTER"` says that the category `physicists` has
+cluster 0.
 
 Some details follow from how the keys are built:
 
@@ -111,10 +131,11 @@ Some details follow from how the keys are built:
   file in two categories becomes two documents.
 - Cluster keys include the stored label, so cluster 0 of one category never
   collides with cluster 0 of another.
-- The `rags` collection stays empty until you run the RAG Strategizer. Each
+- The `rags` collection does not exist until you run the RAG Strategizer. Each
   `rags` document stores the strategy for one cluster (`strategy_type`,
   `VectorRAG` or `FullGraphRAG`), the cluster's
-  [ontology](#per-cluster-ontology-entity_types), and the `rag_partition_id`
+  [entity schema](#per-cluster-entity-schema-entity_types), and the
+  `rag_partition_id`
   that the Knowledge Graph uses. FullGraphRAG documents also store the import
   settings, such as chunk sizes.
 
@@ -125,32 +146,40 @@ their clusters.
 
 ### Layer 3: Knowledge Graph
 
-When you build the Knowledge Graph, AutoGraph starts one Importer job per
-`rags` document. Each job reads the files of one cluster and writes:
+When you build the Knowledge Graph, AutoGraph creates one Importer job per
+`rags` document. The jobs do not all start at once: they run on a pool of
+Importer workers, and the
+[`replicas`](reference/orchestration.md#trigger-orchestration) setting decides
+how many run in parallel (1 by default). Each job reads the files of one
+cluster and writes:
 
 | Collection | Type | Stores | VectorRAG | FullGraphRAG |
 |------------|------|--------|-----------|--------------|
 | `Documents` | Document | The full text of each file | yes | yes |
-| `Chunks` | Document | Token-sized passages, the unit that retrieval returns. VectorRAG always embeds them; for FullGraphRAG, chunk embeddings are a setting. | yes | yes |
+| `Chunks` | Document | Passages of a file, the unit that retrieval returns. Their length is set in tokens: up to 1200 tokens per chunk, with 100 tokens of overlap, by default (`chunk_token_size` and `chunk_overlap_token_size` in the `rags` document). VectorRAG always embeds them; for FullGraphRAG, chunk embeddings are a setting. | yes | yes |
 | `Entities` | Document | Entities extracted from the chunks, with an LLM-written description | no | yes |
 | `Communities` | Document | Groups of related entities, with an LLM-written summary | no | yes |
 | `Relations` | Edge | All links between the above, with the relationship in a `type` field (`PART_OF`, `MENTIONED_IN`, `RELATED_TO`, `IN_COMMUNITY`, `SUB_COMMUNITY_OF`) | yes | yes |
 
 The Importer creates all five collections with the graph, so `Entities` and
 `Communities` exist even if every partition uses VectorRAG. They stay empty in
-that case. If you turn on image extraction, a sixth collection,
+that case. If you enable image extraction, a sixth collection,
 `SemanticUnits`, is added.
 
 All clusters of all categories write to the same collections. Every document in
-them has a `partition_id` field that says which cluster it came from.
+them has a `partition_id` field that says which cluster it came from. Clusters
+and partitions map one to one: each cluster becomes exactly one partition, and
+the partition ID is derived from the cluster key, with a suffix for its strategy. The
+partition ID is also the SmartGraph attribute of the Knowledge Graph, as the next
+section explains.
 
 ## How the partition ID shards the Knowledge Graph
 
 The partition ID connects the two graphs. The RAG Strategizer creates it from
 the cluster key: it drops the `cluster_` prefix and adds a suffix for the
 strategy, `_a` for FullGraphRAG and `_b` for VectorRAG. Cluster
-`cluster_my-sample-project_ArangoDB-3-12_13` with the VectorRAG strategy becomes
-partition `my-sample-project_ArangoDB-3-12_13_b`.
+`cluster_quickstart_physicists_0` with the FullGraphRAG strategy becomes
+partition `quickstart_physicists_0_a`.
 
 The partition ID is stored in two places:
 
@@ -162,14 +191,12 @@ There is no edge from `rags` to `Documents`. To go from one to the other, match
 the two fields in a query:
 
 ```aql
-FOR r IN `my-sample-project_rags`
-  FILTER r.rag_partition_id == "my-sample-project_ArangoDB-3-12_13_b"
-  FOR c IN `my-sample-project_Chunks`
+FOR r IN quickstart_rags
+  FILTER r.rag_partition_id == "quickstart_physicists_0_a"
+  FOR c IN quickstart_Chunks
     FILTER c.partition_id == r.rag_partition_id
     RETURN { strategy: r.strategy_type, chunk: c._key, tokens: c.tokens }
 ```
-
-The collection names need backticks in AQL because they contain hyphens.
 
 ### The Knowledge Graph is a SmartGraph
 
@@ -184,8 +211,8 @@ inside one partition then does not need network hops between servers. See
 You can see this in the keys. In a SmartGraph, the `_key` of every node starts
 with its SmartGraph attribute value and a colon. The Importer builds the rest of
 the key from a hash and the import number. A chunk of partition
-`my-sample-project_ArangoDB-3-12_13_b` that was written by import 8 has a key
-like `my-sample-project_ArangoDB-3-12_13_b:16247946107544591335_8`.
+`quickstart_physicists_0_a` that was written by import 1 has a key
+like `quickstart_physicists_0_a:11142339072494813907_1`.
 
 Current limits:
 
@@ -202,83 +229,100 @@ Current limits:
 ## How categories become a partitioned knowledge graph
 
 The same category label shows up, in its stored form, in the keys and fields of
-every layer. Following one file of the category `ArangoDB-3-12` in the project
-`my-sample-project`:
+every layer. Following one file of the category `physicists` in the project
+`quickstart`:
 
 | Step | Collection | What is written |
 |------|------------|-----------------|
-| You upload the file | File Manager | Scope `["my-sample-project", "ArangoDB-3-12"]` |
-| Corpus build | `modules` | `_key: "module_my-sample-project_ArangoDB-3-12"` (once per category) |
-| Corpus build | `sources` | `_key: "doc_<hash>"`, `module: "my-sample-project_ArangoDB-3-12"` |
-| Corpus build | `domains` | `_key: "cluster_my-sample-project_ArangoDB-3-12_13"` |
+| You upload the file | File Manager | Scope `["quickstart", "physicists"]` |
+| Corpus build | `modules` | `_key: "module_quickstart_physicists"` (once per category) |
+| Corpus build | `sources` | `_key: "doc_<hash>"`, `module: "quickstart_physicists"` |
+| Corpus build | `domains` | `_key: "cluster_quickstart_physicists_0"` |
 | Corpus build | `corpus_relations` | `HAS_CLUSTER` edge from the module to the cluster, `IN_DOMAIN` edge from the file to the cluster |
-| RAG Strategizer | `rags` | `_key: "rag_my-sample-project_ArangoDB-3-12_13_b"`, `rag_partition_id: "my-sample-project_ArangoDB-3-12_13_b"`, and an `INGESTED_AS` edge from the cluster |
-| Knowledge Graph build | `Documents`, `Chunks`, `Relations` | `partition_id: "my-sample-project_ArangoDB-3-12_13_b"` on every document, and keys that start with `my-sample-project_ArangoDB-3-12_13_b:` |
+| RAG Strategizer | `rags` | `_key: "rag_quickstart_physicists_0_a"`, `rag_partition_id: "quickstart_physicists_0_a"`, and an `INGESTED_AS` edge from the cluster |
+| Knowledge Graph build | `Documents`, `Chunks`, `Relations` | `partition_id: "quickstart_physicists_0_a"` on every document, and keys that start with `quickstart_physicists_0_a:` |
 
 Because each cluster becomes its own partition, you can rebuild or reprocess one
 category without touching the data of the others.
 
-## Example: the my-sample-project project
+## Example: the quickstart project with two categories
 
-This example builds a Context Graph from the Markdown source files of this
-documentation site. The project is `my-sample-project`, and the files are split
-into four categories:
+This example continues the
+[Contextual Data Platform Quickstart](../../get-started/contextual-data-platform/quickstart/_index.md).
+The quickstart builds the category `physicists` from three short biographies.
+A second category, `chemists`, adds three more files to the project
+`quickstart`:
 
 | Category | Files |
 |----------|-------|
-| `ArangoDB-3-12` | 437 |
-| `contextual-data-platform` | 103 |
-| `drivers` | 9 |
-| `integrations` | 23 |
+| `physicists` | `einstein.txt`, `bohr.txt`, `heisenberg.txt` |
+| `chemists` | `curie.txt`, `pauling.txt`, `mendeleev.txt` |
+
+Because `physicists` is already built, only `chemists` is sent to the corpus
+build, with `categories: ["chemists"]`. This is the
+[Add a category](#changing-data-later) case: the `physicists` documents are not
+touched.
 
 After the corpus build, the database contains these collections:
 
-| Collection | Type |
-|------------|------|
-| `my-sample-project_modules` | Document |
-| `my-sample-project_sources` | Document |
-| `my-sample-project_similarities` | Edge |
-| `my-sample-project_domains` | Document |
-| `my-sample-project_corpus_relations` | Edge |
-| `my-sample-project_file_parser_corpus_builds` | Document |
+| Collection | Type | Documents |
+|------------|------|-----------|
+| `quickstart_modules` | Document | 2, one per category |
+| `quickstart_sources` | Document | 6, one per file |
+| `quickstart_similarities` | Edge | 6 |
+| `quickstart_domains` | Document | 2 |
+| `quickstart_corpus_relations` | Edge | 8 |
+| `quickstart_file_parser_corpus_builds` | Document | One per build |
 
-`my-sample-project_modules` has four documents, one per category.
-`my-sample-project_sources` has 572 documents, one per file. The Leiden
-algorithm found 138 clusters across the four categories, stored in
-`my-sample-project_domains`. The `file_parser_corpus_builds` collection records
-the progress of each build and is not part of the graph. The named graph
-`my-sample-project_CorpusGraph` connects the rest. The corpus build also creates
-the ArangoSearch View `my-sample-project_sources_search_view` for the full-text
+Each category is small, so the Leiden algorithm puts each into a single
+cluster: `cluster_quickstart_physicists_0` and `cluster_quickstart_chemists_0`.
+All six `SIMILAR_TO` edges connect files of the same category, because
+similarity edges never cross categories. The `file_parser_corpus_builds`
+collection records the progress of each build and is not part of the graph. The
+named graph `quickstart_CorpusGraph` connects the rest. The corpus build also
+creates the ArangoSearch View `quickstart_sources_search_view` for the full-text
 part of the similarity search.
 
-After the RAG Strategizer, `my-sample-project_rags` contains 138 strategy
-documents, one per cluster, and `my-sample-project_corpus_relations` gains one
-`INGESTED_AS` edge per cluster, for 848 edges in total.
+After the RAG Strategizer, `quickstart_rags` contains two strategy documents,
+one per cluster. Both clusters get FullGraphRAG, each with its own entity schema:
 
-To count the edges of each kind in your own project, group them by label:
+| Partition | Strategy | Entity types |
+|-----------|----------|--------------|
+| `quickstart_physicists_0_a` | FullGraphRAG | `PHYSICIST`, `SCIENTIFIC_THEORY`, `INSTITUTE`, `NOBEL_PRIZE`, `MENTORSHIP`, and 6 more |
+| `quickstart_chemists_0_a` | FullGraphRAG | `PERSON`, `CHEMICAL_ELEMENT`, `DISCOVERY`, `ACADEMIC_INSTITUTION`, `NOBEL_PRIZE`, and 7 more |
+
+`quickstart_corpus_relations` gains one `INGESTED_AS` edge per cluster. To
+count the edges of each kind in your own project, group them by label:
 
 ```aql
-FOR e IN `my-sample-project_corpus_relations`
+FOR e IN quickstart_corpus_relations
   COLLECT label = e.label WITH COUNT INTO n
   RETURN { label, n }
 ```
 
+```json
+[
+  { "label": "HAS_CLUSTER", "n": 2 },
+  { "label": "IN_DOMAIN", "n": 6 },
+  { "label": "INGESTED_AS", "n": 2 }
+]
+```
+
 After the Knowledge Graph build, five more collections exist:
-`my-sample-project_Documents`, `my-sample-project_Chunks`,
-`my-sample-project_Entities`, `my-sample-project_Communities`, and the edge
-collection `my-sample-project_Relations`. They form the named graph
-`my-sample-project_kg`. A chunk from the deployment section of the ArangoDB
-manual looks like this:
+`quickstart_Documents` (6), `quickstart_Chunks` (6), `quickstart_Entities`
+(60), `quickstart_Communities` (4), and the edge collection
+`quickstart_Relations` (125). They form the named graph `quickstart_kg`. The
+chunk of `pauling.txt` looks like this:
 
 ```json
 {
-  "_id": "my-sample-project_Chunks/my-sample-project_ArangoDB-3-12_13_b:16247946107544591335_8",
-  "_key": "my-sample-project_ArangoDB-3-12_13_b:16247946107544591335_8",
-  "tokens": 915,
+  "_id": "quickstart_Chunks/quickstart_chemists_0_a:7745226842599354226_2",
+  "_key": "quickstart_chemists_0_a:7745226842599354226_2",
+  "tokens": 51,
   "chunk_order_index": 0,
-  "content": "---\ntitle: Cluster deployment options\nmenuTitle: Deployment\n...",
-  "import_number": 8,
-  "partition_id": "my-sample-project_ArangoDB-3-12_13_b",
+  "content": "Linus Pauling described the nature of the chemical bond and introduced the concept of electronegativity. ...",
+  "import_number": 2,
+  "partition_id": "quickstart_chemists_0_a",
   "embedding": []
 }
 ```
@@ -288,29 +332,38 @@ of 512 numbers. When you ask a question, retrieval creates an embedding for the
 question and returns the chunks whose embeddings are closest to it.
 
 From the key and the `partition_id`, you can tell that this chunk comes from
-cluster 13 of the category `ArangoDB-3-12`, and that the cluster uses the
-VectorRAG strategy (`_b`). A VectorRAG partition has no entities or
-communities, so this chunk is linked only to its document, through a `PART_OF`
-edge in `my-sample-project_Relations`.
+cluster 0 of the category `chemists`, that the cluster uses the FullGraphRAG
+strategy (`_a`), and that it was written by the second import of the project.
+In `quickstart_Relations`, the chunk has a `PART_OF` edge to its document and a
+`MENTIONED_IN` edge from each of the 9 entities that it mentions, such as
+`LINUS PAULING` (`person`), `ELECTRONEGATIVITY` (`concept`), and
+`CALIFORNIA INSTITUTE OF TECHNOLOGY` (`academic_institution`). The entities connect to each other through `RELATED_TO`
+edges and to their communities through `IN_COMMUNITY` edges.
 
-## Per-cluster ontology (entity_types)
+## Per-cluster entity schema (entity_types)
 
 For each FullGraphRAG cluster, the RAG Strategizer samples documents and asks an
-LLM for the entity types that best describe that domain, typically 8 to 12. It
-stores the list in the `entity_types` field of the cluster's `rags` document.
-For example:
+LLM for the entity types that best describe them, typically 8 to 12. It stores
+the list in the `entity_types` field of the cluster's `rags` document. In the
+[example](#example-the-quickstart-project-with-two-categories):
 
-- Aviation documents: `DRONE`, `FLIGHT_PLAN`, `SENSOR`, `AIRSPACE`
-- Legal documents: `CONTRACT`, `JURISDICTION`, `LEGISLATION`
+- `physicists`: `PHYSICIST`, `SCIENTIFIC_THEORY`, `NOBEL_PRIZE`, `INSTITUTE`
+- `chemists`: `PERSON`, `CHEMICAL_ELEMENT`, `NOBEL_PRIZE`, `ACADEMIC_INSTITUTION`
 
-The Importer passes the list to the LLM that extracts entities, so the ontology
-steers what the Knowledge Graph of the partition contains. It does not filter
+The entity schema is a list of type names derived from your documents. It is not
+an ontology in the formal sense: the types have no definitions, hierarchy, or
+rules, and they differ between clusters, projects, and runs. In the example,
+people are `PHYSICIST` in one cluster and `PERSON` in the other.
+
+The Importer passes the list to the LLM that extracts entities, so the entity
+schema steers what the Knowledge Graph of the partition contains. It does not filter
 out entities of other types: the Importer only does that when
-`enable_strict_types` is on, and AutoGraph does not turn it on. VectorRAG
+`enable_strict_types` is on, and AutoGraph does not enable it. VectorRAG
 clusters extract no entities, and their `entity_types` list is empty.
 
-You can review and edit each cluster's ontology before you build the Knowledge
-Graph.
+You can review and edit each cluster's entity schema before you build the Knowledge
+Graph, either in the [web interface](web-interface.md#review-strategies) or with
+[`PATCH /v1/rag-strategizer/strategy/{cluster_id}`](reference/rag-strategizer.md#update-a-cluster-strategy).
 
 ## Changing data later
 
@@ -320,7 +373,7 @@ Each kind of change rewrites a different part of the collections:
 |--------|------------------|-----|
 | Add a category | New `modules`, `sources`, `domains`, and `corpus_relations` documents for that category only | Build only the new category, with [Corpus Build](reference/corpus-build.md) |
 | Add many files to a built category | The Corpus Graph documents of that category. The Knowledge Graph is not touched. | [Incremental build](reference/corpus-build.md#incremental-builds) |
-| Add, remove, or replace a few files | The affected documents in all three layers, keeping clusters and partitions | [Incremental Graph Updates](incremental-graph-updates.md) |
+| Add, remove, or replace a few files | The affected documents in all three layers. Existing clusters and partitions stay in place at first, but after enough changes AutoGraph flags a FullGraphRAG partition for [reclustering](incremental-graph-updates.md#partition-divergence-and-reclustering). | [Incremental Graph Updates](incremental-graph-updates.md) |
 | Rebuild one category from scratch | Everything the category wrote, in all three layers | [Delete the category](reference/project-operations.md#delete-category), then build, strategize, and build the Knowledge Graph again |
 
 Once a category has data in the Knowledge Graph, you cannot rebuild it in place,
@@ -345,13 +398,18 @@ category, when:
   them, AutoGraph puts them all in a single cluster.
 - You are prototyping and do not know the domain boundaries yet.
 
+Leaving files unlabeled only works in a project without named categories. Their
+keys use the project name alone, without `default`, for example
+`cluster_wiki_0`. See [Layer 1](#layer-1-categories).
+
 | Scenario | Suggested categories |
 |----------|----------------------|
 | Product with docs, legal, and support content | `docs`, `legal`, `support` |
 | Multi-language knowledge base, without cross-language similarity | `en`, `de`, `fr` |
 | Single internal wiki | `default` |
 | Regulated industry with strict data separation | One category per business unit |
-| Documentation for several products or versions | One category per product or version, as in the [example](#example-the-my-sample-project-project) |
+| Documentation for several products or versions | One category per product or version |
+| Biographies from different fields | One category per field, as in the [example](#example-the-quickstart-project-with-two-categories) |
 
 Start with fewer categories and split later if answers mix unrelated domains.
 Category labels end up in `_key` values and `module` fields across the
