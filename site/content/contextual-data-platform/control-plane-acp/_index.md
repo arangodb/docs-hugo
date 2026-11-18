@@ -119,6 +119,22 @@ For the endpoints to create, retrieve, list, and delete projects, see
 For managing secret profiles via ACP, see the
 [Secrets Manager](../secrets-manager.md) documentation.
 
+## Permissions
+
+If role-based access control (RBAC) is enabled, you need the `ai-developer`
+role to create projects and install services, and the `ai-user` role is enough
+to list them. The scope of your role assignment decides where:
+
+- Projects and database services, such as AutoGraph, the Importer, and AutoRAG,
+  are checked against the database they belong to. You can manage them if
+  your scope covers that database.
+- Shared services, such as notebook servers, Container Manager services, and
+  Graph Analytics engines, are not bound to a database. Your scope needs to
+  cover the shared service type.
+- Managing secrets requires the `secret-admin` role.
+
+See [Role-based access control for the ACP](rbac.md) for details.
+
 ## Files
 
 For managing files via ACP, see the
