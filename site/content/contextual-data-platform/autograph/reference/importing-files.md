@@ -59,6 +59,8 @@ previous call staged. Build from the staged files by running a
 [corpus build](corpus-build.md) without a selector. Do not import new files
 while a build is in progress.
 
+{{% rbac-endpoint "autograph" "POST /v1/import-multiple" %}}
+
 ### Request
 
 ```json

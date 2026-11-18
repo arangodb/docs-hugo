@@ -14,6 +14,8 @@ weight: 12
 Analyze existing clusters and assign a RAG strategy to each of them. Must be
 called **after** a corpus build is completed.
 
+{{% rbac-endpoint "autograph" "POST /v1/rag-strategizer/analyze" %}}
+
 **Recommended path:** Call after the corpus build reaches `completed`, and before
 `POST /v1/orchestrate`. If you rebuild the corpus, run the strategizer again so
 that `rags` reflects the current clusters.
@@ -148,6 +150,8 @@ curl -X POST \
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/rag-strategizer/jobs/{strategize_job_id}" >}}
 
+{{% rbac-endpoint "autograph" "GET /v1/rag-strategizer/jobs/{strategize_job_id}" %}}
+
 Poll the live progress of an analyze run with the `strategize_job_id` that
 [`POST /v1/rag-strategizer/analyze`](#trigger-rag-strategizer) returned. Use it
 to drive a progress bar while the job runs in the background.
@@ -207,6 +211,8 @@ curl -H "Authorization: Bearer <token>" \
 ## Retrieve RAG Strategies
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/rag-strategizer/strategy" >}}
+
+{{% rbac-endpoint "autograph" "GET /v1/rag-strategizer/strategy" %}}
 
 Retrieve all RAG strategies that have been created.
 
@@ -291,6 +297,8 @@ curl -H "Authorization: Bearer <token>" \
 ## Update a cluster strategy
 
 {{< endpoint "PATCH" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/rag-strategizer/strategy/{cluster_id}" >}}
+
+{{% rbac-endpoint "autograph" "PATCH /v1/rag-strategizer/strategy/{cluster_id}" %}}
 
 Override the strategy type, the entity types, and the image extraction flag of a
 single cluster. Use it when the automatically assigned strategy is not what you

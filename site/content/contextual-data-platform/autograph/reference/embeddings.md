@@ -13,6 +13,8 @@ weight: 16
 
 Add embeddings to documents in **any** ArangoDB collection you already have. This path is **independent** of import, corpus build, clustering, and the `{project}_CorpusGraph` named graph.
 
+{{% rbac-endpoint "autograph" "POST /v1/embed-field-in-collection" %}}
+
 **Recommended path:** This endpoint works independently; no import or corpus build required. Call once per `(collection, field)` pair. Every call recomputes the candidates from the live data, so rows that were inserted after a previous successful run are embedded on the next call.
 
 ## Request

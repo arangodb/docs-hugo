@@ -33,6 +33,8 @@ in `category`.
 Spawn Importer workers for the strategy profiles that are not in the
 knowledge graph yet. Called after RAG strategizer is completed.
 
+{{% rbac-endpoint "autograph" "POST /v1/orchestrate" %}}
+
 **Recommended path:** Call after a successful corpus build and strategizer run,
 when `rags` is non-empty. This is the final step of the standard workflow. Omit
 `categories` to process every eligible strategy profile; list bare category
@@ -227,6 +229,8 @@ curl -X POST \
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate/{orchestration_id}" >}}
 
+{{% rbac-endpoint "autograph" "GET /v1/orchestrate/{orchestration_id}" %}}
+
 Returns the status of the orchestration run that
 [`POST /v1/orchestrate`](#trigger-orchestration) started, using the
 `orchestration_id` from its response. This is where the per-partition results
@@ -397,6 +401,8 @@ curl -H "Authorization: Bearer <token>" \
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate/{orchestration_id}" >}}
 
+{{% rbac-endpoint "autograph" "DELETE /v1/orchestrate/{orchestration_id}" %}}
+
 Ask the running orchestration to stop and release the single-flight slot of the
 project, so that a wedged run can be cleared without database surgery.
 
@@ -474,6 +480,8 @@ fixed constants, not operator-configurable settings.
 ## Insert documents
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/insert" >}}
+
+{{% rbac-endpoint "autograph" "POST /v1/graph/insert" %}}
 
 Adds documents that are not in the graph yet. The call is **synchronous**.
 
@@ -585,6 +593,8 @@ curl -X POST \
 ## Delete documents
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/delete" >}}
+
+{{% rbac-endpoint "autograph" "POST /v1/graph/delete" %}}
 
 Removes documents from an existing corpus graph. The call is **synchronous** and
 performs the whole removal itself. It cleans up **Layer 3 first**, then Layers 1
@@ -740,6 +750,8 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update" >}}
 
+{{% rbac-endpoint "autograph" "POST /v1/graph/update" %}}
+
 Replaces the content of documents that are already in the graph. The call is
 **asynchronous**.
 
@@ -893,6 +905,8 @@ curl -X POST \
 ## Trigger reclustering
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/recluster" >}}
+
+{{% rbac-endpoint "autograph" "POST /v1/graph/recluster" %}}
 
 Schedules a Layer 3 reclustering for up to five **FullGraphRAG** partitions. The
 call returns right away and reports whether each partition was taken up, which is

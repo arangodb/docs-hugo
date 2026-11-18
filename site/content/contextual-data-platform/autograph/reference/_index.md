@@ -21,6 +21,12 @@ works, see the [AutoGraph overview](../_index.md).
 - **Valid JWT** for the API (`Authorization: Bearer ...`)
 - **Platform auth** reachable from the service (for token validation and
   renewal), if your deployment uses it
+- **A role for the AutoGraph actions**, if role-based access control (RBAC) is
+  enabled: `ai-user` for reading the state of a project, `ai-developer` for
+  everything else, with a scope that covers the project database. Each
+  endpoint lists its **Required permission** and the
+  **Predefined roles (RBAC)** that grant it. See
+  [Role-based access control for AutoGraph](rbac.md)
 
 Before importing data, you need to create a project. Projects keep
 datasets and configurations isolated from each other.
@@ -35,6 +41,8 @@ To install and start the AutoGraph service, use the following endpoint of the
 [Arango Control Plane (ACP)](../../control-plane-acp/_index.md):
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/autograph" >}}
+
+{{% rbac-endpoint "acp" "POST /v1/autograph" %}}
 
 The web interface installs the service for you when you start the first build
 of a project.
