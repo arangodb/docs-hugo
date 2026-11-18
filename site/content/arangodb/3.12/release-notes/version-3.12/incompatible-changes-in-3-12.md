@@ -1383,6 +1383,15 @@ FOR d IN coll
 
 Such queries now return each group once.
 
+## `REPEAT()` counts separators towards the output limit
+
+<small>Introduced in: v3.12.14</small>
+
+The [`REPEAT()` AQL function](../../aql/functions/string.md#repeat) now includes
+the separators when checking the size of the output string against the limit of
+16 MB. Up to v3.12.13, the separators can make the output string exceed this
+limit.
+
 ## HTTP API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
