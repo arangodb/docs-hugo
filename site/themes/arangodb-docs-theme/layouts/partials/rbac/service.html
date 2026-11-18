@@ -1,0 +1,14 @@
+{{- /* Looks up a service of site/data/rbac_services.yaml by its id and fails
+       the build naming the page if there is no such service.
+       Takes a dict with "id" and "page", returns the service map. */ -}}
+{{- $data := index hugo.Data "rbac_services" -}}
+{{- $found := dict -}}
+{{- range $data.services -}}
+  {{- if eq .id $.id -}}
+    {{- $found = . -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $found -}}
+  {{- errorf "RBAC: unknown service id %q in %s, see site/data/rbac_services.yaml" $.id $.page.File.Path -}}
+{{- end -}}
+{{- return $found -}}

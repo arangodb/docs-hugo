@@ -1075,6 +1075,19 @@ The following shortcodes also exist but are rarely used:
   the Arango Contextual Data Platform bundles, see
   [Add a Contextual Data Platform release](#add-a-contextual-data-platform-release).
 
+- `{{% rbac-roles %}}`, `{{% rbac-actions "<service>" %}}`,
+  `{{% rbac-endpoints "<service>" %}}`, and
+  `{{% rbac-endpoint "<service>" "<METHOD> <path>" %}}` render the role-based
+  access control (RBAC) information of the data platform services from
+  [`site/data/rbac_services.yaml`](site/data/rbac_services.yaml): the overview
+  of what each predefined AI role grants per service, the actions of a
+  service, the permissions of all its endpoints, and the permission of a
+  single endpoint. Place `rbac-endpoint` below the `endpoint` shortcode of the
+  endpoint, with the path relative to the `prefix` of the service. The build
+  fails if the service or endpoint is not listed in the data file. The comment
+  at the top of the data file describes its structure and sources. For the
+  endpoints of ArangoDB, see [Predefined RBAC roles](#predefined-rbac-roles).
+
 ### Content Guidelines
 
 - Use American English spelling, e.g. _behavior_ instead of _behaviour_.
