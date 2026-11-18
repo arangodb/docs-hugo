@@ -517,6 +517,11 @@ logJsonResponse(response);
 
 ## Manage permissions
 
+If [role-based access control (RBAC)](../../../../contextual-data-platform/access-control/rbac.md)
+is enabled, you cannot manage permissions using access levels with the following
+endpoints. With RBAC, user permissions are managed by assigning roles to grant
+actions and scoping them to resources, such as databases and collections.
+
 ### Set a user's database access level
 
 ```openapi
@@ -588,7 +593,8 @@ paths:
             database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            Returned if you have `none` access to the `_system` database,
+            or if RBAC is enabled and access levels are therefore not used.
       tags:
         - Users
 ```
@@ -692,7 +698,8 @@ paths:
             database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            Returned if you have `none` access to the `_system` database,
+            or if RBAC is enabled and access levels are therefore not used.
       tags:
         - Users
 ```
@@ -775,6 +782,9 @@ paths:
           description: |
             If the JSON representation is malformed or mandatory data is missing
             from the request.
+        '403':
+          description: |
+            Returned if RBAC is enabled and access levels are therefore not used.
       tags:
         - Users
 ```
@@ -860,6 +870,9 @@ paths:
         '400':
           description: |
             If there was an error
+        '403':
+          description: |
+            Returned if RBAC is enabled and access levels are therefore not used.
       tags:
         - Users
 ```
@@ -958,7 +971,8 @@ paths:
             database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            Returned if you have `none` access to the `_system` database,
+            or if RBAC is enabled and access levels are therefore not used.
       tags:
         - Users
 ```
@@ -1057,7 +1071,8 @@ paths:
             database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            Returned if you have `none` access to the `_system` database,
+            or if RBAC is enabled and access levels are therefore not used.
       tags:
         - Users
 ```
@@ -1143,7 +1158,8 @@ paths:
             database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            Returned if you have `none` access to the `_system` database,
+            or if RBAC is enabled and access levels are therefore not used.
       tags:
         - Users
 ```
