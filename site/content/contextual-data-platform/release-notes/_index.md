@@ -8,6 +8,36 @@ description: >-
 pageToc:
   maxHeadlineLevel: 2
 ---
+## v4.2.0 (November 2026)
+
+This release makes the web interface easier to navigate and improves the
+AutoGraph Studio experience, along with bug and security fixes. It includes all
+features of [v4.2.0-beta](#v420-beta-october-2026), now with improved
+stability, and adds multiple improvements for project management in
+AutoGraph Studio.
+
+### AutoGraph Studio
+
+{{< tag "Agentic AI Suite" >}}
+
+- Projects can be deleted and created again under the same name, and the new
+  project builds its Knowledge Graph on the first attempt without manual
+  cleanup.
+- Document updates complete in full even when AutoGraph restarts during the
+  update. Only the new file version remains in the graph, so retrieval reflects
+  your latest documents.
+- Deleting a project removes everything it created and confirms the deletion
+  clearly.
+
+### Security
+
+- Improved read-only safeguard for AI-assisted queries: every query the AI runs
+  through the MCP Server is checked before it runs, and only queries that read
+  data are executed.
+- Dependencies are updated with the latest security patches, including eight
+  critical and high severity CVE fixes in the MCP Server and a patched
+  dependency in the AutoGraph Studio importer.
+
 ## v4.2.0-beta (October 2026)
 
 This release makes the web interface easier to navigate and improves the
@@ -134,20 +164,20 @@ use the [Importer](../autograph/importer/_index.md) and
 
 {{< tag "Agentic AI Suite" >}}
 
-[Incremental Graph Updates](../autograph/incremental-graph-updates.md)
+[Incremental Graph Updates](../autograph/incremental-graph-updates/_index.md)
 keep a Knowledge Graph current after it has been built. It is faster and more
 efficient than to recreate it, and can significantly reduce the LLM cost and
 latency.
 
-You can insert new documents, delete obsolete ones, and replace changed ones
-without re-running the corpus build, the RAG Strategizer, and a full
+In the existing categories of a project, you can add new documents, remove
+obsolete ones, and replace changed ones without re-running the corpus build, the RAG Strategizer, and a full
 orchestration pass. Existing clusters and strategy profiles are preserved, and
 only the documents that actually changed are processed.
 
-AutoGraph also tracks how far a FullGraphRAG partition has drifted since it was
-last clustered and flags it, so you can trigger
-[reclustering](../autograph/incremental-graph-updates.md#partition-divergence-and-reclustering)
-when you choose to. Reclustering is never automatic.
+AutoGraph also tracks how much a partition with the FullGraphRAG strategy has
+changed since its communities were last organized and flags it, so you can
+[reorganize](../autograph/incremental-graph-updates/divergence-and-reorganization.md)
+it when you choose to. Reorganizing is never automatic.
 
 In this release, incremental updates are available through the
 [HTTP API](../autograph/reference/orchestration.md) only.
