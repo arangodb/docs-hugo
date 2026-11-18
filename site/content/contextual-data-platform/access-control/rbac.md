@@ -424,6 +424,9 @@ endpoint in the HTTP API reference for details.
 
 ## Assign a role to a user
 
+The steps are the same for every role. Only the scope differs, see
+[Scope a role assignment](#scope-a-role-assignment).
+
 {{< tabs "interfaces" >}}
 
 {{< tab "Web interface" >}}
@@ -489,22 +492,28 @@ dialog shows what that assignment can be narrowed to.
 Some roles cannot be narrowed at all. For those, the panel shows the notice
 *This role applies everywhere. It cannot be narrowed to specific resources.*
 and the assignment covers all resources. This is the case for the
-`managed:operator:<uuid>` roles and for the Agentic AI Suite roles.
+`managed:operator:<uuid>`, `tenant-admin`, and `platform-operator` roles.
 
 For a role that supports scoping, choose between:
 
-- **Everything**: the role applies to all resources.
+- **Everything**: the role applies to all resources that its policies cover,
+  including resources created in the future.
 - **Specific resources**: the role applies only to the resources you list,
   defined as one or more scopes.
 
 With **Specific resources** selected, use **+ Add scope** to add a scope card.
 A new card is titled **New scope** until you choose a **Resource type**, after
-which it takes the name of that type. The available resource types are
-`Database`, `Collections`, `Views`, `Graphs`, `Analyser`, and
-`Name pattern (advanced)`. Each card can be collapsed with the chevron and
+which it takes the name of that type. Which resource types are available
+depends on the role. Each card can be collapsed with the chevron and
 removed with the trash icon.
 
-### Select collections
+### Scope a core database role
+
+For the `coredb-*` roles, the available resource types are
+`Database`, `Collections`, `Views`, `Graphs`, `Analyser`, and
+`Name pattern (advanced)`.
+
+#### Select collections
 
 For the `Collections` resource type, the scope card shows a collection picker:
 
@@ -518,7 +527,7 @@ For the `Collections` resource type, the scope card shows a collection picker:
 Selecting a whole group or all databases is reflected as a partially selected
 state on the parent checkboxes.
 
-### Match resources by name pattern
+#### Match resources by name pattern
 
 The `Name pattern (advanced)` resource type replaces the picker with a single
 text field where you enter a pattern such as `analytics/report_*`. Below the
