@@ -12,6 +12,15 @@ logging in as well as the access levels that govern which databases and
 collections the user may access and which actions are permitted. User accounts
 are valid throughout a server instance, across all databases.
 
+{{< info >}}
+If you run ArangoDB as part of the
+Arango Contextual Data Platform, you can use
+[role-based access control (RBAC)](../../../../../contextual-data-platform/access-control/rbac.md)
+instead of the access levels described on this page. With RBAC, you assign
+roles to users and scope them to databases, collections, and other resources.
+RBAC is not available for standalone ArangoDB deployments.
+{{< /info >}}
+
 There is a built-in user account `root` which cannot be removed. Note that it
 has an empty password by default, so make sure to set a strong password
 immediately. You can create additional user accounts and grant them different
