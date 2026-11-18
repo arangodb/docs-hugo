@@ -440,6 +440,7 @@ The steps are the same for every role. Only the scope differs, see
    [scope the assignment](#scope-a-role-assignment) or see a notice that the
    role applies everywhere.
 5. Repeat for as many roles as the user needs, then select **Save changes**.
+   A **Roles updated** notification confirms the change.
 
 Each entry in the **Assigned** list shows the role name with a summary of its
 scope underneath, for example `Everything`. The trash icon next to an entry
@@ -467,6 +468,9 @@ endpoint in the HTTP API reference for details.
 
 ## Assign a user to a role
 
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
 Working from the Roles tab reverses the direction and adds a user-picking step
 in front:
 
@@ -482,10 +486,21 @@ in front:
    [Assign a role to a user](#assign-a-role-to-a-user).
 
 This is only a different way to get to the same dialog. The result is the same
-role assignment, so there is no separate HTTP API endpoint for it.
+role assignment.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+See [Assign a role to a user](#assign-a-role-to-a-user). There is no separate
+HTTP API endpoint for assigning a user to a role.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Scope a role assignment
 
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
 With a role selected in the **Assigned** list, the right-hand side of the
 dialog shows what that assignment can be narrowed to.
 
@@ -507,13 +522,46 @@ which it takes the name of that type. Which resource types are available
 depends on the role. Each card can be collapsed with the chevron and
 removed with the trash icon.
 
+Below the **Everything** and **Specific resources** options, a **Visual** /
+**JSON** toggle switches between the form-based configuration and a
+read-only preview of the scope as JSON, in the format that the
+[HTTP API](#scopes-in-the-http-api) uses. You can only edit the scope in the
+**Visual** mode.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+The scope is the `scope` object in the request body when you
+[assign a role to a user](#assign-a-role-to-a-user) or
+[edit an assignment](#edit-or-remove-an-assignment). It consists of
+statements that list the resources the role applies to.
+
+**Everything** corresponds to a single statement that allows all actions on
+all resources. Use it for the roles that cannot be narrowed, too:
+
+```sh
+curl -X POST -H "Authorization: Bearer <JWT>" \
+  https://<EXTERNAL_ENDPOINT>:8529/_management/permissions/user/carol/role/managed:predefined:tenant-admin \
+  -d '{"scope":{"statements":[{"effect":"Allow","actions":["*"],"resources":["*"]}]}}'
+```
+
+For **Specific resources**, list the resources in the `resources` array of a
+statement, as shown in [Scope a core database role](#scope-a-core-database-role)
+and [Scope an AI services role](#scope-an-ai-services-role). See
+[Scopes in the HTTP API](#scopes-in-the-http-api) for the rules.
+{{< /tab >}}
+
+{{< /tabs >}}
+
 ### Scope a core database role
 
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
 For the `coredb-*` roles, the available resource types are
-`Database`, `Collections`, `Views`, `Graphs`, `Analyser`, and
+`Databases`, `Collections`, `Views`, `Analyzers`, `Graphs`, and
 `Name pattern (advanced)`.
 
-#### Select collections
+**Select collections**
 
 For the `Collections` resource type, the scope card shows a collection picker:
 
@@ -527,7 +575,24 @@ For the `Collections` resource type, the scope card shows a collection picker:
 Selecting a whole group or all databases is reflected as a partially selected
 state on the parent checkboxes.
 
-#### Match resources by name pattern
+{{< warning >}}
+Selecting collections does not give access to the database they belong to,
+but every request to a collection requires access to its database, too.
+A scope that only consists of a `Collections` resource type therefore denies
+all requests.
+
+Adding a `Database` resource type for the database is not a solution because
+it grants access to everything in the database, including all collections.
+To limit a role to individual collections, use the HTTP API instead, as shown
+in the cURL tab.
+{{< /warning >}}
+
+{{< comment >}}
+TODO: Web interface bug: a Collections scope lacks db:database:<db>, and a
+Database scope adds db:{collection,view,analyzer,graph}:<db>:*. Revisit once fixed.
+{{< /comment >}}
+
+**Match resources by name pattern**
 
 The `Name pattern (advanced)` resource type replaces the picker with a single
 text field where you enter a pattern such as `analytics/report_*`. Below the
@@ -545,6 +610,36 @@ Patterns are evaluated continuously rather than expanded once, so
 **all future matches are included automatically**. Use this when the set of
 resources grows over time and you do not want to revisit the assignment for
 every new collection.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+To limit a `coredb-*` role to individual collections, list the database and
+the collections as resources, plus `db:apiversion:*`. The web interface adds
+`db:apiversion:*` automatically, but you need to include it yourself when
+using the HTTP API:
+
+```sh
+curl -X POST -H "Authorization: Bearer <JWT>" \
+  https://<EXTERNAL_ENDPOINT>:8529/_management/permissions/user/alice/role/managed:predefined:coredb-developer \
+  -d '{"scope":{"statements":[{"effect":"Allow","actions":["*"],"resources":["db:apiversion:*","db:database:analytics","db:collection:analytics:orders","db:collection:analytics:customers"]}]}}'
+```
+
+A name pattern is a resource with a wildcard in it. For example,
+`db:collection:analytics:report_*` matches every collection of the `analytics`
+database whose name starts with `report_`, including collections created
+later:
+
+```sh
+curl -X POST -H "Authorization: Bearer <JWT>" \
+  https://<EXTERNAL_ENDPOINT>:8529/_management/permissions/user/dave/role/managed:predefined:coredb-reader \
+  -d '{"scope":{"statements":[{"effect":"Allow","actions":["*"],"resources":["db:apiversion:*","db:database:analytics","db:collection:analytics:report_*"]}]}}'
+```
+
+See [Scopes in the HTTP API](#scopes-in-the-http-api) for the resources you
+can use.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ### Scope an AI services role
 
@@ -597,6 +692,9 @@ you can use.
 
 ### Validation
 
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
 The dialog does not let you save incomplete assignments:
 
 - A role with no scope is flagged with a warning icon in the **Assigned**
@@ -605,6 +703,20 @@ The dialog does not let you save incomplete assignments:
   inline error *Add resources to this scope, or remove it.*
 
 Resolve every flagged item, or delete it, before saving.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+The HTTP API rejects a request with a missing scope, or with an action or
+resource that is not well-formed, with an HTTP `400` error. It does not
+check whether a scope is useful, however:
+
+- An empty `statements` array is accepted but grants nothing.
+- A statement without an `effect` is a `Deny` statement.
+- The role name is not checked, so a misspelled role is assigned without
+  an error but has no effect.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Edit or remove an assignment
 
@@ -618,6 +730,9 @@ The same dialog reopens as **Edit roles for `<user>`**, where you can:
 - Change the scope of an assignment, where the role supports it.
 - Remove a role from the user with the trash icon on its entry in the
   **Assigned** list.
+
+Select **Save changes** to apply the changes. A **Roles updated** notification
+confirms them.
 
 The pencil icons in the Roles tab panel work the same way, so you can adjust a
 user's assignment from either direction without switching tabs.
@@ -645,14 +760,6 @@ endpoints in the HTTP API reference for details.
 {{< /tab >}}
 
 {{< /tabs >}}
-
-## Saving and enforcement
-
-**Save changes** applies the assignment and confirms it with a **Roles updated**
-notification. Permission changes are not necessarily effective immediately -
-the notification states that enforcement can take up to about 30 seconds. Keep
-that delay in mind when verifying a change, and when revoking access that must
-take effect right away.
 
 ## List the roles
 
@@ -714,6 +821,14 @@ HTTP API reference for details.
 
 {{< /tabs >}}
 
+## When changes take effect
+
+Changes to role assignments are not necessarily effective immediately,
+regardless of whether you make them in the web interface or with the
+HTTP API. Enforcement can take up to about 30 seconds, as the **Roles updated**
+notification in the web interface points out. Keep that delay in mind when
+verifying a change, and when revoking access that must take effect right away.
+
 ## Troubleshoot denied access
 
 The data platform's services do not silently drop actions a user is not allowed
@@ -727,7 +842,7 @@ check two things in Access Control:
 Remember that an assignment grants only what its role and its scope allow at
 the same time, so a role that covers the action is still not enough if the
 scope leaves the resource out. Also give a recent change time to propagate, as
-[enforcement](#saving-and-enforcement) can lag by up to about 30 seconds.
+[enforcement](#when-changes-take-effect) can lag by up to about 30 seconds.
 
 Users can check whether they are allowed to perform an action on a resource
 with the HTTP API, using their own session token. No particular role is
@@ -814,7 +929,7 @@ for example
   `managed:predefined:coredb-reader`. The authorization service does not check
   whether a role exists when you assign it, so double-check the spelling.
 - **Propagation**: Changes are enforced after up to about 30 seconds, as
-  described in [Saving and enforcement](#saving-and-enforcement).
+  described in [When changes take effect](#when-changes-take-effect).
 - **Errors**: Error responses have a JSON body with a numeric `code`, a
   `message`, and a `details` array. The `code` is a gRPC status code, not the
   HTTP status code.
