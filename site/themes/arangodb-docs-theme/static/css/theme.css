@@ -43,7 +43,15 @@
 
     --font-headlines: "Urbanist", sans-serif;
     --font-content: "Inter", sans-serif;
-    --font-code: Consolas, "liberation mono", Menlo, Courier, monospace;
+    --font-code: "Geist Mono", ui-monospace, Menlo, Consolas, monospace;
+
+    /* Code blocks and inline code. Neutral grays like the table header, not
+       the bluish muted of the design system. Dark values in dark.css,
+       syntax colors in chroma.css */
+    --code-bg: #f0f0f0;                     /* gray-100 */
+    --code-ring: rgb(0 0 0 / 0.06);
+    --code-inline-border: #d9d9d9;
+    --code-text: rgb(45 49 56);
 
     --padding-1: 8px;
     --padding-2: 16px;
@@ -188,6 +196,15 @@
     src: url("../fonts/inter-v12-latin-600.woff2") format("woff2");
 }
 
+/* Geist Mono v1.3.1 (SIL Open Font License 1.1), variable weight */
+@font-face {
+    font-display: swap;
+    font-family: "Geist Mono";
+    font-style: normal;
+    font-weight: 100 900;
+    src: url("../fonts/GeistMono-Variable.woff2") format("woff2");
+}
+
 @font-face {
     font-display: swap;
     font-family: "Urbanist";
@@ -313,8 +330,12 @@ h4 { font-size: 1.8rem; }
 h5 { font-size: 1.4rem; }
 h6 { font-size: 0.9rem; }
 
-code, pre {
-    font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+/* Geist Mono has ligatures (e.g. for => and !=), which must not change how
+   code reads */
+code, pre, kbd {
+    font-family: var(--font-code);
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "calt" 0, "dlig" 0;
 }
 
 summary {
@@ -606,7 +627,7 @@ hr {
 
 pre {
     background-color: var(--CODEBLOCK-BACKGROUND-COLOR);
-    line-height: 1.8rem;
+    line-height: 1.5rem;
     position: relative;
     padding: 0;
     display: flex;
@@ -840,9 +861,14 @@ svg a.card-link {
 
 /* Tabs */
 
+/* The line tabs of the design system (a foreground label and an underline
+   in the primary color for the active tab, muted labels otherwise), on a
+   gray strip at the top of a bordered panel, so that it is clear where the
+   tabbed content ends. The gray ramp and colors switch in dark mode */
+
 .tab-panel .tab-item {
     display: none;
-    margin: 1rem;
+    margin: 16px;
 }
 
 .tab-panel .tab-item.selected {
@@ -851,12 +877,17 @@ svg a.card-link {
 
 .tab-panel {
     margin: 1rem 0;
-    border: 2px solid var(--gray-300);
-    border-radius: 7px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
 }
 
 .tab-nav {
-    border-bottom: 2px solid var(--gray-300);
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 8px;
+    border-bottom: 1px solid var(--gray-200);
+    border-radius: 8px 8px 0 0;
+    background: var(--gray-50);
 }
 
 .tab-content {
@@ -864,7 +895,7 @@ svg a.card-link {
 }
 
 .tab-nav-button {
-    margin-bottom: -2px;
+    margin-bottom: -1px;
     position: relative;
     max-width: 300px;
     background-color: transparent;
@@ -875,21 +906,28 @@ svg a.card-link {
     overflow: hidden;
     text-overflow: ellipsis;
     transition-duration: 0s;
-    color: var(--color-teal-ink);
-    padding: 12px 16px;
+    color: var(--color-muted);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: normal;
+    padding: 10px 12px;
 }
 
+.tab-nav-button:hover,
 .tab-nav-button.selected {
-    font-weight: 700;
+    color: var(--color-heading);
 }
+
 .tab-nav-button.selected::after {
     content: "";
     position: absolute;
-    left: 0;
-    right: 0;
+    left: 12px;
+    right: 12px;
     bottom: 0;
     height: 2px;
-    background-color: var(--color-teal-ink)
+    border-radius: 1px;
+    background-color: var(--color-link);
 }
 
 .tab-nav-button > span {
@@ -1247,6 +1285,17 @@ article.default > * {
 .toc-body .level-4 > a { padding-left: 36px; }
 .toc-body .level-5 > a { padding-left: 48px; }
 .toc-body .level-6 > a { padding-left: 60px; }
+
+/* Plain monospace text in the breadcrumbs and the previous/next links,
+   which are not code samples */
+:is(.breadcrumbs, nav.pagination) code {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font-size: 0.9em;
+    white-space: normal;
+}
 
 /* Plain monospace text in the list, breaking long names only where needed */
 .toc-body code {
@@ -1692,28 +1741,33 @@ article ul li {
     font-size: 12px;
 }
 
-/* Codeblocks */
+/* Codeblocks: a gray fill with a faint ring, the shape of the code block of
+   the design system. Unlike there, code wraps instead of scrolling */
 pre {
-    border-radius: 7px;
-    background: var(--gray-100);
+    border: 1px solid var(--code-ring);
+    border-radius: 8px;
+    background: var(--code-bg);
     box-shadow: none;
     position: relative;
 }
 
+/* Inline code, like IDs and keys in the design system (Geist Mono) on a
+   gray chip. Slightly smaller than the text around it, as the mono font
+   looks bigger at the same size */
 code, p code {
-    font-size: 14px;
+    font-size: 0.875em;
     overflow: auto;
     word-wrap: break-word;
     margin: 0;
-    padding: 2px 3px;
+    padding: 1px 4px;
     word-break: break-word;
     white-space: pre-wrap;
-    border: 1px solid #c6c6c6;
-    border-radius: 5px;
-    background: var(--gray-100);
+    border: 1px solid var(--code-inline-border);
+    border-radius: 4px;
+    background: var(--code-bg);
     box-shadow: none;
-    color: var(--gray-950);
-    vertical-align: middle;
+    color: var(--code-text);
+    vertical-align: baseline;
 }
 
 li > code {
@@ -1783,14 +1837,14 @@ pre > code {
     background: transparent;
     word-break: break-word;
     white-space: break-spaces;
-    color: var(--CODEBLOCK-TEXT-COLOR);
+    color: var(--code-text);
     font-family: var(--font-code);
-    padding: 28px;
-    font-size: 1rem;
+    padding: 20px 24px;
+    font-size: 14px;
 }
 
 .code-long {
-    max-height: calc(15 * 1.8rem);
+    max-height: calc(15 * 1.5rem);
     /* clip, not hidden: hidden is a scroll container and so gets a useless tab stop */
     overflow: clip;
 }
@@ -1831,64 +1885,85 @@ ol > li {
 }
 
 
-/* Hints */
+/* Hints (admonitions): the alerts of the design system, 1px border, 8px
+   radius, a tinted fill and a 16px icon at the first line. The type shows
+   through the icon and color (a hidden label names it for screen readers),
+   the text keeps the body color for readability. Dark values in dark.css */
+
+:root {
+    --note-info-bg: rgb(0 0 0 / 0.025);
+    --note-info-border: #45556c;             /* info-ring */
+    --note-info-icon: #62748e;               /* muted-foreground */
+    --note-tip-bg: #dcfce7;                  /* success-subtle */
+    --note-tip-border: #a4f4cf;              /* success-ring */
+    --note-tip-icon: #00a63e;                /* success */
+    --note-warning-bg: #ffedd4;              /* warning-subtle */
+    --note-warning-border: #ffd6a7;          /* warning-ring */
+    --note-warning-icon: #ca3500;            /* warning-text */
+    --note-danger-bg: rgb(231 0 11 / 0.05);  /* destructive alert */
+    --note-danger-border: rgb(251 44 54 / 0.4);
+    --note-danger-icon: #fb2c36;             /* destructive */
+    --note-code-bg: rgb(255 255 255 / 0.6);
+}
 
 div.box {
-    border-radius: 7px;
-    margin-bottom: 1rem;
-    margin-top: 1rem;
-    border: 3px solid black;
+    margin: 1rem 0;
+    border: 1px solid var(--note-border);
+    border-radius: 8px;
+    background: var(--note-bg);
 }
 
 div.box.info {
-    border-color: var(--state-info-dark);
-}
-
-div.box.warning,
-div.box.security {
-    border-color: var(--state-warning-dark);
-}
-
-div.box.danger {
-    border-color: var(--state-danger);
+    --note-bg: var(--note-info-bg);
+    --note-border: var(--note-info-border);
+    --note-icon: var(--note-info-icon);
 }
 
 div.box.tip {
-    border-color: var(--state-success-dark);
+    --note-bg: var(--note-tip-bg);
+    --note-border: var(--note-tip-border);
+    --note-icon: var(--note-tip-icon);
+}
+
+div.box:is(.warning, .security) {
+    --note-bg: var(--note-warning-bg);
+    --note-border: var(--note-warning-border);
+    --note-icon: var(--note-warning-icon);
+}
+
+div.box.danger {
+    --note-bg: var(--note-danger-bg);
+    --note-border: var(--note-danger-border);
+    --note-icon: var(--note-danger-icon);
 }
 
 div.box-content {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    gap: 12px;
 }
 
-div.box.info > .box-content-container > .box-content > i {
-    color: var(--state-info-dark);
-    font-size: 1.2em;
-}
-
-div.box.warning > .box-content-container > .box-content > i,
-div.box.security > .box-content-container > .box-content > i {
-    color: var(--state-warning-dark);
-    font-size: 1.2em;
-}
-
-div.box.danger > .box-content-container > .box-content > i {
-    color: var(--state-danger);
-    font-size: 1.2em;
-}
-
-div.box.tip > .box-content-container > .box-content > i {
-    color: var(--state-success-dark);
-    font-size: 1.2em;
+/* Centered on the first line of text (24px) */
+div.box > .box-content-container > .box-content > i {
+    flex: none;
+    margin-top: 4px;
+    font-size: 16px;
+    color: var(--note-icon);
 }
 
 div > .box-content-container {
-    padding: 0 0 0 12px;
+    padding: 12px 16px;
+}
+
+/* Inline code takes on the tint of the box instead of a gray chip */
+div.box code {
+    background: var(--note-code-bg);
+    border-color: var(--note-border);
 }
 
 .box-text {
-    padding: 24px;
+    flex: 1;
+    min-width: 0;
 }
 
 .box-text > .visually-hidden + * {
@@ -2046,12 +2121,24 @@ summary {
     list-style: none;
     cursor: pointer;
     user-select: none;
-    font-size: 1.1rem;
     font-weight: 500;
     margin-top: 1rem;
 }
 
-summary:hover, summary:focus-visible {
+/* Like the accordion trigger of the design system: a medium-weight label at
+   the size of the text around it, underlined on hover. The chevron stays in
+   front of the label, close to it in the wide text column */
+summary:not(.openapi-prop) {
+    width: fit-content;
+    color: var(--color-heading);
+    text-underline-offset: 4px;
+}
+
+summary:not(.openapi-prop):hover {
+    text-decoration: underline;
+}
+
+summary.openapi-prop:hover, summary.openapi-prop:focus-visible {
     color: var(--color-link);
 }
 
@@ -2421,9 +2508,11 @@ nav.pagination > .next {
     padding: 20px 0;
     border-radius: 4px;
     margin-bottom: 36px;
-    background: linear-gradient(40deg, var(--color-teal-ink) 50%, var(--color-link));
+    /* Teal 900 to 700 in both modes (literal values, as the link color
+       turns lime in dark mode), with the light text of teal surfaces */
+    background: linear-gradient(40deg, #014654 50%, #00576e);
     background-position: center;
-    color: var(--gray-50)
+    color: #f8fafc;
 }
 
 .ag-banner .title {
@@ -2442,8 +2531,17 @@ nav.pagination > .next {
     color: white;
 }
 
-.ag-banner a:hover{
+/* The lime underline of links on dark surfaces, like in dark mode and the
+   sidebar, as the teal one doesn't stand out on the teal banner */
+.ag-banner .link,
+.ag-banner .link:visited {
+    border-bottom-color: #befe99;
+}
+
+.ag-banner a:hover,
+.ag-banner .link:is(:hover, :focus) {
     color: white;
+    border-bottom-color: #b0eb8f;
 }
 .ag-banner .logo {
     height: 36px !important;
@@ -2914,6 +3012,15 @@ body.sidebar-collapsed .main-nav-ol.shimmer {
     box-shadow: 0 8px 24px rgb(0 0 0 / 0.45);
 }
 
+/* Says what the menu is about without taking space in the sidebar */
+.version-menu > .version-menu-label {
+    padding: 2px 8px 6px;
+    color: var(--sidebar-muted);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+}
+
 .version-menu > li {
     margin: 0;
     line-height: 20px;
@@ -2932,6 +3039,29 @@ body.sidebar-collapsed .main-nav-ol.shimmer {
     color: var(--sidebar-text);
     font-weight: 400;
     transition: none;
+}
+
+/* Like the New database link of the web UI's database selector */
+.version-menu-link,
+.version-menu-link:is(:hover, :visited, :focus) {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0;
+    padding: 8px;
+    border-bottom: 0;
+    border-radius: 8px;
+    color: var(--sidebar-lime);
+    font-weight: 600;
+    transition: none;
+}
+
+.version-menu-link:hover {
+    text-decoration: underline;
+}
+
+.version-menu-link .icon {
+    font-size: 16px;
 }
 
 .version-menu-item:hover,
@@ -3064,25 +3194,18 @@ body.sidebar-collapsed .main-nav-ol.shimmer {
 }
 
 .svg-figure,
-.diagram-figure {
+.img-figure {
     margin: 2rem 0;
     text-align: center;
 }
 
 .svg-figure figcaption,
-.diagram-figure figcaption {
+.img-figure figcaption {
     font-size: 0.9em;
     color: var(--gray-700);
     margin-top: 0.5rem;
     text-wrap: balance;
     font-style: italic;
-}
-
-.diagram-figure img {
-    max-width: 100%;
-    height: auto;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
 }
 
 /* SVGs inlined with the embed-svg shortcode keep their width and height

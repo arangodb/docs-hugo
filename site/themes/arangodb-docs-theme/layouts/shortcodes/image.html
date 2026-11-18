@@ -6,8 +6,9 @@
 {{- $file := .Page.File }}
 {{- $class := .Get "class" }}
 {{- $style := .Get "style" }}
-{{- if not (or $class $style) }}
-  {{- errorf "Use native Markdown image syntax unless you need to apply CSS classes or inline styles for '%v' in %v" $src $file.Path }}
+{{- $caption := .Get "caption" }}
+{{- if not (or $class $style $caption) }}
+  {{- errorf "Use native Markdown image syntax unless you need a caption, CSS classes, or inline styles for '%v' in %v" $src $file.Path }}
 {{- end }}
 {{- $path := path.Join $file.Dir $src }}
 {{- $img := resources.Get $path }}
@@ -16,11 +17,16 @@
 {{- if $size.fill }}
   {{- $class = trim (printf "%s img-fill" $class) " " }}
 {{- end }}
+{{- with $caption }}<figure class="img-figure">{{ end }}
 <img alt="{{ $alt }}" src="{{ $img.RelPermalink }}"
   {{- with $class }} class="{{ . }}"{{ end }}
   {{- with $style }} style="{{ . | safeCSS }}"{{ end }}
   {{- with $size.width }} width="{{ . }}"{{ end }}
   {{- with $size.height }} height="{{ . }}"{{ end }}>
+{{- with $caption }}
+  <figcaption>{{ . | markdownify }}</figcaption>
+</figure>
+{{- end }}
 {{- else }}
   {{- errorf "Broken image reference '%v' found in %v" $src $file.Path }}
 {{- end }}

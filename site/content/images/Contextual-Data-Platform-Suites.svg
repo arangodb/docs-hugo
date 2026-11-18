@@ -1,9 +1,8 @@
-<svg viewBox="0 0 900 906"
+<svg viewBox="0 0 900 906" class="keep-colors"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
-     style="display:block;width:100%;max-width:900px;margin:0 auto">
+     style="display:block;width:100%;max-width:900px;margin:0 auto" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
   <style>
-    .cdp-suites text { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
     /* Lime keyboard focus ring of the docs theme, visible on the dark boxes */
     .cdp-suites { --focus-ring: #befe99; }
     .cdp-suites .card-link { cursor: pointer; }
@@ -29,12 +28,12 @@
   </defs>
 
   <g class="cdp-suites">
-    <rect width="900" height="906" fill="#f1f5f9" rx="6"/>
+    <rect class="dg-f-canvas" width="900" height="906" fill="#f1f5f9" rx="6"/>
 
     <!-- Title and the one-sentence message -->
-    <text x="20" y="42" font-size="24" font-weight="bold" fill="#1d293d">Arango Contextual Data Platform</text>
-    <text x="20" y="70" font-size="17" fill="#45556c">Three layers. ArangoDB and the Platform Suite are always included.</text>
-    <text x="20" y="94" font-size="17" fill="#45556c">The Agentic AI Suite is an optional add-on to them and cannot be licensed stand-alone.</text>
+    <text class="dg-f-text" x="20" y="42" font-size="24" font-weight="bold" fill="#1d293d">Arango Contextual Data Platform</text>
+    <text class="dg-f-muted" x="20" y="70" font-size="17" fill="#45556c">Three layers. ArangoDB and the Platform Suite are always included.</text>
+    <text class="dg-f-muted" x="20" y="94" font-size="17" fill="#45556c">The Agentic AI Suite is an optional add-on to them and cannot be licensed stand-alone.</text>
 
     <!-- Layer 3: Agentic AI Suite (optional, separate license) -->
     <!-- The fill leaves the 2px edge to the dashed border, whose gaps show the light background.
@@ -46,35 +45,35 @@
     <text x="40" y="145" font-size="18" font-weight="bold" fill="#ffffff">Agentic AI Suite</text>
     <text x="594" y="145" text-anchor="end" font-size="15" fill="#befe99">optional · separate license</text>
     <a class="card-link" xlink:href="/contextual-data-platform/autograph/">
-      <rect x="42" y="176" width="270" height="40" rx="20" class="pill-aai"/>
+      <rect x="42" y="176" width="270" height="40" rx="20" class="pill-aai dg-h-lime"/>
       <text x="177" y="202" text-anchor="middle">AutoGraph Studio</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/autorag/">
-      <rect x="322" y="176" width="270" height="40" rx="20" class="pill-aai"/>
+      <rect x="322" y="176" width="270" height="40" rx="20" class="pill-aai dg-h-lime"/>
       <text x="457" y="202" text-anchor="middle">AutoRAG</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/graphml/">
-      <rect x="42" y="226" width="270" height="40" rx="20" class="pill-aai"/>
+      <rect x="42" y="226" width="270" height="40" rx="20" class="pill-aai dg-h-lime"/>
       <text x="177" y="252" text-anchor="middle">GraphML</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/graph-analytics/">
-      <rect x="322" y="226" width="270" height="40" rx="20" class="pill-aai"/>
+      <rect x="322" y="226" width="270" height="40" rx="20" class="pill-aai dg-h-lime"/>
       <text x="457" y="252" text-anchor="middle">Graph Analytics</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/natural-language-to-aql/">
-      <rect x="42" y="276" width="270" height="40" rx="20" class="pill-aai"/>
+      <rect x="42" y="276" width="270" height="40" rx="20" class="pill-aai dg-h-lime"/>
       <text x="177" y="302" text-anchor="middle">Natural Language to AQL</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/reasoner/">
-      <rect x="322" y="276" width="270" height="40" rx="20" class="pill-aai"/>
+      <rect x="322" y="276" width="270" height="40" rx="20" class="pill-aai dg-h-lime"/>
       <text x="457" y="302" text-anchor="middle">Reasoner</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/ada/">
-      <rect x="42" y="326" width="270" height="40" rx="20" class="pill-aai"/>
+      <rect x="42" y="326" width="270" height="40" rx="20" class="pill-aai dg-h-lime"/>
       <text x="177" y="352" text-anchor="middle">Ada</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/notebook-servers/">
-      <rect x="322" y="326" width="270" height="40" rx="20" class="pill-aai"/>
+      <rect x="322" y="326" width="270" height="40" rx="20" class="pill-aai dg-h-lime"/>
       <text x="457" y="352" text-anchor="middle">Notebook servers</text>
     </a>
 
@@ -89,43 +88,43 @@
     <text x="40" y="447" font-size="18" font-weight="bold" fill="#ffffff">Platform Suite</text>
     <text x="594" y="447" text-anchor="end" font-size="15" fill="#befe99">always included</text>
     <a class="card-link" xlink:href="/contextual-data-platform/graph-visualizer/">
-      <rect x="42" y="478" width="270" height="40" rx="20" class="pill-ps"/>
+      <rect x="42" y="478" width="270" height="40" rx="20" class="pill-ps dg-h-lime"/>
       <text x="177" y="504" text-anchor="middle">Graph Visualizer</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/query-editor/">
-      <rect x="322" y="478" width="270" height="40" rx="20" class="pill-ps"/>
+      <rect x="322" y="478" width="270" height="40" rx="20" class="pill-ps dg-h-lime"/>
       <text x="457" y="504" text-anchor="middle">Query Editor</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/container-manager/">
-      <rect x="42" y="528" width="270" height="40" rx="20" class="pill-ps"/>
+      <rect x="42" y="528" width="270" height="40" rx="20" class="pill-ps dg-h-lime"/>
       <text x="177" y="554" text-anchor="middle">Container Manager (BYOC)</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/file-manager/">
-      <rect x="322" y="528" width="270" height="40" rx="20" class="pill-ps"/>
+      <rect x="322" y="528" width="270" height="40" rx="20" class="pill-ps dg-h-lime"/>
       <text x="457" y="554" text-anchor="middle">File Manager</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/secrets-manager/">
-      <rect x="42" y="578" width="270" height="40" rx="20" class="pill-ps"/>
+      <rect x="42" y="578" width="270" height="40" rx="20" class="pill-ps dg-h-lime"/>
       <text x="177" y="604" text-anchor="middle">Secrets Manager</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/cypher-to-aql/">
-      <rect x="322" y="578" width="270" height="40" rx="20" class="pill-ps"/>
+      <rect x="322" y="578" width="270" height="40" rx="20" class="pill-ps dg-h-lime"/>
       <text x="457" y="604" text-anchor="middle">Cypher to AQL</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/control-plane-acp/">
-      <rect x="42" y="628" width="270" height="40" rx="20" class="pill-ps"/>
+      <rect x="42" y="628" width="270" height="40" rx="20" class="pill-ps dg-h-lime"/>
       <text x="177" y="654" text-anchor="middle">Arango Control Plane</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/monitoring/">
-      <rect x="322" y="628" width="270" height="40" rx="20" class="pill-ps"/>
+      <rect x="322" y="628" width="270" height="40" rx="20" class="pill-ps dg-h-lime"/>
       <text x="457" y="654" text-anchor="middle">Monitoring</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/access-control/">
-      <rect x="42" y="678" width="270" height="40" rx="20" class="pill-ps"/>
+      <rect x="42" y="678" width="270" height="40" rx="20" class="pill-ps dg-h-lime"/>
       <text x="177" y="704" text-anchor="middle">Access control (SSO, RBAC)</text>
     </a>
     <a class="card-link" xlink:href="/contextual-data-platform/architecture/#operational-model">
-      <rect x="322" y="678" width="270" height="40" rx="20" class="pill-ps"/>
+      <rect x="322" y="678" width="270" height="40" rx="20" class="pill-ps dg-h-lime"/>
       <text x="457" y="704" text-anchor="middle">High availability, elastic scaling</text>
     </a>
 
@@ -140,36 +139,36 @@
     <text x="40" y="799" font-size="18" font-weight="bold" fill="#ffffff">ArangoDB Enterprise Edition</text>
     <text x="594" y="799" text-anchor="end" font-size="15" fill="#befe99">core database · always included</text>
     <a class="card-link" xlink:href="/arangodb/">
-      <rect x="42" y="830" width="102" height="40" rx="20" class="pill-db"/>
-      <text x="93" y="856" text-anchor="middle">Graph</text>
+      <rect x="42" y="830" width="102" height="40" rx="20" class="pill-db dg-f-raised dg-s-line dg-h-raised-top"/>
+      <text class="dg-f-text" x="93" y="856" text-anchor="middle">Graph</text>
     </a>
     <a class="card-link" xlink:href="/arangodb/">
-      <rect x="154" y="830" width="102" height="40" rx="20" class="pill-db"/>
-      <text x="205" y="856" text-anchor="middle">Document</text>
+      <rect x="154" y="830" width="102" height="40" rx="20" class="pill-db dg-f-raised dg-s-line dg-h-raised-top"/>
+      <text class="dg-f-text" x="205" y="856" text-anchor="middle">Document</text>
     </a>
     <a class="card-link" xlink:href="/arangodb/">
-      <rect x="266" y="830" width="102" height="40" rx="20" class="pill-db"/>
-      <text x="317" y="856" text-anchor="middle">Key-Value</text>
+      <rect x="266" y="830" width="102" height="40" rx="20" class="pill-db dg-f-raised dg-s-line dg-h-raised-top"/>
+      <text class="dg-f-text" x="317" y="856" text-anchor="middle">Key-Value</text>
     </a>
     <a class="card-link" xlink:href="/arangodb/">
-      <rect x="378" y="830" width="102" height="40" rx="20" class="pill-db"/>
-      <text x="429" y="856" text-anchor="middle">Search</text>
+      <rect x="378" y="830" width="102" height="40" rx="20" class="pill-db dg-f-raised dg-s-line dg-h-raised-top"/>
+      <text class="dg-f-text" x="429" y="856" text-anchor="middle">Search</text>
     </a>
     <a class="card-link" xlink:href="/arangodb/">
-      <rect x="490" y="830" width="102" height="40" rx="20" class="pill-db"/>
-      <text x="541" y="856" text-anchor="middle">Vector</text>
+      <rect x="490" y="830" width="102" height="40" rx="20" class="pill-db dg-f-raised dg-s-line dg-h-raised-top"/>
+      <text class="dg-f-text" x="541" y="856" text-anchor="middle">Vector</text>
     </a>
 
     <!-- License brackets -->
     <path d="M 630 116 h 10 v 266 h -10" fill="none" stroke="#06838a" stroke-width="2"/>
-    <text x="650" y="221" font-size="18" font-weight="bold" fill="#00576e">+ Agentic AI Suite license</text>
-    <text x="650" y="245" font-size="17" fill="#45556c">Separate license,</text>
-    <text x="650" y="267" font-size="17" fill="#45556c">requires the</text>
-    <text x="650" y="289" font-size="17" fill="#45556c">Platform Suite license</text>
-    <path d="M 630 418 h 10 v 468 h -10" fill="none" stroke="#014654" stroke-width="2"/>
-    <text x="650" y="624" font-size="18" font-weight="bold" fill="#014654">Platform Suite license</text>
-    <text x="650" y="648" font-size="17" fill="#45556c">Covers ArangoDB and</text>
-    <text x="650" y="670" font-size="17" fill="#45556c">the Platform Suite,</text>
-    <text x="650" y="692" font-size="17" fill="#45556c">always included</text>
+    <text class="dg-f-text" x="650" y="221" font-size="18" font-weight="bold" fill="#00576e">+ Agentic AI Suite license</text>
+    <text class="dg-f-muted" x="650" y="245" font-size="17" fill="#45556c">Separate license,</text>
+    <text class="dg-f-muted" x="650" y="267" font-size="17" fill="#45556c">requires the</text>
+    <text class="dg-f-muted" x="650" y="289" font-size="17" fill="#45556c">Platform Suite license</text>
+    <path class="dg-s-accent" d="M 630 418 h 10 v 468 h -10" fill="none" stroke="#014654" stroke-width="2"/>
+    <text class="dg-f-text" x="650" y="624" font-size="18" font-weight="bold" fill="#014654">Platform Suite license</text>
+    <text class="dg-f-muted" x="650" y="648" font-size="17" fill="#45556c">Covers ArangoDB and</text>
+    <text class="dg-f-muted" x="650" y="670" font-size="17" fill="#45556c">the Platform Suite,</text>
+    <text class="dg-f-muted" x="650" y="692" font-size="17" fill="#45556c">always included</text>
   </g>
 </svg>
