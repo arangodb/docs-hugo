@@ -232,10 +232,10 @@ expect the fully qualified name.
 | `coredb-reader` | Read-only database operations on scoped resources |
 | `coredb-developer` | Read and write database operations on scoped resources |
 | `coredb-admin` | Manages the structure and lifecycle of scoped resources |
-| `ai-user` | Executes AI workflows and reads outputs on scoped resources |
-| `ai-developer` | Builds, configures, manages, and executes AI workflows on scoped resources |
+| `ai-user` | Uses the AI services and reads their results, for example, runs AutoRAG queries and views the state of AutoGraph projects, in the scoped databases and shared services |
+| `ai-developer` | Installs, configures, and runs the AI services in the scoped databases and shared services, and reads secrets |
 | `platform-operator` | Operates the data platform and bundled services, views observability, starts containers |
-| `secret-admin` | Manages secrets on scoped resources |
+| `secret-admin` | Creates, changes, and deletes the secrets that the AI services use, such as API keys of LLM providers |
 
 {{< info >}}
 `super-admin` is reserved. `kube-arangodb` binds it to the deployment's `root`
@@ -258,6 +258,91 @@ Kubernetes operator-managed identity, named `managed:operator:<uuid>`. These
 appear in the Access Control lists like any other role, together with the service
 accounts that hold them, such as `operator-arango-control-plane-token-<id>`.
 They are maintained by the data platform, so leave them untouched.
+
+## AI services roles in detail
+
+The `ai-user`, `ai-developer`, and `secret-admin` roles grant the actions of the
+services of the Agentic AI Suite and the Arango Control Plane (ACP). As with
+every role, the role describes what a user may do, and the scope of the role
+assignment decides where.
+
+### Resources of the AI services
+
+The AI services check their actions on the following kinds of resources:
+
+| Resource | Resource type in the web interface | Description |
+|---|---|---|
+| `ai:database:<database>` | Databases | A database, its projects, and the database services installed for it |
+| `ai:service:<service-type>` | Shared services | A type of shared service, for example, `ai:service:arangodb-gral` for Graph Analytics |
+| `ai:secret:store` | Secrets | All secrets as one resource. Secrets cannot be scoped individually |
+| `ai:fileparser:service` | – | The File Parser |
+
+Most AI services are **database services**: you install them for a specific
+database, like AutoGraph, the Importer, AutoRAG, Natural Language to AQL, the
+Reasoner, and the MCP Server. All of their actions are checked on that
+database. Projects are not resources of their own either. If the scope of your
+role assignment covers a database, it covers all of its projects and the
+database services installed for it.
+
+**Shared services** are services that are not bound to a database:
+
+- [Notebook servers](../notebook-servers.md)
+- [Container Manager](../container-manager/_index.md) services, including the
+  ones that you install for a specific database
+- [Graph Analytics](../graph-analytics/_index.md) engines
+
+They are checked on their service type rather than a database. A shared service
+accesses ArangoDB with the permissions of the user who uses it, so having a
+shared service in your scope lets you start and use the service, but it doesn't
+grant access to any data. Other types of shared services are installed by the
+data platform itself, and the AI roles don't let you manage them.
+
+Shared services are not the same as the
+[central services](#how-rbac-works-in-the-data-platform) of the
+data platform's infrastructure.
+
+### What the AI roles grant
+
+{{% rbac-roles %}}
+
+The services link to their RBAC pages if they have one. These pages describe the
+actions in detail and which action each endpoint requires.
+
+Keep the following rules in mind when you assign the AI roles:
+
+- `ai-user` lets you use the AI services and read their results, whereas
+  `ai-developer` additionally lets you install, configure, and run them, for
+  example, to build a knowledge graph with AutoGraph.
+- Neither `ai-user` nor `ai-developer` lets you create, change, or delete
+  secrets. This requires the `secret-admin` role. `ai-developer` lets you read
+  secrets, which you need to select an API key when you configure a service,
+  but only if the scope includes the secrets. To let a developer also manage
+  secrets, assign both `ai-developer` and `secret-admin`.
+- The AI roles don't grant access to the data in ArangoDB. To access the data
+  directly, for example, to explore the graph that AutoGraph creates or to run
+  AQL queries, you additionally need a `coredb-*` role, or classic permissions if
+  ArangoDB RBAC is disabled. See
+  [Data Platform RBAC and ArangoDB RBAC](#data-platform-rbac-and-arangodb-rbac).
+- The File Parser actions are only needed for using the File Parser directly.
+  AutoGraph and the Importer call it with their own service identity. The web
+  interface doesn't offer the File Parser as a resource type, so only the
+  **Everything** scope covers it.
+
+{{< info >}}
+Notebook servers, Container Manager services, and Graph Analytics engines don't
+check AI actions for requests to their own endpoints. Who can install, list,
+and uninstall them is controlled by the Arango Control Plane, based on the
+shared service types in the scope. What the code in a Container Manager service
+is allowed to do is up to your code. Call the APIs of the data platform with the
+token of the user who called your service, never with the service's own token,
+so that the permissions of that user apply.
+{{< /info >}}
+
+{{< comment >}}
+TODO: Verify for notebook servers and Graph Analytics engines with the
+respective teams. The source docs only cover the Container Manager
+(arangoml/user_defined_service docs/RBAC.md).
+{{< /comment >}}
 
 ## Open the Access Control interface
 
@@ -452,6 +537,55 @@ Patterns are evaluated continuously rather than expanded once, so
 resources grows over time and you do not want to revisit the assignment for
 every new collection.
 
+### Scope an AI services role
+
+For the `ai-user` and `ai-developer` roles, the scope decides which databases,
+shared services, and secrets the role applies to. See
+[Resources of the AI services](#resources-of-the-ai-services). A typical scope
+covers one or more databases, plus the shared services and the secrets if the
+user needs them.
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+With **Specific resources** selected, add one scope per resource type:
+
+- **Databases**: Select **All databases**, which includes databases created in
+  the future, or search for and select individual databases.
+- **Shared services**: Select **All shared services, including new types**, or
+  individual services: **Notebook servers**, **Container Manager**, and
+  **Graph Analytics**.
+- **Secrets**: Covers all secrets. There is nothing to select because secrets
+  cannot be scoped individually.
+
+Each resource type can only be added once per role assignment. To change it,
+edit the existing scope. The dialog only offers the resource types that the
+policy of the role covers.
+
+The `secret-admin` role only covers the secrets. Its assignment always applies
+to all secrets, including ones added later, so there is nothing to narrow.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl -X POST -H "Authorization: Bearer <JWT>" \
+  https://<EXTERNAL_ENDPOINT>:8529/_management/permissions/user/bob/role/managed:predefined:ai-developer \
+  -d '{"scope":{"statements":[
+    {"effect":"Allow","actions":["*"],"resources":["ai:database:sales"]},
+    {"effect":"Allow","actions":["*"],"resources":["ai:service:arangodb-notebook-images","ai:service:arangodb-gral"]},
+    {"effect":"Allow","actions":["*"],"resources":["ai:secret:store"]}
+  ]}}'
+```
+
+This assigns the `ai-developer` role to the user `bob` and limits it to the
+`sales` database, notebook servers and Graph Analytics engines, and the
+secrets. The web interface creates one statement per resource type in the same
+way. See [Scopes in the HTTP API](#scopes-in-the-http-api) for the resources
+you can use.
+{{< /tab >}}
+
+{{< /tabs >}}
+
 ### Validation
 
 The dialog does not let you save incomplete assignments:
@@ -608,7 +742,44 @@ to the ArangoDB core database system involves multiple checks. For example,
 writing a document into the `orders` collection of the `reports` database also
 requires `db:UseApiVersion` on `db:apiversion:<version>` and `db:Read` on
 `db:database:reports` and `db:collection:reports:orders`. An `Allow` for one
-of them doesn't guarantee that the request succeeds. See the
+of them doesn't guarantee that the request succeeds.
+
+The AI services check the action of the endpoint on a single resource, plus
+further actions for some requests. Their error messages name the action and the
+resource, for example, `Not permitted: ai:autograph.build on ai:database:sales`,
+which you can check in the same way:
+
+```sh
+curl -X POST -H "Authorization: Bearer <JWT>" \
+  https://<EXTERNAL_ENDPOINT>:8529/_management/permissions/validate \
+  -d '{"action":"ai:autograph.build","resource":"ai:database:sales"}'
+```
+
+Common causes for denied access to the AI services are:
+
+- The scope covers the database but not the secrets. Starting an AutoGraph
+  orchestration and changing the model configuration of a service read secret
+  profiles and therefore require `ai:secret:store` in the scope.
+- The scope doesn't cover the shared service type, for example, when starting
+  a notebook server or a Graph Analytics engine. Services of the
+  Container Manager are always shared services, even if they are installed for
+  a database.
+- The user has `ai-developer` but tries to create or change a secret, which
+  requires `secret-admin`.
+- ArangoDB RBAC is disabled and the user lacks classic permissions for the
+  database. AI services like AutoGraph then work with the user's token and
+  return `403` with a message like `Database access denied`.
+- The AI service works, but the user cannot see the resulting data in the web
+  interface or with AQL queries. The AI roles don't grant access to the data in
+  ArangoDB. Assign a `coredb-*` role as well.
+- The service returns `500` with ArangoDB RBAC enabled. The service identity
+  of the AI service lacks a permission. This is a problem of the deployment,
+  not of the user's roles.
+
+If nothing is ever denied, check whether RBAC is
+[enforced](#enable-rbac) or runs in permissive mode.
+
+See the
 [`POST /_management/permissions/validate`](#check-a-permission) endpoint in the
 HTTP API reference for details.
 
@@ -662,10 +833,16 @@ resources:
 
 - Set the `effect` explicitly. If you omit it, it defaults to `Deny`.
 - **Everything** corresponds to `"actions": ["*"]` and `"resources": ["*"]`.
+- Each role assignment has its own scope, which only applies to the role of
+  that assignment. For example, to let a user work with the AI services and
+  query the data of the `sales` database, both the `ai-user` and the
+  `coredb-reader` assignment need a scope that covers the `sales` database, with
+  the respective resources.
 - The ArangoDB core database system checks the `db:UseApiVersion` action on the
   `db:apiversion:<version>` resource for every request. Include
   `db:apiversion:*` in every scope for the `coredb-*` and `tenant-admin` roles,
-  or the scope denies all ArangoDB requests.
+  or the scope denies all ArangoDB requests. The AI services roles don't need
+  it.
 - Access to anything in a database also requires the database itself, for
   example `db:database:reports`. `db:*:reports:*` covers the collections,
   Views, Analyzers, and graphs of the `reports` database, and
@@ -673,6 +850,15 @@ resources:
 - User accounts are resources of the form `db:user:<username>`.
 - Administrative actions, such as creating backups, do not operate on a
   specific resource. Only a scope with the `*` resource covers them.
+- The resources of the AI services are `ai:database:<database>` for a
+  database, `ai:service:<service-type>` for a type of shared service,
+  `ai:secret:store` for the secrets, and `ai:fileparser:service` for the
+  File Parser. `ai:database:*` covers all databases and `ai:service:*` all
+  shared services. See
+  [Resources of the AI services](#resources-of-the-ai-services).
+- The names of databases and service types in `ai:` resources cannot contain
+  `:` or `*`. Besides an exact name, you can use a prefix pattern like
+  `ai:database:sales_*`.
 
 ### Get all roles
 
