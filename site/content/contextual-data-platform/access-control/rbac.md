@@ -101,6 +101,115 @@ against the statements that apply to the user:
 4. The request is permitted if at least one assignment allows it. Otherwise it
    is denied, and the service returns an error.
 
+## How RBAC works in the data platform
+
+The data platform runs on Kubernetes, and RBAC is part of its infrastructure:
+
+- The ArangoDB Kubernetes Operator (`kube-arangodb`) manages the objects of the
+  permission model as Kubernetes custom resources: policies
+  (`ArangoPermissionPolicy`), roles (`ArangoPermissionRole`), role assignments
+  (`ArangoPermissionRoleUserBinding`), and the identities of services
+  (`ArangoPermissionToken`). It creates the predefined roles and keeps them up
+  to date.
+- The **central services** of the data platform provide authentication,
+  authorization, metadata, and file storage to all other services. The central
+  authorization service stores the policies, roles, and role assignments, and it
+  serves the [HTTP API](#http-api) for managing them.
+- Every service of the data platform runs with an **integration sidecar**, an
+  additional container in the Kubernetes pod of the service. The sidecar
+  validates the token of a request and decides whether the user is allowed to
+  perform the action. It keeps a copy of the policies, roles, and role
+  assignments that it synchronizes with the central authorization service,
+  which is why changes take up to about 30 seconds to be enforced.
+- Requests enter the data platform through the **gateway**, which
+  authenticates them and passes the token of the user on to the service.
+- Services that act on their own, for example, to run background jobs, have
+  identities of their own. The operator creates a user and a token for each of
+  them, together with a `managed:operator:<uuid>` role that grants only what
+  the service needs.
+
+### Data Platform RBAC and ArangoDB RBAC
+
+RBAC is enforced at two levels:
+
+- **Data Platform RBAC**: The services of the data platform, such as the
+  Arango Control Plane (ACP) and AutoGraph, check the `ai:` actions that the
+  [AI services roles](#ai-services-roles-in-detail) grant.
+- **ArangoDB RBAC**: The ArangoDB core database system checks the `db:` actions
+  that the `coredb-*` roles grant. ArangoDB asks the authorization sidecar of
+  its pod for every decision. The operator configures this by starting the
+  ArangoDB servers with the `--server.external-rbac-service` startup option.
+  If ArangoDB RBAC is disabled, ArangoDB uses its
+  [classic permissions](authorization.md) instead.
+
+Whether ArangoDB RBAC is enabled also changes how the AI services work with your
+data in ArangoDB:
+
+- **ArangoDB RBAC disabled**: AI services like AutoGraph and the Importer read and
+  write the collections of a project with your token. In addition to an AI role,
+  you need classic permissions for the database, typically read/write access.
+- **ArangoDB RBAC enabled**: AI services work in ArangoDB with their own service
+  identity, which can only access the collections of the project. You only need
+  an AI role to use them. To access the data directly, for example, to explore
+  a graph or run AQL queries, you additionally need a `coredb-*` role.
+
+## Enable RBAC
+
+You enable RBAC with feature flags of the ArangoDB Kubernetes Operator
+(`kube-arangodb`) in version 1.4.7 or later:
+
+| Feature flag | Default | Description |
+|---|---|---|
+| `--deployment.feature.central-services` | Disabled | Runs the central services and evaluates the permissions of every request, but in permissive mode, which allows all requests |
+| `--deployment.feature.rbac-enforced` | Disabled | Denies requests that the permissions don't allow |
+| `--deployment.feature.rbac-coredb` | Disabled | Enables [ArangoDB RBAC](#data-platform-rbac-and-arangodb-rbac). Requires the two flags above |
+
+{{< comment >}}
+TODO: Verify the complete set of flags with the kube-arangodb team.
+`central-services` depends on `gateway-sidecar`, which depends on
+`jwt-asymmetric-key` (both disabled by default) and `jwt-rotation` and
+`gateway` (enabled by default). Dependencies are not enabled automatically.
+Also clarify whether the data platform will enable RBAC by default.
+{{< /comment >}}
+
+The flags result in the following modes:
+
+| `central-services` | `rbac-enforced` | Mode | Behavior |
+|---|---|---|---|
+| Disabled | – | Always | No permission checks, all requests are allowed |
+| Enabled | Disabled | Permissive | Permissions are evaluated, but all requests are allowed. Requests that would be denied are logged |
+| Enabled | Enabled | Enforced | Requests that the permissions don't allow are denied |
+
+The permissive mode doesn't protect anything. It is a step for introducing RBAC
+in an existing deployment: assign roles to your users, check the logs of the
+sidecar containers for requests that would be denied, adjust the role
+assignments, and enforce RBAC once nothing legitimate would be denied anymore.
+
+To enable RBAC in enforced mode, add the flags to the arguments of the operator
+when you install or upgrade it with Helm, for example:
+
+```sh
+VERSION_OPERATOR='1.4.7' # Use a newer version if available
+
+helm upgrade --install operator \
+  --namespace arango \
+  "https://github.com/arangodb/kube-arangodb/releases/download/$VERSION_OPERATOR/kube-arangodb-enterprise-$VERSION_OPERATOR.tgz" \
+  --set "webhooks.enabled=true" \
+  --set "operator.args[0]=--deployment.feature.gateway=true" \
+  --set "operator.args[1]=--deployment.feature.central-services=true" \
+  --set "operator.args[2]=--deployment.feature.rbac-enforced=true" \
+  --set "operator.args[3]=--deployment.feature.rbac-coredb=true" \
+  --set "operator.architectures={amd64}"
+```
+
+RBAC also requires authentication to be enabled for the deployment.
+
+{{< info >}}
+The `rbac.enabled` setting of the Helm chart of the operator is unrelated. It
+controls the Kubernetes RBAC permissions of the operator itself, not the RBAC
+of the data platform.
+{{< /info >}}
+
 ## Available roles
 
 When RBAC is enabled, there is a set of **predefined roles** that you cannot
