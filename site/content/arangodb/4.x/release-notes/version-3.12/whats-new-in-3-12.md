@@ -2371,6 +2371,9 @@ With RBAC enabled, ArangoDB talks to a service of the data platform to determine
 whether to allow or deny actions on specific resources. Where this service runs
 can be configured with the new `--server.external-rbac-service` startup option,
 which enables RBAC for ArangoDB at the same time.
+In the data platform, the ArangoDB Kubernetes Operator sets this option for
+you if you enable the `rbac-coredb` feature. See
+[Enable RBAC](../../../../contextual-data-platform/access-control/rbac.md#enable-rbac).
 
 | Authorization Type | RBAC | Classic |
 |---|---|---|
