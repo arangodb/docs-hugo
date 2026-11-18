@@ -2403,6 +2403,25 @@ memory this can take:
 Up to v3.12.12, the maximum decompressed size is not configurable and requests
 exceeding it are rejected with an HTTP `400 Bad Request` error.
 
+<small>Introduced in: v3.12.14</small>
+
+The following startup option has been added to also limit the memory that all
+decompressed request bodies take together:
+
+- `--http.decompressed-request-body-global-memory-limit`:
+  The maximum combined size of all decompressed request bodies that the server
+  holds at the same time (in bytes). Each compressed request body reserves its
+  decompressed size from this budget until the request is finished. The default
+  is 10% of the physical memory. A value of `0` disables the limit.
+  Requests that would exceed the limit are rejected with an HTTP
+  `503 Service Unavailable` error and can be retried later.
+
+If you set both startup options, the global limit needs to be `0` or at least as
+large as the per-request limit, or the server refuses to start. If you only set
+the global limit and it is lower than the per-request limit, the per-request
+limit is lowered to the same value. If the default global limit is lower than
+the per-request limit, the global limit is raised to the per-request limit.
+
 ## Miscellaneous changes
 
 ### V8 and ICU library upgrades
