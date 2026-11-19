@@ -13,7 +13,7 @@ description: >-
 ## Overview
 
 The AQLizer turns questions in natural language into AQL queries and makes AQL
-queries faster. It reasons about your database: it explores the collections,
+queries faster. It reasons about your database. It explores the collections,
 graphs, and indexes with database tools, writes or rewrites a query, runs it,
 and checks the result.
 
@@ -113,21 +113,19 @@ flowchart TD
 
 The pipeline runs through the following stages:
 
-1. **Baseline profiling**: The original query is profiled to measure execution
-   time, memory usage, index utilization, and rows scanned.
-2. **Index discovery**: The indexes on the relevant collections are retrieved.
-3. **Query rewriting**: A new query is produced using applicable optimization
-   techniques.
-4. **Syntax validation**: The rewritten query is validated before it runs, at
-   no additional query cost.
-5. **Side-by-side comparison**: Both queries run and their performance metrics
-   are compared.
-6. **Result verification**: The optimized query has to return identical
-   results, matching both row counts and data content.
-7. **Automatic retry**: If the improvement is below 5% or the results do not
-   match, a new approach is tried, up to 3 attempts.
-8. **Optimization report**: A markdown report with a performance comparison
-   table, what changed, why it is faster, and the final optimized query.
+1. The original query is profiled to measure execution time, memory usage,
+   index utilization, and rows scanned.
+2. The indexes on the relevant collections are retrieved.
+3. A new query is produced using applicable optimization techniques.
+4. The rewritten query is validated before it runs, at no additional query
+   cost.
+5. Both queries run and their performance metrics are compared.
+6. The optimized query has to return identical results, matching both row
+   counts and data content.
+7. If the improvement is below 5% or the results do not match, a new approach
+   is tried, up to 3 attempts.
+8. A markdown report is returned with a performance comparison table, what
+   changed, why it is faster, and the final optimized query.
 
 You can optimize the optimized query again. At some point, the AQLizer finds no
 further improvement.

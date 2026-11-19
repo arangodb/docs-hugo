@@ -66,9 +66,10 @@ the query, the rows it returned, and a short answer.
 ### How a request is processed
 
 1. The AQLizer looks up saved query templates in the `Tools` collection. It
-   compares meaning, not wording: it turns your question into an embedding
-   vector and ranks the templates by the cosine similarity between this vector
-   and the vector of each template's description.
+   turns your question into an embedding vector and ranks the templates by the
+   cosine similarity between this vector and the vector of each template's
+   description, so a template matches a question with the same meaning even if
+   the wording differs.
 2. If the best matching template has a score of at least `0.85`, the AQLizer
    adapts it to your question, mainly by filling in its bind parameters, and
    runs it.
@@ -163,14 +164,12 @@ Set `add_template` to `true` to save the query as a template in the `Tools`
 collection, so that the AQLizer can reuse it for similar questions. This
 requires write access to the `Tools` collection.
 
-Templates help in two ways:
-
-- When a question closely matches a saved template, the AQLizer adapts the
-  template to the question, mainly by filling in its bind parameters. This
-  takes fewer steps than writing a new query, where the AQLizer first samples
-  the collections and, if needed, looks up values in the database.
-- When no template matches closely enough, the most similar templates still
-  serve as examples for writing the new query.
+When a question closely matches a saved template, the AQLizer adapts the
+template to the question, mainly by filling in its bind parameters. This takes
+fewer steps than writing a new query, where the AQLizer first samples the
+collections and, if needed, looks up values in the database. When no template
+matches closely enough, the most similar templates still serve as examples for
+writing the new query.
 
 The template is saved with your question as its description. The AQLizer also
 stores an embedding vector of the description, which it compares with new
@@ -329,7 +328,7 @@ data: {"synthesized": true, "result": "## Optimization Summary\n\n### Performanc
 ```
 
 For a request that is not an optimization, the stream has no `validation`
-events and `done` reports `"synthesized": false`. The answer comes in the
+events and `done` reports `"synthesized": false`. The answer is in the
 `text` events:
 
 ```

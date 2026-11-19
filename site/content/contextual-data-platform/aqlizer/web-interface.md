@@ -99,7 +99,7 @@ you have a chat.
 - To delete all chats, click **Delete all history** and confirm with
   **Delete chat history**. You can't undo this.
 
-Each question starts from zero. The AQLizer doesn't use earlier messages as
+Each question is independent. The AQLizer doesn't use earlier messages as
 context.
 
 ![Screenshot of the chat history with a list of past chats](../../images/data-platform-aqlizer-history.png)
