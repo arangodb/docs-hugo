@@ -46,10 +46,10 @@ get the ArangoDB client tools for your operating system from the
 [download page](https://arango.ai/downloads/).
 
 - To import data to AMP from an existing ArangoDB instance, see
-  [arangodump](../../arangodb/3.12/components/tools/arangodump/) and
-  [arangorestore](../../arangodb/3.12/components/tools/arangorestore/).
+  [arangodump](../../arangodb/3.12/tools/arangodump/) and
+  [arangorestore](../../arangodb/3.12/tools/arangorestore/).
 - To import pre-existing data in JSON, CSV, or TSV format, see
-  [arangoimport](../../arangodb/3.12/components/tools/arangoimport/).
+  [arangoimport](../../arangodb/3.12/tools/arangoimport/).
 
 ## How to access the Data Loader
 

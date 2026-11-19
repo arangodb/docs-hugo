@@ -1,7 +1,8 @@
 ---
 title: ArangoDB Use Cases
 menuTitle: Use Cases
-weight: 15
+weight: 110
+group: Overview
 description: >-
   ArangoDB is a database system with a large solution space because it combines
   graphs, documents, key-value, search engine, and machine learning all in one
@@ -128,7 +129,7 @@ binary large objects (BLOBs) and works best with small to medium-sized
 JSON objects.
 
 For more information about how ArangoDB persists data, see
-[Storage Engine](components/arangodb-server/storage-engine.md).
+[Storage Engine](configuration/storage-engine.md).
 
 ## ArangoDB as a Search Engine
 
@@ -146,7 +147,7 @@ It also features natural language processing (NLP) capabilities.
 and can classify or find similar terms using word embedding models.
 {{% /comment %}}
 
-For more information about the search engine, see [ArangoSearch](indexes-and-search/arangosearch/_index.md).
+For more information about the search engine, see [ArangoSearch](arangosearch/_index.md).
 
 ## ArangoDB for Machine Learning
 

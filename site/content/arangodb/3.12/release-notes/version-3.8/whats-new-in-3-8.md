@@ -252,7 +252,7 @@ value for the option will change to *false* in 3.9. The option will also be
 deprecated in 3.9 and removed in future versions. From then on, unintended
 usage of collection names will always be disallowed.
 
-Also see [ArangoDB Server Query Options](../../components/arangodb-server/options.md#--queryallow-collections-in-expressions)
+Also see [ArangoDB Server Query Options](../../configuration/options.md#--queryallow-collections-in-expressions)
 
 ## ArangoSearch
 
@@ -263,19 +263,19 @@ into one. It allows you to combine text normalization for a case insensitive
 search with _n_-gram tokenization, or to split text at multiple delimiting
 characters followed by stemming.
 
-See [ArangoSearch Pipeline Analyzer](../../indexes-and-search/analyzers.md#pipeline)
+See [ArangoSearch Pipeline Analyzer](../../analyzers.md#pipeline)
 
 ### AQL Analyzer
 
 Added new Analyzer type `"aql"` capable of running an AQL query (with some
 restrictions) to perform data manipulation/filtering.
 
-See [ArangoSearch AQL Analyzer](../../indexes-and-search/analyzers.md#aql)
+See [ArangoSearch AQL Analyzer](../../analyzers.md#aql)
 
 ### Geo-spatial queries
 
-Added two Geo Analyzers [`"geojson"`](../../indexes-and-search/analyzers.md#geojson)
-and [`"geopoint"`](../../indexes-and-search/analyzers.md#geopoint) as well as the
+Added two Geo Analyzers [`"geojson"`](../../analyzers.md#geojson)
+and [`"geopoint"`](../../analyzers.md#geopoint) as well as the
 following [ArangoSearch Geo functions](../../aql/functions/arangosearch.md#geo-functions)
 which enable geo-spatial queries backed by View indexes:
 - `GEO_CONTAINS()`
@@ -292,7 +292,7 @@ input. It can be used standalone or be combined with other Analyzers via a
 pipeline Analyzer to add stop word functionality to them. Previously, only the
 text Analyzer type provided stop word support.
 
-See [ArangoSearch `stopwords` Analyzer](../../indexes-and-search/analyzers.md#stopwords)
+See [ArangoSearch `stopwords` Analyzer](../../analyzers.md#stopwords)
 
 ### Approximate count
 
@@ -324,7 +324,7 @@ threads for committing and consolidation separately:
 
 They supersede the options `--arangosearch.threads` and
 `--arangosearch.threads-limit`. See
-[ArangoDB Server ArangoSearch Options](../../components/arangodb-server/options.md#arangosearch).
+[ArangoDB Server ArangoSearch Options](../../configuration/options.md#arangosearch).
 
 This feature was also backported to v3.7.5.
 
@@ -648,7 +648,7 @@ performance than for a software-only implementation, plus resistance to
 side-channel attacks.
 
 All other things equal, deployments that use
-[Encryption at Rest](../../operations/security/encryption-at-rest.md) should see a reduction of CPU
+[Encryption at Rest](../../security/encryption-at-rest.md) should see a reduction of CPU
 usage by using the hardware-accelerated encryption.
 
 ## HTTP security options
@@ -717,7 +717,7 @@ we have over 200 metrics and nearly 300 graphs in the complete
 dashboard.
 
 The complete list of metrics together with documentation can be found in the
-[Metrics HTTP API](../../develop/http-api/monitoring/metrics.md)
+[Metrics HTTP API](../../http-api/monitoring/metrics.md)
 documentation.
 
 The list of renamed metrics can be found under
@@ -944,7 +944,7 @@ Starting with v3.8.0, _arangodump_ can also dispatch dump jobs for individual
 shards of each collection, allowing higher parallelism if there are many shards
 to dump but only few collections.
 
-Also see [_arangodump_ Threads](../../components/tools/arangodump/examples.md#threads).
+Also see [_arangodump_ Threads](../../tools/arangodump/examples.md#threads).
 
 ### *arangodump* output format
 
@@ -1130,7 +1130,7 @@ concurrently as there are worker threads. The default is chosen such
 that it is sensible for most workloads, but in special situations it
 can help to adjust the value.
 
-See [ArangoDB Server _Server_ Options](../../components/arangodb-server/options.md#--serverongoing-low-priority-multiplier)
+See [ArangoDB Server _Server_ Options](../../configuration/options.md#--serverongoing-low-priority-multiplier)
 for details and hints for configuration.
 
 There have been further improvements, in particular to ensure that

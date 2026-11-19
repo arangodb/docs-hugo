@@ -88,7 +88,7 @@ _The outcome of moving the data like this is that you retain the scalability as 
 
 ## SmartGraphs using SatelliteCollections
 
-SmartGraphs are capable of using [SatelliteCollections](../../develop/satellitecollections.md)
+SmartGraphs are capable of using [SatelliteCollections](../../collections/satellitecollections.md)
 to enable more local execution of graph queries.
 
 You can specify SatelliteCollections in graph definitions as node collections to

@@ -107,7 +107,7 @@ var doc = db.users.save({ firstName: "Paula", lastName: "Plant" });
 */
 ```
 
-See [Computed Values](../../concepts/data-structure/documents/computed-values.md) for more
+See [Computed Values](../../documents/computed-values.md) for more
 information and examples.
 
 ## ArangoSearch
@@ -144,7 +144,7 @@ function in queries.
 
 Like Views, this type of index is eventually consistent.
 
-See [Inverted index](../../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md) for details.
+See [Inverted index](../../indexes/inverted-indexes.md) for details.
 
 ### `search-alias` Views
 
@@ -172,7 +172,7 @@ need to specify an Analyzer context with the `ANALYZER()` function in queries
 because it is inferred from the inverted index definition, which only supports
 a single Analyzer per field.
 
-Also see [Getting started with ArangoSearch](../../indexes-and-search/arangosearch/_index.md#getting-started-with-arangosearch).
+Also see [Getting started with ArangoSearch](../../arangosearch/_index.md#getting-started-with-arangosearch).
 
 ### Search highlighting (Enterprise Edition)
 
@@ -245,7 +245,7 @@ db._query(`FOR doc IN food_view
 */
 ```
 
-See [Search highlighting with ArangoSearch](../../indexes-and-search/arangosearch/search-highlighting.md)
+See [Search highlighting with ArangoSearch](../../arangosearch/search-highlighting.md)
 for details.
 
 ### Nested search (Enterprise Edition)
@@ -293,8 +293,8 @@ FOR doc IN viewName
   RETURN doc
 ```
 
-See [Nested search with ArangoSearch](../../indexes-and-search/arangosearch/nested-search.md) using Views
-and the nested search example using [Inverted indexes](../../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search)
+See [Nested search with ArangoSearch](../../arangosearch/nested-search.md) using Views
+and the nested search example using [Inverted indexes](../../indexes/inverted-indexes.md#nested-search)
 for details.
 
 This feature is only available in the Enterprise Edition.
@@ -307,7 +307,7 @@ enumeration node, if using just scoring for a sort operation.
 
 ### ArangoSearch column cache (Enterprise Edition)
 
-[`arangosearch` Views](../../indexes-and-search/arangosearch/arangosearch-views-reference.md) support new caching options.
+[`arangosearch` Views](../../arangosearch/arangosearch-views-reference.md) support new caching options.
 
 <small>Introduced in: v3.9.5, v3.10.2</small>
 
@@ -337,7 +337,7 @@ enumeration node, if using just scoring for a sort operation.
 
 ---
 
-[Inverted indexes](../../develop/http-api/indexes/inverted.md) also support similar new caching
+[Inverted indexes](../../http-api/indexes/inverted.md) also support similar new caching
 options.
 
 <small>Introduced in: v3.10.2</small>
@@ -363,7 +363,7 @@ metric.
 
 ArangoSearch caching is only available in the Enterprise Edition.
 
-See [Optimizing View and inverted index query performance](../../indexes-and-search/arangosearch/performance.md)
+See [Optimizing View and inverted index query performance](../../arangosearch/performance.md)
 for examples.
 
 {{< info >}}
@@ -398,13 +398,13 @@ links/indexes are going to fail with error "collection/view is out of sync"
 
 The new `--javascript.user-defined-functions` startup option lets you disable
 user-defined AQL functions so that no user-defined JavaScript code of
-[UDFs](../../aql/user-defined-functions.md) runs on the server. This can be useful to close off
+[UDFs](../../aql/functions/user-defined-functions.md) runs on the server. This can be useful to close off
 a potential attack vector in case no user-defined AQL functions are used.
-Also see [Server security options](../../operations/security/security-options.md).
+Also see [Server security options](../../security/security-options.md).
 
 ### ArangoSearch metrics and figures
 
-The [Metrics HTTP API](../../develop/http-api/monitoring/metrics.md) has been
+The [Metrics HTTP API](../../http-api/monitoring/metrics.md) has been
 extended with metrics for ArangoSearch for monitoring `arangosearch` View links
 and inverted indexes.
 
@@ -432,7 +432,7 @@ Additionally, the JavaScript and HTTP API for indexes has been extended with
 figures for `arangosearch` View links and inverted indexes.
 
 In _arangosh_, you can call `db.<collection>.indexes(true, true);` to get at this
-information. Also see [Listing all indexes of a collection](../../indexes-and-search/indexing/working-with-indexes/_index.md#listing-all-indexes-of-a-collection).
+information. Also see [Listing all indexes of a collection](../../indexes/working-with-indexes.md#listing-all-indexes-of-a-collection).
 The information has the following structure:
 
 ```js
@@ -469,7 +469,7 @@ to perform.
 
 This feature is only available in the Enterprise Edition.
 
-See [Analyzers](../../indexes-and-search/analyzers.md#minhash) for details.
+See [Analyzers](../../analyzers.md#minhash) for details.
 
 ### `classification` Analyzer (Enterprise Edition)
 
@@ -478,7 +478,7 @@ using a supervised fastText word embedding model that you provide.
 
 This feature is only available in the Enterprise Edition.
 
-See [Analyzers](../../indexes-and-search/analyzers.md#classification) for details.
+See [Analyzers](../../analyzers.md#classification) for details.
 
 ### `nearest_neighbors` Analyzer (Enterprise Edition)
 
@@ -487,7 +487,7 @@ using a supervised fastText word embedding model that you provide.
 
 This feature is only available in the Enterprise Edition.
 
-See [Analyzers](../../indexes-and-search/analyzers.md#nearest_neighbors) for details.
+See [Analyzers](../../analyzers.md#nearest_neighbors) for details.
 
 ### `geo_s2` Analyzer (Enterprise Edition)
 
@@ -508,7 +508,7 @@ disk, the precision, and query performance:
 
 This feature is only available in the Enterprise Edition.
 
-See [Analyzers](../../indexes-and-search/analyzers.md#geo_s2) for details.
+See [Analyzers](../../analyzers.md#geo_s2) for details.
 
 ## Web Interface
 
@@ -565,7 +565,7 @@ This feature is only available in the Enterprise Edition.
 
 The 3.10 release of ArangoDB conforms to the standards specified in 
 [GeoJSON](https://datatracker.ietf.org/doc/html/rfc7946)
-and [GeoJSON Mode](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson-mode).
+and [GeoJSON Mode](../../indexes/geo-spatial-indexes.md#geojson-mode).
 This diverges from the previous implementation in two fundamental ways:
 
 1. The syntax of GeoJSON objects is interpreted so that lines on the
@@ -590,13 +590,13 @@ has been introduced to guarantee backwards compatibility.
 For existing users who wish to take advantage of the new standard behavior,
 geo indexes need to be dropped and recreated after an upgrade.
 
-See [Legacy Polygons](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons) for
+See [Legacy Polygons](../../indexes/geo-spatial-indexes.md#legacy-polygons) for
 details and for hints about upgrading to version 3.10 or later.
 
 If you use `geojson` Analyzers including in `arangosearch` Views and upgrade
 from a version below 3.10 to a version of 3.10 or higher, the interpretation of
 GeoJSON Polygons changes. See the `legacy` property of the
-[`geojson` Analyzer](../../indexes-and-search/analyzers.md#geojson) for details and how to restore the
+[`geojson` Analyzer](../../analyzers.md#geojson) for details and how to restore the
 old behavior.
 
 ### Traversal Projections (Enterprise Edition)
@@ -771,7 +771,7 @@ If the post-filter conditions filter out a lot of documents, this optimization
 can significantly speed up queries that produce large result sets from index
 lookups but filter many of the documents away with post-filter conditions.
 
-See [Filter Projections Optimization](../../aql/execution-and-performance/query-optimization.md#filter-projections-optimizations)
+See [Filter Projections Optimization](../../aql/query-optimization/query-optimization.md#filter-projections-optimizations)
 for details.
 
 ### Lookahead for Multi-Dimensional Indexes
@@ -783,7 +783,7 @@ index hint for tweaking performance:
 FOR … IN … OPTIONS { lookahead: 32 }
 ```
 
-See [Lookahead Index Hint](../../indexes-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md#lookahead-index-hint).
+See [Lookahead Index Hint](../../indexes/multi-dimensional-indexes.md#lookahead-index-hint).
 
 ### Question mark operator
 
@@ -804,7 +804,7 @@ The quantifier can be a number, a range, `NONE`, `ANY`, `ALL`, or `AT LEAST`.
 This operator is used for the new [Nested search](#nested-search-enterprise-edition)
 feature (Enterprise Edition only).
 
-See [Array Operators](../../aql/operators.md#question-mark-operator)
+See [Array Operators](../../aql/language-basics/operators.md#question-mark-operator)
 for details.
 
 ### New `AT LEAST` array comparison operator
@@ -819,7 +819,7 @@ calculate it dynamically using an expression:
 ["foo", "bar"]  AT LEAST (1+1) ==  "foo"   // false
 ```
 
-See [Array Comparison Operators](../../aql/operators.md#array-comparison-operators).
+See [Array Comparison Operators](../../aql/language-basics/operators.md#array-comparison-operators).
 The `AT LEAST` operator is also supported by ArangoSearch in the
 [`SEARCH` operation](../../aql/high-level-operations/search.md#array-comparison-operators).
 
@@ -829,7 +829,7 @@ AQL functions added to the 3.10 Enterprise Edition:
 
 - [`OFFSET_INFO()`](../../aql/functions/arangosearch.md#offset_info):
   An ArangoSearch function to get the start offsets and lengths of matches for
-  [search highlighting](../../indexes-and-search/arangosearch/search-highlighting.md).
+  [search highlighting](../../arangosearch/search-highlighting.md).
 
 - [`MINHASH()`](../../aql/functions/miscellaneous.md#minhash):
   A new function for locality-sensitive hashing to approximate the
@@ -924,7 +924,7 @@ Also see:
 - [AQL `UPDATE` operation](../../aql/high-level-operations/update.md#refillindexcaches)
 - [AQL `REPLACE` operation](../../aql/high-level-operations/replace.md#refillindexcaches)
 - [AQL `REMOVE` operation](../../aql/high-level-operations/remove.md#refillindexcaches)
-- [Document HTTP API](../../develop/http-api/documents.md)
+- [Document HTTP API](../../http-api/documents.md)
 - [Edge cache refill options](#edge-cache-refill-options)
 
 ### Extended query explain statistics
@@ -961,7 +961,7 @@ use the `POST /_api/explain` endpoint:
 
 Also see:
 - [API Changes in ArangoDB 3.10](api-changes-in-3-10.md#explain-api)
-- [The AQL query optimizer](../../aql/execution-and-performance/query-optimization.md#optimizer-statistics)
+- [The AQL query optimizer](../../aql/query-optimization/query-optimization.md#optimizer-statistics)
 
 ## Indexes
 
@@ -990,7 +990,7 @@ db.<collection>.ensureIndex({
 });
 ```
 
-See [Persistent Indexes](../../indexes-and-search/indexing/working-with-indexes/persistent-indexes.md#storing-additional-values-in-indexes).
+See [Persistent Indexes](../../indexes/persistent-indexes.md#storing-additional-values-in-indexes).
 
 ### Enabling caching for index values
 
@@ -1012,7 +1012,7 @@ scanned index entries is large.
 As the cache is hash-based and unsorted, it cannot be used for full or partial range
 scans, for sorting, or for lookups that do not include all index attributes.
 
-See [Persistent Indexes](../../indexes-and-search/indexing/working-with-indexes/persistent-indexes.md#caching-of-index-values).
+See [Persistent Indexes](../../indexes/persistent-indexes.md#caching-of-index-values).
 
 ## Document keys
 
@@ -1044,12 +1044,12 @@ that have copies of the data. Therefore, the read throughput is higher.
 
 This feature is only available in the Enterprise Edition.
 
-For more information, see [Read from followers](../../develop/http-api/documents.md#read-from-followers)
+For more information, see [Read from followers](../../http-api/documents.md#read-from-followers)
 in the HTTP API documentation.
 
 The JavaScript API supports an `allowDirtyReads` option for
-[AQL queries](../../aql/how-to-invoke-aql/with-arangosh.md#allowdirtyreads) and
-[reading documents](../../develop/javascript-api/@arangodb/collection-object.md#collectiondocumentobject--options).
+[AQL queries](../../aql/run-queries/with-arangosh.md#allowdirtyreads) and
+[reading documents](../../javascript-api/@arangodb/collection-object.md#collectiondocumentobject--options).
 
 ## Improved shard rebalancing
 
@@ -1063,7 +1063,7 @@ You can do any of the following by using the API:
 - Execute the given set of move shard operations.
 - Compute a set of move shard operations to improve balance and execute them immediately. 
 
-For more information, see the [Cluster](../../develop/http-api/cluster.md#get-the-current-cluster-imbalance) 
+For more information, see the [Cluster](../../http-api/cluster.md#get-the-current-cluster-imbalance) 
 section of the HTTP API documentation.
 
 ## Query result spillover to decrease memory usage
@@ -1093,9 +1093,9 @@ arangod --database.directory "myDir"
 You can also set the thresholds per query in the JavaScript and HTTP APIs.
 
 For details, see:
-- [`temp` startup options](../../components/arangodb-server/options.md#--tempintermediate-results-path)
-- [Executing queries from _arangosh_](../../aql/how-to-invoke-aql/with-arangosh.md#spilloverthresholdmemoryusage)
-- [HTTP interfaces for AQL queries](../../develop/http-api/queries/aql-queries.md#create-a-cursor)
+- [`temp` startup options](../../configuration/options.md#--tempintermediate-results-path)
+- [Executing queries from _arangosh_](../../aql/run-queries/with-arangosh.md#spilloverthresholdmemoryusage)
+- [HTTP interfaces for AQL queries](../../http-api/queries/aql-queries.md#create-a-cursor)
 
 ## Server options
 
@@ -1109,7 +1109,7 @@ You can set the new `--server.early-connections` startup option to `true` to
 let the instance respond to the `/_api/version`, `/_admin/version`, and
 `/_admin/status` HTTP APIs early.
 
-See [Respond to liveliness probes](../../develop/http-api/general-request-handling.md#respond-to-liveliness-probes).
+See [Respond to liveliness probes](../../http-api/general-request-handling.md#respond-to-liveliness-probes).
 
 ### Cache RocksDB index and filter blocks by default
 
@@ -1212,7 +1212,7 @@ is allowed to use.
 
 You can reduce the memory usage of the column cache in cluster deployments by
 only using the cache for leader shards with the new
-[`--arangosearch.columns-cache-only-leader` startup option](../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader).
+[`--arangosearch.columns-cache-only-leader` startup option](../../configuration/options.md#--arangosearchcolumns-cache-only-leader).
 It is disabled by default, which means followers also maintain a column cache.
 
 ### Cluster supervision options
@@ -1291,7 +1291,7 @@ still possible even with the option set to `false`.
 
 Disabling the access to Foxx can be useful to close off a potential attack
 vector in case Foxx is not used.
-Also see [Server security options](../../operations/security/security-options.md).
+Also see [Server security options](../../security/security-options.md).
 
 ### RocksDB auto-flushing
 
@@ -1554,7 +1554,7 @@ for the RocksDB buffer cache.
 You can now configure the option by setting a `CACHE_OBLIVIOUS` environment
 variable to the string `true` or `false` before starting ArangoDB.
 
-See [ArangoDB Server environment variables](../../components/arangodb-server/environment-variables.md)
+See [ArangoDB Server environment variables](../../configuration/environment-variables.md)
 for details.
 
 ### WAL file tracking metrics
@@ -1724,7 +1724,7 @@ arangoexport \
 ```
 
 Note that you need to escape at signs in command-lines by doubling them (see
-[Environment variables as parameters](../../operations/administration/configuration.md#environment-variables-as-parameters)).
+[Environment variables as parameters](../../configuration/_index.md#environment-variables-as-parameters)).
 
 _arangoexport_ now also has a `--custom-query-file` startup option that you can
 use instead of `--custom-query`, to read a query from a file. This allows you to
@@ -1756,7 +1756,7 @@ prefixed by the entered values.
 
 _arangoimport_ now supports the `--remove-attribute` option when using JSON
 as input file format.
-For more information, refer to the [_arangoimport_ Options](../../components/tools/arangoimport/options.md).
+For more information, refer to the [_arangoimport_ Options](../../tools/arangoimport/options.md).
 
 ### ArangoDB Starter
 
@@ -1764,7 +1764,7 @@ _ArangoDB Starter_ has a new feature that allows you to configure the binary
 by reading from a configuration file. The default configuration file of the Starter
 is `arangodb-starter.conf` and can be changed using the `--configuration` option. 
 
-See the [Starter configuration file](../../components/tools/arangodb-starter/architecture.md#starter-configuration-file)
+See the [Starter configuration file](../../arangodb-starter/architecture.md#starter-configuration-file)
 section for more information about the configuration file format, passing
 through command line options, and examples. 
 

@@ -1,7 +1,8 @@
 ---
 title: '`WITH` operation in AQL'
 menuTitle: WITH
-weight: 75
+weight: 47
+group: Read
 description: >-
   An AQL query can start with a `WITH` operation, listing collections that a
   query implicitly reads from
@@ -45,12 +46,12 @@ graph traversals.
 
 You can enable the `--query.require-with` startup option to make single server
 instances require `WITH` declarations like cluster deployments to ease development,
-see [Requiring `WITH` statements](../../components/arangodb-server/options.md#--queryrequire-with).
+see [Requiring `WITH` statements](../../configuration/options.md#--queryrequire-with).
 
 Dynamic access via the `DOCUMENT()` function does not require you to list the
 involved collections. Using named graphs in traversals (`GRAPH "graph-name"`)
 does not require it either, assuming that all nodes are in collections that
-are part of the graph, as enforced by the [Graph API](../../develop/http-api/graphs/named-graphs.md).
+are part of the graph, as enforced by the [Graph API](../../http-api/graphs/named-graphs.md).
 That means, it is only necessary for traversals using anonymous graphs /
 [collection sets](../graph-queries/traversals.md#working-with-collection-sets).
 

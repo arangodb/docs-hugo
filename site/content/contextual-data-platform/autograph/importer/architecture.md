@@ -160,7 +160,7 @@ retrieval time. Index parameters (`vector_index_metric`,
 [Parameter Reference](parameters.md#vector-index-configuration).
 
 For background on ArangoDB vector indexes, see
-[Vector indexes](../../../arangodb/3.12/indexes-and-search/indexing/working-with-indexes/vector-indexes.md).
+[Vector indexes](../../../arangodb/3.12/indexes/vector-indexes.md).
 
 ## Asynchronous import lifecycle
 

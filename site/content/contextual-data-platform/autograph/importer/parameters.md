@@ -310,7 +310,7 @@ These parameters configure the vector indexes used for semantic search and simil
 ```
 
 {{< info >}}
-Vector index parameters apply to all embedding fields in your knowledge graph (chunks, edges, entities, and communities). For more details on ArangoDB vector indexes, see the [Vector Search](../../../arangodb/3.12/indexes-and-search/indexing/working-with-indexes/vector-indexes.md) documentation.
+Vector index parameters apply to all embedding fields in your knowledge graph (chunks, edges, entities, and communities). For more details on ArangoDB vector indexes, see the [Vector Search](../../../arangodb/3.12/indexes/vector-indexes.md) documentation.
 {{< /info >}}
 
 ## Semantic Units and Image Processing

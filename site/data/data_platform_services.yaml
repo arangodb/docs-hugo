@@ -41,7 +41,7 @@ arangodb-core-ui:
     # re-implementation in the platform UI yet, so it is documented with the
     # database rather than with the platform.
     - name: Web interface (embedded legacy UI)
-      link: arangodb/3.12/components/web-interface/_index.md
+      link: arangodb/3.12/web-interface/_index.md
 
 arangodb-core-rbac-permissions:
   features:

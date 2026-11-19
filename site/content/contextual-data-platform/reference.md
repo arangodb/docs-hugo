@@ -26,7 +26,7 @@ lists them in one place.
 | Cypher to AQL | [Cypher to AQL Translation Service](cypher-to-aql.md) | Translate Cypher queries to AQL | [HTTP API](cypher-to-aql.md#http-api) |
 
 For the HTTP API of the ArangoDB database system itself, see the
-[ArangoDB HTTP API](../arangodb/3.12/develop/http-api/_index.md).
+[ArangoDB HTTP API](../arangodb/3.12/http-api/_index.md).
 
 ## Changes between releases
 

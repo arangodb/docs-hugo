@@ -1,7 +1,8 @@
 ---
 title: Features and Capabilities
 menuTitle: Features
-weight: 10
+weight: 100
+group: Overview
 description: >-
   ArangoDB is a graph database with a powerful set of features for data management and analytics,
   supported by a rich ecosystem of integrations and drivers
@@ -49,10 +50,10 @@ ArangoDB can be self-deployed on AWS or other cloud platforms, too. However, whe
 using a self-managed deployment, you take full control of managing the resources
 needed to run it in the cloud. This involves tasks such as configuring,
 provisioning, and monitoring the system. For more details, see
-[self-deploying ArangoDB in the cloud](../deploy/in-the-cloud.md).
+[self-deploying ArangoDB in the cloud](../cloud-providers.md).
 
 ArangoDB supports Kubernetes through its official
-[Kubernetes Operator](../deploy/kubernetes.md) that allows you to easily
+[Kubernetes Operator](../kubernetes.md) that allows you to easily
 deploy and manage clusters within a Kubernetes environment.
 
 ### On-premises
@@ -64,16 +65,16 @@ services.
 
 You can install ArangoDB locally by downloading and running the
 [official packages](https://arango.ai/downloads/) or run it using
-[Docker images](../operations/installation/docker.md).
+[Docker images](../installation/docker.md).
 
 You can deploy it on-premises as a
-[single server](../deploy/single-instance/_index.md)
-or as a [cluster](../deploy/cluster/_index.md)
+[single server](../deployment-modes/single-instance.md)
+or as a [cluster](../deployment-modes/cluster/_index.md)
 comprised of multiple nodes with synchronous replication and automatic failover
 for high availability and resilience.
 
 ArangoDB also integrates with Kubernetes, offering a
-[Kubernetes Operator](../deploy/kubernetes.md) that lets you deploy in your
+[Kubernetes Operator](../kubernetes.md) that lets you deploy in your
 Kubernetes cluster.
 
 ## ArangoDB Editions

@@ -50,7 +50,7 @@ deployment offline to perform the upgrade procedure in the safest possible manne
 
 | Current version | Resolved version | Steps to take |
 |-----------------|------------------|---------------|
-| 3.11.10 (or older) | 3.11.11 (or newer 3.11.x) | Create a backup, upgrade normally (following the standard [Upgrade path](../../operations/upgrading/_index.md#upgrade-paths) all the way to the latest 3.11.x version), then check for [affected numbers in indexes](#corrected-sorting-order-for-numbers-in-velocypack-indexes) and fix them. |
+| 3.11.10 (or older) | 3.11.11 (or newer 3.11.x) | Create a backup, upgrade normally (following the standard [Upgrade path](../../upgrading/_index.md#upgrade-paths) all the way to the latest 3.11.x version), then check for [affected numbers in indexes](#corrected-sorting-order-for-numbers-in-velocypack-indexes) and fix them. |
 | 3.11.11 (or newer 3.11.x) | 3.12.4 (or newer) | **Do not upgrade to version 3.12.0, 3.12.1, 3.12.2, or 3.12.3**. Create a backup, check for [affected numbers in indexes](#corrected-sorting-order-for-numbers-in-velocypack-indexes) and fix them (if you haven't done so already or created the deployment with 3.11.11 or a later 3.11.x version), then upgrade to the latest 3.11.x version first, and finally upgrade to version 3.12.4 or later. |
 
 ## Incompatibilities due to switch to glibc
@@ -134,8 +134,8 @@ Coordinators and DB-Servers of the cluster. Otherwise, the startup is
 refused.
 
 Also see:
-- [Collection names](../../concepts/data-structure/collections.md#collection-names)
-- [View names](../../concepts/data-structure/views.md#view-names)
+- [Collection names](../../collections/_index.md#collection-names)
+- [View names](../../arangosearch/views.md#view-names)
 - Index names have the same character restrictions as collection names
 
 ## No AQL user-defined functions (UDF) in `PRUNE`
@@ -180,7 +180,7 @@ preceding or trailing colon.
 
 Writes to the same document in quick succession can result in write-write
 conflicts, requiring you to retry the operations. In v3.11, single document
-operations via the [HTTP Interface for Documents](../../develop/http-api/documents.md) try to
+operations via the [HTTP Interface for Documents](../../http-api/documents.md) try to
 avoid conflicts by locking the key of the document before performing the
 modification. This serializes the write operations on the same document.
 The behavior of AQL queries, Stream Transactions, and multi-document operations
@@ -256,7 +256,7 @@ query option is a threshold for the maximum number of `OR` sub-nodes in the
 internal representation and defaults to `786432`.
 
 You can also set the threshold globally instead of per query with the
-[`--query.max-dnf-condition-members` startup option](../../components/arangodb-server/options.md#--querymax-dnf-condition-members).
+[`--query.max-dnf-condition-members` startup option](../../configuration/options.md#--querymax-dnf-condition-members).
 
 If the threshold is hit, the query continues with a simplified representation of
 the condition, which is **not usable in index lookups**. However, this should
@@ -513,7 +513,7 @@ created with v3.11.11, v3.12.2, or any later version.
    
 3. Call the `PUT /_admin/cluster/vpackSortMigration/migrate` endpoint to mark
    the deployment as having the correct sorting order. This requires
-   [superuser permissions](../../develop/http-api/authentication.md#jwt-superuser-tokens)
+   [superuser permissions](../../http-api/authentication.md#jwt-superuser-tokens)
    unless authentication is disabled.
 
    ```shell
@@ -547,7 +547,7 @@ the following steps.
 1. This step depends on the deployment mode:
 
    - **Single server**: Create a new server. Then create a full dump with
-     [arangodump](../../components/tools/arangodump/_index.md) of the old server,
+     [arangodump](../../tools/arangodump/_index.md) of the old server,
      using the `--all-databases` and `--include-system-collections` startup options
      and a user account with administrate access to the `_system` database and
      at least read access to all other databases to ensure all data including

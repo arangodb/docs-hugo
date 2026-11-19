@@ -15,10 +15,10 @@ in JavaScript, see [`CONCAT()`](string.md#concat) and
 
 Apart from that, AQL also offers several language constructs:
 
-- simple [array access](../fundamentals/data-types.md#arrays--lists) of individual elements,
-- [array operators](../operators.md#array-operators) for array expansion and contraction,
+- simple [array access](../language-basics/data-types.md#arrays--lists) of individual elements,
+- [array operators](../language-basics/operators.md#array-operators) for array expansion and contraction,
   optionally with inline filter, limit and projection,
-- [array comparison operators](../operators.md#array-comparison-operators) to compare
+- [array comparison operators](../language-basics/operators.md#array-comparison-operators) to compare
   each element in an array to a value or the elements of another array,
 - loop-based operations on arrays using [FOR](../high-level-operations/for.md),
   [SORT](../high-level-operations/sort.md),
@@ -137,7 +137,7 @@ Turn an array of arrays into a flat array. All array elements in *array* will be
 expanded in the result array. Non-array elements are added as they are. The function
 will recurse into sub-arrays up to the specified depth. Duplicates will not be removed.
 
-Also see [array contraction](../operators.md#array-contraction).
+Also see [array contraction](../language-basics/operators.md#array-contraction).
 
 - **array** (array): array with elements of arbitrary type, including nested arrays
 - **depth** (number, *optional*):  flatten up to this many levels, the default is 1
@@ -510,7 +510,7 @@ Return whether *search* is contained in *array*. Optionally return the position.
   returned (positions start at 0), or *-1* if it's not found.
 
 If you want to check if a value is in an array, you can alternatively use
-the [`IN` operator](../operators.md#comparison-operators), for example,
+the [`IN` operator](../language-basics/operators.md#comparison-operators), for example,
 `3 IN [1, 2, 3]` instead of `POSITION([1, 2, 3], 3)`.
 
 To determine if or at which position a string occurs in another string, see the
@@ -540,7 +540,7 @@ RETURN POSITION( [2,4,6,8], 4, true )
 ```
 
 If you want to search a list of objects, you can use the
-[array expansion operator `[*]`](../operators.md#array-expansion).
+[array expansion operator `[*]`](../language-basics/operators.md#array-expansion).
 For example, you can get an attribute from each object using the operator, and
 then determine the array index of the first match using the `POSITION()` function:
 

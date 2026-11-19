@@ -49,7 +49,7 @@ Coordinators and DB-Servers of the cluster. Otherwise the startup will be
 refused. In DC2DC setups it is also required to use the same database naming
 convention for both datacenters to avoid incompatibilities.
 
-Also see [Database names](../../concepts/data-structure/databases.md#database-names).
+Also see [Database names](../../databases.md#database-names).
 
 ## AQL
 
@@ -74,7 +74,7 @@ The following limits have been added:
 AQL queries that violate these limits will fail to run, and instead abort 
 with error `1524` ("too much nesting or too many objects") during setup.
 
-Also see [Known limitations for AQL queries](../../aql/fundamentals/limitations.md).
+Also see [Known limitations for AQL queries](../../aql/language-basics/limitations.md).
 
 ## Validation of traversal collection restrictions
 
@@ -159,7 +159,7 @@ controls whether collection names are allowed in arbitrary places in AQL
 expressions. The default was *true*, but is now changed to *false* in 3.9.0 to
 make queries like `FOR doc IN collection RETURN collection` fail, where it was
 probably intended to `RETURN doc` instead. Also see
-[ArangoDB Server Query Options](../../components/arangodb-server/options.md#--queryallow-collections-in-expressions)
+[ArangoDB Server Query Options](../../configuration/options.md#--queryallow-collections-in-expressions)
 
 Such unintentional usage of collection names in queries now makes the query
 fail with error 1568 ("collection used as expression operand") by default.

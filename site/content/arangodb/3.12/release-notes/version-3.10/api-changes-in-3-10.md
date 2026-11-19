@@ -29,7 +29,7 @@ The following APIs can reply early with an HTTP 200 status:
   This API returns information about the instance's status, now also including
   recovery progress and information about which server feature is currently starting.
   
-See [Respond to liveliness probes](../../develop/http-api/general-request-handling.md#respond-to-liveliness-probes) for more details.
+See [Respond to liveliness probes](../../http-api/general-request-handling.md#respond-to-liveliness-probes) for more details.
 
 #### Validation of collections in named graphs
 
@@ -249,7 +249,7 @@ move shard operations and improve balance in the cluster.
 - `POST /_admin/cluster/rebalance_execute`
 - `PUT /_admin/cluster/rebalance`
   
-For more information, see the [Cluster](../../develop/http-api/cluster.md#get-the-current-cluster-imbalance) 
+For more information, see the [Cluster](../../http-api/cluster.md#get-the-current-cluster-imbalance) 
 section of the HTTP API documentation. 
 
 #### Maintenance mode for DB-Servers
@@ -309,7 +309,7 @@ to extend the timeout.
 
 The maintenance mode ends automatically after the defined timeout.
 
-Also see the [HTTP interface for cluster maintenance](../../develop/http-api/cluster.md#get-the-maintenance-status-of-a-db-server).
+Also see the [HTTP interface for cluster maintenance](../../http-api/cluster.md#get-the-maintenance-status-of-a-db-server).
 
 #### Shard usage metrics
 
@@ -323,7 +323,7 @@ startup option to `enabled-per-shard` to make DB-Servers collect per-shard
 usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
 usage metrics per shard and per user whenever a shard is accessed.
 
-For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-the-usage-metrics)
+For more information, see the [HTTP API description](../../http-api/monitoring/metrics.md#get-the-usage-metrics)
 and [Monitoring per collection/database/user](../version-3.10/whats-new-in-3-10.md#monitoring-per-collectiondatabaseuser).
 
 ### Endpoints augmented
@@ -484,7 +484,7 @@ Index definition returned by index endpoints:
 - `writebufferActive` (integer): default: `0`
 - `writebufferSizeMax` (integer): default: `33554432`
 
-Also see the [HTTP API documentation](../../develop/http-api/indexes/inverted.md).
+Also see the [HTTP API documentation](../../http-api/indexes/inverted.md).
 
 #### `search-alias` Views
 
@@ -515,11 +515,11 @@ View definition returned by View endpoints:
   - `collection` (string)
   - `index` (string)
 
-Also see the [HTTP API documentation](../../develop/http-api/views/search-alias-views.md).
+Also see the [HTTP API documentation](../../http-api/views/search-alias-views.md).
 
 #### Computed Values
 
-The [Computed Values](../../concepts/data-structure/documents/computed-values.md) feature
+The [Computed Values](../../documents/computed-values.md) feature
 extends the following endpoints with a new `computedValues` collection property
 that you can read or write to manage the computed value definitions:
 
@@ -568,20 +568,20 @@ search highlighting capabilities for Views.
 The `/_api/analyzer` endpoint supports new Analyzer types in the
 Enterprise Edition:
 
-- [`minhash`](../../indexes-and-search/analyzers.md#minhash):
+- [`minhash`](../../analyzers.md#minhash):
   It has two properties, `analyzer` (object) and `numHashes` (number).
   The `analyzer` object is an Analyzer-like definition with a `type` (string) and
   a `properties` attribute (object). The properties depend on the Analyzer type.
 
-- [`classification`](../../indexes-and-search/analyzers.md#classification) (experimental):
+- [`classification`](../../analyzers.md#classification) (experimental):
   It has three properties, `model_location` (string), `top_k` (number, optional,
   default: `1`), and `threshold` (number, optional, default: `0.99`).
 
-- [`nearest_neighbors`](../../indexes-and-search/analyzers.md#nearest_neighbors) (experimental):
+- [`nearest_neighbors`](../../analyzers.md#nearest_neighbors) (experimental):
   It has two properties, `model_location` (string) and `top_k` (number, optional,
   default: `1`).
 
-- [`geo_s2`](../../indexes-and-search/analyzers.md#geo_s2) (introduced in v3.10.5):
+- [`geo_s2`](../../analyzers.md#geo_s2) (introduced in v3.10.5):
   Like the existing `geojson` Analyzer, but with an additional `format` property
   that can be set to `"latLngDouble"` (default), `"latLngInt"`, or `"s2Point"`.
 
@@ -592,7 +592,7 @@ Enterprise Edition:
 Analyzers of the `geojson` type have a new `legacy` property. The default is `false`.
 
 This option controls how GeoJSON Polygons are interpreted.
-See the [`geojson` Analyzer](../../indexes-and-search/analyzers.md#geojson).
+See the [`geojson` Analyzer](../../analyzers.md#geojson).
 
 #### Views API
 
@@ -622,7 +622,7 @@ You may use a shorthand notations on `arangosearch` View creation or the
 `storedValues` option, like `["attr1", "attr2"]`, instead of using an array of
 objects.
 
-See the [`arangosearch` Views Reference](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+See the [`arangosearch` Views Reference](../../arangosearch/arangosearch-views-reference.md#link-properties)
 for details.
 
 #### Geo-spatial indexes
@@ -630,7 +630,7 @@ for details.
 Indexes of the `geo` type have a new `legacyPolygons` option.
 
 If `geoJson` is set to `true`, then this option controls how GeoJSON Polygons
-are interpreted. Also see [Legacy Polygons](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons).
+are interpreted. Also see [Legacy Polygons](../../indexes/geo-spatial-indexes.md#legacy-polygons).
 
 The default is `true` for geo indexes that were created in versions
 before 3.10, and `false` for geo indexes created in 3.10 or later.
@@ -661,14 +661,14 @@ attribute is returned inside the `serverInfo` object with the following subattri
   recovery. If the instance is already past the recovery, this attribute contains 
   the last handled recovery sequence number.
 
-See [Respond to liveliness probes](../../develop/http-api/general-request-handling.md#respond-to-liveliness-probes) for more information.
+See [Respond to liveliness probes](../../http-api/general-request-handling.md#respond-to-liveliness-probes) for more information.
 
 #### Read from followers
 
 A number of read-only APIs now observe the `x-arango-allow-dirty-read`
 header, which was previously only used in Active Failover deployments.
 This header allows reading from followers or "dirty reads". See
-[Read from followers](../../develop/http-api/documents.md#read-from-followers)
+[Read from followers](../../http-api/documents.md#read-from-followers)
 for details.
 
 The following APIs are affected:
@@ -976,7 +976,7 @@ every optimizer rule that briefly explains what it does.
 ### Computed values
 
 The Computed Values feature extends the collection properties with a new
-`computedValues` attribute. See [Computed Values](../../concepts/data-structure/documents/computed-values.md#interfaces)
+`computedValues` attribute. See [Computed Values](../../documents/computed-values.md#interfaces)
 for details.
 
 ### Query spillover and Read from followers
@@ -984,7 +984,7 @@ for details.
 The `db._query()` and `db._createStatement()` methods accepts new query
 options (`options` object) to set per-query thresholds for the
 [query spillover feature](whats-new-in-3-10.md#query-result-spillover-to-decrease-memory-usage)
-and to [Read from followers](../../develop/http-api/documents.md#read-from-followers):
+and to [Read from followers](../../http-api/documents.md#read-from-followers):
 
 - `allowDirtyReads` (boolean, _optional_): default: `false`
 - `spillOverThresholdMemoryUsage` (integer, _optional_): in bytes, default: `134217728` (128MB)

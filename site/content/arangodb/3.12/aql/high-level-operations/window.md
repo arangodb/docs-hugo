@@ -2,6 +2,7 @@
 title: '`WINDOW` operation in AQL'
 menuTitle: WINDOW
 weight: 45
+group: Read
 description: >-
   Aggregate adjacent documents or value ranges with a sliding window to
   calculate running totals, rolling averages, and other statistical properties

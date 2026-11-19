@@ -34,9 +34,9 @@ graphs and collections:
 - `satellites`
 - `shardingStrategy`
 
-After that, you can [dump](../../components/tools/arangodump/examples.md) the graphs with
+After that, you can [dump](../../tools/arangodump/examples.md) the graphs with
 _arangodump_ as usual.
 
-[Restore](../../components/tools/arangorestore/examples.md) the dumped data into a running
+[Restore](../../tools/arangorestore/examples.md) the dumped data into a running
 ArangoDB cluster. As a result, all cluster relevant properties are restored
 correctly and affect the sharding and the performance as expected.

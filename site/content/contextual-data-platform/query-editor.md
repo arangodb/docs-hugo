@@ -77,7 +77,7 @@ When you close all tabs, the viewport opens the **Welcome** tab.
 
 There is a floating panel in the top right corner for **Bind variables & Options**.
 You can minimize this panel to a button. The panel lets you enter values for
-[bind variables](../arangodb/3.12/aql/fundamentals/bind-parameters.md) if there
+[bind variables](../arangodb/3.12/aql/language-basics/bind-parameters.md) if there
 are any such placeholders in the query (`@value`, `@@collection`). You can also
 set query options here on the **Options** tab using a **Form** or **JSON** mode.
 

@@ -1,0 +1,99 @@
+---
+title: _arangosh_ Examples
+menuTitle: Examples
+weight: 5
+description: >-
+  How to connect to a server and use the ArangoDB Shell
+---
+## Connecting to a server
+
+By default, _arangosh_ tries to connect to an ArangoDB server running on
+server `localhost` on port `8529`. It uses the username `root` and an
+empty password by default. Additionally, it connects to the default database
+(`_system`). All these defaults can be changed using the following 
+command-line options:
+
+- `--server.database <string>`: name of the database to connect to
+- `--server.endpoint <string>`: endpoint to connect to
+- `--server.username <string>`: database username
+- `--server.password <string>`: password or access token to use when connecting 
+- `--server.jwt-token <string>`: JWT to use instead of a username and password
+  (set it to `-` to be prompted for the token)
+- `--server.jwt-secret-keyfile <string>`: file with the JWT secret of the server
+  to authenticate with superuser rights instead of a username and password
+- `--server.authentication <bool>`: whether or not to use authentication
+
+For example, to connect to an ArangoDB server on IP `192.168.173.13` on port
+8530 with the user `foo` and using the database `test`, use:
+
+```
+arangosh --server.endpoint http://192.168.173.13:8530 --server.username foo --server.database test --server.authentication true
+```
+
+_arangosh_ then displays a password prompt and tries to connect to the 
+server after the password is entered. You can also use an access token instead
+of a password (but make sure `--server.username` is set to the same user name as
+encoded in the access token).
+
+_arangosh_ exchanges the username and password for a JWT and renews it
+automatically before it expires. From v3.12.13 onward, this also applies to
+JWT session tokens you pass via `--server.jwt-token`. For details, see
+[Connect to an ArangoDB server](../_index.md#connect-to-an-arangodb-server).
+
+{{< warning >}}
+At signs `@` in startup option arguments need to be escaped as `@@`.
+ArangoDB programs and tools support a
+[special syntax `@envvar@`](../../configuration/_index.md#environment-variables-as-parameters)
+that substitutes text wrapped in at signs with the value of an equally called
+environment variable. This is most likely an issue with passwords and the
+`--server.password` option.
+
+For example, `password@test@123` needs to be passed as
+`--server.password password@@test@@123` to work correctly, unless you want
+`@test@` to be replaced by whatever the environment variable `test` is set to.
+{{< /warning >}}
+
+The shell prints its own version number, and if successfully connected
+to a server, the version number of the ArangoDB server.
+
+{{< tip >}}
+If the server endpoint is configured for TLS encryption then clients such as
+_arangosh_ need to connect to it using a TLS socket as well. For example, use
+`https://` as schema in `--server.endpoint` for a TLS-secured HTTP connection.
+{{< /tip >}}
+
+The schema of an endpoint is comprised of a protocol and a socket in the format
+`protocol+socket://`. There are alternatives and shorthands for some combinations,
+`https://` is equivalent to `ssl://` and `http+ssl://` for instance:
+
+Protocol     | Socket           | Schema
+-------------|------------------|-----------
+HTTP         | TCP              | `http`, `http+tcp`, `http+srv`, `tcp`
+HTTP         | TCP with SSL/TLS | `https`, `http+ssl`, `ssl`
+HTTP         | Unix             | `unix`, `http+unix`
+
+## Using *arangosh*
+
+To change the current database after the connection has been made, you
+can use the `db._useDatabase()` command in _arangosh_:
+
+```js
+---
+name: shellUseDB
+description: ''
+---
+db._useDatabase("_system");
+db._createDatabase("myapp");
+db._useDatabase("myapp");
+
+db._useDatabase("_system");
+db._dropDatabase("myapp");
+```
+
+To get a list of available commands, _arangosh_ provides a `help()` function.
+Calling it displays helpful information.
+
+_arangosh_ also provides auto-completion. Additional information on available 
+commands and methods is thus provided by typing the first few letters of a
+variable and then pressing the {{< kbd "Tab" >}} key. It is recommend to try this with entering
+`db.` (without pressing {{< kbd "Return" >}}) and then pressing {{< kbd "Tab" >}}.

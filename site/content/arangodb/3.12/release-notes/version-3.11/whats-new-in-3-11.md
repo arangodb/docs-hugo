@@ -26,7 +26,7 @@ to be requested from the RocksDB storage engine.
 
 ### ArangoSearch column cache (Enterprise Edition)
 
-[`arangosearch` Views](../../indexes-and-search/arangosearch/arangosearch-views-reference.md) support new caching options.
+[`arangosearch` Views](../../arangosearch/arangosearch-views-reference.md) support new caching options.
 
 <small>Introduced in: v3.9.5, v3.10.2</small>
 
@@ -56,7 +56,7 @@ to be requested from the RocksDB storage engine.
 
 ---
 
-[Inverted indexes](../../develop/http-api/indexes/inverted.md) also support similar new caching
+[Inverted indexes](../../http-api/indexes/inverted.md) also support similar new caching
 options.
 
 <small>Introduced in: v3.10.2</small>
@@ -82,7 +82,7 @@ metric.
 
 ArangoSearch caching is only available in the Enterprise Edition.
 
-See [Optimizing View and inverted index query performance](../../indexes-and-search/arangosearch/performance.md)
+See [Optimizing View and inverted index query performance](../../arangosearch/performance.md)
 for examples.
 
 {{< info >}}
@@ -113,7 +113,7 @@ disk, the precision, and query performance:
 
 This feature is only available in the Enterprise Edition.
 
-See [Analyzers](../../indexes-and-search/analyzers.md#geo_s2) for details.
+See [Analyzers](../../analyzers.md#geo_s2) for details.
 
 ## Web interface
 
@@ -137,13 +137,13 @@ also search by.
 
 You can still switch to the old graph viewer if desired.
 
-See the [Graph Viewer](../../components/web-interface/graphs.md) documentation for
+See the [Graph Viewer](../../web-interface/graphs.md) documentation for
 details.
 
 ### `search-alias` Views
 
 The 3.11 release of ArangoDB introduces a new web interface for Views that lets
-you to create and manage [`search-alias` Views](../../indexes-and-search/arangosearch/search-alias-views-reference.md).
+you to create and manage [`search-alias` Views](../../arangosearch/search-alias-views-reference.md).
 
 Through this dialog, you can easily create a new View and add to it one or more
 inverted indexes from your collections that you could otherwise do via the HTTP
@@ -155,7 +155,7 @@ the same settings to multiple Views. In addition, the JSON editor offers the
 option to directly write the definition of your View in JSON format.
 
 For more information, see the
-[detailed guide](../../indexes-and-search/arangosearch/search-alias-views-reference.md#create-search-alias-views-using-the-web-interface).
+[detailed guide](../../arangosearch/search-alias-views-reference.md#create-search-alias-views-using-the-web-interface).
 
 ### `arangosearch` Views
 
@@ -165,12 +165,12 @@ or modify the definition of your View. The settings, links, and JSON editor have
 been merged into a single page, allowing for a much quicker workflow.
 
 For more information, see the
-[detailed guide](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#create-arangosearch-views-using-the-web-interface).
+[detailed guide](../../arangosearch/arangosearch-views-reference.md#create-arangosearch-views-using-the-web-interface).
 
 ### Inverted indexes
 
 The web interface now includes the option for creating
-[inverted indexes](../../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md) on collections. You can set all the
+[inverted indexes](../../indexes/inverted-indexes.md) on collections. You can set all the
 properties directly in the web interface, which previously required the JavaScript
 or HTTP API. It also offers an editor where you can write the definition of
 your inverted index in JSON format.
@@ -244,7 +244,7 @@ Instead of batching the array of documents (with a default batch size of `1000`)
 a single request per DB-Server is used internally to transfer the data.
 
 The optimization brings the AQL `INSERT` performance close to the performance of
-the specialized HTTP API for [creating multiple documents](../../develop/http-api/documents.md#create-multiple-documents).
+the specialized HTTP API for [creating multiple documents](../../http-api/documents.md#create-multiple-documents).
 
 The pattern that is recognized by the optimizer is as follows:
 
@@ -304,7 +304,7 @@ which means you cannot use `RETURN NEW` or similar to access the new documents
 including their document keys. Additionally, all preceding calculations must be
 constant, which excludes any subqueries that read documents.
 
-See the list of [optimizer rules](../../aql/execution-and-performance/query-optimization.md#optimizer-rules)
+See the list of [optimizer rules](../../aql/query-optimization/query-optimization.md#optimizer-rules)
 for details.
 
 ### Index cache refilling
@@ -363,7 +363,7 @@ Also see:
 - [AQL `UPDATE` operation](../../aql/high-level-operations/update.md#refillindexcaches)
 - [AQL `REPLACE` operation](../../aql/high-level-operations/replace.md#refillindexcaches)
 - [AQL `REMOVE` operation](../../aql/high-level-operations/remove.md#refillindexcaches)
-- [Document HTTP API](../../develop/http-api/documents.md)
+- [Document HTTP API](../../http-api/documents.md)
 - [Index cache refill options](#index-cache-refill-options)
 
 ### Retry request for result batch
@@ -466,7 +466,7 @@ use the `POST /_api/explain` endpoint:
 
 Also see:
 - [API Changes in ArangoDB 3.11](api-changes-in-3-11.md#explain-api)
-- [The AQL query optimizer](../../aql/execution-and-performance/query-optimization.md#optimizer-statistics)
+- [The AQL query optimizer](../../aql/query-optimization/query-optimization.md#optimizer-statistics)
 
 ### Extended peak memory usage reporting
 
@@ -552,7 +552,7 @@ query option is a threshold for the maximum number of `OR` sub-nodes in the
 internal representation and defaults to `786432`.
 
 You can also set the threshold globally instead of per query with the
-[`--query.max-dnf-condition-members` startup option](../../components/arangodb-server/options.md#--querymax-dnf-condition-members).
+[`--query.max-dnf-condition-members` startup option](../../configuration/options.md#--querymax-dnf-condition-members).
 
 If the threshold is hit, the query continues with a simplified representation of
 the condition, which is **not usable in index lookups**. However, this should
@@ -577,7 +577,7 @@ can easily disable this feature by setting the new `--server.telemetrics-api`
 startup option to `false`. The default value is `true`.
 
 For a detailed list of what anonymous metrics ArangoDB collects see
-[Telemetrics](../../operations/administration/telemetrics.md).
+[Telemetrics](../../configuration/telemetrics.md).
 
 ### Extended naming constraints for collections, Views, and indexes
 
@@ -610,7 +610,7 @@ db["🥑~колекція =)"].properties() // square bracket notation
 ```
 
 Using extended collection and View names in AQL queries requires wrapping the
-name in backticks or forward ticks (see [AQL Syntax](../../aql/fundamentals/syntax.md#names)):
+name in backticks or forward ticks (see [AQL Syntax](../../aql/language-basics/syntax.md#names)):
 
 ```aql
 FOR doc IN `🥑~колекція =)`
@@ -640,8 +640,8 @@ Coordinators and DB-Servers of the cluster. Otherwise, the startup is
 refused.
 
 Also see:
-- [Collection names](../../concepts/data-structure/collections.md#collection-names)
-- [View names](../../concepts/data-structure/views.md#view-names)
+- [Collection names](../../collections/_index.md#collection-names)
+- [View names](../../arangosearch/views.md#view-names)
 - Index names have the same character restrictions as collection names
 
 ### Verify `.sst` files
@@ -664,7 +664,7 @@ suffixes are now also supported:
 
 Example: `arangod --rocksdb.total-write-buffer-size 2TiB`
 
-See [Suffixes for numeric options](../../operations/administration/configuration.md#suffixes-for-numeric-options)
+See [Suffixes for numeric options](../../configuration/_index.md#suffixes-for-numeric-options)
 for details.
 
 ### Configurable status code if write concern not fulfilled
@@ -784,7 +784,7 @@ is allowed to use.
 
 You can reduce the memory usage of the column cache in cluster deployments by
 only using the cache for leader shards with the new
-[`--arangosearch.columns-cache-only-leader` startup option](../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader).
+[`--arangosearch.columns-cache-only-leader` startup option](../../configuration/options.md#--arangosearchcolumns-cache-only-leader).
 It is disabled by default, which means followers also maintain a column cache.
 
 ### AQL query logging
@@ -865,9 +865,9 @@ hard-coded value.
 
 The new `--javascript.user-defined-functions` startup option lets you disable
 user-defined AQL functions so that no user-defined JavaScript code of
-[UDFs](../../aql/user-defined-functions.md) runs on the server. This can be useful to close off
+[UDFs](../../aql/functions/user-defined-functions.md) runs on the server. This can be useful to close off
 a potential attack vector in case no user-defined AQL functions are used.
-Also see [Server security options](../../operations/security/security-options.md).
+Also see [Server security options](../../security/security-options.md).
 
 ### Option to disable Foxx
 
@@ -886,7 +886,7 @@ still possible even with the option set to `false`.
 
 Disabling the access to Foxx can be useful to close off a potential attack
 vector in case Foxx is not used.
-Also see [Server security options](../../operations/security/security-options.md).
+Also see [Server security options](../../security/security-options.md).
 
 ### RocksDB auto-flushing
 
@@ -1142,7 +1142,7 @@ To enable tracing for traversals and path searches at startup, you can set
 `--log.level graphs=trace`.
 
 To enable or disable it at runtime, you can call the
-[`PUT /_admin/log/level`](../../develop/http-api/monitoring/logs.md#set-the-server-log-levels)
+[`PUT /_admin/log/level`](../../http-api/monitoring/logs.md#set-the-server-log-levels)
 endpoint of the HTTP API and set the log level using a request body like
 `{"graphs":"TRACE"}`.
 
@@ -1202,7 +1202,7 @@ for the RocksDB buffer cache.
 You can now configure the option by setting a `CACHE_OBLIVIOUS` environment
 variable to the string `true` or `false` before starting ArangoDB.
 
-See [ArangoDB Server environment variables](../../components/arangodb-server/environment-variables.md)
+See [ArangoDB Server environment variables](../../configuration/environment-variables.md)
 for details.
 
 ### WAL file tracking metrics
@@ -1425,14 +1425,14 @@ Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
 
 <small>Introduced in: v3.11.14-4</small>
 
-The previously fixed limit of 128 MiB for [Stream Transactions](../../develop/transactions/stream-transactions.md)
+The previously fixed limit of 128 MiB for [Stream Transactions](../../transactions/stream-transactions.md)
 can now be configured with the new `--transaction.streaming-max-transaction-size`
 startup option. The default value remains 128 MiB.
 
 When beginning a Stream Transaction, you can now specify a `maxTransactionSize`
 for that particular transaction. The default value as well as the maximum value
 are defined by the `--transaction.streaming-max-transaction-size` startup option.
-See [HTTP interface for Stream Transactions](../../develop/http-api/transactions/stream-transactions.md#begin-a-stream-transaction).
+See [HTTP interface for Stream Transactions](../../http-api/transactions/stream-transactions.md#begin-a-stream-transaction).
 
 ## Client tools
 

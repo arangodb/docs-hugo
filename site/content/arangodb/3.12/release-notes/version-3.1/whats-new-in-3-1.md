@@ -31,7 +31,7 @@ The format of the revision values stored in the `_rev` attribute of documents
 has been changed in 3.1. Up to 3.0 they were strings containing largish decimal numbers. With 3.1, revision values are still strings, but are actually encoded time stamps of the creation date of the revision of the document. The time stamps are acquired using a hybrid logical clock (HLC) on the DB-Server that holds the
 revision (for the concept of a hybrid logical clock see
 [this paper](http://www.cse.buffalo.edu/tech-reports/2014-04.pdf)).
-See [this manual section](../../concepts/data-structure/documents/_index.md#document-revisions) for details.
+See [this manual section](../../documents/_index.md#document-revisions) for details.
 
 ArangoDB >= 3.1 can ArangoDB 3.0 database directories and will simply continue
 to use the old `_rev` attribute values. New revisions will be written with
@@ -175,7 +175,7 @@ AQL query editor in the web interface.
 
 ## Audit Log
 
-Audit logging has been added, see [Auditing](../../operations/security/audit-logging.md).
+Audit logging has been added, see [Auditing](../../security/audit-logging.md).
 
 ## Client tools
 
@@ -211,12 +211,12 @@ valid and will be supported in the near future. Use whatever suits you best.
 
 ### GraphQL
 
-It is now easy to get started with providing GraphQL APIs in Foxx, see [Foxx GraphQL](../../develop/foxx-microservices/reference/related-modules/graphql.md).
+It is now easy to get started with providing GraphQL APIs in Foxx, see [Foxx GraphQL](../../foxx-microservices/reference/related-modules/graphql.md).
 
 ### OAuth2
 
-Foxx now officially provides a module for implementing OAuth2 clients, see [Foxx OAuth2](../../develop/foxx-microservices/reference/related-modules/oauth-2-0.md).
+Foxx now officially provides a module for implementing OAuth2 clients, see [Foxx OAuth2](../../foxx-microservices/reference/related-modules/oauth-2-0.md).
 
 ### Per-route middleware
 
-It's now possible to specify middleware functions for a route when defining a route handler. These middleware functions only apply to the single route and share the route's parameter definitions. Check out the [Foxx Router documentation](../../develop/foxx-microservices/reference/routers/_index.md) for more information.
+It's now possible to specify middleware functions for a route when defining a route handler. These middleware functions only apply to the single route and share the route's parameter definitions. Check out the [Foxx Router documentation](../../foxx-microservices/reference/routers/_index.md) for more information.

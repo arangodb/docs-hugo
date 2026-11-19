@@ -13,7 +13,7 @@ home:
   # Picked from the docs analytics top pages and entry pages (Sep 2026)
   popular:
     - title: AQL fundamentals
-      link: /arangodb/stable/aql/fundamentals/
+      link: /arangodb/stable/aql/language-basics/
     - title: AQL functions
       link: /arangodb/stable/aql/functions/
     - title: Graph traversals
@@ -102,9 +102,9 @@ home:
           - title: Graphs
             link: /arangodb/stable/graphs/
           - title: Indexes and search
-            link: /arangodb/stable/indexes-and-search/
+            link: /arangodb/stable/indexes/
           - title: HTTP API
-            link: /arangodb/stable/develop/http-api/
+            link: /arangodb/stable/http-api/
       - title: Ecosystem
         icon: /img/home/layers.svg
         link: /ecosystem/

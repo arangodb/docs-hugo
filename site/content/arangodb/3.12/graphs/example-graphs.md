@@ -15,7 +15,7 @@ purposes.
   with `<name>` substituted by the name of an example graph listed below.
 
 You can visually explore the created graphs in the
-[Graph viewer](../components/web-interface/graphs.md#graph-viewer)
+[Graph viewer](../web-interface/graphs.md#graph-viewer)
 of the web interface.
 
 You can take a look at the script that creates the example graphs on
@@ -255,4 +255,4 @@ from Slovakia.
 
 ## More examples
 
- - [AQL Example Queries on an Actors and Movies Database](../aql/examples-and-query-patterns/actors-and-movies-dataset-queries.md)
+ - [AQL Example Queries on an Actors and Movies Database](../aql/query-patterns/actors-and-movies-dataset-queries.md)

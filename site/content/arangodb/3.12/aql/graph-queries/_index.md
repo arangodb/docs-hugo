@@ -1,7 +1,8 @@
 ---
 title: Graph queries in AQL
 menuTitle: Graph queries
-weight: 35
+weight: 230
+group: Reference
 description: >-
   You can perform graph traversals and path searches on named graphs as well as
   collection sets with AQL
@@ -16,8 +17,8 @@ The two options in managing graphs are to either use
 
 Named graphs can be defined via the JavaScript API through the
 [graph-module](../../graphs/general-graphs/_index.md),
-via the [web interface](../../components/web-interface/_index.md),
-or via the [HTTP API](../../develop/http-api/graphs/named-graphs.md).
+via the [web interface](../../web-interface/_index.md),
+or via the [HTTP API](../../http-api/graphs/named-graphs.md).
 The definition contains the name of the graph, and the node and edge collections
 involved. Since the management functions are layered on top of simple sets of
 document and edge collections, you can also use regular AQL functions to work with them. 

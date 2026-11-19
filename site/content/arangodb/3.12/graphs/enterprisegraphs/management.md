@@ -42,7 +42,7 @@ enforce the correct sharding.
     Mandatory parameter that needs to be set to `true` to create an EnterpriseGraph.
   - `satellites` (array, _optional_):
     An array of collection names that is used to create
-    [SatelliteCollections](../../develop/satellitecollections.md) for an EnterpriseGraph.
+    [SatelliteCollections](../../collections/satellitecollections.md) for an EnterpriseGraph.
     Each array element must be a string and a valid collection name.
     The collection type cannot be modified later.
 

@@ -1,12 +1,13 @@
 ---
 title: '`INSERT` operation in AQL'
 menuTitle: INSERT
-weight: 65
+weight: 52
+group: Write
 description: >-
   You can use the `INSERT` operation to create new documents in a collection
 ---
 Each `INSERT` operation is restricted to a single collection, and the
-[collection name](../../concepts/data-structure/collections.md#collection-names) must not be dynamic.
+[collection name](../../collections/_index.md#collection-names) must not be dynamic.
 Only a single `INSERT` statement per collection is allowed per AQL query, and
 it cannot be followed by read or write operations that access the same
 collection, by traversal operations, or AQL functions that can read documents.
@@ -41,7 +42,7 @@ single document:
 INSERT { value: 1 } INTO numbers
 ```
 
-When inserting into an [edge collection](../../concepts/data-models.md#graph-model),
+When inserting into an [edge collection](../../../../get-started/concepts/data-models.md#graph-model),
 it is mandatory to specify the attributes `_from` and `_to` in document:
 
 ```aql
@@ -246,7 +247,7 @@ transaction (AQL query) hits the specified size thresholds. In this case, the
 query's operations carried out so far are committed and not rolled back in case
 of a later abort/rollback. This behavior can be controlled by adjusting the
 intermediate commit settings for the RocksDB engine. See
-[Known limitations for AQL queries](../fundamentals/limitations.md#storage-engine-properties).
+[Known limitations for AQL queries](../language-basics/limitations.md#storage-engine-properties).
 
 For sharded collections, the entire query and/or insert operation may not be
 transactional, especially if it involves different shards and/or DB-Servers.

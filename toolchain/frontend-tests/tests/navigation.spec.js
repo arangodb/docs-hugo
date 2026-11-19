@@ -1,6 +1,6 @@
 const { test, expect, open, waitForApp, isExpanded, IS_EXPANDED } = require("./fixtures");
 
-const PAGE = "/arangodb/stable/aql/fundamentals/subqueries/";
+const PAGE = "/arangodb/stable/aql/language-basics/subqueries/";
 
 /** On narrow screens, the navigation is only shown after opening it. */
 async function showNav(page) {
@@ -145,8 +145,8 @@ test.describe("going back", () => {
   test.skip(({ isMobile }) => isMobile, "Same behavior, desktop is enough");
 
   test("restores the scroll position, open details, and selected tabs", async ({ page }) => {
-    const A = "/arangodb/stable/concepts/data-structure/collections/";
-    const B = "/arangodb/stable/concepts/data-structure/documents/";
+    const A = "/arangodb/stable/collections/";
+    const B = "/arangodb/stable/documents/";
     const view = () => page.evaluate(() => ({
       tab: document.querySelector("article .tab-nav-button.selected[data-tab-group='interfaces']")?.dataset.tabItem,
       open: [...document.querySelectorAll("article details:not(.toc-details)")].map(d => d.open),

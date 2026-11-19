@@ -2,12 +2,13 @@
 title: '`UPDATE` operation in AQL'
 menuTitle: UPDATE
 weight: 55
+group: Write
 description: >-
   The `UPDATE` operation partially modifies a document with the given attributes,
   by adding new and updating existing attributes
 ---
 Each `UPDATE` operation is restricted to a single collection, and the
-[collection name](../../concepts/data-structure/collections.md#collection-names) must not be dynamic.
+[collection name](../../collections/_index.md#collection-names) must not be dynamic.
 Only a single `UPDATE` statement per collection is allowed per AQL query, and
 it cannot be followed by read or write operations that access the same collection,
 by traversal operations, or AQL functions that can read documents.
@@ -453,7 +454,7 @@ transaction (AQL query) hits the specified size thresholds. In this case, the
 query's operations carried out so far are committed and not rolled back in case
 of a later abort/rollback. This behavior can be controlled by adjusting the
 intermediate commit settings for the RocksDB engine. See
-[Known limitations for AQL queries](../fundamentals/limitations.md#storage-engine-properties).
+[Known limitations for AQL queries](../language-basics/limitations.md#storage-engine-properties).
 
 For sharded collections, the entire query and/or update operation may not be
 transactional, especially if it involves different shards and/or DB-Servers.

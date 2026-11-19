@@ -2,6 +2,7 @@
 title: '`RETURN` operation in AQL'
 menuTitle: RETURN
 weight: 10
+group: Read
 description: >-
   You can use the `RETURN` operation to produce the result of a query
 ---
@@ -59,9 +60,9 @@ FOR u IN users
 ```
 
 Note: `RETURN` will close the current scope and eliminate all local variables in it.
-This is important to remember when working with [subqueries](../fundamentals/subqueries.md).
+This is important to remember when working with [subqueries](../language-basics/subqueries.md).
 
-[Dynamic attribute names](../fundamentals/data-types.md#objects--documents) are
+[Dynamic attribute names](../language-basics/data-types.md#objects--documents) are
 supported as well:
 
 ```aql

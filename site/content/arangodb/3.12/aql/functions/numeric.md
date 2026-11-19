@@ -400,7 +400,7 @@ L2_DISTANCE([0,1], [1,0]) // 1.4142135623730951
 `MAX(anyArray) → max`
 
 Return the greatest element of *anyArray*. The array is not limited to numbers.
-Also see [type and value order](../fundamentals/type-and-value-order.md).
+Also see [type and value order](../language-basics/type-and-value-order.md).
 
 - **anyArray** (array): an array of numbers, *null* values are ignored
 - returns **max** (any\|null): the element with the greatest value. If the array is
@@ -437,7 +437,7 @@ MEDIAN( [ 999, 80, 4, 4, 4, 3, 3, 3 ] ) // 4
 `MIN(anyArray) → min`
 
 Return the smallest element of *anyArray*. The array is not limited to numbers.
-Also see [type and value order](../fundamentals/type-and-value-order.md).
+Also see [type and value order](../language-basics/type-and-value-order.md).
 
 - **anyArray** (array): an array of numbers, *null* values are ignored
 - returns **min** (any\|null): the element with the smallest value. If the array is
@@ -588,7 +588,7 @@ Return an array of numbers in the specified range, optionally with increments
 other than 1. The *start* and *stop* arguments are truncated to integers
 unless a *step* argument is provided.
 
-Also see the [range operator](../operators.md#range-operator) for ranges
+Also see the [range operator](../language-basics/operators.md#range-operator) for ranges
 with integer bounds and a step size of 1.
 
 - **start** (number): the value to start the range at (inclusive)
@@ -624,7 +624,7 @@ ROUND(-2.51) // -3
 ```
 
 Rounding towards zero, also known as `trunc()` in C/C++, can be achieved with
-a combination of the [ternary operator](../operators.md#ternary-operator),
+a combination of the [ternary operator](../language-basics/operators.md#ternary-operator),
 [`CEIL()`](#ceil) and [`FLOOR()`](#floor):
 
 ```aql

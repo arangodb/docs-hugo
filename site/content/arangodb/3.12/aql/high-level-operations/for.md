@@ -2,6 +2,7 @@
 title: '`FOR` operation in AQL'
 menuTitle: FOR
 weight: 5
+group: Read
 description: >-
   The versatile `FOR` operation can iterate over a collection or View, the
   elements of an array, or traverse a graph
@@ -56,8 +57,8 @@ define an explicit sort order with a [`SORT` operation](sort.md).
 The variable introduced by `FOR` is available until the scope the `FOR` is
 placed in is closed.
 
-You can use [array destructuring](../operators.md#array-destructuring) and
-[object destructuring](../operators.md#object-destructuring) as part of a regular
+You can use [array destructuring](../language-basics/operators.md#array-destructuring) and
+[object destructuring](../language-basics/operators.md#object-destructuring) as part of a regular
 `FOR` loop, for example, to assign a subset of attributes to variables in a
 concise manner:
 
@@ -99,7 +100,7 @@ FOR u IN users
   RETURN { "user": u, "locations": subquery }
 ```
 
-Also see [Combining queries with subqueries](../fundamentals/subqueries.md).
+Also see [Combining queries with subqueries](../language-basics/subqueries.md).
 
 ## Options
 
@@ -243,7 +244,7 @@ cache cannot be used (i.e. because the query's filter condition does not contain
 equality lookups for all index attributes). It cannot be used for `FOR`
 operations that iterate over Views or perform graph traversals.
 
-Also see [Caching of index values](../../indexes-and-search/indexing/working-with-indexes/persistent-indexes.md#caching-of-index-values).
+Also see [Caching of index values](../../indexes/persistent-indexes.md#caching-of-index-values).
 
 ### `lookahead`
 
@@ -254,4 +255,4 @@ index hint for tweaking performance:
 FOR … IN … OPTIONS { lookahead: 32 }
 ```
 
-See [Multi-dimensional indexes](../../indexes-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md#lookahead-index-hint).
+See [Multi-dimensional indexes](../../indexes/multi-dimensional-indexes.md#lookahead-index-hint).

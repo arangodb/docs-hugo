@@ -139,7 +139,7 @@ and that is not available in ArangoDB versions before 3.4.
 This format cannot be used with ArangoDB 3.3 or before, meaning it is not possible to 
 perform an in-place downgrade from a fresh 3.4 install to 3.3 or earlier when using the 
 RocksDB engine. For more information on how to downgrade, please refer to the 
-[Downgrading](../../operations/upgrading/downgrading.md) chapter.
+[Downgrading](../../upgrading/downgrading.md) chapter.
 
 Installations that were originally set up with older versions of ArangoDB (e.g. 3.2
 or 3.3) will continue to use the existing on-disk format for the RocksDB engine
@@ -839,4 +839,4 @@ removed in future versions of ArangoDB:
 
 - the _foxx-manager_ executable is deprecated and will be removed in ArangoDB 4.
   
-  Please use [Foxx CLI](../../components/tools/foxx-cli/_index.md) instead.
+  Please use [Foxx CLI](../../tools/foxx-cli/_index.md) instead.

@@ -16,7 +16,7 @@ ArangoSearch is a sophisticated, integrated full-text search solution over
 a user-defined set of attributes and collections. It is the first type of
 view in ArangoDB.
 
-- [ArangoSearch overview](../../indexes-and-search/arangosearch/_index.md)
+- [ArangoSearch overview](../../arangosearch/_index.md)
 - ArangoSearch in AQL:
   - [SEARCH operation](../../aql/high-level-operations/search.md)
   - [ArangoSearch functions](../../aql/functions/arangosearch.md)
@@ -454,7 +454,7 @@ functions:
   of the query, and finally show the query's execution plan with actual runtime information.
   This is very useful for debugging AQL query performance and optimizing queries.
 
-For more information please refer to the [Query Profiling](../../aql/execution-and-performance/query-profiling.md)
+For more information please refer to the [Query Profiling](../../aql/query-optimization/query-profiling.md)
 page.
 
 ### Revised cluster-internal AQL protocol
@@ -1087,7 +1087,7 @@ _arangoimp_ was renamed to _arangoimport_ for consistency.
 The 3.4 release packages will still install _arangoimp_ as a symlink so user scripts
 invoking _arangoimp_ do not need to be changed.
 
-[_arangoimport_ now can pace the data load rate automatically](../../components/tools/arangoimport/details.md#automatic-pacing-with-busy-or-low-throughput-disk-subsystems)
+[_arangoimport_ now can pace the data load rate automatically](../../tools/arangoimport/details.md#automatic-pacing-with-busy-or-low-throughput-disk-subsystems)
 based on the actual rate of
 data the server can handle. This is useful in contexts when the server has a limited
 I/O bandwidth, which is often the case in cloud environments. Loading data too quickly

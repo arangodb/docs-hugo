@@ -6,8 +6,8 @@ description: >-
   AQL provides functions to operate on objects respectively document values
 ---
 You can use the below listed functions with the
-[object data type](../../concepts/data-structure/documents/_index.md#data-types).
-Also see [object access](../fundamentals/data-types.md#objects--documents) for
+[object data type](../../documents/_index.md#data-types).
+Also see [object access](../language-basics/data-types.md#objects--documents) for
 additional language constructs for objects.
 
 ## ATTRIBUTES()
@@ -693,7 +693,7 @@ RETURN MERGE_RECURSIVE(
 
 `PARSE_COLLECTION(documentIdentifier) → collectionName`
 
-Parse a [document ID](../../concepts/data-structure/documents/_index.md#document-identifiers) and
+Parse a [document ID](../../documents/_index.md#document-identifiers) and
 return the collection name.
 
 - **documentIdentifier** (string\|object): a document identifier string (e.g. `_users/1234`)
@@ -727,7 +727,7 @@ RETURN PARSE_COLLECTION( { "_id": "mycollection/mykey", "value": "some value" } 
 
 `PARSE_IDENTIFIER(documentIdentifier) → parts`
 
-Parse a [document ID](../../concepts/data-structure/documents/_index.md#document-identifiers)
+Parse a [document ID](../../documents/_index.md#document-identifiers)
 and separately return the collection name and the document key.
 
 - **documentIdentifier** (string\|object): a document identifier string (e.g. `_users/1234`)
@@ -763,7 +763,7 @@ RETURN PARSE_IDENTIFIER( { "_id": "mycollection/mykey", "value": "some value" } 
 
 `PARSE_KEY(documentIdentifier) → key`
 
-Parse a [document ID](../../concepts/data-structure/documents/_index.md#document-identifiers) and
+Parse a [document ID](../../documents/_index.md#document-identifiers) and
 return the document key.
 
 - **documentIdentifier** (string\|object): a document identifier string (e.g. `_users/1234`)

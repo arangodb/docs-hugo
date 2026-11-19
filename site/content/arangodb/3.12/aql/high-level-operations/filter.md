@@ -2,6 +2,7 @@
 title: '`FILTER` operation in AQL'
 menuTitle: FILTER
 weight: 15
+group: Read
 description: >-
   The `FILTER` operation lets you restrict the results to elements that match
   arbitrary logical conditions
@@ -18,7 +19,7 @@ If the condition result is false, the current element is skipped, so it will
 not be processed further and not be part of the result. If the condition is
 true, the current element is not skipped and can be further processed.
 
-See [Operators](../operators.md) for a list of comparison operators, logical
+See [Operators](../language-basics/operators.md) for a list of comparison operators, logical
 operators etc. that you can use in conditions.
 
 ```aql
@@ -46,7 +47,7 @@ elements of `users` will be skipped and not be included in the result produced
 by `RETURN`.
 
 {{< info >}}
-See [Accessing Data from Collections](../fundamentals/accessing-data-from-collections.md)
+See [Accessing Data from Collections](data-access.md)
 for a description of the impact of non-existent or null attributes.
 {{< /info >}}
 
@@ -61,7 +62,7 @@ RETURN ASSERT(false, "never reached")
 ## Order of operations
 
 Note that the positions of `FILTER` statements can influence the result of a query.
-There are 16 active users in the [test data](../examples-and-query-patterns/_index.md#example-data)
+There are 16 active users in the [test data](../query-patterns/_index.md#example-data)
 for instance:
 
 ```aql

@@ -95,12 +95,12 @@ The following HTTP API endpoints have been added in 3.7:
   TLS keyfile (secret key as well as public certificates) at run time. The API
   basically makes the _arangod_ server reload the keyfile from disk.
 - HTTP `POST /_admin/server/jwt`: can be used to
-  [reload the JWT secrets](../../develop/http-api/authentication.md#hot-reload-jwt-secrets)
+  [reload the JWT secrets](../../http-api/authentication.md#hot-reload-jwt-secrets)
   of a local _arangod_ process without having to restart it (hot-reload).
   This may be used to roll out new JWT secrets throughout an ArangoDB cluster.
   This endpoint is available only in the Enterprise Edition.
 - HTTP `POST /_admin/server/encryption` can be used to
-  [reload the user-supplied key(s)](../../develop/http-api/security.md#encryption-at-rest)
+  [reload the user-supplied key(s)](../../http-api/security.md#encryption-at-rest)
   used for encryption at rest, after they have been changed on disk.
   This endpoint is available only in the Enterprise Edition.
 
@@ -154,7 +154,7 @@ as listing and changing collection properties at PUT/GET
 `/_api/collection/<collection>/properties` will now make use of the additional
 attribute `schema`. The attribute can be used so specify document schema
 validation at collection level. See
-[Schema Validation](../../concepts/data-structure/documents/schema-validation.md).
+[Schema Validation](../../documents/schema-validation.md).
 
 The HTTP API endpoint for creating a graph at `POST /_api/gharial` is now able
 to accept the string value `"satellite"` as an option parameter for the
@@ -229,7 +229,7 @@ engine, but not for the RocksDB storage engine.
 
 ### Variables added
 
-The following [ArangoDB Server environment variables](../../components/arangodb-server/environment-variables.md)
+The following [ArangoDB Server environment variables](../../configuration/environment-variables.md)
 have been added:
 
 - `ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY` can be used to override the
