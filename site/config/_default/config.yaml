@@ -5,6 +5,10 @@ theme: "arangodb-docs-theme"
 timeout: "200000000"
 enableGitInfo: true
 
+build:
+  cleanDestinationDir:
+    enable: true
+
 disableKinds: # Switch off tags, categories, RSS/Atom feed
   - taxonomy
   - term
