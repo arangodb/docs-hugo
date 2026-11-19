@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="keep-colors" viewBox="-85 -92 500 284" width="500" height="284" role="img" aria-labelledby="expertise-graph-schema-t expertise-graph-schema-d" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="expertise-graph-schema-t">Structure of the expertiseGraph</title>
+  <desc id="expertise-graph-schema-d">The collections of the expertiseGraph example graph: the knows edges connect persons with persons, the hasSkill edges persons with skills, the requires edges skills with the skills they require, and the livesIn edges persons with cities.</desc>
+  <defs><marker id="expertise-graph-schema-a" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path class="dg-f-accent" d="M0,0 L8,4 L0,8 z" fill="#00576e"/></marker><marker id="expertise-graph-schema-g" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path class="dg-f-arrow" d="M0,0 L8,4 L0,8 z" fill="#90a1b9"/></marker></defs>
+  <rect class="dg-f-canvas" x="-85" y="-92" width="500" height="284" rx="6" fill="#f1f5f9"/>
+  <path class="dg-s-accent" d="M-22.0,-22.0 C-40.0,-68.0 40.0,-68.0 24.6,-28.5" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#expertise-graph-schema-a)"/>
+  <path class="dg-s-accent" d="M308.0,-22.0 C290.0,-68.0 370.0,-68.0 354.6,-28.5" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#expertise-graph-schema-a)"/>
+  <path class="dg-s-accent" d="M64.0,0.0 L257.0,0.0" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#expertise-graph-schema-a)"/>
+  <path class="dg-s-accent" d="M0.0,21.0 L0.0,120.0" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#expertise-graph-schema-a)"/>
+  <rect class="dg-f-tag-solid dg-s-accent" x="-41.6" y="-73.0" width="83.3" height="33.0" rx="10" fill="#eefbd5" stroke="#00576e" stroke-width="1"/>
+  <text class="dg-f-lime" x="0.0" y="-61.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#014654">knows</text>
+  <text class="dg-f-lime" x="0.0" y="-47.5" text-anchor="middle" font-size="10.5" fill="#014654">type, since</text>
+  <rect class="dg-f-tag-solid dg-s-accent" x="297.8" y="-73.0" width="64.4" height="33.0" rx="10" fill="#eefbd5" stroke="#00576e" stroke-width="1"/>
+  <text class="dg-f-lime" x="330.0" y="-61.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#014654">requires</text>
+  <text class="dg-f-lime" x="330.0" y="-47.5" text-anchor="middle" font-size="10.5" fill="#014654">hours</text>
+  <rect class="dg-f-tag-solid dg-s-accent" x="131.3" y="-16.5" width="64.4" height="33.0" rx="10" fill="#eefbd5" stroke="#00576e" stroke-width="1"/>
+  <text class="dg-f-lime" x="163.5" y="-4.5" text-anchor="middle" font-size="10.5" font-weight="700" fill="#014654">hasSkill</text>
+  <text class="dg-f-lime" x="163.5" y="9.0" text-anchor="middle" font-size="10.5" fill="#014654">level</text>
+  <rect class="dg-f-tag-solid dg-s-accent" x="-29.1" y="63.8" width="58.1" height="19.5" rx="9.75" fill="#eefbd5" stroke="#00576e" stroke-width="1"/>
+  <text class="dg-f-lime" x="0.0" y="75.8" text-anchor="middle" font-size="10.5" font-weight="700" fill="#014654">livesIn</text>
+  <rect x="-65.0" y="-22.0" width="130.0" height="44.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="0.0" y="4.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">persons</text>
+  <rect x="265.0" y="-22.0" width="130.0" height="44.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="330.0" y="4.9" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">skills</text>
+  <rect class="dg-f-node dg-s-accent" x="-65.0" y="128.0" width="130.0" height="44.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="0.0" y="154.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">cities</text>
+</svg>
