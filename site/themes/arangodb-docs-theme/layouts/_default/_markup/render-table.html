@@ -1,3 +1,6 @@
+{{- /* The wrapper scrolls horizontally if a table can't be narrower than the
+       content area, so that it doesn't widen the page */ -}}
+<div class="table-wrapper">
 <table
   {{- range $k, $v := .Attributes }}
     {{- if $v }}
@@ -8,14 +11,13 @@
     {{- range .THead }}
       <tr>
         {{- range . }}
-          {{- $inlineCode := strings.Contains .Text "<code" }}
           <th
             {{- with .Alignment }}
               {{- printf " style=%q" (printf "text-align: %s" .) | safeHTMLAttr }}
             {{- end -}}
-          >{{ if $inlineCode }}<div style="min-width: {{ math.Min 20 (.Text | plainify | len | add 2) }}ch">{{ end }}
+          >
             {{- .Text -}}
-          {{ if $inlineCode }}</div>{{ end }}</th>
+          </th>
         {{- end }}
       </tr>
     {{- end }}
@@ -24,16 +26,16 @@
     {{- range .TBody }}
       <tr>
         {{- range . }}
-          {{- $inlineCode := strings.Contains .Text "<code" }}
           <td
             {{- with .Alignment }}
               {{- printf " style=%q" (printf "text-align: %s" .) | safeHTMLAttr }}
             {{- end -}}
-          >{{ if $inlineCode }}<div style="min-width: {{ math.Min 20 (.Text | plainify | len | add 2) }}ch">{{ end }}
+          >
             {{- .Text -}}
-          {{ if $inlineCode }}</div>{{ end }}</td>
+          </td>
         {{- end }}
       </tr>
     {{- end }}
   </tbody>
 </table>
+</div>
