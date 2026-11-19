@@ -38,6 +38,7 @@
 /arangodb/devel/data-science/arangograph-notebooks/                             /contextual-data-platform/notebook-servers/                             301
 /agentic-ai-suite/retriever/*                                                   /contextual-data-platform/autorag/:splat                                301
 /agentic-ai-suite/reference/retriever/*                                         /contextual-data-platform/autorag/:splat                                301
+/contextual-data-platform/reasoner/*                                            /contextual-data-platform/aqlizer/:splat                                301
 
 /data-platform/get-started/                                                     /contextual-data-platform/                                                301
 /data-platform/installation/                                                    /contextual-data-platform/install-and-upgrade/                  301

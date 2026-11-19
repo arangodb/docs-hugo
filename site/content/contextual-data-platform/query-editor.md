@@ -51,14 +51,10 @@ The Query Editor of the Arango Contextual Data Platform offers the following fea
 - **Syntax highlighting**:
   AQL queries in the query editor are colorized for better readability.
 
-- **Ask AI for AQL Queries (AQLizer)**:
-  Describe what you want in natural language and generate AQL queries right
-  from the Query Editor. This feature is only available in the
-  Arango Contextual Data Platform.
-
-- **Optimize queries with AI (Reasoner)**:
-  Analyze and optimize your AQL queries using AI-powered reasoning directly
-  from the Query Editor. This feature requires a license.
+- **Generate and optimize queries with AI (AQLizer)**:
+  Describe what you want in natural language to generate AQL queries, and make
+  AQL queries faster, right from the Query Editor. This feature requires a
+  license.
 
 To open the Query Editor, click **Query Editor** in the sidebar of the
 web interface. It works with the database that is currently selected in the
@@ -86,10 +82,9 @@ The following buttons are available at the bottom of a query tab:
 - **Save**: Store the query and the bind variables under a name you provide.
   The saved queries of the current database are listed in the queries panel on
   the left-hand side under **Saved**, where you can also clone, rename, and delete them.
-- **AQLizer**: This button is only visible if you use the Arango Contextual Data Platform.
-  See [Generate queries (AQLizer)](#generate-queries-aqlizer).
-- **Optimize**: This button is only visible if you have the required
-  license. See [Optimize queries (Reasoner)](#optimize-queries-reasoner).
+- **Ask AQLizer**: Open the AQLizer next to the query. This button is only
+  visible if you have the required license. See
+  [Generate and optimize queries (AQLizer)](#generate-and-optimize-queries-aqlizer).
 - **Explain**: Show the execution plan for the query.
 - **Profile**: Run the query with detailed tracking of its performance.
 - **Run query**: Execute the AQL query normally. You can also press
@@ -144,48 +139,18 @@ The queries panel on the left-hand side of the Query Editor allows you to manage
 - **Slow Queries**: Open a tab with a list of past queries that ran longer than
   a server-configured threshold.
 
-## Generate queries (AQLizer)
-
-{{< tag "Contextual Data Platform" "Beta" >}}
-
-For an introduction to the AQLizer, see
-[Natural Language to AQL](natural-language-to-aql/_index.md).
-
-Before you can generate AQL queries, you need to set up the AQLizer feature.
-
-1. Click the **AQLizer** button to open the panel for generating AQL queries
-   with AI.
-2. On first use, you are asked for an **OpenAPI API Key** and you can select the
-   desired **OpenAI Model**.
-3. Click **Start Service**.
-4. You can check the status of the service as well as stop it from the
-   **Manage Services** dialog.
-
-Once the AQLizer service is ready, you can generate queries.
-
-1. In the AQLizer tab, enter a self-contained question or instructions in
-   natural language, like "List all distinct surnames of characters older than 30".
-2. Click **Ask** or press {{< kbd "Return" >}} to use GenAI for generating an AQL query.
-3. Click **Open in Editor** for a new query tab, where you can verify, refine,
-   and run the query.
-
-{{< warning >}}
-Always verify AI-generated queries.
-AI can make mistakes or produce unexpected results.
-{{< /warning >}}
-
-![Screenshot of the AQLizer UI with a prompt and the generated query](../images/data-platform-aqlizer.png)
-
-## Optimize queries (Reasoner)
+## Generate and optimize queries (AQLizer)
 
 {{< tag "Agentic AI Suite" "Beta" >}}
 
-The **Optimize** button opens the Reasoner panel, which uses AI to analyze your
-AQL queries and return a validated, faster version with a performance comparison
-report.
+The AQLizer turns questions in natural language into AQL queries and makes AQL
+queries faster. Click **Ask AQLizer** in the **Welcome** tab or at the bottom
+of a query tab to open it. You set it up once per database for both
+operations.
 
-For setup instructions and full usage details, see
-[Reasoner — Web Interface](reasoner/web-interface.md).
+For setup and usage, see [AQLizer in the web interface](aqlizer/web-interface.md).
+
+![Screenshot of the AQLizer with a question, the generated query, and its explanation](../images/data-platform-aqlizer-generate.png)
 
 ## Adjust the viewport
 
