@@ -78,18 +78,9 @@ outputs:
 enableRobotsTXT: true
 
 caches:
-  assets:
-    dir: :resourceDir/_gen
-    maxAge: -1
   getresource:
     dir: :cacheDir/:project
     maxAge: 0
-  images:
-    dir: :resourceDir/_gen
-    maxAge: -1
-  modules:
-    dir: :cacheDir/modules
-    maxAge: -1
 
 security:
   http:
@@ -100,4 +91,3 @@ security:
 
 params:
   arangoproxyUrl: "http://192.168.129.129:8080"
-  themeVariant: [ "relearn-light" ]
