@@ -2359,13 +2359,24 @@ nav.pagination > .next {
     color: var(--color-heading);
 }
 
-/* Consent preferences */
+/* Consent preferences (place bottom right, show tooltip to the left */
 .cky-btn-revisit-wrapper {
     bottom: 10px !important;
     right: 10px !important;
     top: unset !important;
     left: unset !important;
     z-index: 9997 !important;
+}
+.cky-btn-revisit-wrapper.cky-revisit-bottom-left:hover::before {
+    left: auto;
+    right: calc(100% + 7px);
+}
+.cky-btn-revisit-wrapper.cky-revisit-bottom-left:hover::after {
+    left: auto;
+    right: calc(100% + 2px);
+    border-width: 5px 0 5px 5px;
+    border-right-color: transparent;
+    border-left-color: #4e4b66;
 }
 
 /* Algolia */
