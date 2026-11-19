@@ -755,16 +755,6 @@ tr {
     margin: 0;
 }
 
-/* Inline code only breaks within a word if it would otherwise overflow.
-   word-break: break-word would also let the table layout count every
-   character as a possible break, which makes code columns as narrow as a
-   single character and breaks the code in the middle of words. */
-td code,
-th code {
-    word-break: normal;
-    overflow-wrap: break-word;
-}
-
 /* end Tables */
 
 /* Content-specific utility classes */
@@ -1727,10 +1717,14 @@ pre {
 code, p code {
     font-size: 14px;
     overflow: auto;
-    word-wrap: break-word;
     margin: 0;
     padding: 2px 3px;
-    word-break: break-word;
+    /* Only breaks within a word if it would otherwise overflow.
+       word-break: break-word would also make the layout consider every
+       character a possible break when sizing table columns, flex items, and
+       the like, which can squeeze code to a single character in width. */
+    word-break: normal;
+    overflow-wrap: break-word;
     white-space: pre-wrap;
     border: 1px solid #c6c6c6;
     border-radius: 5px;
