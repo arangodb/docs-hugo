@@ -16,7 +16,7 @@
               {{- printf " style=%q" (printf "text-align: %s" .) | safeHTMLAttr }}
             {{- end -}}
           >
-            {{- .Text -}}
+            {{- partial "wbr-inline-code.html" .Text -}}
           </th>
         {{- end }}
       </tr>
@@ -31,7 +31,7 @@
               {{- printf " style=%q" (printf "text-align: %s" .) | safeHTMLAttr }}
             {{- end -}}
           >
-            {{- .Text -}}
+            {{- partial "wbr-inline-code.html" .Text -}}
           </td>
         {{- end }}
       </tr>

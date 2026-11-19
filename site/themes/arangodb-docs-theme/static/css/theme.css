@@ -739,6 +739,16 @@ tr {
     max-width: 100%;
     overflow-x: auto;
     margin: 2rem 0;
+    container-type: inline-size;
+}
+
+/* Short code ignores its break hints (wbr-inline-code.html) if the table has
+   enough space, so that identifiers don't wrap at every _ on wide screens.
+   white-space: nowrap doesn't suppress <wbr> in browsers, display: none does. */
+@container (min-width: 36rem) {
+    .table-wrapper code.nowrap-wide wbr {
+        display: none;
+    }
 }
 
 .table-wrapper > table {
