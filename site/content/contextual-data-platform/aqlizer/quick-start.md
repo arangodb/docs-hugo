@@ -15,8 +15,8 @@ Turn a question into an AQL query, then optimize the query.
 - An **Arango Contextual Data Platform** deployment with a valid Agentic AI
   Suite license.
 - A database with data to query.
-- An OpenAI API key, stored in the [Secrets Manager](../secrets-manager.md) or
-  at hand to paste.
+- An API key for your language model provider, stored in the
+  [Secrets Manager](../secrets-manager.md) or at hand to paste.
 
 ## Translate your first query
 
@@ -31,7 +31,7 @@ click **Ask AQLizer**.
 {{< /step >}}
 
 {{< step "Start the AQLizer" >}}
-Under **API Key**, select or enter your OpenAI API key, then click
+Under **API Key**, select or enter your API key, then click
 **Start AQLizer**. Wait until the **Ask AQLizer** input appears.
 {{< /step >}}
 
@@ -49,10 +49,12 @@ and **Run query**.
 {{< /tab >}}
 
 {{< tab "HTTP API" >}}
-Start the AQLizer for your database in the web interface first, as described
-in the **Web Interface** tab.
-
 {{< steps >}}
+
+{{< step "Start the AQLizer" >}}
+In the **Query Editor** of your database, click **Ask AQLizer**, select or
+enter your API key under **API Key**, and click **Start AQLizer**.
+{{< /step >}}
 
 {{< step "Sign in" >}}
 Set the connection details and get a JWT session token:

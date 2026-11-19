@@ -26,8 +26,8 @@ You set up the AQLizer once per database. The setup makes both Generate and
 Optimize available.
 
 1. Under **API Key**, select a secret from the
-   [Secrets Manager](../secrets-manager.md) that holds your OpenAI API key, or
-   enter a key.
+   [Secrets Manager](../secrets-manager.md) that holds the API key of your
+   language model provider, or enter a key.
 2. Optional: Expand **Advanced settings** and select a different
    **OpenAI model**. The default is `gpt-5.4-nano`.
 3. Click **Start AQLizer**. Starting takes a few seconds.

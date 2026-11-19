@@ -189,11 +189,29 @@ flowchart TD
 
 - A valid **Agentic AI Suite** license for your Arango Contextual Data Platform
   deployment.
-- An **OpenAI API key** for the language model the AQLizer uses. Both
-  operations use the same key and model. The default model is `gpt-5.4-nano`.
+- An **API key** for the language model the AQLizer uses. Both operations use
+  the same key and model. See [Language model](#language-model).
 - To save and reuse query templates, an **embedding API key** on the internal
   MCP server. See
   [Save queries as templates](api-reference.md#save-queries-as-templates).
+
+## Language model
+
+The AQLizer uses OpenAI with the `gpt-5.4-nano` model by default. It also
+works with other providers, such as Anthropic, and with OpenAI-compatible
+endpoints, such as a proxy or Azure OpenAI. The API key you provide has to
+belong to the configured provider.
+
+When you start the AQLizer service through the platform API, you can set the
+following parameters in its `env`:
+
+| Parameter | Description |
+|-----------|-------------|
+| `chat_api_provider` | The provider ID, for example `openai` or `anthropic`. Default: `openai`. |
+| `chat_model` | The model ID without a provider prefix, for example `gpt-5.4-nano`. Default: `gpt-5.4-nano`. |
+| `chat_api_url` | The base URL of a proxy, Azure OpenAI, or another OpenAI-compatible endpoint. Leave it empty for the provider's default. |
+| `chat_model_options` | Provider-specific model options as a JSON object. |
+| `chat_secret_profile_id` or `chat_api_key` | The ID of a [Secrets Manager](../secrets-manager.md) secret that holds the API key, or the key itself. |
 
 ## How to access
 
