@@ -2,7 +2,7 @@ baseURL: "https://docs.arango.ai/"
 locale: "en-us"
 title: "Arango Documentation"
 theme: "arangodb-docs-theme"
-timeout: "200000000"
+timeout: "10m"
 enableGitInfo: true
 
 build:
