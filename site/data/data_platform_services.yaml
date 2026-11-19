@@ -92,12 +92,12 @@ arangodb-file-parser:
       link: contextual-data-platform/autograph/document-conversion.md
 arangodb-graph-rag:
   features:
-    - name: Natural Language to AQL (AQLizer)
+    - name: Natural Language to AQL (deprecated)
       link: contextual-data-platform/natural-language-to-aql/_index.md
 arangodb-reasoner:
   features:
-    - name: Reasoner
-      link: contextual-data-platform/reasoner/_index.md
+    - name: AQLizer (formerly Reasoner)
+      link: contextual-data-platform/aqlizer/_index.md
 arangodb-gral:
   features:
     - name: Graph Analytics
