@@ -3341,3 +3341,150 @@ pre.mermaid {
 .mermaid-diagram .label {
     font-weight: normal;
 }
+
+/* RBAC: what the AI roles grant (rbac-roles shortcode) */
+
+.rbac-role-intro {
+    margin: 0 0 1rem;
+}
+
+.rbac-service {
+    margin: 0 0 10px;
+    border: 1px solid var(--gray-300);
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.rbac-service > summary {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 12px;
+    background-color: var(--gray-50);
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.rbac-service-count {
+    margin-left: auto;
+    font-size: 12px;
+    font-weight: normal;
+    color: var(--color-muted);
+}
+
+.rbac-action {
+    border-top: 1px solid var(--gray-200);
+}
+
+.rbac-action > summary {
+    display: grid;
+    grid-template-columns: auto 120px minmax(0, 1fr);
+    align-items: baseline;
+    column-gap: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.rbac-action > summary::before {
+    margin-right: 0;
+}
+
+.rbac-action > summary:hover {
+    background-color: var(--color-lime-tint);
+}
+
+.rbac-action-new > summary {
+    box-shadow: inset 3px 0 0 var(--color-evergreen);
+}
+
+.rbac-action-name code {
+    border: 0;
+    padding: 0;
+    font-weight: 700;
+}
+
+.rbac-action-summary {
+    grid-column: 3;
+    font-size: 14px;
+    color: var(--color-muted);
+}
+
+.rbac-action-summary p {
+    margin: 0;
+}
+
+.rbac-badge {
+    display: block;
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.rbac-badge-database { background-color: var(--color-teal-ink); }
+.rbac-badge-service { background-color: var(--color-evergreen); }
+.rbac-badge-secret { background-color: #bb4d00; }
+.rbac-badge-fileparser { background-color: var(--color-muted); }
+
+.rbac-tag {
+    margin-left: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-evergreen);
+}
+
+.rbac-tag code {
+    font-size: 12px;
+}
+
+.rbac-action-details {
+    display: grid;
+    grid-template-columns: 130px minmax(0, 1fr);
+    gap: 4px 10px;
+    margin: 0;
+    padding: 4px 12px 12px 168px;
+    font-size: 14px;
+}
+
+.rbac-action-details dt {
+    font-weight: 600;
+}
+
+.rbac-action-details dd {
+    margin: 0;
+    color: var(--color-muted);
+}
+
+.rbac-missing {
+    margin: 4px 0 0;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: var(--color-muted);
+    border: 1px dashed var(--gray-300);
+    border-radius: 7px;
+}
+
+@media (max-width: 640px) {
+    .rbac-roles .rbac-role-panel {
+        margin: 0.5rem;
+    }
+    .rbac-action > summary {
+        grid-template-columns: auto minmax(0, 1fr);
+        row-gap: 4px;
+    }
+    .rbac-badge {
+        justify-self: start;
+    }
+    .rbac-action-name,
+    .rbac-action-summary {
+        grid-column: 2;
+    }
+    .rbac-action-details {
+        grid-template-columns: 1fr;
+        padding-left: 12px;
+    }
+}
