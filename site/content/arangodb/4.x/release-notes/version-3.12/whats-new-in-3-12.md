@@ -2384,7 +2384,7 @@ added:
 |:------|:------------|
 | `arangodb_rbac_request_duration` | Duration of requests to the external RBAC authorization service in microseconds. |
 
-### Memory limit for decompressing request bodies
+### Memory limits for decompressing request bodies
 
 <small>Introduced in: v3.12.13</small>
 
@@ -2402,6 +2402,33 @@ memory this can take:
 
 Up to v3.12.12, the maximum decompressed size is not configurable and requests
 exceeding it are rejected with an HTTP `400 Bad Request` error.
+
+---
+
+<small>Introduced in: v3.12.14</small>
+
+A startup option to limit the global memory usage for decompressing
+request bodies has been added:
+
+- `--http.decompressed-request-body-global-memory-limit`:
+  The maximum combined size of all decompressed request bodies that the server
+  holds at the same time (in bytes). Each compressed request body (gzip,
+  deflate, or lz4) reserves its decompressed size from this budget until the
+  request is finished. Requests that would exceed the budget are rejected with
+  an HTTP `503 Service Unavailable` error and can be retried later.
+  The default is 10% of the physical memory. A value of `0` disables the limit.
+  The memory usage is tracked in steps of 32 KiB.
+
+  The budget needs to be at least as large as
+  `--http.max-decompressed-request-body-size` so that a request body of the
+  maximum size can be decompressed. If the budget is smaller (and not `0`):
+
+  - If you set both options, the server refuses to start.
+  - If you only set the budget, the maximum size of a single decompressed
+    request body is lowered to the budget.
+  - Otherwise, the budget is raised to the maximum size of a single
+    decompressed request body. For example, this happens with the default
+    settings if 10% of the physical memory is less than 512 MiB.
 
 ## Miscellaneous changes
 
