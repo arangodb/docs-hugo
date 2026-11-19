@@ -2,12 +2,18 @@
 title: Natural Language to AQL
 menuTitle: Natural Language to AQL
 group: Query & explore
-weight: 220
+weight: 230
 description: >-
-  Query your ArangoDB database using natural language with the AQLizer feature,
-  which automatically translates plain language into AQL queries using generative AI
+  The deprecated Natural Language to AQL service, the beta version of the
+  AQLizer, translates plain language into AQL queries using generative AI
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
+
+{{< warning >}}
+Natural Language to AQL was the beta version of the AQLizer and is deprecated
+in favor of the new [AQLizer](../aqlizer/_index.md). Use the AQLizer to
+generate and optimize AQL queries.
+{{< /warning >}}
 
 {{< embed-svg "AQLizer-Flow" "Natural Language to AQL flow." >}}
 

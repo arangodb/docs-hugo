@@ -54,13 +54,12 @@ data into a context graph and retrieves from it:
 
 The suite also includes:
 
-- [**AQLizer**](../contextual-data-platform/natural-language-to-aql/_index.md)
+- [**AQLizer**](../contextual-data-platform/aqlizer/_index.md)
   translates natural-language questions into AQL, so users can query across
-  domains in the context graph without writing AQL first.
+  domains in the context graph without writing AQL first, and optimizes AQL
+  queries with AI-assisted reasoning.
 - [**Ada**](../contextual-data-platform/ada/_index.md) is an AI assistant for
   natural-language interaction and development.
-- [**Reasoner**](../contextual-data-platform/reasoner/_index.md) analyzes and optimizes
-  AQL queries with AI-assisted reasoning.
 - [**GraphML**](../contextual-data-platform/graphml/_index.md) applies machine learning
   to graphs for link prediction, classification, and embeddings.
 - [**Graph Analytics**](../contextual-data-platform/graph-analytics/_index.md) runs
