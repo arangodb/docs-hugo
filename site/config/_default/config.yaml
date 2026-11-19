@@ -2,8 +2,12 @@ baseURL: "https://docs.arango.ai/"
 locale: "en-us"
 title: "Arango Documentation"
 theme: "arangodb-docs-theme"
-timeout: "200000000"
+timeout: "10m"
 enableGitInfo: true
+
+build:
+  cleanDestinationDir:
+    enable: true
 
 disableKinds: # Switch off tags, categories, RSS/Atom feed
   - taxonomy
@@ -13,22 +17,22 @@ disableKinds: # Switch off tags, categories, RSS/Atom feed
 module:
   mounts:
     - source: "themes/arangodb-docs-theme/images"
-      target: "content"
+      target: "static"
 
+    # resources.Get searches /assets only
     - source: "content/images"
       target: "assets/images"
-
-    - source: "static"
-      target: "static"
 
     - source: content
       target: content
       # Version folders can be ignored temporarily for faster local builds
-      # of a single version (here: 3.12)
-      #excludeFiles:
-      #  - arangodb/3.10/*
-      #  - arangodb/3.11/*
-      #  - arangodb/4.x/*
+      # of a single version (here: arangodb/3.12/)
+      # Quote the patterns: an unquoted leading ! is a YAML tag and gets dropped
+      files:
+      # - "! arangodb/3.10/*"
+      # - "! arangodb/3.11/*"
+      # - "! arangodb/4.x/*"
+        - "! images/**"
 
     - source: content/arangodb/3.12
       target: content/arangodb/stable
@@ -74,18 +78,9 @@ outputs:
 enableRobotsTXT: true
 
 caches:
-  assets:
-    dir: :resourceDir/_gen
-    maxAge: -1
   getresource:
     dir: :cacheDir/:project
     maxAge: 0
-  images:
-    dir: :resourceDir/_gen
-    maxAge: -1
-  modules:
-    dir: :cacheDir/modules
-    maxAge: -1
 
 security:
   http:
@@ -96,4 +91,3 @@ security:
 
 params:
   arangoproxyUrl: "http://192.168.129.129:8080"
-  themeVariant: [ "relearn-light" ]
