@@ -733,6 +733,28 @@ tr {
     transition: 0.5s;
 }
 
+/* Tables of the Markdown render hook. The wrapper scrolls horizontally as a
+   last resort, if the table can't be narrower than the content area. */
+.table-wrapper {
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 2rem 0;
+}
+
+.table-wrapper > table {
+    margin: 0;
+}
+
+/* Inline code only breaks within a word if it would otherwise overflow.
+   word-break: break-word would also let the table layout count every
+   character as a possible break, which makes code columns as narrow as a
+   single character and breaks the code in the middle of words. */
+td code,
+th code {
+    word-break: normal;
+    overflow-wrap: break-word;
+}
+
 /* end Tables */
 
 /* Content-specific utility classes */
@@ -1898,6 +1920,9 @@ div > .box-content-container {
 
 .box-text {
     padding: 24px;
+    /* A flex item, which can't be narrower than its content by default. A
+       wide table in it scrolls in its wrapper instead of widening the box. */
+    min-width: 0;
 }
 
 .box-text > .visually-hidden + * {
