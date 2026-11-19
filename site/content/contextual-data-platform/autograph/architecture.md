@@ -179,8 +179,8 @@ When you open a node in the
 (right-click a node and choose **View node**), a Properties panel lists that node's fields. The tables below show
 the fields you can expect on one node of each type, with example values. The system
 fields `_id`, `_key`, and `_rev` exist on every node and are omitted. Collection
-names use the `{project}_` prefix (the examples below come from a project whose
-prefix is `SG_`).
+names use the `{project}_` prefix (the examples below come from the project `SG`,
+whose files have no category, so the stored label is the project name alone).
 
 ### Corpus-graph nodes
 
@@ -190,7 +190,7 @@ prefix is `SG_`).
 |-------|---------------|------------|
 | `filename` | `about-us.md` | Original file name. |
 | `content` | `"--- source: https://… Building the world's leading AI data…"` | The raw source text. |
-| `module` | `default` | The category it belongs to, in its stored (encoded) form. |
+| `module` | `SG` | The category it belongs to, in its stored (encoded) form. |
 | `partition_id` | (empty until assigned) | Filled once its domain becomes a partition. |
 | `embeddings` | `[vector]` | Corpus-level vector used to cluster sources into domains. |
 
@@ -200,14 +200,14 @@ prefix is `SG_`).
 |-------|---------------|------------|
 | `size` | `100` | Number of sources in the cluster. |
 | `members` | `[source ids]` | The sources grouped into this domain. |
-| `module` | `default` | Owning category, in its stored (encoded) form. |
+| `module` | `SG` | Owning category, in its stored (encoded) form. |
 
 **`rags`** — the RAG-partition configuration (written by the RAG Strategizer)
 
 | Field | Example value | What it is |
 |-------|---------------|------------|
 | `rag_mode` / `strategy_type` | `FullGraphRAG` | Which RAG strategy the partition uses. |
-| `rag_partition_id` | `default_0_a` | Links the partition to its knowledge-graph rows. |
+| `rag_partition_id` | `SG_0_a` | Links the partition to its knowledge-graph rows. |
 | `chunk_token_size` | `1200` | Target chunk size when splitting documents. |
 | `chunk_overlap_token_size` | `100` | Token overlap between consecutive chunks. |
 | `enable_chunk_embeddings` | `true` | Whether chunks get their own embeddings. |
@@ -227,8 +227,8 @@ rebuilds its communities. A VectorRAG partition has neither collection, see
 
 | Field | Example value | What it is |
 |-------|---------------|------------|
-| `name` | `default` | Stored (encoded) form of the category label. |
-| `clusters` | `[domains/cluster_default_0]` | The domains grouped under this category. |
+| `name` | `SG` | Stored (encoded) form of the category label. |
+| `clusters` | `[domains/cluster_SG_0]` | The domains grouped under this category. |
 
 ### Knowledge-graph nodes
 
@@ -238,7 +238,7 @@ rebuilds its communities. A VectorRAG partition has neither collection, see
 |-------|---------------|------------|
 | `file_name` | `enterprise-context-management.md` | Source file (provenance). |
 | `content` | `"--- source: https://…"` | Full document text. |
-| `partition_id` | `default_0_a` | Which RAG partition it belongs to. |
+| `partition_id` | `SG_0_a` | Which RAG partition it belongs to. |
 | `import_number` | `1` | Which import / build produced it. Every incremental import into the same partition adds another batch. |
 | `file_ids` | `["rag-input-…"]` | The File Manager IDs stored at import time. [Incremental graph updates](incremental-graph-updates/_index.md) use them to find a document that you want to remove. |
 
@@ -249,7 +249,7 @@ rebuilds its communities. A VectorRAG partition has neither collection, see
 | `tokens` | `740` | Length of the chunk in tokens. |
 | `chunk_order_index` | `0` | Position of the chunk within its document. |
 | `content` | `"--- source: …"` | The passage text. |
-| `partition_id` | `default_0_a` | Owning partition. |
+| `partition_id` | `SG_0_a` | Owning partition. |
 | `embedding` | `[vector, when enabled]` | Per-chunk vector for search. |
 
 **`Entities`** — an extracted entity, a node in the graph
@@ -259,7 +259,7 @@ rebuilds its communities. A VectorRAG partition has neither collection, see
 | `entity_name` | `CUSTOMER 360 CO-PILOTS` | The entity's name. |
 | `entity_type` | `use_case` | One of the partition's configured ontology types. |
 | `description` | `"A use case of the Arango AI Data Platform that unifies profiles…"` | LLM-written description. |
-| `partition_id` | `default_0_a` | Owning partition. |
+| `partition_id` | `SG_0_a` | Owning partition. |
 | `embedding` | `[vector]` | Entity embedding for similarity. |
 
 The set of `entity_type` values you see across a corpus is the union of every
