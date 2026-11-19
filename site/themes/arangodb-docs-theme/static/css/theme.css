@@ -700,19 +700,31 @@ img.img-fill {
 
 /* Tables */
 
+/* Separate borders, because collapsed borders can't be rounded. The cells
+   only draw the lines between them, the table draws the outer border. */
 table {
     max-width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--gray-300);
     font-size: .83333rem;
     margin: 2rem 0;
     border-radius: 0.50em;
     overflow: hidden;
 }
 
-table,
 table>*>tr>* {
-     border: 1px solid var(--gray-300);
-     border-width: 1px;
+    border: 0 solid var(--gray-300);
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+}
+
+table>*>tr>*:last-child {
+    border-right-width: 0;
+}
+
+table>:last-child>tr:last-child>* {
+    border-bottom-width: 0;
 }
 
 thead {
