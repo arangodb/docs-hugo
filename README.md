@@ -721,6 +721,31 @@ Available attributes:
 - `class`: CSS classes to apply
 - `style`: CSS inline styles to apply
 
+##### Screenshots
+
+The main content column is only about 800 pixels wide. Wider images are scaled
+down to fit, which can make text and other details illegible. Keep the following
+in mind when taking screenshots of web interfaces:
+
+- **Avoid wide screenshots**: Don't capture an entire browser window with an
+  extreme aspect ratio, like a maximized window on an ultra-wide display.
+- **Zoom the page**: Even with a normal aspect ratio, text can end up too small
+  after scaling. Zoom in on the page, e.g. to 150% or 175%, rather than making
+  the browser window smaller. This results in a higher-resolution screenshot
+  that stays sharp.
+- **Don't zoom in too much**: Excessive zoom levels can break the page layout or
+  make the interface look worse than it does under normal conditions, like by
+  causing excessive text wrapping.
+- **Capture only what is relevant**: It is often best to screenshot only the
+  part of the interface that the surrounding documentation is about instead of
+  the entire viewport. Don't include the address bar or other browser chrome,
+  and no artificial effects like drop shadows around the window.
+- **Prepare the content**: Set up the content in the interface so that it looks
+  tidy and representative, e.g. with meaningful names and example data.
+- **Touch up the page**: You can use the browser's developer tools to edit the
+  page before taking a screenshot, like changing text or removing elements in
+  the border areas that are not relevant for what should be shown.
+
 ##### Image compression
 
 When adding or updating images, the files should be reduced in size as much as
