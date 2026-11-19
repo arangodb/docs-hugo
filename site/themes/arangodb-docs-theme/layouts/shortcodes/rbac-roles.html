@@ -1,0 +1,77 @@
+{{- /* Renders what each predefined AI role grants, from
+       site/data/rbac_services.yaml: one tab per role. Each tab starts with
+       the summary of the role, followed by the services that the role grants
+       actions of, with one collapsible row per action. Expanding an action shows the resource it is checked on, the
+       scope type, and the other roles that grant it. Services that the role
+       grants nothing of are listed at the end.
+
+       Reuses the markup of the tabs shortcode, so that the theme's tab
+       switching (click, arrow keys, persisted selection) applies.
+
+       Use the angle-bracket form, the output is HTML: {{< rbac-roles >}} */ -}}
+{{- $data := index hugo.Data "rbac_services" -}}
+{{- $labels := dict "database" "Database" "service" "Shared service" "secret" "Secrets" "fileparser" "File Parser" -}}
+{{- $n := add (int (.Page.Store.Get "tabPanelCount")) 1 -}}
+{{- .Page.Store.Set "tabPanelCount" $n -}}
+{{- $id := printf "tabs-%d" $n -}}
+{{- $group := "rbac-roles" -}}
+<div class="tab-panel rbac-roles">
+<div class="tab-content">
+<div class="tab-nav" role="tablist" aria-label="AI roles">
+{{- range $idx, $role := $data.roles }}
+<button type="button" role="tab" id="{{ $id }}-tab-{{ $idx }}" aria-controls="{{ $id }}-panel-{{ $idx }}" aria-selected="{{ if eq $idx 0 }}true{{ else }}false{{ end }}" tabindex="{{ if eq $idx 0 }}0{{ else }}-1{{ end }}" data-tab-group="{{ $group }}" data-tab-item="{{ $role.name }}" class="tab-nav-button{{ if eq $idx 0 }} selected{{ end }}"><span>{{ $role.name }}</span></button>
+{{- end }}
+</div>
+{{- range $idx, $role := $data.roles }}
+<div role="tabpanel" tabindex="0" id="{{ $id }}-panel-{{ $idx }}" aria-labelledby="{{ $id }}-tab-{{ $idx }}" data-tab-group="{{ $group }}" data-tab-item="{{ $role.name }}" class="tab-item rbac-role-panel{{ if eq $idx 0 }} selected{{ end }}">
+{{- $actions := 0 -}}
+{{- $services := 0 -}}
+{{- range $data.services -}}
+  {{- $c := 0 -}}
+  {{- range .actions -}}{{- if in .roles $role.name -}}{{- $c = add $c 1 -}}{{- end -}}{{- end -}}
+  {{- $actions = add $actions $c -}}
+  {{- if $c -}}{{- $services = add $services 1 -}}{{- end -}}
+{{- end }}
+<p class="rbac-role-intro">{{ $role.summary }}. Grants {{ $actions }} actions in {{ $services }} service{{ if ne $services 1 }}s{{ end }}{{ with $role.extends }}, including all actions of <code>{{ . }}</code>{{ end }}.</p>
+{{- $missing := slice -}}
+{{- range $svc := $data.services -}}
+  {{- $granted := slice -}}
+  {{- range $svc.actions -}}{{- if in .roles $role.name -}}{{- $granted = $granted | append . -}}{{- end -}}{{- end -}}
+  {{- if not $granted -}}
+    {{- $missing = $missing | append $svc.name -}}
+  {{- else -}}
+    {{- $path := printf "/%s" ($svc.rbacPage | default $svc.page) -}}
+    {{- $target := site.GetPage $path -}}
+    {{- if not $target -}}
+      {{- errorf "RBAC: page %q of service %q not found, see site/data/rbac_services.yaml" $path $svc.id -}}
+    {{- end }}
+<details class="rbac-service" open>
+<summary><a class="link" href="{{ $target.RelPermalink }}">{{ $svc.name }}</a><span class="rbac-service-count">{{ len $granted }} of {{ len $svc.actions }} actions</span></summary>
+{{- range $granted -}}
+  {{- $res := index $data.resources .resource -}}
+  {{- $new := and $role.extends (not (in .roles $role.extends)) -}}
+  {{- $others := slice -}}
+  {{- $action := . -}}
+  {{- range $data.roles -}}{{- if and (ne .name $role.name) (in $action.roles .name) -}}{{- $others = $others | append (printf "<code>%s</code>" .name) -}}{{- end -}}{{- end }}
+<details class="rbac-action{{ if $new }} rbac-action-new{{ end }}">
+<summary><span class="rbac-badge rbac-badge-{{ .resource }}">{{ index $labels .resource }}</span><span class="rbac-action-name"><code>{{ .name }}</code>{{ if $new }} <span class="rbac-tag">Not in <code>{{ $role.extends }}</code></span>{{ end }}</span><span class="rbac-action-summary">{{ .summary | markdownify }}</span></summary>
+<dl class="rbac-action-details">
+<dt>Resource</dt>
+<dd>{{ if and (eq .resource "service") .resourceNote }}{{ .resourceNote | markdownify }}{{ else }}<code>{{ $res.resource }}</code>{{ with .resourceNote }} {{ . | markdownify }}{{ else }}{{ with $svc.resourceNote }} {{ . | markdownify }}{{ end }}{{ end }}{{ end }}</dd>
+<dt>Scope type</dt>
+<dd>{{ with $res.scope }}{{ . }}{{ else }}Only the <strong>Everything</strong> scope{{ end }}</dd>
+<dt>Also granted by</dt>
+<dd>{{ with $others }}{{ delimit . ", " | safeHTML }}{{ else }}No other AI role{{ end }}</dd>
+</dl>
+</details>
+{{- end }}
+</details>
+  {{- end -}}
+{{- end }}
+{{- with $missing }}
+<p class="rbac-missing"><strong>Not granted by <code>{{ $role.name }}</code>:</strong> {{ delimit . ", " }}</p>
+{{- end }}
+</div>
+{{- end }}
+</div>
+</div>

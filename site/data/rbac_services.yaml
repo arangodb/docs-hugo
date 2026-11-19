@@ -5,8 +5,9 @@
 #
 # Rendered by the `rbac-roles`, `rbac-actions`, `rbac-endpoints`, and
 # `rbac-endpoint` shortcodes. Update the data HERE rather than editing tables
-# on individual pages. Use the percent-delimited form of the shortcodes so that
-# the emitted Markdown (tables and links) is rendered.
+# on individual pages. Use the percent-delimited form of the table shortcodes so
+# that the emitted Markdown (tables and links) is rendered. `rbac-roles` emits
+# HTML and uses the angle-bracket form.
 #
 # This file is intentionally NOT versioned (no 3.12/4.x subfolder), like
 # llm_models.yaml, because the platform services are versioned independently of
@@ -31,9 +32,11 @@
 #
 # Structure:
 #
-# roles: the predefined AI roles, in the order of the table columns.
+# roles: the predefined AI roles, in the order of the role tabs of the overview.
 #   name      role name without the `managed:predefined:` prefix
 #   summary   one-line description
+#   extends   a role whose actions this role also grants. The actions that it
+#             adds are marked in the overview
 #
 # resources: the kinds of resources the AI services check. Referenced by id
 #   from the actions and endpoints.
@@ -75,6 +78,7 @@ roles:
     summary: Uses the AI services and reads their results
   - name: ai-developer
     summary: Installs, configures, and runs the AI services and reads secrets
+    extends: ai-user
   - name: secret-admin
     summary: Manages the secrets that the AI services use
 
