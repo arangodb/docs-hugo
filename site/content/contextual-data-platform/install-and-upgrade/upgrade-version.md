@@ -5,6 +5,8 @@ weight: 20
 description: >-
   How to upgrade from an earlier version to a newer version of the Contextual Data Platform
 ---
+{{< tag "Self-managed" >}}
+
 {{< info >}}
 If you run a prerelease or custom version of the data platform, get in touch
 with the Arango support team to determine the upgrade strategy.

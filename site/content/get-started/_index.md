@@ -20,11 +20,10 @@ to each other and which one to install.
 {{< cards >}}
 
 {{% card title="Arango Contextual Data Platform" link="contextual-data-platform/" %}}
-Install the data platform, turn documents into a knowledge graph with AutoGraph,
-and ask questions about them in natural language. Choose between an
-installation script for local evaluation and a manual install of the full
-data platform. The script takes about 10 minutes, most of it downloading container
-images.
+Turn documents into a knowledge graph with AutoGraph and ask questions about
+them in natural language. Create a managed deployment on AMP, or install it
+yourself: with a script for local evaluation (about 10 minutes, most of it
+downloading container images) or manually for the full data platform.
 {{% /card %}}
 
 {{% card title="ArangoDB" link="arangodb/" %}}

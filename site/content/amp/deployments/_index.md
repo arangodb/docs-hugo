@@ -57,8 +57,14 @@ role bindings to regulate access control on a deployment level.
     single server only. Your data will not be replicated and your deployment can
     be restarted at any time.
 
+- Select a __Flavour__. __Core Database__, the default, is a plain ArangoDB
+  deployment. __Data Science Platform__ and __AI Suite__ add the services of
+  the [Arango Contextual Data Platform](../contextual-data-platform.md). Which
+  flavours you can select depends on your organization and the region.
+
 - Select a __NODE SIZE__ from the list of available options. Each option is a
-  combination of vCPUs, memory, and disk space per node.
+  combination of vCPUs, memory, and disk space per node. Only the sizes that
+  support the selected flavour are listed.
 
 ![Arango Managed Platform New Deployment Sizing](../../images/amp-new-deployment-sizing.png)
 

@@ -31,6 +31,10 @@ The Arango Managed Platform (AMP)...
 - guarantees that your data always remains your property and
   access to it is protected with industry standard safeguards.
 
+AMP can also run the
+[Arango Contextual Data Platform](contextual-data-platform.md), which adds
+platform and AI services on top of ArangoDB.
+
 For more information see
 [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home)
 

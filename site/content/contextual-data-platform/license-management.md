@@ -8,6 +8,8 @@ description: >-
   of the Contextual Data Platform and ArangoDB, including the required network
   access
 ---
+{{< tag "Self-managed" >}}
+
 The Enterprise Edition of ArangoDB and the Arango Contextual Data Platform
 are activated using a managed license service operated by Arango. When you run
 a deployment with the [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/)

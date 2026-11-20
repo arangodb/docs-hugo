@@ -229,8 +229,8 @@ Helm chart to the latest version. You cannot select a specific version.
 This endpoint only changes the configuration and the chart version of a single
 running service. It does not change the configuration of the platform, such as
 Helm values files and operator settings, nor the version of the ArangoDB
-cluster. You manage these separately with your deployment YAML file and the
-Helm operator.
+cluster. In a self-managed deployment, you manage these separately with your
+deployment YAML file and the Helm operator. On AMP, Arango manages them.
 {{< /info >}}
 
 **Path parameters:**
