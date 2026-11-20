@@ -24,8 +24,8 @@ works, see the [AutoGraph overview](../_index.md).
 - **A role for the AutoGraph actions**, if role-based access control (RBAC) is
   enabled: `ai-user` for reading the state of a project, `ai-developer` for
   everything else, with a scope that covers the project database. Each
-  endpoint lists its **Required permission** and the
-  **Predefined roles (RBAC)** that grant it. See
+  endpoint has a **Role-based access control (RBAC)** box below its URL that
+  lists the required permission and the predefined roles that grant it. See
   [Role-based access control for AutoGraph](rbac.md)
 
 Before importing data, you need to create a project. Projects keep
@@ -42,7 +42,7 @@ To install and start the AutoGraph service, use the following endpoint of the
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/autograph" >}}
 
-{{% rbac-endpoint "acp" "POST /v1/autograph" %}}
+{{< rbac-endpoint "acp" "POST /v1/autograph" >}}
 
 The web interface installs the service for you when you start the first build
 of a project.

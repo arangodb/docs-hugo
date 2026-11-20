@@ -53,13 +53,13 @@ on how to work with categories.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/import-multiple" >}}
 
+{{< rbac-endpoint "autograph" "POST /v1/import-multiple" >}}
+
 Each call attaches every file in the request to one category (the `module`
 field) and creates one new partition for that category, and it deletes what the
 previous call staged. Build from the staged files by running a
 [corpus build](corpus-build.md) without a selector. Do not import new files
 while a build is in progress.
-
-{{% rbac-endpoint "autograph" "POST /v1/import-multiple" %}}
 
 ### Request
 

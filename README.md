@@ -1082,16 +1082,20 @@ The following shortcodes also exist but are rarely used:
 
 - `{{% rbac-roles %}}`, `{{% rbac-actions "<service>" %}}`,
   `{{% rbac-endpoints "<service>" %}}`, and
-  `{{% rbac-endpoint "<service>" "<METHOD> <path>" %}}` render the role-based
+  `{{< rbac-endpoint "<service>" "<METHOD> <path>" >}}` render the role-based
   access control (RBAC) information of the data platform services from
-  [`site/data/rbac_services.yaml`](site/data/rbac_services.yaml): the overview
+  [`site/data/rbac_services/`](site/data/rbac_services/roles.yaml): the overview
   of what each predefined AI role grants per service, the actions of a
   service, the permissions of all its endpoints, and the permission of a
   single endpoint. Place `rbac-endpoint` below the `endpoint` shortcode of the
   endpoint, with the path relative to the `prefix` of the service. The build
   fails if the service or endpoint is not listed in the data file. The comment
-  at the top of the data file describes its structure and sources. For the
-  endpoints of ArangoDB, see [Predefined RBAC roles](#predefined-rbac-roles).
+  at the top of `roles.yaml` describes the structure and sources, with one
+  file per service in `services/`. The data
+  only records technical resource names like `ai:database:<database>`; the
+  names in the web interface come from
+  [`site/data/rbac_scope.yaml`](site/data/rbac_scope.yaml). For the endpoints
+  of ArangoDB, see [Predefined RBAC roles](#predefined-rbac-roles).
 
 ### Content Guidelines
 
@@ -2560,8 +2564,9 @@ paths:
 - Use an empty list (`x-rbac-predefined-roles: []`) if no predefined role grants
   access, for example, because the endpoint requires a superuser token or is
   not available with RBAC. Explain the reason in the `description`.
-- Omit the extension for endpoints that require no authentication, and for
-  endpoints for which the required permissions haven't been determined yet.
+- Omit the extension for endpoints that require no authentication (use
+  `x-rbac-access` instead), and for endpoints for which the required
+  permissions haven't been determined yet.
 
 Which roles grant access to an endpoint depends on the permission checks the
 ArangoDB server performs for the endpoint, and on the policies of the
@@ -2571,9 +2576,45 @@ Helm chart. If either of them changes, the role lists need to be reviewed.
 The checks can differ between ArangoDB versions, so determine them per version
 folder.
 
-The roles are rendered as a **Predefined roles (RBAC)** section between the
-endpoint description and the parameters, and they are included in the
-generated `openapi.json` files.
+Two further extensions complement the roles, in the same place:
+
+```yaml
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: db:database:{database-name}
+        - action: db:Read
+          resource: db:collection:{database-name}:{collection}
+        - action: db:WriteData
+          resource: db:collection:{database-name}:{collection}
+```
+
+This is `POST /_api/document/{collection}`.
+
+- `x-rbac-permissions` lists the permission checks that the server performs:
+  an `action` and a `resource`, plus an `if` condition for checks that only
+  some requests trigger, like `if: in a cluster`. Use the names of the path
+  parameters as placeholders in the resources, `<collection>` etc. for names
+  from the request body or query string, and `_system` for endpoints that
+  don't take a database. Leave out the `resource` for administrative actions
+  like `db:AdminBackup`. If one of several checks suffices, use an item with
+  `anyOf` and a list of alternative `action`/`resource` items instead. Leave
+  out `db:UseApiVersion` on `db:apiversion:<version>`, which is checked for
+  every request and explained once in the `_index.md` page of the HTTP API.
+  The checks can differ between versions, so determine them per version
+  folder, like the roles.
+- `x-rbac-access: public` marks endpoints that require no authentication, like
+  `POST /_open/auth`. Don't combine it with the other two extensions.
+
+The extensions are rendered in a collapsed **Role-based access control (RBAC)**
+box directly below the endpoint URL, the same box that the `rbac-endpoint`
+shortcode renders for the data platform services (`partials/rbac/box.html`),
+and they are included in the generated `openapi.json` files. The **Scope** line
+of the box is derived from the resources of the unconditional checks, using the
+mapping of resource prefixes to the resource types of the web interface in
+[`site/data/rbac_scope.yaml`](site/data/rbac_scope.yaml).
 
 ### Configure the OpenAPI metadata and API versions
 

@@ -1,0 +1,11 @@
+{{- /* Loads the RBAC data of the data platform services from
+       site/data/rbac_services/: the roles from roles.yaml, and the services
+       from services/<id>.yaml, sorted by their `order` and with the file name
+       added as `id`. Returns a dict with `roles` and `services`. Cached, as it
+       is the same for every page. */ -}}
+{{- $raw := index hugo.Data "rbac_services" -}}
+{{- $services := slice -}}
+{{- range $id, $svc := $raw.services -}}
+  {{- $services = $services | append (merge $svc (dict "id" $id)) -}}
+{{- end -}}
+{{- return dict "roles" $raw.roles.roles "services" (sort $services "order") -}}

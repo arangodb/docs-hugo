@@ -44,13 +44,13 @@ one, build it, see [When to use IGU](_index.md#when-to-use-igu).
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/graph/insert" >}}
 
+{{< rbac-endpoint "autograph" "POST /v1/graph/insert" >}}
+
 Adds new documents to an existing category. The API calls this operation
 insert. The call is synchronous.
 
 The corpus and the target category have to exist already. If the project has
 exactly one category, you can omit `category`. Otherwise, it is required.
-
-{{% rbac-endpoint "autograph" "POST /v1/graph/insert" %}}
 
 ### Request
 
@@ -170,6 +170,8 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/graph/delete" >}}
 
+{{< rbac-endpoint "autograph" "POST /v1/graph/delete" >}}
+
 Removes documents from an existing category. The API calls this operation
 delete. The call is synchronous and does the whole removal itself. It cleans up
 the knowledge graph first, then the corpus graph. No Importer worker is
@@ -184,8 +186,6 @@ removal still reports success, and the file stays in the File Manager.
 Use File Manager IDs in `file_ids` if you can, as they are stable. Otherwise,
 provide `doc_names`, which are looked up in the requested category. You need to
 provide at least one of the two lists.
-
-{{% rbac-endpoint "autograph" "POST /v1/graph/delete" %}}
 
 ### Request
 
@@ -345,13 +345,13 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/graph/update" >}}
 
+{{< rbac-endpoint "autograph" "POST /v1/graph/update" >}}
+
 Replaces documents in an existing category with a new version. The API calls
 this operation update. The call is asynchronous.
 
 Every document has to be in the requested category already. A single
 invalid document makes the whole batch fail before anything is changed.
-
-{{% rbac-endpoint "autograph" "POST /v1/graph/update" %}}
 
 ### Request
 
@@ -518,6 +518,8 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/graph/recluster" >}}
 
+{{< rbac-endpoint "autograph" "POST /v1/graph/recluster" >}}
+
 Rebuilds the communities of up to five partitions with the FullGraphRAG strategy
 from their current entities. The API calls this operation recluster. The call
 returns right away and reports whether each partition was taken up. This is
@@ -543,8 +545,6 @@ The flag is set when the `divergence_score` is above the threshold,
 which is `0.25` and not configurable. For how the divergence is calculated,
 with examples, and how the values change over time, see
 [Divergence and Reorganization](divergence-and-reorganization.md).
-
-{{% rbac-endpoint "autograph" "POST /v1/graph/recluster" %}}
 
 {{< warning >}}
 **Plan reorganizing as a maintenance operation.** It holds the single

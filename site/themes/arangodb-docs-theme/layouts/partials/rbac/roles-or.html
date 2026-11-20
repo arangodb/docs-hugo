@@ -1,0 +1,16 @@
+{{- /* Formats a list of predefined roles as Markdown, as alternatives that each
+       grant access on their own: "`a`", "`a` or `b`", "`a`, `b`, or `c`".
+       An item can also be a single-key map from the role name to a remark,
+       like in the x-rbac-predefined-roles OpenAPI extension, which is added in
+       parentheses. Returns an empty string for an empty list. */ -}}
+{{- $items := slice -}}
+{{- range . -}}
+  {{- if reflect.IsMap . -}}
+    {{- range $role, $remark := . -}}
+      {{- $items = $items | append (printf "`%s`%s" $role (cond (ne $remark "") (printf " (%s)" $remark) "")) -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $items = $items | append (printf "`%s`" .) -}}
+  {{- end -}}
+{{- end -}}
+{{- return partial "rbac/list.html" (dict "items" $items "conj" "or") -}}

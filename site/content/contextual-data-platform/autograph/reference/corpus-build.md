@@ -11,10 +11,10 @@ weight: 10
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds" >}}
 
+{{< rbac-endpoint "autograph" "POST /v1/corpus/builds" >}}
+
 Trigger a corpus build from File Manager categories or from files that you have
 imported directly.
-
-{{% rbac-endpoint "autograph" "POST /v1/corpus/builds" %}}
 
 **Recommended path:** Prefer `categories`, so that the service resolves the files
 of each category from the File Manager itself. Send only new categories on a
@@ -255,9 +255,9 @@ curl -X POST \
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds/{corpus_build_id}" >}}
 
-Check the progress of a corpus build.
+{{< rbac-endpoint "autograph" "GET /v1/corpus/builds/{corpus_build_id}" >}}
 
-{{% rbac-endpoint "autograph" "GET /v1/corpus/builds/{corpus_build_id}" %}}
+Check the progress of a corpus build.
 
 **Recommended path:** Immediately after **`POST /v1/corpus/builds`** returns `corpus_build_id`, poll this endpoint until **`status`** is **`completed`** or **`failed`**. Typical interval: **5–30 seconds** for short builds; **30–60 seconds** for very large corpora to avoid load.
 

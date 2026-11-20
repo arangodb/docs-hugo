@@ -27,11 +27,11 @@ below.
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/projects/{project}/overview" >}}
 
+{{< rbac-endpoint "autograph" "GET /v1/projects/{project}/overview" >}}
+
 Read the state of a project in one aggregate call: a corpus graph card, a
 knowledge graph card, a strategies block, and a per-category list with staleness
 flags.
-
-{{% rbac-endpoint "autograph" "GET /v1/projects/{project}/overview" %}}
 
 **Recommended path:** Safe to call at any time, it is a read-only aggregate. Use
 it to drive a dashboard, to decide whether a build is needed before you call
@@ -190,7 +190,7 @@ curl -H "Authorization: Bearer <token>" \
 
 {{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/projects/{project}/model-config/credentials" >}}
 
-{{% rbac-endpoint "autograph" "PUT /v1/projects/{project}/model-config/credentials" %}}
+{{< rbac-endpoint "autograph" "PUT /v1/projects/{project}/model-config/credentials" >}}
 
 Set the chat and embedding provider, the models, and the secret profiles of a
 project. The service validates the credentials against the provider with a live
@@ -403,7 +403,7 @@ curl -X PUT \
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/projects/{project}/categories/{category}" >}}
 
-{{% rbac-endpoint "autograph" "DELETE /v1/projects/{project}/categories/{category}" %}}
+{{< rbac-endpoint "autograph" "DELETE /v1/projects/{project}/categories/{category}" >}}
 
 Remove a category from the corpus graph **and** from the knowledge graph, and
 optionally delete its files from the File Manager.
@@ -526,7 +526,7 @@ curl -X DELETE \
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/projects/{project}" >}}
 
-{{% rbac-endpoint "autograph" "DELETE /v1/projects/{project}" %}}
+{{< rbac-endpoint "autograph" "DELETE /v1/projects/{project}" >}}
 
 Tear down an entire project: every AutoGraph-owned service, graph, view, and
 collection, optionally its File Manager files, its project metadata, and the

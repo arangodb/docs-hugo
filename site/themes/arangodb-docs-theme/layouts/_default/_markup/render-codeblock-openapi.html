@@ -91,12 +91,12 @@
         "Method" ($method | upper)
         "Url"    (printf "http%s://<EXTERNAL_ENDPOINT>:8529%s" (cond (eq $service "arangodb") "" "s") $displayPath | replaceRE "#.*" "")
       ) }}
+      {{- if or (isset $items "x-rbac-predefined-roles") (isset $items "x-rbac-access") (isset $items "x-rbac-permissions") }}
+        {{- template "renderRbac" dict "items" $items "page" $page }}
+      {{- end }}
       <div class="openapi-description regular-font">
         {{- $items.description | $page.RenderString }}
       </div>
-      {{- if isset $items "x-rbac-predefined-roles" }}
-        {{- template "renderRbacRoles" dict "roles" (index $items "x-rbac-predefined-roles") "page" $page }}
-      {{- end }}
       {{- with .parameters }}
         {{- template "renderParameters" dict "title" $title "content" . "page" $page }}
       {{- end }}
@@ -111,37 +111,82 @@
   </div>
 {{- end }}
 
-{{- /* x-rbac-predefined-roles: the predefined roles of the data platform's RBAC
-  that each grant access to the endpoint on their own (assuming the scope of the
-  role assignment covers the resources). A list of role names, where an item can
-  also be a single-key map from the role name to a remark, e.g.
-  `- coredb-reader: Only your own queries`. An empty list means that no
-  predefined role grants access. How to read this is explained in
-  arangodb/<version>/develop/http-api/_index.md. */}}
-{{- define "renderRbacRoles" }}
-  {{- $roles := .roles }}
+{{- /* The "Role-based access control (RBAC)" box of an endpoint, rendered by the
+  rbac/box.html partial like the rbac-endpoint shortcode does for the data
+  platform services. How to read it is explained in
+  arangodb/<version>/develop/http-api/_index.md. From these extensions:
+
+  x-rbac-predefined-roles: the predefined roles that each grant access to the
+  endpoint on their own (assuming the scope of the role assignment covers the
+  resources). A list of role names, where an item can also be a single-key map
+  from the role name to a remark, e.g. `- coredb-reader: Only your own
+  queries`. An empty list means that no predefined role grants access.
+
+  x-rbac-access: `public` for endpoints that need no authentication, like
+  `/_open/auth`. Leave out x-rbac-predefined-roles and x-rbac-permissions then.
+
+  x-rbac-permissions: the permissions that the server checks, a list of maps
+  with `action`, `resource` (left out for administrative actions, which only
+  a scope of `*` covers), and optionally `if` (the condition, for checks of
+  some requests only), or with `anyOf`, a list of alternative checks of which
+  one suffices. Resources use the names of the path parameters as
+  placeholders, like `db:collection:{database-name}:{collection-name}`.
+  `db:UseApiVersion` on `db:apiversion:<version>` is checked for every request
+  and is left out. The Scope line is derived from the resources of the
+  unconditional checks, see site/data/rbac_scope.yaml. */}}
+{{- define "renderRbac" }}
+  {{- $items := .items }}
   {{- $page := .page }}
-  {{- if not (reflect.IsSlice $roles) }}
-    {{- errorf "OpenAPI: x-rbac-predefined-roles must be a list, got %T: %v" $roles $roles }}
+  {{- $box := dict "page" $page }}
+  {{- with index $items "x-rbac-access" }}
+    {{- if ne . "public" }}
+      {{- errorf "OpenAPI: x-rbac-access must be \"public\", got %q" . }}
+    {{- end }}
+    {{- $box = merge $box (dict "access" .) }}
   {{- end }}
-  <div class="openapi-parameters openapi-rbac regular-font">
-    <div class="openapi-table-title">Predefined roles (RBAC)</div>
-    {{- if eq (len $roles) 0 }}
-    <p class="regular-font">None</p>
-    {{- else }}
-    <ul>
-      {{- range $roles }}
-        {{- if reflect.IsMap . }}
-          {{- range $role, $remark := . }}
-      <li><code>{{ $role }}</code>{{ with $remark }}: {{ . | $page.RenderString }}{{ end }}</li>
-          {{- end }}
+  {{- if isset $items "x-rbac-predefined-roles" }}
+    {{- $roles := index $items "x-rbac-predefined-roles" }}
+    {{- if not (reflect.IsSlice $roles) }}
+      {{- errorf "OpenAPI: x-rbac-predefined-roles must be a list, got %T: %v" $roles $roles }}
+    {{- end }}
+    {{- $box = merge $box (dict "roles" $roles) }}
+  {{- end }}
+  {{- with index $items "x-rbac-permissions" }}
+    {{- $scope := slice }}
+    {{- $checks := slice }}
+    {{- range . }}
+      {{- $line := "" }}
+      {{- with .anyOf }}
+        {{- /* Alternatives, one of which suffices. Not part of the Scope line,
+               which can't express alternatives, but listed with "or" */}}
+        {{- $alts := slice }}
+        {{- range . }}
+          {{- $alts = $alts | append (printf "`%s`%s" .action (cond (isset . "resource") (printf " on `%s`" .resource) "")) }}
+        {{- end }}
+        {{- $line = printf "- %s" (partial "rbac/list.html" (dict "items" $alts "conj" "or")) }}
+      {{- else }}
+        {{- if not .action }}
+          {{- errorf "OpenAPI: every item of x-rbac-permissions needs an action or anyOf, got %v" . }}
+        {{- end }}
+        {{- /* Administrative actions have no resource; only a scope of * covers them */}}
+        {{- $res := .resource | default "*" }}
+        {{- $line = printf "- `%s`%s" .action (cond (isset . "resource") (printf " on `%s`" .resource) "") }}
+        {{- with .if }}
+          {{- $line = printf "%s, %s" $line . }}
         {{- else }}
-      <li><code>{{ . }}</code></li>
+          {{- $scope = $scope | append (dict "resource" $res) }}
         {{- end }}
       {{- end }}
-    </ul>
+      {{- $checks = $checks | append $line }}
     {{- end }}
-  </div>
+    {{- $box = merge $box (dict "scopes" (slice (dict "when" "" "items" $scope)) "checks" $checks) }}
+  {{- end }}
+  {{- $rbacPath := "contextual-data-platform/access-control/rbac.md" }}
+  {{- with site.GetPage (printf "/%s" $rbacPath) }}
+    {{- /* The link leads to the docs of another product, so say which */}}
+    {{- $box = merge $box (dict "link" (printf "See [%s](%s%s) in the Arango Contextual Data Platform." .Title (partial "rbac/up.html" $page) $rbacPath)) }}
+  {{- end }}
+  {{- partial "rbac/box.html" $box }}
 {{- end }}
 
 {{- define "renderParameters" }}

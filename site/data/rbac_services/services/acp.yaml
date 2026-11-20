@@ -1,0 +1,166 @@
+# RBAC of the acp service, see ../roles.yaml for the structure.
+order: 10
+name: Arango Control Plane (ACP)
+page: contextual-data-platform/control-plane-acp/_index.md
+rbacPage: contextual-data-platform/control-plane-acp/rbac.md
+prefix: /_platform/acp
+actions:
+  - name: ai:acp.workspace.read
+    summary: List and get projects
+    resource: ai:database:<database>
+    roles: [ai-user, ai-developer]
+  - name: ai:acp.workspace.manage
+    summary: Create and delete projects
+    resource: ai:database:<database>
+    roles: [ai-developer]
+  - name: ai:acp.service.read
+    summary: Get the status of a service and see it in the list of services
+    resource: [ai:database:<database>, ai:service:<service-type>]
+    roles: [ai-user, ai-developer]
+  - name: ai:acp.service.manage
+    summary: Install, upgrade, and uninstall services
+    resource: [ai:database:<database>, ai:service:<service-type>]
+    roles: [ai-developer]
+  - name: ai:acp.secret.read
+    summary: List and get secret profiles and the secret profile types
+    resource: ai:secret:store
+    roles: [ai-developer, secret-admin]
+  - name: ai:acp.secret.manage
+    summary: Create, update, and delete secret profiles
+    resource: ai:secret:store
+    roles: [secret-admin]
+endpoints:
+  - method: GET
+    path: /v1/health
+    access: authenticated
+  - method: POST
+    path: /v1/<service-type>
+    action: ai:acp.service.manage
+    anyOf:
+      - when: For a database service
+        resource: ai:database:<db_name>
+        note: the `db_name` in the request
+      - when: For a shared service
+        resource: ai:service:<service-type>
+        note: the service type
+  - method: POST
+    path: /v1/graphragimporter
+    action: ai:acp.service.manage
+    resource: ai:database:<db_name>
+    note: the `db_name` in the request
+  - method: POST
+    path: /v1/graphragretriever
+    action: ai:acp.service.manage
+    resource: ai:database:<db_name>
+    note: the `db_name` in the request
+  - method: POST
+    path: /v1/autograph
+    action: ai:acp.service.manage
+    resource: ai:database:<db_name>
+    note: the `db_name` in the request
+  - method: POST
+    path: /v1/graphrag
+    action: ai:acp.service.manage
+    resource: ai:database:<db_name>
+    note: the `db_name` in the request
+  - method: POST
+    path: /v1/graphanalytics
+    action: ai:acp.service.manage
+    resource: ai:service:arangodb-gral
+  - method: POST
+    path: /v1/notebook
+    action: ai:acp.service.manage
+    resource: ai:service:arangodb-notebook-images
+  - method: POST
+    path: /v1/uds
+    action: ai:acp.service.manage
+    resource: ai:service:arango-user-defined
+    note: also if you set a `db_name`
+  - method: POST
+    path: /v1/service
+    action: ai:acp.service.manage
+    anyOf:
+      - when: If `service_name` is a database service
+        resource: ai:database:<db_name>
+        note: the `db_name` in the request
+      - when: If `service_name` is a shared service
+        resource: ai:service:<service_name>
+        note: the `service_name` in the request
+  - method: GET
+    path: /v1/service/{service_id}
+    action: ai:acp.service.read
+    anyOf: &installed-service
+      - when: For a database service
+        resource: ai:database:<database>
+        note: the database that the service is installed for
+      - when: For a shared service
+        resource: ai:service:<service-type>
+        note: the type of the service
+  - method: PUT
+    path: /v1/service/{service_id}
+    action: ai:acp.service.manage
+    anyOf: *installed-service
+  - method: DELETE
+    path: /v1/service/{service_id}
+    action: ai:acp.service.manage
+    anyOf: *installed-service
+  - method: POST
+    path: /v1/list_services
+    action: ai:acp.service.read
+    anyOf: *installed-service
+    remark: >-
+      The permission is checked for every service. The response only
+      includes the services you are allowed to see, and an empty list if
+      there are none.
+  - method: POST
+    path: /v1/project
+    action: ai:acp.workspace.manage
+    resource: ai:database:<project_db_name>
+    note: the `project_db_name` in the request
+  - method: GET
+    path: /v1/all_project_names/{project_db_name}
+    action: ai:acp.workspace.read
+    resource: ai:database:<project_db_name>
+    note: the `project_db_name` in the path
+  - method: GET
+    path: /v1/all_projects/{project_db_name}
+    action: ai:acp.workspace.read
+    resource: ai:database:<project_db_name>
+    note: the `project_db_name` in the path
+  - method: GET
+    path: /v1/project_by_name/{project_db_name}/{project_name}
+    action: ai:acp.workspace.read
+    resource: ai:database:<project_db_name>
+    note: the `project_db_name` in the path
+  - method: DELETE
+    path: /v1/project/{project_db_name}/{project_name}
+    action: ai:acp.workspace.manage
+    resource: ai:database:<project_db_name>
+    note: the `project_db_name` in the path
+  - method: GET
+    path: /v1/secret_types
+    action: ai:acp.secret.read
+  - method: GET
+    path: /v1/secrets
+    action: ai:acp.secret.read
+  - method: GET
+    path: /v1/secrets/{profile_id}
+    action: ai:acp.secret.read
+  - method: POST
+    path: /v1/secrets
+    action: ai:acp.secret.manage
+  - method: PUT
+    path: /v1/secrets/{profile_id}
+    action: ai:acp.secret.manage
+  - method: PATCH
+    path: /v1/secrets/{profile_id}
+    action: ai:acp.secret.manage
+  - method: DELETE
+    path: /v1/secrets/{profile_id}
+    action: ai:acp.secret.manage
+  - method: POST
+    path: /v1/secrets_batch
+    action: ai:acp.secret.manage
+  - method: POST
+    path: /v1/secrets_batch/delete
+    action: ai:acp.secret.manage

@@ -28,10 +28,10 @@ in `categories`.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate" >}}
 
+{{< rbac-endpoint "autograph" "POST /v1/orchestrate" >}}
+
 Spawn Importer workers for the strategy profiles that are not in the
 knowledge graph yet. Called after RAG strategizer is completed.
-
-{{% rbac-endpoint "autograph" "POST /v1/orchestrate" %}}
 
 **Recommended path:** Call after a successful corpus build and strategizer run,
 when `rags` is non-empty. This is the final step of the standard workflow. Omit
@@ -227,6 +227,8 @@ curl -X POST \
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate/{orchestration_id}" >}}
 
+{{< rbac-endpoint "autograph" "GET /v1/orchestrate/{orchestration_id}" >}}
+
 Returns the status of the orchestration run that
 [`POST /v1/orchestrate`](#trigger-orchestration) started, using the
 `orchestration_id` from its response. This is where the per-partition results
@@ -238,8 +240,6 @@ partition. For a **FullGraphRAG** partition, the entry carries the
 job has created its Layer 3 entities. This is the value to act on, not the one
 from an insert or update response, see
 [Where to read the divergence](../incremental-graph-updates/divergence-and-reorganization.md#where-to-read-the-divergence).
-
-{{% rbac-endpoint "autograph" "GET /v1/orchestrate/{orchestration_id}" %}}
 
 ### Response
 
@@ -399,12 +399,12 @@ curl -H "Authorization: Bearer <token>" \
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate/{orchestration_id}" >}}
 
+{{< rbac-endpoint "autograph" "DELETE /v1/orchestrate/{orchestration_id}" >}}
+
 Ask the running orchestration to stop and release the single-flight slot of the
 project, so that a wedged run can be cleared without database surgery.
 
 The request takes no body. Pass the `orchestration_id` in the path.
-
-{{% rbac-endpoint "autograph" "DELETE /v1/orchestrate/{orchestration_id}" %}}
 
 {{< info >}}
 **Cancellation is cooperative, not immediate.** The run notices the request at

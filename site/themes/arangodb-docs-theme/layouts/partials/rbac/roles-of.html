@@ -1,8 +1,8 @@
 {{- /* Formats a list of role names as inline code, in the order of the
-       `roles` list of site/data/rbac_services.yaml (least to most privileged
+       `roles` list of site/data/rbac_services/ (least to most privileged
        within the AI roles), or "None" for an empty list.
        Takes the list of role names, returns a string. */ -}}
-{{- $data := index hugo.Data "rbac_services" -}}
+{{- $data := partialCached "rbac/data.html" "rbac" -}}
 {{- $out := slice -}}
 {{- range $data.roles -}}
   {{- if in $ .name -}}
