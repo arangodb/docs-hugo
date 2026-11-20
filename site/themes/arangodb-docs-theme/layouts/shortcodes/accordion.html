@@ -1,0 +1,10 @@
+{{- /* Stacks the details shortcodes inside it into an accordion with a single
+       rounded outline:
+
+       {{< accordion >}}
+       {{< details summary="First" >}}...{{< /details >}}
+       {{< details summary="Second" >}}...{{< /details >}}
+       {{< /accordion >}}
+
+       Any content other than details shortcodes is not supported. */ -}}
+<div class="details-accordion">{{ .Inner }}</div>

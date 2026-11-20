@@ -2132,6 +2132,95 @@ details[open] > summary::before {
     }
 }
 
+/* Details shortcode: a rounded box like the table of contents dropdown on
+   narrow screens, but the content expands inside the box below the summary */
+.details-box {
+    margin: 1rem 0;
+    padding: 0 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    background: var(--neutral-white);
+}
+
+.details-box > summary {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0;
+    padding: 8px 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--color-heading);
+}
+
+.details-box > summary:hover,
+.details-box > summary:focus-visible {
+    color: var(--color-link);
+}
+
+.details-box > summary::before {
+    align-self: center;
+    margin: 0;
+}
+
+/* The ring follows the rounded box, not the summary inside its padding */
+:root .details-box > summary:focus-visible {
+    outline: none;
+}
+
+.details-box:has(> summary:focus-visible) {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+}
+
+/* Out into the padding of the box, so that the separator spans its width */
+.details-box > .details-body {
+    margin: 0 -12px;
+    padding: 12px;
+    border-top: 1px solid var(--gray-200);
+}
+
+.details-box > .details-body > :first-child {
+    margin-top: 0;
+}
+
+.details-box > .details-body > :last-child {
+    margin-bottom: 0;
+}
+
+/* Accordion shortcode: stacked boxes that share one rounded outline */
+.details-accordion {
+    margin: 1rem 0;
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    background: var(--neutral-white);
+}
+
+.details-accordion > .details-box {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+}
+
+.details-accordion > .details-box + .details-box {
+    border-top: 1px solid var(--gray-300);
+}
+
+/* The rounded outline clips nothing, so round the first and last focus ring */
+.details-accordion > .details-box:first-child {
+    border-radius: 8px 8px 0 0;
+}
+
+.details-accordion > .details-box:last-child {
+    border-radius: 0 0 8px 8px;
+}
+
+.details-accordion > .details-box:only-child {
+    border-radius: 8px;
+}
+
 /* */
 
 
