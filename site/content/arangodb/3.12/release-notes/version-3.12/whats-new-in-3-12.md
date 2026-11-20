@@ -3466,6 +3466,8 @@ despite any temporary errors that can occur.
 
 ### arangorestore
 
+#### `--write-concern` startup option
+
 The following startup option has been added that allows _arangorestore_ to override
 the `writeConcern` value specified in a database dump when creating new
 collections:
