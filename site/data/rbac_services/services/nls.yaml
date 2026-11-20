@@ -1,0 +1,34 @@
+# RBAC of the nls service, see ../roles.yaml for the structure.
+order: 50
+name: Natural Language to AQL
+page: contextual-data-platform/natural-language-to-aql/_index.md
+rbacPage: contextual-data-platform/natural-language-to-aql/rbac.md
+prefix: /graph-rag/{serviceIdPostfix}
+note: the database that the service is installed for
+actions:
+  - name: ai:nls.ask
+    summary: Send questions to the configured model without reading the database
+    resource: ai:database:<database>
+    roles: [ai-user, ai-developer]
+  - name: ai:nls.query
+    summary: Translate questions to AQL and run the queries
+    resource: ai:database:<database>
+    roles: [ai-user, ai-developer]
+endpoints:
+  - method: POST
+    path: /v1/process_text
+    action: ai:nls.ask
+  - method: POST
+    path: /v1/process_text_stream
+    action: ai:nls.ask
+    also:
+      - actions: [ai:nls.query]
+        resource: ai:database:<database>
+        if: instead of `ai:nls.ask` if `mode` is `aqlizer`
+        because: this mode reads the schema and sample documents of the database
+  - method: POST
+    path: /v1/translate_query
+    action: ai:nls.query
+  - method: GET
+    path: /v1/health
+    access: authenticated

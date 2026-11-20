@@ -29,6 +29,12 @@ The Reasoner provides two main endpoints:
 
 Both endpoints support two response modes: streaming and non-streaming.
 
+If role-based access control (RBAC) is enabled, the endpoints require a
+permission. Expand the **Role-based access control (RBAC)** box below the URL
+of an endpoint to see the required permission and the predefined roles that
+grant it. See [Role-based access control for the Reasoner](rbac.md) for
+details.
+
 ## Optimization example
 
 The following example shows how to submit an optimization request via the web
@@ -190,6 +196,10 @@ preferred.
 
 ## `POST /query` - request parameters
 
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/reasoner/<SERVICE_ID_POSTFIX>/query" >}}
+
+{{< rbac-endpoint "reasoner" "POST /query" >}}
+
 | Field | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `request` | string | Yes | - | The user question or query to optimize |
@@ -242,6 +252,10 @@ A query that writes data, for example with `INSERT`, `UPDATE`, `REPLACE`,
 `UPSERT`, or `REMOVE`, is rejected before it runs.
 
 ### `POST /txt2aql` - request parameters
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/reasoner/<SERVICE_ID_POSTFIX>/txt2aql" >}}
+
+{{< rbac-endpoint "reasoner" "POST /txt2aql" >}}
 
 | Field | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -396,6 +410,10 @@ operational monitoring.
 
 ### Liveness check
 
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/reasoner/<SERVICE_ID_POSTFIX>/health" >}}
+
+{{< rbac-endpoint "reasoner" "GET /health" >}}
+
 Returns `healthy` whenever the service process is running, regardless of
 downstream connectivity.
 
@@ -412,6 +430,10 @@ curl http://localhost:8080/health
 ```
 
 ### Readiness check
+
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/reasoner/<SERVICE_ID_POSTFIX>/health/ready" >}}
+
+{{< rbac-endpoint "reasoner" "GET /health/ready" >}}
 
 Verifies that the AI coder is reachable and reports MCP server connectivity.
 The service is considered ready when the AI coder is available; MCP server
@@ -440,6 +462,10 @@ curl http://localhost:8080/health/ready
 ```
 
 ### MCP connectivity check
+
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/reasoner/<SERVICE_ID_POSTFIX>/health/mcp" >}}
+
+{{< rbac-endpoint "reasoner" "GET /health/mcp" >}}
 
 Returns detailed status for all registered MCP servers.
 

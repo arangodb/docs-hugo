@@ -16,9 +16,17 @@ following storage categories:
 
 Authentication uses a Bearer token in the `Authorization` header.
 
+If role-based access control (RBAC) is enabled, every endpoint additionally
+requires a permission. Expand the **Role-based access control (RBAC)** box
+below the URL of an endpoint to see the required permission and the predefined
+roles that grant it. Without the permission, requests fail with `403`. See
+[Role-based access control for the File Manager](rbac.md) for details.
+
 ## Health Check
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/health" >}}
+
+{{< rbac-endpoint "filemanager" "GET /health" >}}
 
 Returns the current health status of the service.
 
@@ -44,6 +52,8 @@ file. The original filename is preserved in the `file_name` metadata field.
 ### Upload a BYOC File
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/" >}}
+
+{{< rbac-endpoint "filemanager" "POST /global/byoc/" >}}
 
 Uploads a code package for a BYOC container service deployment.
 
@@ -90,6 +100,8 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/" >}}
 
+{{< rbac-endpoint "filemanager" "GET /global/byoc/" >}}
+
 Lists all uploaded BYOC services with optional filtering and pagination.
 
 **Query parameters:**
@@ -129,6 +141,8 @@ Lists all uploaded BYOC services with optional filtering and pagination.
 ### List Versions of a BYOC Service
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/{name}" >}}
+
+{{< rbac-endpoint "filemanager" "GET /global/byoc/{name}" >}}
 
 Lists all available versions of a specific BYOC service.
 
@@ -173,6 +187,8 @@ Lists all available versions of a specific BYOC service.
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/{name}/{version}" >}}
 
+{{< rbac-endpoint "filemanager" "GET /global/byoc/{name}/{version}" >}}
+
 Retrieves metadata for a specific version of a BYOC service.
 
 **Path parameters:**
@@ -206,6 +222,8 @@ Retrieves metadata for a specific version of a BYOC service.
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/{name}/{version}/download" >}}
 
+{{< rbac-endpoint "filemanager" "GET /global/byoc/{name}/{version}/download" >}}
+
 Downloads the file content as a binary stream.
 
 **Path parameters:**
@@ -233,6 +251,8 @@ curl -X GET \
 ### Delete a BYOC File
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/{name}/{version}" >}}
+
+{{< rbac-endpoint "filemanager" "DELETE /global/byoc/{name}/{version}" >}}
 
 Deletes a specific version of a BYOC service file and its metadata.
 Deletion is only permitted when `safe_to_delete` is `true` in the file metadata.
@@ -448,6 +468,8 @@ Request-level errors use a common body with a `detail` string:
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input" >}}
 
+{{< rbac-endpoint "filemanager" "POST /_db/{database}/rag-input" >}}
+
 Uploads a single file for RAG processing. Re-uploading a file with the same name
 into the same scope automatically creates a new version.
 
@@ -517,6 +539,8 @@ ingress or proxy in front of the service may impose one.
 ### Upload a Batch of RAG Input Files
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/batch" >}}
+
+{{< rbac-endpoint "filemanager" "POST /_db/{database}/rag-input/batch" >}}
 
 Uploads up to 100 files in one request. The combined request body must not
 exceed 2 GiB. Files are processed sequentially and independently, and the
@@ -678,6 +702,8 @@ internal or storage error).
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input" >}}
 
+{{< rbac-endpoint "filemanager" "GET /_db/{database}/rag-input" >}}
+
 Lists the latest version of each RAG input file in a database.
 
 **Path parameters:**
@@ -743,6 +769,8 @@ query parameter), `500` (metadata listing failed)
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/versions" >}}
 
+{{< rbac-endpoint "filemanager" "GET /_db/{database}/rag-input/versions" >}}
+
 Returns the full version history for a lineage, looked up by exact ordered scope
 and name within the specified database. Versions are returned in descending
 order.
@@ -790,6 +818,8 @@ lineage), `422` (`name` is missing or a typed query value is invalid),
 ### Browse Scopes
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/scopes" >}}
+
+{{< rbac-endpoint "filemanager" "GET /_db/{database}/rag-input/scopes" >}}
 
 Lists the immediate child scopes under a given scope path, together with the
 files located at exactly that scope. Use it to build a folder-style browser:
@@ -856,6 +886,8 @@ Only scopes that currently contain at least one file are listed.
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/{id}" >}}
 
+{{< rbac-endpoint "filemanager" "GET /_db/{database}/rag-input/{id}" >}}
+
 Retrieves metadata for a stored RAG input file. Returns the latest version
 unless a specific version is requested.
 
@@ -906,6 +938,8 @@ exist), `422` (invalid `version`), `500` (metadata lookup failed).
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/{id}/download" >}}
 
+{{< rbac-endpoint "filemanager" "GET /_db/{database}/rag-input/{id}/download" >}}
+
 Downloads the file content as a streaming binary response. Returns the latest
 version unless a specific version is requested.
 
@@ -934,6 +968,8 @@ stored/original MIME type, such as `application/pdf`. The generic OpenAPI
 ### Lock or Unlock a File
 
 {{< endpoint "PATCH" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/{id}" >}}
+
+{{< rbac-endpoint "filemanager" "PATCH /_db/{database}/rag-input/{id}" >}}
 
 Sets the `safe_to_delete` flag of a file. The flag is stored per version, and
 this endpoint writes the given value to every version of the lineage.
@@ -987,6 +1023,8 @@ version's metadata is returned.
 ### Lock or Unlock Multiple Files
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/safe-to-delete" >}}
+
+{{< rbac-endpoint "filemanager" "POST /_db/{database}/rag-input/safe-to-delete" >}}
 
 Sets the `safe_to_delete` flag of up to 100 files in one request. Each id
 writes the given value to every version of that lineage.
@@ -1054,6 +1092,8 @@ Each result reports a `status` of `updated`, `not_found`, or `error`.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/safe-to-delete-scope" >}}
 
+{{< rbac-endpoint "filemanager" "POST /_db/{database}/rag-input/safe-to-delete-scope" >}}
+
 Sets the `safe_to_delete` flag of every file at a scope **and below it**,
 including every version of each of these files.
 
@@ -1112,6 +1152,8 @@ limit), `422` (the body or an individual scope label violates its schema),
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/{id}" >}}
 
+{{< rbac-endpoint "filemanager" "DELETE /_db/{database}/rag-input/{id}" >}}
+
 Deletes a single RAG input file version and its metadata. Defaults to the latest
 version unless a specific version is given. Deletion is only permitted when the
 `safe_to_delete` flag **of the selected version** is `true`. The flags of the
@@ -1152,6 +1194,8 @@ version is locked, not safe to delete), `500` (server error)
 ### Delete Multiple Files
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/delete" >}}
+
+{{< rbac-endpoint "filemanager" "POST /_db/{database}/rag-input/delete" >}}
 
 Deletes up to 100 lineages in one request. Each id removes the **whole** file,
 including all of its versions. Locked files are left untouched and reported as
@@ -1220,6 +1264,8 @@ Entries that did not succeed may also carry a `detail` string.
 ### Delete a Scope
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/delete-scope" >}}
+
+{{< rbac-endpoint "filemanager" "POST /_db/{database}/rag-input/delete-scope" >}}
 
 Deletes every file at a scope **and below it**. Locked files are skipped and
 reported. Because scopes are derived from files, a scope level that ends up

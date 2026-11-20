@@ -1,0 +1,117 @@
+# RBAC of the filemanager service, see ../roles.yaml for the structure.
+order: 80
+name: File Manager
+page: contextual-data-platform/file-manager/_index.md
+rbacPage: contextual-data-platform/file-manager/rbac.md
+prefix: /_platform/filemanager
+actions:
+  - name: ai:filemanager.file.read
+    summary: List, browse, and download input files and their versions
+    resource: ai:database:<database>
+    note: the database in the request path
+    roles: [ai-user, ai-developer]
+  - name: ai:filemanager.file.manage
+    summary: Upload and delete input files
+    resource: ai:database:<database>
+    note: the database in the request path
+    roles: [ai-developer]
+  - name: ai:filemanager.file.lock
+    summary: Lock and unlock input files for deletion
+    resource: ai:database:<database>
+    note: the database in the request path
+    roles: [ai-developer]
+  - name: ai:filemanager.package.read
+    summary: List, get, and download Container Manager packages
+    resource: ai:service:arango-user-defined
+    roles: [ai-user, ai-developer]
+  - name: ai:filemanager.package.manage
+    summary: Upload and delete Container Manager packages
+    resource: ai:service:arango-user-defined
+    roles: [ai-developer]
+endpoints:
+  - method: GET
+    path: /health
+    access: authenticated
+  - method: POST
+    path: /global/byoc/
+    action: ai:filemanager.package.manage
+  - method: GET
+    path: /global/byoc/
+    action: ai:filemanager.package.read
+  - method: GET
+    path: /global/byoc/{name}
+    action: ai:filemanager.package.read
+  - method: GET
+    path: /global/byoc/{name}/{version}
+    action: ai:filemanager.package.read
+  - method: GET
+    path: /global/byoc/{name}/{version}/download
+    action: ai:filemanager.package.read
+  - method: DELETE
+    path: /global/byoc/{name}/{version}
+    action: ai:filemanager.package.manage
+  - method: POST
+    path: /_db/{database}/rag-input
+    action: ai:filemanager.file.manage
+    resource: ai:database:<database>
+    note: the `database` in the path
+  - method: POST
+    path: /_db/{database}/rag-input/batch
+    action: ai:filemanager.file.manage
+    resource: ai:database:<database>
+    note: the `database` in the path
+  - method: GET
+    path: /_db/{database}/rag-input
+    action: ai:filemanager.file.read
+    resource: ai:database:<database>
+    note: the `database` in the path
+  - method: GET
+    path: /_db/{database}/rag-input/versions
+    action: ai:filemanager.file.read
+    resource: ai:database:<database>
+    note: the `database` in the path
+  - method: GET
+    path: /_db/{database}/rag-input/scopes
+    action: ai:filemanager.file.read
+    resource: ai:database:<database>
+    note: the `database` in the path
+  - method: GET
+    path: /_db/{database}/rag-input/{id}
+    action: ai:filemanager.file.read
+    resource: ai:database:<database>
+    note: the `database` in the path
+  - method: GET
+    path: /_db/{database}/rag-input/{id}/download
+    action: ai:filemanager.file.read
+    resource: ai:database:<database>
+    note: the `database` in the path
+  - method: PATCH
+    path: /_db/{database}/rag-input/{id}
+    action: ai:filemanager.file.lock
+    resource: ai:database:<database>
+    note: the `database` in the path
+  - method: POST
+    path: /_db/{database}/rag-input/safe-to-delete
+    action: ai:filemanager.file.lock
+    resource: ai:database:<database>
+    note: the `database` in the path
+  - method: POST
+    path: /_db/{database}/rag-input/safe-to-delete-scope
+    action: ai:filemanager.file.lock
+    resource: ai:database:<database>
+    note: the `database` in the path
+  - method: DELETE
+    path: /_db/{database}/rag-input/{id}
+    action: ai:filemanager.file.manage
+    resource: ai:database:<database>
+    note: the `database` in the path
+  - method: POST
+    path: /_db/{database}/rag-input/delete
+    action: ai:filemanager.file.manage
+    resource: ai:database:<database>
+    note: the `database` in the path
+  - method: POST
+    path: /_db/{database}/rag-input/delete-scope
+    action: ai:filemanager.file.manage
+    resource: ai:database:<database>
+    note: the `database` in the path

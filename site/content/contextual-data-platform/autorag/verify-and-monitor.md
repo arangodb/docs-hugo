@@ -23,6 +23,8 @@ You can monitor the AutoRAG service health using the health endpoint:
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/health" >}}
 
+{{< rbac-endpoint "retriever" "GET /v1/health" >}}
+
 ```bash
 curl https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/health \
   -H "Authorization: Bearer <your-jwt-token>"
@@ -84,6 +86,8 @@ Runs that stay in `streaming` status beyond a configurable timeout are marked as
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/retriever-runs" >}}
 
+{{< rbac-endpoint "retriever" "GET /v1/retriever-runs" >}}
+
 Returns the runs of the project, newest first. Deleted runs are excluded.
 
 **Query parameters:**
@@ -123,12 +127,16 @@ run, pass an explicit `limit` on projects with a long history.
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/retriever-runs/{run_id}" >}}
 
+{{< rbac-endpoint "retriever" "GET /v1/retriever-runs/{run_id}" >}}
+
 Returns one run, in the same shape as the items of the list response. Returns
 `404` if the run does not exist or has been deleted.
 
 ### Delete a run
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/retriever-runs/{run_id}" >}}
+
+{{< rbac-endpoint "retriever" "DELETE /v1/retriever-runs/{run_id}" >}}
 
 **Example response:**
 

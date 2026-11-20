@@ -215,6 +215,12 @@ The service handles token renewal automatically for long-running imports.
 Read-only endpoints (`GET /v1/jobs` and `GET /v1/jobs/{job_id}`) validate the
 token without renewing it.
 
+If role-based access control (RBAC) is enabled, you need the `ai-developer`
+role to import files and recluster partitions, and the `ai-user` role is enough
+to read the status of import jobs. The scope of your role assignment needs to
+cover the database that the Importer is installed for. See
+[Role-based access control for the Importer](rbac.md).
+
 {{< info >}}
 **Field names are lowerCamelCase over HTTP.** This reference uses the
 protobuf field names, such as `partition_id` or `job_id`. The REST gateway
@@ -317,6 +323,8 @@ are on the [Import endpoints](import-endpoints.md#call-sequence) page.
   limits, and which of them are configurable.
 - [**Error Handling**](error-handling.md): Troubleshooting, known
   limitations, and error markers in job status messages.
+- [**RBAC**](rbac.md): The roles and scopes you need, and the permissions that
+  each endpoint checks.
 
 For the full machine-readable API, see the
 [GraphRAG Importer API Reference](https://apiref.arango.ai/#graphrag_importer).

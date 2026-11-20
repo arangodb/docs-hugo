@@ -1,0 +1,42 @@
+# RBAC of the importer service, see ../roles.yaml for the structure.
+order: 30
+name: Importer
+page: contextual-data-platform/autograph/importer/_index.md
+rbacPage: contextual-data-platform/autograph/importer/rbac.md
+prefix: /graphrag/importer/{serviceIdPostfix}
+note: the database that the Importer service is installed for
+actions:
+  - name: ai:importer.read
+    summary: Get the status of an import job and list the jobs
+    resource: ai:database:<database>
+    roles: [ai-user, ai-developer]
+  - name: ai:importer.import
+    summary: Import one or more files
+    resource: ai:database:<database>
+    roles: [ai-developer]
+  - name: ai:importer.data.manage
+    summary: Rebuild the communities of a partition and retire an import
+    resource: ai:database:<database>
+    roles: [ai-developer]
+endpoints:
+  - method: GET
+    path: /v1/health
+    access: authenticated
+  - method: POST
+    path: /v1/import
+    action: ai:importer.import
+  - method: POST
+    path: /v1/import-multiple
+    action: ai:importer.import
+  - method: GET
+    path: /v1/jobs/{job_id}
+    action: ai:importer.read
+  - method: GET
+    path: /v1/jobs
+    action: ai:importer.read
+  - method: POST
+    path: /v1/recluster
+    action: ai:importer.data.manage
+  - method: POST
+    path: /v1/jobs/{job_id}/retire
+    action: ai:importer.data.manage

@@ -121,6 +121,13 @@ The internal MCP server is started, connected, and stopped automatically along
 with the Reasoner, so you don't need to deploy or configure an MCP server
 yourself.
 
+If role-based access control (RBAC) is enabled, both the Reasoner and its
+internal MCP server check your permissions. You need the `ai-user` or
+`ai-developer` role with a scope that covers the database, and `ai-developer`
+to save queries as templates. The MCP server works with your token, so you also
+need access to the data in ArangoDB. See
+[Role-based access control for the Reasoner](rbac.md).
+
 {{< info >}}
 The internal MCP server used by the Reasoner is not the same as the
 [ArangoDB MCP Server](../../ecosystem/arangodb-mcp-server.md). The latter is

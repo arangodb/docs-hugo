@@ -1,0 +1,17 @@
+# RBAC of the fileparser service, see ../roles.yaml for the structure.
+order: 90
+# Internal service, called by AutoGraph and the Importer with their own
+# service identity. Users need no role for it, so it is left out of the
+# overview table. Its API is not documented.
+internal: true
+name: File Parser
+page: contextual-data-platform/autograph/document-conversion.md
+actions:
+  - name: ai:fileparser.parse
+    summary: Submit files for parsing
+    resource: ai:fileparser:service
+    roles: [ai-developer]
+  - name: ai:fileparser.job.read
+    summary: Get the status of parsing jobs
+    resource: ai:fileparser:service
+    roles: [ai-developer]

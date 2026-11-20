@@ -140,6 +140,8 @@ The divergence does not apply to `vector_rag` partitions because they have no
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/recluster" >}}
 
+{{< rbac-endpoint "importer" "POST /v1/recluster" >}}
+
 Rebuilds the **community layer** of a single `full_graphrag` partition without
 importing the documents again. The call is **asynchronous**. It returns a
 `job_id` right away, and you can poll `GET /v1/jobs/{job_id}` until

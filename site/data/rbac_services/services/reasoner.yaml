@@ -1,0 +1,58 @@
+# RBAC of the reasoner service, see ../roles.yaml for the structure.
+order: 60
+name: Reasoner
+page: contextual-data-platform/reasoner/_index.md
+rbacPage: contextual-data-platform/reasoner/rbac.md
+prefix: /reasoner/<SERVICE_ID_POSTFIX>
+note: the database that the Reasoner is installed for
+actions:
+  - name: ai:reasoner.query
+    summary: Optimize queries and generate AQL
+    resource: ai:database:<database>
+    roles: [ai-user, ai-developer]
+  - name: ai:reasoner.config.manage
+    summary: Register, unregister, and list the MCP servers of the Reasoner
+    resource: ai:database:<database>
+    roles: [ai-developer]
+endpoints:
+  - method: POST
+    path: /query
+    action: ai:reasoner.query
+    also:
+      - actions: [ai:mcp.query]
+        resource: ai:database:<database>
+        because: >-
+          the Reasoner accesses the database through its MCP server with your
+          token
+  - method: POST
+    path: /txt2aql
+    action: ai:reasoner.query
+    also:
+      - actions: [ai:mcp.query]
+        resource: ai:database:<database>
+        because: >-
+          the Reasoner accesses the database through its MCP server with your
+          token
+      - actions: [ai:mcp.template.manage]
+        resource: ai:database:<database>
+        if: if `add_template` is `true`
+        because: the MCP server saves the template
+  - method: GET
+    path: /health
+    access: authenticated
+    remark: >-
+      If you call the endpoint through a forwarded port of the Reasoner's
+      container, as in the example, no token is needed.
+  - method: GET
+    path: /health/ready
+    access: authenticated
+    remark: >-
+      If you call the endpoint through a forwarded port of the Reasoner's
+      container, as in the example, no token is needed.
+  - method: GET
+    path: /health/mcp
+    action: ai:reasoner.config.manage
+    remark: >-
+      The Reasoner checks the token and the permission itself, so they are
+      also required if you call the endpoint through a forwarded port of its
+      container.

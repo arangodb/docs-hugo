@@ -70,7 +70,7 @@ are checked after the request has been read and before anything is changed:
 AutoGraph reads and writes the collections and graphs of a project in
 ArangoDB. Whose permissions apply to this work depends on whether RBAC is
 also enabled for the ArangoDB core database system
-([ArangoDB RBAC](../../access-control/rbac.md#data-platform-rbac-and-arangodb-rbac)):
+([ArangoDB RBAC](../../access-control/rbac.md#access-to-the-data-in-arangodb)):
 
 - **ArangoDB RBAC disabled**: AutoGraph works in ArangoDB with your token. You
   need a [classic permission](../../access-control/authorization.md) of

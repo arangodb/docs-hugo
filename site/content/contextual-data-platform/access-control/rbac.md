@@ -128,30 +128,17 @@ The data platform runs on Kubernetes, and RBAC is part of its infrastructure:
   them, together with a `managed:operator:<uuid>` role that grants only what
   the service needs.
 
-### Data Platform RBAC and ArangoDB RBAC
-
 RBAC is enforced at two levels:
 
-- **Data Platform RBAC**: The services of the data platform, such as the
-  Arango Control Plane (ACP) and AutoGraph, check the `ai:` actions that the
+- The services of the data platform, such as the Arango Control Plane (ACP)
+  and AutoGraph, check the `ai:` actions that the
   [AI services roles](#ai-services-roles-in-detail) grant.
-- **ArangoDB RBAC**: The ArangoDB core database system checks the `db:` actions
-  that the `coredb-*` roles grant. ArangoDB asks the authorization sidecar of
-  its pod for every decision. The operator configures this by starting the
-  ArangoDB servers with the `--server.external-rbac-service` startup option.
-  If ArangoDB RBAC is disabled, ArangoDB uses its
-  [classic permissions](authorization.md) instead.
-
-Whether ArangoDB RBAC is enabled also changes how the AI services work with your
-data in ArangoDB:
-
-- **ArangoDB RBAC disabled**: AI services like AutoGraph and the Importer read and
-  write the collections of a project with your token. In addition to an AI role,
-  you need classic permissions for the database, typically read/write access.
-- **ArangoDB RBAC enabled**: AI services work in ArangoDB with their own service
-  identity, which can only access the collections of the project. You only need
-  an AI role to use them. To access the data directly, for example, to explore
-  a graph or run AQL queries, you additionally need a `coredb-*` role.
+- The ArangoDB core database system checks the `db:` actions that the
+  `coredb-*` roles grant, if you enable RBAC for ArangoDB, called
+  ArangoDB RBAC in this documentation (see [Enable RBAC](#enable-rbac)).
+  ArangoDB then asks the authorization sidecar of
+  its pod for every decision. Otherwise, ArangoDB uses its
+  [classic permissions](authorization.md).
 
 ## Enable RBAC
 
@@ -162,7 +149,7 @@ You enable RBAC with feature flags of the ArangoDB Kubernetes Operator
 |---|---|---|
 | `--deployment.feature.central-services` | Disabled | Runs the central services and evaluates the permissions of every request, but in permissive mode, which allows all requests |
 | `--deployment.feature.rbac-enforced` | Disabled | Denies requests that the permissions don't allow |
-| `--deployment.feature.rbac-coredb` | Disabled | Enables [ArangoDB RBAC](#data-platform-rbac-and-arangodb-rbac). Requires the two flags above |
+| `--deployment.feature.rbac-coredb` | Disabled | Enables RBAC for the ArangoDB core database system, so that the `coredb-*` roles apply instead of the classic permissions. Requires the two flags above |
 
 {{< comment >}}
 TODO: Verify the complete set of flags with the kube-arangodb team.
@@ -203,6 +190,11 @@ helm upgrade --install operator \
 ```
 
 RBAC also requires authentication to be enabled for the deployment.
+
+The operator implements `rbac-coredb` by starting the ArangoDB servers with the
+`--server.external-rbac-service` startup option. Enabling it also changes which
+permissions users need to work with their data through the AI services, see
+[Access to the data in ArangoDB](#access-to-the-data-in-arangodb).
 
 {{< info >}}
 The `rbac.enabled` setting of the Helm chart of the operator is unrelated. It
@@ -245,8 +237,8 @@ it appears in the lists with `root` as its holder but cannot be handed out.
 
 For the endpoints of the ArangoDB core database system, the
 [HTTP API documentation](../../arangodb/4.x/develop/http-api/_index.md) lists
-which predefined roles grant access to each endpoint, under
-**Predefined roles (RBAC)**.
+which predefined roles grant access to each endpoint, in the
+**Role-based access control (RBAC)** box below the endpoint URL.
 
 The data platform denies everything by default. A role grants nothing until it
 is assigned to a user together with a scope, and a user's effective permissions
@@ -275,11 +267,10 @@ The AI services check their actions on the following kinds of resources:
 | `ai:database:<database>` | Databases | A database, its projects, and the database services installed for it |
 | `ai:service:<service-type>` | Shared services | A type of shared service, for example, `ai:service:arangodb-gral` for Graph Analytics |
 | `ai:secret:store` | Secrets | All secrets as one resource. Secrets cannot be scoped individually |
-| `ai:fileparser:service` | – | The File Parser |
 
 Most AI services are **database services**: you install them for a specific
-database, like AutoGraph, the Importer, AutoRAG, Natural Language to AQL, the
-Reasoner, and the MCP Server. All of their actions are checked on that
+database, like AutoGraph, the Importer, AutoRAG, Natural Language to AQL, and
+the Reasoner with its MCP server. All of their actions are checked on that
 database. Projects are not resources of their own either. If the scope of your
 role assignment covers a database, it covers all of its projects and the
 database services installed for it.
@@ -322,11 +313,10 @@ Keep the following rules in mind when you assign the AI roles:
   directly, for example, to explore the graph that AutoGraph creates or to run
   AQL queries, you additionally need a `coredb-*` role, or classic permissions if
   ArangoDB RBAC is disabled. See
-  [Data Platform RBAC and ArangoDB RBAC](#data-platform-rbac-and-arangodb-rbac).
-- The File Parser actions are only needed for using the File Parser directly.
-  AutoGraph and the Importer call it with their own service identity. The web
-  interface doesn't offer the File Parser as a resource type, so only the
-  **Everything** scope covers it.
+  [Access to the data in ArangoDB](#access-to-the-data-in-arangodb).
+- You don't need to grant anything for the File Parser, the internal service
+  that converts documents for AutoGraph and the Importer. They use it with
+  their own service identity.
 
 {{< info >}}
 Notebook servers, Container Manager services, and Graph Analytics engines don't
@@ -343,6 +333,32 @@ TODO: Verify for notebook servers and Graph Analytics engines with the
 respective teams. The source docs only cover the Container Manager
 (arangoml/user_defined_service docs/RBAC.md).
 {{< /comment >}}
+
+### Access to the data in ArangoDB
+
+The AI roles don't grant access to the data in ArangoDB. Whether you need
+permissions for the data in addition depends on the AI service and on whether
+ArangoDB RBAC is enabled (the `rbac-coredb` flag, see
+[Enable RBAC](#enable-rbac)).
+
+AI services that build or change data, like AutoGraph and the Importer, work
+differently depending on whether ArangoDB RBAC is enabled:
+
+- **ArangoDB RBAC disabled**: They read and write the collections of a
+  project with your token. In addition to an AI role, you need classic permissions for
+  the database, typically read/write access.
+- **ArangoDB RBAC enabled**: They work in ArangoDB with their own service
+  identity, which can only access the collections of the project. You only need
+  an AI role to use them.
+
+AI services that query your data always do so with your token, in both cases:
+[AutoRAG](../autorag/rbac.md),
+[Natural Language to AQL](../natural-language-to-aql/rbac.md), and the tools of
+the MCP server that the [Reasoner](../reasoner/rbac.md) manages. In addition
+to an AI role, you need read access to the database, with a `coredb-*` role if
+ArangoDB RBAC is enabled, or a classic permission otherwise. The same applies
+whenever you want to access the data directly, for example, to explore a graph
+or run AQL queries.
 
 ## Open the Access Control interface
 
@@ -443,7 +459,7 @@ The steps are the same for every role. Only the scope differs, see
    A **Roles updated** notification confirms the change.
 
 Each entry in the **Assigned** list shows the role name with a summary of its
-scope underneath, for example `Everything`. The trash icon next to an entry
+scope underneath, for example **Everything**. The trash icon next to an entry
 removes that role from the assignment.
 
 **Cancel** discards every change made in the dialog.
@@ -558,12 +574,12 @@ and [Scope an AI services role](#scope-an-ai-services-role). See
 
 {{< tab "Web interface" >}}
 For the `coredb-*` roles, the available resource types are
-`Databases`, `Collections`, `Views`, `Analyzers`, `Graphs`, and
-`Name pattern (advanced)`.
+**Databases**, **Collections**, **Views**, **Analyzers**, **Graphs**, and
+**Name pattern (advanced)**.
 
 **Select collections**
 
-For the `Collections` resource type, the scope card shows a collection picker:
+For the **Collections** resource type, the scope card shows a collection picker:
 
 - **All collections in all databases** selects everything at once.
 - A **Search collections** field filters the list.
@@ -578,10 +594,10 @@ state on the parent checkboxes.
 {{< warning >}}
 Selecting collections does not give access to the database they belong to,
 but every request to a collection requires access to its database, too.
-A scope that only consists of a `Collections` resource type therefore denies
+A scope that only consists of a **Collections** resource type therefore denies
 all requests.
 
-Adding a `Database` resource type for the database is not a solution because
+Adding a **Databases** resource type for the database is not a solution because
 it grants access to everything in the database, including all collections.
 To limit a role to individual collections, use the HTTP API instead, as shown
 in the cURL tab.
@@ -594,17 +610,13 @@ Database scope adds db:{collection,view,analyzer,graph}:<db>:*. Revisit once fix
 
 **Match resources by name pattern**
 
-The `Name pattern (advanced)` resource type replaces the picker with a single
-text field where you enter a pattern such as `analytics/report_*`. Below the
-field, the dialog previews what the pattern currently resolves to, for example:
-
-```
-Matches 312 collections
-analytics/report_daily
-analytics/report_weekly
-analytics/report_hourly
-+309
-```
+The **Name pattern (advanced)** resource type replaces the picker with a single
+text field where you enter a resource with a wildcard in it, in the same format
+as in the [HTTP API](#scopes-in-the-http-api). For example,
+`db:collection:analytics:report_*` matches every collection of the `analytics`
+database whose name starts with `report_`. You can also enter resources that
+have no resource type of their own in the dialog, like a user account
+(`db:user:<username>`).
 
 Patterns are evaluated continuously rather than expanded once, so
 **all future matches are included automatically**. Use this when the set of
@@ -657,8 +669,9 @@ With **Specific resources** selected, add one scope per resource type:
 - **Databases**: Select **All databases**, which includes databases created in
   the future, or search for and select individual databases.
 - **Shared services**: Select **All shared services, including new types**, or
-  individual services: **Notebook servers**, **Container Manager**, and
-  **Graph Analytics**.
+  individual services, such as **Notebook servers**, **Container Manager**, and
+  **Graph Analytics**. The dialog offers the types of shared services that the
+  policy of the role covers.
 - **Secrets**: Covers all secrets. There is nothing to select because secrets
   cannot be scoped individually.
 
@@ -690,7 +703,7 @@ you can use.
 
 {{< /tabs >}}
 
-### Validation
+### Incomplete and invalid assignments
 
 {{< tabs "interfaces" >}}
 
@@ -975,9 +988,8 @@ resources:
 - Administrative actions, such as creating backups, do not operate on a
   specific resource. Only a scope with the `*` resource covers them.
 - The resources of the AI services are `ai:database:<database>` for a
-  database, `ai:service:<service-type>` for a type of shared service,
-  `ai:secret:store` for the secrets, and `ai:fileparser:service` for the
-  File Parser. `ai:database:*` covers all databases and `ai:service:*` all
+  database, `ai:service:<service-type>` for a type of shared service, and
+  `ai:secret:store` for the secrets. `ai:database:*` covers all databases and `ai:service:*` all
   shared services. See
   [Resources of the AI services](#resources-of-the-ai-services).
 - The names of databases and service types in `ai:` resources cannot contain

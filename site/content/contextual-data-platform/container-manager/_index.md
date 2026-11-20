@@ -117,6 +117,19 @@ Deploy services using runtime environments and resources tailored to your needs.
 All deployed services operate within the platform's security framework, with
 integrated authentication, network isolation, and access controls.
 
+If role-based access control (RBAC) is enabled, you need the `ai-developer`
+role to upload packages and to deploy, upgrade, and remove services, and the
+`ai-user` role lets you list them. Container Manager services are
+[shared services](../access-control/rbac.md#resources-of-the-ai-services), so
+the scope of your role assignment needs to cover the **Container Manager**
+shared service, also for services that you deploy for a specific database.
+
+The platform authenticates the callers of your service and passes their token
+on to it, but it doesn't check any permissions for your service's endpoints.
+Your code decides what callers may do. When your service calls the APIs of the
+data platform on behalf of a caller, use the caller's token, not the service's
+own token, so that the permissions of that user apply.
+
 {{< comment >}}
 ## Scaling and High Availability
 

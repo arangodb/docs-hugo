@@ -15,6 +15,10 @@ workflows.
 
 To deploy services via the API, you need:
 - A Bearer token for authentication
+- If role-based access control (RBAC) is enabled, the `ai-developer` role with
+  a scope that covers the **Container Manager** shared service. Each endpoint
+  has a **Role-based access control (RBAC)** box below its URL with the
+  details
 - The external endpoint URL for your Arango Platform deployment
 - For **Bring Your Own Code**: A `.tar.gz` service package
   (see [Package Your Code](package-code/))
@@ -27,6 +31,8 @@ To deploy services via the API, you need:
 Upload your application archive to the storage backend via the FileManager service:
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/" >}}
+
+{{< rbac-endpoint "filemanager" "POST /global/byoc/" >}}
 
 ```bash
 curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/" \
@@ -68,6 +74,8 @@ Save the `name` and `version` values as you will need them in the deployment ste
 After uploading your archive, deploy it as a running service:
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" >}}
+
+{{< rbac-endpoint "acp" "POST /v1/uds" >}}
 
 ```bash
 curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
@@ -115,6 +123,8 @@ Provide your own Docker image URL to deploy a service directly, without
 uploading a code package.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" >}}
+
+{{< rbac-endpoint "acp" "POST /v1/uds" >}}
 
 ```bash
 curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
@@ -239,6 +249,8 @@ Get a list of the deployed services, including services registered as Apps:
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services" >}}
 
+{{< rbac-endpoint "acp" "POST /v1/list_services" >}}
+
 ```bash
 curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services" \
   -H "Authorization: Bearer <JWT_TOKEN>" \
@@ -296,6 +308,8 @@ Get a list of all uploaded services:
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/" >}}
 
+{{< rbac-endpoint "filemanager" "GET /global/byoc/" >}}
+
 **Query Parameters:**
 
 | Parameter | Description | Required |
@@ -333,6 +347,8 @@ Get a list of all uploaded services:
 Get all versions of a specific service:
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/{name}" >}}
+
+{{< rbac-endpoint "filemanager" "GET /global/byoc/{name}" >}}
 
 **Query Parameters:**
 
@@ -374,6 +390,8 @@ Get detailed information about a specific service version:
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/{name}/{version}" >}}
 
+{{< rbac-endpoint "filemanager" "GET /global/byoc/{name}/{version}" >}}
+
 **Response:**
 
 ```json
@@ -394,6 +412,8 @@ Get detailed information about a specific service version:
 Download the uploaded service file:
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/{name}/{version}/download" >}}
+
+{{< rbac-endpoint "filemanager" "GET /global/byoc/{name}/{version}/download" >}}
 
 ```bash
 curl -X GET "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/<SERVICE_NAME>/<VERSION>/download" \
