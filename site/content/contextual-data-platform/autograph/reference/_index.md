@@ -369,6 +369,11 @@ This example drives the build from File Manager categories. The direct upload
 with `POST /v1/import-multiple`, and a corpus build without a selector, are
 deprecated (see [Import Files](importing-files.md)).
 
+The examples call the service directly at `http://localhost:8080`, which needs
+a port-forward to the AutoGraph service in a self-managed deployment. On AMP,
+use `https://<EXTERNAL_ENDPOINT>:8529/autograph/<SERVICE_ID_POSTFIX>` instead,
+with the trailing segment of the service ID.
+
 ```bash
 # Step 1: Health check
 curl -H "Authorization: Bearer <token>" http://localhost:8080/v1/health

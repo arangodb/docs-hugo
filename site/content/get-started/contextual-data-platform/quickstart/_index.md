@@ -18,6 +18,9 @@ Context Graph that you can ask questions in natural language:
 - [Query](#query): deploy a retriever and ask questions that span all the
   texts.
 
+If you use the data platform on AMP, skip the installation: follow
+[Get started on AMP](../amp.md), then continue at [Build](#build).
+
 ## Prerequisites
 
 - **Docker**: Docker must be installed and running.

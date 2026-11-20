@@ -58,6 +58,8 @@ succeed with empty content and a warning rather than failing.
 
 ### Tuning the File Parser for self-hosted deployments
 
+{{< tag "Self-managed" >}}
+
 The File Parser ships with defaults sized for a reference data platform deployment.
 Deployments on the [Arango Managed Platform (AMP)](../../amp/_index.md) run
 these defaults unchanged. For self-hosted clusters, the settings below are the

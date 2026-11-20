@@ -7,6 +7,8 @@ description: >-
   Arango Contextual Data Platform
 draft: true
 ---
+{{< tag "Self-managed" >}}
+
 ## Move from bare-metal or unmanaged containers to a Kubernetes-managed ArangoDB
 
 ## Move from ArangoDB to Arango Contextual Data Platform

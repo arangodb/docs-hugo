@@ -157,7 +157,7 @@ https://data-platform.example.org:8529/gral/tqcge/v1/pagerank
 
 The port `:8529` is added when constructing URLs.
 
-You can also list all service IDs using kubectl:
+In a self-managed deployment, you can also list all service IDs using kubectl:
 
 ```bash
 kubectl -n arangodb get svc arangodb-gral -o jsonpath="{.spec.selector.release}"

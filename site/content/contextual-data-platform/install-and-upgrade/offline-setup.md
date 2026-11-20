@@ -6,6 +6,8 @@ description: >-
   How to set up the Contextual Data Platform on your own hardware in an
   environment without internet access, including air-gapped environments
 ---
+{{< tag "Self-managed" >}}
+
 For offline installation and the special case of a fully air-gapped environment,
 you need another environment with internet access to download data and for
 generating license keys. Data needs to be transferred in both directions between

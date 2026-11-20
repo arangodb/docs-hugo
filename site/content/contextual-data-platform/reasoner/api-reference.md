@@ -17,8 +17,9 @@ services, you reach it through the data platform, which forwards requests under
 have no version prefix such as `/v1`.
 
 The Reasoner listens on port `8080` inside its container. You can't reach this
-port from outside, but you can use `http://localhost:8080` if you forward the
-port to your machine, as in the [health check](#health-and-monitoring) examples.
+port from outside. In a self-managed deployment, you can use
+`http://localhost:8080` if you forward the port to your machine, as in the
+[health check](#health-and-monitoring) examples. On AMP, use the base URL above.
 
 The Reasoner provides two main endpoints:
 
