@@ -1048,7 +1048,8 @@ function hideEmptyOpenapiDiv() {
   if (fragment) {
     var element = document.getElementById(fragment);
     if (!element) {
-      // Like browsers, #top in any case is the top of the page (the Overview entry)
+      // #Top exists (the Overview entry), but like browsers, treat #top in any
+      // other case as the top of the page, too
       if (fragment.toLowerCase() === "top") window.scrollTo(window.scrollX, 0);
       return;
     }
