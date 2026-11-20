@@ -81,6 +81,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -133,6 +136,11 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:database:<database>"
       parameters:
         - name: database-name
           in: path
@@ -187,6 +195,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
       responses:
         '200':
           description: |
@@ -233,6 +244,11 @@ paths:
         {{</* /info */>}}
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:Create
+          resource: "db:database:<database>"
       requestBody:
         content:
           application/json:
@@ -434,6 +450,11 @@ paths:
         {{</* /info */>}}
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:Drop
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path

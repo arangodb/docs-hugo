@@ -39,6 +39,11 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
       parameters:
         - name: database-name
           in: path

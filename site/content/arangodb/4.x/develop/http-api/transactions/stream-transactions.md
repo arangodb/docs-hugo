@@ -48,6 +48,14 @@ paths:
         - coredb-reader: Only for transactions that don't write
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -321,6 +329,11 @@ paths:
         - coredb-reader: Only your own transactions
         - coredb-developer: Only your own transactions
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitorTransactions
+          if: for a transaction of another user
       parameters:
         - name: database-name
           in: path
@@ -494,6 +507,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -672,6 +688,11 @@ paths:
         - coredb-reader: Only your own transactions
         - coredb-developer: Only your own transactions
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminKillTransactions
+          if: to abort a transaction of another user
       parameters:
         - name: database-name
           in: path
@@ -838,6 +859,11 @@ paths:
         - coredb-reader: Only your own transactions
         - coredb-developer: Only your own transactions
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitorTransactions
+          if: to see the transactions of other users
       parameters:
         - name: database-name
           in: path

@@ -19,6 +19,9 @@ paths:
   /_db/{database-name}/_api/version:
   # /_admin/version is an (undocumented) alias
     get:
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getVersion
       description: |
@@ -490,6 +493,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -649,6 +655,10 @@ paths:
         including figures about data size, cache usage, individual column families, etc.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitoringInternal
       parameters:
         - name: database-name
           in: path
@@ -746,6 +756,9 @@ paths:
 paths:
   /_db/{database-name}/_admin/time:
     get:
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getTime
       description: |
@@ -803,6 +816,10 @@ paths:
 paths:
   /_db/{database-name}/_admin/status:
     get:
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitoring
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getStatus
       description: |
@@ -1073,6 +1090,7 @@ paths:
 
         This is a public API so it does *not* require authentication. It is meant to be
         used only in the context of server monitoring.
+      x-rbac-access: public
       responses:
         '200':
           description: |
@@ -1114,6 +1132,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
       responses:
         '200':
           description: |
@@ -1142,6 +1163,10 @@ paths:
         the API is made available.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminMonitoring
       responses:
         '200':
           description: ''
@@ -1563,6 +1588,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -1704,6 +1732,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -1741,6 +1772,10 @@ paths:
         server rights.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMaintenance
       parameters:
         - name: database-name
           in: path
@@ -1796,6 +1831,10 @@ paths:
         is returned.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminLicense
       parameters:
         - name: database-name
           in: path
@@ -1958,6 +1997,10 @@ paths:
         Can be called on single servers, Coordinators, and DB-Servers.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminLicense
       parameters:
         - name: database-name
           in: path
@@ -2129,6 +2172,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -2245,6 +2291,10 @@ paths:
         This endpoint requires `rw` access to the `_system` database.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminCrashHandler
       parameters:
         - name: database-name
           in: path
@@ -2402,6 +2452,10 @@ paths:
         This endpoint requires `rw` access to the `_system` database.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminCrashHandler
       parameters:
         - name: database-name
           in: path
@@ -2609,6 +2663,10 @@ paths:
         This endpoint requires `rw` access to the `_system` database.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminCrashHandler
       parameters:
         - name: database-name
           in: path
@@ -2805,6 +2863,10 @@ paths:
         This call initiates a clean shutdown sequence. Requires administrative privileges.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminShutdown
       parameters:
         - name: database-name
           in: path
@@ -2876,6 +2938,10 @@ paths:
         This API is only available on Coordinators.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminShutdown
       parameters:
         - name: database-name
           in: path
@@ -3016,6 +3082,9 @@ apiVersions: [v0]
 paths:
   /_db/{database-name}/_admin/routing/reload:
     post:
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: reloadRouting
       deprecated: true
@@ -3248,6 +3317,9 @@ apiVersions: [v0]
 paths:
   /_db/{database-name}/_admin/execute:
     post:
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: executeCode
       deprecated: true
@@ -3356,6 +3428,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
       responses:
         '200':
           description: |

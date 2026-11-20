@@ -283,6 +283,11 @@ paths:
         - coredb-reader: Only for queries that don't modify data
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -1454,6 +1459,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -1962,6 +1970,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -2459,6 +2470,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -2539,6 +2553,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -2678,6 +2695,11 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:UpdateQueryProperties
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -2922,6 +2944,11 @@ paths:
         - coredb-reader: Only your own queries
         - coredb-developer: Only your own queries
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitorAqlQueries
+          if: to see the queries of other users
       parameters:
         - name: database-name
           in: path
@@ -3180,6 +3207,11 @@ paths:
         - coredb-reader: Only your own queries
         - coredb-developer: Only your own queries
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitorAqlQueries
+          if: to see the queries of other users
       parameters:
         - name: database-name
           in: path
@@ -3410,6 +3442,11 @@ paths:
         - coredb-reader: Only your own queries
         - coredb-developer: Only your own queries
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitorAqlQueries
+          if: to clear the entries of other users
       parameters:
         - name: database-name
           in: path
@@ -3516,6 +3553,11 @@ paths:
         - coredb-reader: Only your own queries
         - coredb-developer: Only your own queries
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminKillAqlQueries
+          if: to kill a query of another user
       parameters:
         - name: database-name
           in: path
@@ -3624,6 +3666,11 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -3957,6 +4004,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -4049,6 +4099,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path

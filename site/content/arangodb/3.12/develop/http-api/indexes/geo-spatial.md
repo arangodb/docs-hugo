@@ -21,6 +21,16 @@ paths:
         will not be indexed.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:WriteMeta
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:<collection>"
+          if: on a single server
       parameters:
         - name: database-name
           in: path

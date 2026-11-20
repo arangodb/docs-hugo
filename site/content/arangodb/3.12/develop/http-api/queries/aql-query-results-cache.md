@@ -27,6 +27,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -152,6 +155,10 @@ paths:
         Clears all results stored in the AQL query results cache for the selected database.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminQueryCache
       parameters:
         - name: database-name
           in: path
@@ -228,6 +235,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -322,6 +332,10 @@ paths:
         Changing the properties may invalidate all results currently in the cache.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminQueryCache
       parameters:
         - name: database-name
           in: path

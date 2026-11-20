@@ -84,6 +84,11 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
       parameters:
         - name: database-name
           in: path
@@ -251,6 +256,11 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
       parameters:
         - name: database-name
           in: path
@@ -411,6 +421,14 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -860,6 +878,14 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -1203,6 +1229,14 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -1524,6 +1558,14 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -1810,6 +1852,14 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -1983,6 +2033,14 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -2329,6 +2387,14 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -2574,6 +2640,14 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -2817,6 +2891,14 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+          if: on a single server
       parameters:
         - name: database-name
           in: path

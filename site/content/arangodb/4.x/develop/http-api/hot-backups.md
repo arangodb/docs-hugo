@@ -47,6 +47,10 @@ paths:
         it to a remote site for an actual backup.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminBackup
       requestBody:
         content:
           application/json:
@@ -145,6 +149,10 @@ paths:
         the ArangoDB service locally.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminBackup
       requestBody:
         content:
           application/json:
@@ -236,6 +244,10 @@ paths:
         Delete a specific local backup identified by the given `id`.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminBackup
       requestBody:
         content:
           application/json:
@@ -297,6 +309,10 @@ paths:
         Lists all locally found backups.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminBackup
       requestBody:
         content:
           application/json:
@@ -381,6 +397,10 @@ paths:
         a running upload operation.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminBackup
       requestBody:
         content:
           application/json:
@@ -536,6 +556,10 @@ paths:
         a running download operation.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminBackup
       requestBody:
         content:
           application/json:

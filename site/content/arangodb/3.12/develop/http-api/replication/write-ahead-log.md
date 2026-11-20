@@ -40,6 +40,10 @@ paths:
         - `server`: An object with fields `version` and `serverId`
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminWalAccess
       parameters:
         - name: database-name
           in: path
@@ -106,6 +110,10 @@ paths:
         {{</* /info */>}}
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminWalAccess
       parameters:
         - name: database-name
           in: path
@@ -261,6 +269,10 @@ paths:
         {{</* /info */>}}
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminWalAccess
       parameters:
         - name: database-name
           in: path

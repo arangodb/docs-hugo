@@ -46,6 +46,11 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -147,6 +152,11 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -284,6 +294,16 @@ paths:
         write lock for the duration of the index creation.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:WriteMeta
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:<collection>"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -337,6 +357,18 @@ paths:
         Deletes an index with `index-id`.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:WriteMeta
+          resource: "db:database:{database-name}"
+        - action: db:WriteMeta
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:<collection>"
+          if: on a single server
       parameters:
         - name: database-name
           in: path

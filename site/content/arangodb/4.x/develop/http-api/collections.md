@@ -39,6 +39,15 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_analyzers"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
       parameters:
         - name: database-name
           in: path
@@ -153,6 +162,11 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -304,6 +318,11 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -714,6 +733,11 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -1121,6 +1145,11 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -1672,6 +1701,11 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -1866,6 +1900,11 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -2366,6 +2405,11 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -2802,6 +2846,11 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -2993,6 +3042,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -3056,6 +3108,13 @@ paths:
         object with the following attributes.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Create
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -3830,6 +3889,15 @@ paths:
         Delete the collection identified by `collection-name` and all its documents.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Drop
+          resource: "db:collection:{database-name}:{collection-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
       parameters:
         - name: database-name
           in: path
@@ -4001,6 +4069,13 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -4211,6 +4286,16 @@ paths:
         the rename endpoint (but not in clusters).
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
+        - action: db:WriteMeta
+          resource: "db:collection:{database-name}:{collection-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection-name}"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -4785,6 +4870,11 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -4934,6 +5024,15 @@ paths:
         all graph definitions inside the `_graphs` collection in the current database.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
+        - action: db:WriteMeta
+          resource: "db:collection:{database-name}:{collection-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -5490,6 +5589,13 @@ paths:
         space shall be reclaimed. In this case the compaction operation can be used.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
+        - action: db:WriteMeta
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path

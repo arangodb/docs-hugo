@@ -39,6 +39,11 @@ paths:
         execute this action.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Create
+          resource: "db:user:<user>"
       parameters:
         - name: database-name
           in: path
@@ -134,6 +139,9 @@ paths:
       x-rbac-predefined-roles:
         - coredb-admin
         - tenant-admin
+      x-rbac-permissions:
+        - action: db:WriteMeta
+          resource: "db:user:{user}"
       parameters:
         - name: database-name
           in: path
@@ -231,6 +239,9 @@ paths:
       x-rbac-predefined-roles:
         - coredb-admin
         - tenant-admin
+      x-rbac-permissions:
+        - action: db:WriteMeta
+          resource: "db:user:{user}"
       parameters:
         - name: database-name
           in: path
@@ -326,6 +337,9 @@ paths:
       x-rbac-predefined-roles:
         - coredb-admin
         - tenant-admin
+      x-rbac-permissions:
+        - action: db:Drop
+          resource: "db:user:{user}"
       parameters:
         - name: database-name
           in: path
@@ -397,6 +411,10 @@ paths:
         - coredb-developer: Only your own user account
         - coredb-admin
         - tenant-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:user:{user}"
+          if: unless it is your own user
       parameters:
         - name: database-name
           in: path
@@ -474,6 +492,12 @@ paths:
           interface to store graph viewer settings and saved queries.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminReadUsers
+        - action: db:Read
+          resource: "db:user:<user>"
       parameters:
         - name: database-name
           in: path

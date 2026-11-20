@@ -27,6 +27,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -132,6 +135,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -255,6 +261,11 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteMeta
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -399,6 +410,11 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteMeta
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -550,6 +566,11 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteMeta
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path

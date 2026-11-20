@@ -47,6 +47,10 @@ paths:
         for collection.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitoring
       parameters:
         - name: database-name
           in: path
@@ -161,6 +165,10 @@ paths:
         usage metrics per shard and per user whenever a shard is accessed.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitoringInternal
       parameters:
         - name: database-name
           in: path

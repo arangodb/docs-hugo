@@ -18,6 +18,13 @@ paths:
         already exist.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Create
+          resource: "db:view:{database-name}:<view>"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -222,6 +229,13 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:view:{database-name}:{view-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -365,6 +379,13 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:view:{database-name}:{view-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -552,6 +573,13 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:view:{database-name}:<view>"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -650,6 +678,13 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteMeta
+          resource: "db:view:{database-name}:{view-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -842,6 +877,13 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteMeta
+          resource: "db:view:{database-name}:{view-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -1034,6 +1076,15 @@ db._drop(coll.name());
 paths:
   /_db/{database-name}/_api/view/{view-name}/rename#searchalias:
     put:
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Drop
+          resource: "db:view:{database-name}:{view-name}"
+        - action: db:Create
+          resource: "db:view:{database-name}:<view>"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
     # The PATCH method can be used as an alias
       operationId: renameViewSearchAlias
       description: |
@@ -1215,6 +1266,13 @@ paths:
         Deletes the View identified by `view-name`.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Drop
+          resource: "db:view:{database-name}:{view-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path

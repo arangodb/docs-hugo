@@ -35,6 +35,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
       parameters:
         - name: DBserver
           in: query
@@ -101,6 +104,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
       responses:
         '200':
           description: |
@@ -189,6 +195,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
       responses:
         '200':
           description: |
@@ -214,6 +223,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
       responses:
         '200':
           description: |
@@ -276,6 +288,10 @@ paths:
         itself automatically at some point after disabling it.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminMaintenance
       requestBody:
         content:
           application/json:
@@ -320,6 +336,10 @@ paths:
         Check whether the specified DB-Server is in maintenance mode and until when.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminMaintenance
       parameters:
         - name: DB-Server-ID
           in: path
@@ -397,6 +417,10 @@ paths:
         considered viable failover targets because they are likely restarted soon.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminMaintenance
       parameters:
         - name: DB-Server-ID
           in: path
@@ -689,6 +713,10 @@ paths:
         It additionally shows the amount of ongoing and pending move shard operations.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminRebalance
       responses:
         '200':
           description: |
@@ -842,6 +870,10 @@ paths:
       operationId: computeClusterRebalancePlan
       description: |
         Compute a set of move shard operations to improve balance.
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminRebalance
       requestBody:
         content:
           application/json:
@@ -1194,6 +1226,10 @@ paths:
         Execute the given set of move shard operations. You can use the
         `POST /_admin/cluster/rebalance` endpoint to calculate these operations to improve
         the balance of shards, leader shards, and follower shards.
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminRebalance
       requestBody:
         content:
           application/json:
@@ -1263,6 +1299,10 @@ paths:
         These moves are then immediately executed.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminRebalance
       requestBody:
         content:
           application/json:
@@ -1627,6 +1667,10 @@ paths:
         {{</* /warning */>}}
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminMaintenance
       parameters:
         - name: number
           in: query

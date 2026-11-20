@@ -39,6 +39,10 @@ paths:
         the value of the `--log.api-enabled` startup option.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminReadLogs
       parameters:
         - name: upto
           in: query
@@ -146,6 +150,10 @@ paths:
         the value of the `--log.api-enabled` startup option.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminReadLogs
       parameters:
         - name: serverId
           in: query
@@ -245,6 +253,10 @@ paths:
         the value of the `--log.api-enabled` startup option.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminSetLogLevel
       parameters:
         - name: serverId
           in: query
@@ -598,6 +610,10 @@ paths:
         the value of the `--log.api-enabled` startup option.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminSetLogLevel
       parameters:
         - name: serverId
           in: query
@@ -637,6 +653,10 @@ paths:
         the value of the `--log.api-enabled` startup option.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminReadLogs
       responses:
         '200':
           description: |
@@ -676,6 +696,10 @@ paths:
         the value of the `--log.api-enabled` startup option.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminSetLogLevel
       requestBody:
         content:
           application/json:
@@ -732,6 +756,10 @@ paths:
         The endpoint returns an empty list of calls if turned off.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminApiCalls
       parameters:
         - name: database-name
           in: path
@@ -972,6 +1000,10 @@ paths:
         The endpoint returns an empty list of queries if turned off.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminAqlQueries
       parameters:
         - name: database-name
           in: path

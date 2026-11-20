@@ -39,6 +39,13 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:Read
+          resource: "db:graph:{database-name}:<graph>"
       parameters:
         - name: database-name
           in: path
@@ -225,6 +232,21 @@ paths:
         definition of its edges.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:Create
+          resource: "db:graph:{database-name}:<graph>"
+        - action: db:Create
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:Read
+          resource: "db:graph:{database-name}:<graph>"
       parameters:
         - name: database-name
           in: path
@@ -977,6 +999,13 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
       parameters:
         - name: database-name
           in: path
@@ -1204,6 +1233,23 @@ paths:
         can be dropped as well.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:Read
+          resource: "db:graph:{database-name}:<graph>"
+        - action: db:Drop
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Drop
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -1355,6 +1401,13 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
       parameters:
         - name: database-name
           in: path
@@ -1472,6 +1525,21 @@ paths:
         If the collection does not exist, it is created.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:WriteMeta
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:Create
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:_graphs"
       parameters:
         - name: database-name
           in: path
@@ -1928,6 +1996,13 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
       parameters:
         - name: database-name
           in: path
@@ -2382,6 +2457,13 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
       parameters:
         - name: database-name
           in: path
@@ -2502,6 +2584,21 @@ paths:
         Additionally, collection creation options can be set.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:WriteMeta
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:Create
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:_graphs"
       parameters:
         - name: database-name
           in: path
@@ -2975,6 +3072,27 @@ paths:
         This modifies all occurrences of this definition in all graphs known to your database.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:WriteMeta
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:WriteMeta
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:Create
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:Read
+          resource: "db:graph:{database-name}:<graph>"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:_graphs"
       parameters:
         - name: database-name
           in: path
@@ -3467,6 +3585,25 @@ paths:
         and can still be used in your queries.
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:WriteMeta
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:WriteMeta
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:Read
+          resource: "db:graph:{database-name}:<graph>"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Drop
+          resource: "db:collection:{database-name}:{collection}"
       parameters:
         - name: database-name
           in: path
@@ -3879,6 +4016,18 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -4208,6 +4357,15 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -4513,6 +4671,18 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+          if: on a single server
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -4961,6 +5131,18 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+          if: on a single server
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -5411,6 +5593,23 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+          if: on a single server
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
+          if: on a single server
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -5749,6 +5948,20 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -6171,6 +6384,15 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -6487,6 +6709,18 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+          if: on a single server
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -6996,6 +7230,20 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+          if: on a single server
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -7523,6 +7771,18 @@ paths:
       x-rbac-predefined-roles:
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:graph:{database-name}:{graph}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
+          if: on a single server
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)

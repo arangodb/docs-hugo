@@ -48,6 +48,10 @@ paths:
         [superuser JWT](../authentication.md#jwt-superuser-tokens).
       x-rbac-predefined-roles:
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminMonitoringInternal
       parameters:
         - name: database-name
           in: path
@@ -397,6 +401,10 @@ paths:
         By default, `rw` access for the `_system` database is
         sufficient. If the startup option is enabled, the endpoint requires a
         [superuser JWT](../authentication.md#jwt-superuser-tokens).
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminMonitoringInternal
       parameters:
         - name: database-name
           in: path

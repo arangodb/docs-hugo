@@ -283,6 +283,7 @@ paths:
         The lifetime for the token is controlled by the `--server.session-timeout`
         startup option, unless you specify a different lifetime with the
         `expiryTime` attribute.
+      x-rbac-access: public
       requestBody:
         content:
           application/json:
@@ -473,6 +474,9 @@ paths:
       x-rbac-predefined-roles:
         - coredb-admin
         - tenant-admin
+      x-rbac-permissions:
+        - action: db:WriteMeta
+          resource: "db:user:{user}"
       parameters:
         - name: user
           in: path
@@ -762,6 +766,9 @@ paths:
       x-rbac-predefined-roles:
         - coredb-admin
         - tenant-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:user:{user}"
       parameters:
         - name: user
           in: path
@@ -957,6 +964,9 @@ paths:
       x-rbac-predefined-roles:
         - coredb-admin
         - tenant-admin
+      x-rbac-permissions:
+        - action: db:WriteMeta
+          resource: "db:user:{user}"
       parameters:
         - name: user
           in: path
@@ -1130,6 +1140,9 @@ paths:
         - coredb-reader
         - coredb-developer
         - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
