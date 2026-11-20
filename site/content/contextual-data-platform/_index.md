@@ -16,7 +16,7 @@ aliases:
 The Arango Contextual Data Platform brings everything Arango offers together
 in a single solution that you can deploy and self-manage on-premises or in the
 cloud, or use as a managed service on the
-[Arango Managed Platform (AMP)](../amp/contextual-data-platform.md).
+[Arango Managed Platform (AMP)](../get-started/contextual-data-platform/amp.md).
 It is built on a modern, cloud-native foundation designed for enterprise
 scalability and reliability.
 
@@ -81,8 +81,8 @@ Any structured data extracted from uploaded files
 ## Deployment options
 
 Arango can run the data platform for you on the
-[Arango Managed Platform (AMP)](../amp/contextual-data-platform.md), in Google
-Cloud or AWS, and handle upgrades, monitoring, and backups. Or you
+[Arango Managed Platform (AMP)](../get-started/contextual-data-platform/amp.md),
+in Google Cloud or AWS, and handle upgrades, monitoring, and backups. Or you
 [install](install-and-upgrade/_index.md) it on your own Kubernetes cluster with
 the ArangoDB Kubernetes Operator, on-premises, in the cloud, or air-gapped.
 

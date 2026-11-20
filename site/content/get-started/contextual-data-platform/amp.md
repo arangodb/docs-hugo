@@ -18,10 +18,12 @@ To run the data platform on your own machine or Kubernetes cluster instead, see
 
 - An AMP account. Sign up or sign in at
   [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home).
-- Access to the Contextual Data Platform in your AMP organization.
+- Access to the AI Suite flavour in your AMP organization. It is available as
+  part of the
+  [Arango Developer Edition](https://arango.ai/arango-developer-edition/).
   {{< comment >}}
-  TODO(DOC-952): Describe how access is granted (trial, PLG sign-up, sales) once
-  decided.
+  TODO(DOC-952): Describe how access is granted through the Developer Edition
+  once the PLG team decides. Draft pending PLG team review of this guide.
   {{< /comment >}}
 - An API key for an OpenAI-compatible LLM provider. See
   [Supported LLM providers and models](../../contextual-data-platform/llm-models.md).
@@ -44,7 +46,17 @@ To run the data platform on your own machine or Kubernetes cluster instead, see
    your organization and the region.
 7. Select a node size. The list only shows the sizes that support the selected
    flavour.
+   {{< comment >}}
+   TODO(DOC-952): An A4 configuration is not enough for AI Suite. Collect the
+   minimum node size and all other prerequisites and limitations (ask Hari).
+   {{< /comment >}}
 8. Check the **Summary** panel, then click **Create deployment**.
+
+{{< comment >}}
+TODO(DOC-952): Confirm whether the AI Suite flavour changes the Price/hour in
+the Summary panel, and whether the Free Trial, On-Demand, and Committed packages
+apply to it.
+{{< /comment >}}
 
 The deployment page shows **Deployment creation in progress, please wait.**
 Provisioning takes a few minutes. The deployment is ready when the

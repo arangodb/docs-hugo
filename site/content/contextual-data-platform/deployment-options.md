@@ -10,10 +10,10 @@ description: >-
 ---
 You can run the Arango Contextual Data Platform in two ways:
 
-- Managed on the
-  [Arango Managed Platform (AMP)](../amp/contextual-data-platform.md): Arango
-  runs the data platform for you in Google Cloud or AWS. You create a
-  deployment in the AMP dashboard and connect to it.
+- Managed on the Arango Managed Platform (AMP): Arango runs the data platform
+  for you in Google Cloud or AWS. You create a deployment in the AMP dashboard
+  and connect to it. See
+  [Get started on AMP](../get-started/contextual-data-platform/amp.md).
 - Self-managed on your own Kubernetes cluster: you install the data platform
   with the ArangoDB Kubernetes Operator (`kube-arangodb`), on-premises, in the
   cloud, or in an air-gapped environment.

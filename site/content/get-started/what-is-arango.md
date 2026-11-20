@@ -151,7 +151,7 @@ Both editions require ArangoDB Enterprise Edition 3.12.12 or later. Licenses
 activate and renew automatically through the Kubernetes Operator. See
 [License Management](../contextual-data-platform/license-management.md).
 
-**Managed**: The [Arango Managed Platform (AMP)](../amp/contextual-data-platform.md)
+**Managed**: The [Arango Managed Platform (AMP)](../get-started/contextual-data-platform/amp.md)
 runs the Contextual Data Platform for you on Google Cloud or AWS, with
 monitoring, upgrades, and backups handled. AMP deployments do not need a
 license key. See
