@@ -1,0 +1,16 @@
+{{- /* Formats a list of role names as inline code, in the order of the
+       `roles` list of site/data/rbac_services.yaml (least to most privileged
+       within the AI roles), or "None" for an empty list.
+       Takes the list of role names, returns a string. */ -}}
+{{- $data := index hugo.Data "rbac_services" -}}
+{{- $out := slice -}}
+{{- range $data.roles -}}
+  {{- if in $ .name -}}
+    {{- $out = $out | append (printf "`%s`" .name) -}}
+  {{- end -}}
+{{- end -}}
+{{- $result := "None" -}}
+{{- if $out -}}
+  {{- $result = delimit $out ", " -}}
+{{- end -}}
+{{- return $result -}}

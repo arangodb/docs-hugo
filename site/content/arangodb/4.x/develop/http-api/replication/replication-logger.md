@@ -62,6 +62,10 @@ paths:
           - `lastServedTick`: last tick value served to this client via the WAL tailing API
 
           - `time`: date and time when this client last called the WAL tailing API
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path

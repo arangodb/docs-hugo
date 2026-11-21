@@ -45,6 +45,8 @@ paths:
         guarantee consistency. Note that the backup at first resides on the
         same machine and hard drive as the original data. Make sure to upload
         it to a remote site for an actual backup.
+      x-rbac-predefined-roles:
+        - coredb-admin
       requestBody:
         content:
           application/json:
@@ -141,6 +143,8 @@ paths:
         Restores a consistent local backup from a
         snapshot in time, with a given id. The backup snapshot must reside on
         the ArangoDB service locally.
+      x-rbac-predefined-roles:
+        - coredb-admin
       requestBody:
         content:
           application/json:
@@ -230,6 +234,8 @@ paths:
       operationId: deleteBackup
       description: |
         Delete a specific local backup identified by the given `id`.
+      x-rbac-predefined-roles:
+        - coredb-admin
       requestBody:
         content:
           application/json:
@@ -289,6 +295,8 @@ paths:
       operationId: listBackups
       description: |
         Lists all locally found backups.
+      x-rbac-predefined-roles:
+        - coredb-admin
       requestBody:
         content:
           application/json:
@@ -371,6 +379,8 @@ paths:
         Upload a specific local backup to a remote repository, or query
         progress on a previously scheduled upload operation, or abort
         a running upload operation.
+      x-rbac-predefined-roles:
+        - coredb-admin
       requestBody:
         content:
           application/json:
@@ -524,6 +534,8 @@ paths:
         Download a specific local backup from a remote repository, or query
         progress on a previously scheduled download operation, or abort
         a running download operation.
+      x-rbac-predefined-roles:
+        - coredb-admin
       requestBody:
         content:
           application/json:

@@ -116,6 +116,24 @@ as follows:\
   It can be preceded by `/_db/:database`, with `:database` replaced by a
   database name, to select another database than the default `_system` database.
 
+- **Predefined roles (RBAC)** is only relevant for the
+  Arango Contextual Data Platform with
+  [role-based access control (RBAC)](../../../../contextual-data-platform/access-control/rbac.md)
+  enabled. It lists the predefined roles that each grant access to the
+  endpoint on their own, so that you know which role to assign to a user for
+  using the endpoint. A remark next to a role indicates a limitation, for
+  example, that the role only lets you see your own queries.
+
+  A role defines the maximum set of actions and resources it can grant. The
+  scope of the role assignment can reduce this to the permissions a user
+  actually needs, for example, to a specific database or collections, or to a
+  subset of the actions. The role
+  only grants access to an endpoint if the scope covers the resources of the
+  request, like the database and collection in the URL. The reserved
+  `super-admin` role of the `root` user is not listed, as it grants access to
+  all endpoints except for those that require a superuser token. **None** means
+  that no predefined role grants access, not even `super-admin`.
+
 - `:collection` and `:key` (and `:database`) are placeholders called
   **Path Parameters** that you have to replace with a collection name and
   document key (and database name) in this case. They are always required.
@@ -176,6 +194,11 @@ Content-Length: 160
 
 ArangoDB's HTTP API is documented using the industry-standard
 **OpenAPI Specification**, more specifically [OpenAPI version 3.1](https://swagger.io/specification/).
+
+The predefined roles of the data platform's RBAC that grant access to an endpoint
+are included as the `x-rbac-predefined-roles` extension of the operation. It is
+a list of role names, where an item can also be an object that maps the role
+name to a remark, like `{"coredb-reader": "Only your own queries"}`.
 
 {{< comment >}} TODO: Swagger UI in new core UI?
 You can explore the API with the interactive **Swagger UI** using the

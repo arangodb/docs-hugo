@@ -23,6 +23,10 @@ paths:
       deprecated: true
       description: |
         Fetches all existing tasks on the server.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -124,6 +128,10 @@ paths:
       deprecated: true
       description: |
         fetches one existing task on the server specified by `id`
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -244,6 +252,9 @@ paths:
       deprecated: true
       description: |
         Creates a new task with a generated identifier.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -385,6 +396,9 @@ paths:
         Registers a new task with the specified ID.
 
         Not compatible with load balancers.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -533,6 +547,9 @@ paths:
       deprecated: true
       description: |
         Deletes the task identified by `id` on the server.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path

@@ -80,6 +80,10 @@ paths:
         - `_id`, containing the document identifier with the format `<collection-name>/<document-key>`.
         - `_key`, containing the document key that uniquely identifies a document within the collection.
         - `_rev`, containing the document revision.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -243,6 +247,10 @@ paths:
         Like `GET`, but only returns the header fields and not the body. You
         can use this call to get the current revision of a document or check if
         the document was deleted.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -400,6 +408,9 @@ paths:
         If the query parameter `returnNew` is `true`, then, for each
         generated document, the complete new document is returned under
         the `new` attribute in the result.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -846,6 +857,9 @@ paths:
 
         If the document does not exist, then a *HTTP 404* is returned and the
         body of the response contains an error document.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -1186,6 +1200,9 @@ paths:
 
         If the document does not exist, then a *HTTP 404* is returned and the
         body of the response contains an error document.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -1504,6 +1521,9 @@ paths:
         If the query parameter `returnOld` is `true`, then
         the complete previous revision of the document
         is returned under the `old` attribute in the result.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -1786,6 +1806,10 @@ paths:
         - `_id`, containing the document identifier with the format `<collection-name>/<document-key>`.
         - `_key`, containing the document key that uniquely identifies a document within the collection.
         - `_rev`, containing the document revision.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -1956,6 +1980,9 @@ paths:
         error codes and how often each kind of error occurred. For example,
         `1200:17,1205:10` means that in 17 cases the error 1200 ("revision conflict")
         has happened, and in 10 cases the error 1205 ("illegal document handle").
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -2299,6 +2326,9 @@ paths:
         error codes and how often each kind of error occurred. For example,
         `1200:17,1205:10` means that in 17 cases the error 1200 ("revision conflict")
         has happened, and in 10 cases the error 1205 ("illegal document handle").
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -2541,6 +2571,9 @@ paths:
         error codes and how often each kind of error occurred. For example,
         `1200:17,1205:10` means that in 17 cases the error 1200 ("revision conflict")
         has happened, and in 10 cases the error 1205 ("illegal document handle").
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -2781,6 +2814,9 @@ paths:
         error codes and how often each kind of error occurred. For example,
         `1200:17,1205:10` means that in 17 cases the error 1200 ("revision conflict")
         has happened, and in 10 cases the error 1205 ("illegal document handle").
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path

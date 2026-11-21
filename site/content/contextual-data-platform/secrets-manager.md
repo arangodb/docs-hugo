@@ -31,6 +31,14 @@ embedding model and need an API key for a provider like OpenAI. See
 
 Secrets are encrypted at rest using a token derived from the Kubernetes namespace.
 
+If role-based access control (RBAC) is enabled, you need the `secret-admin`
+role to create, change, and delete secrets. The `ai-developer` role lets you
+list and read secrets, for example, to select an API key when you configure a
+service. In both cases, the scope of the role assignment needs to include the
+secrets. Secrets cannot be scoped individually, so a role assignment either
+covers all secrets or none of them. See
+[Role-based access control](access-control/rbac.md#ai-services-roles-in-detail).
+
 Each service that runs in the Contextual Data Platform can access the secrets via a
 sidecar container for metadata that runs in the pod of the service. <!-- TODO: Does it need to be enabled via a configuration? -->
 

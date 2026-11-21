@@ -47,6 +47,8 @@ paths:
         expect in a cluster setup using a single Coordinator querying this Coordinator.
         Just with the difference that cluster transactions have no notion of
         intermediate commits and will not increase the value.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -578,6 +580,8 @@ paths:
         - `type`: Either `current`, `accumulated`, or `distribution`.
         - `cuts`: The distribution vector.
         - `units`: Units in which the figure is measured.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path

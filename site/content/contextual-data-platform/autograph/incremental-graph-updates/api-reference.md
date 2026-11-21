@@ -50,6 +50,8 @@ insert. The call is synchronous.
 The corpus and the target category have to exist already. If the project has
 exactly one category, you can omit `category`. Otherwise, it is required.
 
+{{% rbac-endpoint "autograph" "POST /v1/graph/insert" %}}
+
 ### Request
 
 Every document is identified by its File Manager `file_id`. Adding takes no
@@ -182,6 +184,8 @@ removal still reports success, and the file stays in the File Manager.
 Use File Manager IDs in `file_ids` if you can, as they are stable. Otherwise,
 provide `doc_names`, which are looked up in the requested category. You need to
 provide at least one of the two lists.
+
+{{% rbac-endpoint "autograph" "POST /v1/graph/delete" %}}
 
 ### Request
 
@@ -346,6 +350,8 @@ this operation update. The call is asynchronous.
 
 Every document has to be in the requested category already. A single
 invalid document makes the whole batch fail before anything is changed.
+
+{{% rbac-endpoint "autograph" "POST /v1/graph/update" %}}
 
 ### Request
 
@@ -537,6 +543,8 @@ The flag is set when the `divergence_score` is above the threshold,
 which is `0.25` and not configurable. For how the divergence is calculated,
 with examples, and how the values change over time, see
 [Divergence and Reorganization](divergence-and-reorganization.md).
+
+{{% rbac-endpoint "autograph" "POST /v1/graph/recluster" %}}
 
 {{< warning >}}
 **Plan reorganizing as a maintenance operation.** It holds the single

@@ -77,6 +77,10 @@ paths:
         - `sharding`: the default sharding method for collections created in this database
         - `replicationFactor`: the default replication factor for collections in this database
         - `writeConcern`: the default write concern for collections in this database
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -125,6 +129,10 @@ paths:
       description: |
         Retrieves the list of all databases the current user can access without
         specifying a different username or password.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -175,6 +183,10 @@ paths:
         {{</* info */>}}
         Retrieving the list of databases is only possible from within the `_system` database.
         {{</* /info */>}}
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       responses:
         '200':
           description: |
@@ -219,6 +231,8 @@ paths:
         {{</* info */>}}
         Creating a new database is only possible from within the `_system` database.
         {{</* /info */>}}
+      x-rbac-predefined-roles:
+        - coredb-admin
       requestBody:
         content:
           application/json:
@@ -418,6 +432,8 @@ paths:
         Dropping a database is only possible from within the `_system` database.
         The `_system` database itself cannot be dropped.
         {{</* /info */>}}
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path

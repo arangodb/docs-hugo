@@ -28,6 +28,10 @@ paths:
         If the result is not available yet or if the job is not known (anymore),
         the additional header is not present and you can tell the status from
         the HTTP status code.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -229,6 +233,10 @@ paths:
         might take some time to actually cancel the running async job.
 
         If you cancel an ongoing AQL query job, the query gets killed.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -379,6 +387,10 @@ paths:
 
         If you delete the result of an ongoing AQL query job, this does not kill
         the query but leaves it running and discards the results when it finishes.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -594,6 +606,10 @@ paths:
 
         - The IDs of async jobs with a specific status
         - The processing status of a specific async job
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path

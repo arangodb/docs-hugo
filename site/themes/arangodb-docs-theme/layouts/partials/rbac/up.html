@@ -1,0 +1,15 @@
+{{- /* Path from the directory of the given page back to the content root, so
+       that the content-root-relative paths of site/data/rbac_services.yaml
+       can be emitted as relative Markdown links that the link render hook
+       resolves and checks like any other link. Same approach as the
+       service-versions shortcode. */ -}}
+{{- $up := "" -}}
+{{- with .File -}}
+  {{- $dir := path.Dir .Path -}}
+  {{- if ne $dir "." -}}
+    {{- range split $dir "/" -}}
+      {{- $up = printf "../%s" $up -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $up -}}

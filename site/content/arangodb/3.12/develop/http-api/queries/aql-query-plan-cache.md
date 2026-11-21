@@ -29,6 +29,10 @@ paths:
         This requires read privileges for the selected database. In addition, only those
         query plans are returned for which the current user has at least read permissions
         on all collections and Views included in the query.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -148,6 +152,9 @@ paths:
         selected database.
 
         This requires write privileges for the selected database.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
