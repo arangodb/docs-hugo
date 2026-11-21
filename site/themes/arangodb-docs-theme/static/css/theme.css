@@ -2185,7 +2185,9 @@ details[open] > summary::before {
     margin-top: 0;
 }
 
-.details-box > .details-body > :last-child {
+.details-box > .details-body > :last-child,
+.details-box > .details-body > .highlight:last-child > pre,
+.highlight:has(+ .details-box) > pre {
     margin-bottom: 0;
 }
 
