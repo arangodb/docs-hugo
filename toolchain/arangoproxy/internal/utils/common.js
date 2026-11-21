@@ -25,6 +25,28 @@ var assert = function(condition, assertion) {
   }
 };
 
+// The error numbers of the error names that an example expects
+// (`// expectedError(ERROR_NAME)` comments), null for unknown names. Resolved
+// here so that the numbers match the version of the server.
+function __docsErrorCodes(names) {
+  var codes = {};
+  names.forEach(function (name) {
+    codes[name] = errors.hasOwnProperty(name) ? errors[name].code : null;
+  });
+  return codes;
+}
+
+// Runs the cursor of an AQL example and returns the result. Warnings are
+// printed as a separate line that arangoproxy shows below the output.
+function __docsQuery(cursor) {
+  var result = cursor.toArray();
+  var extra = cursor.getExtra() || {};
+  if (extra.warnings && extra.warnings.length > 0) {
+    print('WARNINGS ' + JSON.stringify(extra.warnings));
+  }
+  return result;
+}
+
 
 
 // The page (source file) of the current example, set by arangoproxy before each

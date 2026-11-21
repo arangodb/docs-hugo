@@ -741,7 +741,7 @@ var graph = examples.loadGraph("social");
 graph.relation.save(
   "relation/aliceAndBob",
    "female/alice",
-  {type: "married", _key: "bobAndAlice"}); // xpError(ERROR_GRAPH_INVALID_EDGE)
+  {type: "married", _key: "bobAndAlice"}); // expectedError(ERROR_GRAPH_INVALID_EDGE)
 ~examples.dropGraph("social");
 ```
 

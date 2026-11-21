@@ -4,7 +4,7 @@ menuTitle: Graph queries
 weight: 35
 description: >-
   You can perform graph traversals and path searches on named graphs as well as
-  collection sets with AQL
+  collection sets with AQL, and find patterns of nodes and edges
 ---
 There are multiple ways to work with [graphs in ArangoDB](../../graphs/_index.md),
 as well as different ways to query your graphs using AQL.
@@ -28,6 +28,10 @@ make full use of optimizations and therefore best performance is to be expected:
 - [AQL Traversals](traversals.md) to follow edges connected to a start node,
   with multiple hops up to a configured, optionally variable depth. It can be
   combined with AQL filter conditions.
+
+- [AQL `MATCH`](../high-level-operations/match.md) to find all occurrences of
+  a pattern of nodes and edges, described with a syntax similar to Cypher and
+  GQL. It only supports collection sets, not named graphs.
 
 - [AQL Shortest Path](shortest-path.md) to find one shortest (or lightest) path
   between two given documents.

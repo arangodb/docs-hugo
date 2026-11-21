@@ -36,8 +36,11 @@ type ExampleOptions struct {
 	Type        string                 `yaml:"type,omitempty" json:"type,omitempty"`       // Example Name
 	Version     string                 `yaml:"-" json:"-"`                                 // Arango instance version to launch the example against
 	Render      RenderType             `yaml:"render,omitempty" json:"render,omitempty"`   // Return the example code, the example output or both
-	Explain     bool                   `yaml:"explain,omitempty" json:"explain,omitempty"` // AQL @EXPLAIN flag
+	Explain     bool                   `yaml:"explain,omitempty" json:"explain,omitempty"` // AQL: show the execution plan instead of the result
 	BindVars    map[string]interface{} `yaml:"bindVars,omitempty" json:"bindVars,omitempty"`
+	// AQL: query options, i.e. the `options` object of the cursor API request
+	// body (the sub-options like `maxRuntime`, not `count`, `batchSize`, etc.)
+	QueryOptions map[string]interface{} `yaml:"options,omitempty" json:"queryOptions,omitempty"`
 	Dataset     string                 `yaml:"dataset,omitempty" json:"dataset,omitempty"`
 	SaveCache   string                 `yaml:"-" json:"-"`
 	Filename    string                 `yaml:"-" json:"-"`
@@ -113,6 +116,8 @@ type ExampleResponse struct {
 	Output  string         `json:"output"`
 	Error   string         `json:"error"`
 	Options ExampleOptions `json:"options"`
+	// AQL: the warnings of the query as a JSON array, if there are any
+	Warnings string `json:"warnings,omitempty"`
 	// No server for the requested version was used during generation, so the
 	// example didn't run and Output only contains a notice (see service.go)
 	NoServer bool `json:"noServer,omitempty"`
@@ -142,13 +147,32 @@ func (r ExampleResponse) String() string {
 	return string(j)
 }
 
+// An example declares the errors it expects with a comment after the statement
+// that raises them, e.g. `db._document("c/x"); // expectedError(ERROR_ARANGO_DOCUMENT_NOT_FOUND)`.
+// In AQL examples, the comment is an AQL comment.
+var expectedErrorRE = regexp.MustCompile(`//[ \t]*expectedError\([ \t]*([A-Za-z0-9_]*)[ \t]*\)`)
+var expectedErrorCommentRE = regexp.MustCompile(`(?m)[ \t]*//[ \t]*expectedError\(.*`)
+
+// ExpectedErrors returns the error names of the expectedError comments in the
+// code, without duplicates
+func ExpectedErrors(code string) []string {
+	names := []string{}
+	seen := map[string]bool{}
+	for _, match := range expectedErrorRE.FindAllStringSubmatch(code, -1) {
+		if !seen[match[1]] {
+			seen[match[1]] = true
+			names = append(names, match[1])
+		}
+	}
+	return names
+}
+
 func FormatResponse(response *ExampleResponse) {
 	codeComments := regexp.MustCompile(`(?m) *~.*\n*`) // Cut the ~... strings from the displayed input
 	response.Input = codeComments.ReplaceAllString(response.Input, "")
 	newLines := regexp.MustCompile(`(?m)^ *\n^ *\n`)
 	response.Input = newLines.ReplaceAllString(response.Input, "")
-	xpError := regexp.MustCompile(`(?m)\/\/ xpError.*`)
-	response.Input = xpError.ReplaceAllString(response.Input, "")
+	response.Input = expectedErrorCommentRE.ReplaceAllString(response.Input, "")
 
 	response.Input = strings.TrimLeft(response.Input, "\r\n")
 	response.Input = strings.TrimLeft(response.Input, "\n")

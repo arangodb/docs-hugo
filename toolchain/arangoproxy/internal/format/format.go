@@ -32,9 +32,11 @@ func AdjustCodeForArangosh(code string) string {
 	lines := strings.Split(code, "\n")
 
 	for _, line := range lines {
-		// An AQL example is a single db._query("...") line (see AQLFormatter).
-		// The JavaScript rewrites below must not change the text of the query.
-		isQuery := strings.HasPrefix(strings.TrimLeft(line, " \t~"), "db._query(")
+		// An AQL example is a single __docsQuery(db._query("...")) or
+		// db._explain("...") line (see AQLFormatter). The JavaScript rewrites
+		// below must not change the text of the query.
+		trimmed := strings.TrimLeft(line, " \t~")
+		isQuery := strings.HasPrefix(trimmed, "__docsQuery(db._query(") || strings.HasPrefix(trimmed, "db._explain(")
 
 		if !isQuery {
 			re := regexp.MustCompile(`(?m)let |const `)
@@ -146,15 +148,52 @@ func jsStringLiteral(s string) string {
 // template literal, so that the query reaches the server exactly as written in
 // the example: backslashes are the ones AQL sees, and `${...}` and backticks
 // carry no special meaning.
-func (formatter AQLFormatter) FormatRequestCode(code string, bindVars map[string]interface{}) string {
-	commands := fmt.Sprintf("db._query(%s", jsStringLiteral(code))
-	if len(bindVars) != 0 {
-		bindVarsJson, _ := json.Marshal(bindVars)
-		commands = fmt.Sprintf("%s, %s", commands, bindVarsJson)
+//
+// The query options are the `options` object of the request body (sub-options
+// like `maxRuntime` or `optimizer`). arangosh's db._query() and db._explain()
+// send their third argument as this object.
+//
+// With explain set, the execution plan is printed (without terminal colors)
+// instead of running the query. The query options are forwarded so that they
+// can affect the plan, and so that features that need to be enabled with an
+// option can be explained.
+func (formatter AQLFormatter) FormatRequestCode(code string, bindVars, queryOptions map[string]interface{}, explain bool) string {
+	if explain {
+		explainOptions := map[string]interface{}{}
+		for key, value := range queryOptions {
+			explainOptions[key] = value
+		}
+		explainOptions["colors"] = false
+		return fmt.Sprintf("db._explain(%s, %s, %s);", jsStringLiteral(code), jsonValue(bindVars), jsonValue(explainOptions))
 	}
 
-	commands = commands + ").toArray();"
+	commands := fmt.Sprintf("__docsQuery(db._query(%s", jsStringLiteral(code))
+	if len(bindVars) != 0 || len(queryOptions) != 0 {
+		commands = fmt.Sprintf("%s, %s", commands, jsonValue(bindVars))
+	}
+	if len(queryOptions) != 0 {
+		commands = fmt.Sprintf("%s, %s", commands, jsonValue(queryOptions))
+	}
+
+	// __docsQuery() (see common.js) returns the result and prints the warnings
+	commands = commands + "));"
 	return commands
+}
+
+// jsonValue encodes a map as a JSON object, which is also a JavaScript object
+// literal. Keys are sorted, so the result is deterministic. A nil or empty map
+// becomes {}.
+func jsonValue(value map[string]interface{}) string {
+	if len(value) == 0 {
+		return "{}"
+	}
+	var buf bytes.Buffer
+	encoder := json.NewEncoder(&buf)
+	encoder.SetEscapeHTML(false)
+	if err := encoder.Encode(value); err != nil {
+		return "{}"
+	}
+	return strings.TrimSuffix(buf.String(), "\n")
 }
 
 /*

@@ -93,7 +93,7 @@ type AQLService struct{}
 var AQLFormatter = format.AQLFormatter{}
 
 func (service AQLService) Execute(request models.Example, cacheChannel chan map[string]interface{}) (res models.AQLResponse) {
-	commands := AQLFormatter.FormatRequestCode(request.Code, request.Options.BindVars)
+	commands := AQLFormatter.FormatRequestCode(request.Code, request.Options.BindVars, request.Options.QueryOptions, request.Options.Explain)
 
 	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
 	models.Logger.Debug("[%s] Chosen repository: %s", request.Options.Name, repository.Version)
@@ -113,6 +113,8 @@ func (service AQLService) Execute(request models.Example, cacheChannel chan map[
 	arangoshResult := commonService.arangosh(request.Options.Name, commands, request.Options.Position, repository)
 
 	res.ExampleResponse.Input, res.ExampleResponse.Options = request.Code, request.Options
+
+	arangoshResult, res.ExampleResponse.Warnings = arangosh.ExtractWarnings(arangoshResult)
 
 	if strings.Contains(string(request.Options.Render), "output") {
 		res.ExampleResponse.Output = fmt.Sprintf("%s\n%s", res.Output, arangoshResult)

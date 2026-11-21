@@ -82,10 +82,21 @@ test("renders mermaid diagrams", async ({ page }) => {
 
 test.describe("image viewer", () => {
   test("enlarges images and closes with Escape", async ({ page }) => {
-    await open(page, "/arangodb/stable/graphs/example-graphs/");
+    await open(page, "/arangodb/stable/components/web-interface/graphs/");
     const img = page.locator("article img[data-zoomable]").first();
     await img.scrollIntoViewIfNeeded();
     await img.click();
+    const viewer = page.locator(".image-viewer");
+    await expect(viewer).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(viewer).toBeHidden();
+  });
+
+  test("enlarges embedded SVG diagrams and closes with Escape", async ({ page }) => {
+    await open(page, "/arangodb/stable/graphs/example-graphs/");
+    const svg = page.locator("article .svg-figure svg[data-zoomable]").first();
+    await svg.scrollIntoViewIfNeeded();
+    await svg.click();
     const viewer = page.locator(".image-viewer");
     await expect(viewer).toBeVisible();
     await page.keyboard.press("Escape");

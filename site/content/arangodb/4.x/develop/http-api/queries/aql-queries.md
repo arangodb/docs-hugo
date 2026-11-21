@@ -690,6 +690,14 @@ paths:
                         transaction, not the individual read operations.
                       type: boolean
                       default: false
+                    matchStatement:
+                      description: |
+                        Set this option to `"experimental"` to enable the experimental
+                        [`MATCH` operation](../../../aql/high-level-operations/match.md) for the query.
+                        Queries that use `MATCH` fail with error `9` (not implemented) unless
+                        you set this option.
+                      type: string
+                      enum: ["experimental"]
       responses:
         '201':
           description: |
@@ -3709,6 +3717,14 @@ paths:
                         for details.
                       type: boolean
                       default: false
+                    matchStatement:
+                      description: |
+                        Set this option to `"experimental"` to enable the experimental
+                        [`MATCH` operation](../../../aql/high-level-operations/match.md) for the query.
+                        Queries that use `MATCH` fail with error `9` (not implemented) unless
+                        you set this option.
+                      type: string
+                      enum: ["experimental"]
       responses:
         '200':
           description: |

@@ -26,7 +26,7 @@ for reference about how to manage graphs programmatically.
 
 The `knows` graph is a set of persons knowing each other:
 
-![Persons relation Example Graph](../../../images/knows_graph.png)
+{{< embed-svg "knows-graph" >}}
 
 The graph consists of a `persons` vertex collection connected via a `knows`
 edge collection.
@@ -63,7 +63,7 @@ The `traversalGraph` has been designed to demonstrate filters in traversals.
 It has some labels to filter on it. The graph's vertices are in a collection
 called `circles`, and it has an edge collection `edges` to connect them.
 
-![Traversal Graph](../../../images/traversal_graph.png)
+{{< embed-svg "traversal-graph" >}}
 
 Circles have unique numeric labels. Edges have two boolean attributes
 (`theFalse` always being `false`, `theTruth` always being `true`) and a label
@@ -87,13 +87,76 @@ examples.dropGraph("traversalGraph");
 **Note:** With the default traversal depth of 2 of the graph viewer, you may not
 see all edges of this graph by default.
 
+## Service Graph
+
+The `serviceGraph` is a set of services of an application that call each other.
+The services are the vertices of the graph, stored in a `services` collection, with
+a `tier` attribute (`frontend`, `backend`, `data`, or `external`). The calls are
+the edges, stored in a `calls` edge collection, with the `protocol` and the
+latency in milliseconds (`latencyMs`) of the call.
+
+{{< embed-svg "service-graph" >}}
+
+The `db` service can be reached via multiple paths, and `orders` and `payments`
+call each other, which forms a cycle. This makes the graph suitable to
+demonstrate how traversals and path searches work. See
+[Graph traversals in AQL](../aql/graph-queries/traversals.md) for query examples.
+
+Unlike the other example graphs, you cannot load the `serviceGraph` with
+`loadGraph()` or create it in the web interface. You can create it with the
+following code:
+
+```js
+---
+name: graph_create_service_sample
+description: ''
+---
+var graphModule = require("@arangodb/general-graph");
+var graph = graphModule._create("serviceGraph", [
+  graphModule._relation("calls", "services", "services")
+]);
+var services = [
+  { _key: "web", tier: "frontend" },
+  { _key: "api", tier: "backend" },
+  { _key: "auth", tier: "backend" },
+  { _key: "catalog", tier: "backend" },
+  { _key: "orders", tier: "backend" },
+  { _key: "inventory", tier: "backend" },
+  { _key: "payments", tier: "backend" },
+  { _key: "cache", tier: "data" },
+  { _key: "db", tier: "data" },
+  { _key: "bank", tier: "external" }
+];
+var calls = [
+  { _from: "services/web", _to: "services/api", protocol: "https", latencyMs: 20 },
+  { _from: "services/api", _to: "services/auth", protocol: "grpc", latencyMs: 5 },
+  { _from: "services/api", _to: "services/catalog", protocol: "grpc", latencyMs: 8 },
+  { _from: "services/api", _to: "services/orders", protocol: "grpc", latencyMs: 6 },
+  { _from: "services/auth", _to: "services/db", protocol: "http", latencyMs: 25 },
+  { _from: "services/catalog", _to: "services/cache", protocol: "tcp", latencyMs: 1 },
+  { _from: "services/catalog", _to: "services/db", protocol: "http", latencyMs: 30 },
+  { _from: "services/orders", _to: "services/inventory", protocol: "grpc", latencyMs: 4 },
+  { _from: "services/orders", _to: "services/payments", protocol: "grpc", latencyMs: 10 },
+  { _from: "services/inventory", _to: "services/db", protocol: "http", latencyMs: 3 },
+  { _from: "services/payments", _to: "services/bank", protocol: "https", latencyMs: 120 },
+  { _from: "services/payments", _to: "services/orders", protocol: "https", latencyMs: 15 }
+];
+services.forEach(doc => db.services.save(doc));
+calls.forEach(doc => db.calls.save(doc));
+db.services.toArray();
+db.calls.toArray();
+~graphModule._drop("serviceGraph", true);
+```
+
 ## k Shortest Paths Graph
 
 The vertices in the `kShortestPathsGraph` graph are train stations of cities in
 Europe and North America. The edges represent train connections between them,
 with the travel time for both directions as edge weight.
 
-![Train Connection Map](../../../images/train_map.png)
+{{< embed-svg "train-map-europe" >}}
+
+{{< embed-svg "train-map-north-america" >}}
 
 See the [k Shortest Paths page](../aql/graph-queries/k-shortest-paths.md) for query examples.
 
@@ -118,7 +181,7 @@ The example graph consists of vertices in the `mps_verts` collection and edges
 in the `mps_edges` collection. It is a simple traversal graph with start node
 *A* and end node *C*.
 
-![Mps Graph](../../../images/mps_graph.png)
+{{< embed-svg "mps-graph" >}}
 
 With the [Shortest Path](../aql/graph-queries/shortest-path.md) algorithm, you either
 get the shortest path *A* - *B* - *C* or *A* - *D* - *C*. With the
@@ -142,14 +205,15 @@ examples.dropGraph("mps_graph");
 
 ## World Graph
 
-The `worldCountry` graph has as node structure as follows:
+The `worldCountry` graph is a hierarchy of the world, continents, countries,
+and capitals, stored as vertices in a `worldVertices` collection. The edges in
+the `worldEdges` collection have the type `is-in` and point from each capital
+to its country, from each country to its continent, and from each continent
+to the world:
 
-world → continent → country → capital
+capital → country → continent → world
 
-![World Graph](../../../images/world_graph.png)
-
-In some cases, edge directions aren't forward. Therefore, it may get displayed
-disjunct in the graph viewer.
+{{< embed-svg "world-graph" >}}
 
 You can create the graph as a named graph using the name `worldCountry`, or as
 an anonymous graph (vertex and edge collections only) using the name
@@ -175,7 +239,7 @@ The `social` graph is a set of persons and their relations. The graph has
 `female` and `male` persons as vertices in two vertex collections.
 The edges are their connections and stored in the `relation` edge collection.
 
-![Social Example Graph](../../../images/social_graph.png)
+{{< embed-svg "social-graph" >}}
 
 Example of how to create the graph, inspect its vertices and edges, and delete
 it again:
@@ -201,7 +265,7 @@ multiple vertex collections (`germanCity` and `frenchCity`). The edges are their
 interconnections in several edge collections (`frenchHighway`, `germanHighway`,
 `internationalHighway`).
 
-![Cities Example Graph](../../../images/cities_graph.png)
+{{< embed-svg "city-graph" >}}
 
 Example of how to create the graph, inspect its edges and vertices, and delete
 it again:
@@ -225,7 +289,7 @@ examples.dropGraph("routeplanner");
 
 A small example graph comprised of `components` (vertices) and `connections` (edges).
 
-![Three disjoint subgraphs with 36 nodes and edges in total](../../../images/connected_components.png)
+{{< embed-svg "connected-components-graph" >}}
 
 ```js
 ---
