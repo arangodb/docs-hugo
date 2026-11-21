@@ -21,7 +21,7 @@ FOR u IN users
     RETURN age
 ```
 
-This is grouping without tracking the group values, but just the group criterion (*age*) value.
+This is grouping without tracking the group values, but just the group criterion (`age`) value.
 
 Grouping can also be done on multiple levels using `COLLECT`:
 
@@ -69,16 +69,16 @@ FOR u IN users
 ]
 ```
 
-The query will put all users together by their *age* attribute. There will be one
-result document per distinct *age* value (let aside the `LIMIT`). For each group,
-we have access to the matching document via the *usersByAge* variable introduced in
+The query will put all users together by their `age` attribute. There will be one
+result document per distinct `age` value (let aside the `LIMIT`). For each group,
+we have access to the matching document via the `usersByAge` variable introduced in
 the `COLLECT` statement.
 
 ## Variable Expansion
 
-The *usersByAge* variable contains the full documents found, and as we're only
+The `usersByAge` variable contains the full documents found, and as we're only
 interested in user names, we'll use the expansion operator `[*]` to extract just the
-*name* attribute of all user documents in each group:
+`name` attribute of all user documents in each group:
 
 ```aql
 usersByAge[*].u.name
@@ -94,8 +94,8 @@ a subquery:
 ## Grouping by multiple criteria
 
 To group by multiple criteria, we'll use multiple arguments in the `COLLECT` clause.
-For example, to group users by *ageGroup* (a derived value we need to calculate first)
-and then by *gender*, we'll do:
+For example, to group users by `ageGroup` (a derived value we need to calculate first)
+and then by `gender`, we'll do:
 
 ```aql
 FOR u IN users
@@ -123,7 +123,7 @@ FOR u IN users
 ## Counting group values
 
 If the goal is to count the number of values in each group, AQL provides the special
-*COLLECT WITH COUNT INTO* syntax. This is a simple variant for grouping with an additional
+`COLLECT WITH COUNT INTO` syntax. This is a simple variant for grouping with an additional
 group length calculation:
 
 ```aql
@@ -193,7 +193,7 @@ FOR u IN users
 ]
 ```
 
-We have used the aggregate functions *LENGTH* here (it returns the length of an array).
+We have used the aggregate functions `LENGTH` here (it returns the length of an array).
 This is the equivalent to SQL's `SELECT g, COUNT(*) FROM ... GROUP BY g`. In addition to
 `LENGTH`, AQL also provides `MAX`, `MIN`, `SUM` and `AVERAGE`, `VARIANCE_POPULATION`,
 `VARIANCE_SAMPLE`, `STDDEV_POPULATION`, `STDDEV_SAMPLE`, `UNIQUE`, `SORTED_UNIQUE` and
@@ -214,7 +214,7 @@ though performance-wise this is often inferior to using `COLLECT` with `AGGREGAT
 
 The same query as before can be turned into a post-aggregation query as shown below. Note
 that this query will build and pass on all group values for all groups inside the variable
-*g*, and perform the aggregation at the latest possible stage:
+`g`, and perform the aggregation at the latest possible stage:
 
 ```aql
 FOR u IN users
@@ -260,7 +260,7 @@ To filter the results of a grouping or aggregation operation (i.e. something
 similar to *HAVING* in SQL), simply add another `FILTER` clause after the `COLLECT`
 statement.
 
-For example, to get the 3 *ageGroup*s with the most users in them:
+For example, to get the 3 `ageGroup`s with the most users in them:
 
 ```aql
 FOR u IN users
@@ -316,8 +316,8 @@ FOR u IN users
 ]
 ```
 
-To increase readability, the repeated expression *LENGTH(group)* was put into a variable
-*numUsers*. The `FILTER` on *numUsers* is the equivalent an SQL *HAVING* clause.
+To increase readability, the repeated expression `LENGTH(group)` was put into a variable
+`numUsers`. The `FILTER` on `numUsers` is the equivalent an SQL *HAVING* clause.
 
 ## Aggregating data in local time
 

@@ -129,7 +129,7 @@ ArangoDB 3.8 adds the following bit handling functions to AQL:
 Also see [Bit functions](../../aql/functions/bit.md).
 
 `BIT_AND()`, `BIT_OR()` and `BIT_XOR()` are also available as aggregate
-functions for usage inside [`COLLECT AGGREGATE`](../../aql/high-level-operations/collect.md#aggregation).
+functions for usage inside [`COLLECT AGGREGATE`](../../aql/high-level-operations/collect.md#aggregation-aggregate).
 
 All above bit operations support unsigned integer values with up to 32 bits.
 Using values outside the supported range will make any of these bit functions

@@ -28,11 +28,11 @@ between cities and are the edges of the graph.
 Assuming that you want to go from **Carlisle** to **London** by train, the
 expected two shortest paths are:
 
-1. Carlisle – Birmingham – London
-2. Carlisle – York – London
+- Carlisle → Birmingham → London
+- Carlisle → York → London
 
 Another path that connects Carlisle and London is
-Carlisle – Glasgow – Edinburgh – York – London, but it has two more stops and
+Carlisle → Glasgow → Edinburgh → York → London, but it has two more stops and
 is therefore not a path of the shortest length.
 
 ## Syntax
@@ -44,17 +44,17 @@ variable however, whereas `SHORTEST_PATH` emits a node and an edge variable.
 
 ### Working with named graphs
 
-```aql
-FOR path
-  IN OUTBOUND|INBOUND|ANY ALL_SHORTEST_PATHS
-  startNode TO endNode
-  GRAPH graphName
-  [OPTIONS options]
+```aql-syntax
+FOR <path>
+  IN (OUTBOUND|INBOUND|ANY) ALL_SHORTEST_PATHS
+  <startNode> TO <endNode>
+  GRAPH <graphName>
+  [OPTIONS { … }]
 ```
 
 - `FOR`: Emits the variable **path** which contains one shortest path as an
   object, with the `vertices` (nodes) and `edges` of the path.
-- `IN` `OUTBOUND|INBOUND|ANY`: Defines in which direction
+- `IN` `OUTBOUND`/`INBOUND`/`ANY`: Defines in which direction
   edges are followed (outgoing, incoming, or both)
 - `ALL_SHORTEST_PATHS`: The keyword to compute All Shortest Paths
 - **startNode** `TO` **endNode** (both string\|object): The two nodes between
@@ -73,11 +73,12 @@ All Shortest Paths traversals do not support edge weights.
 
 ### Working with collection sets
 
-```aql
-FOR path
-  IN OUTBOUND|INBOUND|ANY ALL_SHORTEST_PATHS
-  startNode TO endNode
-  edgeCollection1, ..., edgeCollectionN
+```aql-syntax
+FOR <path>
+  IN (OUTBOUND|INBOUND|ANY) ALL_SHORTEST_PATHS
+  <startNode> TO <endNode>
+  [(OUTBOUND|INBOUND|ANY)] <edgeCollection1>
+  [, … , [(OUTBOUND|INBOUND|ANY)] <edgeCollectionN>]
 ```
 
 Instead of `GRAPH graphName` you can specify a list of edge collections.
@@ -109,8 +110,9 @@ specifically for *edges2* as follows:
 
 ```aql
 FOR path IN OUTBOUND ALL_SHORTEST_PATHS
-  startNode TO endNode
+  "places/A" TO "places/B"
   edges1, ANY edges2, edges3
+  RETURN path
 ```
 
 All collections in the list that do not specify their own direction use the

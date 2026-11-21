@@ -15,9 +15,10 @@ traversal operations, or AQL functions that can read documents.
 
 The syntax for a remove operation is:
 
-<pre><code>REMOVE <em>keyExpression</em> IN <em>collection</em></code></pre>
-
-It can optionally end with an `OPTIONS { … }` clause.
+```aql-syntax
+REMOVE <keyExpression> IN <collection>
+[OPTIONS { … }]
+```
 
 `collection` must contain the name of the collection to remove the documents 
 from. `keyExpression` must be an expression that contains the document identification.

@@ -1,16 +1,18 @@
 {{- $context := .context }}
 {{- $options := .options }}
 {{- $content := .content }}
-{{- $language := .language }}
+{{- $inputLanguage := .language }}
+{{- $outputLanguage := .language }}
 
 {{- if eq .language "curl" }}
-  {{- $language = "bash" }}
+  {{- $inputLanguage = "bash" }}
+  {{- $outputLanguage = "http" }}
 {{- end }}
 
 {{- /* Ensure that a single paragraph is also wrapped in <p></p> */}}
 {{- $options.description | $context.Page.RenderString (dict "display" "block") }}
 
-{{- $input := transform.Highlight $content.input $language }}
+{{- $input := transform.Highlight $content.input $inputLanguage $context.Options }}
 {{ $input }}
 
 {{- if $options.bindVars }}
@@ -20,6 +22,6 @@
 {{ transform.Highlight $bindVars "json" }}
 {{- end }}
 
-{{- $output := transform.Highlight $content.output $language }}
+{{- $output := transform.Highlight $content.output $outputLanguage $context.Options }}
 <details><summary>Show output</summary>{{ $context.Page.RenderString $output }}</details>
 <br>

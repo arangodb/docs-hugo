@@ -60,18 +60,18 @@ collections (anonymous graph).
 
 ### Working with named graphs
 
-```aql
-FOR node[, edge]
-  IN OUTBOUND|INBOUND|ANY SHORTEST_PATH
-  startNode TO endNode
-  GRAPH graphName
-  [OPTIONS options]
+```aql-syntax
+FOR <node> [, <edge>]
+  IN (OUTBOUND|INBOUND|ANY) SHORTEST_PATH
+  <startNode> TO <endNode>
+  GRAPH <graphName>
+  [OPTIONS { … }]
 ```
 
 - `FOR`: Emits up to two variables:
   - **node** (object): The current node on the shortest path
   - **edge** (object, *optional*): The edge pointing to the node
-- `IN` `OUTBOUND|INBOUND|ANY`: Defines in which direction edges are followed
+- `IN` `OUTBOUND`/`INBOUND`/`ANY`: Defines in which direction edges are followed
   (outgoing, incoming, or both)
 - **startNode** `TO` **endNode** (both string\|object): The two nodes between
   which the shortest path is computed. This can be specified in the form of
@@ -92,12 +92,13 @@ number, then the query is aborted with an error.
 
 ### Working with collection sets
 
-```aql
-FOR node[, edge]
-  IN OUTBOUND|INBOUND|ANY SHORTEST_PATH
-  startNode TO endNode
-  edgeCollection1, ..., edgeCollectionN
-  [OPTIONS options]
+```aql-syntax
+FOR <node> [, <edge>]
+  IN (OUTBOUND|INBOUND|ANY) SHORTEST_PATH
+  <startNode> TO <endNode>
+  [(OUTBOUND|INBOUND|ANY)] <edgeCollection1>
+  [, … , [(OUTBOUND|INBOUND|ANY)] <edgeCollectionN>]
+  [OPTIONS { … }]
 ```
 
 Instead of `GRAPH graphName` you may specify a list of edge collections (anonymous
@@ -148,9 +149,10 @@ account. In this case you can use `OUTBOUND` as general search direction and `AN
 specifically for *edges2* as follows:
 
 ```aql
-FOR node IN OUTBOUND SHORTEST_PATH
-  startNode TO endNode
+FOR node, edge IN OUTBOUND SHORTEST_PATH
+  "places/A" TO "places/B"
   edges1, ANY edges2, edges3
+  RETURN node
 ```
 
 All collections in the list that do not specify their own direction use the

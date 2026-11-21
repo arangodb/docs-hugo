@@ -43,30 +43,36 @@ The purpose of the `UPSERT` AQL operation is to ensure that a specific document
 exists after the operation has finished.
 
 `UPSERT` will look for a specific document, based on user-configurable
-attributes/values, and create the document if it does not yet exist.
-If `UPSERT` finds such document, it can partially adjust it (`UPDATE`) or fully
-replace it (`REPLACE`).
+attributes/values or filter conditions, and create the document if it does not
+yet exist. If `UPSERT` finds such document, it can partially adjust it (`UPDATE`)
+or fully replace it (`REPLACE`).
 
-To recap, the syntaxes of AQL `UPSERT` are, depending on whether you want to
-update replace a document:
+To recap, there are two syntax variants of AQL `UPSERT` operations, depending on
+how you want to look up the document. With either variant, you can update or
+replace the document if it exists.
 
-```aql
-UPSERT <search-expression>
-INSERT <insert-expression>
-UPDATE <update-expression>
-IN <collection> OPTIONS <options>
+The exact-value matching syntax looks up a document using an object literal with
+the attributes and values to match:
+
+```aql-syntax
+UPSERT <lookupExpression>
+INSERT <insertExpression>
+(UPDATE|REPLACE) <updateExpression>
+IN <collection>
+[OPTIONS { … }]
 ```
 
-or
+The filter matching syntax (introduced in v3.12.0) looks up a document using
+a filter condition, in which you can access the document via the `CURRENT`
+pseudo-variable:
 
-```aql
-UPSERT <search-expression>
-INSERT <insert-expression>
-REPLACE <replace-expression>
-IN <collection> OPTIONS <options>
+```aql-syntax
+UPSERT FILTER <filterCondition>
+INSERT <insertExpression>
+(UPDATE|REPLACE) <updateExpression>
+IN <collection>
+[OPTIONS { … }]
 ```
-
-The `OPTIONS` part is optional.
 
 An example `UPSERT` operation looks like this:
 
@@ -83,6 +89,29 @@ attribute having a value of `index.html`. If such document cannot be found, the
 `status` attributes. If the operation finds an existing document with `page`
 being `index.html`, it will execute the `UPDATE` part, which will set the
 document's `status` attribute to `updated`.
+
+The same operation using the filter matching syntax looks like this:
+
+```aql
+UPSERT FILTER CURRENT.page == "index.html"
+INSERT { page: "index.html", status: "inserted" }
+UPDATE { status: "updated" }
+IN pages
+```
+
+The filter matching syntax is not limited to equality matches. You can use
+other comparison operators, combine conditions with `AND` and `OR`, and call
+functions. The following example looks for a page with either of two names:
+
+```aql
+UPSERT FILTER CURRENT.page IN ["index.html", "index.htm"]
+INSERT { page: "index.html", status: "inserted" }
+UPDATE { status: "updated" }
+IN pages
+```
+
+The examples in the remainder of this guide use the exact-value matching syntax,
+but the same considerations apply to the filter matching syntax.
 
 ### Tracking Modification Dates
 
@@ -107,7 +136,7 @@ Following is an example that increments a counter on a document whenever the
 ```aql
 UPSERT { page: "index.html" }
 INSERT { page: "index.html", hits: 1 }
-UPDATE { hits: OLD.value + 1 }
+UPDATE { hits: OLD.hits + 1 }
 IN pages
 ```
 
@@ -116,11 +145,11 @@ IN pages
 `UPSERT` is a very flexible operation, so some things should be kept in mind to
 use it effectively and efficiently.
 
-#### Repeat the Search Attributes
+#### Repeat the Lookup Attributes
 
 First of all, the `INSERT` part of an `UPSERT` operation should contain all
-attributes that are used in the search expression. Consider the following
-counter-example:
+attributes that are used in the lookup expression or filter condition. Consider
+the following counter-example:
 
 ```aql
 UPSERT { page: "index.html" }
@@ -129,7 +158,7 @@ UPDATE { status: "updated" }
 IN pages
 ```
 
-Forgetting to specify the search attributes in the `INSERT` part introduces a
+Forgetting to specify the lookup attributes in the `INSERT` part introduces a
 problem: The first time the `UPSERT` is executed and does not find a document
 with `page` being `index.html`, it will branch into the `INSERT` part as
 expected. However, the `INSERT` part will create a document with only the
@@ -139,7 +168,7 @@ That means whenever this `UPSERT` statement executes, it will branch into the
 `INSERT` part, and the `UPDATE` part will never be reached. This is likely
 unintentional.
 
-The problem can easily be avoided by adding the search attributes to the
+The problem can easily be avoided by adding the lookup attributes to the
 `INSERT` part:
 
 ```aql
@@ -149,10 +178,10 @@ UPDATE { status: "updated" }
 IN pages
 ```
 
-Note that it is not necessary to repeat the search attributes in the `UPDATE`
+Note that it is not necessary to repeat the lookup attributes in the `UPDATE`
 part, because `UPDATE` is a partial update. It will only set the attributes that
 are specified in the `UPDATE` part, and leave all other existing attributes
-alone. However, it is necessary to repeat the search attributes in the `REPLACE`
+alone. However, it is necessary to repeat the lookup attributes in the `REPLACE`
 part, because `REPLACE` will completely overwrite the existing document with
 what is specified in the `REPLACE` part.
 
@@ -165,7 +194,15 @@ REPLACE { page: "index.html", status: "updated" }
 IN pages
 ```
 
-#### Use Indexes for Search Attributes
+With the filter matching syntax, make sure that the documents created by the
+`INSERT` part and the `REPLACE` part satisfy the filter condition. This is
+not always as obvious as with exact-value matching. For example, with a
+condition like `CURRENT.page IN ["index.html", "index.htm"]`, the `page`
+attribute needs to be set to one of these values. With a range condition like
+`CURRENT.version < 3`, the inserted document needs a `version` attribute with a
+value that is lower than `3`.
+
+#### Use Indexes for Lookup Attributes
 
 A downside of `UPSERT`'s flexibility is that it can be used on arbitrary
 collection attributes, even if those are not indexed.
@@ -173,8 +210,24 @@ collection attributes, even if those are not indexed.
 When the `UPSERT` looks for an existing document, it _will_ use an index if an
 index exists, but will also continue if no index exists. In the latter case,
 the `UPSERT` will execute a full collection scan, which can be expensive for
-large collections. So it is advised to create an index on the search
+large collections. So it is advised to create an index on the lookup
 attribute(s) used in an `UPSERT`.
+
+With the filter matching syntax, an index can only be used if the filter
+condition is eligible for it. For example, `CURRENT.page == "index.html"` and
+`CURRENT.page IN ["index.html", "index.htm"]` can use an index on `page`, but
+`LOWER(CURRENT.page) == "index.html"` cannot because the attribute is wrapped
+in a function call. You can check whether an index is used by
+[explaining the query](../execution-and-performance/explaining-queries.md).
+
+#### Lookups Matching Multiple Documents
+
+`UPSERT` only modifies a single document. If more than one document matches
+the lookup expression or filter condition, only one of them is updated or
+replaced, and it is undefined which one. Filter conditions that are not
+equality matches on unique attributes, like `CURRENT.page IN ["index.html", "index.htm"]`,
+make this more likely. Make sure by other means, such as unique indexes or
+application logic, that at most one document matches.
 
 #### `UPSERT` is Non-Atomic
 
@@ -182,12 +235,12 @@ The overall `UPSERT` operation does not execute atomically for a single document
 It is basically a document lookup followed by either a document insert, update
 or replace operation.
 
-That means if multiple `UPSERT` operations run concurrently with the same search
+That means if multiple `UPSERT` operations run concurrently with the same lookup
 values, they may all determine that the target document does not exist - and
 then all decide to create such document. That will mean one will end up with
 multiple instances of the target document afterwards.
 
-To avoid such concurrency issues, a unique index can be created on the search
+To avoid such concurrency issues, a unique index can be created on the lookup
 attribute(s). Such index will prevent concurrent `UPSERT` operations from
 creating identical documents. Instead, only one of the concurrent `UPSERT`s will
 succeed, whereas the others will fail with a "unique constraint violated" error.
@@ -195,16 +248,23 @@ In that case the client application can either retry the operation (which then
 should go into the `UPDATE`/`REPLACE` branch), or ignore the error if the goal
 was only to ensure the target document exists.
 
-Using a unique index on the search attribute(s) will thus improve lookup
+Using a unique index on the lookup attribute(s) will thus improve lookup
 performance and avoid duplicates.
 
 #### Using Shard Key(s) for Lookups
 
-In a cluster setup, the search expression should contain the shard key(s), as
+In a cluster setup, the lookup expression should contain the shard key(s), as
 this allows the lookup to be sent to a single shard only. This will be more
 efficient than having to execute the lookup on all the shards of the collection.
 
-Another benefit of using the shard key(s) in the search expression is that
+With the filter matching syntax, the filter condition needs to contain equality
+matches for the shard key(s), like `CURRENT.page == "index.html"` if the
+collection is sharded by `page`. You can combine them with further conditions
+using `AND`. Other conditions on the shard key(s), like
+`CURRENT.page IN ["index.html", "index.htm"]` or range conditions, require the
+lookup to be executed on all shards.
+
+Another benefit of using the shard key(s) in the lookup expression is that
 unique indexes are only supported if they contain the shard key(s).
 
 ## `INSERT` AQL Operation with `overwriteMode`
@@ -220,9 +280,10 @@ when the operation is executed, and none of the old values need to be referenced
 
 The general syntax of the `INSERT` AQL operation is:
 
-```aql
-INSERT <insert-expression>
-IN <collection> OPTIONS <options>
+```aql-syntax
+INSERT <insertExpression>
+IN <collection>
+[OPTIONS { … }]
 ```
 
 As we will deal with the `overwriteMode` option here, we are focussing on

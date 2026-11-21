@@ -7,13 +7,14 @@ description: >-
   and it supports user-defined functions
 ---
 Functions can be called at any query position where an expression is allowed.
+
 The general function call syntax is:
 
 ```aql
-FUNCTIONNAME(arguments)
+FUNCTION_NAME(arguments)
 ```
 
-`FUNCTIONNAME` is the name of the function to be called, and `arguments`
+`FUNCTION_NAME` is the name of the function to be called, and `arguments`
 is a comma-separated list of function arguments. If a function does not need any
 arguments, the argument list can be left empty. However, even if the argument
 list is empty, the parentheses around it are still mandatory to make function

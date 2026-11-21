@@ -10,9 +10,11 @@ You cannot change the value once assigned.
 
 ## Syntax
 
-<pre><code>LET <em>variableName</em> = <em>expression</em></code></pre>
+```aql-syntax
+LET <variableName> = <expression>
+```
 
-*expression* can be a simple expression or a subquery.
+The *expression* can be a simple expression or a subquery.
 
 For allowed variable names [AQL Syntax](../fundamentals/syntax.md#names).
 

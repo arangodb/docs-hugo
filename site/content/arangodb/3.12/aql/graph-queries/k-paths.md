@@ -31,55 +31,19 @@ Assume that you want to go from **Aberdeen** to **London** by train.
 
 You have a couple of alternatives:
 
-a) Straight way
+- **Straight way**: Aberdeen → Leuchars → Edinburgh → York → London
+- **Detour at York**: Aberdeen → Leuchars → Edinburgh → York → **Carlisle** →
+  **Birmingham** → London
+- **Detour at Edinburgh**: Aberdeen → Leuchars → Edinburgh → **Glasgow** →
+  **Carlisle** → **Birmingham** → London
+- **Detour at Edinburgh to York**: Aberdeen → Leuchars → Edinburgh →
+  **Glasgow** → **Carlisle** → York → London
 
-   1. Aberdeen
-   2. Leuchars
-   3. Edinburgh
-   4. York
-   5. London
-
-b) Detour at York
-
-   1. Aberdeen
-   2. Leuchars
-   3. Edinburgh
-   4. York
-   5. **Carlisle**
-   6. **Birmingham**
-   7. London
-
-c) Detour at Edinburgh
-
-   1. Aberdeen
-   2. Leuchars
-   3. Edinburgh
-   4. **Glasgow**
-   5. **Carlisle**
-   6. **Birmingham**
-   7. London
-
-d) Detour at Edinburgh to York
-
-   1. Aberdeen
-   2. Leuchars
-   3. Edinburgh
-   4. **Glasgow**
-   5. **Carlisle**
-   6. York
-   7. London
-
-Note that only paths that do not contain the same node twice are consider to
+Note that only paths that do not contain the same node twice are considered to
 be valid. The following alternative would visit Aberdeen twice and is **not**
 returned by the k Paths algorithm:
 
-1. Aberdeen
-2. **Inverness**
-3. **Aberdeen**
-4. Leuchars
-5. Edinburgh
-6. York
-7. London
+- Aberdeen → **Inverness** → **Aberdeen** → Leuchars → Edinburgh → York → London
 
 ## Example Use Cases
 
@@ -109,17 +73,17 @@ return a large number of paths for large connected graphs.
 
 ### Working with named graphs
 
-```aql
-FOR path
-  IN MIN..MAX OUTBOUND|INBOUND|ANY K_PATHS
-  startNode TO endNode
-  GRAPH graphName
-  [OPTIONS options]
+```aql-syntax
+FOR <path>
+  IN [<min>[..<max>]] (OUTBOUND|INBOUND|ANY) K_PATHS
+  <startNode> TO <endNode>
+  GRAPH <graphName>
+  [OPTIONS { … }]
 ```
 
 - `FOR`: Emits the variable **path** which contains one path as an object
   containing `vertices` (nodes) and `edges` of the path.
-- `IN` `MIN..MAX`: The minimal and maximal depth for the traversal:
+- `IN` `min..max`: The minimal and maximal depth for the traversal:
   - **min** (number, *optional*): Paths returned by this query
     have at least a length of this many edges.
     If not specified, it defaults to `1`. The minimal possible value is `0`.
@@ -127,7 +91,7 @@ FOR path
     have at most a length of this many edges.
     If omitted, it defaults to the value of `min`. Thus, only the nodes and
     edges in the range of `min` are returned. You cannot specify `max` without `min`.
-- `OUTBOUND|INBOUND|ANY`: Defines in which direction
+- `OUTBOUND`/`INBOUND`/`ANY`: Defines in which direction
   edges are followed (outgoing, incoming, or both).
 - `K_PATHS`: The keyword to compute all paths with the specified lengths.
 - **startNode** `TO` **endNode** (both string\|object): The two nodes
@@ -142,12 +106,13 @@ FOR path
 
 ### Working with collection sets
 
-```aql
-FOR path
-  IN MIN..MAX OUTBOUND|INBOUND|ANY K_PATHS
-  startNode TO endNode
-  edgeCollection1, ..., edgeCollectionN
-  [OPTIONS options]
+```aql-syntax
+FOR <path>
+  IN [<min>[..<max>]] (OUTBOUND|INBOUND|ANY) K_PATHS
+  <startNode> TO <endNode>
+  [(OUTBOUND|INBOUND|ANY)] <edgeCollection1>
+  [, … , [(OUTBOUND|INBOUND|ANY)] <edgeCollectionN>]
+  [OPTIONS { … }]
 ```
 
 Instead of `GRAPH graphName` you can specify a list of edge collections.
@@ -178,9 +143,10 @@ into account. In this case you can use `OUTBOUND` as general search direction
 and `ANY` specifically for *edges2* as follows:
 
 ```aql
-FOR node IN OUTBOUND K_PATHS
-  startNode TO endNode
+FOR path IN 1..3 OUTBOUND K_PATHS
+  "places/A" TO "places/B"
   edges1, ANY edges2, edges3
+  RETURN path
 ```
 
 All collections in the list that do not specify their own direction use the

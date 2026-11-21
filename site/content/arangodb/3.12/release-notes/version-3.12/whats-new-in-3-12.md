@@ -1199,7 +1199,7 @@ FOR t IN observations
 | 109 | [10,0,9,10,25,5,20,30]
 | 134 | [10,0,9,10,25,5,20,30,25]
 
-See the [`COLLECT` operation](../../aql/high-level-operations/collect.md#aggregation)
+See the [`COLLECT` operation](../../aql/high-level-operations/collect.md#aggregation-aggregate)
 and the [`WINDOW` operation](../../aql/high-level-operations/window.md) for details.
 
 ### Improved index utilization for `SORT`
