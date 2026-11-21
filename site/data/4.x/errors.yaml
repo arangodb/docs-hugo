@@ -217,6 +217,10 @@
   text: "superfluous URL suffices"
   desc: "Will be raised when the URL contains superfluous suffices."
   code: 601
+- name: ERROR_HTTP_API_VERSION_MISMATCH
+  text: "API version mismatch"
+  desc: "Will be raised when the API version requested via the x-arango-api-version header is not compatible with the API version the server serves."
+  code: 602
 - group: Internal ArangoDB storage errors
 - name: ERROR_ARANGO_ILLEGAL_STATE
   text: "illegal state"
@@ -906,6 +910,10 @@
   text: "window operation after data-modification"
   desc: "Will be raised when a window node is created after a data-modification operation."
   code: 1595
+- name: ERROR_QUERY_MATCH_EXCLUDED_ATTRIBUTE
+  text: "attribute '%s' was excluded by MATCH projection on variable '%s'"
+  desc: "Will be raised when a query accesses an attribute that was not kept by a MATCH projection."
+  code: 1596
 - group: ArangoDB cursor errors
 - name: ERROR_CURSOR_NOT_FOUND
   text: "cursor not found"
