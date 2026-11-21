@@ -1138,7 +1138,7 @@ You should check for the following things in particular:
   You might need to force specific settings in case your provider is not known
   to rclone and therefore doesn't handle specific quirks on its own.
 
-### Telemetrics removed
+## Telemetrics removed
 
 <small>Removed in: v3.12.10</small>
 
