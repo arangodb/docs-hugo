@@ -2426,7 +2426,8 @@ nav.pagination > .next {
     margin-bottom: 36px;
     background: linear-gradient(40deg, var(--color-teal-ink) 50%, var(--color-link));
     background-position: center;
-    color: var(--gray-50)
+    color: var(--gray-50);
+    --focus-ring: #befe99;
 }
 
 .ag-banner .title {
@@ -2439,22 +2440,17 @@ nav.pagination > .next {
     padding-left: 24px;
     padding-bottom: 4px;
 }
-.ag-banner a {
+
+.ag-banner .link {
     margin-left: 24px;
     font-weight: bold;
     color: white;
+    border-bottom-color: #befe99;
 }
 
-.ag-banner a:hover{
-    color: white;
-}
 .ag-banner .logo {
     height: 36px !important;
     width: 200px !important;
-}
-
-.block {
-    display: block;
 }
 
 /* Sidebar: logo, search, main navigation, and footer link, like the sidebar of
