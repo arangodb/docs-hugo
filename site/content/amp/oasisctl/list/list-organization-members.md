@@ -1,7 +1,7 @@
 ---
 title: List Organization Members with _oasisctl_
 menuTitle: List Organization Members
-weight: 29
+weight: 30
 # This is a generated file, DO NOT MODIFY directly!
 ---
 

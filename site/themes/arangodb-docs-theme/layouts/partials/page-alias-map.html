@@ -1,9 +1,11 @@
-{{ $pathMap := dict -}}
+{{- /* Fill a scratch map in place: merge in the loop would copy the whole map
+  for every entry, which made this take ~1.7 s per build */ -}}
+{{ $s := newScratch -}}
 {{ range $page := .Site.Pages -}}
   {{ $pagePath := $page.Path -}}
   {{ if $pagePath -}}
     {{ $pagePathNoExt := $pagePath -}}
-    {{ $pathMap = merge $pathMap (dict $pagePathNoExt $page.RelPermalink) -}}
+    {{ $s.SetInMap "pathMap" $pagePathNoExt $page.RelPermalink -}}
   {{ end -}}
 
   {{ with $page.Params.aliases -}}
@@ -22,9 +24,9 @@
       {{ $fullAliasPath = path.Clean $fullAliasPath -}}
       {{/* warnf "Alias: %s | Page: %s | Resolved: %s" $alias $pagePath $fullAliasPath */ -}}
 
-      {{ $pathMap = merge $pathMap (dict $fullAliasPath $page.RelPermalink) -}}
+      {{ $s.SetInMap "pathMap" $fullAliasPath $page.RelPermalink -}}
     {{ end -}}
   {{ end -}}
 {{ end -}}
 
-{{ return $pathMap -}}
+{{ return $s.Get "pathMap" -}}

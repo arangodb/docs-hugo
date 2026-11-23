@@ -15,4 +15,12 @@
   {{ end -}}
 {{ end -}}
 
-<script src="/js/theme.js{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
+{{ range $file := slice "js/theme.js" -}}
+  {{ with resources.Get $file -}}
+    {{ with . | minify | fingerprint "sha256" -}}
+      <script src="{{ .RelPermalink }}" defer integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
+    {{- end -}}
+  {{ else -}}
+    {{ errorf "Failed to find JS file '%s'" $file -}}
+  {{ end -}}
+{{ end -}}

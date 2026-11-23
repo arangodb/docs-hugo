@@ -3,7 +3,7 @@
 {{- if and (not $pageVersion) (strings.HasPrefix .Page.RelPermalink "/arangodb/") }}
   {{- $pageVersion = (partialCached "version-short.html" .Page.RelPermalink .Page.RelPermalink) }}
 {{- end }}
-{{- $title := .Page.Scratch.Get "currentHeadline" }}
+{{- $title := .Page.Store.Get "currentHeadline" }}
 {{- $endpoint := printf "%s/openapi" site.Params.arangoproxyUrl }}
 {{- $service := "arangodb" }}
 {{- $apiVersions := slice }}

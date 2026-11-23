@@ -2020,6 +2020,14 @@ results (`LIMIT`, including the offset). This memory also counts towards the
 memory limit of the query (`memoryLimit` query option or
 `--query.memory-limit` startup option).
 
+---
+
+<small>Introduced in: v3.12.14</small>
+
+Vector index operations are faster because ArangoDB now selects SIMD
+instructions at runtime: AVX2 or AVX-512 on x86-64, and NEON or SVE on
+ARM (aarch64).
+
 ## Server options
 
 ### Effective and available startup options
@@ -3465,6 +3473,8 @@ connection errors. This makes the creation of dumps more likely to succeed
 despite any temporary errors that can occur.
 
 ### arangorestore
+
+#### `--write-concern` startup option
 
 The following startup option has been added that allows _arangorestore_ to override
 the `writeConcern` value specified in a database dump when creating new

@@ -34,6 +34,11 @@
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 2.25v12M3.333 2.25h9.334c.736 0 1.333.597 1.333 1.333v9.334c0 .736-.597 1.333-1.333 1.333H3.333A1.333 1.333 0 0 1 2 12.917V3.583c0-.736.597-1.333 1.333-1.333z" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <main class="container-main" id="main-content" tabindex="-1">
+          {{- /* Target of the Overview entry in the table of contents. Empty so that
+                 the target flash isn't visible. Also the nearest ID for Algolia
+                 DocSearch records of content before the first heading, which
+                 would otherwise link to #main-content (flashing the whole page) */}}
+          <span id="Top" aria-hidden="true"></span>
           <div class="row-main">
             {{ block "main" . }}{{ end -}}
           </div>
