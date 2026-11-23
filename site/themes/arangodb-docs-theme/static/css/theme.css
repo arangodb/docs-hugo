@@ -1564,6 +1564,13 @@ hgroup > h1, .article-body > :is(h2, h3, h4, h5, h6) {
     overflow-wrap: break-word;
 }
 
+/* Room for the link icon after the last word (.header-link: 0.2em margin and
+   a 0.7em icon), so that the text wraps a bit earlier instead of the icon
+   sticking out of the content area and widening the page */
+.article-body > :is(h2, h3, h4, h5, h6):has(> .header-link) {
+    padding-right: 1em;
+}
+
 /* Page title and lead paragraph like on the home page */
 hgroup > h1 {
     margin: 32px 0 12px;
@@ -1699,7 +1706,8 @@ article ul li {
 }
 
 /* Copies the link to the heading. Absolutely positioned after the last word,
-   so that it never wraps to a line of its own. */
+   so that it never wraps to a line of its own, in the space the heading
+   reserves for it (padding-right). */
 .header-link {
     position: absolute;
     display: inline-block;
@@ -3263,6 +3271,11 @@ body.sidebar-collapsed .main-nav-ol.shimmer {
 
 .image-zoom-hint {
     position: absolute;
+    /* At the top until it is shown. Without a position, it is placed after the
+       content (static position, end of the body), and Firefox lets the page
+       scroll past its end by the height of the button. */
+    top: 0;
+    left: 0;
     z-index: 50;
     display: flex;
     align-items: center;
