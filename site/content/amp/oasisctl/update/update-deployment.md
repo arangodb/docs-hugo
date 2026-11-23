@@ -25,6 +25,7 @@ oasisctl update deployment [flags]
       --disable-foxx-authentication          Disable authentication of requests to Foxx application.
       --disk-performance-id string           Set the disk performance to use for this deployment.
       --drop-vst-support                     Drop VST protocol support to improve resilience.
+      --flavour string                       Set the flavour of the deployment (coredb, datascience, aisuite). Use 'oasisctl list flavours' to see the available flavours. Changing it resets the platform charts of the deployment.
   -h, --help                                 help for deployment
   -i, --ipallowlist-id string                Identifier of the IP allowlist to use for the deployment
       --is-platform-authentication-enabled   Enable platform authentication for deployment.
