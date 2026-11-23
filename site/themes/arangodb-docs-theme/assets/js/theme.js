@@ -485,6 +485,8 @@ function loadPage(target) {
         }
         return;
       }
+      // The illustration the zoom hint belongs to is gone, the pointer may not move
+      hideZoomHint();
       replaceArticle(href, newDoc);
       swapped = true;
       docsLastFetchedDocKey = docKeyWithoutHash(href);
@@ -1715,6 +1717,8 @@ function initImageViewer() {
     else hideZoomHint();
   });
   window.addEventListener('resize', hideZoomHint);
+  // Content above or below moves, e.g. details toggled with the keyboard (toggle does not bubble)
+  document.addEventListener('toggle', hideZoomHint, true);
 }
 
 function showZoomHint(el) {
@@ -1730,6 +1734,15 @@ function hideZoomHint() {
   if (!_zoomHint) return;
   _zoomHint.classList.remove('visible');
   _zoomHint.target = null;
+  /* Park the hidden button at the top after the fade-out. Left at the position
+     of the illustration, it keeps the page scrollable beyond its end once the
+     content gets shorter (client-side navigation, collapsed details). */
+  clearTimeout(_zoomHint.parkTimer);
+  _zoomHint.parkTimer = setTimeout(function () {
+    if (_zoomHint.classList.contains('visible')) return;
+    _zoomHint.style.top = '0px';
+    _zoomHint.style.left = '0px';
+  }, 200);
 }
 
 function getImageViewer() {

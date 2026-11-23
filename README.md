@@ -258,7 +258,7 @@ includes Google Analytics etc.
 
 Browser tests with [Playwright](https://playwright.dev/) check the
 functionality of the built site, like the navigation, version selector, copy
-buttons, tabs, image viewer, and keyboard access, in Chromium, Firefox, and WebKit on desktop and
+buttons, tabs, tables, details boxes, image viewer, and keyboard access, in Chromium, Firefox, and WebKit on desktop and
 mobile viewports. They are in `toolchain/frontend-tests/`.
 
 CircleCI runs them before deploying a release, after scheduled and example
@@ -1089,6 +1089,11 @@ The following shortcodes also exist but are rarely used:
   Content that is collapsed by default but can be expanded.
   {{< /details >}}
   ```
+
+  It renders a rounded box like the table of contents on narrow screens, which
+  expands in place. Add `open="true"` to expand it initially. To stack several
+  boxes with a single outline, wrap them in `{{< accordion >}}` and
+  `{{< /accordion >}}`.
 
 - `{{< youtube id="dQw4w9WgXcQ" >}}` can be used to embed a single YouTube video,
   and `{{< youtube-playlist id="PL0tn-TSss6NV45d1HnLA57VJFH6h1SeH7" >}}`
