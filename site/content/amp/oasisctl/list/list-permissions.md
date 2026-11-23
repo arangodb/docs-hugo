@@ -1,7 +1,7 @@
 ---
 title: List Permissions with _oasisctl_
 menuTitle: List Permissions
-weight: 31
+weight: 32
 # This is a generated file, DO NOT MODIFY directly!
 ---
 

@@ -8,6 +8,15 @@ in a PR.
 It is configured to build the docs without re-generating the examples
 (using a committed cache file).
 
+It builds exactly the commit of the pipeline (`$CIRCLE_SHA1`), not whatever the
+tip of the branch is when the job runs. The project setting
+**Auto-cancel redundant workflows** is enabled, so a newer push to the same
+branch cancels the unfinished workflows of the older pipeline, and the deploy
+preview shows the latest push. This applies to pipelines triggered via the API
+as well (e.g. a `generate` workflow is cancelled by a push to its branch), but
+never to the `main` branch, scheduled workflows, or reruns. Rerunning the
+workflow of an older pipeline deploys its older commit to the preview again.
+
 Pull requests from forks of people who aren't members of the `arangodb` GitHub
 organization aren't built automatically, as the builds run their code with
 access to the CircleCI secrets. A member can review the changes (especially to
@@ -389,7 +398,14 @@ The ArangoDB release workflow includes the following jobs:
 - a release branch and pull request is created with the generated content, which
   needs to be reviewed and merged on GitHub
 - once merged, the workflow in CircleCI needs to be approved to start
-  deploying to production at <https://docs.arango.ai>
+  deploying to production at <https://docs.arango.ai>. The build uses the tip
+  of `main` and first checks via the GitHub API that the release pull request
+  is merged into it. If the workflow is approved too early, the `plain-build`
+  job fails before anything is built, deployed, or tagged. Merge the pull
+  request and then use **Rerun workflow from failed** to continue. (Rerunning
+  from the start regenerates the content and creates another release pull
+  request to merge.) If the regenerated content has no changes, no pull request
+  is created and there's nothing to wait for
 - after the deployment, the built commit is tagged as `v<arangodb-version>`
   (e.g. `v3.12.13`), if its `versions.yaml` has this version. If the workflow
   runs again for the same version (e.g. to fix the generated content), the tag

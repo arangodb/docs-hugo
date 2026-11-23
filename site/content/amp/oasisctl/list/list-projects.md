@@ -1,7 +1,7 @@
 ---
 title: List Projects with _oasisctl_
 menuTitle: List Projects
-weight: 32
+weight: 33
 # This is a generated file, DO NOT MODIFY directly!
 ---
 

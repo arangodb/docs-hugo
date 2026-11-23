@@ -737,14 +737,6 @@ tr {
 
 /* Content-specific utility classes */
 
-table.fixed {
-    table-layout: fixed;
-}
-
-table.fixed code {
-    white-space: pre-wrap;
-}
-
 .columns-3 {
     -webkit-column-count: 3;
     -moz-column-count: 3;
@@ -2359,13 +2351,24 @@ nav.pagination > .next {
     color: var(--color-heading);
 }
 
-/* Consent preferences */
+/* Consent preferences (place bottom right, show tooltip to the left */
 .cky-btn-revisit-wrapper {
     bottom: 10px !important;
     right: 10px !important;
     top: unset !important;
     left: unset !important;
     z-index: 9997 !important;
+}
+.cky-btn-revisit-wrapper.cky-revisit-bottom-left:hover::before {
+    left: auto;
+    right: calc(100% + 7px);
+}
+.cky-btn-revisit-wrapper.cky-revisit-bottom-left:hover::after {
+    left: auto;
+    right: calc(100% + 2px);
+    border-width: 5px 0 5px 5px;
+    border-right-color: transparent;
+    border-left-color: #4e4b66;
 }
 
 /* Algolia */
@@ -2423,7 +2426,8 @@ nav.pagination > .next {
     margin-bottom: 36px;
     background: linear-gradient(40deg, var(--color-teal-ink) 50%, var(--color-link));
     background-position: center;
-    color: var(--gray-50)
+    color: var(--gray-50);
+    --focus-ring: #befe99;
 }
 
 .ag-banner .title {
@@ -2436,22 +2440,17 @@ nav.pagination > .next {
     padding-left: 24px;
     padding-bottom: 4px;
 }
-.ag-banner a {
+
+.ag-banner .link {
     margin-left: 24px;
     font-weight: bold;
     color: white;
+    border-bottom-color: #befe99;
 }
 
-.ag-banner a:hover{
-    color: white;
-}
 .ag-banner .logo {
     height: 36px !important;
     width: 200px !important;
-}
-
-.block {
-    display: block;
 }
 
 /* Sidebar: logo, search, main navigation, and footer link, like the sidebar of
