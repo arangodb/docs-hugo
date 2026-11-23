@@ -113,7 +113,9 @@ phase. Events are delivered over a persistent Server-Sent Events (SSE)
 connection, allowing the client to display progress in real time. Closing the
 connection stops the request.
 
-> **Note:** Streaming is only available via the API.
+{{< info >}}
+Streaming is only available via the API.
+{{< /info >}}
 
 **General query - request:**
 
