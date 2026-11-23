@@ -1,7 +1,7 @@
 ---
 title: List Roles with _oasisctl_
 menuTitle: List Roles
-weight: 35
+weight: 36
 # This is a generated file, DO NOT MODIFY directly!
 ---
 

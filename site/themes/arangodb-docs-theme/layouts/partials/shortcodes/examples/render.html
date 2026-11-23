@@ -22,4 +22,3 @@
 
 {{- $output := transform.Highlight $content.output $language }}
 {{ partial "details-box.html" (dict "summary" "Show output" "content" ($context.Page.RenderString $output)) }}
-<br>
