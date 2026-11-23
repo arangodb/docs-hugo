@@ -537,8 +537,14 @@ p {
     line-height: 24px;
 }
 
-.highlight {
-    margin-top: 16px;
+/* Code blocks, spaced like paragraphs: highlighted ones in a .highlight
+   wrapper, plain ones (code fences without a language) as a bare pre. The
+   margins collapse with those of the content around it, so a list or a
+   heading below keeps its own spacing, and text that has no margin of its
+   own (in tight lists, labels of examples) doesn't touch the code. */
+.highlight,
+pre:not(.highlight > pre, .mermaid) {
+    margin: 1rem 0;
 }
 
 li {
@@ -614,7 +620,7 @@ pre {
     flex-direction: column;
     position: relative;
     color: #202951;
-    margin: 0 0 2rem 0;
+    margin: 0;
     transition: 150ms ease-in-out;
     transition-property: border,box-shadow;
     border: 0;
@@ -2201,9 +2207,7 @@ details[open] > summary::before {
     margin-top: 0;
 }
 
-.details-box > .details-body > :last-child,
-.details-box > .details-body > .highlight:last-child > pre,
-.highlight:has(+ .details-box) > pre {
+.details-box > .details-body > :last-child {
     margin-bottom: 0;
 }
 

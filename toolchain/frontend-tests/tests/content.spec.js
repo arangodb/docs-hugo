@@ -150,6 +150,68 @@ test.describe("narrow screens", () => {
   });
 });
 
+test.describe("space below code blocks", () => {
+  for (const [name, path] of [
+    // Text after code in an item of a tight list (no <p>), and the next item
+    ["tight lists", "/arangodb/stable/aql/functions/type-check-and-cast/"],
+    // Code fences without a language (no .highlight wrapper), one after another
+    ["plain code blocks", "/arangodb/stable/operations/administration/user-management/in-arangosh/"],
+    // The "Bind Parameters" label of examples, a bare <strong>
+    ["example labels", "/arangodb/stable/aql/examples-and-query-patterns/joins/"],
+  ]) {
+    test(`separates code from what follows: ${name}`, async ({ page }) => {
+      await open(page, path);
+      const gaps = await page.evaluate(() => {
+        const article = document.querySelector("article");
+        const boxed = "img, svg, table, pre, hr, details, .tab-panel, .box";
+        // Not the hidden output in collapsed details boxes
+        const shown = pre => !pre.closest("details:not([open])") && pre.getClientRects().length;
+        return [...article.querySelectorAll("pre:not(.mermaid)")].filter(shown).map(pre => {
+          // The next text or boxed element in document order
+          const walker = document.createTreeWalker(article, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
+          walker.currentNode = pre;
+          let node = walker.nextSibling() ? walker.currentNode : null;
+          if (!node) {
+            let el = pre;
+            while (el && !el.nextSibling) el = el.parentNode;
+            node = el && (walker.currentNode = el.nextSibling);
+          }
+          for (; node; node = walker.nextNode()) {
+            let top = null;
+            if (node.nodeType === Node.TEXT_NODE && node.data.trim()) {
+              const range = document.createRange();
+              range.selectNodeContents(node);
+              top = [...range.getClientRects()].find(r => r.width)?.top;
+            } else if (node.nodeType === Node.ELEMENT_NODE && node.matches(boxed) && shown(node)) {
+              top = node.getBoundingClientRect().top;
+            }
+            if (top != null) return Math.round(top - pre.getBoundingClientRect().bottom);
+          }
+          return null;
+        }).filter(gap => gap !== null);
+      });
+      expect(gaps.length).toBeGreaterThan(0);
+      expect(Math.min(...gaps)).toBeGreaterThanOrEqual(14);
+    });
+  }
+
+  test("at the end of a list, the list's spacing applies", async ({ page }) => {
+    await open(page, "/contextual-data-platform/license-management/");
+    const blocks = page.locator("article :is(ol, ul):has(+ *) > li:last-child > .highlight:last-child > pre");
+    await expect(blocks.first()).toBeAttached();
+    const results = await blocks.evaluateAll(pres => pres.map(pre => {
+      const list = pre.closest("ol, ul");
+      const next = list.nextElementSibling;
+      return {
+        gap: next.getBoundingClientRect().top - pre.getBoundingClientRect().bottom,
+        // Collapsed margins: no extra space from the code block
+        expected: Math.max(parseFloat(getComputedStyle(list).marginBottom), parseFloat(getComputedStyle(next).marginTop)),
+      };
+    }));
+    for (const { gap, expected } of results) expect(Math.abs(gap - expected)).toBeLessThanOrEqual(1);
+  });
+});
+
 test("long code blocks can be expanded", async ({ page }) => {
   await open(page, "/arangodb/stable/release-notes/version-3.12/whats-new-in-3-12/");
   // Fails rather than skips if the page has no long code block anymore
