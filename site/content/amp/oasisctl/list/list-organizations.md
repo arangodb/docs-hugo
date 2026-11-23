@@ -1,7 +1,7 @@
 ---
 title: List Organizations with _oasisctl_
 menuTitle: List Organizations
-weight: 30
+weight: 31
 # This is a generated file, DO NOT MODIFY directly!
 ---
 
