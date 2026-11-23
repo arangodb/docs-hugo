@@ -1,7 +1,15 @@
 {{- $link := partial "resolve-link.html" (dict "link" .Destination "page" .Page) -}}
+{{- $text := .Text -}}
+{{- /* A URL as the label: break hints after slashes, so that it wraps between
+       path segments on narrow screens in every browser (Firefox does this on
+       its own) rather than at an arbitrary character. A slash run stays
+       intact (no hint within `//`), and there is none at the end. */ -}}
+{{- if findRE `^https?://[^\s<>]+$` $text -}}
+  {{- $text = replaceRE `(/+)([^/])` "${1}<wbr>${2}" $text -}}
+{{- end -}}
 <a href="{{ $link.href | safeURL }}"
   {{- with .Title }} title="{{ . }}"{{ end }}
   {{- if $link.remote }} target="_blank" rel="noopener noreferrer"{{ end }} class="link{{ if $link.remote }} link-external{{ end }}">
-  {{- .Text | safeHTML -}}
+  {{- $text | safeHTML -}}
 </a>
 {{- /* whitespace control */ -}}

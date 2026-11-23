@@ -1549,6 +1549,14 @@ article.notfound > h1 {
     }
 }
 
+/* Long words, identifiers, and URLs would otherwise stick out of the content
+   area on narrow screens and make the page scroll horizontally. Unlike
+   overflow-wrap: anywhere, break-word doesn't let tables, flex items, and the
+   like shrink to a few characters to fit. */
+.article-body {
+    overflow-wrap: break-word;
+}
+
 hgroup > h1, .article-body > :is(h2, h3, h4, h5, h6) {
     color: var(--color-link);
     font-family: var(--font-headlines);
