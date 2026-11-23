@@ -49,10 +49,13 @@ git config --global --add safe.directory /home
 
 hugoOptions=""
 if [ "$ENV" = "local" ]; then
-    # Without --buildDrafts (rarely used) to match CI builds
+    # Without --buildDrafts (rarely used) to match CI builds.
+    # Without --minify, which makes full rebuilds about 1 s slower.
     hugoOptions="serve --watch --bind=0.0.0.0 --ignoreCache --noHTTPCache"
-#else
-#  hugoOptions="--templateMetrics --templateMetricsHints"
+else
+    # Static builds are published, so minify their output
+    hugoOptions="--minify"
+    #hugoOptions="$hugoOptions --templateMetrics --templateMetricsHints"
 fi
 
 
@@ -65,7 +68,7 @@ stopped=false
 trap 'stopped=true; pkill -TERM -P $$' TERM INT
 
 set -o pipefail
-hugo $hugoOptions -e $HUGO_ENV -b $HUGO_URL --minify 2>&1 | tee -a /tmp/hugo-summary.md &
+hugo $hugoOptions -e $HUGO_ENV -b $HUGO_URL 2>&1 | tee -a /tmp/hugo-summary.md &
 wait $!
 exit=$?
 if [ "$stopped" = true ]; then
