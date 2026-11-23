@@ -228,6 +228,16 @@ server runs until you press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 
 The site will be available at `http://localhost:1313`.
 
+The `stable` and `devel` paths are second mounts of the version folders they
+point to (see `module.mounts` in `site/config/_default/config.yaml`). When you
+edit a file in one of these folders, the live server only rebuilds the page
+under the alias path. For example, if `stable` is 3.12, an edit to
+`site/content/arangodb/3.12/aql/_index.md` shows up at
+`http://localhost:1313/arangodb/stable/aql/` but not at
+`http://localhost:1313/arangodb/3.12/aql/`, which keeps the old content until
+you restart the server. Preview such changes under the alias path. Static builds
+render both paths correctly.
+
 To make the documentation tooling not start a live server in watch mode but
 rather create a static build and exit, set the environment variable `ENV` to
 any value other than `local` before calling `docker compose ...`:
@@ -248,7 +258,7 @@ includes Google Analytics etc.
 
 Browser tests with [Playwright](https://playwright.dev/) check the
 functionality of the built site, like the navigation, version selector, copy
-buttons, tabs, image viewer, and keyboard access, in Chromium, Firefox, and WebKit on desktop and
+buttons, tabs, tables, details boxes, image viewer, and keyboard access, in Chromium, Firefox, and WebKit on desktop and
 mobile viewports. They are in `toolchain/frontend-tests/`.
 
 CircleCI runs them before deploying a release, after scheduled and example
@@ -718,6 +728,31 @@ At least one of `caption`, `class`, and `style` is required. Otherwise, use the
 Markdown syntax. For diagrams in SVG format, use the `embed-svg` shortcode
 instead (see [Embedded SVGs](#embedded-svgs)).
 
+##### Screenshots
+
+The main content column is only about 800 pixels wide. Wider images are scaled
+down to fit, which can make text and other details illegible. Keep the following
+in mind when taking screenshots of web interfaces:
+
+- **Avoid wide screenshots**: Don't capture an entire browser window with an
+  extreme aspect ratio, like a maximized window on an ultra-wide display.
+- **Zoom the page**: Even with a normal aspect ratio, text can end up too small
+  after scaling. Zoom in on the page, e.g. to 150% or 175%, rather than making
+  the browser window smaller. This results in a higher-resolution screenshot
+  that stays sharp.
+- **Don't zoom in too much**: Excessive zoom levels can break the page layout or
+  make the interface look worse than it does under normal conditions, like by
+  causing excessive text wrapping.
+- **Capture only what is relevant**: It is often best to screenshot only the
+  part of the interface that the surrounding documentation is about instead of
+  the entire viewport. Don't include the address bar or other browser chrome,
+  and no artificial effects like drop shadows around the window.
+- **Prepare the content**: Set up the content in the interface so that it looks
+  tidy and representative, e.g. with meaningful names and example data.
+- **Touch up the page**: You can use the browser's developer tools to edit the
+  page before taking a screenshot, like changing text or removing elements in
+  the border areas that are not relevant for what should be shown.
+
 ##### Image compression
 
 When adding or updating images, the files should be reduced in size as much as
@@ -1061,6 +1096,11 @@ The following shortcodes also exist but are rarely used:
   Content that is collapsed by default but can be expanded.
   {{< /details >}}
   ```
+
+  It renders a rounded box like the table of contents on narrow screens, which
+  expands in place. Add `open="true"` to expand it initially. To stack several
+  boxes with a single outline, wrap them in `{{< accordion >}}` and
+  `{{< /accordion >}}`.
 
 - `{{< youtube id="dQw4w9WgXcQ" >}}` can be used to embed a single YouTube video,
   and `{{< youtube-playlist id="PL0tn-TSss6NV45d1HnLA57VJFH6h1SeH7" >}}`

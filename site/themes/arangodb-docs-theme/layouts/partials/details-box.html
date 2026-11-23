@@ -1,0 +1,13 @@
+{{- /* A collapsible box, styled like the table of contents dropdown on narrow
+       screens but expanding in place below the summary. Used by the details
+       and rbac-endpoint shortcodes and for the RBAC information of OpenAPI
+       endpoints. Consecutive boxes in an element with the details-accordion
+       class form an accordion with a single rounded outline.
+
+       Takes a dict with:
+       - summary: the summary, as HTML
+       - content: the content, as HTML
+       - class:   optional additional class names
+       - open:    optional, true to expand the box initially */ -}}
+<details class="details-box{{ with .class }} {{ . }}{{ end }}"{{ if .open }} open{{ end }}><summary>{{ .summary }}</summary><div class="details-body">{{ .content }}</div></details>
+{{- /* whitespace control */ -}}

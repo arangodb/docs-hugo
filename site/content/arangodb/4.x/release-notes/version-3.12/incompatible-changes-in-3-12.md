@@ -1138,7 +1138,7 @@ You should check for the following things in particular:
   You might need to force specific settings in case your provider is not known
   to rclone and therefore doesn't handle specific quirks on its own.
 
-### Telemetrics removed
+## Telemetrics removed
 
 <small>Removed in: v3.12.10</small>
 
@@ -1338,6 +1338,59 @@ REVERSE("We 🥑 avocado!") // now "!odacova 🥑 eW" instead of "!odacova ��
 Up to v3.12.12, every code point above U+FFFF is turned into two U+FFFD
 replacement characters, and everything before a U+FFFF character in the input
 is dropped.
+
+## Range filters on `_key` and `_id` with floating-point numbers
+
+<small>Introduced in: v3.12.14</small>
+
+AQL range filters on the `_key` or `_id` attribute that compare against a
+floating-point number, like `FILTER doc._key < 1.5`, now return results instead
+of failing with an internal error. Up to v3.12.13, such filters only support
+`null`, Booleans, and integer numbers as comparison values.
+
+Document keys and identifiers are strings, and numbers sort before strings in
+[AQL's type order](../../aql/fundamentals/type-and-value-order.md). Therefore,
+filters with `<`, `<=`, and `==` match no documents, and filters with `>` and
+`>=` match all documents. The primary index is used in either case.
+
+```aql
+FOR doc IN coll FILTER doc._key < 1.5 RETURN doc  // no documents
+FOR doc IN coll FILTER doc._key > 1.5 RETURN doc  // all documents
+```
+
+## Sorted `COLLECT` reuses `SORT` only if it starts with the group variables
+
+<small>Introduced in: v3.12.14</small>
+
+If a [`COLLECT` operation](../../aql/high-level-operations/collect.md) uses the
+`sorted` method, the AQL optimizer no longer reuses a preceding `SORT` operation
+unless the group variables are the leading sort keys of it. Otherwise, it adds
+a `SORT` on the group variables, the same as if there was no preceding `SORT`.
+The order and direction of the leading sort keys don't matter.
+
+Up to v3.12.13, the optimizer reuses a preceding `SORT` if the group variables
+appear anywhere among its sort keys. The rows of a group are then not
+necessarily adjacent, and a query like the following can return the same group
+multiple times, with the counts and aggregated values split across the
+duplicates:
+
+```aql
+FOR d IN coll
+  SORT d.a, d.b
+  COLLECT b = d.b WITH COUNT INTO count
+  RETURN { b, count }
+```
+
+Such queries now return each group once.
+
+## `REPEAT()` counts separators towards the output limit
+
+<small>Introduced in: v3.12.14</small>
+
+The [`REPEAT()` AQL function](../../aql/functions/string.md#repeat) now includes
+the separators when checking the size of the output string against the limit of
+16 MB. Up to v3.12.13, the separators can make the output string exceed this
+limit.
 
 ## HTTP API
 

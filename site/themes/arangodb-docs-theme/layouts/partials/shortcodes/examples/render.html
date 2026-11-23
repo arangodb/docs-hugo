@@ -21,5 +21,4 @@
 {{- end }}
 
 {{- $output := transform.Highlight $content.output $language }}
-<details><summary>Show output</summary>{{ $context.Page.RenderString $output }}</details>
-<br>
+{{ partial "details-box.html" (dict "summary" "Show output" "content" ($context.Page.RenderString $output)) }}

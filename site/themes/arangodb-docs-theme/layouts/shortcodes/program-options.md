@@ -115,7 +115,7 @@ Effective on {{ delimit . ", " " and " }} only.
 {{ end }}
 
 {{ with $option.longDescription }}
-<details><summary>Show details</summary>{{ . | $context.Page.RenderString (dict "display" "block") }}</details>
+{{ partial "details-box.html" (dict "summary" "Show details" "content" (. | $context.Page.RenderString (dict "display" "block"))) }}
 {{ end }}
 
 ---

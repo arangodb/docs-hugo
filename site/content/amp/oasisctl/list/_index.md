@@ -38,6 +38,7 @@ oasisctl list [flags]
 * [oasisctl list effective](list-effective.md)	 - List effective information
 * [oasisctl list example](list-example.md)	 - List example ...
 * [oasisctl list examples](list-examples.md)	 - List all example datasets
+* [oasisctl list flavours](list-flavours.md)	 - List deployment flavours available for an organization
 * [oasisctl list group](list-group.md)	 - List group resources
 * [oasisctl list groups](list-groups.md)	 - List all groups of the given organization
 * [oasisctl list ipallowlists](list-ipallowlists.md)	 - List all IP allowlists of the given project
