@@ -286,12 +286,15 @@ database. Projects are not resources of their own either. If the scope of your
 role assignment covers a database, it covers all of its projects and the
 database services installed for it.
 
-**Shared services** are services that are not bound to a database:
+**Shared services** are services that are not bound to a database, such as
+the following:
 
 - [Notebook servers](../notebook-servers.md)
 - [Container Manager](../container-manager/_index.md) services, including the
   ones that you install for a specific database
 - [Graph Analytics](../graph-analytics/_index.md) engines
+- MLflow
+- [GraphML](../graphml/_index.md)
 
 They are checked on their service type rather than a database. A shared service
 accesses ArangoDB with the permissions of the user who uses it, so having a
@@ -383,13 +386,11 @@ that user as chips:
 
 ![The Users tab of the Access control page listing users with their roles as chips, a search field, a role filter, and page controls](../../images/rbac-ui-users-tab.png)
 
-- A user with no roles shows a dash (`–`).
-- A user that holds every role, such as `root`, shows **All roles** instead of
-  the individual chips.
+- A user with no roles shows a hyphen (`-`).
+- The `root` user shows the reserved `super-admin` role.
 - If not all chips fit, the row shows as many as it can, followed by a chip
-  with the number of remaining roles, for example `+3`.
-
-Select a role chip to switch to that role in the **Roles** tab.
+  with the number of remaining roles, for example `+3`. Hover over this chip
+  to see the remaining roles.
 
 The list always contains at least the `root` user. It also includes inactive
 users, and you can assign roles to them, too.
@@ -469,7 +470,7 @@ The steps are the same for every role. Only the scope differs, see
    below the role name and a description of the role. Depending on the role,
    you either [scope the assignment](#scope-a-role-assignment) or see a notice
    that the role applies everywhere.
-5. To add more roles, use the **Assign role** combobox at the top of the
+5. To add more roles, use the **Add role** combobox at the top of the
    **Assigned** list.
 6. Select **Save changes**. A **Roles updated** notification confirms the
    change.
@@ -478,7 +479,10 @@ Each entry in the **Assigned** list shows the role name with the number of
 scopes underneath, for example `2 scopes`, or `No scope yet` for a role you
 have not scoped yet.
 
-**Cancel** discards every change made in the dialog.
+**Cancel** discards every change made in the dialog. If you have unsaved
+changes, a **Discard changes?** prompt appears first. Select
+**Discard changes** to close the dialog, or **Keep editing** to return to it.
+The same applies if you close the dialog with the close icon or the Escape key.
 {{< /tab >}}
 
 {{< tab "cURL" >}}
@@ -510,9 +514,9 @@ in front:
 2. Select **Assign user**. The **Assign a user** dialog opens, prompting you to
    *Pick the user to give this role to. You can define its scope in the next
    step.*
-3. Choose an account from the **Search users** combobox. It lists only users
-   that do not already hold this role. **Next** stays disabled until you pick
-   one.
+3. Choose an account from the **Search users** combobox. Users that already
+   hold this role are listed under **Already assigned** and cannot be
+   selected. **Next** stays disabled until you pick an available user.
 4. Select **Next**. The **Assign roles to `<user>`** dialog opens with the role
    already in the **Assigned** list, and the flow continues exactly as in
    [Assign a role to a user](#assign-a-role-to-a-user).
@@ -537,7 +541,8 @@ With a role selected in the **Assigned** list, the right-hand side of the
 dialog shows what that assignment can be narrowed to.
 
 Some roles cannot be narrowed at all. For those, the panel shows the notice
-*This role applies everywhere. It cannot be narrowed to specific resources.*
+*This role applies everywhere. It cannot be narrowed to specific resources
+because it's a platform-level role.*
 and the assignment covers all resources. This is the case for the
 `managed:operator:<uuid>`, `tenant-admin`, and `platform-operator` roles.
 
@@ -549,12 +554,13 @@ role. Choose between:
 - **Specific resources**: the role applies only to the resources you list,
   defined as one or more scopes.
 
-With **Specific resources** selected, use the **Add scope** button next to the
-role name to add a scope card. A new card is titled **New scope** until you
-choose a **Resource type**, after which it takes the name of that type. Which
-resource types are available depends on the role. Each resource type can only
-be added once per role assignment. Types that are already in use are listed
-under **Already selected** and cannot be picked again. To change a scope, edit
+Selecting **Specific resources** adds a first scope card. To add more, use
+the **Add scope** button next to the role name. A new card is titled
+**New scope** until you choose a **Resource type**, after which it takes the
+name of that type. Which resource types are available depends on the role.
+Each resource type except `Name pattern (advanced)` can only be added once
+per role assignment. Types that are already in use are listed under
+**Already scoped** and cannot be picked again. To change a scope, edit
 the existing card. Each card can be collapsed with the chevron and removed
 with the trash icon.
 
@@ -562,9 +568,11 @@ Below the **Everything** and **Specific resources** options, a **Visual** /
 **JSON** toggle switches between the form-based configuration and a
 read-only preview of the scope as JSON, in the format that the
 [HTTP API](#scopes-in-the-http-api) uses. You can only edit the scope in the
-**Visual** mode. The copy icon copies the JSON to the clipboard. Selecting
-anything else in the dialog switches back to **Visual** mode, so that you
-see any validation errors.
+**Visual** mode. The copy icon copies the JSON to the clipboard. The dialog
+switches back to **Visual** mode when you switch between **Everything** and
+**Specific resources**, select **Add scope**, select another role in the
+**Assigned** list, or when **Save changes** finds an incomplete scope, so that
+you see the validation errors.
 {{< /tab >}}
 
 {{< tab "cURL" >}}
@@ -610,8 +618,10 @@ For the `Collections` resource type, the scope card shows a collection picker:
   **All collections in this database** checkbox followed by the individual
   collections.
 
-Selecting a whole group or all databases is reflected as a partially selected
-state on the parent checkboxes.
+The **All collections in this database** checkbox of a database is checked
+if all of its collections are selected, and shows a partially selected state
+if only some are. **All collections in all databases** shows a partially
+selected state until every database is fully selected.
 
 {{< warning >}}
 Selecting collections does not give access to the database they belong to,
@@ -633,16 +643,11 @@ Database scope adds db:{collection,view,analyzer,graph}:<db>:*. Revisit once fix
 **Match resources by name pattern**
 
 The `Name pattern (advanced)` resource type replaces the picker with a single
-text field where you enter a pattern such as `analytics/report_*`. Below the
-field, the dialog previews what the pattern currently resolves to, for example:
-
-```
-Matches 312 collections
-analytics/report_daily
-analytics/report_weekly
-analytics/report_hourly
-+309
-```
+text field where you enter a full resource name with a wildcard, for
+example, `db:collection:analytics:report_*`. The pattern is used exactly as
+you enter it, so a pattern in any other format, like `analytics/report_*`,
+matches nothing. See [Scopes in the HTTP API](#scopes-in-the-http-api) for the
+format of resource names.
 
 Patterns are evaluated continuously rather than expanded once, so
 **all future matches are included automatically**. Use this when the set of
@@ -695,8 +700,8 @@ With **Specific resources** selected, add one scope per resource type:
 - **Databases**: Select **All databases**, which includes databases created in
   the future, or search for and select individual databases.
 - **Shared services**: Select **All shared services, including new types**, or
-  individual service types, for example **Notebooks** and
-  **Custom containers**.
+  individual service types, for example **Notebook servers** and
+  **Container Manager**.
 - **Secrets**: Covers all secrets. There is nothing to select because secrets
   cannot be scoped individually.
 
@@ -737,12 +742,24 @@ you can use.
 The dialog does not let you save incomplete assignments. When you select
 **Save changes**, it flags the following:
 
+- A role for which you selected neither **Everything** nor
+  **Specific resources** shows **Scope required** with the hint
+  *Choose Everything or Specific resources, or remove this role.*
 - A role with no scope gets a warning icon in the **Assigned** list. Hovering
   it shows *Add scope and resources, or remove this role*.
 - A role with a scope that has no resources gets the same icon. Hovering it
   shows *Add resources to each scope, or remove the empty ones.*
+- A scope card without a resource type is titled **Empty scope**, outlined
+  in red, and shows **Resource type required** with the hint
+  *Pick a resource type, or remove this scope.*
 - A scope card without any selected resource is outlined in red and shows the
   inline error *Add resources to this scope, or remove it.*
+
+  ![A Collections scope card outlined in red with the error Add resources to this scope, or remove it, above the empty collection picker](../../images/rbac-ui-validation.png)
+
+If you delete all scope cards of a role, the role is flagged right away as
+**No scope yet**, with the hint *Add a scope with resources, or remove this
+role.*
 
 Resolve every flagged item, or delete it, before saving.
 {{< /tab >}}
@@ -768,22 +785,22 @@ check whether a scope is useful, however:
 Open the details panel of a user and select the pencil icon on a role card.
 The same dialog reopens as **Edit roles for `<user>`**, where you can:
 
-- Add further roles with the **Assign role** combobox.
+- Add further roles with the **Add role** combobox.
 - Change the scope of an assignment, where the role supports it.
 - Remove a role from the user with the trash icon on its entry in the
-  **Assigned** list. Confirm with **Delete role** to remove the role and all
-  its scopes.
+  **Assigned** list. The role is removed from the list right away. If the user
+  held the role before you opened the dialog, a confirmation appears when you
+  select **Save changes**. Confirm it to remove the role and all its scopes.
+  The button reads **Delete role** or **Delete roles**, or
+  **Delete role and save changes** if you made other changes, too.
+
+  ![The confirmation dialog asking Do you want to delete this role, with the Cancel and Delete role buttons](../../images/rbac-ui-delete-role-confirm.png)
 
 If you remove every role, the dialog shows *No roles assigned to this user*
 with an **Assign role** button to start over.
 
 Select **Save changes** to apply the changes. A **Roles updated** notification
 confirms them.
-
-{{< comment >}}
-TODO: The confirmation dialog says the deletion cannot be undone. Verify
-whether it takes effect immediately or only with Save changes.
-{{< /comment >}}
 
 The pencil icons in the Roles tab panel work the same way, so you can adjust a
 user's assignment from either direction without switching tabs. The dialog
@@ -824,7 +841,7 @@ The **Roles** tab lists every role in a table with two sortable columns:
 | Column | Description |
 |--------|-------------|
 | `Roles` | The role name |
-| `Users` | The users that hold the role as chips, **All users**, or `–` if nobody does |
+| `Users` | The users that hold the role as chips, or `-` if nobody does |
 
 Above the table you get a **Search** field for role names and a
 **Filter by user** dropdown that narrows the list to the roles of the selected
@@ -833,8 +850,11 @@ users.
 Select a row to open the details panel for that role. It is headed by the role
 name, a description of the role, and an **Assign user** button. Below a
 **Search** field for user names, it lists one card per user that holds the
-role. The pencil icon on a user card opens the assignment dialog for that user,
-and the chevron expands the card to show the other roles of that user.
+role. The pencil icon on a user card (**Edit user's roles**) opens the
+assignment dialog for that user, and the chevron expands the card to show the
+other roles of that user.
+
+![The details panel of the coredb-reader role with an Assign user button, a field for searching users, and one card per user, the first one expanded to show the other roles of that user](../../images/rbac-ui-role-panel.png)
 {{< /tab >}}
 
 {{< tab "cURL" >}}
@@ -879,9 +899,9 @@ HTTP API reference for details.
 
 Changes to role assignments are not necessarily effective immediately,
 regardless of whether you make them in the web interface or with the
-HTTP API. Enforcement can take up to about 30 seconds, as the **Roles updated**
-notification in the web interface points out. Keep that delay in mind when
-verifying a change, and when revoking access that must take effect right away.
+HTTP API. Enforcement can take up to about 30 seconds. Keep that delay in mind
+when verifying a change, and when revoking access that must take effect right
+away.
 
 ## Troubleshoot denied access
 
