@@ -1495,9 +1495,10 @@ article.default > * {
         background: var(--neutral-white);
     }
 
+    /* Out into the padding of the box, so that the whole box can be clicked */
     .toc-details > summary {
-        margin: 0;
-        padding: 8px 0;
+        margin: 0 -12px;
+        padding: 8px 12px;
         font-size: 14px;
     }
 
@@ -2181,14 +2182,22 @@ summary {
 
 /* Like the accordion trigger of the design system: a medium-weight label at
    the size of the text around it, underlined on hover. The chevron stays in
-   front of the label, close to it in the wide text column */
-summary:not(.openapi-prop) {
+   front of the label, close to it in the wide text column. The summaries of
+   boxes (table of contents on narrow screens, details shortcode) span the box
+   instead, and only underline their label, not the current section of the
+   table of contents. */
+:not(.toc-details, .details-box) > summary:not(.openapi-prop) {
     width: fit-content;
     color: var(--color-heading);
+}
+
+:not(.toc-details, .details-box) > summary:not(.openapi-prop),
+.summary-label {
     text-underline-offset: 4px;
 }
 
-summary:not(.openapi-prop):hover {
+:not(.toc-details, .details-box) > summary:not(.openapi-prop):hover,
+summary:hover > .summary-label {
     text-decoration: underline;
 }
 
@@ -2237,17 +2246,13 @@ details[open] > summary::before {
     display: flex;
     align-items: baseline;
     gap: 8px;
-    margin: 0;
-    padding: 8px 0;
+    /* Out into the padding of the box, so that the whole box can be clicked */
+    margin: 0 -12px;
+    padding: 8px 12px;
     font-size: 14px;
     font-weight: 600;
     line-height: 20px;
     color: var(--color-heading);
-}
-
-.details-box > summary:hover,
-.details-box > summary:focus-visible {
-    color: var(--color-link);
 }
 
 .details-box > summary::before {
