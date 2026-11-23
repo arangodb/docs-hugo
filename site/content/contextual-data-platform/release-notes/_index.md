@@ -29,28 +29,6 @@ AutoGraph Studio.
 - Deleting a project removes everything it created and confirms the deletion
   clearly.
 
-### AQLizer
-
-{{< tag "Agentic AI Suite" "Beta" >}}
-
-- **One tab for generating and optimizing queries**: The
-  [AQLizer](../aqlizer/_index.md) tab of the Query Editor replaces the
-  separate AQLizer and Reasoner tabs. Click **Generate** to turn a question
-  into an AQL query, or **Optimize** to make a query faster. One setup per
-  database makes both available.
-- **More accurate queries**: The AQLizer explores your database before it
-  writes a query. This takes longer than before but gives more accurate
-  results on average.
-- **Query templates**: Through the
-  [API](../aqlizer/api-reference.md#save-queries-as-templates), you can save
-  generated queries as templates that the AQLizer reuses for similar
-  questions.
-- **Renamed**: The Reasoner is now part of the AQLizer. Its API keeps the
-  `/reasoner/` path.
-- **Deprecated**: The [Natural Language to AQL](../natural-language-to-aql/_index.md)
-  service, the beta version of the AQLizer, is deprecated in favor of the new
-  AQLizer. The web interface no longer offers it.
-
 ### Security
 
 - Improved read-only safeguard for AI-assisted queries: every query the AI runs

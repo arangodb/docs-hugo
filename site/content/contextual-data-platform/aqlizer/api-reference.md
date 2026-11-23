@@ -160,6 +160,11 @@ the request.
 
 ### Save queries as templates
 
+{{< info >}}
+Query templates are only available through the API. The web interface does not
+support them.
+{{< /info >}}
+
 Set `add_template` to `true` to save the query as a template in the `Tools`
 collection, so that the AQLizer can reuse it for similar questions. This
 requires write access to the `Tools` collection.
@@ -184,7 +189,7 @@ query is generated, for example because the database has no data for the
 question, nothing is saved and `added_template_id` is `null`.
 
 Templates require an embedding API key. Set it as `embedding_api_key` in the
-`env` of the AQLizer's MCP server when you start it through the platform API.
+`env` of the AQLizer's MCP server when you start it through the data platform API.
 Without it, the AQLizer always writes a new query, and saving new templates
 fails with the `Can not add template` error.
 

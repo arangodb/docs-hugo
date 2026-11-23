@@ -22,8 +22,8 @@ Platform. It requires the Agentic AI Suite license.
 
 ## Set up the AQLizer
 
-You set up the AQLizer once per database. The setup makes both Generate and
-Optimize available.
+You set up the AQLizer once per database. The setup makes both **Generate** and
+**Optimize** available.
 
 1. Under **API Key**, select a secret from the
    [Secrets Manager](../secrets-manager.md) that holds the API key of your
@@ -109,7 +109,7 @@ context.
 Click **Manage services** at the bottom of the queries panel to see the
 AQLizer services of all databases, with their **Service ID** and status. To
 stop the AQLizer for a database, click the stop button next to it. Stopping
-stops both Generate and Optimize, including the internal MCP server.
+stops both **Generate** and **Optimize**, including the internal MCP server.
 
 The **Service ID** is the `{service_id_postfix}` in the paths of the
 [API](api-reference.md).

@@ -30,17 +30,16 @@ The AQLizer offers two operations:
 - **Optimize**: Submit an AQL query and get a faster version that returns the
   same results, with a performance comparison report.
 
-Generate aims at a correct answer, Optimize at a faster query. You can optimize
+**Generate** aims at a correct answer, **Optimize** at a faster query. You can optimize
 a query that the AQLizer generated, or one you wrote yourself.
 
 {{< info >}}
-The AQLizer service was previously called the **Reasoner**. The former name
-still appears in the API, for example in the `/reasoner/` URL prefix of the
-endpoints and in the `arangodb-reasoner` service name.
-
-The AQLizer replaces the
+The **AQLizer** tab of the Query Editor used to run on the
 [Natural Language to AQL](../natural-language-to-aql/_index.md) service, which
-was the beta version of the AQLizer and is deprecated.
+is deprecated. The tab now runs on the service formerly called the
+**Reasoner**, which is now the AQLizer service. The former name still appears in
+the API, for example in the `/reasoner/` URL prefix of the endpoints and in the
+`arangodb-reasoner` service name.
 {{< /info >}}
 
 ## How the AQLizer works
@@ -78,6 +77,11 @@ builds up a set of queries for the questions your users ask. When a new
 question closely matches one of them, the AQLizer adapts the saved query
 instead of sampling the database and writing a new one. See
 [Save queries as templates](api-reference.md#save-queries-as-templates).
+
+{{< info >}}
+Query templates are only available through the API. The web interface does not
+support them.
+{{< /info >}}
 
 Generating a query can take tens of seconds, because the AQLizer explores the
 database before it writes the query.
@@ -135,8 +139,8 @@ further improvement.
 The AQLizer only runs read-only queries. It does not run a query that writes
 data, for example with `INSERT`, `UPDATE`, `REPLACE`, `UPSERT`, or `REMOVE`:
 
-- Generate answers a request to add, change, or delete data with an error.
-- Optimize ends the request with the message
+- **Generate** answers a request to add, change, or delete data with an error.
+- **Optimize** ends the request with the message
   `This is a write query. Only read-only queries can be optimized or run.`
 - During validation, an optimization attempt that writes data is rejected.
 
@@ -189,8 +193,8 @@ flowchart TD
   deployment.
 - An **API key** for the language model the AQLizer uses. Both operations use
   the same key and model. See [Language model](#language-model).
-- To save and reuse query templates, an **embedding API key** on the internal
-  MCP server. See
+- To save and reuse query templates through the API, an **embedding API key**
+  on the internal MCP server. See
   [Save queries as templates](api-reference.md#save-queries-as-templates).
 
 ## Language model
@@ -200,7 +204,7 @@ works with other providers, such as Anthropic, and with OpenAI-compatible
 endpoints, such as a proxy or Azure OpenAI. The API key you provide has to
 belong to the configured provider.
 
-When you start the AQLizer service through the platform API, you can set the
+When you start the AQLizer service through the data platform API, you can set the
 following parameters in its `env`:
 
 | Parameter | Description |

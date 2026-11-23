@@ -10,7 +10,7 @@ description: >-
 {{< tag "Agentic AI Suite" "Beta" >}}
 
 {{< warning >}}
-Natural Language to AQL was the beta version of the AQLizer and is deprecated
+Natural Language to AQL was the previous version of the AQLizer and is deprecated
 in favor of the new [AQLizer](../aqlizer/_index.md). Use the AQLizer to
 generate and optimize AQL queries.
 {{< /warning >}}
