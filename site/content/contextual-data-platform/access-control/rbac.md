@@ -308,7 +308,7 @@ data platform's infrastructure.
 
 ### What the AI roles grant
 
-{{% rbac-roles %}}
+{{< rbac-roles >}}
 
 The services link to their RBAC pages if they have one. These pages describe the
 actions in detail and which action each endpoint requires.
