@@ -423,7 +423,10 @@ jobs:
               # not the pipeline's commit from before the release pull request
               git checkout -q --detach origin/main
             else
-              git fetch origin $CIRCLE_BRANCH:$CIRCLE_SHA1 && git checkout $CIRCLE_SHA1
+              # Exactly the pipeline's commit (also of pull requests from forks, which
+              # the clone doesn't have), for the summary and the frontend tests that
+              # refer to it. A newer push to the branch auto-cancels this workflow.
+              git fetch origin "$CIRCLE_SHA1" && git checkout -q --detach "$CIRCLE_SHA1"
             fi
             # The built commit, for tagging ArangoDB releases (tag-release)
             git rev-parse HEAD > /home/circleci/project/build-commit
