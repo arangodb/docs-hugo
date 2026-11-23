@@ -1,7 +1,7 @@
 ---
 title: List IP Allowlists with _oasisctl_
 menuTitle: List IP Allowlists
-weight: 23
+weight: 24
 # This is a generated file, DO NOT MODIFY directly!
 ---
 

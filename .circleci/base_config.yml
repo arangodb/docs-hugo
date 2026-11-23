@@ -296,6 +296,9 @@ commands:
 
               if [ "<< parameters.create-pr >>" = true ]; then
                 # No branch and pull request without changes (e.g. scheduled workflows)
+                # The release pull request's branch, empty without one, for
+                # plain-build to check that it's merged (release workflow)
+                : > /home/circleci/project/release-pr-branch
                 if git diff --cached --quiet; then
                   echo "No changes in the generated files, not creating a pull request"
                   exit 0
@@ -327,6 +330,7 @@ commands:
 
               if [ "<< parameters.create-pr >>" = true ]; then
                 git push -u origin << parameters.pr-branch >>-$CIRCLE_BUILD_NUM
+                echo "<< parameters.pr-branch >>-$CIRCLE_BUILD_NUM" > /home/circleci/project/release-pr-branch
                 curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci \
                   --header "docs-webhook-token: $DOCS_WEBHOOK_TOKEN" \
                   --header 'docs-webhook-event: scheduled-create-pr' \
@@ -383,6 +387,11 @@ jobs:
       url:
         type: string
         default: "https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app/"
+      # For the release workflow of ArangoDB releases (set by generate_config.py):
+      # build the tip of main and only if the release pull request is merged
+      release-pr-check:
+        type: boolean
+        default: false
     machine:
       image: default
     resource_class: large
@@ -396,14 +405,74 @@ jobs:
             #- "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o" # arangodb/enterprise
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
 
-      - run: 
+      - when:
+          condition: << parameters.release-pr-check >>
+          steps:
+            # Not at . because release-generate also persists docs-hugo/site/public,
+            # which would make the clone below fail
+            - attach_workspace:
+                at: /home/circleci/release-workspace
+
+      - run:
           name: Clone docs repo
           command: |
             git clone git@github.com:arangodb/docs-hugo.git
             cd /home/circleci/project/docs-hugo
-            git fetch origin $CIRCLE_BRANCH:$CIRCLE_SHA1 && git checkout $CIRCLE_SHA1
+            if [ "<< parameters.release-pr-check >>" = true ]; then
+              # The tip of main, which has the release pull request once it's merged,
+              # not the pipeline's commit from before the release pull request
+              git checkout -q --detach origin/main
+            else
+              # Exactly the pipeline's commit (also of pull requests from forks, which
+              # the clone doesn't have), for the summary and the frontend tests that
+              # refer to it. A newer push to the branch auto-cancels this workflow.
+              git fetch origin "$CIRCLE_SHA1" && git checkout -q --detach "$CIRCLE_SHA1"
+            fi
             # The built commit, for tagging ArangoDB releases (tag-release)
             git rev-parse HEAD > /home/circleci/project/build-commit
+
+      - when:
+          condition: << parameters.release-pr-check >>
+          steps:
+            - run:
+                name: Check that the release pull request is merged
+                command: |
+                  set -eo pipefail
+                  file=/home/circleci/release-workspace/release-pr-branch
+                  if [ ! -f "$file" ]; then
+                    echo "[ERROR] $file is missing, release-generate didn't record the release pull request"
+                    exit 1
+                  fi
+                  branch=$(cat "$file")
+                  # No changes in the generated files, no pull request to wait for
+                  if [ -z "$branch" ]; then
+                    echo "release-generate didn't create a release pull request, nothing to check"
+                    exit 0
+                  fi
+
+                  pr=$(curl -fsS -H "Authorization: Bearer $CIRCLECI_GITHUB_READONLY" \
+                    "https://api.github.com/repos/arangodb/docs-hugo/pulls?head=arangodb:$branch&state=all" | jq '.[0]')
+                  if [ "$pr" = "null" ]; then
+                    echo "[ERROR] There is no pull request for the branch $branch"
+                    exit 1
+                  fi
+                  number=$(echo "$pr" | jq -r '.number')
+                  merged_at=$(echo "$pr" | jq -r '.merged_at')
+                  merge_commit=$(echo "$pr" | jq -r '.merge_commit_sha')
+                  if [ "$merged_at" = "null" ]; then
+                    echo "[ERROR] The release pull request #$number isn't merged. Approve the workflow only after merging it."
+                    echo "Merge #$number, then use \"Rerun workflow from failed\" to continue the release."
+                    exit 1
+                  fi
+
+                  # Pull requests are squash-merged, so the merge commit (not the
+                  # pull request's own commit) needs to be part of the built commit
+                  cd /home/circleci/project/docs-hugo
+                  if ! git merge-base --is-ancestor "$merge_commit" HEAD; then
+                    echo "[ERROR] The merge commit $merge_commit of #$number isn't part of the built commit $(git rev-parse HEAD)"
+                    exit 1
+                  fi
+                  echo "The release pull request #$number is merged ($merge_commit), building $(git rev-parse HEAD)"
 
 
       - run:
@@ -475,6 +544,16 @@ jobs:
             - commit:
                 create-pr: << parameters.create-pr >>
                 pr-branch: << parameters.pr-branch >>
+      - when:
+          condition:
+            and:
+              - << parameters.commit-generated >>
+              - << parameters.create-pr >>
+          steps:
+            - persist_to_workspace:
+                root: .
+                paths:
+                  - release-pr-branch
 
       
       - persist_to_workspace:

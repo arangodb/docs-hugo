@@ -1539,7 +1539,7 @@
       "agent",
       "single"
     ],
-    "default" : 3580411904,
+    "default" : 3580412928,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -2976,7 +2976,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 2864329523,
+    "default" : 2864330342,
     "deprecatedIn" : null,
     "description" : "Maximum memory usage (in bytes) to be used by all ongoing dumps.",
     "dynamic" : true,
@@ -3377,6 +3377,38 @@
       "v3.12.0"
     ],
     "longDescription" : "Automatically compress outgoing HTTP responses with\nthe deflate or gzip compression format, in case the client request advertises\nsupport for this.\n\nCompression only happens for HTTP/1.1 and HTTP/2 connections, if the size of the\nuncompressed response body exceeds the threshold value controlled by this\nstartup option, and if the response body size after compression is less than the\noriginal response body size.\n\nUsing the value `0` disables the automatic response compression.",
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "http",
+    "type" : "uint64"
+  },
+  "http.decompressed-request-body-global-memory-limit" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 1646913536,
+    "deprecatedIn" : null,
+    "description" : "The maximum combined size of all decompressed request bodies held by the server at the same time (in bytes).",
+    "dynamic" : true,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.14"
+    ],
+    "longDescription" : "Each compressed request body (gzip, deflate or lz4)\nreserves its decompressed size from this budget until the request is finished.\nRequests that would exceed the budget are rejected with HTTP 503 and can be\nretried later.\n\nThe default is 10% of the physical memory. A value of `0` disables the limit.",
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
     "minInclusive" : true,
@@ -5953,7 +5985,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 16469131264,
+    "base" : 16469135360,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5961,7 +5993,7 @@
       "agent",
       "single"
     ],
-    "default" : 13339996324,
+    "default" : 13339999641,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -6288,7 +6320,7 @@
     "type" : "uint64"
   },
   "query.memory-limit" : {
-    "base" : 16469131264,
+    "base" : 16469135360,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -6296,7 +6328,7 @@
       "agent",
       "single"
     ],
-    "default" : 9881478759,
+    "default" : 9881481216,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7528,7 +7560,7 @@
       "agent",
       "single"
     ],
-    "default" : 4296494284,
+    "default" : 4296495513,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -10169,7 +10201,7 @@
       "agent",
       "single"
     ],
-    "default" : 5728659046,
+    "default" : 5728660684,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
