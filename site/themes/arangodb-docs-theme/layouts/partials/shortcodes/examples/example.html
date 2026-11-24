@@ -20,55 +20,63 @@
 
 
 {{ if site.Params.useArangoproxy }}
-    {{ $saveCache := true }}
-
-
-    {{ with $cacheFound }}
-        {{ $oldRequest := $cacheFound.request }}
-        {{ $newRequest :=  printf "%s" $content | base64Encode  }}
-
-        {{ if eq $oldRequest $newRequest }}
-            {{ if $context.Page.Store.Get $name }}
-                {{ $response := .response | base64Decode | transform.Unmarshal }}
-                {{- partial "shortcodes/examples/render.html" (dict
-                "context" $context
-                "content" $response
-                "options" $options
-                "language" $language
-                ) }}
-            {{ else }}
-                {{- partial "shortcodes/examples/generate.html" (dict
-                "context" $context
-                "example" $content
-                "language" $language
-                "options" $options
-                "cache" false
-                "version" $pageVersion
-                ) }}
-                {{ $context.Page.Store.Set $name "true" }}
+    {{- /* Live responses are kept in hugo.Store for the whole hugo process: across
+           server rebuilds (unlike the cache.json data, which only receives the
+           responses of examples whose code changed), for the version alias copies of
+           pages (/arangodb/stable/, /arangodb/devel/), and for repeated examples. An
+           example is therefore only sent to arangoproxy (and run) again if its code
+           changes. The key includes the code so that edits are picked up. */}}
+    {{ $newRequest := printf "%s" $content | base64Encode }}
+    {{ $storeKey := printf "examples/%s/%s/%s" $pageVersion $cacheEntry (md5 $newRequest) }}
+    {{ $response := hugo.Store.Get $storeKey }}
+    {{- /* Only run the examples of changed pages, others render the saved output */}}
+    {{ if and (not $response) (eq site.Params.examplesScope "changed") }}
+        {{ with $cacheFound }}
+            {{ if eq .request $newRequest }}
+                {{ $pageKey := printf "%s/%s" $context.Page.RelPermalink (md5 $context.Page.RawContent) }}
+                {{ if not (partialCached "shortcodes/examples/page-changed.html" (dict "page" $context.Page "version" $pageVersion) $pageKey) }}
+                    {{ $response = .response | base64Decode | transform.Unmarshal }}
+                {{ end }}
             {{ end }}
-
-        {{ else }}
-            {{- partial "shortcodes/examples/generate.html" (dict
+        {{ end }}
+    {{ end }}
+    {{ if not $response }}
+        {{- /* Only save to cache.json if the example code changed (keeps diffs small) */}}
+        {{ $saveCache := true }}
+        {{ with $cacheFound }}
+            {{ if eq .request $newRequest }}
+                {{ $saveCache = false }}
+            {{ end }}
+        {{ end }}
+        {{ $response = partial "shortcodes/examples/generate.html" (dict
             "context" $context
             "example" $content
             "language" $language
-            "options" $options
             "cache" $saveCache
             "version" $pageVersion
             ) }}
-            {{ $context.Page.Store.Set $name "true" }}
+        {{ if and $response (not $response.noServer) }}
+            {{- /* For the end-of-page cleanup (page-done.html) */}}
+            {{ $context.Page.Store.Set "examplesRan" true }}
         {{ end }}
-    {{ else }}
-        {{- partial "shortcodes/examples/generate.html" (dict
+        {{ if $response.noServer }}
+            {{- /* No server for this version, show the saved output like a plain build */}}
+            {{ with $cacheFound }}
+                {{ $response = .response | base64Decode | transform.Unmarshal }}
+            {{ end }}
+        {{ end }}
+        {{- /* Don't keep failed runs (not saved to cache.json either), so they run again */}}
+        {{ if and $response (not (strings.Contains (print $response.output) "ERRORD")) }}
+            {{ hugo.Store.Set $storeKey $response }}
+        {{ end }}
+    {{ end }}
+    {{ with $response }}
+        {{- partial "shortcodes/examples/render.html" (dict
         "context" $context
-        "example" $content
-        "language" $language
+        "content" .
         "options" $options
-        "cache" $saveCache
-        "version" $pageVersion
+        "language" $language
         ) }}
-        {{ $context.Page.Store.Set $name "true" }}
     {{ end }}
 
 {{ else }}

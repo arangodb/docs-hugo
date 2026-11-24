@@ -114,6 +114,7 @@ The complete list of keywords is currently:
 - `AND`
 - `ANY`
 - `ASC`
+- `AT LEAST`
 - `COLLECT`
 - `DESC`
 - `DISTINCT`

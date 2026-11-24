@@ -105,4 +105,4 @@ _arangod_ inspects the following list of environment variables:
 <!-- ARANGODB_CONFIG_PATH, ICU_DATA, ICU_DATA_LEGACY, ... (TRI_GETENV, iresearch::getenv) -->
 
 For Docker specific environment variables please refer to
-[Docker Hub](https://hub.docker.com/_/arangodb)
+[Install with Docker](../../operations/installation/docker.md).

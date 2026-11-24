@@ -636,7 +636,10 @@ coll.count();
 
 ### `db._drop(collection [, options])`
 
-Drops a `collection` and all its indexes and data.
+Drops a collection and all its indexes and data.
+
+You need to specify the name or ID of the collection. You cannot pass a
+_collection_ object.
 
 `db._drop(collection-name)`
 
@@ -674,7 +677,8 @@ description: ''
 ---
 ~db._create("example");
 var coll = db._collection("example");
-db._drop(coll);
+db._drop(coll.name());
+~assert(db._collection("example") === null);
 ```
 
 Drops a collection identified by name:
@@ -1019,11 +1023,10 @@ Creates a new View and returns a [_view_ object](view-object.md).
 same name may already exist in the current database. For information about the
 naming constraints for Views, see [View names](../../../concepts/data-structure/views.md#view-names).
 
-`type` must be the string `"arangosearch"`, as it is currently the only
-supported View type.
+`type` must be the string `"arangosearch"` or `"search-alias"`.
 
 `properties` is an optional object containing View configuration specific
-to each View-type.
+to each View type:
 - [`arangosearch` View definition](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-definitionmodification)
 - [`search-alias` View definition](../../../indexes-and-search/arangosearch/search-alias-views-reference.md#view-definition)
 

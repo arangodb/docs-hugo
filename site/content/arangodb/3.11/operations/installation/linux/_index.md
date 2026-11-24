@@ -44,7 +44,7 @@ installation steps are:
 
 6. You can start ArangoDB in several ways. The exact start-up command depends on
    your Linux distribution, as well as on the type of ArangoDB deployment you
-   are interested in (_Single Server_, _Active Failover_, _Cluster_, _DC2DC_).
+   are interested in (_Single Server_, _Cluster_).
    Please refer to the [Deploy](../../../deploy/_index.md) chapter for details.
 
 ## Securing your Installation
@@ -79,12 +79,30 @@ ARANGODB_DEFAULT_ROOT_PASSWORD=NEWPASSWORD arango-secure-installation
 
 The command should be executed after the installation.
 
-### Other Distributions
+### `tar.gz` archives
 
-For other distributions run `arango-secure-installation` to set the password
-for the `root` user.
+The `tar.gz` archives don't include configuration files. Therefore,
+`arango-secure-installation` doesn't work with them. Instead, use the following
+command to set a password for the `root` user before you start the server for
+the first time. Use the same database directory as for starting the server
+afterwards:
+
+```bash
+ARANGODB_DEFAULT_ROOT_PASSWORD=NEWPASSWORD arangod --database.directory /path/to/data --database.init-database true
+```
+
+If you don't set the `ARANGODB_DEFAULT_ROOT_PASSWORD` environment variable, you
+are prompted for the password. The server shuts down after initializing the
+database directory.
+
+To set a new password for the `root` user of an existing database directory,
+stop the server and run the following command:
+
+```bash
+ARANGODB_DEFAULT_ROOT_PASSWORD=NEWPASSWORD arangod --database.directory /path/to/data --database.restore-admin true
+```
 
 {{< danger >}}
-Please be aware that running `arango-secure-installation` on your ArangoDB
-server will remove all current database users but root.
+Running `arango-secure-installation` or using the `--database.restore-admin`
+startup option removes all database users but `root`.
 {{< /danger >}}

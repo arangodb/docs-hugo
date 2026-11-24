@@ -17,35 +17,31 @@ The basic operations for documents are mapped to the standard HTTP methods:
 
 ## Addresses of documents
 
-Any document can be retrieved using its unique URI:
-
-```
-http://server:port/_api/document/<document-identifier>
-```
-
-For example, assuming that the document identifier is `demo/362549736`, then the URL
-of that document is:
-
-```
-http://localhost:8529/_api/document/demo/362549736
-```
-
-The above URL schema does not specify a [database name](../../concepts/data-structure/databases.md#database-names)
-explicitly, so the default `_system` database is used. To explicitly specify the
-database context, use the following URL schema:
+Any document can be retrieved using its unique URL:
 
 ```
 http://server:port/_db/<database-name>/_api/document/<document-identifier>
 ```
 
-For example, using a database called `mydb`:
+A document identifier is composed of the collection name, a forward slash (`/`),
+and the document key. The key is unique within a collection, and the identifier
+is unique within a database.
+
+For example, assume that ArangoDB runs locally, the document key is `362549736`,
+the document is in the `demo` collection, and the collection is in the `mydb`
+database. The document identifier is `demo/362549736` and the URL of the
+document is the following:
 
 ```
 http://localhost:8529/_db/mydb/_api/document/demo/362549736
 ```
 
+The above URL specifies a [database name](../../concepts/data-structure/databases.md#database-names)
+explicitly. If you omit `/_db/<database-name>`, then the default `_system`
+database is used. This is the same as explicitly specifying `/_db/_system`.
+
 {{< tip >}}
-Many examples in the documentation use the short URL format (and thus the
+Examples in the documentation may use the short URL format (and thus the
 `_system` database) for brevity.
 {{< /tip >}}
 

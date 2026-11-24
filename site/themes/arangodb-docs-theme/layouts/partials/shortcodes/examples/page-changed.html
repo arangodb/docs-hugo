@@ -1,0 +1,29 @@
+{{- /* Whether a page has examples whose code differs from cache.json (or that are
+       not cached), to only run the examples of such pages (examplesScope "changed").
+       The code is compared the same way as in example.html, the fence's indentation
+       removed like in the .Inner of the render hooks (e.g. for lists). */}}
+{{- $page := .page }}
+{{- /* Commented-out examples aren't rendered and therefore never cached */}}
+{{- $raw := replaceRE `(?s)\{\{[%<]\s*comment\s*[%>]\}\}.*?\{\{[%<]\s*/comment\s*[%>]\}\}` "" $page.RawContent }}
+{{- $raw = replaceRE `(?s)<!--.*?-->` "" $raw }}
+{{- $cache := index (index hugo.Data .version) "cache" }}
+{{- $changed := false }}
+{{- $fence := "```" }}
+{{- range findRESubmatch (printf "(?ms)^([ \\t]*)%s(?:js|aql|curl)\\n(.*?)\\n[ \\t]*%s" $fence $fence) $raw }}
+  {{- $body := index . 2 }}
+  {{- with index . 1 }}
+    {{- $body = replaceRE (printf "(?m)^%s" .) "" $body }}
+  {{- end }}
+  {{- if strings.HasPrefix $body "---\n" }}
+    {{- $name := index (index (findRESubmatch `(?m)^name: (\S+)` $body 1) 0) 1 }}
+    {{- $type := "single" }}
+    {{- with findRESubmatch `(?m)^type: (\S+)` $body 1 }}
+      {{- $type = index (index . 0) 1 }}
+    {{- end }}
+    {{- $entry := index $cache (printf "%s_%s" $name $type) }}
+    {{- if or (not $entry) (ne $entry.request ($body | base64Encode)) }}
+      {{- $changed = true }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{- return $changed }}

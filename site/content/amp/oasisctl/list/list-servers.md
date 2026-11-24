@@ -1,7 +1,7 @@
 ---
 title: List Servers with _oasisctl_
 menuTitle: List Servers
-weight: 36
+weight: 37
 # This is a generated file, DO NOT MODIFY directly!
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: List Metrics with _oasisctl_
 menuTitle: List Metrics
-weight: 24
+weight: 25
 # This is a generated file, DO NOT MODIFY directly!
 ---
 

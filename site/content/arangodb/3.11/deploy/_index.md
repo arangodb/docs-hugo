@@ -23,20 +23,13 @@ to get started. Unlike other setups, which require some specific procedures,
 deploying a stand-alone instance is straightforward and can be started manually
 or by using the ArangoDB Starter tool.
 
-### Active Failover
-
-[Active Failover deployments](active-failover/_index.md) use ArangoDB's
-multi-node technology to provide high availability for smaller projects with
-fast asynchronous replication from the leading node to multiple replicas.
-If the leader fails, then a follower takes over seamlessly.
-
 ### Cluster
 
 [Cluster deployments](cluster/_index.md) are designed for large scale
 operations and analytics, allowing you to scale elastically with your
 applications and data models. ArangoDB's synchronously-replicating cluster
 technology runs on premises, on Kubernetes, and in the cloud on the
-[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic) - Arango's fully managed service.
+[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home) - Arango's fully managed service.
 
 Clustering ArangoDB not only delivers better performance and capacity improvements,
 but it also provides resilience through replication and automatic failover.
@@ -51,16 +44,6 @@ each database restricted to a single shard. This allows queries to run locally
 on a single DB-Server node for better performance and with transactional
 guarantees similar to a single server deployment. OneShard is primarily intended
 for multi-tenant use cases.
-
-### Datacenter-to-Datacenter
-
-{{< tag "ArangoDB Enterprise Edition" >}}
-
-For cluster deployments, ArangoDB supports
-[Datacenter-to-Datacenter Replication](arangosync/_index.md) (DC2DC). You can
-use it as an additional security feature to replicate your entire cluster
-off-site to another datacenter. The leading datacenter asynchronously replicates
-the data and configuration to the other datacenter for disaster recovery.
 
 ## How to deploy
 
@@ -78,7 +61,7 @@ There are different ways to set up and operate ArangoDB.
   ArangoDB Kubernetes Operator (`kube-arangodb`).
 
 The fastest way to get ArangoDB up and running is to run it in the cloud - the
-[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
+[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home)
 offers a fully managed cloud service, available on AWS and GCP.
 
 ### Manual Deployment
@@ -87,11 +70,6 @@ offers a fully managed cloud service, available on AWS and GCP.
 
 - [Manually created processes](single-instance/manual-start.md)
 - [Manually created Docker containers](single-instance/manual-start.md#manual-start-in-docker)
-
-**Active Failover:**
-
-- [Manually created processes](active-failover/manual-start.md)
-- [Manually created Docker containers](active-failover/manual-start.md#manual-start-in-docker)
 
 **Cluster:**
 
@@ -104,7 +82,7 @@ Setting up an ArangoDB cluster, for example, involves starting various nodes
 with different roles (Agents, DB-Servers, and Coordinators). The starter
 simplifies this process.
 
-The Starter supports different deployment modes (single server, Active Failover,
+The Starter supports different deployment modes (single server,
 cluster) and it can either use Docker containers or processes (using the
 _arangod_ executable).
 
@@ -123,11 +101,6 @@ If you want a specific version, download the precompiled executable via the
 - [_Starter_ using processes](single-instance/using-the-arangodb-starter.md)
 - [_Starter_ using Docker containers](single-instance/using-the-arangodb-starter.md#using-the-arangodb-starter-in-docker)
 
-**Active Failover:**
-
-- [_Starter_ using processes](active-failover/using-the-arangodb-starter.md)
-- [_Starter_ using Docker containers](active-failover/using-the-arangodb-starter.md#using-the-arangodb-starter-in-docker)
-
 **Cluster:**
 
 - [_Starter_ using processes](cluster/deployment/using-the-arangodb-starter.md)
@@ -136,7 +109,7 @@ If you want a specific version, download the precompiled executable via the
 ### Run in the cloud
 
 - [AWS and Azure](in-the-cloud.md)
-- [Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
+- [Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home),
   fully managed, available on AWS and GCP
 
 ### Run in Kubernetes

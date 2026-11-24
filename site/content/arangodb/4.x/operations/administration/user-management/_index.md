@@ -43,11 +43,7 @@ authentication = true
 This makes ArangoDB require authentication for every request, except for
 endpoints with the `/_open` prefix that never require authentication.
 
-When finished making changes, you need to restart ArangoDB, e.g.:
-
-```
-service arangodb restart
-```
+When finished making changes, you need to restart ArangoDB.
 
 ## Actions and access levels
 

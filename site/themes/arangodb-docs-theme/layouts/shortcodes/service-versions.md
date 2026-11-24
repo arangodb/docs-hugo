@@ -64,7 +64,7 @@
   {{- with $release.version -}}
     {{- $version := printf "%v" . -}}
     {{- if not $release.date -}}
-      {{- errorf "<error code=1> Platform config file '%s' has no top-level 'date' key </error>" $filePath -}}
+      {{- errorf "Platform config file '%s' has no top-level 'date' key" $filePath -}}
     {{- end -}}
     {{- $key := "" -}}
     {{- $parts := split $version "-" -}}
@@ -78,7 +78,7 @@
     {{- end -}}
     {{- $sorted = $sorted | append (dict "key" $key "version" $version "date" $release.date "packages" $release.packages) -}}
   {{- else -}}
-    {{- errorf "<error code=1> Platform config file '%s' has no top-level 'version' key </error>" $filePath -}}
+    {{- errorf "Platform config file '%s' has no top-level 'version' key" $filePath -}}
   {{- end -}}
 {{- end -}}
 
@@ -105,7 +105,7 @@
   {{- else -}}
     {{- $message := printf "Package '%s' is shipped by a release in %s/ but is not listed in %s, so it is rendered without a feature in %s" $package $dataPath $mappingPath $currentFile -}}
     {{- if site.Params.failOnBrokenLinks -}}
-      {{- errorf "<error code=1> %s </error>" $message -}}
+      {{- errorf "%s" $message -}}
     {{- else -}}
       {{- warnf "%s" $message -}}
     {{- end -}}

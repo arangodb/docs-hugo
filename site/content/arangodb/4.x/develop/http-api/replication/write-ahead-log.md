@@ -45,7 +45,7 @@ paths:
           example: _system
           description: |
             The name of a database. The user account you authenticate with needs
-            at least read access to this database and administrate access to the
+            at least `ro` access to this database and `rw` access to the
             `_system` database.
           schema:
             type: string
@@ -109,7 +109,7 @@ paths:
           example: _system
           description: |
             The name of a database. The user account you authenticate with needs
-            at least read access to this database and administrate access to the
+            at least `ro` access to this database and `rw` access to the
             `_system` database.
           schema:
             type: string
@@ -262,7 +262,7 @@ paths:
           example: _system
           description: |
             The name of a database. The user account you authenticate with needs
-            at least read access to this database and administrate access to the
+            at least `ro` access to this database and `rw` access to the
             `_system` database.
           schema:
             type: string

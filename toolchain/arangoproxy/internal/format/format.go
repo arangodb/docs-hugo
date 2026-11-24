@@ -1,6 +1,7 @@
 package format
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"math"
@@ -31,15 +32,21 @@ func AdjustCodeForArangosh(code string) string {
 	lines := strings.Split(code, "\n")
 
 	for _, line := range lines {
-		re := regexp.MustCompile(`(?m)let |const `)
-		line = re.ReplaceAllString(line, "var ")
+		// An AQL example is a single db._query("...") line (see AQLFormatter).
+		// The JavaScript rewrites below must not change the text of the query.
+		isQuery := strings.HasPrefix(strings.TrimLeft(line, " \t~"), "db._query(")
 
-		assertRE := regexp2.MustCompile(`(?m)(?<=assert\().*(?=\))`, 0) // Replace all asserts args with String args because we want to eval() assert args
-		if assertArgs, _ := assertRE.FindStringMatch(line); assertArgs != nil {
-			args := strings.ReplaceAll(assertArgs.String(), "\"", "`")
-			args = strings.ReplaceAll(args, "'", "`")
+		if !isQuery {
+			re := regexp.MustCompile(`(?m)let |const `)
+			line = re.ReplaceAllString(line, "var ")
 
-			line = fmt.Sprintf("assert(%s, '%s');\n", args, args)
+			assertRE := regexp2.MustCompile(`(?m)(?<=assert\().*(?=\))`, 0) // Replace all asserts args with String args because we want to eval() assert args
+			if assertArgs, _ := assertRE.FindStringMatch(line); assertArgs != nil {
+				args := strings.ReplaceAll(assertArgs.String(), "\"", "`")
+				args = strings.ReplaceAll(args, "'", "`")
+
+				line = fmt.Sprintf("assert(%s, '%s');\n", args, args)
+			}
 		}
 
 		tildeRE := regexp.MustCompile(`(?m)^\s*~`)
@@ -120,8 +127,27 @@ func (formatter CurlFormatter) FormatCurlOutput(arangoOutput, renderOption strin
 
 type AQLFormatter struct{}
 
+// jsStringLiteral encodes s as a JavaScript string literal. A JSON string is
+// also a valid JavaScript string literal, but Go's encoder escapes <, > and &
+// as numeric escapes by default, which would make a named capturing group such
+// as (?<name>...) unreadable in the injected code and in the logs. U+2028 and
+// U+2029 are escaped either way, so the result stays a safe single-line literal.
+func jsStringLiteral(s string) string {
+	var buf bytes.Buffer
+	encoder := json.NewEncoder(&buf)
+	encoder.SetEscapeHTML(false)
+	if err := encoder.Encode(s); err != nil {
+		return `""`
+	}
+	return strings.TrimSuffix(buf.String(), "\n")
+}
+
+// The query is passed to arangosh as a JavaScript string literal, not as a
+// template literal, so that the query reaches the server exactly as written in
+// the example: backslashes are the ones AQL sees, and `${...}` and backticks
+// carry no special meaning.
 func (formatter AQLFormatter) FormatRequestCode(code string, bindVars map[string]interface{}) string {
-	commands := fmt.Sprintf("db._query(`%s`", code)
+	commands := fmt.Sprintf("db._query(%s", jsStringLiteral(code))
 	if len(bindVars) != 0 {
 		bindVarsJson, _ := json.Marshal(bindVars)
 		commands = fmt.Sprintf("%s, %s", commands, bindVarsJson)

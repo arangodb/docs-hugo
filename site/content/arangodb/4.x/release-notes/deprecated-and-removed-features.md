@@ -7,32 +7,32 @@ description: >-
 aliases:
   - ../components/tools/arangorestore/fast-cluster-restore # 3.10 -> 3.11
   - ../develop/drivers/csharp-dotnet # 3.10 -> 3.11
-  - ../components/arangodb-server/ldap # 3.11 -> 3.12
-  - ../data-science/pregel # 3.11 -> 3.12
-  - ../data-science/pregel/algorithms # 3.11 -> 3.12
-  - ../develop/http-api/pregel # 3.11 -> 3.12
+  - ../components/arangodb-server/ldap # 3.11 -> 3.11
+  - ../data-science/pregel # 3.11 -> 3.11
+  - ../data-science/pregel/algorithms # 3.11 -> 3.11
+  - ../develop/http-api/pregel # 3.11 -> 3.11
   - ../deploy/active-failover # 3.11 -> 3.12
   - ../deploy/active-failover/administration # 3.11 -> 3.12
   - ../deploy/active-failover/manual-start # 3.11 -> 3.12
   - ../deploy/active-failover/using-the-arangodb-starter # 3.11 -> 3.12
-  - ../deploy/arangosync # 3.11 -> 3.12
-  - ../deploy/arangosync/administration # 3.11 -> 3.12
-  - ../deploy/arangosync/monitoring # 3.11 -> 3.12
-  - ../deploy/arangosync/operations-and-maintenance # 3.11 -> 3.12
-  - ../deploy/arangosync/security # 3.11 -> 3.12
-  - ../deploy/arangosync/troubleshooting # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/arangodb-cluster # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.12
+  - ../deploy/arangosync # 3.11 -> 3.11
+  - ../deploy/arangosync/administration # 3.11 -> 3.11
+  - ../deploy/arangosync/monitoring # 3.11 -> 3.11
+  - ../deploy/arangosync/operations-and-maintenance # 3.11 -> 3.11
+  - ../deploy/arangosync/security # 3.11 -> 3.11
+  - ../deploy/arangosync/troubleshooting # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangodb-cluster # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.11
   - ../operations/installation/macos # 3.11 -> 3.12
   - ../operations/installation/windows # 3.11 -> 3.12
-  - ../operations/installation/compiling # 3.11 -> 3.12
-  - ../operations/installation/compiling/compile-on-debian # 3.11 -> 3.12
-  - ../operations/installation/compiling/running-custom-build # 3.11 -> 3.12
-  - ../operations/installation/compiling/compile-on-windows # 3.11 -> 3.12
-  - ../operations/installation/compiling/recompiling-jemalloc # 3.11 -> 3.12
+  - ../operations/installation/compiling # 3.11 -> 3.11
+  - ../operations/installation/compiling/compile-on-debian # 3.11 -> 3.11
+  - ../operations/installation/compiling/running-custom-build # 3.11 -> 3.11
+  - ../operations/installation/compiling/compile-on-windows # 3.11 -> 3.11
+  - ../operations/installation/compiling/recompiling-jemalloc # 3.11 -> 3.11
   - ../operations/upgrading/manual-deployments/active-failover # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/macos # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/windows # 3.11 -> 3.12
@@ -123,9 +123,9 @@ detailed information about breaking changes before upgrading.
 {{< /info >}}
 
 - **Aardvark web interface**:\
-  The web interface served by the ArangoDB server (_arangod_), also known as
-  _Aardvark_, has been removed. The server executable no longer offers a
-  built-in web interface.
+  The web interface is no longer built into the ArangoDB server (_arangod_).
+  The old web interface served by _arangod_, also known as _Aardvark_, has been
+  replaced by new web interfaces that run separately from the database core:
 
   - If you use the Arango Contextual Data Platform, there is a new, integrated
     web interface also known as the platform UI.
@@ -159,7 +159,7 @@ detailed information about breaking changes before upgrading.
 
   You can rewrite existing Foxx services or create new user-defined services for
   the [Arango Contextual Data Platform](../../../contextual-data-platform/_index.md).
-  See the [Container Manager](../../../platform-suite/container-manager/_index.md)
+  See the [Container Manager](../../../contextual-data-platform/container-manager/_index.md)
   to learn how to bring your own code and containers.
 
 - **User-defined AQL functions (UDFs)**:\
@@ -182,7 +182,7 @@ detailed information about breaking changes before upgrading.
   Starting with v3.12, the native platform support for the Windows and macOS
   operating systems has been removed and ArangoDB packages for Windows and macOS
   are not provided anymore. You can use the official
-  [Docker images](https://hub.docker.com/_/arangodb/) instead, to run ArangoDB
+  [Docker images](../operations/installation/docker.md) instead, to run ArangoDB
   in Linux containers.
 
 - **Active Failover deployment mode**:\
@@ -301,10 +301,11 @@ detailed information about breaking changes before upgrading.
   maintenance complexity. The `/_api/simple/*` HTTP API endpoints have been
   removed in ArangoDB v4.0.
 
-- **Accessing collections by ID instead of by name**:\
-  Accessing collections by their internal ID instead of accessing them by name
-  is deprecated and highly discouraged. This functionality may be removed in
-  future versions of ArangoDB.
+- **Accessing collections and Views by ID instead of by name**:\
+  Referencing a collection or View by its internal `id` in an endpoint path
+  like `/_api/collection/357` or `/_api/view/468` instead of by its name
+  like `/_api/collection/coll` or `/_api/view/myView` was deprecated and is no
+  longer supported in ArangoDB v4.0.
 
 - **Old metrics HTTP API**:\
   The old metrics API under `/_admin/metrics` is deprecated and replaced by
@@ -392,7 +393,7 @@ detailed information about breaking changes before upgrading.
   The following _arangod_ startup options are deprecated and will be removed
   in a future version:
   - `--database.old-system-collections` (no need to use it anymore)
-  - `--server.jwt-secret` (use `--server.jwt-secret-keyfile`) 
+  - `--server.jwt-secret` (use `--server.jwt-secret-keyfile` or `--server.jwt-secret-folder`) 
   - `--arangosearch.threads` / `--arangosearch.threads-limit`
     (use the following options instead):
     - `--arangosearch.commit-threads`

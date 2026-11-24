@@ -14,22 +14,6 @@ upgrade to a new hotfix, or to perform an upgrade to a new minor version of Aran
 Please refer to the [Upgrade paths](_index.md#upgrade-paths) section
 for detailed information.
 
-## Upgrade Scenarios
-
-The following four cases are possible:
-
-1. You have installed via an installation package (e.g. a `.deb` or `.rpm` package)
-   and you will upgrade this installation using again an installation package
-   (e.g. a `.deb` or `.rpm`).
-2. You have installed via the `.tar.gz` distribution and you will upgrade this
-   installation using again a `.tar.gz` distribution.
-3. You have installed via an installation package (e.g. a `.deb` or `.rpm` package)
-   and you will upgrade this installation using a `.tar.gz` distribution.
-4. You have installed via the `.tar.gz` distribution and you will upgrade this
-   installation using an installation package (e.g. a `.deb` or `.rpm` package).
-
-Cases 1. and 2. are more common, though cases 3. and 4. are also possible.
-
 ## Upgrade Procedure
 
 The following procedure has to be executed on every ArangoDB _Starter_ instance.
@@ -42,54 +26,15 @@ using [arangodump](../../components/tools/arangodump/_index.md).
 
 ### Install the new ArangoDB version binary
 
-Installing the new ArangoDB version binary also includes the latest ArangoDB _Starter_
-binary, which is necessary to perform the rolling upgrade.
+The server package of the new ArangoDB version also includes the latest
+ArangoDB _Starter_ binary, which is necessary to perform the rolling upgrade.
 
-The first step is to install the new ArangoDB package.
+Download the server package of the new version from
+[arango.ai/downloads/](https://arango.ai/downloads/) and extract the archive in
+a different location than the current installation. Keep the old installation
+where it is for now.
 
 **Note:** you do not have to stop the _Starter_ processes before upgrading it.
-
-For example, if you want to upgrade to `3.9.2` on Debian or Ubuntu, either call
-
-```bash
-apt install arangodb=3.9.2
-```
-
-(`apt-get` on older versions) if you have added the ArangoDB repository. Or
-install a specific package using
-
-```bash
-dpkg -i arangodb3-3.9.2-1_amd64.deb
-```
-
-after you have downloaded the corresponding file from
-[arangodb.ai/downloads/](https://arango.ai/downloads/).
-
-If you are using the `.tar.gz` distribution,
-you can simply extract the new archive in a different
-location and keep the old installation where it is. Note that
-this does not launch a standalone instance, so the following section can
-be skipped in this case.
-
-#### Stop the Standalone Instance
-
-As the package will automatically start the standalone instance, you might want to
-stop it now, as otherwise this standalone instance that is started on your machine
-can create some confusion later. As you are using the _Starter_ you do not need
-this standalone instance, and you can hence stop it:
-
-```bash
-service arangodb3 stop
-```
-
-Also, you might want to remove the standalone instance from the default
-_runlevels_ to prevent it to start on the next reboot of your machine. How this
-is done depends on your distribution and _init_ system. For example, on older Debian
-and Ubuntu systems using a SystemV-compatible _init_, you can use:
-
-```bash
-update-rc.d -f arangodb3 remove
-```
 
 ### Stop the *Starter* without stopping the ArangoDB Server processes
 
@@ -155,9 +100,8 @@ manually with the same command that has been used before.
 You can inspect which processes belong to a starter instance using the `pstree`
 command (see above).
 
-If you are using the `.tar.gz` distribution,
-your new version of the executable might be located in a
-different directory. Make sure that you now start the new _Starter_
+The new version of the executable is located in the directory where you
+extracted the new archive. Make sure that you now start the new _Starter_
 executable (`bin/arangodb`) in the new installation place. If you are
 using a supervisor like _SystemD_, you might have to adjust the path to
 the executable in the service description to the new location.
@@ -221,25 +165,12 @@ The `arangodb upgrade` command will show the progress of the upgrade
 and stop when the upgrade has either finished successfully or finished
 with an error.
 
-### Uninstall old package
+### Remove the old installation
 
-{{< info >}}
-This step is required in the cases 2., 3. and 4. only. It is not required
-in case 1., see [Upgrade Scenarios](#upgrade-scenarios) above.
-{{< /info >}}
-
-After verifying your upgraded ArangoDB system is working, you can remove
-the old package. This can be done in different ways, depending on the case
-you are:
-
-- Cases 2. and 4.: just remove the old directory created by the `.tar.gz`
-  (assumes your `--starter.data-dir` is located outside of this 
-  directory - which is a recommended approach).
-- Case 3.: just remove the old package by running the corresponding
-  uninstallation command (the exact command depends on whether you are
-  using a `.deb` or `.rmp` package and it is assumed that your 
-  `--starter.data-dir` is located outside of the standard directories
-  created by the installation package - which is a recommended approach).
+After verifying your upgraded ArangoDB system is working, you can remove the
+directory of the old installation that you extracted from the `.tar.gz` archive.
+This assumes that your `--starter.data-dir` is located outside of this
+directory, which is the recommended approach.
 
 ## Retrying a failed upgrade
 

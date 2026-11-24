@@ -28,7 +28,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -37,7 +37,7 @@ paths:
           required: false
           description: |
             If set to `true` and if the user account you authenticate with has
-            administrate access to the `_system` database, the response contains
+            `rw` access to the `_system` database, the response contains
             a `details` attribute with additional information about included
             components and their versions. The attribute names and internals of
             the `details` object may vary depending on platform and ArangoDB version.
@@ -484,7 +484,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -624,9 +624,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
       responses:
@@ -675,7 +675,7 @@ paths:
         '403':
           description: |
             The `--server.harden` startup option is enabled but the user account
-            you authenticated with lacks write access to the `_system` database.
+            you authenticated with lacks `rw` access to the `_system` database.
           content:
             application/json:
               schema:
@@ -725,7 +725,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -776,9 +776,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
       responses:
@@ -1129,9 +1129,9 @@ paths:
         controls the required privileges to access the option endpoints and allows
         you to disable them entirely. The option can have the following values:
         - `disabled`: This endpoint is disabled.
-        - `jwt`: This endpoint can only be accessed using a superuser JWT (default).
+        - `jwt`: This endpoint can only be accessed using a [superuser JWT](authentication.md#jwt-superuser-tokens) (default).
         - `admin`: This endpoint can only be accessed by users with
-          write access to the `_system` database.
+          `rw` access to the `_system` database.
         - `public`: Every user with read access to the `_system` database can
           access this endpoint.
       responses:
@@ -1146,8 +1146,8 @@ paths:
                 type: object
         '401':
           description: |
-            You tried to authenticate with user credentials but a superuser token
-            created from the JWT secret is required (`--server.options-api` set
+            You tried to authenticate with user credentials but a superuser JWT
+            is required (`--server.options-api` set
             to `jwt`), you lack read access to the `_system` database
             (`--server.options-api` set to `public`), the credentials are wrong,
             or the user account is inactive.
@@ -1181,7 +1181,7 @@ paths:
                     type: string
         '403':
           description: |
-            You don't have write access to the `_system` database
+            You don't have `rw` access to the `_system` database
             (`--server.options-api` set to `admin`) or you tried to access the
             endpoint using a database other than `_system`.
           content:
@@ -1263,9 +1263,9 @@ paths:
         controls the required privileges to access the option endpoints and allows
         you to disable them entirely. The option can have the following values:
         - `disabled`: This endpoint is disabled.
-        - `jwt`: This endpoint can only be accessed using a superuser JWT (default).
+        - `jwt`: This endpoint can only be accessed using a [superuser JWT](authentication.md#jwt-superuser-tokens) (default).
         - `admin`: This endpoint can only be accessed by users with
-          write access to the `_system` database.
+          `rw` access to the `_system` database.
         - `public`: Every user with read access to the `_system` database can
           access this endpoint.
       responses:
@@ -1329,7 +1329,7 @@ paths:
                 type: object
         '401':
           description: |
-            You tried to authenticate with user credentials but a superuser token
+            You tried to authenticate with user credentials but a superuser JWT
             is required, the credentials are wrong, or the user account is inactive.
           content:
             application/json:
@@ -1361,7 +1361,7 @@ paths:
                     type: string
         '403':
           description: |
-            You don't have write access to the `_system` database or you tried
+            You don't have `rw` access to the `_system` database or you tried
             to access the endpoint using a database other than `_system`.
           content:
             application/json:
@@ -1454,7 +1454,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -1503,7 +1503,7 @@ paths:
         '401':
           description: |
             Authentication is enabled and the user account you authenticated with
-            doesn't have at least read access to the specified database, the
+            doesn't have at least `ro` access to the specified database, the
             credentials are wrong, or the user account is inactive.
           content:
             application/json:
@@ -1591,7 +1591,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -1626,8 +1626,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
       requestBody:
@@ -1676,9 +1676,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
       responses:
@@ -1837,9 +1837,9 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
+            `rw` access to the `_system` database is required.
           schema:
             type: string
         - name: force
@@ -2004,7 +2004,7 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
+            as the user account you authenticate with has at least `ro` access
             to this database.
           schema:
             type: string
@@ -2110,7 +2110,7 @@ paths:
         The server keeps the most recent 10 crash dumps. Older ones are removed
         during startup.
 
-        This endpoint requires *administrate* access to the `_system` database.
+        This endpoint requires `rw` access to the `_system` database.
       parameters:
         - name: database-name
           in: path
@@ -2118,8 +2118,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and write access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
       responses:
@@ -2184,7 +2184,7 @@ paths:
         '403':
           description: |
             Returned if authentication is enabled and the user does not have
-            write access to the `_system` database.
+            `rw` access to the `_system` database.
           content:
             application/json:
               schema:
@@ -2265,7 +2265,7 @@ paths:
         to their contents. Crash dumps are stored under
         `<database-directory>/crashes/<uuid>/`.
 
-        This endpoint requires *administrate* access to the `_system` database.
+        This endpoint requires `rw` access to the `_system` database.
       parameters:
         - name: database-name
           in: path
@@ -2273,8 +2273,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and write access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: crashId
@@ -2359,7 +2359,7 @@ paths:
         '403':
           description: |
             Returned if authentication is enabled and the user does not have
-            write access to the `_system` database.
+            `rw` access to the `_system` database.
           content:
             application/json:
               schema:
@@ -2470,7 +2470,7 @@ paths:
         stored under `<database-directory>/crashes/<uuid>/`. The server keeps the
         most recent 10 crash dumps. Older ones are removed during startup.
 
-        This endpoint requires *administrate* access to the `_system` database.
+        This endpoint requires `rw` access to the `_system` database.
       parameters:
         - name: database-name
           in: path
@@ -2478,8 +2478,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and write access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: crashId
@@ -2557,7 +2557,7 @@ paths:
         '403':
           description: |
             Returned if authentication is enabled and the user does not have
-            write access to the `_system` database.
+            `rw` access to the `_system` database.
           content:
             application/json:
               schema:
@@ -2672,8 +2672,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
         - name: soft
@@ -2741,8 +2741,8 @@ paths:
           example: _system
           description: |
             The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            as the user account you authenticate with has at least `ro` access
+            to this database and `rw` access to the `_system` database.
           schema:
             type: string
       responses:
@@ -2821,7 +2821,8 @@ paths:
         This endpoint can be used to reclaim disk space after substantial data
         deletions have taken place, by compacting the entire database system data.
 
-        The endpoint requires superuser access.
+        This endpoint requires a [superuser JWT](authentication.md#jwt-superuser-tokens).
+        User accounts, including `root`, are not sufficient.
       requestBody:
         content:
           application/json:

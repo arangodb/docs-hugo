@@ -7,32 +7,32 @@ description: >-
 aliases:
   - ../components/tools/arangorestore/fast-cluster-restore # 3.10 -> 3.11
   - ../develop/drivers/csharp-dotnet # 3.10 -> 3.11
-  - ../components/arangodb-server/ldap # 3.11 -> 3.12
-  - ../data-science/pregel # 3.11 -> 3.12
-  - ../data-science/pregel/algorithms # 3.11 -> 3.12
-  - ../develop/http-api/pregel # 3.11 -> 3.12
+  - ../components/arangodb-server/ldap # 3.11 -> 3.11
+  - ../data-science/pregel # 3.11 -> 3.11
+  - ../data-science/pregel/algorithms # 3.11 -> 3.11
+  - ../develop/http-api/pregel # 3.11 -> 3.11
   - ../deploy/active-failover # 3.11 -> 3.12
   - ../deploy/active-failover/administration # 3.11 -> 3.12
   - ../deploy/active-failover/manual-start # 3.11 -> 3.12
   - ../deploy/active-failover/using-the-arangodb-starter # 3.11 -> 3.12
-  - ../deploy/arangosync # 3.11 -> 3.12
-  - ../deploy/arangosync/administration # 3.11 -> 3.12
-  - ../deploy/arangosync/monitoring # 3.11 -> 3.12
-  - ../deploy/arangosync/operations-and-maintenance # 3.11 -> 3.12
-  - ../deploy/arangosync/security # 3.11 -> 3.12
-  - ../deploy/arangosync/troubleshooting # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/arangodb-cluster # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.12
-  - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.12
+  - ../deploy/arangosync # 3.11 -> 3.11
+  - ../deploy/arangosync/administration # 3.11 -> 3.11
+  - ../deploy/arangosync/monitoring # 3.11 -> 3.11
+  - ../deploy/arangosync/operations-and-maintenance # 3.11 -> 3.11
+  - ../deploy/arangosync/security # 3.11 -> 3.11
+  - ../deploy/arangosync/troubleshooting # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangodb-cluster # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.11
+  - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.11
   - ../operations/installation/macos # 3.11 -> 3.12
   - ../operations/installation/windows # 3.11 -> 3.12
-  - ../operations/installation/compiling # 3.11 -> 3.12
-  - ../operations/installation/compiling/compile-on-debian # 3.11 -> 3.12
-  - ../operations/installation/compiling/running-custom-build # 3.11 -> 3.12
-  - ../operations/installation/compiling/compile-on-windows # 3.11 -> 3.12
-  - ../operations/installation/compiling/recompiling-jemalloc # 3.11 -> 3.12
+  - ../operations/installation/compiling # 3.11 -> 3.11
+  - ../operations/installation/compiling/compile-on-debian # 3.11 -> 3.11
+  - ../operations/installation/compiling/running-custom-build # 3.11 -> 3.11
+  - ../operations/installation/compiling/compile-on-windows # 3.11 -> 3.11
+  - ../operations/installation/compiling/recompiling-jemalloc # 3.11 -> 3.11
   - ../operations/upgrading/manual-deployments/active-failover # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/macos # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/windows # 3.11 -> 3.12
@@ -132,7 +132,7 @@ detailed information about breaking changes before upgrading.
   Community Edition from v3.12.5 onward, but only in the prebuilt packages and
   official container images. The source code of these features is not public.
   For instructions to compile the public code, see
-  [`CONTRIBUTING.md`](https://github.com/arangodb/arangodb/blob/devel/CONTRIBUTING.md#building)
+  [`CONTRIBUTING.md`](https://github.com/arangodb/arangodb/blob/3.12/CONTRIBUTING.md#building)
   in the `arangodb/arangodb` repository.
 
 - **Fast cluster restore procedure**:\

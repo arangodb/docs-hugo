@@ -13,11 +13,11 @@ all examples can be easily translated to many different languages.
 
 ## Prerequisites
 
-Make sure that you have already [signed up for AMP](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+Make sure that you have already [signed up for AMP](https://dashboard.arangodb.cloud/home).
 
 ## Creating an API key
 
-1. Go to [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic) and login.
+1. Go to [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home) and login.
 2. Click the user icon in the top-right of the dashboard.
 3. Select __My API keys__
 4. Click __New API key__

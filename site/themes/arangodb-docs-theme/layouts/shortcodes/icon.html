@@ -1,6 +1,6 @@
 <span class="inline-icon" aria-hidden="true">
   {{- $iconName := .Get 0 }}
-  {{- if not (findRE "^[a-z0-9-]+$" $iconName) }}
+  {{- if not (findRE "^([a-z0-9-]+/)?[a-z0-9-]+$" $iconName) }}
     {{- errorf "Invalid icon name '%v' for '%v'" $iconName .Page.File.Path }}
   {{- end }}
   {{- $iconPath := printf "content/images/icons/%s.svg" $iconName }}

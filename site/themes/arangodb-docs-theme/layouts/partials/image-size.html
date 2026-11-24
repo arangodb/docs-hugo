@@ -1,0 +1,44 @@
+{{- /*
+  Intrinsic size of an image resource, for the width and height attributes of
+  <img> so that browsers reserve the space before the image has loaded.
+
+  Returns a dict with "width" and "height" (0 if unknown) and "fill" (true if
+  the image has no intrinsic size but an aspect ratio, which browsers render at
+  the full available width).
+
+  Raster images: the pixel size. SVG: the width and height of the root element
+  if both are in px or unitless, otherwise the viewBox for the aspect ratio.
+*/ -}}
+{{- $img := . }}
+{{- $width := 0 }}
+{{- $height := 0 }}
+{{- $fill := false }}
+{{- if eq $img.MediaType.SubType "svg" }}
+  {{- $root := index (findRE `<svg\b[^>]*>` $img.Content 1) 0 }}
+  {{- $w := index (findRESubmatch `\swidth=["']\s*([\d.]+)\s*(?:px)?\s*["']` $root 1) 0 }}
+  {{- $h := index (findRESubmatch `\sheight=["']\s*([\d.]+)\s*(?:px)?\s*["']` $root 1) 0 }}
+  {{- $vb := index (findRESubmatch `\sviewBox=["']\s*[-\d.]+[\s,]+[-\d.]+[\s,]+([\d.]+)[\s,]+([\d.]+)\s*["']` $root 1) 0 }}
+  {{- if and $w $h }}
+    {{- $width = index $w 1 | float }}
+    {{- $height = index $h 1 | float }}
+  {{- else if $vb }}
+    {{- $vbWidth := index $vb 1 | float }}
+    {{- $vbHeight := index $vb 2 | float }}
+    {{- if $w }}
+      {{- /* Browsers derive the missing dimension from the viewBox */}}
+      {{- $width = index $w 1 | float }}
+      {{- $height = div (mul $width $vbHeight) $vbWidth }}
+    {{- else if $h }}
+      {{- $height = index $h 1 | float }}
+      {{- $width = div (mul $height $vbWidth) $vbHeight }}
+    {{- else }}
+      {{- $width = $vbWidth }}
+      {{- $height = $vbHeight }}
+      {{- $fill = true }}
+    {{- end }}
+  {{- end }}
+{{- else if in (slice "png" "jpeg" "gif" "webp") $img.MediaType.SubType }}
+  {{- $width = $img.Width }}
+  {{- $height = $img.Height }}
+{{- end }}
+{{- return dict "width" (math.Round $width | int) "height" (math.Round $height | int) "fill" $fill }}

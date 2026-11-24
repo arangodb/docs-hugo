@@ -699,8 +699,6 @@ There are now three algorithms to find connected components in a graph:
    The algorithm is more complex than the WCC algorithm and requires more memory,
    because each vertex needs to store much more state.
 
-Also see [Pregel](../../data-science/pregel/_index.md)
-
 ## Foxx
 
 Foxx endpoints now provide the methods `securityScheme`, `securityScope` and 
@@ -891,7 +889,6 @@ The following metrics have been added in ArangoDB 3.7:
 | `arangodb_v8_context_free` | Number of V8 contexts currently free |
 | `arangodb_v8_context_max` | Maximum number of concurrent V8 contexts allowed |
 | `arangodb_v8_context_min` | Minimum number of concurrent V8 contexts allowed |
-{.fixed}
 
 ## Client tools
 

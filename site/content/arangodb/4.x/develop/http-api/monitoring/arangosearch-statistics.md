@@ -58,7 +58,7 @@ paths:
         `arangosearch` View and no inverted index, then the list of data stores
         is empty.
 
-        You need at least read access to the specified database.
+        You need at least `ro` access to the specified database.
       parameters:
         - name: database-name
           in: path

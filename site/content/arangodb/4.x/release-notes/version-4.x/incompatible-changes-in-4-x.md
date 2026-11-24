@@ -21,11 +21,50 @@ their instruction set extensions for improved performance:
 For more details about the necessary CPU features, see
 [Supported platforms and architectures](../../operations/installation/_index.md#supported-platforms-and-architectures).
 
+## Separate packages for the server and the client tools
+
+The ArangoDB server and the client tools are now provided as separate packages:
+
+- The **server** package contains the ArangoDB server (_arangod_) and the
+  [ArangoDB Starter](../../components/tools/arangodb-starter/_index.md) (_arangodb_).
+- The **client tools** package contains _arangosh_, _arangodump_,
+  _arangorestore_, _arangoimport_, _arangoexport_, _arangobackup_,
+  _arangoinspect_, and _arangovpack_.
+
+Up to v3.12, the server package includes the client tools as well. If you need
+the client tools on the same machine as the server, for example, to create dumps
+or to use the ArangoDB Shell, install both packages.
+
+The same applies to the container images. The `arangodb/core` image contains
+the server and the `arangodb/client-tools` image the client tools. Up to v3.12,
+the `arangodb/enterprise` image contains both. Note the following changes if you
+use the server image:
+
+- The database directory in the container is `/var/lib/arangodb4` instead of
+  `/var/lib/arangodb3`. Adjust your volume mounts accordingly.
+- Files in `/docker-entrypoint-initdb.d/` are only supported if they are shell
+  scripts (`*.sh`). The server image cannot run JavaScript files with _arangosh_
+  or restore dumps with _arangorestore_ during the initialization anymore. Use
+  the client tools image for these tasks once the server is running.
+- To run the client tools against a server container, start them in a separate
+  container of the `arangodb/client-tools` image, see
+  [Install with Docker](../../operations/installation/docker.md).
+- If you use the `arangodb/arangodb-starter` image, specify an `arangodb/core`
+  image with the `--docker.image` startup option, like
+  `--docker.image=arangodb/core:4.0.0`.
+
+The packages are provided as `tar.gz` archives for Linux on the x86-64 and
+ARM64 architectures. Debian and RPM packages are no longer provided.
+
+The separation together with the removal of all server-side JavaScript
+functionality (see below) strictly keeps the JavaScript engine (V8) out of the
+server, which reduces the attack surface and improves server stability.
+
 ## Built-in web interface removed
 
-The web interface served by the ArangoDB server (_arangod_), also known as
-_Aardvark_, has been removed. The server executable no longer offers a
-built-in web interface.
+The web interface is no longer built into the ArangoDB server (_arangod_).
+The old web interface served by _arangod_, also known as _Aardvark_, has been
+replaced by new web interfaces that run separately from the database core:
 
 - If you use the Arango Contextual Data Platform, there is a new, integrated
   web interface also known as the platform UI.
@@ -122,7 +161,7 @@ to work with ArangoDB from the outside using JavaScript as your language.
 
 If you upgrade to the [Arango Contextual Data Platform](../../../../contextual-data-platform/_index.md),
 you can run custom services in the data platform with the
-[Container Manager](../../../../platform-suite/container-manager/_index.md)
+[Container Manager](../../../../contextual-data-platform/container-manager/_index.md)
 You can think of it as a more powerful incarnation of Foxx because it is a
 microservice architecture but with a clear separation of the core database system
 and the surrounding services. It is also not limited to (synchronous) JavaScript
@@ -206,7 +245,7 @@ indexes when upgrading. The suffix `_migrated` is appended to their name.
 When restoring dumps with _arangorestore_, the former aliases are replaced with
 the `persistent` index type.
 
-## Removed AQL functions
+## AQL functions removed
 
 - `FULLTEXT()`: Removed because the legacy `fulltext` index type is gone.
   thus this function served no purpose either.
@@ -351,7 +390,6 @@ is a string:
 | `"foo" + 123`   | `123`              | `"foo123"`              |
 | `"123" + 200`   | `323`              | `"123200"`              |
 | `1 + "99"`      | `100`              | `"199"`                 |
-{.fixed}
 
 Expressions where both operands are non-string values are not affected and still
 perform arithmetic addition, for example, `1 + 2` still evaluates to `3`.
@@ -368,7 +406,7 @@ For more information, see [String operators](../../aql/operators.md#string-opera
 
 ### New reserved keywords
 
-The following keywords are now reserved for future use:
+The following keywords are now reserved for upcoming AQL language features:
 
 - `INNER_JOIN`
 - `LEFT_JOIN`
@@ -658,16 +696,23 @@ A few obsolete endpoints related to the write-ahead log have been removed, too.
 - `GET /_admin/wal/properties`
 - `PUT /_admin/wal/properties`
 
-#### Job and version admin APIs removed
+### Job and version admin APIs removed
 
 The `/_admin/job*` endpoints as well as the `/_admin/version` endpoint have
 been removed. The identical functionality is now only available using the
 corresponding `/_api/job*` and `/_api/version` endpoints.
 
-#### Database `path` removed
+### Database `path` removed
 
 The `GET /_api/database/current` endpoint no longer includes a `path` attribute
 in responses. It always returned `"none"`.
+
+### Collections and Views cannot be referenced by ID
+
+Referencing a collection or View by its internal `id` in an endpoint path
+like `/_api/collection/357` or `/_api/view/468` is no longer supported.
+Reference the data source by its name instead, like `/_api/collection/coll`
+or `/_api/view/myView`.
 
 ## JavaScript API
 
@@ -686,7 +731,7 @@ For more details, see [API changes in ArangoDB 4.x](api-changes-in-4-x.md#javasc
 
 The `db` object no longer has a `_path` method. It always returned `"none"`.
 
-### Removed collection methods
+### Collection methods removed
 
 The following methods have been removed from
 [_collection_ objects](../../develop/javascript-api/@arangodb/collection-object.md)
@@ -718,7 +763,7 @@ as they are either obsolete or didn't provide much value and better alternatives
 See [API Changes in ArangoDB 4.x](api-changes-in-4-x.md#removed-collection-methods)
 for details like how you can replace this functionality.
 
-### Reimplemented collection methods
+### Collection methods reimplemented
 
 Some collection methods of the JavaScript API relied on the server-side
 Simple Queries interface. The methods of a
@@ -761,8 +806,10 @@ directly (without a file). However, this is discouraged for security reasons.
 This option has now been removed. It is no longer recognized and throws an error
 if set.
 
-You can use `--server.jwt-secret-keyfile` to specify the path to a file that
-contains the JWT secret instead.
+You can use [`--server.jwt-secret-keyfile`](../../components/arangodb-server/options.md#--serverjwt-secret-keyfile)
+instead to specify the path to a file that contains the JWT secret. You can also
+use [`--server.jwt-secret-folder`](../../components/arangodb-server/options.md#--serverjwt-secret-folder)
+to specify a folder path and read secrets from multiple files.
 
 ### SSL encryption options removed and renamed
 
@@ -920,6 +967,15 @@ and throw errors if set:
 - `--query.allow-collections-in-expressions`
 - `--rocksdb.exclusive-writes`
 
+### Read write metrics option renamed
+
+The `--server.export-read-write-metrics` startup option has been renamed to
+`--rocksdb.export-read-write-metrics`. This aligns the option category with what
+the option provides, which is additional metrics from the RocksDB storage engine.
+
+Using the new option is recommended. You can still start the server with the
+old option, which logs a warning on startup.
+
 ## Client tools
 
 ### *arangoimp* removed
@@ -946,11 +1002,11 @@ They are no longer recognized and throw errors if set:
 - `--log.use-local-time`
 - `--log.use-microtime`
 
-### `--tls.protocol` renamed
+### `--ssl.protocol` renamed
 
 The `--ssl.protocol` startup option has been renamed to `--tls.protocol` for
 all client-tools because the legacy SSL encryption settings are not supported
-by _arangod_  anymore and the remaining ones are all TLS versions.
+by _arangod_ anymore and the remaining ones are all TLS versions.
 
 You can still use the old startup option name.
 

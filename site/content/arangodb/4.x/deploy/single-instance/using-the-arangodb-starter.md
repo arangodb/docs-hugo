@@ -44,6 +44,7 @@ docker run -it --name=adb --rm -p 8528:8528 \
     -v arangodb:/data \
     -v /var/run/docker.sock:/var/run/docker.sock \
     arangodb/arangodb-starter \
+    --docker.image=arangodb/core:4.0.0 \
     --starter.address=$IP \
     --starter.mode=single \
     --docker.net-mode=default
@@ -75,8 +76,9 @@ docker volume create arangodb
 docker run -it --name=adb --rm -p 8528:8528 \
     -v arangodb:/data \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    -v /path/to/certificate:/path/to/certificate
+    -v /path/to/certificate:/path/to/certificate \
     arangodb/arangodb-starter \
+    --docker.image=arangodb/core:4.0.0 \
     --starter.address=$IP \
     --starter.mode=single \
     --docker.net-mode=default
@@ -97,6 +99,7 @@ docker run -it --name=adb --rm -p 8528:8528 \
     -v /path/to/cert:/root/.docker \
     -e DOCKER_TLS_VERIFY=1 \
     arangodb/arangodb-starter \
+    --docker.image=arangodb/core:4.0.0 \
     --starter.address=$IP \
     --starter.mode=single \
     --docker.net-mode=default

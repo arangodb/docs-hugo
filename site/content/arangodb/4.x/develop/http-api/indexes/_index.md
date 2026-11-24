@@ -15,14 +15,15 @@ is prefixed with a collection name and a forward slash (`/`) to identify an
 index within a database.
 
 ```
-http://server:port/_api/index/<collection-name>/<index-identifier>
+http://server:port/_db/<database-name>/_api/index/<collection-name>/<index-identifier>
 ```
 
-For example, assume that the full index identifier is `demo/63563528`, then the
-URL of that index is as follows:
+For example, assume ArangoDB runs locally, the full index identifier is
+`demo/63563528`, and it is in the `mydb` database. The URL of that index is the
+following:
 
 ```
-http://localhost:8529/_api/index/demo/63563528
+http://localhost:8529/_db/mydb/_api/index/demo/63563528
 ```
 
 ## List all indexes of a collection
@@ -37,6 +38,10 @@ paths:
         index descriptions for the given collection. The same information is also
         available in the `identifiers` attribute as an object with the index identifiers
         as object keys.
+
+        The user account you authenticate with needs at least `ro` access to
+        the collection. In cluster deployments, Coordinators didn't check
+        this access level for all requests up to v3.12.12.
       parameters:
         - name: database-name
           in: path
@@ -80,6 +85,10 @@ paths:
         '200':
           description: |
             returns a JSON object containing a list of indexes on that collection.
+        '403':
+          description: |
+            The user account you authenticate with has `none` access to the
+            collection.
       tags:
         - Indexes
 ```
@@ -126,6 +135,10 @@ paths:
         All other attributes are type-dependent. For example, some indexes provide
         `unique` or `sparse` flags, whereas others don't. Some indexes also provide
         a selectivity estimate in the `selectivityEstimate` attribute of the result.
+
+        The user account you authenticate with needs at least `ro` access to
+        the collection. In cluster deployments, Coordinators didn't check
+        this access level for all requests up to v3.12.12.
       parameters:
         - name: database-name
           in: path
@@ -146,6 +159,10 @@ paths:
         '200':
           description: |
             If the index exists, then a *HTTP 200* is returned.
+        '403':
+          description: |
+            The user account you authenticate with has `none` access to the
+            collection.
         '404':
           description: |
             If the index does not exist, then a *HTTP 404*

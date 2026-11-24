@@ -52,7 +52,7 @@ Graph analytics can answer questions like _**Who are the most connected persons*
 ArangoDB offers _Graph Analytics Engines_ to run algorithms such as
 connected components, label propagation, and PageRank on your data. This feature
 is available for the Arango Managed Platform (AMP). See
-[Graph Analytics](../../../agentic-ai-suite/graph-analytics/_index.md) for details.
+[Graph Analytics](../../../contextual-data-platform/graph-analytics/_index.md) for details.
 
 ### GraphML
 
@@ -108,7 +108,7 @@ your running database from the **Examples** tab of your deployment.
 
 {{< tip >}}
 You can try out the Arango Managed Platform (AMP) free of charge for 14 days.
-Sign up at [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+Sign up at [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home).
 {{< /tip >}}
 
 The ArangoFlix demo uses five different recommendation methods:
