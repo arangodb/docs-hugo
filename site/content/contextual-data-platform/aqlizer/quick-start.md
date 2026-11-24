@@ -31,7 +31,8 @@ click **Ask AQLizer**.
 {{< /step >}}
 
 {{< step "Start the AQLizer" >}}
-Under **API Key**, select or enter your API key, then click
+Under **API Key**, select a saved API key, or click **Add new secret** to save
+a new one in the [Secrets Manager](../secrets-manager.md). Then click
 **Start AQLizer**. Wait until the **Ask AQLizer** input appears.
 {{< /step >}}
 
@@ -52,8 +53,8 @@ and **Run query**.
 {{< steps >}}
 
 {{< step "Start the AQLizer" >}}
-In the **Query Editor** of your database, click **Ask AQLizer**, select or
-enter your API key under **API Key**, and click **Start AQLizer**.
+In the **Query Editor** of your database, click **Ask AQLizer**, select a
+saved API key under **API Key** or add a new one, and click **Start AQLizer**.
 {{< /step >}}
 
 {{< step "Sign in" >}}

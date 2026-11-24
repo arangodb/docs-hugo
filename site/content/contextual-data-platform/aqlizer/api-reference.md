@@ -147,7 +147,7 @@ with the following events:
 | Event | Meaning |
 |-------|---------|
 | `phase` | The processing phase changed (`executing`). |
-| `text` | Partial text from the language model. |
+| `text` | Raw output of the language model, which can be JSON such as `{"nl":"","off_topic":true}`. Don't show it as the answer. The answer is `nl` in the `done` event. |
 | `tool_call` | A database tool was called. |
 | `tool_result` | A database tool returned a result. |
 | `done` | The final result: `aql`, `json`, `nl`, `error` (`null`), and `added_template_id`. |
@@ -157,6 +157,15 @@ If no event is sent for 5 seconds, the stream sends an SSE comment
 (`: heartbeat`) to keep the connection open. Standard SSE clients ignore
 comments. If the client closes the connection, the AQLizer stops processing
 the request.
+
+{{< info >}}
+The AQLizer service of a database answers one request at a time.
+`POST /txt2aql` and `POST /query` share this queue, so a second request waits
+until the first one finishes, even if both come from the same user. While a
+request waits, its stream only sends `: heartbeat` comments, and no event says
+that it is waiting. Send requests one at a time, or allow for this wait in your
+client's timeouts.
+{{< /info >}}
 
 ### Save queries as templates
 
@@ -312,7 +321,8 @@ With `"stream": true`, the default, the endpoint returns a Server-Sent Events
 | `done` | The final result. For an optimization, `result` holds the report. |
 | `error` | Processing failed. |
 
-The stream sends the same `: heartbeat` comment as `POST /txt2aql`. Closing the
+The stream sends the same `: heartbeat` comment as `POST /txt2aql`, including
+while the request [waits for other requests](#streaming-response). Closing the
 connection stops the request.
 
 ```

@@ -15,7 +15,7 @@ generate and optimize AQL queries.
 {{< /warning >}}
 
 The web interface no longer offers Natural Language to AQL. The **AQLizer** tab
-of the Query Editor now uses the new AQLizer service. To generate and optimize
+of the Query Editor now runs on the Reasoner service. To generate and optimize
 queries there, see
 [How to use the AQLizer in the web interface](../aqlizer/web-interface.md).
 

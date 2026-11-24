@@ -34,12 +34,14 @@ The AQLizer offers two operations:
 a query that the AQLizer generated, or one you wrote yourself.
 
 {{< info >}}
-The **AQLizer** tab of the Query Editor used to run on the
-[Natural Language to AQL](../natural-language-to-aql/_index.md) service, which
-is deprecated. The tab now runs on the service formerly called the
-**Reasoner**, which is now the AQLizer service. The former name still appears in
-the API, for example in the `/reasoner/` URL prefix of the endpoints and in the
-`arangodb-reasoner` service name.
+Previously, the Query Editor had two separate features: the **AQLizer** tab
+generated queries from questions using the
+[Natural Language to AQL](../natural-language-to-aql/_index.md) service, and an
+**Optimize** button opened a separate panel that used the Reasoner service.
+Now the **AQLizer** tab does both, with **Generate** and **Optimize**, and both
+run on one backend, the Reasoner service (`arangodb-reasoner`). This is why the
+API uses the `/reasoner/` URL prefix. The Natural Language to AQL service is
+deprecated, and the web interface no longer uses it.
 {{< /info >}}
 
 ## How the AQLizer works
@@ -151,10 +153,10 @@ permissions in the database.
 
 From a user perspective, the AQLizer is a single service that you start, stop,
 and configure as one unit, once per database. One setup makes both operations
-available. Internally, it consists of two components that the data platform
-deploys and manages together:
+available. The backend is the Reasoner service (`arangodb-reasoner`). It
+consists of two components that the data platform deploys and manages together:
 
-- The **AQLizer service**, which bundles an AI coder that plans and carries out
+- The **Reasoner service**, which bundles an AI coder that plans and carries out
   the work.
 - An **internal MCP server** that exposes ArangoDB operations as tools that
   the AI coder can call. It also stores and searches the query templates.
@@ -176,8 +178,8 @@ flowchart TD
       <code>POST /txt2aql</code>
       <code>POST /query</code>"] --> Service
 
-    subgraph AQLizerService["AQLizer service (managed by the data platform)"]
-        Service["AQLizer
+    subgraph ReasonerService["Reasoner service (managed by the data platform)"]
+        Service["Reasoner
         (port 8080)"] --> AICoder["AI coder
         (port 4099)"]
         AICoder --> MCP["Internal MCP server
@@ -204,7 +206,7 @@ works with other providers, such as Anthropic, and with OpenAI-compatible
 endpoints, such as a proxy or Azure OpenAI. The API key you provide has to
 belong to the configured provider.
 
-When you start the AQLizer service through the data platform API, you can set the
+When you start the Reasoner service through the data platform API, you can set the
 following parameters in its `env`:
 
 | Parameter | Description |

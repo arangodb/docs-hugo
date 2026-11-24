@@ -18,16 +18,18 @@ Platform. It requires the Agentic AI Suite license.
 2. Open the **AQLizer** tab in one of these ways:
    - In the **Welcome** tab, click **Ask AQLizer**.
    - At the bottom of a query tab, click **Ask AQLizer**. The AQLizer tab
-     opens next to the query.
+     opens next to the query, with the query copied into the input field.
+     Nothing runs yet. Click **Optimize** to optimize the query, or replace it
+     with a question and click **Generate**.
 
 ## Set up the AQLizer
 
 You set up the AQLizer once per database. The setup makes both **Generate** and
 **Optimize** available.
 
-1. Under **API Key**, select a secret from the
-   [Secrets Manager](../secrets-manager.md) that holds the API key of your
-   language model provider, or enter a key.
+1. Under **API Key**, select a saved API key of your language model provider,
+   or click **Add new secret** to save a new one in the
+   [Secrets Manager](../secrets-manager.md).
 2. Optional: Expand **Advanced settings** and select a different
    **OpenAI model**. The default is `gpt-5.4-nano`.
 3. Click **Start AQLizer**. Starting takes a few seconds.
@@ -58,6 +60,8 @@ the editor to see them.
 1. Start the optimization in one of these ways:
    - Below a generated query, click **Optimize query**.
    - Paste a query into the input field and click **Optimize**.
+   - At the bottom of a query tab, click **Ask AQLizer** to copy the query into
+     the input field, then click **Optimize**.
 2. The AQLizer profiles the query, rewrites it, and checks that the new query
    returns the same results. Expand **Steps** to see each tool it ran.
 3. Review the **Optimization Summary**: **What Changed**, **Why It's Faster**,
@@ -74,8 +78,14 @@ Always verify AI-generated queries.
 AI can make mistakes or produce unexpected results.
 {{< /warning >}}
 
-If you leave the AQLizer tab while an operation runs, the operation is
-cancelled.
+If you switch to another tab while an operation runs, it keeps running and the
+AQLizer tab shows that it's working. When the answer arrives, a red dot appears
+on the tab until you open it. Closing the AQLizer tab or reloading the page
+cancels the operation.
+
+The AQLizer of a database handles one request at a time. If you send a request
+while another one runs on the same database, the AQLizer shows a notice that
+your request starts as soon as the other one finishes.
 
 ## When the AQLizer can't answer
 
@@ -89,18 +99,24 @@ The AQLizer shows the reason in the tab, for example:
 
 ## Chat history
 
-Click **Chat history** in the top-right corner of the AQLizer tab to see your
-past chats, listed by their first message and time. The button appears once
-you have a chat.
-
-- To open a chat, click it.
-- To delete one chat, click the delete button ({{< icon "delete" >}}) next to
-  it.
-- To delete all chats, click **Delete all history** and confirm with
-  **Delete chat history**. You can't undo this.
-
+Every request starts a new chat: **Generate**, **Optimize**,
+**Optimize query**, and **Try again**. The previous chat stays in the history.
 Each question is independent. The AQLizer doesn't use earlier messages as
 context.
+
+Once you have a chat, two buttons appear at the top of the AQLizer tab:
+
+- **Chat history** in the top-left corner lists the past chats of the database,
+  by their first message and time. A chat that is still running shows
+  **Answering...**.
+  - To open a chat, click it.
+  - To delete one chat, click the delete button ({{< icon "delete" >}}) next to
+    it. You can't delete a chat while its request runs.
+  - To delete all chats of the database, click **Delete all history** and
+    confirm with **Delete chat history**. You can't undo this.
+- **New chat** in the top-right corner opens another AQLizer tab with its own
+  chat. The current tab keeps its chat, and a request that runs in it keeps
+  running.
 
 ![Screenshot of the chat history with a list of past chats](../../images/data-platform-aqlizer-history.png)
 
@@ -113,5 +129,3 @@ stops both **Generate** and **Optimize**, including the internal MCP server.
 
 The **Service ID** is the `{service_id_postfix}` in the paths of the
 [API](api-reference.md).
-
-![Screenshot of the Manage AQLizer services dialog with two running services](../../images/data-platform-aqlizer-services.png)
