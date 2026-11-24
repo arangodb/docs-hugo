@@ -22,7 +22,7 @@ indexes that are created, see [Architecture](architecture.md).
 You can verify the state of the Importer service deployed for a project via
 the Arango Control Plane (ACP):
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project_by_name/{project_name}" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project_by_name/{database_name}/{project_name}" >}}
 
 The `status` object inside `importerServices` looks like this when the
 import completes successfully:
