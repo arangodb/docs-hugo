@@ -1539,7 +1539,7 @@
       "agent",
       "single"
     ],
-    "default" : 3580412928,
+    "default" : 3580413952,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -2976,7 +2976,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 2864330342,
+    "default" : 2864331161,
     "deprecatedIn" : null,
     "description" : "Maximum memory usage (in bytes) to be used by all ongoing dumps.",
     "dynamic" : true,
@@ -3398,7 +3398,7 @@
       "agent",
       "single"
     ],
-    "default" : 1646913536,
+    "default" : 1646913945,
     "deprecatedIn" : null,
     "description" : "The maximum combined size of all decompressed request bodies held by the server at the same time (in bytes).",
     "dynamic" : true,
@@ -5985,7 +5985,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 16469135360,
+    "base" : 16469139456,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5993,7 +5993,7 @@
       "agent",
       "single"
     ],
-    "default" : 13339999641,
+    "default" : 13340002959,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -6320,7 +6320,7 @@
     "type" : "uint64"
   },
   "query.memory-limit" : {
-    "base" : 16469135360,
+    "base" : 16469139456,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -6328,7 +6328,7 @@
       "agent",
       "single"
     ],
-    "default" : 9881481216,
+    "default" : 9881483673,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7560,7 +7560,7 @@
       "agent",
       "single"
     ],
-    "default" : 4296495513,
+    "default" : 4296496742,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -10201,7 +10201,7 @@
       "agent",
       "single"
     ],
-    "default" : 5728660684,
+    "default" : 5728662323,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
