@@ -16,7 +16,7 @@ when to stop following a path.
 
 {{< info >}}
 Alternatively, you can describe the nodes and edges you want to find as a
-pattern with a syntax similar to Cypher and GQL, using the
+pattern like `(a:persons) -[:knows]-> (b:persons)`, using the
 [`MATCH` operation](../high-level-operations/match.md). For the differences
 between the two approaches, see
 [`MATCH` compared to graph traversals](../high-level-operations/match.md#match-compared-to-graph-traversals).

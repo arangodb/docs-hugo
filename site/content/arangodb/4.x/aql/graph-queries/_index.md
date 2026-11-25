@@ -30,8 +30,8 @@ make full use of optimizations and therefore best performance is to be expected:
   combined with AQL filter conditions.
 
 - [AQL `MATCH`](../high-level-operations/match.md) to find all occurrences of
-  a pattern of nodes and edges, described with a syntax similar to Cypher and
-  GQL. It only supports collection sets, not named graphs.
+  a pattern of nodes and edges, like `(a:persons) -[:knows]-> (b:persons)`.
+  It only supports collection sets, not named graphs.
 
 - [AQL Shortest Path](shortest-path.md) to find one shortest (or lightest) path
   between two given documents.

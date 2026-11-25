@@ -121,7 +121,7 @@ In queries, you can define in which directions the edge relations may be followe
   - variable traversal depth between a defined minimum and maximum 
   - breadth-first, depth-first, and weighted traversals
   - optionally with prune conditions
-- [Pattern matching with a Cypher/GQL-style syntax](../aql/high-level-operations/match.md)
+- [Pattern matching](../aql/high-level-operations/match.md)
   - nodes and edges described as patterns like `(a:persons) -[:knows]-> (b:persons)`
   - conditions on every node and edge of a pattern
   - fixed-length and variable-length paths, cycles, and multiple patterns that

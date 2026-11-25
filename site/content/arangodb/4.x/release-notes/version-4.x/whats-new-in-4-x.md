@@ -235,9 +235,10 @@ FOR n IN nodes
 ### Graph pattern matching with `MATCH` (experimental)
 
 AQL has a new, experimental `MATCH` operation that lets you query graphs by
-describing the pattern of nodes and edges that you want to find. The syntax is
-similar to the graph patterns of Cypher and GQL. You write nodes in parentheses and edges in square brackets
-with arrows, and you use collection names as labels:
+describing the pattern of nodes and edges that you want to find. You write
+nodes in parentheses and edges in square brackets with arrows, and you use
+collection names as labels. The syntax corresponds to a subset of the graph
+patterns of Cypher and GQL, with differences in the details:
 
 ```aql
 MATCH (a:persons { name: "Eve" }) -[:knows]-> (b:persons) -[:knows]-> (c:persons)
@@ -259,7 +260,7 @@ The current implementation supports the following:
   `(p:persons RETURN name, profile.age)`
 - Collection bind parameters as labels, like `(p:@@coll)`
 
-The feature is disabled by default. To try it out, set the new `matchStatement`
+The feature is disabled by default. To try it out, set the `matchStatement`
 query option to `"experimental"`:
 
 ```js

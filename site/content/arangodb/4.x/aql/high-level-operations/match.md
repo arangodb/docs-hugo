@@ -3,16 +3,15 @@ title: '`MATCH` operation in AQL'
 menuTitle: MATCH
 weight: 6
 description: >-
-  The experimental `MATCH` operation lets you query graphs by describing the
-  pattern of nodes and edges you want to find, similar to Cypher and GQL
+  The `MATCH` operation finds all occurrences of a graph pattern that you sketch
+  as text, with nodes in parentheses and edges as arrows, like `(a) -[e]-> (b)`
 ---
 {{< tag "Experimental" >}}
 
 The `MATCH` operation finds all occurrences of a graph pattern in your data.
 You describe nodes in parentheses and edges in square brackets with arrows that
-indicate the direction. The syntax is similar to the graph patterns of Cypher
-and of GQL, the ISO standard for graph query languages, but it is not a
-complete or conforming implementation of either:
+indicate the direction, so that a pattern resembles a drawing of the graph
+shape you are looking for:
 
 ```aql
 MATCH (a:persons) -[k:knows]-> (b:persons)
@@ -729,8 +728,9 @@ MATCH (a:persons { _key: "eve" }) -[:knows]-> (b:persons)
   query is executed as a join, which can be efficient if there are selective
   conditions on the nodes and edges, compared to starting a traversal from every
   node of a collection.
-- **Familiar syntax**: If you know Cypher or GQL, the pattern syntax lets you
-  get started quickly.
+- **Readable syntax**: A pattern resembles a drawing of the graph shape you
+  are looking for. If you know Cypher or GQL, note that `MATCH` only covers a
+  subset of their pattern syntax, and the details differ.
 
 ### When to use graph traversals
 
