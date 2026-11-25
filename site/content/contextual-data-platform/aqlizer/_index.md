@@ -151,18 +151,15 @@ permissions in the database.
 
 ## Architecture
 
-From a user perspective, the AQLizer is a single service that you start, stop,
-and configure as one unit, once per database. One setup makes both operations
-available. The backend is the Reasoner service (`arangodb-reasoner`). It
-consists of two components that the data platform deploys and manages together:
+The AQLizer runs on the Reasoner service (`arangodb-reasoner`). You start,
+stop, and configure it as one unit, once per database, and one setup makes
+both **Generate** and **Optimize** available.
 
-- The **Reasoner service**, which bundles an AI coder that plans and carries out
-  the work.
-- An **internal MCP server** that exposes ArangoDB operations as tools that
-  the AI coder can call. It also stores and searches the query templates.
-
-The internal MCP server is started, connected, and stopped along with the
-AQLizer, so you don't need to deploy or configure an MCP server yourself.
+The Reasoner service contains an AI agent that sends prompts to the language
+model and decides which database tools to call. The tools come from an
+internal MCP server that the data platform starts, connects, and stops along
+with the AQLizer. The MCP server runs the database operations and also stores
+and searches the query templates.
 
 {{< info >}}
 The internal MCP server used by the AQLizer is not the same as the
@@ -179,10 +176,8 @@ flowchart TD
       <code>POST /query</code>"] --> Service
 
     subgraph ReasonerService["Reasoner service (managed by the data platform)"]
-        Service["Reasoner
-        (port 8080)"] --> AICoder["AI coder
-        (port 4099)"]
-        AICoder --> MCP["Internal MCP server
+        Service["Reasoner service"] --> Agent["AI agent"]
+        Agent --> MCP["Internal MCP server
         (database tools, query templates)"]
     end
 
@@ -195,9 +190,6 @@ flowchart TD
   deployment.
 - An **API key** for the language model the AQLizer uses. Both operations use
   the same key and model. See [Language model](#language-model).
-- To save and reuse query templates through the API, an **embedding API key**
-  on the internal MCP server. See
-  [Save queries as templates](api-reference.md#save-queries-as-templates).
 
 ## Language model
 

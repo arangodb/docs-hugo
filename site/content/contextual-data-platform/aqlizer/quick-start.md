@@ -15,8 +15,9 @@ Turn a question into an AQL query, then optimize the query.
 - An **Arango Contextual Data Platform** deployment with a valid Agentic AI
   Suite license.
 - A database with data to query.
-- An API key for your language model provider, stored in the
-  [Secrets Manager](../secrets-manager.md) or at hand to paste.
+- An API key for your language model provider. During setup, you either pick
+  a secret saved in the [Secrets Manager](../secrets-manager.md) or click
+  **Add new secret** to enter and save the key.
 
 ## Translate your first query
 
@@ -33,7 +34,7 @@ click **Ask AQLizer**.
 {{< step "Start the AQLizer" >}}
 Under **API Key**, select a saved API key, or click **Add new secret** to save
 a new one in the [Secrets Manager](../secrets-manager.md). Then click
-**Start AQLizer**. Wait until the **Ask AQLizer** input appears.
+**Start AQLizer**. Wait until the input field for questions appears.
 {{< /step >}}
 
 {{< step "Ask a question" >}}

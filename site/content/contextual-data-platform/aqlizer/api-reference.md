@@ -15,10 +15,10 @@ guide, see the [Quick Start](quick-start.md).
 
 The endpoints are relative to the path of the AQLizer service of a database,
 `https://<EXTERNAL_ENDPOINT>:8529/reasoner/{service_id_postfix}`. The path
-starts with `/reasoner/` because the service was previously called the
-Reasoner. `service_id_postfix` is the end of the service ID, such as `mxsli`
-for `arangodb-reasoner-mxsli`. The **Manage services** dialog of the
-[Query Editor](web-interface.md#manage-services) shows it as the
+starts with `/reasoner/` because the AQLizer runs on the Reasoner service
+(`arangodb-reasoner`). `service_id_postfix` is the end of the service ID,
+such as `mxsli` for `arangodb-reasoner-mxsli`. The **Manage services** dialog
+of the [Query Editor](web-interface.md#manage-services) shows it as the
 **Service ID**. The endpoints have no version prefix such as `/v1`.
 
 Every endpoint except the health checks requires a JWT in the
@@ -32,7 +32,7 @@ in the database.
 | [`POST /query`](#optimize-a-query) | Optimize | Make an AQL query faster, with results verified to match | Synchronous or streamed |
 | [`POST /query/permission`](#approve-or-reject-a-tool-call) | Approve | Answer a request for permission to run a tool during `POST /query` | Synchronous |
 | [`GET /health`](#check-that-the-service-is-running) | Monitor | Check that the service process is running | Synchronous |
-| [`GET /health/ready`](#check-that-the-service-is-ready) | Monitor | Check the connection to the AI coder and the MCP server | Synchronous |
+| [`GET /health/ready`](#check-that-the-service-is-ready) | Monitor | Check the connection to the AI agent and the MCP server | Synchronous |
 
 ## Generate a query
 
@@ -114,7 +114,7 @@ If no answer can be produced, the request still succeeds with HTTP status
 
 | `error` | Meaning |
 |---------|---------|
-| `Can not generate AQL` | Generating is not available because no MCP server is configured. |
+| `Can not generate AQL` | Generating is not available because the AQLizer started without its internal MCP server.|
 | `Can not add template` | `add_template` was `true` but the query could not be saved, for example because you don't have write access to the `Tools` collection. |
 | `Can not change data: text-to-AQL only reads` | The question asks to add, change, or delete data. |
 | `Query contains write operation '<OPERATION>'`, followed by a snippet of the query | The query would modify data, so it did not run. |
@@ -192,11 +192,6 @@ before you save it.
 If saving fails, the request ends with the `Can not add template` error. If no
 query is generated, for example because the database has no data for the
 question, nothing is saved and `added_template_id` is `null`.
-
-Templates require an embedding API key. Set it as `embedding_api_key` in the
-`env` of the AQLizer's MCP server when you start it through the data platform API.
-Without it, the AQLizer always writes a new query, and saving new templates
-fails with the `Can not add template` error.
 
 The AQLizer endpoints don't let you list or delete saved templates. To manage
 them, query the `Tools` collection directly, for example with AQL.
@@ -488,8 +483,8 @@ curl -X GET \
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/reasoner/{service_id_postfix}/health/ready" >}}
 
-Checks the connection to the AI coder and the MCP server. The service is ready
-when the AI coder is reachable. The MCP server status is reported for
+Checks the connection to the AI agent and the MCP server. The service is ready
+when the AI agent is reachable. The MCP server status is reported for
 information. Use it as the Kubernetes readiness probe. No token is needed.
 
 ### Response
@@ -515,7 +510,7 @@ information. Use it as the Kubernetes readiness probe. No token is needed.
 | Field | Type | Meaning |
 |-------|------|---------|
 | `ready` | boolean | Whether the service is ready. |
-| `checks.opencode.status` | string | `healthy` or `unhealthy`, the status of the AI coder. |
+| `checks.opencode.status` | string | `healthy` or `unhealthy`, the status of the AI agent (OpenCode). |
 | `checks.mcp_servers.status` | string | Whether MCP servers are available. |
 | `checks.mcp_servers.details` | object | The connection status of each MCP server. |
 
