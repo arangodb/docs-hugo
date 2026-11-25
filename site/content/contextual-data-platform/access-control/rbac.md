@@ -403,7 +403,7 @@ that user as chips:
 ![The Users tab of the Access control page listing users with their roles as chips, a search field, a role filter, and page controls](../../images/rbac-ui-users-tab.png)
 
 - A user with no roles shows a hyphen (`-`).
-- The `root` user shows the reserved `super-admin` role.
+- The `root` user shows the reserved `super-admin` role as a single chip.
 - If not all chips fit, the row shows as many as it can, followed by a chip
   with the number of remaining roles, for example `+3`. Hover over this chip
   to see the remaining roles.
@@ -421,9 +421,11 @@ The panel is headed by the user name and an **Assign role** button. Below a
 **Search** field for role names, it lists one card per assigned role. Each card
 has a pencil icon that opens the role for editing, and a chevron that expands
 the card to show the scope of the assignment, grouped by resource type and
-database, or `Everything` if the assignment is not narrowed.
+database, `Everything` if the assignment is not narrowed, or `Custom scope` if
+the scope was set outside the web interface. See
+[Custom scopes](#custom-scopes).
 
-![The details panel of a user with an Assign role button, a field for searching roles, and one card per role with a pencil icon and a chevron](../../images/rbac-ui-user-panel.png)
+![The details panel of the user alice with an Assign role button, a field for searching roles, and one card per role with a pencil icon and a chevron, the ai-user card expanded to show Custom scope](../../images/rbac-ui-user-panel.png)
 
 If the user has no roles yet, the panel shows an empty state instead, headed
 *No roles assigned to this user*. It points out that the user has no access
@@ -477,7 +479,7 @@ The steps are the same for every role. Only the scope differs, see
 2. Select **Assign role**. The **Assign role to `<user>`** dialog opens. Its
    field already contains the roles the user holds.
 
-   ![The Assign role dialog with the roles that the user already holds in the role field, and the Cancel and Assign role buttons](../../images/rbac-ui-assign-role-dialog.png)
+   ![The Assign role to alice dialog with the roles that the user already holds in the role field, and the Cancel and Assign role buttons](../../images/rbac-ui-assign-role-dialog.png)
 3. Search for and pick one or more roles to add, then select **Assign role**.
    The **Assign roles to `<user>`** dialog opens, with the new roles added to
    the **Assigned** list on the left, together with any roles the user
@@ -499,6 +501,8 @@ have not scoped yet.
 changes, a **Discard changes?** prompt appears first. Select
 **Discard changes** to close the dialog, or **Keep editing** to return to it.
 The same applies if you close the dialog with the close icon or the Escape key.
+
+![The Discard changes? prompt saying that the changes to alice's roles haven't been saved and will be lost, with the Keep editing and Discard changes buttons](../../images/rbac-ui-discard-changes.png)
 {{< /tab >}}
 
 {{< tab "cURL" >}}
@@ -556,11 +560,17 @@ HTTP API endpoint for assigning a user to a role.
 With a role selected in the **Assigned** list, the right-hand side of the
 dialog shows what that assignment can be narrowed to.
 
+![The Edit roles for alice dialog with the Assigned list on the left and the coredb-admin role on the right, set to Everything, with the Visual / JSON toggle on JSON](../../images/rbac-ui-assign-roles-dialog.png)
+
 Some roles cannot be narrowed at all. For those, the panel shows the notice
 *This role applies everywhere. It cannot be narrowed to specific resources
 because it's a platform-level role.*
 and the assignment covers all resources. This is the case for the
-`managed:operator:<uuid>`, `tenant-admin`, and `platform-operator` roles.
+`tenant-admin` and `platform-operator` roles, and for the `super-admin` role
+of the `root` user. You cannot remove `super-admin`, so its entry in the
+**Assigned** list has no trash icon. The `managed:operator:<uuid>`
+roles get their scope from the Kubernetes operator, so they show as a
+[custom scope](#custom-scopes).
 
 For a role that supports scoping, neither option is selected when you add the
 role. Choose between:
@@ -571,7 +581,8 @@ role. Choose between:
   defined as one or more scopes.
 
 Selecting **Specific resources** adds a first scope card. To add more, use
-the **Add scope** button next to the role name. A new card is titled
+the **Add scope** button next to the role name. The button is disabled while
+**Everything** is selected. A new card is titled
 **New scope** until you choose a **Resource type**, after which it takes the
 name of that type. Which resource types are available depends on the role.
 Each resource type except `Name pattern (advanced)` can only be added once
@@ -772,10 +783,11 @@ The dialog does not let you save incomplete assignments. When you select
 - A scope card without a resource type is titled **Empty scope**, outlined
   in red, and shows **Resource type required** with the hint
   *Pick a resource type, or remove this scope.*
-- A scope card without any selected resource is outlined in red and shows the
-  inline error *Add resources to this scope, or remove it.*
+- A scope card without any selected resource is outlined in red, gets a
+  warning icon in its header, and shows the error **Empty scope** with the hint
+  *Add resources to this scope, or remove it.*
 
-  ![A Collections scope card outlined in red with the error Add resources to this scope, or remove it, above the empty collection picker](../../images/rbac-ui-validation.png)
+  ![The Edit roles for alice dialog with a Collections scope card of the coredb-developer role outlined in red, showing the error Empty scope above the empty collection picker, and a warning icon next to coredb-developer in the Assigned list](../../images/rbac-ui-validation.png)
 
 If you delete all scope cards of a role, the role is flagged right away as
 **No scope yet**, with the hint *Add a scope with resources, or remove this
@@ -797,6 +809,33 @@ check whether a scope is useful, however:
 
 {{< /tabs >}}
 
+### Custom scopes
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+A scope that was set outside the web interface, for example with the
+HTTP API or by the Kubernetes operator, may not fit the options of the dialog.
+The dialog then shows the role as `Custom scope` in the **Assigned** list, and
+the notice *This scope was set outside the UI and doesn't fit the editor, so
+it's shown read-only. Remove the role to replace it.* The scope is only shown
+as JSON, and you cannot edit it in the dialog.
+
+![The Edit roles for alice dialog with the ai-user role selected, showing the read-only notice and the custom scope as JSON](../../images/rbac-ui-custom-scope.png)
+
+To change a custom scope in the web interface, remove the role with the trash
+icon, save, and assign the role again. This replaces the scope with one that
+you define in the dialog.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+The HTTP API accepts any scope, whether the web interface can show it in the
+dialog or not. To change a custom scope, replace it as a whole, as described
+in [Edit or remove an assignment](#edit-or-remove-an-assignment).
+{{< /tab >}}
+
+{{< /tabs >}}
+
 ## Edit or remove an assignment
 
 {{< tabs "interfaces" >}}
@@ -806,15 +845,18 @@ Open the details panel of a user and select the pencil icon on a role card.
 The same dialog reopens as **Edit roles for `<user>`**, where you can:
 
 - Add further roles with the **Add role** combobox.
-- Change the scope of an assignment, where the role supports it.
+- Change the scope of an assignment, where the role supports it. A
+  [custom scope](#custom-scopes) is read-only.
 - Remove a role from the user with the trash icon on its entry in the
   **Assigned** list. The role is removed from the list right away. If the user
   held the role before you opened the dialog, a confirmation appears when you
-  select **Save changes**. Confirm it to remove the role and all its scopes.
+  select **Save changes**, for example *Delete coredb-developer?*, stating that
+  the user loses this role and all of its scopes. If you removed several roles,
+  it asks *Delete 2 roles?* and lists them. Confirm it to remove the roles.
   The button reads **Delete role** or **Delete roles**, or
   **Delete role and save changes** if you made other changes, too.
 
-  ![The confirmation dialog asking Do you want to delete this role, with the Cancel and Delete role buttons](../../images/rbac-ui-delete-role-confirm.png)
+  ![The confirmation dialog Delete coredb-developer? saying that alice loses this role and all of its scopes, with the Cancel and Delete role buttons](../../images/rbac-ui-delete-role-confirm.png)
 
 If you remove every role, the dialog shows *No roles assigned to this user*
 with an **Assign role** button to start over.
@@ -870,11 +912,17 @@ users.
 Select a row to open the details panel for that role. It is headed by the role
 name, a description of the role, and an **Assign user** button. Below a
 **Search** field for user names, it lists one card per user that holds the
-role. The pencil icon on a user card (**Edit user's roles**) opens the
-assignment dialog for that user, and the chevron expands the card to show the
-other roles of that user.
+role, with the number of roles of that user, for example `1 role`. The pencil
+icon on a user card (**Edit user's roles**) opens the assignment dialog for
+that user, and the chevron expands the card. It then shows the role itself,
+followed by the other roles of that user under
+*Other roles assigned to this user*, or *No other roles assigned to this user*. If many users hold the role,
+the list is split into pages, with **Previous** and **Next** controls below it.
 
-![The details panel of the coredb-reader role with an Assign user button, a field for searching users, and one card per user, the first one expanded to show the other roles of that user](../../images/rbac-ui-role-panel.png)
+The panel of a `managed:operator:<uuid>` role has no description and no
+**Assign user** button.
+
+![The details panel of the coredb-reader role with its description, an Assign user button, a field for searching users, and one card per user with the number of roles of that user, followed by page controls](../../images/rbac-ui-role-panel.png)
 {{< /tab >}}
 
 {{< tab "cURL" >}}
