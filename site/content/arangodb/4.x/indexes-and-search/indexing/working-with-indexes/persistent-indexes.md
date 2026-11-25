@@ -195,7 +195,7 @@ db.ids.ensureIndex({ type: "persistent", fields: [ "myId" ], unique: true });
 db.ids.save({ "myId": 123 });
 db.ids.save({ "myId": 456 });
 db.ids.save({ "myId": 789 });
-db.ids.save({ "myId": 123 });  // xpError(ERROR_ARANGO_UNIQUE_CONSTRAINT_VIOLATED)
+db.ids.save({ "myId": 123 });  // expectedError(ERROR_ARANGO_UNIQUE_CONSTRAINT_VIOLATED)
 ~db._drop("ids");
 ```
 
@@ -209,7 +209,7 @@ db.ids.ensureIndex({ type: "persistent", fields: [ "name.first", "name.last" ], 
 db.ids.save({ "name" : { "first" : "hans", "last": "hansen" }});
 db.ids.save({ "name" : { "first" : "jens", "last": "jensen" }});
 db.ids.save({ "name" : { "first" : "hans", "last": "jensen" }});
-db.ids.save({ "name" : { "first" : "hans", "last": "hansen" }});  // xpError(ERROR_ARANGO_UNIQUE_CONSTRAINT_VIOLATED)
+db.ids.save({ "name" : { "first" : "hans", "last": "hansen" }});  // expectedError(ERROR_ARANGO_UNIQUE_CONSTRAINT_VIOLATED)
 ~db._drop("ids");
 ```
 

@@ -15,6 +15,7 @@ import (
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/arangosh"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/format"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
+	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/utils"
 	"gopkg.in/yaml.v3"
 )
 
@@ -29,7 +30,7 @@ func (service CommonService) arangosh(name, code, filepath string, repository mo
 }
 
 func (service CommonService) saveCache(request string, response models.ExampleResponse, cacheChannel chan map[string]interface{}) {
-	if response.Options.SaveCache == "false" || strings.Contains(response.Output, "ERRORD") {
+	if response.Options.SaveCache == "false" || strings.Contains(response.Output, utils.MarkerError) {
 		return
 	}
 
@@ -94,7 +95,7 @@ type AQLService struct{}
 var AQLFormatter = format.AQLFormatter{}
 
 func (service AQLService) Execute(request models.Example, cacheChannel chan map[string]interface{}) (res models.AQLResponse) {
-	commands := AQLFormatter.FormatRequestCode(request.Code, request.Options.BindVars)
+	commands := AQLFormatter.FormatRequestCode(request.Code, request.Options.BindVars, request.Options.QueryOptions, request.Options.Explain)
 
 	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
 	models.Logger.Debug("[%s] Chosen repository: %s", request.Options.Name, repository.Version)
@@ -114,6 +115,8 @@ func (service AQLService) Execute(request models.Example, cacheChannel chan map[
 	arangoshResult := commonService.arangosh(request.Options.Name, commands, request.Options.Position, repository)
 
 	res.ExampleResponse.Input, res.ExampleResponse.Options = request.Code, request.Options
+
+	arangoshResult, res.ExampleResponse.Warnings = arangosh.ExtractWarnings(arangoshResult)
 
 	if strings.Contains(string(request.Options.Render), "output") {
 		res.ExampleResponse.Output = fmt.Sprintf("%s\n%s", res.Output, arangoshResult)

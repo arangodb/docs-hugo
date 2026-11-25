@@ -1,3 +1,10 @@
+/arangodb/3.10/aql/graph-queries/traversals-explained/                          /arangodb/3.10/aql/graph-queries/traversals/#how-traversals-work     301
+/arangodb/3.11/aql/graph-queries/traversals-explained/                          /arangodb/3.11/aql/graph-queries/traversals/#how-traversals-work     301
+/arangodb/3.12/aql/graph-queries/traversals-explained/                          /arangodb/3.12/aql/graph-queries/traversals/#how-traversals-work     301
+/arangodb/stable/aql/graph-queries/traversals-explained/                        /arangodb/stable/aql/graph-queries/traversals/#how-traversals-work   301
+/arangodb/4.x/aql/graph-queries/traversals-explained/                           /arangodb/4.x/aql/graph-queries/traversals/#how-traversals-work      301
+/arangodb/devel/aql/graph-queries/traversals-explained/                         /arangodb/devel/aql/graph-queries/traversals/#how-traversals-work    301
+
 /arangodb/3.10/components/tools/arangodump/limitations/                         /arangodb/3.10/components/tools/arangodump/examples/    301
 /arangodb/3.11/components/tools/arangodump/limitations/                         /arangodb/3.11/components/tools/arangodump/examples/    301
 /arangodb/3.12/components/tools/arangodump/limitations/                         /arangodb/3.12/components/tools/arangodump/examples/    301
@@ -718,7 +725,7 @@
 /docs/3.10/aql/functions-string.html                                                       /arangodb/3.10/aql/functions/string/                                                      301
 /docs/3.10/aql/functions-type-cast.html                                                    /arangodb/3.10/aql/functions/type-check-and-cast/                                         301
 /docs/3.10/aql/graphs.html                                                                 /arangodb/3.10/aql/graph-queries/                                                         301
-/docs/3.10/aql/graphs-traversals-explained.html                                            /arangodb/3.10/aql/graph-queries/traversals-explained/                                    301
+/docs/3.10/aql/graphs-traversals-explained.html                                            /arangodb/3.10/aql/graph-queries/traversals/#how-traversals-work                                    301
 /docs/3.10/aql/graphs-traversals.html                                                      /arangodb/3.10/aql/graph-queries/traversals/                                              301
 /docs/3.10/aql/graphs-shortest-path.html                                                   /arangodb/3.10/aql/graph-queries/shortest-path/                                           301
 /docs/3.10/aql/graphs-all-shortest-paths.html                                              /arangodb/3.10/aql/graph-queries/all-shortest-paths/                                      301
@@ -1465,7 +1472,7 @@
 /docs/stable/aql/functions-string.html                                                     /arangodb/3.11/aql/functions/string/                                                      301
 /docs/stable/aql/functions-type-cast.html                                                  /arangodb/3.11/aql/functions/type-check-and-cast/                                         301
 /docs/stable/aql/graphs.html                                                               /arangodb/3.11/aql/graph-queries/                                                         301
-/docs/stable/aql/graphs-traversals-explained.html                                          /arangodb/3.11/aql/graph-queries/traversals-explained/                                    301
+/docs/stable/aql/graphs-traversals-explained.html                                          /arangodb/3.11/aql/graph-queries/traversals/#how-traversals-work                                    301
 /docs/stable/aql/graphs-traversals.html                                                    /arangodb/3.11/aql/graph-queries/traversals/                                              301
 /docs/stable/aql/graphs-shortest-path.html                                                 /arangodb/3.11/aql/graph-queries/shortest-path/                                           301
 /docs/stable/aql/graphs-all-shortest-paths.html                                            /arangodb/3.11/aql/graph-queries/all-shortest-paths/                                      301
@@ -2212,7 +2219,7 @@
 /docs/3.11/aql/functions-string.html                                                       /arangodb/3.11/aql/functions/string/                                                      301
 /docs/3.11/aql/functions-type-cast.html                                                    /arangodb/3.11/aql/functions/type-check-and-cast/                                         301
 /docs/3.11/aql/graphs.html                                                                 /arangodb/3.11/aql/graph-queries/                                                         301
-/docs/3.11/aql/graphs-traversals-explained.html                                            /arangodb/3.11/aql/graph-queries/traversals-explained/                                    301
+/docs/3.11/aql/graphs-traversals-explained.html                                            /arangodb/3.11/aql/graph-queries/traversals/#how-traversals-work                                    301
 /docs/3.11/aql/graphs-traversals.html                                                      /arangodb/3.11/aql/graph-queries/traversals/                                              301
 /docs/3.11/aql/graphs-shortest-path.html                                                   /arangodb/3.11/aql/graph-queries/shortest-path/                                           301
 /docs/3.11/aql/graphs-all-shortest-paths.html                                              /arangodb/3.11/aql/graph-queries/all-shortest-paths/                                      301
@@ -2953,7 +2960,7 @@
 /docs/devel/aql/functions-string.html                                                      /arangodb/3.12/aql/functions/string/                                                      301
 /docs/devel/aql/functions-type-cast.html                                                   /arangodb/3.12/aql/functions/type-check-and-cast/                                         301
 /docs/devel/aql/graphs.html                                                                /arangodb/3.12/aql/graph-queries/                                                         301
-/docs/devel/aql/graphs-traversals-explained.html                                           /arangodb/3.12/aql/graph-queries/traversals-explained/                                    301
+/docs/devel/aql/graphs-traversals-explained.html                                           /arangodb/3.12/aql/graph-queries/traversals/#how-traversals-work                                    301
 /docs/devel/aql/graphs-traversals.html                                                     /arangodb/3.12/aql/graph-queries/traversals/                                              301
 /docs/devel/aql/graphs-shortest-path.html                                                  /arangodb/3.12/aql/graph-queries/shortest-path/                                           301
 /docs/devel/aql/graphs-all-shortest-paths.html                                             /arangodb/3.12/aql/graph-queries/all-shortest-paths/                                      301
@@ -3697,7 +3704,7 @@
 /docs/3.12/aql/functions-string.html                                                       /arangodb/3.12/aql/functions/string/                                                      301
 /docs/3.12/aql/functions-type-cast.html                                                    /arangodb/3.12/aql/functions/type-check-and-cast/                                         301
 /docs/3.12/aql/graphs.html                                                                 /arangodb/3.12/aql/graph-queries/                                                         301
-/docs/3.12/aql/graphs-traversals-explained.html                                            /arangodb/3.12/aql/graph-queries/traversals-explained/                                    301
+/docs/3.12/aql/graphs-traversals-explained.html                                            /arangodb/3.12/aql/graph-queries/traversals/#how-traversals-work                                    301
 /docs/3.12/aql/graphs-traversals.html                                                      /arangodb/3.12/aql/graph-queries/traversals/                                              301
 /docs/3.12/aql/graphs-shortest-path.html                                                   /arangodb/3.12/aql/graph-queries/shortest-path/                                           301
 /docs/3.12/aql/graphs-all-shortest-paths.html                                              /arangodb/3.12/aql/graph-queries/all-shortest-paths/                                      301

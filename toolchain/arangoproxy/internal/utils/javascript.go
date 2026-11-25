@@ -4,9 +4,11 @@ import (
 	"os"
 )
 
+// GetCommonFunctions returns common.js, preceded by the definition of the
+// markers that its functions print (see markers.go)
 func GetCommonFunctions() (string, error) {
 	file, err := os.ReadFile("../internal/utils/common.js")
-	return string(file), err
+	return markersJS() + string(file), err
 }
 
 func GetSetupFunctions() (string, error) {

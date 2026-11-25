@@ -757,7 +757,7 @@ description: ''
 ---
 ~db._create("example");
 ~var myid = db.example.insert({_key: "2873916"});
-db.example.document("example/4472917"); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND)
+db.example.document("example/4472917"); // expectedError(ERROR_ARANGO_DOCUMENT_NOT_FOUND)
 ~db._drop("example");
 ```
 
@@ -769,7 +769,7 @@ name: documentsCollectionNameHandle
 description: ''
 ---
 ~db._create("example");
-db.example.document(""); // xpError(ERROR_ARANGO_DOCUMENT_HANDLE_BAD)
+db.example.document(""); // expectedError(ERROR_ARANGO_DOCUMENT_HANDLE_BAD)
 ~db._drop("example");
 ```
 
@@ -1076,7 +1076,7 @@ description: ''
 a1 = db.example.insert({ a : 1 });
 db.example.document(a1);
 db.example.remove(a1);
-db.example.document(a1); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND);
+db.example.document(a1); // expectedError(ERROR_ARANGO_DOCUMENT_NOT_FOUND);
 ~db._drop("example");
 ```
 
@@ -1090,9 +1090,9 @@ description: ''
 ~db._create("example");
 a1 = db.example.insert({ a : 1 });
 a2 = db.example.replace(a1, { a : 2 });
-db.example.remove(a1);       // xpError(ERROR_ARANGO_CONFLICT);
+db.example.remove(a1);       // expectedError(ERROR_ARANGO_CONFLICT);
 db.example.remove(a1, true);
-db.example.document(a1);     // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND);
+db.example.document(a1);     // expectedError(ERROR_ARANGO_DOCUMENT_NOT_FOUND);
 ~db._drop("example");
 ```
 
@@ -1243,7 +1243,7 @@ description: ''
 ~db._create("example");
 a1 = db.example.insert({ a : 1 });
 a2 = db.example.replace(a1, { a : 2 });
-a3 = db.example.replace(a1, { a : 3 }); // xpError(ERROR_ARANGO_CONFLICT);
+a3 = db.example.replace(a1, { a : 3 }); // expectedError(ERROR_ARANGO_CONFLICT);
 a3 = db.example.replace(a1, { a : 3 }, { overwrite: true });
 ~db._drop("example");
 ```
@@ -1435,7 +1435,7 @@ description: ''
 ~db._create("example");
 a1 = db.example.insert({"a" : 1});
 a2 = db.example.update(a1, {"b" : 2, "c" : 3});
-a3 = db.example.update(a1, {"d" : 4}); // xpError(ERROR_ARANGO_CONFLICT);
+a3 = db.example.update(a1, {"d" : 4}); // expectedError(ERROR_ARANGO_CONFLICT);
 a4 = db.example.update(a2, {"e" : 5, "f" : 6 });
 db.example.document(a4);
 a5 = db.example.update(a4, {"a" : 1, c : 9, e : 42 });
