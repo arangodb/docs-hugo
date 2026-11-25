@@ -228,6 +228,16 @@ server runs until you press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 
 The site will be available at `http://localhost:1313`.
 
+The `stable` and `devel` paths are second mounts of the version folders they
+point to (see `module.mounts` in `site/config/_default/config.yaml`). When you
+edit a file in one of these folders, the live server only rebuilds the page
+under the alias path. For example, if `stable` is 3.12, an edit to
+`site/content/arangodb/3.12/aql/_index.md` shows up at
+`http://localhost:1313/arangodb/stable/aql/` but not at
+`http://localhost:1313/arangodb/3.12/aql/`, which keeps the old content until
+you restart the server. Preview such changes under the alias path. Static builds
+render both paths correctly.
+
 To make the documentation tooling not start a live server in watch mode but
 rather create a static build and exit, set the environment variable `ENV` to
 any value other than `local` before calling `docker compose ...`:
@@ -248,7 +258,7 @@ includes Google Analytics etc.
 
 Browser tests with [Playwright](https://playwright.dev/) check the
 functionality of the built site, like the navigation, version selector, copy
-buttons, tabs, image viewer, and keyboard access, in Chromium, Firefox, and WebKit on desktop and
+buttons, tabs, tables, details boxes, image viewer, and keyboard access, in Chromium, Firefox, and WebKit on desktop and
 mobile viewports. They are in `toolchain/frontend-tests/`.
 
 CircleCI runs them before deploying a release, after scheduled and example
@@ -711,6 +721,31 @@ Available attributes:
 - `class`: CSS classes to apply
 - `style`: CSS inline styles to apply
 
+##### Screenshots
+
+The main content column is only about 800 pixels wide. Wider images are scaled
+down to fit, which can make text and other details illegible. Keep the following
+in mind when taking screenshots of web interfaces:
+
+- **Avoid wide screenshots**: Don't capture an entire browser window with an
+  extreme aspect ratio, like a maximized window on an ultra-wide display.
+- **Zoom the page**: Even with a normal aspect ratio, text can end up too small
+  after scaling. Zoom in on the page, e.g. to 150% or 175%, rather than making
+  the browser window smaller. This results in a higher-resolution screenshot
+  that stays sharp.
+- **Don't zoom in too much**: Excessive zoom levels can break the page layout or
+  make the interface look worse than it does under normal conditions, like by
+  causing excessive text wrapping.
+- **Capture only what is relevant**: It is often best to screenshot only the
+  part of the interface that the surrounding documentation is about instead of
+  the entire viewport. Don't include the address bar or other browser chrome,
+  and no artificial effects like drop shadows around the window.
+- **Prepare the content**: Set up the content in the interface so that it looks
+  tidy and representative, e.g. with meaningful names and example data.
+- **Touch up the page**: You can use the browser's developer tools to edit the
+  page before taking a screenshot, like changing text or removing elements in
+  the border areas that are not relevant for what should be shown.
+
 ##### Image compression
 
 When adding or updating images, the files should be reduced in size as much as
@@ -1054,6 +1089,11 @@ The following shortcodes also exist but are rarely used:
   Content that is collapsed by default but can be expanded.
   {{< /details >}}
   ```
+
+  It renders a rounded box like the table of contents on narrow screens, which
+  expands in place. Add `open="true"` to expand it initially. To stack several
+  boxes with a single outline, wrap them in `{{< accordion >}}` and
+  `{{< /accordion >}}`.
 
 - `{{< youtube id="dQw4w9WgXcQ" >}}` can be used to embed a single YouTube video,
   and `{{< youtube-playlist id="PL0tn-TSss6NV45d1HnLA57VJFH6h1SeH7" >}}`
@@ -2465,12 +2505,12 @@ paths:
 Only define a **single tag** in `tags` as this is used to categorize the endpoints.
 
 The tag descriptions live in [`site/data/openapi_tags/`](site/data/openapi_tags/)
-and are merged into the `openapi.json` files (see below). For the ArangoDB
-HTTP API, the files are stored as:
+and are merged into the `openapi*.json` files (see below). For the ArangoDB
+HTTP API, there is one file per API version:
 
-- `arangodb_0.yaml` (API v0)
-- `arangodb_1.yaml` (API v1)
-- `arangodb_2.yaml` (experimental API)
+- `arangodb_v0.yaml` (API v0)
+- `arangodb_v1.yaml` (API v1)
+- `arangodb_experimental.yaml` (experimental API)
 
 For other services, use `site/data/openapi_tags/<Service-Name>.yaml`
 if you need tags.
@@ -2480,9 +2520,9 @@ _arangoproxy_ also converts the YAML to JSON and assembles full OpenAPI
 specifications when creating a [static build](#plain-build). These are saved to
 disk under `site/data/<version>/` for the ArangoDB API, so one folder per ArangoDB
 version and with one or more files depending on the supported API versions:
-- `0-openapi.json` (API v0)
-- `1-openapi.json` (API v1)
-- `2-openapi.json` (experimental API)
+- `openapi-v0.json` (API v0)
+- `openapi-v1.json` (API v1)
+- `openapi-experimental.json` (experimental API)
 
 These files are checked into the `OpenAPI` folder in the
 [`arangodb/arangodb`](https://github.com/arangodb/arangodb/tree/devel/OpenAPI)
@@ -2506,8 +2546,7 @@ paths:
 ````
 
 A value of `[v0]` for the `apiVersions` option will add the endpoint only to
-`0-openapi.json`. The experimental API uses the next available number, hence
-`2-openapi.json`.
+`openapi-v0.json`, and `[experimental]` only to `openapi-experimental.json`.
 
 ````yaml
 ## Get the activities (experimental)
@@ -2521,10 +2560,9 @@ paths:
     ...
 ````
 
-Endpoint paths are automatically prefixed for ArangoDB as follows:
-- No prefix for API v0
-- `/_arango/v1` for API v1
-- `/_arango/experimental` for the experimental API
+Endpoint paths are automatically prefixed for ArangoDB with
+`/_arango/<API-version>`, e.g. `/_arango/v1` for API v1 and
+`/_arango/experimental` for the experimental API. API v0 has no prefix.
 
 To write OpenAPI descriptions for something other than ArangoDB, use the
 `service` front matter option. This writes the OpenAPI specification to
@@ -2545,20 +2583,21 @@ paths:
 The default front matter values allow you to omit the front matter block
 entirely in many cases. The defaults are:
 - `service: arangodb`
-- `apiVersions: [v0]` for ArangoDB 3.10
-- `apiVersions: [v0]` for ArangoDB 3.11
-- `apiVersions: [v0, v1]` for ArangoDB 3.12
-- `apiVersions: [v1]` for ArangoDB 4.x
+- `apiVersions`: the `allowedAPIVersions` of the ArangoDB version in
+  [`versions.yaml`](site/data/versions.yaml) except for `experimental`,
+  e.g. `[v0]` for 3.12 and `[v1]` for 4.x at the moment
 
 ### Configure the OpenAPI metadata and API versions
 
 **`site/data/versions.yaml`**
 
-For each ArangoDB documentation version, you can set `allowedAPIVersions` to
-declare which API versions (v0, v1, experimental) are valid for that version.
-_arangoproxy_ uses this to know which OpenAPI files to expect per version
-(e.g. `0-openapi.json`, `1-openapi.json`, `2-openapi.json` under
-`site/data/<version>/`). Example:
+For each ArangoDB documentation version, you need to set `allowedAPIVersions`
+to declare which API versions (like v0, v1, experimental) are valid for that
+version. This is the single source of truth for the API versions:
+_arangoproxy_ writes one OpenAPI file per listed API version
+(e.g. `openapi-v0.json` and `openapi-experimental.json` under
+`site/data/<version>/`), and the Hugo templates derive the default
+`apiVersions` from it. Example:
 
 ```yaml
 - name: "4.x"
@@ -2572,9 +2611,8 @@ _arangoproxy_ uses this to know which OpenAPI files to expect per version
   allowedAPIVersions: [v0]
 ```
 
-Allowed values are `v0`, `v1`, and `experimental`. If you add a new docs version,
-set `allowedAPIVersions` accordingly; omitting it means the toolchain falls back
-to allowing all indices for that version.
+If you add a new docs version, set `allowedAPIVersions` accordingly. The
+toolchain reports an error if it is missing.
 
 **`site/data/openapi_services.yaml`**
 
@@ -2582,7 +2620,7 @@ This file defines base metadata per OpenAPI service (`title`, `summary`, `contac
 `externalDocs`, and for non-ArangoDB services also `version`). _arangoproxy_
 merges this with the per-version OpenAPI content. For ArangoDB (`service: arangodb`),
 `version` and `license` are computed in Go from `versions.yaml` and the API
-version index; for other services, all fields are read from this file. Example:
+version; for other services, all fields are read from this file. Example:
 
 ```yaml
 arangodb:
@@ -2610,10 +2648,11 @@ handling of front matter such as `apiVersions`, see
 To adjust the OpenAPI processing and how the `*openapi.json` files are written,
 see [`service.go`](toolchain/arangoproxy/internal/service/service.go).
 
-If a new API version is added to ArangoDB, both need to adjusted to handle it,
-and you also need to update `allowedAPIVersions` fields for affected versions in
-[`versions.yaml`](site/data/versions.yaml), as well as add a new file with the
-OpenAPI tags (`site/data/openapi_tags/arangodb_#.yaml`).
+If a new API version is added to ArangoDB (e.g. `v2`), add it to the
+`allowedAPIVersions` fields of the affected versions in
+[`versions.yaml`](site/data/versions.yaml) and add a file with the
+OpenAPI tags (`site/data/openapi_tags/arangodb_v2.yaml`). No code changes are
+needed as long as the API version uses the `/_arango/<API-version>` path prefix.
 
 ### Add a new cURL example
 

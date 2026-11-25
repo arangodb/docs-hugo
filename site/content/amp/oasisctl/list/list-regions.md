@@ -1,7 +1,7 @@
 ---
 title: List Regions with _oasisctl_
 menuTitle: List Regions
-weight: 34
+weight: 35
 # This is a generated file, DO NOT MODIFY directly!
 ---
 

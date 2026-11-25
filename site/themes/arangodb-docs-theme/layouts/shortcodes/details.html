@@ -1,3 +1,9 @@
+{{- /* A collapsible box with a summary, see partials/details-box.html.
+       Wrap several in the accordion shortcode to stack them. */ -}}
 {{ $summary := .Get "summary" -}}
 {{ if not $summary }}{{ errorf "Missing summary for %q shortcode at %s" .Name .Position }}{{ end -}}
-<details><summary>{{ $summary | markdownify }}</summary>{{ .Inner | .Page.RenderString (dict "display" "block") }}</details>
+{{ partial "details-box.html" (dict
+  "summary" ($summary | markdownify)
+  "content" (.Inner | .Page.RenderString (dict "display" "block"))
+  "open"    (.Get "open")
+) }}

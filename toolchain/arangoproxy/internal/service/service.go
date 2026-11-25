@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"reflect"
+	"slices"
 	"strings"
 	"sync"
 
@@ -128,46 +129,49 @@ func (service AQLService) Execute(request models.Example, cacheChannel chan map[
 	return
 }
 
-// ArangoDB API version indices and path prefixes for versioned API (0-openapi.json, 1-openapi.json, 2-openapi.json).
-const (
-	ArangoDBAPIVersionV0           = "v0"
-	ArangoDBAPIVersionV1           = "v1"
-	ArangoDBAPIVersionExperimental = "experimental"
-)
+// The ArangoDB API versions (like v0, v1, experimental) are data-driven: each
+// docs version lists the ones it supports in the allowedAPIVersions field of
+// site/data/versions.yaml. Every API version name used there needs a tags file
+// site/data/openapi_tags/arangodb_<API-version>.yaml, and the assembled
+// specifications are written to site/data/<version>/openapi-<API-version>.json
 
-var arangoDBAPIVersionToIndex = map[string]int{
-	ArangoDBAPIVersionV0:           0,
-	ArangoDBAPIVersionV1:           1,
-	ArangoDBAPIVersionExperimental: 2,
-}
+// The unversioned API (no path prefix)
+const arangoDBAPIVersionUnprefixed = "v0"
 
-var arangoDBAPIVersionPrefix = map[int]string{
-	0: "",                      // v0: no prefix
-	1: "/_arango/v1",           // v1
-	2: "/_arango/experimental", // experimental
-}
-
-// arangoDBVersionToAllowedIndices is populated from site/data/versions.yaml (allowedAPIVersions per version).
-var arangoDBVersionToAllowedIndices map[string][]int
-
-// arangoDBAllowedAPIVersionIndices returns which API version indices (0=v0, 1=v1, 2=experimental) are valid for a page version.
-// Uses arangoDBVersionToAllowedIndices from versions.yaml when set; otherwise falls back to default (all indices).
-func arangoDBAllowedAPIVersionIndices(pageVersion string) []int {
-	if indices, ok := arangoDBVersionToAllowedIndices[pageVersion]; ok && len(indices) > 0 {
-		return indices
+// arangoDBAPIVersionPrefix returns the path prefix of an ArangoDB API version,
+// e.g. /_arango/v1 for v1 and nothing for v0
+func arangoDBAPIVersionPrefix(apiVersion string) string {
+	if apiVersion == arangoDBAPIVersionUnprefixed {
+		return ""
 	}
-	return []int{0, 1, 2}
+	return "/_arango/" + apiVersion
 }
+
+// arangoDBOpenapiFileName returns the name of the OpenAPI file of an ArangoDB API version
+func arangoDBOpenapiFileName(apiVersion string) string {
+	return fmt.Sprintf("openapi-%s.json", apiVersion)
+}
+
+// arangoDBMapKey returns the key for OpenapiGlobalMap and OpenapiSpecCounter
+func arangoDBMapKey(pageVersion, apiVersion string) string {
+	return pageVersion + "_" + apiVersion
+}
+
+// The allowedAPIVersions per docs version name from site/data/versions.yaml
+var arangoDBAllowedAPIVersions map[string][]string
+
+// All API versions used in site/data/versions.yaml, in order of first occurrence
+var arangoDBKnownAPIVersions []string
 
 type OpenapiService struct{}
 
 var OpenapiFormatter = format.OpenapiFormatter{}
-var OpenapiGlobalMap map[string]interface{}  // key: "version_apiIndex" e.g. "3.12_0"
+var OpenapiGlobalMap map[string]interface{}  // key: "version_apiVersion" e.g. "3.12_v0"
 var OpenapiServiceMap map[string]interface{} // key: service name (e.g. "cypher2aql")
 var OpenapiGlobalMapMutex sync.RWMutex
 var OpenapiServiceMapMutex sync.RWMutex
 var OpenapiPendingSpecs sync.WaitGroup
-var OpenapiSpecCounter map[string]int // key: "version_apiIndex" or "service_name"
+var OpenapiSpecCounter map[string]int // key: "version_apiVersion" or "service_name"
 var OpenapiSpecCounterMutex sync.Mutex
 var OpenapiRejectedSpecs int
 var OpenapiRejectedSpecsMutex sync.Mutex
@@ -176,8 +180,8 @@ var OpenapiSpecErrorMutex sync.Mutex
 var OpenapiValidationError error
 var OpenapiValidationErrorMutex sync.Mutex
 var Versions map[string][]models.Version
-var openapiServicesConfig map[string]interface{}  // service name -> baseInfo from openapi_services.yaml
-var arangoDBTagsByAPIIndex [3][]map[string]string // tags for arangodb_0, arangodb_1, arangodb_2
+var openapiServicesConfig map[string]interface{}            // service name -> baseInfo from openapi_services.yaml
+var arangoDBTagsByAPIVersion map[string][]map[string]string // API version -> tags from arangodb_<API-version>.yaml
 
 func loadTagsFile(path string) ([]map[string]string, error) {
 	data, err := os.ReadFile(path)
@@ -197,21 +201,19 @@ func init() {
 	OpenapiSpecCounter = make(map[string]int)
 	Versions = models.LoadVersions()
 
-	// Build allowed API version indices per ArangoDB version from versions.yaml (allowedAPIVersions).
-	arangoDBVersionToAllowedIndices = make(map[string][]int)
-	if arangodbList, ok := Versions["/arangodb/"]; ok {
-		for _, v := range arangodbList {
-			if len(v.AllowedAPIVersions) == 0 {
-				continue
-			}
-			indices := make([]int, 0, len(v.AllowedAPIVersions))
-			for _, name := range v.AllowedAPIVersions {
-				if idx, ok := arangoDBAPIVersionToIndex[name]; ok {
-					indices = append(indices, idx)
-				}
-			}
-			if len(indices) > 0 {
-				arangoDBVersionToAllowedIndices[v.Name] = indices
+	// The API versions per ArangoDB docs version (allowedAPIVersions in versions.yaml)
+	arangoDBAllowedAPIVersions = make(map[string][]string)
+	knownAPIVersions := make(map[string]bool)
+	for _, v := range Versions["/arangodb/"] {
+		if len(v.AllowedAPIVersions) == 0 {
+			models.Logger.Printf("[ERROR] Version %s in versions.yaml has no allowedAPIVersions", v.Name)
+			os.Exit(1)
+		}
+		arangoDBAllowedAPIVersions[v.Name] = v.AllowedAPIVersions
+		for _, apiVersion := range v.AllowedAPIVersions {
+			if !knownAPIVersions[apiVersion] {
+				knownAPIVersions[apiVersion] = true
+				arangoDBKnownAPIVersions = append(arangoDBKnownAPIVersions, apiVersion)
 			}
 		}
 	}
@@ -229,14 +231,15 @@ func init() {
 	}
 
 	// Load ArangoDB OpenAPI tags per API version from site/data/openapi_tags/
-	for apiIdx := 0; apiIdx <= 2; apiIdx++ {
-		tagsPath := fmt.Sprintf("/home/site/data/openapi_tags/arangodb_%d.yaml", apiIdx)
+	arangoDBTagsByAPIVersion = make(map[string][]map[string]string)
+	for _, apiVersion := range arangoDBKnownAPIVersions {
+		tagsPath := fmt.Sprintf("/home/site/data/openapi_tags/arangodb_%s.yaml", apiVersion)
 		tags, err := loadTagsFile(tagsPath)
 		if err != nil {
 			models.Logger.Printf("[ERROR] Opening %s: %s", tagsPath, err.Error())
 			os.Exit(1)
 		}
-		arangoDBTagsByAPIIndex[apiIdx] = tags
+		arangoDBTagsByAPIVersion[apiVersion] = tags
 	}
 
 	arangodbBase, _ := openapiServicesConfig["arangodb"].(map[string]interface{})
@@ -245,12 +248,6 @@ func init() {
 	}
 
 	models.Logger.Debug("[OpenapiService.init] Initializing OpenAPI maps for ArangoDB versions and API versions...")
-
-	apiVersionSuffix := map[int]string{
-		0: " (API v0)",
-		1: " (API v1)",
-		2: " (API experimental)",
-	}
 
 	upstreamBranches := models.LoadUpstreamBranches()
 
@@ -274,10 +271,10 @@ func init() {
 			if version.Name == "3.10" || version.Name == "3.11" {
 				license["name"] = "Apache 2.0"
 			}
-			for _, apiIdx := range arangoDBAllowedAPIVersionIndices(version.Name) {
-				mapKey := fmt.Sprintf("%s_%d", version.Name, apiIdx)
-				models.Logger.Debug("[OpenapiService.init] Creating OpenAPI map for version: %s API index: %d", version.Name, apiIdx)
-				infoVersion := version.Version + apiVersionSuffix[apiIdx]
+			for _, apiVersion := range arangoDBAllowedAPIVersions[version.Name] {
+				mapKey := arangoDBMapKey(version.Name, apiVersion)
+				models.Logger.Debug("[OpenapiService.init] Creating OpenAPI map for version: %s API version: %s", version.Name, apiVersion)
+				infoVersion := fmt.Sprintf("%s (API %s)", version.Version, apiVersion)
 				info := map[string]interface{}{
 					"title":   arangodbBase["title"],
 					"summary": arangodbBase["summary"],
@@ -298,7 +295,7 @@ func init() {
 					"openapi":      "3.1.0",
 					"info":         info,
 					"paths":        make(map[string]interface{}),
-					"tags":         arangoDBTagsByAPIIndex[apiIdx],
+					"tags":         arangoDBTagsByAPIVersion[apiVersion],
 					"externalDocs": arangodbBase["externalDocs"],
 				}
 				if specCopy["externalDocs"] == nil {
@@ -382,28 +379,23 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 
 	// ArangoDB: one spec per (pageVersion, apiVersion) with path prefix for v1/experimental.
 	// Only add to API versions that exist for this page version (e.g. 3.10 has no v1).
-	allowedIndices := make(map[int]bool)
-	for _, idx := range arangoDBAllowedAPIVersionIndices(pageVersion) {
-		allowedIndices[idx] = true
-	}
 	acceptedVersions := 0
 	for _, av := range apiVersions {
-		apiIdx, ok := arangoDBAPIVersionToIndex[av]
-		if !ok {
-			models.Logger.Printf("[ERROR] Unknown ArangoDB API version %q (expected v0, v1, or experimental) in %s endpoint %s %s (%s)", av, pageVersion, strings.ToUpper(method), path, summary)
+		if !slices.Contains(arangoDBKnownAPIVersions, av) {
+			models.Logger.Printf("[ERROR] Unknown ArangoDB API version %q (expected one of %v from versions.yaml) in %s endpoint %s %s (%s)", av, arangoDBKnownAPIVersions, pageVersion, strings.ToUpper(method), path, summary)
 			OpenapiSpecErrorMutex.Lock()
 			if OpenapiSpecError == nil {
-				OpenapiSpecError = fmt.Errorf("unknown ArangoDB API version %q (expected v0, v1, or experimental) in %s endpoint %s %s (%s)", av, pageVersion, strings.ToUpper(method), path, summary)
+				OpenapiSpecError = fmt.Errorf("unknown ArangoDB API version %q (expected one of %v from versions.yaml) in %s endpoint %s %s (%s)", av, arangoDBKnownAPIVersions, pageVersion, strings.ToUpper(method), path, summary)
 			}
 			OpenapiSpecErrorMutex.Unlock()
 			return
 		}
-		if !allowedIndices[apiIdx] {
+		if !slices.Contains(arangoDBAllowedAPIVersions[pageVersion], av) {
 			models.Logger.Debug("[ProcessOpenapiSpec] Skipping API version %s for page version %s (not supported)", av, pageVersion)
 			continue
 		}
 		acceptedVersions++
-		prefix := arangoDBAPIVersionPrefix[apiIdx]
+		prefix := arangoDBAPIVersionPrefix(av)
 		prefixedPath := path
 		if prefix != "" {
 			prefixedPath = prefix + path
@@ -411,7 +403,7 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 		// Copy spec and set the single path (prefixed) for this API version
 		specCopy := copySpecWithSinglePath(spec, prefixedPath)
 		OpenapiSpecCounterMutex.Lock()
-		mapKey := fmt.Sprintf("%s_%d", pageVersion, apiIdx)
+		mapKey := arangoDBMapKey(pageVersion, av)
 		if _, exists := OpenapiSpecCounter[mapKey]; !exists {
 			OpenapiSpecCounter[mapKey] = 0
 		}
@@ -421,10 +413,10 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 		models.Logger.Debug("[ProcessOpenapiSpec #%s %d] Received spec for version '%s' API %s: %s %s", mapKey, specNum, pageVersion, av, strings.ToUpper(method), prefixedPath)
 		OpenapiPendingSpecs.Add(1)
 		globalOpenapiChannel <- map[string]interface{}{
-			"_target":         "arangodb",
-			"version":         pageVersion,
-			"apiVersionIndex": apiIdx,
-			"spec":            specCopy,
+			"_target":    "arangodb",
+			"version":    pageVersion,
+			"apiVersion": av,
+			"spec":       specCopy,
 		}
 	}
 	if acceptedVersions == 0 {
@@ -494,13 +486,13 @@ func (service OpenapiService) AddSpecToGlobalSpec(chnl chan map[string]interface
 		}
 
 		versionStr, _ := payload["version"].(string)
-		apiVersionIndex, _ := payload["apiVersionIndex"].(int)
+		apiVersion, _ := payload["apiVersion"].(string)
 		openapiSpec, _ := payload["spec"].(map[string]interface{})
 		if openapiSpec == nil {
 			OpenapiPendingSpecs.Done()
 			continue
 		}
-		mapKey := fmt.Sprintf("%s_%d", versionStr, apiVersionIndex)
+		mapKey := arangoDBMapKey(versionStr, apiVersion)
 		specPaths := openapiSpec["paths"].(map[string]interface{})
 		path := reflect.ValueOf(specPaths).MapKeys()[0].String()
 		method := reflect.ValueOf(specPaths[path].(map[string]interface{})).MapKeys()[0].String()
@@ -724,16 +716,16 @@ func (service OpenapiService) ValidateOpenapiGlobalSpec() error {
 	models.Logger.Debug("[ValidateOpenapiGlobalSpec] Total ArangoDB endpoints: %d (total specs: %d, rejected: %d)", totalEndpoints, totalSpecs, OpenapiRejectedSpecs)
 	OpenapiGlobalMapMutex.RUnlock()
 
-	// Validate ArangoDB: one file per (version, apiVersionIndex) -> 0-openapi.json, 1-openapi.json, 2-openapi.json
+	// Validate ArangoDB: one file per (version, API version), e.g. 3.12/openapi-v0.json
 	for key, versionList := range Versions {
 		if key != "/arangodb/" {
 			continue
 		}
 		for _, version := range versionList {
-			for _, apiIdx := range arangoDBAllowedAPIVersionIndices(version.Name) {
-				mapKey := fmt.Sprintf("%s_%d", version.Name, apiIdx)
+			for _, apiVersion := range arangoDBAllowedAPIVersions[version.Name] {
+				mapKey := arangoDBMapKey(version.Name, apiVersion)
 				wg.Add(1)
-				go service.ValidateArangoDBFile(version.Name, apiIdx, mapKey, &wg)
+				go service.ValidateArangoDBFile(version.Name, apiVersion, mapKey, &wg)
 			}
 		}
 		wg.Wait()
@@ -766,10 +758,10 @@ func (service OpenapiService) ValidateOpenapiGlobalSpec() error {
 	return validationError
 }
 
-func (service OpenapiService) ValidateArangoDBFile(version string, apiVersionIndex int, mapKey string, wg *sync.WaitGroup) error {
+func (service OpenapiService) ValidateArangoDBFile(version string, apiVersion string, mapKey string, wg *sync.WaitGroup) error {
 	defer wg.Done()
 
-	fileName := fmt.Sprintf("%d-openapi.json", apiVersionIndex)
+	fileName := arangoDBOpenapiFileName(apiVersion)
 	dir := "/home/site/data/" + version
 	path := dir + "/" + fileName
 

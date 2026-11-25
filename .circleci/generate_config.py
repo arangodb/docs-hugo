@@ -312,6 +312,8 @@ def workflow_release_arangodb(config):
     for job in release_jobs:
         if isinstance(job, dict) and "plain-build" in job:
             job["plain-build"]["requires"] = ["approve-workflow"]
+            # Build the tip of main, only after the release PR is merged
+            job["plain-build"]["release-pr-check"] = True
 
     # Tag the deployed commit at the end, if the version for versions.yaml is known
     if args.arangodb_version:

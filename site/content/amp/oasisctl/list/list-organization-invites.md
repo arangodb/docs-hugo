@@ -1,7 +1,7 @@
 ---
 title: List Organization Invites with _oasisctl_
 menuTitle: List Organization Invites
-weight: 28
+weight: 29
 # This is a generated file, DO NOT MODIFY directly!
 ---
 

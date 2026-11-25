@@ -537,8 +537,14 @@ p {
     line-height: 24px;
 }
 
-.highlight {
-    margin-top: 16px;
+/* Code blocks, spaced like paragraphs: highlighted ones in a .highlight
+   wrapper, plain ones (code fences without a language) as a bare pre. The
+   margins collapse with those of the content around it, so a list or a
+   heading below keeps its own spacing, and text that has no margin of its
+   own (in tight lists, labels of examples) doesn't touch the code. */
+.highlight,
+pre:not(.highlight > pre, .mermaid) {
+    margin: 1rem 0;
 }
 
 li {
@@ -614,7 +620,7 @@ pre {
     flex-direction: column;
     position: relative;
     color: #202951;
-    margin: 0 0 2rem 0;
+    margin: 0;
     transition: 150ms ease-in-out;
     transition-property: border,box-shadow;
     border: 0;
@@ -866,9 +872,14 @@ svg a.card-link {
 
 /* Tabs */
 
+/* The line tabs of the design system (a foreground label and an underline
+   in the primary color for the active tab, muted labels otherwise), on a
+   gray strip at the top of a bordered panel, so that it is clear where the
+   tabbed content ends. The gray ramp and colors switch in dark mode */
+
 .tab-panel .tab-item {
     display: none;
-    margin: 1rem;
+    margin: 16px;
 }
 
 .tab-panel .tab-item.selected {
@@ -877,12 +888,17 @@ svg a.card-link {
 
 .tab-panel {
     margin: 1rem 0;
-    border: 2px solid var(--gray-300);
-    border-radius: 7px;
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
 }
 
 .tab-nav {
-    border-bottom: 2px solid var(--gray-300);
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 8px;
+    border-bottom: 1px solid var(--gray-200);
+    border-radius: 8px 8px 0 0;
+    background: var(--gray-50);
 }
 
 .tab-content {
@@ -890,7 +906,7 @@ svg a.card-link {
 }
 
 .tab-nav-button {
-    margin-bottom: -2px;
+    margin-bottom: -1px;
     position: relative;
     max-width: 300px;
     background-color: transparent;
@@ -901,21 +917,28 @@ svg a.card-link {
     overflow: hidden;
     text-overflow: ellipsis;
     transition-duration: 0s;
-    color: var(--color-teal-ink);
-    padding: 12px 16px;
+    color: var(--color-muted);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: normal;
+    padding: 10px 12px;
 }
 
+.tab-nav-button:hover,
 .tab-nav-button.selected {
-    font-weight: 700;
+    color: var(--color-heading);
 }
+
 .tab-nav-button.selected::after {
     content: "";
     position: absolute;
-    left: 0;
-    right: 0;
+    left: 12px;
+    right: 12px;
     bottom: 0;
     height: 2px;
-    background-color: var(--color-teal-ink)
+    border-radius: 1px;
+    background-color: var(--color-link);
 }
 
 .tab-nav-button > span {
@@ -1532,11 +1555,26 @@ article.notfound > h1 {
     }
 }
 
+/* Long words, identifiers, and URLs would otherwise stick out of the content
+   area on narrow screens and make the page scroll horizontally. Unlike
+   overflow-wrap: anywhere, break-word doesn't let tables, flex items, and the
+   like shrink to a few characters to fit. */
+.article-body {
+    overflow-wrap: break-word;
+}
+
 hgroup > h1, .article-body > :is(h2, h3, h4, h5, h6) {
     color: var(--color-link);
     font-family: var(--font-headlines);
     font-weight: var(--TYPOGRAPHY-BOLD-TEXT);
     overflow-wrap: break-word;
+}
+
+/* Room for the link icon after the last word (.header-link: 0.2em margin and
+   a 0.7em icon), so that the text wraps a bit earlier instead of the icon
+   sticking out of the content area and widening the page */
+.article-body > :is(h2, h3, h4, h5, h6):has(> .header-link) {
+    padding-right: 1em;
 }
 
 /* Page title and lead paragraph like on the home page */
@@ -1674,7 +1712,8 @@ article ul li {
 }
 
 /* Copies the link to the heading. Absolutely positioned after the last word,
-   so that it never wraps to a line of its own. */
+   so that it never wraps to a line of its own, in the space the heading
+   reserves for it (padding-right). */
 .header-link {
     position: absolute;
     display: inline-block;
@@ -2115,6 +2154,95 @@ details[open] > summary::before {
     }
 }
 
+/* Details shortcode: a rounded box like the table of contents dropdown on
+   narrow screens, but the content expands inside the box below the summary */
+.details-box {
+    margin: 1rem 0;
+    padding: 0 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    background: var(--neutral-white);
+}
+
+.details-box > summary {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0;
+    padding: 8px 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--color-heading);
+}
+
+.details-box > summary:hover,
+.details-box > summary:focus-visible {
+    color: var(--color-link);
+}
+
+.details-box > summary::before {
+    align-self: center;
+    margin: 0;
+}
+
+/* The ring follows the rounded box, not the summary inside its padding */
+:root .details-box > summary:focus-visible {
+    outline: none;
+}
+
+.details-box:has(> summary:focus-visible) {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+}
+
+/* Out into the padding of the box, so that the separator spans its width */
+.details-box > .details-body {
+    margin: 0 -12px;
+    padding: 12px;
+    border-top: 1px solid var(--gray-200);
+}
+
+.details-box > .details-body > :first-child {
+    margin-top: 0;
+}
+
+.details-box > .details-body > :last-child {
+    margin-bottom: 0;
+}
+
+/* Accordion shortcode: stacked boxes that share one rounded outline */
+.details-accordion {
+    margin: 1rem 0;
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    background: var(--neutral-white);
+}
+
+.details-accordion > .details-box {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+}
+
+.details-accordion > .details-box + .details-box {
+    border-top: 1px solid var(--gray-300);
+}
+
+/* The rounded outline clips nothing, so round the first and last focus ring */
+.details-accordion > .details-box:first-child {
+    border-radius: 8px 8px 0 0;
+}
+
+.details-accordion > .details-box:last-child {
+    border-radius: 0 0 8px 8px;
+}
+
+.details-accordion > .details-box:only-child {
+    border-radius: 8px;
+}
+
 /* */
 
 
@@ -2392,13 +2520,24 @@ nav.pagination > .next {
     color: var(--color-heading);
 }
 
-/* Consent preferences */
+/* Consent preferences (place bottom right, show tooltip to the left */
 .cky-btn-revisit-wrapper {
     bottom: 10px !important;
     right: 10px !important;
     top: unset !important;
     left: unset !important;
     z-index: 9997 !important;
+}
+.cky-btn-revisit-wrapper.cky-revisit-bottom-left:hover::before {
+    left: auto;
+    right: calc(100% + 7px);
+}
+.cky-btn-revisit-wrapper.cky-revisit-bottom-left:hover::after {
+    left: auto;
+    right: calc(100% + 2px);
+    border-width: 5px 0 5px 5px;
+    border-right-color: transparent;
+    border-left-color: #4e4b66;
 }
 
 /* Algolia */
@@ -2456,7 +2595,8 @@ nav.pagination > .next {
     margin-bottom: 36px;
     background: linear-gradient(40deg, var(--color-teal-ink) 50%, var(--color-link));
     background-position: center;
-    color: var(--gray-50)
+    color: var(--gray-50);
+    --focus-ring: #befe99;
 }
 
 .ag-banner .title {
@@ -2469,22 +2609,17 @@ nav.pagination > .next {
     padding-left: 24px;
     padding-bottom: 4px;
 }
-.ag-banner a {
+
+.ag-banner .link {
     margin-left: 24px;
     font-weight: bold;
     color: white;
+    border-bottom-color: #befe99;
 }
 
-.ag-banner a:hover{
-    color: white;
-}
 .ag-banner .logo {
     height: 36px !important;
     width: 200px !important;
-}
-
-.block {
-    display: block;
 }
 
 /* Sidebar: logo, search, main navigation, and footer link, like the sidebar of
@@ -3140,6 +3275,11 @@ body.sidebar-collapsed .main-nav-ol.shimmer {
 
 .image-zoom-hint {
     position: absolute;
+    /* At the top until it is shown. Without a position, it is placed after the
+       content (static position, end of the body), and Firefox lets the page
+       scroll past its end by the height of the button. */
+    top: 0;
+    left: 0;
     z-index: 50;
     display: flex;
     align-items: center;

@@ -245,7 +245,7 @@ indexes when upgrading. The suffix `_migrated` is appended to their name.
 When restoring dumps with _arangorestore_, the former aliases are replaced with
 the `persistent` index type.
 
-## Removed AQL functions
+## AQL functions removed
 
 - `FULLTEXT()`: Removed because the legacy `fulltext` index type is gone.
   thus this function served no purpose either.
@@ -731,7 +731,7 @@ For more details, see [API changes in ArangoDB 4.x](api-changes-in-4-x.md#javasc
 
 The `db` object no longer has a `_path` method. It always returned `"none"`.
 
-### Removed collection methods
+### Collection methods removed
 
 The following methods have been removed from
 [_collection_ objects](../../develop/javascript-api/@arangodb/collection-object.md)
@@ -763,7 +763,7 @@ as they are either obsolete or didn't provide much value and better alternatives
 See [API Changes in ArangoDB 4.x](api-changes-in-4-x.md#removed-collection-methods)
 for details like how you can replace this functionality.
 
-### Reimplemented collection methods
+### Collection methods reimplemented
 
 Some collection methods of the JavaScript API relied on the server-side
 Simple Queries interface. The methods of a
@@ -1002,10 +1002,10 @@ They are no longer recognized and throw errors if set:
 - `--log.use-local-time`
 - `--log.use-microtime`
 
-### `--tls.protocol` renamed
+### `--ssl.protocol` renamed
 
 The `--ssl.protocol` startup option has been renamed to `--tls.protocol` for
 all client-tools because the legacy SSL encryption settings are not supported
-by _arangod_  anymore and the remaining ones are all TLS versions.
+by _arangod_ anymore and the remaining ones are all TLS versions.
 
 You can still use the old startup option name.

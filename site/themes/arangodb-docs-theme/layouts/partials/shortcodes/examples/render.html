@@ -28,9 +28,8 @@
 {{- end }}
 
 {{- $output := transform.Highlight $content.output $language }}
-<details><summary>Show output</summary>{{ $context.Page.RenderString $output }}
+{{- $outputHTML := $context.Page.RenderString $output }}
 {{- with $content.warnings }}
-<strong>Warnings</strong>
-{{ transform.Highlight . "json" }}
-{{- end }}</details>
-<br>
+{{- $outputHTML = print $outputHTML "\n<strong>Warnings</strong>\n" (transform.Highlight . "json") | safeHTML }}
+{{- end }}
+{{ partial "details-box.html" (dict "summary" "Show output" "content" $outputHTML) }}
