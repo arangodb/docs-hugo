@@ -46,12 +46,13 @@ func ExecRoutine(queue chan Job) {
 		// Hidden lines before and after the example (in the same exchange with
 		// arangosh): the page for exemptions, and the cleanup (see common.js)
 		page, _ := json.Marshal(pageOf(filepath))
-		// The numbers of the expected errors, resolved by arangosh (see
-		// checkExpectedErrors)
+		// The numbers of the expected errors and warnings, resolved by arangosh
+		// (see checkExpectedErrors and checkExpectedWarnings)
 		expectedErrors := models.ExpectedErrors(code)
+		expectedWarnings := models.ExpectedWarnings(code)
 		resolveErrors := ""
-		if len(expectedErrors) > 0 {
-			names, _ := json.Marshal(expectedErrors)
+		if len(expectedErrors) > 0 || len(expectedWarnings) > 0 {
+			names, _ := json.Marshal(append(append([]string{}, expectedErrors...), expectedWarnings...))
 			resolveErrors = fmt.Sprintf("\n~print(%q + JSON.stringify(__docsErrorCodes(%s)));", expectedErrorsMarker, names)
 		}
 		execCode := fmt.Sprintf("~__docsPage = %s;%s\n%s\n~__docsCleanup();", page, resolveErrors, code)
@@ -88,6 +89,7 @@ func ExecRoutine(queue chan Job) {
 		} else {
 			out = checkArangoError(name, code, out, filepath, repository)
 		}
+		out = checkExpectedWarnings(name, expectedWarnings, errorCodes, out, filepath, repository)
 
 		models.Logger.Printf("[EXEC] Finished %s %s example %s in %d ms", repository.Version, repository.Type, name, time.Since(start).Milliseconds())
 		job.Reply <- out
@@ -362,6 +364,72 @@ func checkExpectedErrors(name string, expected []string, codes string, thrown []
 	for _, errorName := range expected {
 		if number, ok := numbers[errorName]; ok && number != nil && !occurred[*number] {
 			problems = append(problems, fmt.Sprintf("Expected error did not occur: %s (%d)", errorName, *number))
+		}
+	}
+
+	if len(problems) > 0 {
+		models.Logger.Printf("[%s %s] [ERROR]: %s", repository.Version, name, strings.Join(problems, "; "))
+		models.Logger.Printf("[%s %s] [ERROR]: Command output: %s", repository.Version, name, out)
+		models.Logger.Error("Examples", repository.Version, name, filepath, strings.Join(problems, "\n"))
+		return utils.MarkerError
+	}
+
+	return out
+}
+
+// checkExpectedWarnings fails an AQL example if its query produces warnings that
+// it doesn't declare with `// expectedWarning(ERROR_NAME)` comments, if a
+// declared warning doesn't occur, or if a name is unknown. Warnings have the
+// codes of errors, hence the error names. The warnings line stays in the output
+// (see ExtractWarnings). codes is the JSON object with the error numbers by name
+// (__docsErrorCodes in common.js).
+func checkExpectedWarnings(name string, expected []string, codes string, out, filepath string, repository models.Repository) string {
+	if strings.Contains(out, utils.MarkerError) {
+		return out
+	}
+	_, warningsJSON := extractMarker(out, utils.MarkerWarnings+" ")
+	if len(expected) == 0 && warningsJSON == "" {
+		return out
+	}
+
+	problems := []string{}
+	warnings := []struct {
+		Code    int    `json:"code"`
+		Message string `json:"message"`
+	}{}
+	if warningsJSON != "" {
+		if err := json.Unmarshal([]byte(warningsJSON), &warnings); err != nil {
+			problems = append(problems, fmt.Sprintf("Could not parse the warnings: %q", warningsJSON))
+		}
+	}
+
+	numbers := map[string]*int{}
+	if len(expected) > 0 {
+		if err := json.Unmarshal([]byte(codes), &numbers); err != nil {
+			problems = append(problems, fmt.Sprintf("Could not resolve the expected warnings %v: %q", expected, codes))
+		}
+	}
+	expectedNumbers := map[int]bool{}
+	for _, warningName := range expected {
+		if number, ok := numbers[warningName]; ok && number != nil {
+			expectedNumbers[*number] = true
+		} else if len(numbers) > 0 {
+			problems = append(problems, fmt.Sprintf("Unknown error name in expectedWarning(%s)", warningName))
+		}
+	}
+
+	occurred := map[int]bool{}
+	for _, warning := range warnings {
+		if expectedNumbers[warning.Code] {
+			occurred[warning.Code] = true
+			continue
+		}
+		problems = append(problems, fmt.Sprintf("Unexpected warning (no expectedWarning): %d %s", warning.Code, warning.Message))
+	}
+
+	for _, warningName := range expected {
+		if number, ok := numbers[warningName]; ok && number != nil && !occurred[*number] {
+			problems = append(problems, fmt.Sprintf("Expected warning did not occur: %s (%d)", warningName, *number))
 		}
 	}
 

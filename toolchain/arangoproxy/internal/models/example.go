@@ -41,10 +41,10 @@ type ExampleOptions struct {
 	// AQL: query options, i.e. the `options` object of the cursor API request
 	// body (the sub-options like `maxRuntime`, not `count`, `batchSize`, etc.)
 	QueryOptions map[string]interface{} `yaml:"options,omitempty" json:"queryOptions,omitempty"`
-	Dataset     string                 `yaml:"dataset,omitempty" json:"dataset,omitempty"`
-	SaveCache   string                 `yaml:"-" json:"-"`
-	Filename    string                 `yaml:"-" json:"-"`
-	Position    string                 `yaml:"-" json:"-"`
+	Dataset      string                 `yaml:"dataset,omitempty" json:"dataset,omitempty"`
+	SaveCache    string                 `yaml:"-" json:"-"`
+	Filename     string                 `yaml:"-" json:"-"`
+	Position     string                 `yaml:"-" json:"-"`
 }
 
 // Get an example code block, parse the yaml options and the code itself
@@ -151,14 +151,31 @@ func (r ExampleResponse) String() string {
 // that raises them, e.g. `db._document("c/x"); // expectedError(ERROR_ARANGO_DOCUMENT_NOT_FOUND)`.
 // In AQL examples, the comment is an AQL comment.
 var expectedErrorRE = regexp.MustCompile(`//[ \t]*expectedError\([ \t]*([A-Za-z0-9_]*)[ \t]*\)`)
-var expectedErrorCommentRE = regexp.MustCompile(`(?m)[ \t]*//[ \t]*expectedError\(.*`)
+
+// An AQL example declares the warnings that its query produces the same way,
+// with the error names of the warning codes, e.g.
+// `RETURN JSON_PARSE("{") // expectedWarning(ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH)`.
+var expectedWarningRE = regexp.MustCompile(`//[ \t]*expectedWarning\([ \t]*([A-Za-z0-9_]*)[ \t]*\)`)
+
+// The expectedError and expectedWarning comments, removed from the displayed code
+var expectedCommentRE = regexp.MustCompile(`(?m)[ \t]*//[ \t]*expected(?:Error|Warning)\(.*`)
 
 // ExpectedErrors returns the error names of the expectedError comments in the
 // code, without duplicates
 func ExpectedErrors(code string) []string {
+	return uniqueSubmatches(expectedErrorRE, code)
+}
+
+// ExpectedWarnings returns the error names of the expectedWarning comments in
+// the code, without duplicates
+func ExpectedWarnings(code string) []string {
+	return uniqueSubmatches(expectedWarningRE, code)
+}
+
+func uniqueSubmatches(re *regexp.Regexp, code string) []string {
 	names := []string{}
 	seen := map[string]bool{}
-	for _, match := range expectedErrorRE.FindAllStringSubmatch(code, -1) {
+	for _, match := range re.FindAllStringSubmatch(code, -1) {
 		if !seen[match[1]] {
 			seen[match[1]] = true
 			names = append(names, match[1])
@@ -172,7 +189,7 @@ func FormatResponse(response *ExampleResponse) {
 	response.Input = codeComments.ReplaceAllString(response.Input, "")
 	newLines := regexp.MustCompile(`(?m)^ *\n^ *\n`)
 	response.Input = newLines.ReplaceAllString(response.Input, "")
-	response.Input = expectedErrorCommentRE.ReplaceAllString(response.Input, "")
+	response.Input = expectedCommentRE.ReplaceAllString(response.Input, "")
 
 	response.Input = strings.TrimLeft(response.Input, "\r\n")
 	response.Input = strings.TrimLeft(response.Input, "\n")

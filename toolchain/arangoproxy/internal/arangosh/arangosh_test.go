@@ -1,6 +1,7 @@
 package arangosh
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
@@ -55,5 +56,48 @@ func TestExtractWarnings(t *testing.T) {
 	out, warnings = ExtractWarnings("[ \n  1 \n]\n")
 	if out != "[ \n  1 \n]\n" || warnings != "" {
 		t.Errorf("ExtractWarnings() without warnings = %q, %q", out, warnings)
+	}
+}
+
+func TestCheckExpectedWarnings(t *testing.T) {
+	repository := models.Repository{Version: "test"}
+	codes := `{"ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH":1542,"ERROR_BAD_PARAMETER":10,"ERROR_TYPO":null}`
+	mismatch := `{"code":1542,"message":"invalid argument type in call to function 'JSON_PARSE()'"}`
+	badParameter := `{"code":10,"message":"bad parameter"}`
+	output := func(warnings ...string) string {
+		out := "[ \n  null \n]\n"
+		if len(warnings) > 0 {
+			out = utils.MarkerWarnings + " [" + strings.Join(warnings, ",") + "]\n" + out
+		}
+		return out
+	}
+
+	tests := []struct {
+		name     string
+		expected []string
+		out      string
+		failed   bool
+	}{
+		{"no warnings, none expected", nil, output(), false},
+		{"expected warning occurs", []string{"ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH"}, output(mismatch), false},
+		{"expected warning occurs repeatedly", []string{"ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH"}, output(mismatch, mismatch), false},
+		{"multiple expected warnings occur", []string{"ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH", "ERROR_BAD_PARAMETER"}, output(badParameter, mismatch), false},
+		{"undeclared warning", nil, output(mismatch), true},
+		{"additional warning", []string{"ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH"}, output(mismatch, badParameter), true},
+		{"expected warning does not occur", []string{"ERROR_BAD_PARAMETER"}, output(), true},
+		{"unknown warning name", []string{"ERROR_TYPO"}, output(mismatch), true},
+		{"already failed", nil, utils.MarkerError, true},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			got := checkExpectedWarnings("example", test.expected, codes, test.out, "page.md", repository)
+			if failed := got == utils.MarkerError; failed != test.failed {
+				t.Errorf("checkExpectedWarnings() failed = %v, want %v", failed, test.failed)
+			}
+			if !test.failed && got != test.out {
+				t.Errorf("checkExpectedWarnings() changed the output to %q", got)
+			}
+		})
 	}
 }

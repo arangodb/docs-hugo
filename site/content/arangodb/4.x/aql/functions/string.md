@@ -486,7 +486,7 @@ RETURN IPV4_FROM_NUMBER(3232235521)
 name: aqlIPv4FromNumber_5
 description: ''
 ---
-RETURN IPV4_FROM_NUMBER(-23) // invalid, produces a warning
+RETURN IPV4_FROM_NUMBER(-23) // invalid, produces a warning // expectedWarning(ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH)
 ```
 
 ## IPV4_TO_NUMBER()
@@ -540,7 +540,7 @@ RETURN IPV4_TO_NUMBER("192.168.0.1")
 name: aqlIPv4ToNumber_5
 description: ''
 ---
-RETURN IPV4_TO_NUMBER("milk") // invalid, produces a warning
+RETURN IPV4_TO_NUMBER("milk") // invalid, produces a warning // expectedWarning(ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH)
 ```
 
 ## IS_IPV4()
@@ -654,7 +654,7 @@ RETURN JSON_PARSE('"abc"')
 name: aqlJsonParse_5
 description: ''
 ---
-RETURN JSON_PARSE("abc") // invalid JSON
+RETURN JSON_PARSE("abc") // invalid JSON // expectedWarning(ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH)
 ```
 
 ## JSON_STRINGIFY()
@@ -2125,7 +2125,7 @@ incomplete UTF-8 byte sequence:
 name: aqlSubstringBytes_4
 description: ''
 ---
-RETURN SUBSTRING_BYTES("We ❤️ avocado!", -15, 4)
+RETURN SUBSTRING_BYTES("We ❤️ avocado!", -15, 4) // expectedWarning(ERROR_BAD_PARAMETER)
 ```
 
 Get a 3 bytes long substring starting at the 3rd byte (where the Black Heart Symbol is), but

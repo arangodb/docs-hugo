@@ -2398,8 +2398,6 @@ MATCH (a:persons) -[:knows]-> (b:persons)
 
 The bind parameters and query options are also used if you set `explain: true`.
 
-If the query produces warnings, they are shown below the query result.
-
 If a query is expected to fail, indicate this with an AQL comment like in
 JavaScript examples. It is not shown in the rendered example:
 
@@ -2412,6 +2410,27 @@ options:
 ---
 MATCH (a) RETURN a // expectedError(ERROR_QUERY_PARSE)
 ```
+
+If a query is expected to produce warnings, declare each of them with an
+`expectedWarning` comment. Warnings have the codes of errors, so use the error
+names (see [Error codes and meanings](https://docs.arango.ai/arangodb/stable/develop/error-codes/)).
+The comment is not shown in the rendered example, but other comments before it
+on the same line are:
+
+```aql
+---
+name: aqlJsonParse_5
+description: ''
+---
+RETURN JSON_PARSE("abc") // invalid JSON // expectedWarning(ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH)
+```
+
+The warnings are shown below the query result. Like for errors, the example
+generation fails with an error if the query produces a warning that the example
+doesn't declare, if a declared warning doesn't occur, or if a declared name is
+unknown. This way, queries that produce warnings by accident are noticed.
+Warnings are only collected for AQL examples, not for queries in JavaScript
+examples.
 
 #### Backslashes in AQL examples
 

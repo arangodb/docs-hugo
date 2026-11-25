@@ -36,3 +36,22 @@ func TestFormatResponseRemovesExpectedErrorComments(t *testing.T) {
 		t.Errorf("FormatResponse()\n got: %q\nwant: %q", response.Input, want)
 	}
 }
+
+func TestExpectedWarnings(t *testing.T) {
+	code := "RETURN [\n  JSON_PARSE(\"{\"), // expectedWarning(ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH)\n  1 / 0 // expectedWarning( ERROR_QUERY_DIVISION_BY_ZERO )\n] // expectedError(ERROR_X)"
+	want := []string{"ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH", "ERROR_QUERY_DIVISION_BY_ZERO"}
+	if got := ExpectedWarnings(code); !reflect.DeepEqual(got, want) {
+		t.Errorf("ExpectedWarnings() = %#v, want %#v", got, want)
+	}
+	if got := ExpectedErrors(code); !reflect.DeepEqual(got, []string{"ERROR_X"}) {
+		t.Errorf("ExpectedErrors() = %#v, want only the error", got)
+	}
+}
+
+func TestFormatResponseRemovesExpectedWarningComments(t *testing.T) {
+	response := ExampleResponse{Input: "RETURN JSON_PARSE(\"{\") // expectedWarning(ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH)"}
+	FormatResponse(&response)
+	if want := "RETURN JSON_PARSE(\"{\")"; response.Input != want {
+		t.Errorf("FormatResponse()\n got: %q\nwant: %q", response.Input, want)
+	}
+}
