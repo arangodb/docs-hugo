@@ -7,8 +7,6 @@ description: >-
   How to set up and upgrade a self-managed Contextual Data Platform
   online or offline
 ---
-{{< tag "Self-managed" >}}
-
 ## Requirements for self-hosting
 
 - **ArangoDB Enterprise Edition**: The multi-model database system for graph,

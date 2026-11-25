@@ -212,11 +212,10 @@ call fails and the affected semantic units carry
 ### Image description model
 
 The model used for the description call is selected by the `MULTIMODAL_MODEL`
-environment variable (in a self-managed deployment, Helm value
-`multimodal_model`, also accepted on the server CLI as `--multimodal_model`).
-When unset, the Importer defaults to `gpt-4o-mini`. It is independent of
-`chat_model` and has to name a vision-capable model that the endpoint above can
-serve.
+environment variable (Helm value `multimodal_model`, also accepted on the server
+CLI as `--multimodal_model`). When unset, the Importer defaults to
+`gpt-4o-mini`. It is independent of `chat_model` and has to name a
+vision-capable model that the endpoint above can serve.
 
 Description calls go through the same OpenAI-compatible chat path as the rest of
 the pipeline, so they honor the chat token-budget and Responses API settings

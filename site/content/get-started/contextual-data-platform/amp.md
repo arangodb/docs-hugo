@@ -4,10 +4,12 @@ menuTitle: Get started on AMP
 weight: 3
 description: >-
   Create a Contextual Data Platform deployment in the Arango Managed Platform
-  (AMP), sign in, and connect to it with the Arango AI SDK
+  (AMP) with the Developer Edition, sign in, and connect to it with the
+  Arango AI SDK
 ---
-On AMP, Arango runs the data platform for you, so there is nothing to install
-except the Python SDK. This page takes you from an AMP account to a client that
+With the [Arango Developer Edition](https://arango.ai/arango-developer-edition/),
+you can run the data platform on AMP. Arango runs it for you, so there is
+nothing to install except the Python SDK. This page takes you from an AMP account to a client that
 is connected to your deployment. From there, you continue with the Build and
 Query steps of [Tutorial 1](quickstart/_index.md#build).
 
@@ -141,5 +143,3 @@ Tutorial 1.
   port-forward notes there; they apply only to a local installation.
 - Work with a larger document set in
   [Tutorial 2: From documents to answers](build-with-autograph.md).
-- See [Deployment options](../../contextual-data-platform/deployment-options.md)
-  for what differs between AMP and a self-managed installation.

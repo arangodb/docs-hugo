@@ -12,15 +12,8 @@ query. AutoGraph builds the graph from your content, and AutoRAG answers
 natural-language questions from it, citing the entities, relationships, and
 sources behind each answer.
 
-If you want Arango to run the data platform for you, follow
-[Get started on AMP](amp.md) to create a deployment on AMP and connect to it,
-then continue with the Build step of Tutorial 1. To run it on your own machine
-or cluster, start with Tutorial 1, which installs a local evaluation deployment.
-
-See [Deployment options](../../contextual-data-platform/deployment-options.md)
-for a comparison.
-
-The two hands-on tutorials take you to a working Context Graph:
+Start with two hands-on tutorials. They take you from an empty machine to a
+working Context Graph:
 
 1. [Tutorial 1: Install and try it out](quickstart/_index.md): install the data
    platform and the Arango AI SDK, then build a small graph from three short

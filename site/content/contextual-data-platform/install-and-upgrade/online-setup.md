@@ -6,8 +6,6 @@ description: >-
   How to set up the Contextual Data Platform on your own hardware in an
   environment with internet access
 ---
-{{< tag "Self-managed" >}}
-
 ## Step 1: Get the installation information
 
 You receive a package configuration file and license credentials from the

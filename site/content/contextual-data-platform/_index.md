@@ -15,8 +15,7 @@ aliases:
 ---
 The Arango Contextual Data Platform brings everything Arango offers together
 in a single solution that you can deploy and self-manage on-premises or in the
-cloud, or use as a managed service on the
-[Arango Managed Platform (AMP)](../get-started/contextual-data-platform/amp.md).
+cloud, or use as a managed service - [Arango Managed Platform (AMP)](../amp/_index.md).
 It is built on a modern, cloud-native foundation designed for enterprise
 scalability and reliability.
 
@@ -52,7 +51,7 @@ operational excellence. Read more about the platform's
 
 | Goal | Start here |
 |:-----|:-----------|
-| **Deploy** the data platform | [Deployment options](deployment-options.md), [Install & Upgrade](install-and-upgrade/_index.md), [License Management](license-management.md) |
+| **Install** the data platform | [Install & Upgrade](install-and-upgrade/_index.md), [License Management](license-management.md) |
 | **Build** a Context Graph from your documents and ask questions | [AutoGraph](autograph/_index.md), [AutoRAG](autorag/_index.md) |
 | **Query & explore** your data in the [web interface](web-interface/_index.md) | [Query Editor](query-editor.md), [Graph Visualizer](graph-visualizer.md) |
 | **Integrate** the services into your applications | [API references](reference.md) |
@@ -80,14 +79,27 @@ Any structured data extracted from uploaded files
 
 ## Deployment options
 
-Arango can run the data platform for you on the
-[Arango Managed Platform (AMP)](../get-started/contextual-data-platform/amp.md),
-in Google Cloud or AWS, and handle upgrades, monitoring, and backups. Or you
-[install](install-and-upgrade/_index.md) it on your own Kubernetes cluster with
-the ArangoDB Kubernetes Operator, on-premises, in the cloud, or air-gapped.
+### Use the Arango Contextual Data Platform as a managed service
 
-See [Deployment options](deployment-options.md) for a comparison. Pages that
-apply only to your own cluster carry the {{< tag "Self-managed" >}} label.
+You can request the Arango Contextual Data Platform as a managed service for the
+[Arango Managed Platform (AMP)](../amp/_index.md).
+
+[Get in touch](https://arango.ai/contact-us/) with the Arango team to learn more.
+
+### Self-host the Arango Contextual Data Platform
+
+You can set up and run the Arango Contextual Data Platform on-premises or in
+the cloud and manage this deployment yourself.
+
+For a guide on how to set up the Contextual Data Platform yourself, see
+[Install and upgrade the Arango Contextual Data Platform](install-and-upgrade/_index.md).
+
+{{< info >}}
+**Kubernetes-Native**: The Arango Contextual Data Platform is built specifically
+for Kubernetes environments and relies on the official
+[ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/)
+to provide automated deployment, scaling, and management capabilities.
+{{< /info >}}
 
 ## Licensing
 
@@ -101,9 +113,8 @@ The Arango Contextual Data Platform is licensed as two suites:
 
 See [Features and licensing](features-and-licensing.md) for what each
 includes. Every page carries a badge with the suite it belongs to.
-In self-managed deployments, the ArangoDB Kubernetes Operator activates and
-renews licenses automatically, see [License Management](license-management.md).
-On AMP, access is tied to your AMP organization instead.
+Licenses are activated and renewed automatically by the ArangoDB Kubernetes
+Operator, see [License Management](license-management.md).
 
 ## Tutorials
 

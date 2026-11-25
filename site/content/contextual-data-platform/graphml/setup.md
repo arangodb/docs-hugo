@@ -54,11 +54,6 @@ see the [GraphML Notebooks & API](notebooks-api.md) reference documentation.
 
 ## Configure resources with profiles
 
-{{< tag "Self-managed" >}}
-
-On AMP, you cannot create profiles yourself. To change the resources of GraphML
-jobs, contact the AMP support team via **Request help**.
-
 GraphML jobs (featurization, training, prediction, and embedding generation)
 run as Kubernetes pods
 that the Arango Contextual Data Platform schedules on your behalf. Without

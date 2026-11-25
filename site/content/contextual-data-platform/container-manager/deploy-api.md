@@ -143,13 +143,9 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
 
 ### Private Registry Authentication
 
-{{< tag "Self-managed" >}}
-
 For Docker images hosted in private registries, provide `imagePullSecrets`
 with the names of [Kubernetes Secrets](https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod) that hold your registry credentials.
-These secrets must exist in the target namespace before deployment. On AMP,
-you cannot create Kubernetes Secrets. Contact the AMP support team via
-**Request help** to use a private registry.
+These secrets must exist in the target namespace before deployment.
 
 ```bash
 curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
