@@ -31,7 +31,7 @@ You set up the AQLizer once per database. The setup makes both **Generate** and
    or click **Add new secret** to save a new one in the
    [Secrets Manager](../secrets-manager.md).
 2. Optional: Expand **Advanced settings** and select a different
-   **OpenAI model**. The default is `gpt-5.4-nano`.
+   **OpenAI model**. The default is `gpt-5.4-mini`.
 3. Click **Start AQLizer**. Starting takes a few seconds.
 
 ![Screenshot of the AQLizer setup with an API key and the advanced settings](../../images/data-platform-aqlizer-setup.png)
