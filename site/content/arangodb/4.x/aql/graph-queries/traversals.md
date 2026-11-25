@@ -114,7 +114,8 @@ path that the traversal takes from the queue, it performs the following steps:
 
 Conditions that the optimizer cannot move into the traversal, like conditions
 combined with `OR`, are applied to the emitted paths afterwards.
-See [Using filters](#using-filters) for details.
+See [Conditions applied during the traversal](#conditions-applied-during-the-traversal)
+for details.
 
 The following three queries show how `PRUNE`, a `FILTER` on the emitted node,
 and a `FILTER` on the path differ in their effect on the `payments` service.
@@ -155,6 +156,12 @@ FOR v, e, p IN 1..3 OUTBOUND "services/api" GRAPH "serviceGraph"
   FILTER p.vertices[2]._key != "payments"
   RETURN CONCAT_SEPARATOR(" → ", p.vertices[*]._key)
 ```
+
+The third query only works because `payments` is always at depth 2. To exclude
+a node regardless of its depth, use a condition on all nodes of the path, like
+`FILTER p.vertices[*]._key NONE == "payments"`, or
+[assign the prune expression to a variable](#pruning) (like `PRUNE cond = ...`)
+and use an additional `FILTER NOT cond`.
 
 ### Traversal order
 
@@ -935,7 +942,9 @@ the complete set of `node`, `edge` and `path` is skipped. All paths
 with a length greater than the `max` depth are never computed.
 
 Filter conditions that are `AND`-combined can be optimized, but `OR`-combined
-conditions cannot.
+conditions cannot. See
+[Conditions applied during the traversal](#conditions-applied-during-the-traversal)
+for details.
 
 ### Filtering on paths
 
@@ -1126,10 +1135,8 @@ FILTER p.edges[* FILTER CURRENT.weight != null RETURN CURRENT.weight] ALL <= 10
 FILTER p.edges[* FILTER CURRENT.weight > LENGTH(p.vertices)].weight ALL <= 10
 ```
 
-To check whether a condition is evaluated during the traversal, inspect the
-[execution plan](../execution-and-performance/query-optimization.md#execution-plans).
-If the `optimize-traversals` rule can move the condition into the traversal,
-no `FilterNode` remains for it.
+To check whether a condition is evaluated during the traversal, see
+[Conditions applied during the traversal](#conditions-applied-during-the-traversal).
 
 ### Filtering on the path vs. filtering on nodes or edges
 
@@ -1144,6 +1151,71 @@ down the path may still match. This is comparable to setting a minimum traversal
 depth greater than zero. With a minimum depth of `2`, the traversal still has to
 walk over the first two vertices of every path, you just don't see them in the
 result.
+
+### Conditions applied during the traversal
+
+The `optimize-traversals` optimizer rule can move `FILTER` conditions into the
+traversal so that they are checked at every step, as described in
+[What happens at each step](#what-happens-at-each-step). Conditions that it
+cannot move are applied to the emitted paths afterwards, after the traversal
+has explored all paths up to the maximum depth.
+
+The optimizer combines all `FILTER` operations that follow the traversal and
+can move the conditions into the traversal if the following applies:
+
+- The conditions are not combined with `OR`. If any `FILTER` operation contains
+  an `OR`, none of the conditions are moved into the traversal, including the
+  ones in other `FILTER` operations. The optimizer can turn simple cases like
+  `v.tier == "data" OR v.tier == "external"` into
+  `v.tier IN ["data", "external"]`, however.
+- Each condition refers to only one of the node, edge, and path variables.
+  For example, `v.tier == e.protocol` cannot be moved.
+- Function calls are deterministic (not `RAND()`, for example) and not
+  user-defined functions. In clusters, the functions also need to be able to
+  run on DB-Servers.
+
+Conditions on the path variable additionally need to have one of the
+following forms:
+
+- A condition on the node or edge at a fixed position, like
+  `p.vertices[2].tier == "data"` or `p.edges[0].latencyMs <= 6`. The position
+  needs to be a number literal greater or equal to `0`. A negative position
+  like `p.vertices[-1]` refers to the emitted node or edge, and the traversal
+  handles it like a condition on `v` or `e`.
+  - If the position exceeds the maximum depth, the query returns no results.
+  - If the condition isn't fulfilled for a missing node or edge (`null`), the
+    minimum depth is increased so that shorter paths aren't emitted.
+- A condition on all nodes or edges, like `p.edges[*].protocol ALL == "grpc"`,
+  using the array comparison operators `ALL` or `NONE` with `==`, `!=`, `<`,
+  `<=`, `>`, `>=`, `IN`, or `NOT IN`. The path needs to be on the left-hand
+  side of the operator. `ANY` and `AT LEAST` cannot be moved because they need
+  the entire path, and neither can the `LIKE`, `=~`, and `!~` operators.
+  You can [filter a subset of the path](#filter-a-subset-of-the-path)
+  with an inline `FILTER`.
+
+The value you compare the path to needs to be a fixed value, a bind parameter,
+or a variable that holds a subquery result. Expressions like `doc.maxLatency`,
+`v.tier`, or function calls prevent the optimization. This includes variables
+like `LET max = doc.maxLatency` because the optimizer replaces them with their
+expression.
+
+To check whether a condition is evaluated during the traversal, inspect the
+[execution plan](../execution-and-performance/query-optimization.md#execution-plans).
+The conditions that the traversal checks are listed in the
+**Filter / Prune Conditions** column of the **Traversals on graphs** table.
+
+```aql
+---
+name: GRAPHTRAV_explainTraversalConditions
+description: |
+  The condition on all nodes of the path is moved into the traversal:
+dataset: serviceGraph
+explain: true
+---
+FOR v, e, p IN 1..3 OUTBOUND "services/api" GRAPH "serviceGraph"
+  FILTER p.vertices[*]._key NONE == "payments"
+  RETURN CONCAT_SEPARATOR(" → ", p.vertices[*]._key)
+```
 
 ### Examples
 
