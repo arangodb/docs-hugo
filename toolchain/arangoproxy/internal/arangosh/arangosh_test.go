@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
+	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/utils"
 )
 
 func TestCheckExpectedErrors(t *testing.T) {
@@ -30,19 +31,19 @@ func TestCheckExpectedErrors(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			got := checkExpectedErrors("example", test.expected, codes, test.thrown, "output", "page.md", repository)
-			if failed := got == "ERRORD"; failed != test.failed {
+			if failed := got == utils.MarkerError; failed != test.failed {
 				t.Errorf("checkExpectedErrors() failed = %v, want %v", failed, test.failed)
 			}
 		})
 	}
 
-	if got := checkExpectedErrors("example", []string{"ERROR_ARANGO_CONFLICT"}, "", nil, "output", "page.md", repository); got != "ERRORD" {
+	if got := checkExpectedErrors("example", []string{"ERROR_ARANGO_CONFLICT"}, "", nil, "output", "page.md", repository); got != utils.MarkerError {
 		t.Errorf("checkExpectedErrors() without resolved error codes did not fail")
 	}
 }
 
 func TestExtractWarnings(t *testing.T) {
-	out, warnings := ExtractWarnings("WARNINGS [{\"code\":1562,\"message\":\"division by zero\"}]\n[ \n  null \n]\n")
+	out, warnings := ExtractWarnings(utils.MarkerWarnings + " [{\"code\":1562,\"message\":\"division by zero\"}]\n[ \n  null \n]\n")
 	if out != "[ \n  null \n]\n" {
 		t.Errorf("ExtractWarnings() output = %q", out)
 	}

@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/utils"
 	"gopkg.in/yaml.v3"
 )
 
@@ -376,5 +377,23 @@ func TestAdjustCodeForArangoshKeepsAQL(t *testing.T) {
 	got := AdjustCodeForArangosh("const a = 1;\nassert(a === 1);")
 	if !strings.Contains(got, "var a = 1;") || !strings.Contains(got, "assert(a === 1, 'a === 1');") {
 		t.Errorf("AdjustCodeForArangosh() did not rewrite JavaScript\n got: %s", got)
+	}
+}
+
+func TestFormatCurlOutput(t *testing.T) {
+	// Text that looks like the old markers (REQ, END, RESP) must stay as it is
+	out := utils.MarkerRequest + "\ncurl -X PUT --data-binary @- --dump - http://localhost:8529/_api/job/pending <<'EOF'\n{\"status\":\"PENDING\"}\nEOF\n" + utils.MarkerRequestEnd + "\n" +
+		utils.MarkerResponse + "\nHTTP/1.1 200 OK\n{\"REQUIRED\":\"BACKEND\",\"RESP\":true}\n" + utils.MarkerResponseEnd + "\n" +
+		utils.MarkerRequest + "\ncurl http://localhost:8529/_api/version\n" + utils.MarkerRequestEnd + "\n"
+	input, output, _ := CurlFormatter{}.FormatCurlOutput(out, "")
+
+	wantInput := "\n\ncurl -X PUT --data-binary @- --dump - http://localhost:8529/_api/job/pending <<'EOF'\n{\"status\":\"PENDING\"}\nEOF\n\n" +
+		"\n\ncurl http://localhost:8529/_api/version\n\n"
+	if input != wantInput {
+		t.Errorf("FormatCurlOutput() input\n got: %q\nwant: %q", input, wantInput)
+	}
+	wantOutput := "\n\nHTTP/1.1 200 OK\n{\"REQUIRED\":\"BACKEND\",\"RESP\":true}\n\n"
+	if output != wantOutput {
+		t.Errorf("FormatCurlOutput() output\n got: %q\nwant: %q", output, wantOutput)
 	}
 }

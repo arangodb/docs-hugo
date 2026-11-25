@@ -15,6 +15,7 @@ import (
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/arangosh"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/format"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
+	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/utils"
 	"gopkg.in/yaml.v3"
 )
 
@@ -29,7 +30,7 @@ func (service CommonService) arangosh(name, code, filepath string, repository mo
 }
 
 func (service CommonService) saveCache(request string, response models.ExampleResponse, cacheChannel chan map[string]interface{}) {
-	if response.Options.SaveCache == "false" || strings.Contains(response.Output, "ERRORD") {
+	if response.Options.SaveCache == "false" || strings.Contains(response.Output, utils.MarkerError) {
 		return
 	}
 

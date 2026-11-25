@@ -21,9 +21,7 @@ func AdjustCodeForArangosh(code string) string {
 	hide := false
 	buffer := []string{}
 
-	if !(strings.Contains(code, "EOFD")) {
-		code = fmt.Sprintf("%s\nprint('EOFD');\n\n\n\n", code)
-	}
+	code = fmt.Sprintf("%s\nprint(%q);\n\n\n\n", code, utils.MarkerEOF)
 
 	code = strings.ReplaceAll(code, "\r\n", "\n")
 	re := regexp.MustCompile(`(?m)}\n *catch`)
@@ -56,7 +54,7 @@ func AdjustCodeForArangosh(code string) string {
 		if hide && !tildeRE.MatchString(line) {
 			hide = false
 			hiddenCode := strings.Join(buffer, "\n")
-			out = fmt.Sprintf("%s\nprint('HIDED-START')\n%s\nprint('HIDED-END');\n%s", out, hiddenCode, line)
+			out = fmt.Sprintf("%s\nprint(%q)\n%s\nprint(%q);\n%s", out, utils.MarkerHideStart, hiddenCode, utils.MarkerHideEnd, line)
 			buffer = []string{}
 			continue
 		}
@@ -99,26 +97,18 @@ func (formatter CurlFormatter) FormatCommand(code string) string {
 	return code
 }
 
+// The requests and responses between their markers, without the markers
+var curlRequestRE = regexp.MustCompile(`(?s)` + regexp.QuoteMeta(utils.MarkerRequest) + `(.*?)` + regexp.QuoteMeta(utils.MarkerRequestEnd))
+var curlResponseRE = regexp.MustCompile(`(?s)` + regexp.QuoteMeta(utils.MarkerResponse) + `(.*?)` + regexp.QuoteMeta(utils.MarkerResponseEnd))
+
 func (formatter CurlFormatter) FormatCurlOutput(arangoOutput, renderOption string) (input, output string, err error) {
-	curlRE := regexp2.MustCompile(`(?ms)REQ(.*?)ENDREQ`, 0)
-	curlRequests := utils.Regexp2FindAllString(curlRE, arangoOutput)
-	for _, curl := range curlRequests {
-		input = fmt.Sprintf("%s\n%s", input, curl)
+	for _, match := range curlRequestRE.FindAllStringSubmatch(arangoOutput, -1) {
+		input = fmt.Sprintf("%s\n%s\n", input, match[1])
 	}
 
-	input = strings.ReplaceAll(input, "REQ", "")
-	input = strings.ReplaceAll(input, "ENDREQ", "")
-	input = strings.ReplaceAll(input, "END", "\n")
-
-	respRE := regexp2.MustCompile(`(?ms)RESP(.*?)ENDRESP`, 0)
-	responses := utils.Regexp2FindAllString(respRE, arangoOutput)
-	for _, response := range responses {
-		output = fmt.Sprintf("%s\n%s", output, response)
+	for _, match := range curlResponseRE.FindAllStringSubmatch(arangoOutput, -1) {
+		output = fmt.Sprintf("%s\n%s\n", output, match[1])
 	}
-
-	output = strings.ReplaceAll(output, "RESP", "")
-	output = strings.ReplaceAll(output, "ENDRESP", "")
-	output = strings.ReplaceAll(output, "END", "\n")
 
 	return input, output, nil
 }

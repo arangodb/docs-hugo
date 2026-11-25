@@ -95,13 +95,13 @@ func ExecRoutine(queue chan Job) {
 }
 
 // Output lines of the hidden code that arangoproxy runs around examples
-const cleanedMarker = "CLEANED "
-const pageDoneMarker = "PAGEDONE "
-const expectedErrorsMarker = "EXPECTEDERRORS "
+const cleanedMarker = utils.MarkerCleaned + " "
+const pageDoneMarker = utils.MarkerPageDone + " "
+const expectedErrorsMarker = utils.MarkerExpectedErrors + " "
 
 // Output line that Exec adds for every exception of an example that expects
 // errors: the error number (0 if it's not an ArangoError) and the message
-const thrownMarker = "THROWN "
+const thrownMarker = utils.MarkerThrown + " "
 
 // The first line of an exception that arangosh prints, e.g.
 // JavaScript exception in file '...' at 92,9: ArangoError 1210: unique constraint violated ...
@@ -138,7 +138,7 @@ func extractMarkers(out, marker string) (string, []string) {
 // ExtractWarnings removes the warnings line of an AQL example (__docsQuery in
 // common.js) from the output and returns the warnings as indented JSON
 func ExtractWarnings(out string) (string, string) {
-	out, warnings := extractMarker(out, "WARNINGS ")
+	out, warnings := extractMarker(out, utils.MarkerWarnings+" ")
 	if warnings == "" {
 		return out, ""
 	}
@@ -203,10 +203,10 @@ while (require("internal").time() < __deadline) {
   require("internal").wait(0.5);
 }
 output = "";
-print(__ok ? "RECONNECTED" : ("RECONNECT_FAILED: " + __lastErr));
+print(__ok ? __docsMarker.Reconnected : (__docsMarker.ReconnectFailed + " " + __lastErr));
 `
 	out := Exec(name, recovery, "", repository)
-	if strings.Contains(out, "RECONNECTED") {
+	if strings.Contains(out, utils.MarkerReconnected) {
 		models.Logger.Printf("[%s %s] [INFO] arangosh reconnected to arangod", repository.Version, name)
 		return true
 	}
@@ -239,7 +239,7 @@ func Exec(exampleName string, code, filepath string, repository models.Repositor
 		}
 
 		for scanner.Scan() {
-			if strings.Contains(scanner.Text(), "EOFD") {
+			if strings.Contains(scanner.Text(), utils.MarkerEOF) {
 				buf = true
 				break
 			}
@@ -252,12 +252,12 @@ func Exec(exampleName string, code, filepath string, repository models.Repositor
 				continue
 			}
 
-			if strings.Contains(scanner.Text(), "HIDED-START") {
+			if strings.Contains(scanner.Text(), utils.MarkerHideStart) {
 				hide = true
 				continue
 			}
 
-			if strings.Contains(scanner.Text(), "HIDED-END") {
+			if strings.Contains(scanner.Text(), utils.MarkerHideEnd) {
 				hide = false
 				continue
 			}
@@ -297,25 +297,25 @@ func Exec(exampleName string, code, filepath string, repository models.Repositor
 			models.Logger.Printf("[%s %s] [arangosh.Exec] stdout read error: %v", repository.Version, exampleName, err)
 			break
 		}
-		// EOF or arangosh exited without printing EOFD (e.g. fatal error) — do not spin forever.
+		// EOF or arangosh exited without printing the EOF marker (e.g. fatal error) — do not spin forever.
 		break
 	}
 	return
 }
 
 func checkAssertionFailed(name, code, out, filepath string, repository models.Repository) string {
-	if strings.Contains(out, "ASSERTD-FAIL") {
+	if strings.Contains(out, utils.MarkerAssertFail) {
 		models.Logger.Printf("[%s %s] [ERROR]: Assertion Failed", repository.Version, name)
 		models.Logger.Printf("[%s %s] [ERROR]: Command output: %s", repository.Version, name, out)
 
-		re := regexp.MustCompile(`(?m)ASSERTD-FAIL.*`)
+		re := regexp.MustCompile(`(?m)` + regexp.QuoteMeta(utils.MarkerAssertFail) + `.*`)
 		conditions := []string{}
 		for _, match := range re.FindAllString(out, -1) {
-			conditions = append(conditions, "Assertion failed: "+strings.ReplaceAll(match, "ASSERTD-FAIL ", ""))
+			conditions = append(conditions, "Assertion failed: "+strings.TrimSpace(strings.TrimPrefix(match, utils.MarkerAssertFail)))
 		}
 		models.Logger.Error("Examples", repository.Version, name, filepath, strings.Join(conditions, "\n"))
 
-		return "ERRORD"
+		return utils.MarkerError
 	}
 	return out
 }
@@ -328,7 +328,7 @@ func checkAssertionFailed(name, code, out, filepath string, repository models.Re
 // codes is the JSON object with the error numbers by name (__docsErrorCodes in
 // common.js), thrown the exceptions (number and message) recorded by Exec.
 func checkExpectedErrors(name string, expected []string, codes string, thrown []string, out, filepath string, repository models.Repository) string {
-	if strings.Contains(out, "ERRORD") {
+	if strings.Contains(out, utils.MarkerError) {
 		return out
 	}
 
@@ -369,14 +369,14 @@ func checkExpectedErrors(name string, expected []string, codes string, thrown []
 		models.Logger.Printf("[%s %s] [ERROR]: %s", repository.Version, name, strings.Join(problems, "; "))
 		models.Logger.Printf("[%s %s] [ERROR]: Command output: %s", repository.Version, name, out)
 		models.Logger.Error("Examples", repository.Version, name, filepath, strings.Join(problems, "\n"))
-		return "ERRORD"
+		return utils.MarkerError
 	}
 
 	return out
 }
 
 func checkArangoError(name, code, out, filepath string, repository models.Repository) string {
-	if strings.Contains(out, "ERRORD") {
+	if strings.Contains(out, utils.MarkerError) {
 		return out
 	}
 
@@ -398,7 +398,7 @@ func checkArangoError(name, code, out, filepath string, repository models.Reposi
 
 			models.Logger.Error("Examples", repository.Version, name, filepath, "Unexpected error (no expectedError):\n"+strings.Join(re.FindAllString(out, -1), "\n"))
 
-			return "ERRORD"
+			return utils.MarkerError
 		}
 	}
 
@@ -415,7 +415,7 @@ func handleCollectionNotFound(name, code, out, filepath string, repository model
 		re := regexp.MustCompile(`(?m)JavaScript exception.*|ArangoError.*`)
 		models.Logger.Error("Examples", repository.Version, name, filepath, "Unexpected error (no expectedError):\n"+strings.Join(re.FindAllString(output, -1), "\n"))
 
-		return "ERRORD"
+		return utils.MarkerError
 	}
 
 	return output
