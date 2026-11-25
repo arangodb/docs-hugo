@@ -104,7 +104,7 @@ demonstrate how traversals and path searches work. See
 
 Unlike the other example graphs, you cannot load the `serviceGraph` with
 `loadGraph()` or create it in the web interface. You can create it with the
-following code:
+following code in _arangosh_:
 
 ```js
 ---
