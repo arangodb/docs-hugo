@@ -71,7 +71,7 @@ the editor to see them.
 You can optimize the result again until the AQLizer finds no further
 improvement.
 
-![Screenshot of the AQLizer with an optimization summary next to the original query](../../images/data-platform-aqlizer-optimize.png)
+![Screenshot of the AQLizer with an optimization summary and the final optimized query](../../images/data-platform-aqlizer-optimize.png)
 
 {{< warning >}}
 Always verify AI-generated queries.
@@ -106,8 +106,9 @@ context.
 
 Once you have a chat, two buttons appear at the top of the AQLizer tab:
 
-- **Chat history** in the top-left corner lists the past chats of the database,
-  by their first message and time. A chat that is still running shows
+- **Chat history** in the top-left corner lists the past chats of the database
+  with their time. A chat is titled by its question, or by `Optimize:` and the
+  query for an optimization. A chat that is still running shows
   **Answering...**.
   - To open a chat, click it.
   - To delete one chat, click the delete button ({{< icon "delete" >}}) next to
@@ -129,3 +130,5 @@ stops both **Generate** and **Optimize**, including the internal MCP server.
 
 The **Service ID** is the `{service_id_postfix}` in the paths of the
 [API](api-reference.md).
+
+![Screenshot of the Manage AQLizer services dialog with four running services](../../images/data-platform-aqlizer-services.png)
