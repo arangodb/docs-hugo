@@ -1,0 +1,155 @@
+{{ define "main" -}}
+{{ $home := .Params.home -}}
+{{ $arrow := `<svg class="arr" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.333 8h9.334M8.667 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` | safeHTML -}}
+{{ $external := `<svg class="ext" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.667 11.333l6.666-6.666M4.667 4.667h6.666v6.666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` | safeHTML -}}
+{{ $versions := index hugo.Data.versions "/arangodb/" -}}
+{{ $stableVersion := (index (where $versions "alias" "stable") 0).name -}}
+<article class="home home-landing hd no-zoom">
+  <style>
+    .hd { --hd-ink: #0F172B; --hd-text: #1D293D; --hd-muted: #62748E; --hd-link: #00576E; --hd-soft: #F1F5F9; --hd-soft-hover: #E2E8F0; --hd-line: #E2E8F0; --hd-card-line: #D4D4D4; font-family: var(--font-content); color: var(--hd-text); }
+    /* minmax(0, …) stops wide content (pill rows, card grids) from stretching the grid past the viewport */
+    article.hd { max-width: 1068px; margin: 0 8px; padding: 44px 0 80px; }
+    @media screen and (max-width: 768px) { article.hd { margin: 0; padding: 24px 0 60px; min-width: 0; } .hd h1 { font-size: 1.75rem; } }
+
+    /* Reset the theme's underlined .link style inside the homepage */
+    .hd a.link, .hd a.link:visited, .hd a.link:is(:hover, :focus) { border-bottom: 0; }
+    .hd a { font-weight: inherit; transition: .12s; }
+    .hd a:hover { text-decoration: none; }
+    .hd .arr { flex: none; }
+
+    /* Intro */
+    .hd h1 { font-family: var(--font-headlines); font-size: 2.25rem; line-height: 1.2; font-weight: 700; letter-spacing: -.5px; color: var(--color-link); margin: 0 0 12px; }
+    .hd-sub { font-size: 1.0625rem; line-height: 1.5; color: var(--hd-muted); margin: 0 0 14px; }
+    .hd-search { display: flex; align-items: center; gap: 8px; width: 100%; height: 36px; margin: 0; padding: 0 8px 0 10px; background: #fff; border: 1px solid var(--hd-line); border-radius: 6px; cursor: text; text-align: left; letter-spacing: normal; font-weight: 400; transition: .12s; }
+    .hd-search:hover { border-color: #90A1B9; }
+    .hd-search svg { color: var(--hd-muted); flex: none; }
+    .hd-search span { flex: 1; color: var(--hd-muted); font-size: .9375rem; }
+    .hd-search kbd { font-family: var(--font-content); font-size: .6875rem; color: var(--hd-muted); background: var(--hd-soft); border: 0; border-radius: 4px; padding: 2px 5px; box-shadow: none; }
+    .hd-popular { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; }
+    .hd-popular .lbl { font-size: .875rem; color: var(--hd-muted); margin-right: 2px; }
+    .hd-popular a { font-size: .9375rem; color: var(--hd-text); background: var(--hd-soft); border-radius: 999px; padding: 8px 16px; line-height: 1.2; }
+    .hd-popular a:hover { background: var(--hd-soft-hover); color: var(--hd-ink); }
+
+    /* Text links match the content pages: dark text, teal underline that lightens on hover.
+       !important beats the theme's global text-decoration: none !important on links. */
+    .hd-sec a.more, .hd-start .cta, .hd-card h3 .t, .hd-list.community a { color: var(--hd-text); text-decoration: underline 2px var(--color-link) !important; text-underline-offset: 4px; }
+    .hd-sec a.more:is(:hover, :focus), .hd-start:is(:hover, :focus) .cta, .hd-card h3 a:is(:hover, :focus) .t, .hd-list.community a:is(:hover, :focus) { color: var(--hd-ink); text-decoration-color: var(--color-link-hover) !important; }
+
+    /* Section heads */
+    .hd-sec { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 48px 0 16px; }
+    .hd-sec h2 { font-family: var(--font-content); font-size: 1.375rem; font-weight: 600; letter-spacing: -.2px; color: var(--hd-text); margin: 0; scroll-margin-top: 110px; }
+    .hd-sec a.more { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: .9375rem; white-space: nowrap; }
+
+    .hd-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    @media screen and (max-width: 1100px) { .hd-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media screen and (max-width: 700px) { .hd-grid { grid-template-columns: 1fr; } }
+
+    /* Get started tiles */
+    .hd-start { display: flex; flex-direction: column; background: var(--hd-soft); border-radius: 8px; padding: 20px; color: var(--hd-text); }
+    .hd-start:hover { background: var(--hd-soft-hover); }
+    .hd-start .top { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+    .hd-start .top img { width: 48px; height: 48px; flex: none; }
+    .hd-start strong { font-size: 1.0625rem; font-weight: 600; color: var(--hd-text); }
+    .hd-start .d { font-size: .9375rem; color: var(--hd-muted); margin-bottom: 10px; }
+    .hd-start .cta { display: inline-flex; align-items: center; gap: 6px; font-size: .9375rem; font-weight: 600; }
+
+    /* Browse cards: the heading and every balloon are separate links. The heading link
+       spans the whole row (icon, title, arrow, remaining width) as a large click target. */
+    .hd-card h3 { margin: 0 0 18px; font-family: var(--font-content); font-size: 1.0625rem; font-weight: 600; line-height: 1.3; }
+    .hd-card h3 a { display: flex; align-items: center; gap: 16px; color: var(--hd-text); }
+    .hd-card h3 img { width: 48px; height: 48px; flex: none; }
+    .hd-card h3 .arr { vertical-align: -3px; margin-left: 6px; }
+    .hd-card p { margin: 0 0 12px; font-size: .9375rem; line-height: 1.45; color: var(--hd-muted); }
+    .hd-tags { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+    .hd-tags a { font-size: .8125rem; line-height: 1.2; color: var(--hd-text); background: var(--hd-soft); border-radius: 999px; padding: 5px 10px; }
+    .hd-tags a:hover { background: var(--hd-soft-hover); color: var(--hd-ink); }
+
+    /* What's new + Community */
+    .hd-bottom { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); column-gap: 48px; margin-top: 16px; }
+    @media screen and (max-width: 900px) { .hd-bottom { grid-template-columns: 1fr; } }
+    .hd-list { display: flex; flex-direction: column; }
+    .hd .hd-list a { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 8px 0; border-bottom: 1px solid var(--hd-line); font-size: .9375rem; color: var(--hd-text); }
+    /* Keep the separator, the .link reset above would remove it. For :visited, the
+       reset's border-bottom: 0 would turn the color into currentColor (browsers only
+       apply the color part of :visited rules), drawing a dark line. */
+    .hd .hd-list a:is(:visited, :hover, :focus) { border-bottom: 1px solid var(--hd-line); }
+    .hd .nw { white-space: nowrap; }
+    .hd-list a .arr { margin-left: auto; color: var(--hd-link); }
+    .hd-list a:hover { color: var(--hd-link); }
+    .hd-badge { font-size: .8125rem; font-weight: 500; color: #fff; background: var(--hd-link); border-radius: 999px; padding: 4px 8px; line-height: 1.2; }
+    .hd-list.community a { font-weight: 600; gap: 6px; }
+  </style>
+
+  {{- /* The content lives in the front matter of content/_index.md */}}
+  <h1>{{ .Title | markdownify }}</h1>
+  <p class="hd-sub">{{ .Description | markdownify }}</p>
+  <button type="button" class="hd-search" data-open-search aria-label="Search the documentation">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M14 14l-2.9-2.9M12.667 7.333A5.333 5.333 0 1 1 2 7.333a5.333 5.333 0 0 1 10.667 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Search in the docs</span><kbd data-search-kbd>Ctrl K</kbd>
+  </button>
+  <div class="hd-popular">
+    <span class="lbl">Popular searches</span>
+    {{- range $home.popular }}
+    <a class="link" href="{{ (partial "resolve-link.html" (dict "link" .link "page" $)).href }}">{{ .title }}</a>
+    {{- end }}
+  </div>
+
+  {{- with $home.start }}
+  <div class="hd-sec"><h2 id="get-started">{{ .title }}</h2>
+    {{- with .more }}<a class="more link" href="{{ (partial "resolve-link.html" (dict "link" .link "page" $)).href }}">{{ .title }}{{ $arrow }}</a>{{ end }}</div>
+  <section class="hd-grid">
+    {{- range .items }}
+    <a class="hd-start link" href="{{ (partial "resolve-link.html" (dict "link" .link "page" $)).href }}">
+      <span class="top"><img src="{{ .icon }}" alt=""><strong>{{ .title }}</strong></span>
+      <span class="d">{{ .description }}</span>
+      <span class="cta">{{ .cta }}{{ $arrow }}</span>
+    </a>
+    {{- end }}
+  </section>
+  {{- end }}
+
+  {{- with $home.browse }}
+  <div class="hd-sec"><h2 id="browse">{{ .title }}</h2></div>
+  <section class="hd-grid">
+    {{- range .items }}
+    {{- /* Keep the last word with the arrow so the arrow never wraps alone */}}
+    {{- $words := split .title " " }}
+    {{- $last := index (last 1 $words) 0 }}
+    {{- $rest := delimit (first (sub (len $words) 1) $words) " " }}
+    <div class="hd-card card">
+      <h3><a class="link" href="{{ (partial "resolve-link.html" (dict "link" .link "page" $)).href }}"><img src="{{ .icon }}" alt=""><span class="t">{{ with $rest }}{{ . }} {{ end }}<span class="nw">{{ $last }}{{ $arrow }}</span></span></a></h3>
+      <p>{{ .description }}</p>
+      <div class="hd-tags">
+        {{- range .tags }}
+        <a class="link" href="{{ (partial "resolve-link.html" (dict "link" .link "page" $)).href }}">{{ .title }}</a>
+        {{- end }}
+      </div>
+    </div>
+    {{- end }}
+  </section>
+  {{- end }}
+
+  <div class="hd-bottom">
+    {{- with $home.news }}
+    <div>
+      <div class="hd-sec"><h2 id="whats-new">{{ .title }}</h2></div>
+      <nav class="hd-list">
+        {{- range .items }}
+        <a class="link"{{ if .unversioned }} data-unversioned{{ end }} href="{{ (partial "resolve-link.html" (dict "link" .link "page" $)).href }}">{{ replace .title "{stable}" $stableVersion }}{{ with .badge }} <span class="hd-badge">{{ . }}</span>{{ end }}{{ $arrow }}</a>
+        {{- end }}
+      </nav>
+    </div>
+    {{- end }}
+    {{- with $home.community }}
+    <div>
+      <div class="hd-sec"><h2 id="community">{{ .title }}</h2></div>
+      <nav class="hd-list community">
+        {{- range .items }}
+        <a href="{{ .link }}" target="_blank" rel="noopener">{{ .title }}{{ $external }}</a>
+        {{- end }}
+      </nav>
+    </div>
+    {{- end }}
+  </div>
+</article>
+{{ end -}}

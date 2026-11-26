@@ -28,7 +28,7 @@ the [The Arango Contextual Data Platform](../../../contextual-data-platform/_ind
 ### Fully managed cloud service
 
 The fully managed multi-cloud
-[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
+[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home)
 is the easiest and fastest way to get started.
 It lets you deploy clusters with just a few clicks, and is operated
 by a dedicated team of ArangoDB engineers day and night. You can choose from a
@@ -98,7 +98,7 @@ It allows you to use ArangoDB for commercial purposes and removes the 100 GiB
 dataset size limit of the Community Edition.
 
 The source code of ArangoDB is available under the
-[Business Source License 1.1 (BUSL-1.1)](https://github.com/arangodb/arangodb/blob/devel/LICENSE),
+[Business Source License 1.1 (BUSL-1.1)](https://github.com/arangodb/arangodb/blob/3.12/LICENSE),
 excluding the source code of the formerly exclusive Enterprise Edition features.
 Copying, modification, redistribution, non-commercial use, and commercial use in
 a non-production context are always allowed. Additionally, you can deploy

@@ -379,7 +379,7 @@ See the [Cluster Deployment](deployment/_index.md)
 chapter for instructions.
 
 ArangoDB is also available as a cloud service, the
-[**Arango Managed Platform (AMP)**](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+[**Arango Managed Platform (AMP)**](https://dashboard.arangodb.cloud/home).
 
 ## Cluster ID
 

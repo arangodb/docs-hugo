@@ -10,14 +10,14 @@ description: >-
 
 ArangoDB offers two deployment options, tailored to suit diverse requirements
 and infrastructure preferences: 
-- Managed cloud service via the [Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
+- Managed cloud service via the [Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home)
 - Self-managed solution via the [ArangoDB Kubernetes Operator](https://github.com/arangodb/kube-arangodb)
 
 ### ArangoGraphML
 
 ArangoGraphML provides enterprise-ready Graph Machine Learning as a
 Cloud Service via Jupyter Notebooks that run on the
-[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home).
 
 {{< tip >}}
 To get access to ArangoGraphML services and packages,
@@ -38,14 +38,14 @@ with the Arango team.
 #### Setup
 
 The ArangoGraphML managed-service runs on
-[AMP](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+[AMP](https://dashboard.arangodb.cloud/home).
 It offers a pre-configured environment where everything,
 including necessary components and configurations, comes preloaded. You don't
 need to set up or configure the infrastructure, and can immediately start using the
 GraphML functionalities.
 
 To summarize, all you need to do is:
-1. Sign up for an [AMP account](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+1. Sign up for an [AMP account](https://dashboard.arangodb.cloud/home).
 2. Create a new [deployment in AMP](../../../../amp/deployments/_index.md#how-to-create-a-new-deployment).
 3. Start using the ArangoGraphML functionalities.
 

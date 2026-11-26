@@ -35,7 +35,7 @@ is to **assume they are all case sensitive**, when being used with _oasisctl_.
 
 The first step to using the AMP API is to generate an API key. To generate a
 key you will need to be signed into your account at
-[dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+[dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home).
 Once you are signed in, hover over the profile icon in the top right corner.
 
 Click _My API keys_.

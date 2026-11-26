@@ -481,7 +481,7 @@ RETURN IPV4_FROM_NUMBER(3232235521)
 name: aqlIPv4FromNumber_5
 description: ''
 ---
-RETURN IPV4_FROM_NUMBER(-23) // invalid, produces a warning
+RETURN IPV4_FROM_NUMBER(-23) // invalid, produces a warning // expectedWarning(ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH)
 ```
 
 ## IPV4_TO_NUMBER()
@@ -537,7 +537,7 @@ RETURN IPV4_TO_NUMBER("192.168.0.1")
 name: aqlIPv4ToNumber_5
 description: ''
 ---
-RETURN IPV4_TO_NUMBER("milk") // invalid, produces a warning
+RETURN IPV4_TO_NUMBER("milk") // invalid, produces a warning // expectedWarning(ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH)
 ```
 
 ## IS_IPV4()
@@ -653,7 +653,7 @@ RETURN JSON_PARSE('"abc"')
 name: aqlJsonParse_5
 description: ''
 ---
-RETURN JSON_PARSE("abc") // invalid JSON
+RETURN JSON_PARSE("abc") // invalid JSON // expectedWarning(ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH)
 ```
 
 ## JSON_STRINGIFY()
@@ -1101,7 +1101,7 @@ RETURN REGEX_MATCHES("#4d82h4", "^#?([a-f0-9]{6}|[a-f0-9]{3})$", true)
 name: aqlRegexMatches_3
 description: ''
 ---
-RETURN REGEX_MATCHES("john@doe.com", "^([a-z0-9_\\\\.-]+)@([\\\\da-z-]+)\\\\.([a-z\\\\.]{2,6})$", false)
+RETURN REGEX_MATCHES("john@doe.com", "^([a-z0-9_\\.-]+)@([\\da-z-]+)\\.([a-z\\.]{2,6})$", false)
 ```
 
 ## REGEX_SPLIT()
@@ -1128,7 +1128,7 @@ Split the given string `text` into a list of strings at positions where
 name: aqlRegexSplit_1
 description: ''
 ---
-RETURN REGEX_SPLIT("This is a line.\\n This is yet another line\\r\\n This again is a line.\\r Mac line ", "\\\\.?\\r\\n|\\r|\\n")
+RETURN REGEX_SPLIT("This is a line.\n This is yet another line\r\n This again is a line.\r Mac line ", "\\.?\r\n|\r|\n")
 ```
 
 ```aql
@@ -1136,7 +1136,7 @@ RETURN REGEX_SPLIT("This is a line.\\n This is yet another line\\r\\n This again
 name: aqlRegexSplit_2
 description: ''
 ---
-RETURN REGEX_SPLIT("hypertext language, programming", "[\\\\s, ]+")
+RETURN REGEX_SPLIT("hypertext language, programming", "[\\s, ]+")
 ```
 
 ```aql
@@ -1188,7 +1188,7 @@ RETURN REGEX_TEST("the quick brown fox", "the.*fox")
 name: aqlRegexTest_2
 description: ''
 ---
-RETURN REGEX_TEST("the quick brown fox", "^(a|the)\\\\s+(quick|slow).*f.x$")
+RETURN REGEX_TEST("the quick brown fox", "^(a|the)\\s+(quick|slow).*f.x$")
 ```
 
 ```aql
@@ -1196,7 +1196,7 @@ RETURN REGEX_TEST("the quick brown fox", "^(a|the)\\\\s+(quick|slow).*f.x$")
 name: aqlRegexTest_3
 description: ''
 ---
-RETURN REGEX_TEST("the\\nquick\\nbrown\\nfox", "^the(\\n[a-w]+)+\\nfox$")
+RETURN REGEX_TEST("the\nquick\nbrown\nfox", "^the(\n[a-w]+)+\nfox$")
 ```
 
 ## REGEX_REPLACE()
@@ -1756,7 +1756,7 @@ incomplete UTF-8 byte sequence:
 name: aqlSubstringBytes_4
 description: ''
 ---
-RETURN SUBSTRING_BYTES("We ❤️ avocado!", -15, 4)
+RETURN SUBSTRING_BYTES("We ❤️ avocado!", -15, 4) // expectedWarning(ERROR_BAD_PARAMETER)
 ```
 
 ## TOKENS()
@@ -1946,7 +1946,7 @@ RETURN TRIM("--==[foo-bar]==--", "-=[]")
 name: aqlTrim_4
 description: ''
 ---
-RETURN TRIM("  foobar\\t \\r\\n ")
+RETURN TRIM("  foobar\t \r\n ")
 ```
 
 ```aql

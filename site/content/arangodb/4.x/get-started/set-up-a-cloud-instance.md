@@ -8,7 +8,7 @@ description: >-
   AMP deployment
 ---
 For general information about the Arango Managed Platform (AMP), see
-[dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+[dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home).
 
 For guides and reference documentation, see the [AMP documentation](../../../amp/_index.md).
 
@@ -30,7 +30,7 @@ used for multiple accounts.
 
 ## How to Create a New Account
 
-1. Go to [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+1. Go to [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home).
 2. Click the __Start Free__ button or click the __Sign Up__ link in the top
    right corner.
 

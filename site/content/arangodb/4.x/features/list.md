@@ -50,7 +50,7 @@ aliases:
   or modified, using an AQL expression.
 
 - [**In the cloud or on-prem**](../features/_index.md#on-premises-versus-cloud):
-  Use ArangoDB as a [fully managed service](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
+  Use ArangoDB as a [fully managed service](https://dashboard.arangodb.cloud/home),
   self-managed in the cloud, or on-premises.
 
 - [**Multiple Environments**](../operations/installation/_index.md#supported-platforms-and-architectures):
@@ -111,7 +111,7 @@ aliases:
   match up documents from different collections, allowing normalized data models.
 
 - **Advanced Path-Finding with Multiple Algorithms**:
-  Multi-hop [graph traversal](../aql/graph-queries/traversals-explained.md) with
+  Multi-hop [graph traversal](../aql/graph-queries/traversals.md#how-traversals-work) with
   AQL in outbound, inbound, or both directions to retrieve direct and indirect
   neighbor nodes using a fixed or variable depth.
   The [traversal order](../aql/graph-queries/traversals.md) can be
@@ -122,6 +122,13 @@ aliases:
   increasing length ("[k Shortest Paths](../aql/graph-queries/k-shortest-paths.md)"),
   and to enumerate all paths between two nodes
   ("[k Paths](../aql/graph-queries/k-paths.md)") are available, too.
+
+{{% comment %}} Experimental feature
+- [**Graph Pattern Matching**](../aql/high-level-operations/match.md):
+  Describe the nodes and edges you want to find as a pattern, like
+  `(a:persons) -[:knows]-> (b:persons)`, and find all occurrences in your data
+  with the AQL `MATCH` operation.
+{{% /comment %}}
 
 - [**ArangoSearch for Text Search and Ranking**](../indexes-and-search/arangosearch/_index.md):
   A built-in search engine for full-text, complex data structures, and more.

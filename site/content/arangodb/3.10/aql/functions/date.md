@@ -510,41 +510,6 @@ description: |
 RETURN DATE_ISOWEEK(1234567890)
 ```
 
-### DATE_ISOWEEKYEAR()
-
-`DATE_ISOWEEKYEAR(date) → weekAndYear`
-
-Return the week number of `date` according to ISO 8601 and the year the
-week belongs to.
-
-- **date** (number\|string): numeric timestamp or ISO 8601 date time string
-- returns **weekAndYear** (object): an object with two attributes
-  - **week** (number): the ISO week number of `date`. The values range from 1 to 53.
-    Monday is considered the first day of the week. There are no fractional weeks,
-    thus the last days in December may belong to the first week of the next year,
-    and the first days in January may be part of the previous year's last week.
-  - **year** (number): the year to which the ISO week number belongs to
-
-**Examples**
-
-```aql
----
-name: aqlDateIsoWeekYear1
-description: |
-  January 1st of 2023 is part of the previous year's last week:
----
-RETURN DATE_ISOWEEKYEAR("2023-01-01")
-```
-
-```aql
----
-name: aqlDateIsoWeekYear2
-description: |
-  The last two days of 2019 are part of the next year's first week:
----
-RETURN DATE_ISOWEEKYEAR("2019-12-30")
-```
-
 ### DATE_LEAPYEAR()
 
 `DATE_LEAPYEAR(date) → leapYear`

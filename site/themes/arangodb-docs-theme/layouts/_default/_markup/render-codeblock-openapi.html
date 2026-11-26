@@ -22,16 +22,15 @@
   {{- end }}
 {{- else }}
   {{- $body = .Inner }}
-  {{- /* $service defaults to "arangodb"; apiVersions depend on ArangoDB version (3.10/3.11→v0, 3.12→v0+v1, 4.x→v1) */}}
+  {{- /* $service defaults to "arangodb", apiVersions to the allowedAPIVersions
+    of the ArangoDB version in versions.yaml except for experimental */}}
   {{- if eq $service "arangodb" }}
-    {{- if or (eq $pageVersion "3.10") (eq $pageVersion "3.11") }}
-      {{- $apiVersions = slice "v0" }}
-    {{- else if eq $pageVersion "3.12" }}
-      {{- $apiVersions = slice "v0" }}{{/* TODO: Add "v1" again for 3.12.10 */}}
-    {{- else if eq $pageVersion "4.x" }}
-      {{- $apiVersions = slice "v1" }}
-    {{- else }}
-      {{- errorf "OpenAPI front matter: Unsupported ArangoDB page version %q — add an apiVersions mapping for this version" $pageVersion }}
+    {{- $versionData := where (index hugo.Data.versions "/arangodb/") "name" $pageVersion }}
+    {{- if $versionData }}
+      {{- $apiVersions = complement (slice "experimental") (index $versionData 0).allowedAPIVersions }}
+    {{- end }}
+    {{- if not $apiVersions }}
+      {{- errorf "OpenAPI front matter: No default apiVersions for ArangoDB page version %q, set allowedAPIVersions for this version in versions.yaml" $pageVersion }}
     {{- end }}
   {{- end }}
 {{- end }}
@@ -113,14 +112,11 @@
         {{- errorf "Omit the API version prefix for the endpoint path %q in %s" $path $page.File.Path }}
       {{- end }}
       {{- $displayPath := $path }}
-      {{- if (eq $service "arangodb") }}
-        {{- if (in $apiVersions "v0") }}
-          {{- /* Omit prefix for 3.12 docs because older versions don't have a versioned API */}}
-        {{- else if (in $apiVersions "v1") }}
-          {{- $displayPath = printf "/_arango/v1%s" $path }}
-        {{- else if (in $apiVersions "experimental") }}
-          {{- $displayPath = printf "/_arango/experimental%s" $path }}
-        {{- end }}
+      {{- /* Show the path of the first non-experimental API version, with the
+        /_arango/<API-version> prefix unless it's v0 (unversioned API) */}}
+      {{- if and (eq $service "arangodb") (not ("v0" | in $apiVersions)) }}
+        {{- $displayAPIVersion := index (complement (slice "experimental") $apiVersions | default $apiVersions) 0 }}
+        {{- $displayPath = printf "/_arango/%s%s" $displayAPIVersion $path }}
       {{- end }}
       {{- partial "shortcodes/endpoint.html" (dict
         "Method" ($method | upper)
@@ -264,7 +260,7 @@
             {{- $statusDescription := index $statusMap $status }}
             {{- if not $statusDescription }}{{ errorf "OpenAPI: %v missing in HTTP status code mapping" $status }}{{ end }}
             <span class="openapi-property-type bold-text">{{ $statusDescription }}</span>
-            <a class="openapi-property-link" href="{{ printf "#%s" $statusId }}"><i class="fa fa-link"></i></a>
+            <a class="openapi-property-link" href="{{ printf "#%s" $statusId }}"><i class="icon icon-link" aria-hidden="true"></i></a>
           </summary>
             {{- $description := $content.description | $page.RenderString }}
             <div class="openapi-prop-content">
@@ -326,7 +322,7 @@
             {{- if isset $value.schema "default" }} (default: <code>{{ $value.schema.default }}</code>){{ $preceding = true }}{{ end }}
             {{- if and $value.required (ne $category "path") }}{{ if $preceding }}, {{ end }}<span style="color: var(--orange-700)">required</span>{{ end }}
           </span>
-          <a class="openapi-property-link" href="{{ printf "#%s" $anchor }}"><i class="fa fa-link"></i></a>
+          <a class="openapi-property-link" href="{{ printf "#%s" $anchor }}"><i class="icon icon-link" aria-hidden="true"></i></a>
         </summary>
         {{- $description := $value.description | $page.RenderString }}
         <div class="openapi-prop-content">
@@ -385,7 +381,7 @@
           {{- else if and (not $required) $isResponse (ne $prop "") }}{{ if $preceding }}, {{ end }}optional
           {{- end }}
         </span>
-        <a class="openapi-property-link" href="#{{ $anchor }}"><i class="fa fa-link"></i></a>
+        <a class="openapi-property-link" href="#{{ $anchor }}"><i class="icon icon-link" aria-hidden="true"></i></a>
       </summary>
       {{- $description := $value.description | $page.RenderString }}
       <div class="openapi-prop-content">

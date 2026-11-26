@@ -175,7 +175,7 @@ type: cluster
 ~var graph_module = require("@arangodb/satellite-graph");
 ~var relation = graph_module._relation("edges", "nodes", "nodes");
 ~var graph = graph_module._create("myGraph", [relation], []);
-graph._removeVertexCollection("nodes"); // xpError(ERROR_GRAPH_NOT_IN_ORPHAN_COLLECTION)
+graph._removeVertexCollection("nodes"); // expectedError(ERROR_GRAPH_NOT_IN_ORPHAN_COLLECTION)
 ~graph_module._drop("myGraph", true);
 ```
 
@@ -193,7 +193,7 @@ var relation = graph_module._relation("edges", "nodes", "nodes");
 var graph = graph_module._create("myGraph", [relation], []);
 graph._deleteEdgeDefinition("edges");
 graph._removeVertexCollection("nodes");
-db._drop("nodes"); // xpError(ERROR_CLUSTER_MUST_NOT_DROP_COLL_OTHER_DISTRIBUTESHARDSLIKE)
+db._drop("nodes"); // expectedError(ERROR_CLUSTER_MUST_NOT_DROP_COLL_OTHER_DISTRIBUTESHARDSLIKE)
 ~graph_module._drop("myGraph", true);
 ~db._drop("edges");
 ~db._drop("nodes");
@@ -321,7 +321,7 @@ type: cluster
 ~var graph = graph_module._create("myGraph", [relation], []);
 ~graph._addVertexCollection("other");
 graph._removeVertexCollection("other");
-graph_module._drop("myGraph", true); // xpError(ERROR_CLUSTER_MUST_NOT_DROP_COLL_OTHER_DISTRIBUTESHARDSLIKE)
+graph_module._drop("myGraph", true); // expectedError(ERROR_CLUSTER_MUST_NOT_DROP_COLL_OTHER_DISTRIBUTESHARDSLIKE)
 ~db._drop("other");
 ~db._drop("nodes");
 ```

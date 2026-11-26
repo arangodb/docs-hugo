@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="keep-colors" viewBox="-32 -5 986 240" width="986" height="240" role="img" aria-labelledby="train-map-europe-t train-map-europe-d" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="train-map-europe-t">Train connections in Europe</title>
+  <desc id="train-map-europe-d">The European part of the kShortestPathsGraph example graph. Each connection has an edge in both directions, labeled with the travel time in hours: Inverness and Aberdeen (3 and 2.5), Aberdeen and Leuchars (1.5 and 1), Leuchars and StAndrews (0.2 and 0.2), Leuchars and Edinburgh (1.5 and 3), Edinburgh and Glasgow (1 and 1), Edinburgh and York (3.5 and 4), Glasgow and Carlisle (1 and 1), Carlisle and York (2.5 and 3.5), Carlisle and Birmingham (2 and 1), Birmingham and London (1.5 and 2.5), York and London (1.8 and 2), London and Brussels (2.5 and 3.5), Brussels and Cologne (2 and 1.5).</desc>
+  <defs><marker id="train-map-europe-a" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path class="dg-f-accent" d="M0,0 L8,4 L0,8 z" fill="#00576e"/></marker><marker id="train-map-europe-g" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path class="dg-f-arrow" d="M0,0 L8,4 L0,8 z" fill="#90a1b9"/></marker></defs>
+  <rect class="dg-f-canvas" x="-32" y="-5" width="986" height="240" rx="6" fill="#f1f5f9"/>
+  <path class="dg-s-accent" d="M34.9,60.0 Q20.0,114.0 33.3,162.2" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M41.1,171.0 Q56.0,117.0 42.7,68.8" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M82.6,190.2 Q107.8,205.0 127.7,193.2" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M135.9,183.9 Q110.8,169.0 90.8,180.8" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M225.1,190.2 Q248.1,205.0 266.2,193.4" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M274.2,183.9 Q251.1,169.0 233.1,180.6" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M326.1,171.0 Q341.0,117.0 327.7,68.8" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M319.9,60.0 Q305.0,114.0 318.3,162.2" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M371.8,190.2 Q474.5,205.0 571.3,191.0" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M580.2,183.9 Q477.5,169.0 380.7,183.0" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M363.4,47.1 Q390.6,62.0 412.6,50.0" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M420.9,40.9 Q393.6,26.0 371.7,38.0" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M477.3,60.3 Q521.1,125.3 580.9,165.9" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M596.2,170.7 Q552.8,106.1 493.3,65.8" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M510.1,47.1 Q531.0,62.0 547.1,50.6" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M555.0,40.9 Q534.0,26.0 518.0,37.4" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M619.8,60.3 Q663.2,124.9 722.7,165.2" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M738.7,170.7 Q695.3,106.1 635.8,65.8" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M183.7,171.0 Q198.5,117.0 185.2,68.8" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M177.3,60.0 Q162.5,114.0 175.8,162.2" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M635.8,190.2 Q673.5,205.0 705.7,192.3" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M714.3,183.9 Q676.5,169.0 644.4,181.7" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M753.6,171.0 Q768.5,117.0 755.2,68.8" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M747.4,60.0 Q732.5,114.0 745.8,162.2" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M795.1,47.1 Q822.4,62.0 844.3,50.0" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <path class="dg-s-accent" d="M852.6,40.9 Q825.4,26.0 803.4,38.0" fill="none" stroke="#00576e" stroke-width="2" marker-end="url(#train-map-europe-a)"/>
+  <text class="dg-f-lime" x="18.5" y="118.7" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">3</text>
+  <text class="dg-f-lime" x="65.3" y="121.7" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">2.5</text>
+  <text class="dg-f-lime" x="107.8" y="213.8" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">1.5</text>
+  <text class="dg-f-lime" x="110.8" y="169.6" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">1</text>
+  <text class="dg-f-lime" x="248.1" y="213.8" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">1.5</text>
+  <text class="dg-f-lime" x="251.2" y="169.6" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">3</text>
+  <text class="dg-f-lime" x="342.5" y="121.7" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">1</text>
+  <text class="dg-f-lime" x="303.5" y="118.7" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">1</text>
+  <text class="dg-f-lime" x="474.5" y="213.8" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">3.5</text>
+  <text class="dg-f-lime" x="477.5" y="169.6" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">4</text>
+  <text class="dg-f-lime" x="390.6" y="70.8" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">1</text>
+  <text class="dg-f-lime" x="393.6" y="26.6" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">1</text>
+  <text class="dg-f-lime" x="513.7" y="137.3" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">2.5</text>
+  <text class="dg-f-lime" x="560.2" y="103.4" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">3.5</text>
+  <text class="dg-f-lime" x="531.0" y="70.8" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">2</text>
+  <text class="dg-f-lime" x="534.0" y="26.6" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">1</text>
+  <text class="dg-f-lime" x="655.8" y="137.0" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">1.5</text>
+  <text class="dg-f-lime" x="702.7" y="103.4" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">2.5</text>
+  <text class="dg-f-lime" x="207.8" y="121.7" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">0.2</text>
+  <text class="dg-f-lime" x="153.2" y="118.7" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">0.2</text>
+  <text class="dg-f-lime" x="673.5" y="213.8" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">1.8</text>
+  <text class="dg-f-lime" x="676.5" y="169.6" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">2</text>
+  <text class="dg-f-lime" x="777.8" y="121.7" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">2.5</text>
+  <text class="dg-f-lime" x="723.2" y="118.7" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">3.5</text>
+  <text class="dg-f-lime" x="822.4" y="70.8" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">2</text>
+  <text class="dg-f-lime" x="825.4" y="26.6" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">1.5</text>
+  <rect class="" x="-11.8" y="27.0" width="99.6" height="34.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="38.0" y="48.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">Inverness</text>
+  <rect class="" x="-7.6" y="170.0" width="91.2" height="34.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="38.0" y="191.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">Aberdeen</text>
+  <rect class="" x="130.7" y="27.0" width="99.6" height="34.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="180.5" y="48.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">StAndrews</text>
+  <rect class="" x="134.9" y="170.0" width="91.2" height="34.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="180.5" y="191.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">Leuchars</text>
+  <rect class="" x="281.6" y="27.0" width="82.8" height="34.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="323.0" y="48.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">Glasgow</text>
+  <rect class="" x="273.2" y="170.0" width="99.6" height="34.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="323.0" y="191.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">Edinburgh</text>
+  <rect class="" x="419.9" y="27.0" width="91.2" height="34.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="465.5" y="48.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">Carlisle</text>
+  <rect class="" x="579.2" y="170.0" width="57.6" height="34.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="608.0" y="191.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">York</text>
+  <rect class="" x="554.0" y="27.0" width="108.0" height="34.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="608.0" y="48.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">Birmingham</text>
+  <rect class="" x="713.3" y="170.0" width="74.4" height="34.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="750.5" y="191.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">London</text>
+  <rect class="" x="704.9" y="27.0" width="91.2" height="34.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="750.5" y="48.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">Brussels</text>
+  <rect class="" x="851.6" y="27.0" width="82.8" height="34.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="893.0" y="48.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">Cologne</text>
+</svg>

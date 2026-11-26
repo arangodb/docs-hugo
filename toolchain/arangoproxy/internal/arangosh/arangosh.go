@@ -46,7 +46,16 @@ func ExecRoutine(queue chan Job) {
 		// Hidden lines before and after the example (in the same exchange with
 		// arangosh): the page for exemptions, and the cleanup (see common.js)
 		page, _ := json.Marshal(pageOf(filepath))
-		execCode := fmt.Sprintf("~__docsPage = %s;\n%s\n~__docsCleanup();", page, code)
+		// The numbers of the expected errors and warnings, resolved by arangosh
+		// (see checkExpectedErrors and checkExpectedWarnings)
+		expectedErrors := models.ExpectedErrors(code)
+		expectedWarnings := models.ExpectedWarnings(code)
+		resolveErrors := ""
+		if len(expectedErrors) > 0 || len(expectedWarnings) > 0 {
+			names, _ := json.Marshal(append(append([]string{}, expectedErrors...), expectedWarnings...))
+			resolveErrors = fmt.Sprintf("\n~print(%q + JSON.stringify(__docsErrorCodes(%s)));", expectedErrorsMarker, names)
+		}
+		execCode := fmt.Sprintf("~__docsPage = %s;%s\n%s\n~__docsCleanup();", page, resolveErrors, code)
 		out := Exec(name, execCode, filepath, repository)
 
 		// A single long-lived arangosh serves every example for a version.
@@ -72,8 +81,15 @@ func ExecRoutine(queue chan Job) {
 		if cleaned != "" {
 			models.Logger.Printf("[%s %s] [INFO] Removed after the example: %s", repository.Version, name, cleaned)
 		}
+		out, errorCodes := extractMarker(out, expectedErrorsMarker)
+		out, thrown := extractMarkers(out, thrownMarker)
 		out = checkAssertionFailed(name, code, out, filepath, repository)
-		out = checkArangoError(name, code, out, filepath, repository)
+		if len(expectedErrors) > 0 {
+			out = checkExpectedErrors(name, expectedErrors, errorCodes, thrown, out, filepath, repository)
+		} else {
+			out = checkArangoError(name, code, out, filepath, repository)
+		}
+		out = checkExpectedWarnings(name, expectedWarnings, errorCodes, out, filepath, repository)
 
 		models.Logger.Printf("[EXEC] Finished %s %s example %s in %d ms", repository.Version, repository.Type, name, time.Since(start).Milliseconds())
 		job.Reply <- out
@@ -81,22 +97,59 @@ func ExecRoutine(queue chan Job) {
 }
 
 // Output lines of the hidden code that arangoproxy runs around examples
-const cleanedMarker = "CLEANED "
-const pageDoneMarker = "PAGEDONE "
+const cleanedMarker = utils.MarkerCleaned + " "
+const pageDoneMarker = utils.MarkerPageDone + " "
+const expectedErrorsMarker = utils.MarkerExpectedErrors + " "
+
+// Output line that Exec adds for every exception of an example that expects
+// errors: the error number (0 if it's not an ArangoError) and the message
+const thrownMarker = utils.MarkerThrown + " "
+
+// The first line of an exception that arangosh prints, e.g.
+// JavaScript exception in file '...' at 92,9: ArangoError 1210: unique constraint violated ...
+// JavaScript exception: ReferenceError: undefinedFunction is not defined
+// The lines that follow (source excerpt, stacktrace) end with an empty line.
+var exceptionRE = regexp.MustCompile(`^JavaScript exception(?: in file '[^']*' at \d+,\d+)?: (.*)$`)
+var arangoErrorRE = regexp.MustCompile(`^ArangoError (\d+): `)
 
 // extractMarker removes the output line with the marker from the output and
 // returns it separately (without the marker)
 func extractMarker(out, marker string) (string, string) {
-	found := ""
+	out, found := extractMarkers(out, marker)
+	if len(found) == 0 {
+		return out, ""
+	}
+	return out, found[len(found)-1]
+}
+
+// extractMarkers removes all output lines with the marker from the output and
+// returns them separately (without the marker)
+func extractMarkers(out, marker string) (string, []string) {
+	found := []string{}
 	lines := []string{}
 	for _, line := range strings.Split(out, "\n") {
 		if value, ok := strings.CutPrefix(line, marker); ok {
-			found = value
+			found = append(found, value)
 			continue
 		}
 		lines = append(lines, line)
 	}
 	return strings.Join(lines, "\n"), found
+}
+
+// ExtractWarnings removes the warnings line of an AQL example (__docsQuery in
+// common.js) from the output and returns the warnings as indented JSON
+func ExtractWarnings(out string) (string, string) {
+	out, warnings := extractMarker(out, utils.MarkerWarnings+" ")
+	if warnings == "" {
+		return out, ""
+	}
+	var parsed interface{}
+	if err := json.Unmarshal([]byte(warnings), &parsed); err != nil {
+		return out, warnings
+	}
+	indented, _ := json.MarshalIndent(parsed, "", "  ")
+	return out, string(indented)
 }
 
 // pageOf returns the source file of a code block position (file:line:column)
@@ -152,10 +205,10 @@ while (require("internal").time() < __deadline) {
   require("internal").wait(0.5);
 }
 output = "";
-print(__ok ? "RECONNECTED" : ("RECONNECT_FAILED: " + __lastErr));
+print(__ok ? __docsMarker.Reconnected : (__docsMarker.ReconnectFailed + " " + __lastErr));
 `
 	out := Exec(name, recovery, "", repository)
-	if strings.Contains(out, "RECONNECTED") {
+	if strings.Contains(out, utils.MarkerReconnected) {
 		models.Logger.Printf("[%s %s] [INFO] arangosh reconnected to arangod", repository.Version, name)
 		return true
 	}
@@ -175,41 +228,45 @@ func Exec(exampleName string, code, filepath string, repository models.Repositor
 
 	scanner := bufio.NewScanner(repository.StdoutPipe)
 	buf := false
-	inArangoError := false
-	xpError := false
+	// Within the lines of an exception (until the next empty line)
+	inException := false
+	// Examples that expect errors show exceptions in a short form, and every
+	// exception is reported with a marker line for checkExpectedErrors
+	expectsErrors := len(models.ExpectedErrors(code)) > 0
 	hide := false
 
-	if strings.Contains(code, "xpError") {
-		xpError = true
-
-	}
 	for {
 		if buf {
 			break
 		}
 
 		for scanner.Scan() {
-			if strings.Contains(scanner.Text(), "EOFD") {
+			if strings.Contains(scanner.Text(), utils.MarkerEOF) {
 				buf = true
 				break
 			}
 
-			if scanner.Text() == "\n" {
-				inArangoError = false
+			if inException {
+				if scanner.Text() == "" {
+					inException = false
+					output = output + "\n"
+				}
+				continue
 			}
 
-			if strings.Contains(scanner.Text(), "HIDED-START") {
+			if strings.Contains(scanner.Text(), utils.MarkerHideStart) {
 				hide = true
 				continue
 			}
 
-			if strings.Contains(scanner.Text(), "HIDED-END") {
+			if strings.Contains(scanner.Text(), utils.MarkerHideEnd) {
 				hide = false
 				continue
 			}
 
-			// The cleanup runs as hidden code but its result is needed
-			if strings.HasPrefix(scanner.Text(), cleanedMarker) || strings.HasPrefix(scanner.Text(), pageDoneMarker) {
+			// The cleanup and the resolution of expected errors run as hidden
+			// code but their results are needed
+			if strings.HasPrefix(scanner.Text(), cleanedMarker) || strings.HasPrefix(scanner.Text(), pageDoneMarker) || strings.HasPrefix(scanner.Text(), expectedErrorsMarker) {
 				output = output + scanner.Text() + "\n"
 				continue
 			}
@@ -218,15 +275,17 @@ func Exec(exampleName string, code, filepath string, repository models.Repositor
 				continue
 			}
 
-			if inArangoError {
-				continue
-			}
-
-			if xpError {
-				if strings.Contains(scanner.Text(), "ArangoError") && !inArangoError {
-					inArangoError = true
-					re := regexp.MustCompile(`(?m)ArangoError.*`)
-					output = output + "[" + re.FindString(scanner.Text()) + "]"
+			if expectsErrors {
+				if match := exceptionRE.FindStringSubmatch(scanner.Text()); match != nil {
+					inException = true
+					message := match[1]
+					number := "0"
+					if arangoError := arangoErrorRE.FindStringSubmatch(message); arangoError != nil {
+						number = arangoError[1]
+						// Shown in the output, the rest of the exception is skipped
+						output = output + "[" + message + "]"
+					}
+					output = output + "\n" + thrownMarker + number + " " + message + "\n"
 					continue
 				}
 			}
@@ -240,35 +299,156 @@ func Exec(exampleName string, code, filepath string, repository models.Repositor
 			models.Logger.Printf("[%s %s] [arangosh.Exec] stdout read error: %v", repository.Version, exampleName, err)
 			break
 		}
-		// EOF or arangosh exited without printing EOFD (e.g. fatal error) — do not spin forever.
+		// EOF or arangosh exited without printing the EOF marker (e.g. fatal error) — do not spin forever.
 		break
 	}
 	return
 }
 
 func checkAssertionFailed(name, code, out, filepath string, repository models.Repository) string {
-	if strings.Contains(out, "ASSERTD-FAIL") {
+	if strings.Contains(out, utils.MarkerAssertFail) {
 		models.Logger.Printf("[%s %s] [ERROR]: Assertion Failed", repository.Version, name)
 		models.Logger.Printf("[%s %s] [ERROR]: Command output: %s", repository.Version, name, out)
 
-		re := regexp.MustCompile(`(?m)ASSERTD-FAIL.*`)
+		re := regexp.MustCompile(`(?m)` + regexp.QuoteMeta(utils.MarkerAssertFail) + `.*`)
 		conditions := []string{}
 		for _, match := range re.FindAllString(out, -1) {
-			conditions = append(conditions, "Assertion failed: "+strings.ReplaceAll(match, "ASSERTD-FAIL ", ""))
+			conditions = append(conditions, "Assertion failed: "+strings.TrimSpace(strings.TrimPrefix(match, utils.MarkerAssertFail)))
 		}
 		models.Logger.Error("Examples", repository.Version, name, filepath, strings.Join(conditions, "\n"))
 
-		return "ERRORD"
+		return utils.MarkerError
 	}
 	return out
 }
 
-func checkArangoError(name, code, out, filepath string, repository models.Repository) string {
-	if strings.Contains(out, "ERRORD") {
+// checkExpectedErrors fails an example that declares errors with
+// `// expectedError(ERROR_NAME)` comments if one of the names is unknown, if an
+// exception occurs that isn't one of the declared errors, or if a declared error
+// doesn't occur. The check is for the whole example, not per statement, so that
+// it works for statements that span multiple lines.
+// codes is the JSON object with the error numbers by name (__docsErrorCodes in
+// common.js), thrown the exceptions (number and message) recorded by Exec.
+func checkExpectedErrors(name string, expected []string, codes string, thrown []string, out, filepath string, repository models.Repository) string {
+	if strings.Contains(out, utils.MarkerError) {
 		return out
 	}
 
-	if strings.Contains(out, "JavaScript exception") && !strings.Contains(code, "xpError") {
+	problems := []string{}
+	numbers := map[string]*int{}
+	if err := json.Unmarshal([]byte(codes), &numbers); err != nil {
+		problems = append(problems, fmt.Sprintf("Could not resolve the expected errors %v: %q", expected, codes))
+	}
+
+	expectedNumbers := map[int]string{}
+	for _, errorName := range expected {
+		if number, ok := numbers[errorName]; ok && number != nil {
+			expectedNumbers[*number] = errorName
+		} else if len(numbers) > 0 {
+			problems = append(problems, fmt.Sprintf("Unknown error name in expectedError(%s)", errorName))
+		}
+	}
+
+	occurred := map[int]bool{}
+	for _, exception := range thrown {
+		numberText, message, _ := strings.Cut(exception, " ")
+		number := 0
+		fmt.Sscanf(numberText, "%d", &number)
+		if _, ok := expectedNumbers[number]; ok && number != 0 {
+			occurred[number] = true
+			continue
+		}
+		problems = append(problems, "Unexpected error: "+message)
+	}
+
+	for _, errorName := range expected {
+		if number, ok := numbers[errorName]; ok && number != nil && !occurred[*number] {
+			problems = append(problems, fmt.Sprintf("Expected error did not occur: %s (%d)", errorName, *number))
+		}
+	}
+
+	if len(problems) > 0 {
+		models.Logger.Printf("[%s %s] [ERROR]: %s", repository.Version, name, strings.Join(problems, "; "))
+		models.Logger.Printf("[%s %s] [ERROR]: Command output: %s", repository.Version, name, out)
+		models.Logger.Error("Examples", repository.Version, name, filepath, strings.Join(problems, "\n"))
+		return utils.MarkerError
+	}
+
+	return out
+}
+
+// checkExpectedWarnings fails an AQL example if its query produces warnings that
+// it doesn't declare with `// expectedWarning(ERROR_NAME)` comments, if a
+// declared warning doesn't occur, or if a name is unknown. Warnings have the
+// codes of errors, hence the error names. The warnings line stays in the output
+// (see ExtractWarnings). codes is the JSON object with the error numbers by name
+// (__docsErrorCodes in common.js).
+func checkExpectedWarnings(name string, expected []string, codes string, out, filepath string, repository models.Repository) string {
+	if strings.Contains(out, utils.MarkerError) {
+		return out
+	}
+	_, warningsJSON := extractMarker(out, utils.MarkerWarnings+" ")
+	if len(expected) == 0 && warningsJSON == "" {
+		return out
+	}
+
+	problems := []string{}
+	warnings := []struct {
+		Code    int    `json:"code"`
+		Message string `json:"message"`
+	}{}
+	if warningsJSON != "" {
+		if err := json.Unmarshal([]byte(warningsJSON), &warnings); err != nil {
+			problems = append(problems, fmt.Sprintf("Could not parse the warnings: %q", warningsJSON))
+		}
+	}
+
+	numbers := map[string]*int{}
+	if len(expected) > 0 {
+		if err := json.Unmarshal([]byte(codes), &numbers); err != nil {
+			problems = append(problems, fmt.Sprintf("Could not resolve the expected warnings %v: %q", expected, codes))
+		}
+	}
+	expectedNumbers := map[int]bool{}
+	for _, warningName := range expected {
+		if number, ok := numbers[warningName]; ok && number != nil {
+			expectedNumbers[*number] = true
+		} else if len(numbers) > 0 {
+			problems = append(problems, fmt.Sprintf("Unknown error name in expectedWarning(%s)", warningName))
+		}
+	}
+
+	occurred := map[int]bool{}
+	for _, warning := range warnings {
+		if expectedNumbers[warning.Code] {
+			occurred[warning.Code] = true
+			continue
+		}
+		problems = append(problems, fmt.Sprintf("Unexpected warning (no expectedWarning): %d %s", warning.Code, warning.Message))
+	}
+
+	for _, warningName := range expected {
+		if number, ok := numbers[warningName]; ok && number != nil && !occurred[*number] {
+			problems = append(problems, fmt.Sprintf("Expected warning did not occur: %s (%d)", warningName, *number))
+		}
+	}
+
+	if len(problems) > 0 {
+		models.Logger.Printf("[%s %s] [ERROR]: %s", repository.Version, name, strings.Join(problems, "; "))
+		models.Logger.Printf("[%s %s] [ERROR]: Command output: %s", repository.Version, name, out)
+		models.Logger.Error("Examples", repository.Version, name, filepath, strings.Join(problems, "\n"))
+		return utils.MarkerError
+	}
+
+	return out
+}
+
+func checkArangoError(name, code, out, filepath string, repository models.Repository) string {
+	if strings.Contains(out, utils.MarkerError) {
+		return out
+	}
+
+	if strings.Contains(out, "JavaScript exception") {
 		if strings.Contains(out, "ArangoError 1203") || strings.Contains(out, "ArangoError 1932") {
 			return handleCollectionNotFound(name, code, out, filepath, repository)
 		} else if strings.Contains(out, "ArangoError 1207") {
@@ -276,7 +456,7 @@ func checkArangoError(name, code, out, filepath string, repository models.Reposi
 			out = re.ReplaceAllString(out, "")
 			return out
 		} else {
-			models.Logger.Printf("[%s %s] [ERROR]: Found ArangoError without xpError", repository.Version, name)
+			models.Logger.Printf("[%s %s] [ERROR]: Found ArangoError without expectedError", repository.Version, name)
 			models.Logger.Printf("[%s %s] [ERROR]: Command output: %s", repository.Version, name, out)
 
 			re := regexp.MustCompile(`(?m)ArangoError.*`)
@@ -284,9 +464,9 @@ func checkArangoError(name, code, out, filepath string, repository models.Reposi
 				re = regexp.MustCompile(`(?m)JavaScript exception.*`)
 			}
 
-			models.Logger.Error("Examples", repository.Version, name, filepath, "Unexpected error (no xpError):\n"+strings.Join(re.FindAllString(out, -1), "\n"))
+			models.Logger.Error("Examples", repository.Version, name, filepath, "Unexpected error (no expectedError):\n"+strings.Join(re.FindAllString(out, -1), "\n"))
 
-			return "ERRORD"
+			return utils.MarkerError
 		}
 	}
 
@@ -296,14 +476,14 @@ func checkArangoError(name, code, out, filepath string, repository models.Reposi
 func handleCollectionNotFound(name, code, out, filepath string, repository models.Repository) string {
 	code = notFoundFallbackCode(code, out)
 	output := Exec(name, code, filepath, repository)
-	if strings.Contains(output, "ArangoError") && !strings.Contains(code, "xpError") {
-		models.Logger.Printf("[%s %s] [ERROR]: Found ArangoError without xpError", repository.Version, name)
+	if strings.Contains(output, "ArangoError") {
+		models.Logger.Printf("[%s %s] [ERROR]: Found ArangoError without expectedError", repository.Version, name)
 		models.Logger.Printf("[%s %s] [ERROR]: Command output: %s", repository.Version, name, output)
 
 		re := regexp.MustCompile(`(?m)JavaScript exception.*|ArangoError.*`)
-		models.Logger.Error("Examples", repository.Version, name, filepath, "Unexpected error (no xpError):\n"+strings.Join(re.FindAllString(output, -1), "\n"))
+		models.Logger.Error("Examples", repository.Version, name, filepath, "Unexpected error (no expectedError):\n"+strings.Join(re.FindAllString(output, -1), "\n"))
 
-		return "ERRORD"
+		return utils.MarkerError
 	}
 
 	return output

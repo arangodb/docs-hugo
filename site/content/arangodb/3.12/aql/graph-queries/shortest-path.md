@@ -29,28 +29,30 @@ the path:
 ### Example execution
 
 Let's take a look at a simple example to explain how it works.
-This is the graph that you are going to find a shortest path on:
+This is the graph that you are going to find a shortest path on, the
+[`serviceGraph`](../../graphs/example-graphs.md#service-graph) example graph
+of services that call each other:
 
-![traversal graph](../../../../images/traversal_graph.png)
+{{< embed-svg "service-graph" >}}
 
 You can use the following parameters for the query:
 
-1. You start at the node **A**.
-2. You finish with the node **D**.
+1. You start at the vertex `web`.
+2. You finish with the vertex `inventory`.
 
-So, obviously, you have the nodes **A**, **B**, **C** and **D** on the
-shortest path in exactly this order. Then, the shortest path statement
+So, obviously, you have the vertices `web`, `api`, `orders`, and `inventory` on
+the shortest path in exactly this order. Then, the shortest path statement
 returns the following pairs:
 
-| Node  | Edge  |
-|-------|-------|
-|   A   | null  |
-|   B   | A → B |
-|   C   | B → C |
-|   D   | C → D |
+| Vertex        | Edge                    |
+|-------------|-------------------------|
+| `web`       | `null`                  |
+| `api`       | `web` → `api`           |
+| `orders`    | `api` → `orders`        |
+| `inventory` | `orders` → `inventory`  |
 
 Note that the first edge is always `null` because there is no edge pointing
-to the *startNode*.
+to the *startVertex*.
 
 ## Syntax
 
@@ -222,80 +224,68 @@ collections you expect to be involved.
 
 ## Examples
 
-Creating a simple symmetric traversal demonstration graph:
+The following examples use the
+[`serviceGraph`](../../graphs/example-graphs.md#service-graph) example graph
+that is shown in [Example execution](#example-execution).
 
-![traversal graph](../../../../images/traversal_graph.png)
-
-```js
+```aql
 ---
-name: GRAPHSP_01_create_graph
-description: ''
+name: GRAPHSP_02_web_to_inventory_a
+description: |
+  Find the shortest path from `web` to `inventory` as described above, using the
+  named graph:
+dataset: serviceGraph
 ---
-~addIgnoreCollection("circles");
-~addIgnoreCollection("edges");
-var examples = require("@arangodb/graph-examples/example-graph");
-var graph = examples.loadGraph("traversalGraph");
-db.circles.toArray();
-db.edges.toArray();
+FOR v, e IN OUTBOUND SHORTEST_PATH "services/web" TO "services/inventory" GRAPH "serviceGraph"
+  RETURN { service: v._key, latencyMs: e.latencyMs }
 ```
 
-Start with the shortest path from **A** to **D** as above:
-
-```js
+```aql
 ---
-name: GRAPHSP_02_A_to_D
-description: ''
+name: GRAPHSP_02_web_to_inventory_b
+description: |
+  The same path search, using the edge collection directly:
+dataset: serviceGraph
 ---
-db._query(`
-  FOR v, e IN OUTBOUND SHORTEST_PATH 'circles/A' TO 'circles/D' GRAPH 'traversalGraph'
-    RETURN [v._key, e._key]
-`);
-
-db._query(`
-  FOR v, e IN OUTBOUND SHORTEST_PATH 'circles/A' TO 'circles/D' edges
-    RETURN [v._key, e._key]
-`);
+FOR v, e IN OUTBOUND SHORTEST_PATH "services/web" TO "services/inventory" calls
+  RETURN { service: v._key, latencyMs: e.latencyMs }
 ```
 
-You can see that expectations are fulfilled. You find the nodes in the
+You can see that expectations are fulfilled. You find the vertices in the
 correct ordering and the first edge is `null`, because no edge is pointing
-to the start node on this path.
+to the start vertex on this path.
 
-You can also compute shortest paths based on documents found in collections:
+You can also compute shortest paths based on documents found in collections.
 
-```js
+```aql
 ---
-name: GRAPHSP_03_A_to_D
-description: ''
+name: GRAPHSP_03_web_to_inventory_docs
+description: |
+  Look up the start and target vertex in the `services` collection and use the
+  documents for the shortest path search:
+dataset: serviceGraph
 ---
-db._query(`
-  FOR a IN circles
-    FILTER a._key == 'A'
-    FOR d IN circles
-      FILTER d._key == 'D'
-      FOR v, e IN OUTBOUND SHORTEST_PATH a TO d GRAPH 'traversalGraph'
-        RETURN [v._key, e._key]
-`);
-
-db._query(`
-  FOR a IN circles
-    FILTER a._key == 'A'
-    FOR d IN circles
-      FILTER d._key == 'D'
-      FOR v, e IN OUTBOUND SHORTEST_PATH a TO d edges
-        RETURN [v._key, e._key]
-`);
+FOR a IN services
+  FILTER a._key == "web"
+  FOR b IN services
+    FILTER b._key == "inventory"
+    FOR v, e IN OUTBOUND SHORTEST_PATH a TO b GRAPH "serviceGraph"
+      RETURN { service: v._key, latencyMs: e.latencyMs }
 ```
 
-And finally clean it up again:
+If you set the [`weightAttribute` option](#weightattribute), you get the path
+with the lowest sum of edge weights instead. From `web` to `db`, the paths via
+`auth` and `catalog` have the fewest edges, but the path via `orders` and
+`inventory` has the lowest total latency.
 
-```js
+```aql
 ---
-name: GRAPHSP_99_drop_graph
-description: ''
+name: GRAPHSP_04_web_to_db_weighted
+description: |
+  Find the path from `web` to `db` with the lowest total latency:
+dataset: serviceGraph
 ---
-var examples = require("@arangodb/graph-examples/example-graph");
-examples.dropGraph("traversalGraph");
-~removeIgnoreCollection("circles");
-~removeIgnoreCollection("edges");
+FOR v, e IN OUTBOUND SHORTEST_PATH "services/web" TO "services/db" GRAPH "serviceGraph"
+  OPTIONS { weightAttribute: "latencyMs" }
+  RETURN { service: v._key, latencyMs: e.latencyMs }
 ```

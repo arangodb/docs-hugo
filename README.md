@@ -228,6 +228,16 @@ server runs until you press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 
 The site will be available at `http://localhost:1313`.
 
+The `stable` and `devel` paths are second mounts of the version folders they
+point to (see `module.mounts` in `site/config/_default/config.yaml`). When you
+edit a file in one of these folders, the live server only rebuilds the page
+under the alias path. For example, if `stable` is 3.12, an edit to
+`site/content/arangodb/3.12/aql/_index.md` shows up at
+`http://localhost:1313/arangodb/stable/aql/` but not at
+`http://localhost:1313/arangodb/3.12/aql/`, which keeps the old content until
+you restart the server. Preview such changes under the alias path. Static builds
+render both paths correctly.
+
 To make the documentation tooling not start a live server in watch mode but
 rather create a static build and exit, set the environment variable `ENV` to
 any value other than `local` before calling `docker compose ...`:
@@ -244,6 +254,51 @@ You can additionally set the `HUGO_URL` environment variable to
 `https://docs.arango.ai/` to create a production-like build that
 includes Google Analytics etc.
 
+#### Frontend tests
+
+Browser tests with [Playwright](https://playwright.dev/) check the
+functionality of the built site, like the navigation, version selector, copy
+buttons, tabs, tables, details boxes, image viewer, and keyboard access, in Chromium, Firefox, and WebKit on desktop and
+mobile viewports. They are in `toolchain/frontend-tests/`.
+
+CircleCI runs them before deploying a release, after scheduled and example
+generation builds, and after plain builds if the changes compared to `main`
+touch the theme, site configuration, static files, versions, the tests, or the
+CircleCI configuration (in parallel to the deploy preview).
+
+To run them locally, create a static build first (see [Plain build](#plain-build)
+with `ENV=static`) so that `site/public/` exists. Then install the dependencies
+and browsers once, and run the tests:
+
+```sh
+cd toolchain/frontend-tests
+npm ci
+npx playwright install chromium firefox   # add webkit if your system supports it
+npx playwright test --project chromium --project mobile-chromium --project firefox
+```
+
+The tests serve `site/public/` themselves. You can test another build with
+`SITE_DIR=path/to/public` or a deployed site, like a deploy preview, with
+`BASE_URL`:
+
+```sh
+BASE_URL=https://deploy-preview-1234--docs-hugo.netlify.app npx playwright test
+```
+
+To run all browsers including WebKit, which doesn't run natively on every Linux
+distribution, use the same Docker image as CircleCI. Arguments are passed to
+`playwright test`:
+
+```sh
+toolchain/frontend-tests/run-in-docker.sh
+toolchain/frontend-tests/run-in-docker.sh --project webkit -g "version selector"
+```
+
+After a run, `npm run report` opens the report with screenshots and traces of
+failed tests, and `npx playwright test --ui` lets you run and debug tests
+interactively. For writing tests and updating Playwright, see
+[toolchain/frontend-tests/README.md](toolchain/frontend-tests/README.md).
+
 #### Scheduled and example generation build
 
 **Configuration**
@@ -253,16 +308,16 @@ The toolchain is configured with environment variables:
 - `GENERATORS`: the generators to run as a space-separated string (see below).
   All generators run if it is empty.
 - `ARANGODB_BRANCH_{VERSION}`: the ArangoDB Docker image to use for a docs version,
-  for example, `arangodb/enterprise-preview:devel-nightly`,
-  `arangodb/core-preview:4.0-nightly`, or `arangodb/enterprise:3.12.9`
+  for example, `arangodb/enterprise-preview:3.12-nightly`,
+  `arangodb/core-preview:devel-nightly`, or `arangodb/enterprise:3.12.9`
   (Docker Hub if no registry is given, other registries like
-  `gcr.io/gcr-for-testing/arangodb/core-preview:4.0-nightly` work, too),
+  `gcr.io/gcr-for-testing/arangodb/core-preview:devel-nightly` work, too),
   or the absolute path of a local build (see **Local builds** below).
-  It can also be a branch name of the `arangodb/arangodb` repository if CI
-  compiled it before: the toolchain then uses the cached image
-  `arangodb/docs-hugo:<version>-<arangodb commit>-<enterprise commit>` (see
-  [CIRCLECI.md](CIRCLECI.md#upstream-references)) for the commits checked out in
-  `ARANGODB_SRC_{VERSION}` (including its `enterprise` folder).
+  It can also be a branch name of the `arangodb/arangodb` repository if an image
+  was built for it (see [CIRCLECI.md](CIRCLECI.md#build-arangodb-images)): the
+  toolchain then uses the image of the commits checked out in
+  `ARANGODB_SRC_{VERSION}` (including its `enterprise` folder), named as
+  configured in `.circleci/upstream.yaml`.
   No server is started for a version if it is empty, and its content is not
   regenerated.
 - `ARANGODB_SRC_{VERSION}`: the absolute path to a working copy of the
@@ -296,14 +351,14 @@ so you can use one server per version.
 export GENERATORS="examples options optimizer"
 export ARANGODB_BRANCH_3_12="arangodb/enterprise:3.12.9"
 export ARANGODB_SRC_3_12="path/to/arangodb"
-export ARANGODB_BRANCH_4_X="arangodb/core-preview:4.0-nightly"
+export ARANGODB_BRANCH_4_X="arangodb/core-preview:devel-nightly"
 export ARANGODB_SRC_4_X="path/to/arangodb2"
 ```
 
 ```fish
 # Fish
 set -xg GENERATORS "examples options optimizer"
-set -xg ARANGODB_BRANCH_4_X arangodb/core-preview:4.0-nightly
+set -xg ARANGODB_BRANCH_4_X arangodb/core-preview:devel-nightly
 ```
 
 On Windows using PowerShell, use a Unix-like path:
@@ -340,7 +395,7 @@ OVERRIDE=".*" docker compose up   # Bash and Fish
 
 Starting with 4.x, the server (`arangod`, without V8) and the client tools
 (including `arangosh`) are in separate images, for example,
-`arangodb/core-preview:4.0-nightly` and `arangodb/client-tools-preview:4.0-nightly`.
+`arangodb/core-preview:devel-nightly` and `arangodb/client-tools-preview:devel-nightly`.
 Only specify the server image (`core`/`core-preview`). The toolchain derives the
 matching client tools image (`client-tools`/`client-tools-preview` in the same
 registry, with the same tag; generally, a repository name `core` or `core-<suffix>`
@@ -348,14 +403,29 @@ becomes `client-tools` or `client-tools-<suffix>`), pulls it if necessary, and r
 `arangosh` and the other client tools in a separate container. For images that bundle the server and the client tools
 (like `arangodb/enterprise:3.12.9`), the client tools run in the server container.
 
+The nightly images are built from the `arangodb/arangodb` branches that the docs
+versions are based on:
+
+| Docs version | Branch  | Nightly image |
+|:-------------|:--------|:--------------|
+| 4.x          | `devel` | `arangodb/core-preview:devel-nightly` (also tagged `4.0-nightly`) with `arangodb/client-tools-preview:devel-nightly` |
+| 3.12         | `3.12`  | `arangodb/enterprise-preview:3.12-nightly` |
+| 3.11         | `3.11`  | None, use release images or build images (see [CIRCLECI.md](CIRCLECI.md#build-arangodb-images)) |
+
+`devel` is where the 4.0 development happens. It used to be the 3.12 development
+branch, so `arangodb/enterprise-preview:devel-nightly` is an outdated 3.12 image
+that is no longer updated. Use `arangodb/enterprise-preview:3.12-nightly` for 3.12
+instead. The toolchain checks that the version of the server in an image matches
+the docs version and aborts if not (e.g. a 3.12 image for 4.x).
+
 Images that exist locally are used as they are, otherwise the toolchain pulls
 them. To get the latest build of an image with a tag that is updated regularly,
 like the nightly images, pull it manually before running the toolchain. For
 versions with separate server and client tools images, pull both:
 
 ```sh
-docker pull arangodb/core-preview:4.0-nightly
-docker pull arangodb/client-tools-preview:4.0-nightly
+docker pull arangodb/core-preview:devel-nightly
+docker pull arangodb/client-tools-preview:devel-nightly
 ```
 
 The same applies to the images of the toolchain itself
@@ -389,6 +459,9 @@ executables, and the toolchain warns about it.
   container (e.g. `arangodb/ubuntubuildarangodb-devel`) work, too.
 - The version of the build needs to match the docs version and the version of the
   source tree (major and minor version).
+- Up to 3.12, the servers need V8 for server-side JavaScript, so don't use the
+  `*-no-v8` presets of 3.12. 4.x is V8-free: only `arangosh` uses JavaScript, and
+  the presets don't have such variants.
 - Prefer release-like presets like `nightly-package-x64` or
   `pr-non-maintainer-x64`. Developer builds with maintainer mode and assertions
   (e.g. the `developer-x64` preset) work, but the example output can differ from
@@ -556,6 +629,31 @@ Inner shortcode
 {{< /details >}}
 ```
 
+#### Navigation group labels
+
+Pages of a section can be grouped under a non-clickable label in the sidebar
+by setting `group` in their front matter:
+
+```yaml
+---
+title: Architecture
+menuTitle: Architecture
+group: Overview
+weight: 5
+---
+```
+
+The label is printed once whenever the `group` value changes while the pages
+of a section are rendered in weight order, so the pages of a group have to be
+contiguous by weight. Use a weight band per group (for example 100 to 199 for
+the first group, 200 to 299 for the second) to keep it that way. Pages without
+`group` are listed without a label. Within one section, either every page
+sets `group` or none does, and the pages of a group have to be adjacent by
+weight; the build fails with an error if either rule is broken, so a page
+cannot end up under a label by accident. The Contextual Data Platform section uses
+the labels Overview, Install, Build, Query & explore, Develop & extend,
+Operate, and Reference.
+
 #### Tags
 
 Tags let you display badges, usually below a headline.
@@ -711,6 +809,31 @@ Available attributes:
 - `class`: CSS classes to apply
 - `style`: CSS inline styles to apply
 
+##### Screenshots
+
+The main content column is only about 800 pixels wide. Wider images are scaled
+down to fit, which can make text and other details illegible. Keep the following
+in mind when taking screenshots of web interfaces:
+
+- **Avoid wide screenshots**: Don't capture an entire browser window with an
+  extreme aspect ratio, like a maximized window on an ultra-wide display.
+- **Zoom the page**: Even with a normal aspect ratio, text can end up too small
+  after scaling. Zoom in on the page, e.g. to 150% or 175%, rather than making
+  the browser window smaller. This results in a higher-resolution screenshot
+  that stays sharp.
+- **Don't zoom in too much**: Excessive zoom levels can break the page layout or
+  make the interface look worse than it does under normal conditions, like by
+  causing excessive text wrapping.
+- **Capture only what is relevant**: It is often best to screenshot only the
+  part of the interface that the surrounding documentation is about instead of
+  the entire viewport. Don't include the address bar or other browser chrome,
+  and no artificial effects like drop shadows around the window.
+- **Prepare the content**: Set up the content in the interface so that it looks
+  tidy and representative, e.g. with meaningful names and example data.
+- **Touch up the page**: You can use the browser's developer tools to edit the
+  page before taking a screenshot, like changing text or removing elements in
+  the border areas that are not relevant for what should be shown.
+
 ##### Image compression
 
 When adding or updating images, the files should be reduced in size as much as
@@ -814,11 +937,62 @@ block, and edit the `xlink:href` value.
 Conventions used in the existing diagrams:
 
 - Internal docs links use an absolute path, e.g. `/arangodb/4.x/deploy/cluster/`
-  or `/platform-suite/container-manager/`.
+  or `/contextual-data-platform/container-manager/`.
 - External links use a full URL and add `target="_blank"`, e.g.
   `<a xlink:href="https://kubernetes.io/" target="_blank">`.
 - Use `class="card-link"` on the `<a>` tag so the link picks up the shared
   hover styling defined in the theme.
+
+##### Keyboard and screen reader access to SVG links
+
+Every link in an embedded SVG is a tab stop, and screen readers announce it by
+its text. Keep the following in mind so that diagrams work without a mouse:
+
+- **Document order**: The order of the `<a>` elements in the file is the order
+  in which they are focused and read. Arrange them like the layout, top to
+  bottom and left to right, and the link of a container (like the title of a
+  box) before the links inside of it. Later elements are drawn on top of earlier
+  ones, so a container's own shapes still come first.
+- **Link text**: Put the visible `<text>` inside the `<a>`. A link around a
+  transparent shape without text has no name for screen readers.
+- **Few duplicates**: Each link is a stop when tabbing. Avoid many links to the
+  same page in a row.
+- **Scoped styles**: The `<style>` element of an SVG applies to the whole page
+  once inlined. Scope all rules with a class on the SVG's top-level group, like
+  `.cdp-arch .card-link { ... }`.
+- **Focus state**: Apply hover styles on keyboard focus, too:
+
+  ```css
+  .arch .card-link:is(:hover, :focus-visible) .node { fill: #1f5c38; }
+  ```
+
+- **Focus ring color**: The theme draws a 2px focus ring in the color of the
+  `--focus-ring` custom property, dark teal by default. It is hardly visible on
+  dark backgrounds. Set the property to the lime of the theme for the links
+  there, and only there, for example with a class:
+
+  ```css
+  .arch .on-dark { --focus-ring: #befe99; }
+  ```
+
+  Where a ring is still easy to miss, like around a large box among other green
+  borders, change the border of the focused shape, too
+  (`.arch .on-dark:focus-visible > rect { stroke: #befe99; stroke-width: 3; }`).
+- **Room for the ring**: The ring is a rectangle around the bounding box of the
+  link, 3px outside of it. Leave at least 10px between links that are next to
+  each other, as the ring of the earlier link is otherwise drawn below the later
+  one.
+- **Ring inside a shape**: For links that fill a box edge to edge, like a title
+  strip, the ring would cover the box border. Firefox ignores a negative
+  `outline-offset` in SVGs, so draw a shape inside the link instead, with
+  `outline: none` for the link and a stroke for the shape on focus. See the
+  `title-focus` paths in `Arango-Contextual-Data-Platform-Overview.svg`.
+- **Shapes within borders**: Draw fills that adjoin a border (like a title strip
+  in a box) inside the border, inset by its stroke width, so that they don't
+  show through or overlap it.
+
+Check diagrams by tabbing through them in Chrome and Firefox, on the page and in
+the image viewer (**Enlarge**), which pans to the focused link.
 
 #### Diagrams
 
@@ -898,16 +1072,19 @@ To prominently link to other content, you may use cards:
 ```markdown
 {{< cards >}}
 
-{{% card title="Graphs" link="graphs/" icon="/images/file.png" %}}
+{{% card title="Graphs" link="graphs/" %}}
 Learn everything about graphs.
 {{% /card %}}
 
-{{% card title="Data science" link="data-science/" icon="/images/file.png" %}}
+{{% card title="Data science" link="data-science/" icon="graph.svg" %}}
 Read about ArangoDB's features for analytics.
 {{% /card %}}
 
 {{< /cards >}}
 ```
+
+The cards are shown in as many columns as fit. The optional `icon` is the file
+name of an image in `site/content/images/`, shown at 48 × 48 pixels.
 
 #### Steps
 
@@ -925,7 +1102,7 @@ Download and install the package for your platform.
 Run the following command:
 
 ```sh
-arangod --server.endpoint tcp://0.0.0.0:8529
+arangod --server.endpoint http://0.0.0.0:8529
 ```
 {{< /step >}}
 
@@ -1001,6 +1178,11 @@ The following shortcodes also exist but are rarely used:
   {{< /details >}}
   ```
 
+  It renders a rounded box like the table of contents on narrow screens, which
+  expands in place. Add `open="true"` to expand it initially. To stack several
+  boxes with a single outline, wrap them in `{{< accordion >}}` and
+  `{{< /accordion >}}`.
+
 - `{{< youtube id="dQw4w9WgXcQ" >}}` can be used to embed a single YouTube video,
   and `{{< youtube-playlist id="PL0tn-TSss6NV45d1HnLA57VJFH6h1SeH7" >}}`
   for a YouTube playlist.
@@ -1054,8 +1236,8 @@ The following shortcodes also exist but are rarely used:
 - Avoid overly long link labels, such as entire sentences.
 
 - Use relative links for cross-references to other documentation pages, e.g.
-  `../../platform-suite/_index.md` instead of `/platform-suite/_index.md` or
-  `https://docs.arango.ai/platform-suite/`.
+  `../../contextual-data-platform/_index.md` instead of `/contextual-data-platform/_index.md` or
+  `https://docs.arango.ai/contextual-data-platform/`.
 
 - Avoid **bold** and *italic* markup in headlines. If you have to use it, then
   prefer `**bold**` and `*italic*`  over `__bold__` and `_italic_` because the
@@ -1399,10 +1581,13 @@ Pages and sections about features that are only available in certain environment
 such as in ArangoDB Shell should indicate where they are available using the
 `tag` shortcode.
 
-Features exclusive to the Contextual Data Platform, Platform Suite, Agentic AI Suite,
-Arango Managed Platform (AMP), and ArangoDB generally don't need to be tagged
-because they are in dedicated parts of the documentation. However, if there are
-subsections with different procedures, each can be tagged accordingly.
+Features exclusive to the Contextual Data Platform, the Arango Managed Platform
+(AMP), and ArangoDB generally don't need to be tagged because they are in
+dedicated parts of the documentation. Within the Contextual Data Platform
+documentation, the Platform Suite and the Agentic AI Suite are licenses rather
+than chapters, so pages of services that require one of them are tagged.
+If there are subsections with different procedures, each can be tagged
+accordingly.
 
 In the Contextual Data Platform only:
 
@@ -1410,13 +1595,13 @@ In the Contextual Data Platform only:
 {{< tag "Contextual Data Platform" >}}
 ```
 
-In the Platform Suite of the Contextual Data Platform:
+Requires the Platform Suite license of the Contextual Data Platform:
 
 ```markdown
 {{< tag "Platform Suite" >}}
 ```
 
-In the Agentic AI Suite of the Contextual Data Platform only:
+Requires the Agentic AI Suite license of the Contextual Data Platform:
 
 ```markdown
 {{< tag "Agentic AI Suite" >}}
@@ -1523,9 +1708,11 @@ Add the actual content formatted in Markdown syntax below the front matter.
 There are two options for setting up redirects when renaming or moving content:
 
 - **Netlify redirects**: Server-side, testable in Netlify deploy previews.
-  Use for unversioned content as well as when removing versioned content.
-- **Hugo aliases**: Client-side, can be tested locally. Use only when
-  renaming/moving versioned content to keep the version switcher working locally.
+  Use for unversioned content as well as when removing versioned content
+  that the version selector can't lead to, i.e. pages removed from all versions.
+- **Hugo aliases**: Server-side on Netlify (generated) and client-side when
+  running the docs toolchain locally. Use when renaming/moving versioned content,
+  or removing it from some versions only, to keep the version selector working.
 
 Note that turning a page `topic.md` into a section `topic/_index.md` (in
 order to add child pages) does not affect the resulting URL (`/topic/`) and
@@ -1538,8 +1725,9 @@ there is support for splatting and placeholders (but not regular expressions). S
 [Redirect options](https://docs.netlify.com/routing/redirects/redirect-options/)
 for details.
 
-The configuration file is [`site/static/_redirects`](site/static/_redirects).
-The general format is `/old/url/ /new/url/ 301`, where `301` is for a permanent
+The manual rules are in [`site/_redirects`](site/_redirects). Hugo publishes
+them as part of the generated `_redirects` file, after a forced `301!` rule
+for every alias (see below). The general format is `/old/url/ /new/url/ 301`, where `301` is for a permanent
 redirect and `302` for a temporary one. Use `302` until the redirects have been
 tested, then change them to `301` - this avoids caching issues (browser, CDN)
 should it be necessary to fix some of the redirects.
@@ -1559,16 +1747,23 @@ redirected. This is because the version selector merely substitutes the version
 in the current URL and we hope that this page exists.
 
 To ensure a working version selector locally, which can be helpful when
-reviewing content, the rule is to use Hugo aliases when moving or renaming
-versioned pages (i.e. `/arangodb/<version>/...`). This is possible in addition
-to or instead of Netlify redirects. Netlify's server-side `301` redirects are
-better for search engines, but it only redirects if there is no file for a given
-URL. Hugo aliases create client-redirect files. To make Netlify redirect anyway,
-write an exclamation mark after the `301` in `_redirects`, like so:
+reviewing content, use Hugo aliases when moving or renaming versioned pages
+(i.e. `/arangodb/<version>/...`), and when removing a page from some versions
+but not others. Hugo aliases create
+client-side redirect files (`<meta http-equiv="refresh">`), and Netlify only
+applies a redirect rule if there is no file for a given URL, unless the status
+code has an exclamation mark (`301!`). Therefore, Hugo generates a forced rule
+for every alias at the top of the published `_redirects` file
+(`site/themes/arangodb-docs-theme/layouts/_default/home.redirects`):
 
 ```
-/arangodb/4.x/old-feature/  /arangodb/4.x/deprecated-and-removed-features/  301!
+/arangodb/4.x/old-feature/  /arangodb/4.x/release-notes/deprecated-and-removed-features/  301!
 ```
+
+Do not add manual rules for URLs that are aliases. The generated rules take
+precedence as they come first. Manual rules for URLs without an alias don't
+need an exclamation mark. Hugo warns if an alias is the URL of an existing
+page (no rule is generated) or if two pages use the same alias.
 
 The following steps are necessary for moving/renaming versioned content:
 1. Rename file or folder
@@ -1640,7 +1835,8 @@ aliases:
 
 Aliases create HTML files with client-side redirects before any content is
 rendered to HTML, which means that aliases can get overwritten by content files.
-If this is not a mistake, the affected aliases should be removed.
+If this is not a mistake, the affected aliases should be removed. Hugo warns
+about such aliases (`Alias ... is the URL of another page`).
 
 ### Disable or limit the table of contents
 
@@ -1710,6 +1906,14 @@ It makes a warning show at the top of every page for that version.
    +    default: "undefined"
    ```
 
+   Under `jobs.generate-config.environment`, add an environment variable for
+   the parameter. Example:
+
+   ```diff
+         PARAM_ARANGODB_3_12: << pipeline.parameters.arangodb-3_12 >>
+   +     PARAM_ARANGODB_4_X: << pipeline.parameters.arangodb-4_x >>
+   ```
+
    Near the end of the file under `jobs.generate-config.steps[0].run.command`,
    find the line of code that calls `python3 generate_config.py`. In one of the
    following lines, a parameter for every version is passed as argument. Add one
@@ -1717,13 +1921,28 @@ It makes a warning show at the top of every page for that version.
 
    ```diff
                 python3 generate_config.py \
-                  --workflow << pipeline.parameters.workflow >> \
-   -              --arangodb-branches 3.11="<< pipeline.parameters.arangodb-3_11 >>" 3.12="<< pipeline.parameters.arangodb-3_12 >>" \
-   +              --arangodb-branches 3.11="<< pipeline.parameters.arangodb-3_11 >>" 3.12="<< pipeline.parameters.arangodb-3_12 >>" 4.x="<< pipeline.parameters.arangodb-4_x >>" \
+                  --workflow="$PARAM_WORKFLOW" \
+   -              --arangodb-branches 3.11="$PARAM_ARANGODB_3_11" 3.12="$PARAM_ARANGODB_3_12" \
+   +              --arangodb-branches 3.11="$PARAM_ARANGODB_3_11" 3.12="$PARAM_ARANGODB_3_12" 4.x="$PARAM_ARANGODB_4_X" \
    ```
 
    Each entry is `VERSION=REF`, with `VERSION` being the `name` of the version in
    `versions.yaml`. The order doesn't matter.
+
+   In the `.circleci/upstream.yaml` file, add an entry for the new version with
+   the `arangodb/arangodb` branch it is based on (`devel` for the version in
+   development), the default `arangodb/enterprise` branch, the naming of the images that the
+   CI of `arangodb/arangodb` builds for branches, and the nightly image (see the
+   comments in the file and [CIRCLECI.md](CIRCLECI.md#build-arangodb-images)).
+   Example:
+
+   ```yaml
+   "4.x":
+     branch: "devel"
+     enterprise: "devel"
+     image: "public.ecr.aws/b0b8h2r4/arangodb/core-preview:{main7}_{enterprise7}"
+     nightly: "arangodb/core-preview:devel-nightly"
+   ```
 
 3. In the `toolchain/docker/amd64/docker-compose.yml` file, add an entry under
    `services.toolchain.volumes` for the new version. Simply increment the value
@@ -1851,12 +2070,12 @@ It makes a warning show at the top of every page for that version.
     | Type | Name | Value |
     |:-----|:-----|:------|
     | string | `workflow` | `generate` |
-    | string | `arangodb-4_x` | Docker Hub image (e.g. `arangodb/core-preview:4.0-nightly`) or GitHub main repo PR link (e.g. `https://github.com/arangodb/arangodb/pull/123456`) |
+    | string | `arangodb-4_x` | Image (e.g. `arangodb/core-preview:devel-nightly`) or `arangodb/arangodb` branch with a built image (see [CIRCLECI.md](CIRCLECI.md#upstream-references)) |
     | string | `generators` | `examples metrics error-codes exit-codes optimizer options` |
     | string | `deploy-url` | `deploy-preview-{PR-number}` with the number of the docs PR |
     | boolean | `commit-generated` | `true` |
 
-    Approve the workflow in CircleCI. After a successful run, you should see a
+    After a successful run, you should see a
     commit in the docs PR with the updated data files, as well as an updated
     example cache file. The plain build should no longer fail and provide you
     with a Netlify preview.
@@ -1907,6 +2126,17 @@ version. In this example, you need to adjust the `alias` of the 4.x entry.
 The work-in-progress versions of the ArangoDB documentation need to have
 `inDevelopment` set to `true`. Make sure to change it to `false` for the former
 devel version when it becomes the new stable version.
+
+The version with the `"devel"` alias is the one developed in the `devel` branch
+of `arangodb/arangodb`. When the former devel version gets a branch of its own
+(e.g. 4.x when the 5.0 development starts in `devel`), update `.circleci/upstream.yaml`:
+set `branch` of the former devel version to its new branch, adjust `enterprise`,
+`image`, and `nightly` accordingly, and add an entry for the new devel version
+(see [Add a new version](#add-a-new-version)). Also update the links to the
+`devel` branch in the content of the former devel version, like the changelog in
+`release-notes/_index.md` and `CONTRIBUTING.md` and `LICENSE`
+(`git grep -E "arangodb/arangodb/(blob|tree)/devel|arangodb/arangodb/devel/" site/content/arangodb/4.x`),
+and copy them with `devel` to the new version.
 
 The final configuration would then look like this:
 
@@ -2005,7 +2235,7 @@ db.ids.ensureIndex({ type: "persistent", fields: [ "myId" ], unique: true });
 db.ids.save({ "myId": 123 });
 db.ids.save({ 
   "myId": 123
-}); // xpError(ERROR_ARANGO_UNIQUE_CONSTRAINT_VIOLATED)
+}); // expectedError(ERROR_ARANGO_UNIQUE_CONSTRAINT_VIOLATED)
 ~db._drop("ids");
 ```
 ````
@@ -2131,13 +2361,25 @@ If a statement is expected to fail (e.g. to demonstrate the error case), then
 this has to be indicated with a special JavaScript comment:
 
 ```js
-db._document("collection/does_not_exist"); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND)
+db._document("collection/does_not_exist"); // expectedError(ERROR_ARANGO_DOCUMENT_NOT_FOUND)
 ```
 
 This will make the example generation continue despite the error. See
 [Error codes and meanings](https://docs.arango.ai/arangodb/stable/develop/error-codes/)
-for a list of all error codes and their names. If a unexpected error is raised,
-then the example generation will abort with an error.
+for a list of all error codes and their names. The error is shown in a short
+form in the output, e.g. `[ArangoError 1202: document not found]`, and the
+output of the following statements is shown as usual.
+
+The example generation fails with an error if:
+
+- an error is raised that the example doesn't declare (including JavaScript
+  errors like a `ReferenceError`),
+- a declared error is not raised, or
+- a declared error name is unknown.
+
+The check covers the whole example rather than individual statements, so the
+comment can follow a statement that spans multiple lines. If an example
+expects multiple different errors, add a comment for each of them.
 
 Every backslash in a query needs to be escaped with another backslash, i.e.
 JSON escape sequences require two backslashes, and literal backslashes four:
@@ -2191,7 +2433,7 @@ for the available datasets.
 
 To get the query explain output including the execution plan instead of the
 actual query result, you can optionally specify the `explain` option in the
-front matter:
+front matter. The output is the same as of `db._explain()` in arangosh:
 
 ```yaml
 explain: true
@@ -2220,6 +2462,111 @@ bindVars:
 ---
 FOR doc IN @@coll
   RETURN doc.@attr
+```
+
+The query can optionally set query options via the `options` key in the
+front matter. It corresponds to the `options` object of the cursor API, i.e.
+it accepts the sub-options like `maxRuntime`, `optimizer`, or `fullCount`, but
+not the attributes at the top level of the request body like `count` or
+`batchSize`. The options are shown below the query like the bind parameters:
+
+```yaml
+---
+...
+options:
+  matchStatement: experimental
+  optimizer:
+    rules: ["-all"]
+# or using JSON notation:
+#options: { "matchStatement": "experimental", "optimizer": { "rules": ["-all"] } }
+---
+MATCH (a:persons) -[:knows]-> (b:persons)
+  RETURN [a._key, b._key]
+```
+
+The bind parameters and query options are also used if you set `explain: true`.
+
+If a query is expected to fail, indicate this with an AQL comment like in
+JavaScript examples. It is not shown in the rendered example:
+
+```aql
+---
+name: aqlMatchUnboundVariable
+description: ''
+options:
+  matchStatement: experimental
+---
+MATCH (a) RETURN a // expectedError(ERROR_QUERY_PARSE)
+```
+
+If a query is expected to produce warnings, declare each of them with an
+`expectedWarning` comment. Warnings have the codes of errors, so use the error
+names (see [Error codes and meanings](https://docs.arango.ai/arangodb/stable/develop/error-codes/)).
+The comment is not shown in the rendered example, but other comments before it
+on the same line are:
+
+```aql
+---
+name: aqlJsonParse_5
+description: ''
+---
+RETURN JSON_PARSE("abc") // invalid JSON // expectedWarning(ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH)
+```
+
+The warnings are shown below the query result. Like for errors, the example
+generation fails with an error if the query produces a warning that the example
+doesn't declare, if a declared warning doesn't occur, or if a declared name is
+unknown. This way, queries that produce warnings by accident are noticed.
+Warnings are only collected for AQL examples, not for queries in JavaScript
+examples.
+
+#### Backslashes in AQL examples
+
+The query is handed to _arangosh_ as a JavaScript string literal, so the AQL
+parser sees exactly what you write in the example. Escape backslashes by the AQL
+rules alone, the same way you would when typing the query into the query editor
+of the web interface:
+
+- `\\` in an AQL string literal for a single literal backslash. A regular
+  expression shorthand like `\d`, `\s`, or `\b` therefore needs to be written as
+  `\\d`, `\\s`, and `\\b` to survive the string literal
+- `\n`, `\r`, and `\t` for a line feed, carriage return, and tabulation
+
+````yaml
+```aql
+---
+name: regexExample
+description: ''
+---
+RETURN REGEX_MATCHES("foo=1, bar=22", "(\\w+)=(\\d+)")
+```
+````
+
+Do not add a second level of escaping for _arangosh_. An example can be copied
+from the rendered documentation straight into the query editor and run unchanged.
+
+For the same reason, `${...}` and backticks carry no special meaning in the query
+and need no escaping. A named capturing group can be referenced in a replacement
+string as usual:
+
+````yaml
+```aql
+---
+name: namedGroupExample
+description: ''
+---
+RETURN REGEX_REPLACE("Jane Roe", "(?<first>\\w+) (?<last>\\w+)", "${last}, ${first}")
+```
+````
+
+In the generated **output**, _arangosh_ prints strings with JSON-style escaping.
+A single backslash in a result value is therefore displayed as `\\`. A query that
+returns the three-character string `a\b` renders like this:
+
+```
+[
+  "a\\b"
+]
 ```
 
 ### Add a new OpenAPI endpoint description
@@ -2265,12 +2612,12 @@ paths:
 Only define a **single tag** in `tags` as this is used to categorize the endpoints.
 
 The tag descriptions live in [`site/data/openapi_tags/`](site/data/openapi_tags/)
-and are merged into the `openapi.json` files (see below). For the ArangoDB
-HTTP API, the files are stored as:
+and are merged into the `openapi*.json` files (see below). For the ArangoDB
+HTTP API, there is one file per API version:
 
-- `arangodb_0.yaml` (API v0)
-- `arangodb_1.yaml` (API v1)
-- `arangodb_2.yaml` (experimental API)
+- `arangodb_v0.yaml` (API v0)
+- `arangodb_v1.yaml` (API v1)
+- `arangodb_experimental.yaml` (experimental API)
 
 For other services, use `site/data/openapi_tags/<Service-Name>.yaml`
 if you need tags.
@@ -2280,9 +2627,9 @@ _arangoproxy_ also converts the YAML to JSON and assembles full OpenAPI
 specifications when creating a [static build](#plain-build). These are saved to
 disk under `site/data/<version>/` for the ArangoDB API, so one folder per ArangoDB
 version and with one or more files depending on the supported API versions:
-- `0-openapi.json` (API v0)
-- `1-openapi.json` (API v1)
-- `2-openapi.json` (experimental API)
+- `openapi-v0.json` (API v0)
+- `openapi-v1.json` (API v1)
+- `openapi-experimental.json` (experimental API)
 
 These files are checked into the `OpenAPI` folder in the
 [`arangodb/arangodb`](https://github.com/arangodb/arangodb/tree/devel/OpenAPI)
@@ -2306,8 +2653,7 @@ paths:
 ````
 
 A value of `[v0]` for the `apiVersions` option will add the endpoint only to
-`0-openapi.json`. The experimental API uses the next available number, hence
-`2-openapi.json`.
+`openapi-v0.json`, and `[experimental]` only to `openapi-experimental.json`.
 
 ````yaml
 ## Get the activities (experimental)
@@ -2321,10 +2667,9 @@ paths:
     ...
 ````
 
-Endpoint paths are automatically prefixed for ArangoDB as follows:
-- No prefix for API v0
-- `/_arango/v1` for API v1
-- `/_arango/experimental` for the experimental API
+Endpoint paths are automatically prefixed for ArangoDB with
+`/_arango/<API-version>`, e.g. `/_arango/v1` for API v1 and
+`/_arango/experimental` for the experimental API. API v0 has no prefix.
 
 To write OpenAPI descriptions for something other than ArangoDB, use the
 `service` front matter option. This writes the OpenAPI specification to
@@ -2345,20 +2690,21 @@ paths:
 The default front matter values allow you to omit the front matter block
 entirely in many cases. The defaults are:
 - `service: arangodb`
-- `apiVersions: [v0]` for ArangoDB 3.10
-- `apiVersions: [v0]` for ArangoDB 3.11
-- `apiVersions: [v0, v1]` for ArangoDB 3.12
-- `apiVersions: [v1]` for ArangoDB 4.x
+- `apiVersions`: the `allowedAPIVersions` of the ArangoDB version in
+  [`versions.yaml`](site/data/versions.yaml) except for `experimental`,
+  e.g. `[v0]` for 3.12 and `[v1]` for 4.x at the moment
 
 ### Configure the OpenAPI metadata and API versions
 
 **`site/data/versions.yaml`**
 
-For each ArangoDB documentation version, you can set `allowedAPIVersions` to
-declare which API versions (v0, v1, experimental) are valid for that version.
-_arangoproxy_ uses this to know which OpenAPI files to expect per version
-(e.g. `0-openapi.json`, `1-openapi.json`, `2-openapi.json` under
-`site/data/<version>/`). Example:
+For each ArangoDB documentation version, you need to set `allowedAPIVersions`
+to declare which API versions (like v0, v1, experimental) are valid for that
+version. This is the single source of truth for the API versions:
+_arangoproxy_ writes one OpenAPI file per listed API version
+(e.g. `openapi-v0.json` and `openapi-experimental.json` under
+`site/data/<version>/`), and the Hugo templates derive the default
+`apiVersions` from it. Example:
 
 ```yaml
 - name: "4.x"
@@ -2372,9 +2718,8 @@ _arangoproxy_ uses this to know which OpenAPI files to expect per version
   allowedAPIVersions: [v0]
 ```
 
-Allowed values are `v0`, `v1`, and `experimental`. If you add a new docs version,
-set `allowedAPIVersions` accordingly; omitting it means the toolchain falls back
-to allowing all indices for that version.
+If you add a new docs version, set `allowedAPIVersions` accordingly. The
+toolchain reports an error if it is missing.
 
 **`site/data/openapi_services.yaml`**
 
@@ -2382,7 +2727,7 @@ This file defines base metadata per OpenAPI service (`title`, `summary`, `contac
 `externalDocs`, and for non-ArangoDB services also `version`). _arangoproxy_
 merges this with the per-version OpenAPI content. For ArangoDB (`service: arangodb`),
 `version` and `license` are computed in Go from `versions.yaml` and the API
-version index; for other services, all fields are read from this file. Example:
+version; for other services, all fields are read from this file. Example:
 
 ```yaml
 arangodb:
@@ -2410,10 +2755,11 @@ handling of front matter such as `apiVersions`, see
 To adjust the OpenAPI processing and how the `*openapi.json` files are written,
 see [`service.go`](toolchain/arangoproxy/internal/service/service.go).
 
-If a new API version is added to ArangoDB, both need to adjusted to handle it,
-and you also need to update `allowedAPIVersions` fields for affected versions in
-[`versions.yaml`](site/data/versions.yaml), as well as add a new file with the
-OpenAPI tags (`site/data/openapi_tags/arangodb_#.yaml`).
+If a new API version is added to ArangoDB (e.g. `v2`), add it to the
+`allowedAPIVersions` fields of the affected versions in
+[`versions.yaml`](site/data/versions.yaml) and add a file with the
+OpenAPI tags (`site/data/openapi_tags/arangodb_v2.yaml`). No code changes are
+needed as long as the API version uses the `/_arango/<API-version>` path prefix.
 
 ### Add a new cURL example
 

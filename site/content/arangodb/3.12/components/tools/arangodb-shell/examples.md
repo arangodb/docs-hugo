@@ -17,19 +17,28 @@ command-line options:
 - `--server.endpoint <string>`: endpoint to connect to
 - `--server.username <string>`: database username
 - `--server.password <string>`: password or access token to use when connecting 
+- `--server.jwt-token <string>`: JWT to use instead of a username and password
+  (set it to `-` to be prompted for the token)
+- `--server.jwt-secret-keyfile <string>`: file with the JWT secret of the server
+  to authenticate with superuser rights instead of a username and password
 - `--server.authentication <bool>`: whether or not to use authentication
 
 For example, to connect to an ArangoDB server on IP `192.168.173.13` on port
 8530 with the user `foo` and using the database `test`, use:
 
 ```
-arangosh --server.endpoint tcp://192.168.173.13:8530 --server.username foo --server.database test --server.authentication true
+arangosh --server.endpoint http://192.168.173.13:8530 --server.username foo --server.database test --server.authentication true
 ```
 
 _arangosh_ then displays a password prompt and tries to connect to the 
 server after the password is entered. You can also use an access token instead
 of a password (but make sure `--server.username` is set to the same user name as
 encoded in the access token).
+
+_arangosh_ exchanges the username and password for a JWT and renews it
+automatically before it expires. From v3.12.13 onward, this also applies to
+JWT session tokens you pass via `--server.jwt-token`. For details, see
+[Connect to an ArangoDB server](../_index.md#connect-to-an-arangodb-server).
 
 {{< warning >}}
 At signs `@` in startup option arguments need to be escaped as `@@`.
@@ -48,20 +57,20 @@ The shell prints its own version number, and if successfully connected
 to a server, the version number of the ArangoDB server.
 
 {{< tip >}}
-If the server endpoint is configured for SSL then clients such as _arangosh_
-need to connect to it using an SSL socket as well. For example, use `http+ssl://`
-as schema in `--server.endpoint` for an SSL-secured HTTP connection.
+If the server endpoint is configured for TLS encryption then clients such as
+_arangosh_ need to connect to it using a TLS socket as well. For example, use
+`https://` as schema in `--server.endpoint` for a TLS-secured HTTP connection.
 {{< /tip >}}
 
 The schema of an endpoint is comprised of a protocol and a socket in the format
 `protocol+socket://`. There are alternatives and shorthands for some combinations,
-`ssl://` is equivalent to `http+ssl://` and `https://` for instance:
+`https://` is equivalent to `ssl://` and `http+ssl://` for instance:
 
 Protocol     | Socket           | Schema
 -------------|------------------|-----------
-HTTP         | TCP              | `http+tcp`, `http+srv`, `http`, `tcp`
-HTTP         | TCP with SSL/TLS | `http+ssl`, `https`, `ssl`
-HTTP         | Unix             | `http+unix`, `unix`
+HTTP         | TCP              | `http`, `http+tcp`, `http+srv`, `tcp`
+HTTP         | TCP with SSL/TLS | `https`, `http+ssl`, `ssl`
+HTTP         | Unix             | `unix`, `http+unix`
 
 ## Using *arangosh*
 

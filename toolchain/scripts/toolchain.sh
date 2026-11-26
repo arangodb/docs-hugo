@@ -214,24 +214,31 @@ function log(){
 
 ### Print the ID of the image for a docs version, pulling it if necessary (locally).
 ### $1 is an image reference, or locally also an arangodb/arangodb branch name: then
-### the image that CI compiled for the commits of the working copy (ARANGODB_SRC_*,
-### see compiled_image_ref) is used if available.
+### the prebuilt image of the commits of the working copy (ARANGODB_SRC_*, see
+### upstream_image_ref) is used if available.
+### The ID of a local image, empty if it doesn't exist. Not `docker images -q`:
+### with the classic image store (e.g. CircleCI machine images), its reference
+### filter doesn't match fully qualified names like docker.io/arangodb/x:tag
+function local_image_id() {
+  docker image inspect --format '{{.Id}}' "$1" 2>/dev/null
+}
+
 function find_or_pull_image() {
   image="$1"
   version="$2"
 
-  image_id=$(docker images -q "$image" 2>/dev/null | head -n1)
+  image_id=$(local_image_id "$image")
   if [ -z "$image_id" ] && [ "$ENV" == "local" ]; then
     log "[find_or_pull_image] Pull image $image" >&2
     if docker pull "$image" >&2; then
-      image_id=$(docker images -q "$image" | head -n1)
+      image_id=$(local_image_id "$image")
     else
-      compiled=$(compiled_image_ref "$version")
-      if [ -n "$compiled" ]; then
-        log "[find_or_pull_image] Not an image, try the image compiled by CI for branch $image: $compiled" >&2
-        image_id=$(docker images -q "$compiled" | head -n1)
-        if [ -z "$image_id" ] && docker pull "$compiled" >&2; then
-          image_id=$(docker images -q "$compiled" | head -n1)
+      prebuilt=$(upstream_image_ref "$version")
+      if [ -n "$prebuilt" ]; then
+        log "[find_or_pull_image] Not an image, try the prebuilt image for branch $image: $prebuilt" >&2
+        image_id=$(local_image_id "$prebuilt")
+        if [ -z "$image_id" ] && docker pull "$prebuilt" >&2; then
+          image_id=$(local_image_id "$prebuilt")
         fi
       fi
     fi
@@ -239,14 +246,21 @@ function find_or_pull_image() {
   echo "$image_id"
 }
 
-### The image reference that CI uses for compiled branches (see clone-arangodb in
-### .circleci/base_config.yml): <docs version>-<main commit>-<enterprise commit>
-function compiled_image_ref() {
+### The prebuilt image of the commits checked out in the working copy of a docs
+### version (ARANGODB_SRC_*, including its enterprise folder), built by the CI of
+### arangodb/arangodb or the compile workflow of the docs (image in
+### .circleci/upstream.yaml, see prepare-arangodb in .circleci/base_config.yml)
+function upstream_image_ref() {
   version="$1"
-  main_hash=$(awk 'END{print $2}' /tmp/$version/.git/logs/HEAD 2>/dev/null | cut -c1-9)
-  enterprise_hash=$(awk 'END{print $2}' /tmp/$version/enterprise/.git/logs/HEAD 2>/dev/null | cut -c1-9)
-  if [ -n "$main_hash" ] && [ -n "$enterprise_hash" ]; then
-    echo "arangodb/docs-hugo:$version-$main_hash-$enterprise_hash"
+  main=$(awk 'END{print $2}' /tmp/$version/.git/logs/HEAD 2>/dev/null)
+  enterprise=$(awk 'END{print $2}' /tmp/$version/enterprise/.git/logs/HEAD 2>/dev/null)
+  image=$(yq -r ".[\"$version\"].image // \"\"" ../../.circleci/upstream.yaml)
+  if [ -n "$main" ] && [ -n "$enterprise" ] && [ -n "$image" ]; then
+    image="${image//\{main7\}/${main:0:7}}"
+    image="${image//\{main9\}/${main:0:9}}"
+    image="${image//\{enterprise7\}/${enterprise:0:7}}"
+    image="${image//\{enterprise9\}/${enterprise:0:9}}"
+    echo "$image"
   fi
 }
 
@@ -445,6 +459,7 @@ function process_server() {
       client_container="$container_name"
       IFS=$'\x1f' read -r -a client_args <<< "${LOCAL_CLIENT_ARGS[$version]}"
     else
+      check_image_version "$image" "$version" "$container_name"
       setup_client_container "$image" "$version" "$container_name"
     fi
 
@@ -469,7 +484,6 @@ function process_server() {
 ### in a separate image of the same registry ("client-tools...", same tag).
 ### Prints the client tools image for a split server image, nothing otherwise (also
 ### for digests, which differ per image).
-### Keep in sync with client_image_for() in .circleci/generate_config.py
 function client_image_for() {
   if [[ "$1" =~ ^(.*/)?core((-[^/:@]*)?)(:.*)$ ]]; then
     echo "${BASH_REMATCH[1]}client-tools${BASH_REMATCH[2]}${BASH_REMATCH[4]}"
@@ -680,7 +694,8 @@ function run_local_build_containers() {
   fi
 
   ## Version information (one line each): build version, maintainer mode, assertions,
-  ## source version, directory name (arangodb3, arangodb4, ...), enterprise JS present
+  ## source version, directory name (arangodb3, arangodb4, ...), enterprise JS present,
+  ## V8 version ("none" without V8)
   mapfile -t info < <(local_build_exec "$build_dir" "$src_dir" '
     if [ ! -x /arangodb-build/bin/arangod ] || [ ! -x /arangodb-build/bin/arangosh ]; then echo; exit; fi
     v=$(/arangodb-build/bin/arangod --version 2>/dev/null)
@@ -689,7 +704,8 @@ function run_local_build_containers() {
     echo "$v" | sed -n "s/^assertions: //p"
     cat /arangodb-src/ARANGO-VERSION
     echo "$(sed -n "s/^CMAKE_PROJECT_NAME:STATIC=//p" /arangodb-build/CMakeCache.txt 2>/dev/null)"
-    [ -d /arangodb-src/enterprise/js ] && echo yes || echo')
+    [ -d /arangodb-src/enterprise/js ] && echo yes || echo
+    echo "$(echo "$v" | sed -n "s/^v8-version: //p")"')
   build_version="${info[0]}"
   if [ -z "$build_version" ]; then
     abort_with_error "No arangod and arangosh executables found in $build_dir/bin (or they don't run, only static builds are supported)"
@@ -702,6 +718,11 @@ function run_local_build_containers() {
   docs_prefix="${version%.x}"
   if [[ "$build_version" != "$docs_prefix".* ]]; then
     abort_with_error "The local build $build_dir is version $build_version, which doesn't match the docs version $version"
+  fi
+  ## Up to 3.x, the examples need server-side JavaScript (V8). 3.12 has presets
+  ## without V8 (*-no-v8), 4.0+ is V8-free
+  if [ "${build_version%%.*}" -lt 4 ] && [ "${info[6]}" == "none" ]; then
+    abort_with_error "The local build $build_dir ($build_version) is without V8, which version $version requires for server-side JavaScript. Build with a preset that includes V8 (not *-no-v8), e.g. nightly-package-x64"
   fi
   if [ "${build_version%.*}" != "${src_version%.*}" ]; then
     abort_with_error "The local build $build_dir ($build_version) doesn't match the source tree $src_dir ($src_version), set $src_var to a matching working copy"
@@ -782,7 +803,7 @@ function setup_client_container() {
   ## The client tools image of a split image pinned by digest can't be derived, as
   ## its digest differs
   if [ -z "$client_image" ] && [[ "$image" =~ ^(.*/)?core(-[^/:@]*)?@ ]]; then
-    abort_with_error "$image is a server image without client tools, pinned by digest. The matching client tools image can't be derived from it, use a tag instead (e.g. arangodb/core-preview:4.0-nightly)."
+    abort_with_error "$image is a server image without client tools, pinned by digest. The matching client tools image can't be derived from it, use a tag instead (e.g. arangodb/core-preview:devel-nightly)."
   fi
 
   if [ -n "$client_image" ]; then
@@ -813,6 +834,24 @@ function setup_client_container() {
   fi
   printf -v shown_args '%s ' "${client_args[@]}"
   log "[setup_client_container] Client container: $client_container, arangosh args: $shown_args"
+}
+
+### Abort if the server of an image isn't of the docs version (e.g. 3.12 for 3.12.11,
+### 4.x for 4.0.0), like for local builds. Image tags that refer to branches don't
+### say which version they are, e.g. arangodb/enterprise-preview:devel-nightly is a
+### discontinued 3.12 image since devel became 4.0 (arangodb/core-preview:devel-nightly)
+function check_image_version() {
+  local image="$1"
+  local version="$2"
+  local server_version=$(docker exec "$3" wget -q -O - 'http://127.0.0.1:8529/_api/version' 2>/dev/null | tr -d ' \n' | sed -n 's/.*"version":"\([^"]*\)".*/\1/p')
+  if [ -z "$server_version" ]; then
+    log "[WARNING] Could not determine the server version of $image"
+    return
+  fi
+  log "[check_image_version] $image is version $server_version"
+  if [[ "$server_version" != "${version%.x}".* ]]; then
+    abort_with_error "The image $image is version $server_version, which doesn't match the docs version $version"
+  fi
 }
 
 ### Warn if the server is a developer build, whose output can differ from releases

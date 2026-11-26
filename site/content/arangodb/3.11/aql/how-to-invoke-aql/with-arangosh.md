@@ -289,7 +289,7 @@ db._query(
   'FOR i IN 1..100000 SORT i RETURN i',
   {},
   { memoryLimit: 100000 }
-).toArray(); // xpError(ERROR_RESOURCE_LIMIT)
+).toArray(); // expectedError(ERROR_RESOURCE_LIMIT)
 ```
 
 If no memory limit is specified, then the server default value (controlled by

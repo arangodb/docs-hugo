@@ -10,6 +10,13 @@ _arangoimport_ command-line tool. It allows you to bulk import data records
 from a file into a database collection. Multiple files can be imported into
 the same or different collections by invoking it multiple times.
 
+You can specify the file to import with the `--file` startup option or as a
+[positional argument](../../../operations/administration/configuration.md#command-line-options):
+
+```
+arangoimport --collection users --type jsonl data.jsonl
+```
+
 {{< tip >}}
 Import files are expected to be UTF-8 encoded **without**
 [byte order mark (BOM)](https://en.wikipedia.org/wiki/Byte_order_mark).
@@ -18,6 +25,45 @@ Other encodings are not supported, but may not raise warnings or errors.
 In case of CSV/TSV files, BOMs become part of the first column's name
 (possibly mangled), so be sure the files have none.
 {{< /tip >}}
+
+## Connect and authenticate
+
+Without further startup options, _arangoimport_ connects to the `_system`
+database of the ArangoDB server at the default endpoint `tcp://127.0.0.1:8529`
+as the `root` user and prompts you for the password. To connect to a different
+server, database, or as a different user, use the following startup options:
+
+- `--server.endpoint <string>`: The endpoint to connect to. In a cluster,
+  specify a Coordinator.
+- `--server.database <string>`: The name of the database to import into.
+- `--server.username <string>`: The username.
+- `--server.password <string>`: The password. If you omit it, you are prompted
+  for the password.
+- `--server.authentication <bool>`: Whether to authenticate. Set it to
+  `false` if authentication is disabled on the server.
+
+For example, to import a file into a collection of a server at a non-standard
+endpoint as the `importer` user:
+
+```
+arangoimport \
+  --server.endpoint tcp://192.168.173.13:8531 \
+  --server.username importer \
+  --server.database mydb \
+  --file "data.jsonl" \
+  --type jsonl \
+  --collection "users"
+```
+
+The user needs **Read/Write** / `rw` access to the target collection. If you
+let _arangoimport_ create the collection (`--create-collection true`), the user
+needs **Administrate** / `rw` access to the database. To create the database
+(`--create-database true`), the user needs **Administrate** / `rw` access to the
+`_system` database.
+
+For details about the authentication and how to avoid exposing credentials in
+the process list, see
+[Connect to an ArangoDB server](../_index.md#connect-to-an-arangodb-server).
 
 ## Importing into an Edge Collection
 

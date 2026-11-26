@@ -225,7 +225,7 @@ arguments, and the model settings survive it, so a later deploy reuses them.
 
 ## 7. Ask a question
 
-To query the Context Graph, deploy an [AutoRAG](../../agentic-ai-suite/autorag/_index.md)
+To query the Context Graph, deploy an [AutoRAG](../../contextual-data-platform/autorag/_index.md)
 retriever into the project. Do this only after the ingestion has finished,
 because the retriever answers from the graph it finds. It takes the same model
 settings and secret profiles as the AutoGraph deploy, except that there is no
@@ -346,9 +346,9 @@ and its subclass `ServiceError` covers every error a service answered with. A
 ## Next steps
 
 To learn more about the search methods a retriever offers, see
-[AutoRAG](../../agentic-ai-suite/autorag/_index.md). Editing strategies and
+[AutoRAG](../../contextual-data-platform/autorag/_index.md). Editing strategies and
 deleting categories or files from the graph are not in the SDK yet; use the
-[AutoGraph HTTP API](../../agentic-ai-suite/autograph/reference/_index.md).
+[AutoGraph HTTP API](../../contextual-data-platform/autograph/reference/_index.md).
 
 For every parameter, return value, and exception of the calls used here, see the
 [SDK reference documentation](https://arango-ai-sdk-reference.arango.ai/).

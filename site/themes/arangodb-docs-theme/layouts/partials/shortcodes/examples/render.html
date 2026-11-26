@@ -20,6 +20,16 @@
 {{ transform.Highlight $bindVars "json" }}
 {{- end }}
 
-{{- $output := transform.Highlight $content.output $language }}
-<details><summary>Show output</summary>{{ $context.Page.RenderString $output }}</details>
+{{- if and (eq .language "aql") $options.options }}
+<strong>Query Options</strong>
 <br>
+{{- $queryOptions := $options.options | jsonify (dict "indent" "  ") }}
+{{ transform.Highlight $queryOptions "json" }}
+{{- end }}
+
+{{- $output := transform.Highlight $content.output $language }}
+{{- $outputHTML := $context.Page.RenderString $output }}
+{{- with $content.warnings }}
+{{- $outputHTML = print $outputHTML "\n<strong>Warnings</strong>\n" (transform.Highlight . "json") | safeHTML }}
+{{- end }}
+{{ partial "details-box.html" (dict "summary" "Show output" "content" $outputHTML) }}

@@ -6,11 +6,12 @@ description: >-
   ArangoDB is a graph database with a powerful set of features for data management and analytics,
   supported by a rich ecosystem of integrations and drivers
 aliases:
-  - ../operations/installation/compiling # 3.11 -> 3.11
-  - ../operations/installation/compiling/compile-on-debian # 3.11 -> 3.11
-  - ../operations/installation/compiling/compile-on-windows # 3.11 -> 3.11
-  - ../operations/installation/compiling/recompiling-jemalloc # 3.11 -> 3.11
-  - ../operations/installation/compiling/running-custom-build # 3.11 -> 3.11
+  - operations/installation/compiling # 3.11 -> 3.11
+  - operations/installation/compiling/compile-on-debian # 3.11 -> 3.11
+  - operations/installation/compiling/compile-on-windows # 3.11 -> 3.11
+  - operations/installation/compiling/recompiling-jemalloc # 3.11 -> 3.11
+  - operations/installation/compiling/running-custom-build # 3.11 -> 3.11
+  - get-started/set-up-a-cloud-instance # 3.11 -> 3.11
 ---
 ## Feature overview
 
@@ -48,7 +49,7 @@ selected feature enhancements.
 ### Fully managed cloud service
 
 The fully managed multi-cloud
-[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
+[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home)
 does not support the 3.11 OEM LTS version of ArangoDB.
 
 ### Self-managed in the cloud

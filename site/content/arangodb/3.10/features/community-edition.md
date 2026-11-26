@@ -45,7 +45,7 @@ aliases:
   or modified, using an AQL expression.
 
 - [**In the cloud or on-prem**](_index.md#on-premises-versus-cloud):
-  Use ArangoDB as a [fully managed service](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
+  Use ArangoDB as a [fully managed service](https://dashboard.arangodb.cloud/home),
   self-managed in the cloud, or on-premises.
 
 - [**Multiple Environments**](../operations/installation/_index.md#supported-platforms-and-architectures):
@@ -114,7 +114,7 @@ aliases:
   match up documents from different collections, allowing normalized data models.
 
 - **Advanced Path-Finding with Multiple Algorithms**:
-  Graphs can be [traversed](../aql/graph-queries/traversals-explained.md) with AQL to
+  Graphs can be [traversed](../aql/graph-queries/traversals.md#how-traversals-work) with AQL to
   retrieve direct and indirect neighbor nodes using a fixed or variable depth.
   The [traversal order](../aql/graph-queries/traversals.md) can be
   depth-first, breadth-first, or in order of increasing edge weights

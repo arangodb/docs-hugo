@@ -502,23 +502,47 @@ a document is for the query:
 In the example, the third document is the most relevant one for the query
 because it contains both of the searched terms.
 
-Only the direction of a vector matters for the cosine, not its length. A longer
-document is thus not more relevant merely because it is longer. The scoring
-functions do not literally build these vectors and measure an angle, however.
-They sum up a weight per query term, and how much the length of a field
-influences the score is determined by a normalization factor that is stored in
-the index if you enable the `norm`
-[Analyzer feature](../analyzers.md#analyzer-features).
+Only the direction of a vector matters for the cosine, not its length. If the
+third document were `quick brown fox quick brown fox`, its arrow would be twice
+as long but point in the same direction, so it would not be more relevant.
+If it contained `quick` twice but `brown` only once, its arrow would tilt
+towards the `quick` axis and away from the query.
 
-To compute such a score, the components of the vectors need to be weighted.
-There are a number of probability and statistical weighting models, and
-ArangoSearch supports the two most popular ones, Okapi BM25 and TF-IDF. Both
-rely on two main components:
+In practice, the components of the vectors are not plain term counts but
+weights. There are a number of probability and statistical weighting models,
+and ArangoSearch supports the two most popular ones, Okapi BM25 and TF-IDF.
+Both rely on two main components:
 
 - **Term frequency** (TF): in the simplest case defined as the number of times
   a term occurs in a document
 - **Inverse document frequency** (IDF): a measure of how much information a term
   provides, i.e. whether it is common or rare across all documents
+
+The scoring functions do not literally build the vectors and measure an angle,
+however. They sum up a weight per query term, which corresponds to how far a
+document's arrow reaches along each axis in the diagrams. The more often a term
+occurs, the further the arrow reaches along that axis, and the rarer the term is
+across all documents, the more each occurrence counts.
+
+Instead of ignoring the length entirely like the cosine does, the scoring
+functions can scale the weights by the length of a field: the more terms a field
+contains in total, the more its arrow is shortened. For example, `quick dog`
+contains a term that is not part of the query, so its arrow along the `quick`
+axis is shorter than for a document that only contains `quick`. Long texts are
+thus not favored merely because they are more likely to contain the searched
+terms more often. You control this normalization with the parameters of the
+scoring functions:
+
+- [`BM25()`](../../aql/functions/arangosearch.md#bm25): The `b` parameter sets
+  how strongly the length is taken into account, from `0` (not at all) to `1`
+  (fully). The default is `0.75`. The `k` parameter limits how much each
+  additional occurrence of a term extends the arrow.
+- [`TFIDF()`](../../aql/functions/arangosearch.md#tfidf): Length normalization
+  is disabled by default and you can enable it with the `normalize` parameter.
+
+The normalization factor of a field is stored in the index if you enable the
+`norm` [Analyzer feature](../analyzers.md#analyzer-features). Without it, no
+length normalization takes place.
 
 The information that these models need, like how often a term occurs, is part of
 the posting lists in the index segments. Which of it is available depends on the

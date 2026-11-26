@@ -50,8 +50,8 @@ below:
   [ArangoDB authentication methods](../../arangodb/3.12/develop/http-api/authentication.md)
   work.
 - **Other data platform endpoints**: everything else the gateway exposes,
-  including the [Platform Suite](../../platform-suite/_index.md) services and
-  the [Agentic AI Suite](../../agentic-ai-suite/_index.md) services. They only
+  including the [Platform Suite](../_index.md) services and
+  the [Agentic AI Suite](../_index.md) services. They only
   accept JWTs.
 
 A session token is therefore the credential that works everywhere. You can
@@ -78,8 +78,7 @@ The login screen asks for the following:
 4. **Select a database**: the database you want to start in. Only the databases
    your account has access to are listed in the dropdown menu. You can quickly
    switch between databases later.
-5. Click **Log in** to get to the **Home** screen of the
-   Arango Contextual Data Platform web interface.
+5. Click **Log in** to open the Arango Contextual Data Platform web interface.
 
 What you can see and do in the database system is limited by the permissions of
 the user account you logged in with, see
@@ -88,9 +87,9 @@ the user account you logged in with, see
 ## Authenticate requests to data platform services
 
 The services of the data platform accept **only** `Bearer` tokens. This applies
-to the [Platform Suite](../../platform-suite/_index.md) services such as the
+to the [Platform Suite](../_index.md) services such as the
 Control Plane, File Manager, and Container Manager, to the
-[Agentic AI Suite](../../agentic-ai-suite/_index.md) services such as AutoGraph,
+[Agentic AI Suite](../_index.md) services such as AutoGraph,
 AutoRAG (Retriever), and Graph Analytics, and to built-in services provided by the
 ArangoDB Kubernetes operator (`kube-arangodb`).
 

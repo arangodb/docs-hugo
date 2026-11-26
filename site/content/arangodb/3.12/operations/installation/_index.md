@@ -20,7 +20,7 @@ see the [Docker](docker.md) section.
 {{< /tip >}}
 
 If you prefer to compile ArangoDB from source, please refer to the
-[Contributing guidelines](https://github.com/arangodb/arangodb/blob/devel/CONTRIBUTING.md).
+[Contributing guidelines](https://github.com/arangodb/arangodb/blob/3.12/CONTRIBUTING.md).
 
 For detailed information on how to deploy ArangoDB, once it has been installed,
 please refer to the [Deploy](../../deploy/_index.md) chapter.
@@ -55,7 +55,7 @@ The official Linux release executables of ArangoDB require the operating system
 to use a page size of **4096 bytes** or less.
 
 {{< tip >}}
-[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
+[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home)
 is a fully-managed service and requires no installation. It's the easiest way
 to run ArangoDB in the cloud.
 {{< /tip >}}

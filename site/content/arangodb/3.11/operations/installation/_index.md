@@ -5,8 +5,6 @@ weight: 210
 description: >-
   You can install ArangoDB by downloading and running the official packages,
   as well as run ArangoDB in containers
-aliases:
-  - installation/macos # 3.11 -> 3.11
 ---
 To install ArangoDB 3.11 OEM LTS, as a first step, please download a package
 for your operating system using the links provided by the Arango team.

@@ -63,8 +63,8 @@ The classic permission system has a few characteristics that can be surprising:
 
 ## Effect on the data platform services
 
-The [Platform Suite](../../platform-suite/_index.md) and
-[Agentic AI Suite](../../agentic-ai-suite/_index.md) services store their data
+The [Platform Suite](../_index.md) and
+[Agentic AI Suite](../_index.md) services store their data
 in ArangoDB and read from and write to the databases and collections you point
 them at. Where a service does so with the identity of the user who made the
 request, the access levels of that user account apply.
