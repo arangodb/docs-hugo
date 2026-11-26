@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="keep-colors" viewBox="-32 -12 664 284" width="664" height="284" role="img" aria-labelledby="social-graph-t social-graph-d" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="social-graph-t">The social example graph</title>
+  <desc id="social-graph-d">Four persons: alice and diana in the female collection, bob and charly in the male collection. The relation edges have a type: alice is married to bob and a friend of charly, charly is married to diana, and bob is a friend of diana.</desc>
+  <defs><marker id="social-graph-a" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path class="dg-f-accent" d="M0,0 L8,4 L0,8 z" fill="#00576e"/></marker><marker id="social-graph-g" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path class="dg-f-arrow" d="M0,0 L8,4 L0,8 z" fill="#90a1b9"/></marker></defs>
+  <rect class="dg-f-canvas" x="-32" y="-12" width="664" height="284" rx="6" fill="#f1f5f9"/>
+  <line class="dg-s-accent" x1="87.4" y1="148.2" x2="244.2" y2="208.5" stroke="#00576e" stroke-width="2" marker-end="url(#social-graph-a)"/>
+  <line class="dg-s-accent" x1="87.4" y1="111.8" x2="244.2" y2="51.5" stroke="#00576e" stroke-width="2" marker-end="url(#social-graph-a)"/>
+  <line class="dg-s-accent" x1="347.4" y1="48.2" x2="504.2" y2="108.5" stroke="#00576e" stroke-width="2" marker-end="url(#social-graph-a)"/>
+  <line class="dg-s-accent" x1="347.4" y1="211.8" x2="504.2" y2="151.5" stroke="#00576e" stroke-width="2" marker-end="url(#social-graph-a)"/>
+  <rect class="dg-f-tag-solid dg-s-accent" x="139.5" y="169.7" width="58.1" height="19.5" rx="9.75" fill="#eefbd5" stroke="#00576e" stroke-width="1"/>
+  <text class="dg-f-lime" x="168.6" y="181.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#014654">married</text>
+  <rect class="dg-f-tag-solid dg-s-accent" x="142.7" y="70.8" width="51.8" height="19.5" rx="9.75" fill="#eefbd5" stroke="#00576e" stroke-width="1"/>
+  <text class="dg-f-lime" x="168.6" y="82.8" text-anchor="middle" font-size="10.5" font-weight="700" fill="#014654">friend</text>
+  <rect class="dg-f-tag-solid dg-s-accent" x="399.5" y="69.7" width="58.1" height="19.5" rx="9.75" fill="#eefbd5" stroke="#00576e" stroke-width="1"/>
+  <text class="dg-f-lime" x="428.6" y="81.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#014654">married</text>
+  <rect class="dg-f-tag-solid dg-s-accent" x="402.7" y="170.8" width="51.8" height="19.5" rx="9.75" fill="#eefbd5" stroke="#00576e" stroke-width="1"/>
+  <text class="dg-f-lime" x="428.6" y="182.8" text-anchor="middle" font-size="10.5" font-weight="700" fill="#014654">friend</text>
+  <rect class="" x="-12.0" y="108.0" width="104.0" height="44.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="40.0" y="128.0" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">alice</text>
+  <text x="40.0" y="143.0" text-anchor="middle" font-size="11" fill="#00576e">female</text>
+  <rect class="" x="248.0" y="8.0" width="104.0" height="44.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="300.0" y="28.0" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">charly</text>
+  <text x="300.0" y="43.0" text-anchor="middle" font-size="11" fill="#befe99">male</text>
+  <rect class="" x="248.0" y="208.0" width="104.0" height="44.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="300.0" y="228.0" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">bob</text>
+  <text x="300.0" y="243.0" text-anchor="middle" font-size="11" fill="#befe99">male</text>
+  <rect class="" x="508.0" y="108.0" width="104.0" height="44.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="560.0" y="128.0" text-anchor="middle" font-size="13" font-weight="700" fill="#014654">diana</text>
+  <text x="560.0" y="143.0" text-anchor="middle" font-size="11" fill="#00576e">female</text>
+</svg>

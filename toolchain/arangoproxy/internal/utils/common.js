@@ -21,9 +21,31 @@ var user_examples = require("@arangodb/examples/example-users.js");
 
 var assert = function(condition, assertion) {
   if (!condition) {
-    print('ASSERTD-FAIL ' + assertion);
+    print(__docsMarker.AssertFail + ' ' + assertion);
   }
 };
+
+// The error numbers of the error names that an example expects
+// (`// expectedError(ERROR_NAME)` comments), null for unknown names. Resolved
+// here so that the numbers match the version of the server.
+function __docsErrorCodes(names) {
+  var codes = {};
+  names.forEach(function (name) {
+    codes[name] = errors.hasOwnProperty(name) ? errors[name].code : null;
+  });
+  return codes;
+}
+
+// Runs the cursor of an AQL example and returns the result. Warnings are
+// printed as a separate line that arangoproxy shows below the output.
+function __docsQuery(cursor) {
+  var result = cursor.toArray();
+  var extra = cursor.getExtra() || {};
+  if (extra.warnings && extra.warnings.length > 0) {
+    print(__docsMarker.Warnings + ' ' + JSON.stringify(extra.warnings));
+  }
+  return result;
+}
 
 
 
@@ -194,7 +216,7 @@ function __docsCleanup() {
   });
   __docsRemove(left);
   if (Object.keys(removed).length > 0) {
-    print("CLEANED " + JSON.stringify(removed));
+    print(__docsMarker.Cleaned + " " + JSON.stringify(removed));
   }
 }
 
@@ -227,7 +249,7 @@ function __docsPageDone(page) {
   });
   __docsRemove(left);
   if (Object.keys(left).length > 0) {
-    print("PAGEDONE " + JSON.stringify(left));
+    print(__docsMarker.PageDone + " " + JSON.stringify(left));
   }
 }
 
@@ -341,9 +363,9 @@ var appendCurlRequest = function (shellAppender, jsonAppender, rawAppender) {
       curl += "\nEOF";
     }
 
-    print("REQ");
+    print(__docsMarker.Request);
     print(curl);
-    print("ENDREQ");
+    print(__docsMarker.RequestEnd);
     return response;
   };
 };
@@ -388,9 +410,9 @@ var logJsonResponse = internal.appendJsonResponse(rawAppender, jsonAppender);
 var logJsonLResponseRaw = internal.appendJsonLResponse(rawAppender, rawAppender);
 var logJsonLResponse = function (response) {
   var r = logJsonLResponseRaw.apply(logJsonLResponseRaw, [response]);
-  print("RESP");
+  print(__docsMarker.Response);
   print(output);
-  print("ENDRESP");
+  print(__docsMarker.ResponseEnd);
   output = "";
 }
 
@@ -398,33 +420,25 @@ var logHtmlResponse = internal.appendRawResponse(rawAppender, htmlAppender);
 var logRawResponseRaw = internal.appendRawResponse(rawAppender, rawAppender);
 var logRawResponse = function (response) {
   var r = logRawResponseRaw.apply(logRawResponseRaw, [response]);
-  print("RESP");
+  print(__docsMarker.Response);
   print(output);
-  print("ENDRESP");
+  print(__docsMarker.ResponseEnd);
   output = "";
 };
 
 var logPlainResponseRaw = internal.appendPlainResponse(plainAppender, plainAppender);
 var logPlainResponse = function (response) {
   var r = logPlainResponseRaw.apply(logPlainResponseRaw, [response]);
-  print("RESP");
+  print(__docsMarker.Response);
   print(output);
-  print("ENDRESP");
+  print(__docsMarker.ResponseEnd);
   output = "";
 }
 
 var logJsonResponse = function (response) {
   var r = logJsonResponseRaw.apply(logJsonResponseRaw, [response]);
-  print("RESP");
+  print(__docsMarker.Response);
   print(output);
-  print("ENDRESP");
+  print(__docsMarker.ResponseEnd);
   output = "";
 };
-
-
-print("EOFD");
-
-
-
-
-

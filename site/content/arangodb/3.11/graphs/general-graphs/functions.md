@@ -10,7 +10,7 @@ A lot of these accept a vertex (or edge) example as parameter as defined in the 
 
 Examples explain the API using the [City Graph](../example-graphs.md#city-graph):
 
-![Social Example Graph](../../../../images/cities_graph.png)
+{{< embed-svg "city-graph" >}}
 
 ## Definition of examples
 
