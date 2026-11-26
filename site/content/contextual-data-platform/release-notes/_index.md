@@ -463,8 +463,7 @@ Key features:
 
 ### Ada
 
-{{< tag "Agentic AI Suite" >}}
-{{< tag "Beta" >}}
+{{< tag "Agentic AI Suite" "Beta" >}}
 
 [Ada](../ada/_index.md) is a new AI digital assistant integrated into the Arango
 Contextual Data Platform. It lets you interact with your database using natural language,
@@ -515,8 +514,7 @@ The [Query Editor](../query-editor.md) has been extended with the following capa
 
 ### AQL Optimizer (Reasoner)
 
-{{< tag "Agentic AI Suite" >}}
-{{< tag "Beta" >}}
+{{< tag "Agentic AI Suite" "Beta" >}}
 
 A new **Optimize** button has been added to query tabs for
 [AI-powered query optimization](../query-editor.md#generate-and-optimize-queries-aqlizer).
@@ -612,8 +610,7 @@ The minimum required ArangoDB version has been raised to Enterprise Edition v3.1
 
 ### AQLizer
 
-{{< tag "Agentic AI Suite" >}}
-{{< tag "Beta" >}}
+{{< tag "Agentic AI Suite" "Beta" >}}
 
 The [Natural Language to AQL Translation Service](../natural-language-to-aql/_index.md)
 enables you to query your ArangoDB database using natural language or get
