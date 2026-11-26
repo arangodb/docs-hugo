@@ -12,6 +12,8 @@ The tasks feature is deprecated and removed in ArangoDB v4.0.
 
 ## List all tasks
 
+{{< tag "API v0 only" >}}
+
 ```openapi
 ---
 apiVersions: [v0]
@@ -112,6 +114,8 @@ logJsonResponse(response);
 ```
 
 ## Get a task
+
+{{< tag "API v0 only" >}}
 
 ```openapi
 ---
@@ -232,6 +236,8 @@ logJsonResponse(response);
 ```
 
 ## Create a task
+
+{{< tag "API v0 only" >}}
 
 ```openapi
 ---
@@ -371,6 +377,8 @@ curlRequest('DELETE', url + response.parsedBody.id);
 ```
 
 ## Create a task with ID
+
+{{< tag "API v0 only" >}}
 
 ```openapi
 ---
@@ -521,6 +529,8 @@ curlRequest('DELETE', url + 'sampleTask');
 ```
 
 ## Delete a task
+
+{{< tag "API v0 only" >}}
 
 ```openapi
 ---
