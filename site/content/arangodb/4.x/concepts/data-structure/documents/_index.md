@@ -396,7 +396,7 @@ for {
 ```
 
 See the following functions 
-in the [_go-driver_ v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentCreate)
+in the [_go-driver_ v3 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#CollectionDocumentCreate)
 for details:
 - `CollectionDocumentCreate.CreateDocument()`
 - `CollectionDocumentCreate.CreateDocumentWithOptions()`
@@ -577,7 +577,7 @@ for {
 ```
 
 See the following functions 
-in the [_go-driver_ v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentRead)
+in the [_go-driver_ v3 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#CollectionDocumentRead)
 for details:
 - `CollectionDocumentRead.ReadDocument()`
 - `CollectionDocumentRead.ReadDocumentWithOptions()`
@@ -745,7 +745,7 @@ for {
 ```
 
 See the following functions 
-in the [_go-driver_ v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentUpdate)
+in the [_go-driver_ v3 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#CollectionDocumentUpdate)
 for details:
 - `CollectionDocumentUpdate.UpdateDocument()`
 - `CollectionDocumentUpdate.UpdateDocumentWithOptions()`
@@ -929,7 +929,7 @@ for {
 ```
 
 See the following functions 
-in the [_go-driver_ v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentReplace)
+in the [_go-driver_ v3 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#CollectionDocumentReplace)
 for details:
 - `CollectionDocumentReplace.ReplaceDocument()`
 - `CollectionDocumentReplace.ReplaceDocumentWithOptions()`
@@ -1091,7 +1091,7 @@ for {
 ```
 
 See the following functions 
-in the [_go-driver_ v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentDelete)
+in the [_go-driver_ v3 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#CollectionDocumentDelete)
 for details:
 - `CollectionDocumentRead.DeleteDocument()`
 - `CollectionDocumentRead.DeleteDocumentsWithOptions()`

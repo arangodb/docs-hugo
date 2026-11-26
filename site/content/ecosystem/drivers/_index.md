@@ -38,10 +38,11 @@ Java programming language.
 ## Go driver
 
 The [**Go driver**](go.md) lets you work with ArangoDB in the Go programming
-language.
+language. Use driver v2 with ArangoDB 3.12 and older, and driver v3 with
+ArangoDB 4.0 and later. See [Driver versions](go.md#driver-versions).
 
 - [Tutorial](go.md#tutorial)
-- Repository: [github.com/arangodb/go-driver](https://github.com/arangodb/go-driver/tree/master/v2)
+- Repository: [github.com/arangodb/go-driver](https://github.com/arangodb/go-driver)
 
 ## JavaScript driver
 

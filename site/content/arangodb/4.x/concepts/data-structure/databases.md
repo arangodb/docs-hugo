@@ -219,8 +219,8 @@ if err != nil {
 }
 ```
 
-See [`ClientDatabase.GetDatabase()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ClientDatabase)
-in the _go-driver_ v2 documentation for details.
+See [`ClientDatabase.GetDatabase()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#ClientDatabase)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -301,8 +301,8 @@ mydb, err := client.CreateDatabase(ctx, "mydb", /* options */ nil)
 _ = mydb
 ```
 
-See [`ClientDatabase.CreateDatabase()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ClientDatabase)
-in the _go-driver_ v2 documentation for details.
+See [`ClientDatabase.CreateDatabase()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#ClientDatabase)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -396,8 +396,8 @@ if err != nil {
 }
 ```
 
-See [`Database.GetDatabase()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Database)
-in the _go-driver_ v2 documentation for details.
+See [`Database.GetDatabase()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#Database)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -481,8 +481,8 @@ if err != nil {
 }
 ```
 
-See [`ClientDatabase.Databases()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ClientDatabase)
-in the _go-driver_ v2 documentation for details.
+See [`ClientDatabase.Databases()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#ClientDatabase)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -565,8 +565,8 @@ if err != nil {
 }
 ```
 
-See [`Database.Remove()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Database)
-in the _go-driver_ v2 documentation for details.
+See [`Database.Remove()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#Database)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
