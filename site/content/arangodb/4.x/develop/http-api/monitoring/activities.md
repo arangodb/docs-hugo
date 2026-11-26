@@ -163,7 +163,8 @@ paths:
                           #              type: number
         '401':
           description: |
-            The credentials are wrong or the user account is inactive.
+            The credentials are wrong, the user account is inactive, or the
+            specified database doesn't exist.
           content:
             application/json:
               schema:
@@ -195,14 +196,20 @@ paths:
         '403':
           description: |
             The request is not authorized due to a lack of permissions.
-            The reason depends on the setting of the
-            `--activities.only-superuser-enabled` startup option:
+            The possible reasons are the following:
 
-            - `false`: The endpoint is restricted to admin users but the
-              user account you authenticated with lacks write access to the
-              `_system` database.
-            - `true`: The endpoint requires a superuser JWT but you
-              didn't use one.
+            - The user account you authenticated with has no access to the
+              specified database.
+            - The `--activities.only-superuser-enabled` startup option is
+              `false` and the user account you authenticated with lacks write
+              access to the `_system` database.
+            - The `--activities.only-superuser-enabled` startup option is `true`
+              and you didn't use a superuser JWT.
+
+            In v3.12.11, a lack of database access resulted in an HTTP `404`
+            error with the `ERROR_ARANGO_DATABASE_NOT_FOUND` (`1228`) error
+            number instead. Up to v3.12.10, it resulted in an HTTP `401` error
+            with the `ERROR_FORBIDDEN` (`11`) error number.
           content:
             application/json:
               schema:
@@ -231,47 +238,8 @@ paths:
                     description: |
                       A descriptive error message.
                     type: string
-        '404':
-          # TODO
-          # , or the server
-          # specified by the `serverId` query parameter is not known in the
-          # cluster.
-          description: |
-            The specified database doesn't exist, or the user account you
-            authenticate with has no access to this database.
-
-            Up to v3.12.10, a lack of database access resulted in an HTTP `401`
-            error with the `ERROR_FORBIDDEN` (`11`) error number instead of an
-            HTTP `404` error with the `ERROR_ARANGO_DATABASE_NOT_FOUND` (`1228`)
-            error number.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - errorNum
-                  - errorMessage
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that an error occurred.
-                    type: boolean
-                    example: true
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 404
-                  errorNum:
-                    description: |
-                      The ArangoDB error number for the error that occurred.
-                    type: integer
-                  errorMessage:
-                    description: |
-                      A descriptive error message.
-                    type: string
+        # TODO: '404' if the server specified by the `serverId` query parameter
+        # is not known in the cluster?
         '405':
           description: |
             Returned when an HTTP method other than `GET` is used.
@@ -442,9 +410,8 @@ paths:
                         # TODO: oneOf with activity/error object schema
         '401':
           description: |
-            The user account you authenticated with lacks read access for the
-            specified database, the credentials are wrong, or the user account
-            is inactive.
+            The credentials are wrong, the user account is inactive, or the
+            specified database doesn't exist.
           content:
             application/json:
               schema:
@@ -478,12 +445,19 @@ paths:
             The request is not authorized. The possible reasons are the
             following:
 
+            - The user account you authenticated with has no access to the
+              specified database.
             - You called the endpoint on a server other than a Coordinator.
             - The `--activities.only-superuser-enabled` startup option is
               `false` and the user account you authenticated with lacks write
               access to the `_system` database.
             - The `--activities.only-superuser-enabled` startup option is `true`
               and you didn't use a superuser JWT.
+
+            In v3.12.11, a lack of database access resulted in an HTTP `404`
+            error with the `ERROR_ARANGO_DATABASE_NOT_FOUND` (`1228`) error
+            number instead. Up to v3.12.10, it resulted in an HTTP `401` error
+            with the `ERROR_FORBIDDEN` (`11`) error number.
           content:
             application/json:
               schema:

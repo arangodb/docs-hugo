@@ -122,17 +122,27 @@ paths:
     get:
       operationId: listUserAccessibleDatabases
       description: |
-        Retrieves the list of all databases the current user can access without
-        specifying a different username or password.
+        Retrieves the list of all databases the user account you authenticate
+        with can access, i.e. the databases for which it has at least `ro`
+        access.
+
+        You don't need to know the name of a database you have access to in
+        order to call this endpoint. This lets you find out which databases
+        you can use, for example, directly after logging in.
+
+        This endpoint is also available if you use
+        [Role-Based Access Control (RBAC)](../../release-notes/version-3.12/whats-new-in-3-12.md#external-service-for-rbac).
+        The result then includes the databases you are allowed to read.
       parameters:
         - name: database-name
           in: path
           required: true
           example: _system
           description: |
-            The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least `ro` access
-            to this database.
+            The name of an existing database. Which database you use doesn't
+            matter. The user account you authenticate with doesn't need any
+            access to this database. You can always use `_system` because this
+            database always exists.
           schema:
             type: string
       responses:
@@ -142,6 +152,9 @@ paths:
         '400':
           description: |
             is returned if the request is invalid.
+        '401':
+          description: |
+            The credentials are wrong or the user account is inactive.
       tags:
         - Databases
 ```

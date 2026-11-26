@@ -829,12 +829,20 @@ paths:
         the databases names as object keys, and the associated privileges
         for the database as values.
 
-        In case you specified `full`, the result will contain the permissions
-        for the databases as well as the permissions for the collections.
+        By default, the result only includes the databases the user has at
+        least `ro` access to. The reported access levels are the effective ones,
+        taking wildcard access levels (`*`) into account.
 
-        The access levels are `rw`, `ro`, and `none`. Collections without an
-        explicitly set access level are reported as `undefined`, in which case
-        the wildcard access level (`*`) applies.
+        If you set `full` to `true`, the result includes all databases, also
+        the ones the user has no access to. For each database, `permission` is
+        the explicitly configured database access level and `collections` holds
+        the explicitly configured access levels of all collections in this
+        database, including a `*` key for the collection wildcard. An additional
+        `*` key holds the access level of the database wildcard.
+
+        The access levels are `rw`, `ro`, and `none`. Databases and collections
+        without an explicitly set access level are reported as `undefined` in
+        the full result, in which case the wildcard access level (`*`) applies.
       parameters:
         - name: database-name
           in: path
@@ -855,7 +863,8 @@ paths:
           in: query
           required: false
           description: |
-            Return the full set of access levels for all databases and all collections.
+            Return the configured access levels for all databases and all collections,
+            including the databases the user has no access to.
           schema:
             type: boolean
             default: false
