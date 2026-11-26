@@ -123,8 +123,15 @@ paths:
     get:
       operationId: listUserAccessibleDatabases
       description: |
-        Retrieves the list of all databases the current user can access without
-        specifying a different username or password.
+        Retrieves the list of all databases the user account you authenticate
+        with can access, i.e. the databases for which it has at least `ro`
+        access.
+
+        You need to specify a database you have access to in the URL. If you
+        don't know the name of such a database, you can use the
+        [`GET /_db/{database-name}/_api/user/{user}/database` endpoint](users.md#list-a-users-accessible-databases)
+        with your own username instead. It doesn't require access to the
+        database you specify in the URL, so you can use `_system`, for example.
       parameters:
         - name: database-name
           in: path
@@ -143,6 +150,11 @@ paths:
         '400':
           description: |
             is returned if the request is invalid.
+        '401':
+          description: |
+            The user account you authenticate with has `none` access to the
+            specified database, the credentials are wrong, the user account is
+            inactive, or the specified database doesn't exist.
       tags:
         - Databases
 ```
