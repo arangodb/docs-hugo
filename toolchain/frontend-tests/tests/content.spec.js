@@ -231,6 +231,8 @@ test.describe("deep links to OpenAPI properties", () => {
     ["/arangodb/stable/develop/http-api/collections/", "create-a-collection_body_keyOptions_type", ["create-a-collection_body_keyOptions"]],
     // Array items (double underscore)
     ["/arangodb/stable/develop/http-api/queries/aql-query-results-cache/", "list-the-entries-of-the-aql-query-results-cache_res_200__hash", ["list-the-entries-of-the-aql-query-results-cache_res_200"]],
+    // Property name with an underscore (_key), so the ID can't be split into parent IDs
+    ["/arangodb/stable/develop/http-api/graphs/named-graphs/", "add-an-edge-definition_res_201_graph__key", ["add-an-edge-definition_res_201", "add-an-edge-definition_res_201_graph"]],
   ]) {
     test(`open the property and its parents: ${id}`, async ({ page }) => {
       await open(page, `${path}#${id}`);

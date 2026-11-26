@@ -336,10 +336,13 @@ HTTP `403 Forbidden` error.
 If the user account you authenticate with has no access to the database you
 target with the experimental
 [`GET /_arango/experimental/_admin/activities` endpoint](../../develop/http-api/monitoring/activities.md),
-the request now fails with an HTTP `404 Not Found` error and the
-`ERROR_ARANGO_DATABASE_NOT_FOUND` (`1228`) error number. Up to v3.12.10, the
-request failed with an HTTP `401 Unauthorized` error and the `ERROR_FORBIDDEN`
-(`11`) error number.
+the request now fails with an HTTP `403 Forbidden` error and the
+`ERROR_FORBIDDEN` (`11`) error number. Up to v3.12.10, the request failed with
+an HTTP `401 Unauthorized` error and the `ERROR_FORBIDDEN` (`11`) error number.
+
+In v3.12.11 specifically, the request failed with an HTTP `404 Not Found` error
+and the `ERROR_ARANGO_DATABASE_NOT_FOUND` (`1228`) error number. From v3.12.12
+onward, it fails with an HTTP `403 Forbidden` error as described above.
 
 #### Validation of vector index factory strings
 
@@ -379,6 +382,27 @@ If you deactivate a user account by setting `active` to `false` using the
 and [user tokens](../../develop/http-api/authentication.md#jwt-user-tokens) of
 this user account are now rejected. Requests that
 authenticate with such a token fail with an HTTP `401 Unauthorized` error.
+
+#### Listing the accessible databases without database access
+
+<small>Introduced in: v3.12.12</small>
+
+The [`GET /_db/{database-name}/_api/database/user` endpoint](../../develop/http-api/databases.md#list-the-accessible-databases)
+no longer requires access to the database you specify in the URL. Any
+authenticated user account can call it via any existing database to get the
+list of databases it can access, for example, via `_system` because this
+database always exists. This lets the web interface show the database
+selection after logging in, even if the user account has no access to the
+`_system` database.
+
+Up to v3.12.11, the user account needed at least `ro` access to the specified
+database. Otherwise, the request failed with an HTTP `401 Unauthorized` error.
+This required you to know the name of at least one database you have access to.
+
+Alternatively, you can use the
+[`GET /_db/{database-name}/_api/user/{user}/database` endpoint](../../develop/http-api/users.md#list-a-users-accessible-databases)
+with your own username if you use the classic authorization system (not RBAC).
+This endpoint has never required access to the database you specify in the URL.
 
 #### Per-user scoping of the query tracking API
 

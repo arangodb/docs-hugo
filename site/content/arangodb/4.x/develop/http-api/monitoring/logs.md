@@ -793,7 +793,9 @@ paths:
                               type: string
         '401':
           description: |
-            The user account has insufficient permissions for the selected database.
+            The credentials are wrong, the user account is inactive, or the
+            specified database doesn't exist and the user account has no default
+            access to it.
           content:
             application/json:
               schema:
@@ -824,7 +826,10 @@ paths:
                     type: string
         '403':
           description: |
-            The recording API has been disabled.
+            The recording API has been disabled, the user account you
+            authenticate with has `none` access to the specified database or
+            lacks `rw` access to the `_system` database, or you tried to
+            authenticate with user credentials but a superuser JWT is required.
           content:
             application/json:
               schema:
@@ -1037,7 +1042,9 @@ paths:
                               type: string
         '401':
           description: |
-            The user account has insufficient permissions for the selected database.
+            The credentials are wrong, the user account is inactive, or the
+            specified database doesn't exist and the user account has no default
+            access to it.
           content:
             application/json:
               schema:
@@ -1068,7 +1075,10 @@ paths:
                     type: string
         '403':
           description: |
-            The recording API has been disabled.
+            The recording API has been disabled, the user account you
+            authenticate with has `none` access to the specified database or
+            lacks `rw` access to the `_system` database, or you tried to
+            authenticate with user credentials but a superuser JWT is required.
           content:
             application/json:
               schema:

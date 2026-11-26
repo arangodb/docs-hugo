@@ -1,0 +1,33 @@
+{{- /* Opens a group of HTTP API version tabs. Unlike {{< tabs >}}, the panes are not nested
+       inside the shortcode: {{< api-version >}} and {{< api-versions-end >}} are markers that
+       only emit the surrounding elements, so the openapi code blocks stay part of the page's
+       Markdown. That keeps their render hook running during the Goldmark pass, which is what
+       gives them the correct headline and leaves nested shortcodes unexpanded. */ -}}
+{{- $group := "arangodb-api" -}}
+{{- $versions := .Params -}}
+{{- if or (not $versions) (not (reflect.IsSlice $versions)) -}}
+  {{- errorf "%q: api-versions needs the API versions as parameters, e.g. {{< api-versions \"v0\" \"v1\" >}}" .Page.Path -}}
+{{- end -}}
+{{- if .Page.Store.Get "apiVersionsOpen" -}}
+  {{- errorf "%q: api-versions opened while the previous group %v is still open, add {{< api-versions-end >}}" .Page.Path (.Page.Store.Get "apiVersions") -}}
+{{- end -}}
+{{- .Page.Store.Set "apiVersionsOpen" true -}}
+{{- $n := add (int (.Page.Store.Get "apiVersionsCount")) 1 -}}
+{{- .Page.Store.Set "apiVersionsCount" $n -}}
+{{- .Page.Store.Set "apiVersions" $versions -}}
+{{- .Page.Store.Set "apiVersionIndex" 0 -}}
+{{- .Page.Store.Set "apiVersionsId" (printf "api-versions-%d" $n) -}}
+{{- $id := printf "api-versions-%d" $n -}}
+<div class="tab-panel">
+  <div class="tab-content">
+    <div class="tab-nav" role="tablist" aria-label="API version">
+    {{- range $i, $v := $versions }}
+      <button type="button" role="tab"
+        id="{{ $id }}-tab-{{ $v | urlize }}"
+        aria-controls="{{ $id }}-panel-{{ $v | urlize }}"
+        aria-selected="{{ if eq $i 0 }}true{{ else }}false{{ end }}"
+        tabindex="{{ if eq $i 0 }}0{{ else }}-1{{ end }}"
+        data-tab-group="{{ $group }}" data-tab-item="{{ $v }}"
+        class="tab-nav-button{{ if eq $i 0 }} selected{{ end }}"><span>API {{ $v }}</span></button>
+    {{- end }}
+    </div>

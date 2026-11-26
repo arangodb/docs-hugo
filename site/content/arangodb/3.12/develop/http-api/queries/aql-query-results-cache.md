@@ -105,7 +105,7 @@ paths:
             The request is malformed.
         '401':
           description: |
-            The user account you authenticate with lacks read access to the
+            The user account you authenticate with has `none` access to the
             specified database.
       tags:
         - Queries
@@ -186,11 +186,11 @@ paths:
             The request is malformed.
         '401':
           description: |
-            The user account you authenticate with lacks read access to the
+            The user account you authenticate with has `none` access to the
             specified database.
         '403':
           description: |
-            The user account you authenticated with lacks read access to the
+            The user account you authenticate with has `none` access to the
             `_system` database (introduced in v3.12.11). Up to v3.12.10, this
             endpoint didn't perform this permission check.
       tags:
@@ -277,7 +277,7 @@ paths:
             The request is malformed.
         '401':
           description: |
-            The user account you authenticate with lacks read access to the
+            The user account you authenticate with has `none` access to the
             specified database.
       tags:
         - Queries
@@ -414,11 +414,11 @@ paths:
             The request is malformed.
         '401':
           description: |
-            The user account you authenticate with lacks read access to the
+            The user account you authenticate with has `none` access to the
             specified database.
         '403':
           description: |
-            The user account you authenticated with lacks read access to the
+            The user account you authenticate with has `none` access to the
             `_system` database (introduced in v3.12.11). Up to v3.12.10, this
             endpoint didn't perform this permission check.
       tags:
