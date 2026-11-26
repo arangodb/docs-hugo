@@ -127,8 +127,6 @@ paths:
 
 ## Get the global server logs (deprecated)
 
-{{< tag "API v0 only" >}}
-
 ```openapi
 ---
 apiVersions: [v0]
@@ -962,7 +960,7 @@ paths:
         '401':
           description: |
             The user account you authenticate with has `none` access to the
-            specified database (with API `v1`, you get an HTTP `403` error instead), the credentials are wrong, or the user account
+            specified database, the credentials are wrong, or the user account
             is inactive.
           content:
             application/json:
@@ -1211,7 +1209,7 @@ paths:
         '401':
           description: |
             The user account you authenticate with has `none` access to the
-            specified database (with API `v1`, you get an HTTP `403` error instead), the credentials are wrong, or the user account
+            specified database, the credentials are wrong, or the user account
             is inactive.
           content:
             application/json:

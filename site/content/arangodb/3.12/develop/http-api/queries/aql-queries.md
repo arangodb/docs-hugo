@@ -1918,8 +1918,6 @@ logJsonResponse(response);
 
 ### Read the next batch from a cursor (deprecated)
 
-{{< tag "API v0 only" >}}
-
 ```openapi
 ---
 apiVersions: [v0]

@@ -3307,27 +3307,6 @@ cluster servers is:
 |:------|:------------|
 | `arangodb_server_health` | Cluster server health status (0=FAILED, 1=BAD, 2=GOOD). |
 
-### HTTP API versioning
-
-<small>Introduced in: v3.12.15</small>
-
-{{< comment >}}TODO: Confirm the release that enables API v1 in 3.12{{< /comment >}}
-
-The HTTP API now has a version of its own that is independent of the ArangoDB
-version. Breaking changes are only made in a new major API version that you
-need to request explicitly, so that a server upgrade doesn't break your client
-code as long as the server serves the API version you use.
-
-In addition to its own API, which is now called `v0` and stays the default,
-ArangoDB 3.12 serves the API version `v1` of the upcoming ArangoDB 4.x release.
-You can select it with the `/_arango/v1` prefix in the URL path, like
-`/_arango/v1/_db/mydb/_api/collection`. This lets you test whether your client
-code works with ArangoDB 4.x before you upgrade. The `v1` API doesn't include
-the endpoints that are removed in ArangoDB 4.x and differs in some other
-aspects, like the error responses for denied access.
-
-See [HTTP API versioning](../../develop/http-api/api-versioning.md) for details.
-
 ## Client tools
 
 ### Protocol aliases for endpoints

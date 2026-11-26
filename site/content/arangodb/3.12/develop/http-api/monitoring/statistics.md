@@ -8,8 +8,6 @@ description: >-
 ---
 ## Get the statistics
 
-{{< tag "API v0 only" >}}
-
 ```openapi
 ---
 apiVersions: [v0]
@@ -543,8 +541,6 @@ logJsonResponse(response);
 ```
 
 ## Get the statistics description
-
-{{< tag "API v0 only" >}}
 
 ```openapi
 ---

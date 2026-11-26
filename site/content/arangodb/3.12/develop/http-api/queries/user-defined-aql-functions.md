@@ -22,8 +22,6 @@ User-defined AQL functions are deprecated and the feature is removed in ArangoDB
 
 ## Create a user-defined AQL function
 
-{{< tag "API v0 only" >}}
-
 ```openapi
 ---
 apiVersions: [v0]
@@ -189,8 +187,6 @@ logJsonResponse(response);
 ```
 
 ## Remove a user-defined AQL function
-
-{{< tag "API v0 only" >}}
 
 ```openapi
 ---
@@ -366,8 +362,6 @@ logJsonResponse(response);
 ```
 
 ## List the registered user-defined AQL functions
-
-{{< tag "API v0 only" >}}
 
 ```openapi
 ---

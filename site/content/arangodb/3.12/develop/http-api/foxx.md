@@ -18,8 +18,6 @@ removed in ArangoDB v4.0.
 
 ### List the installed services
 
-{{< tag "API v0 only" >}}
-
 ```openapi
 ---
 apiVersions: [v0]
@@ -69,8 +67,6 @@ paths:
 ```
 
 ### Get the service description
-
-{{< tag "API v0 only" >}}
 
 ```openapi
 ---
@@ -124,8 +120,6 @@ paths:
 ```
 
 ### Install a new service
-
-{{< tag "API v0 only" >}}
 
 ```openapi
 ---
@@ -216,8 +210,6 @@ paths:
 
 ### Uninstall a service
 
-{{< tag "API v0 only" >}}
-
 ```openapi
 ---
 apiVersions: [v0]
@@ -264,8 +256,6 @@ paths:
 ```
 
 ### Replace a service
-
-{{< tag "API v0 only" >}}
 
 ```openapi
 ---
@@ -368,8 +358,6 @@ paths:
 ```
 
 ### Upgrade a service
-
-{{< tag "API v0 only" >}}
 
 ```openapi
 ---
@@ -475,8 +463,6 @@ paths:
 
 ### Get the configuration options
 
-{{< tag "API v0 only" >}}
-
 ```openapi
 ---
 apiVersions: [v0]
@@ -516,8 +502,6 @@ paths:
 ```
 
 ### Update the configuration options
-
-{{< tag "API v0 only" >}}
 
 ```openapi
 ---
@@ -566,8 +550,6 @@ paths:
 
 ### Replace the configuration options
 
-{{< tag "API v0 only" >}}
-
 ```openapi
 ---
 apiVersions: [v0]
@@ -615,8 +597,6 @@ paths:
 
 ### Get the dependency options
 
-{{< tag "API v0 only" >}}
-
 ```openapi
 ---
 apiVersions: [v0]
@@ -656,8 +636,6 @@ paths:
 ```
 
 ### Update the dependency options
-
-{{< tag "API v0 only" >}}
 
 ```openapi
 ---
@@ -710,8 +688,6 @@ paths:
 ```
 
 ### Replace the dependency options
-
-{{< tag "API v0 only" >}}
 
 ```openapi
 ---
@@ -767,8 +743,6 @@ paths:
 
 ### List the service scripts
 
-{{< tag "API v0 only" >}}
-
 ```openapi
 ---
 apiVersions: [v0]
@@ -807,8 +781,6 @@ paths:
 ```
 
 ### Run a service script
-
-{{< tag "API v0 only" >}}
 
 ```openapi
 ---
@@ -862,8 +834,6 @@ paths:
 ```
 
 ### Run the service tests
-
-{{< tag "API v0 only" >}}
 
 ```openapi
 ---
@@ -945,8 +915,6 @@ paths:
 
 ### Enable the development mode
 
-{{< tag "API v0 only" >}}
-
 ```openapi
 ---
 apiVersions: [v0]
@@ -993,8 +961,6 @@ paths:
 
 ### Disable the development mode
 
-{{< tag "API v0 only" >}}
-
 ```openapi
 ---
 apiVersions: [v0]
@@ -1036,8 +1002,6 @@ paths:
 
 ### Get the service README
 
-{{< tag "API v0 only" >}}
-
 ```openapi
 ---
 apiVersions: [v0]
@@ -1078,8 +1042,6 @@ paths:
 
 ### Get the Swagger description
 
-{{< tag "API v0 only" >}}
-
 ```openapi
 ---
 apiVersions: [v0]
@@ -1118,8 +1080,6 @@ paths:
 ```
 
 ### Download a service bundle
-
-{{< tag "API v0 only" >}}
 
 ```openapi
 ---
@@ -1165,8 +1125,6 @@ paths:
 ```
 
 ### Commit the local service state
-
-{{< tag "API v0 only" >}}
 
 ```openapi
 ---

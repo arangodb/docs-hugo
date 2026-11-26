@@ -225,8 +225,6 @@ in a batch part will be ignored.
 
 ### Execute a batch request
 
-{{< tag "API v0 only" >}}
-
 ```openapi
 ---
 apiVersions: [v0]

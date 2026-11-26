@@ -29,8 +29,6 @@ refer to [Transactions](../../transactions/_index.md).
 
 ## Execute a JavaScript Transaction
 
-{{< tag "API v0 only" >}}
-
 ```openapi
 ---
 apiVersions: [v0]

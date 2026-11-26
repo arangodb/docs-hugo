@@ -8,39 +8,6 @@ description: >-
 ---
 ## HTTP API
 
-### API versioning
-
-<small>Introduced in: v3.12.15</small>
-
-The HTTP API has a version of its own that is independent of the ArangoDB
-version. See [HTTP API versioning](../../develop/http-api/api-versioning.md)
-for details.
-
-- You can prefix endpoint paths with `/_arango/v0` to explicitly select the
-  API version `v0`, which is the API of ArangoDB 3.12 (and earlier versions) and
-  the default if you don't specify a prefix. The prefix comes first, before the
-  database, like `/_arango/v0/_db/mydb/_api/collection`.
-
-- Experimental endpoints are available via the `/_arango/experimental` prefix,
-  like the [activities API](../../develop/http-api/monitoring/activities.md).
-
-- The server serves the OpenAPI description of each API version at
-  `/_arango/{api-version}/openapi.json`, like `/_arango/v0/openapi.json`.
-
-- You can select the API version `v1` of the upcoming ArangoDB 4.x release with
-  the `/_arango/v1` prefix from ArangoDB v3.12.15 onward. It doesn't include the
-  endpoints that are removed in ArangoDB 4.x and has some behavior changes, like
-  HTTP `403 Forbidden` instead of `401 Unauthorized` errors if you lack access
-  to a database. See
-  [Differences between `v0` and `v1`](../../develop/http-api/api-versioning.md#differences-between-v0-and-v1).
-
-  {{< comment >}}TODO: Confirm the release that enables API v1 in 3.12{{< /comment >}}
-
-- The `GET /_api/version` endpoint returns the supported API versions in an
-  `apiVersions` attribute, the deprecated API versions in a
-  `deprecatedApiVersions` attribute, and the API version of the request in a
-  `requestedApiVersion` attribute.
-
 ### Behavior changes
 
 #### VelocyStream protocol removed
