@@ -133,7 +133,44 @@ or `/_api/view/myView`.
 
 ### Privilege changes
 
+#### Error responses for denied access
 
+The HTTP status codes and error numbers of some error responses for
+insufficient permissions have changed. This applies to both the classic
+authorization system and Role-Based Access Control (RBAC).
+
+- If the user account you authenticate with has no access to the database you
+  specify in the URL (`/_db/{database-name}/...`), requests now fail with an
+  HTTP `403 Forbidden` error instead of an HTTP `401 Unauthorized` error.
+  The error number remains `ERROR_FORBIDDEN` (`11`) but the error message
+  is different and more detailed. For example:
+
+  ```json
+  {
+    "code": 403,
+    "error": true,
+    "errorMessage": "Failed to use database 'db2' with access level 'read'. Request requires database authentication level 'ro' but it has only level 'none'.",
+    "errorNum": 11
+  }
+  ```
+
+  An HTTP `401 Unauthorized` error now only indicates a problem with the
+  authentication, for example, wrong credentials, an inactive user account,
+  or a database that doesn't exist.
+
+  Endpoints that don't require access to the specified database are not
+  affected, like the [User Management API](../../develop/http-api/users.md)
+  for your own user account and the
+  [`GET /_api/database/user` endpoint](../../develop/http-api/databases.md#list-the-accessible-databases).
+
+- If a request requires administrative permissions or you try to read the
+  data of another user account but you lack the permission, the request still
+  fails with an HTTP `403 Forbidden` error, but the error number is now
+  `ERROR_FORBIDDEN` (`11`) instead of `ERROR_HTTP_FORBIDDEN` (`403`).
+  With the classic authorization system, these operations require `rw` access
+  to the `_system` database. Examples are listing all users with
+  `GET /_api/user` and fetching another user's data or access levels with
+  `GET /_api/user/{user}` and `GET /_api/user/{user}/database`.
 
 ### Endpoint return value changes
 

@@ -519,6 +519,19 @@ The following endpoints could previously be called using any HTTP method of
  The HTTP method is now checked and only `GET` requests are allowed for these
  endpoints. Only the `GET` variants were documented.
 
+### Error responses for denied access
+
+Requests to a database the user account you authenticate with has no access to
+now fail with an HTTP `403 Forbidden` error instead of an HTTP `401 Unauthorized`
+error. Requests that lack administrative permissions or try to read the data
+of another user account now report the `ERROR_FORBIDDEN` (`11`) error number
+instead of `ERROR_HTTP_FORBIDDEN` (`403`).
+
+If your client code relies on the HTTP status code or the error number to
+handle permission errors, you may need to adjust it. See
+[API Changes in ArangoDB 4.x](api-changes-in-4-x.md#error-responses-for-denied-access)
+for details.
+
 ### Endpoint API removed
 
 The long-deprecated `GET /_api/endpoint` for retrieving all configured endpoints

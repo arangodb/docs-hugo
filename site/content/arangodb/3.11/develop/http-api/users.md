@@ -179,7 +179,8 @@ paths:
             The JSON representation is malformed or mandatory data is missing from the request
         '401':
           description: |
-            The credentials are wrong or the user account is inactive.
+            The credentials are wrong, the user account is inactive, or the
+            specified database doesn't exist.
         '403':
           description: |
             You specified a different user than the one you authenticated with,
@@ -268,7 +269,8 @@ paths:
             The JSON representation is malformed or mandatory data is missing from the request.
         '401':
           description: |
-            The credentials are wrong or the user account is inactive.
+            The credentials are wrong, the user account is inactive, or the
+            specified database doesn't exist.
         '403':
           description: |
             You specified a different user than the one you authenticated with,
@@ -335,7 +337,8 @@ paths:
             Is returned if the user was removed by the server
         '401':
           description: |
-            The credentials are wrong or the user account is inactive.
+            The credentials are wrong, the user account is inactive, or the
+            specified database doesn't exist.
         '403':
           description: |
             The user account you authenticate with lacks `rw` access to the
@@ -399,7 +402,8 @@ paths:
             The user was found.
         '401':
           description: |
-            The credentials are wrong or the user account is inactive.
+            The credentials are wrong, the user account is inactive, or the
+            specified database doesn't exist.
         '403':
           description: |
             You specified a different user than the one you authenticated with,
@@ -554,7 +558,8 @@ paths:
             from the request.
         '401':
           description: |
-            The credentials are wrong or the user account is inactive.
+            The credentials are wrong, the user account is inactive, or the
+            specified database doesn't exist.
         '403':
           description: |
             The user account you authenticate with lacks `rw` access to the
@@ -650,7 +655,8 @@ paths:
             from the request.
         '401':
           description: |
-            The credentials are wrong or the user account is inactive.
+            The credentials are wrong, the user account is inactive, or the
+            specified database doesn't exist.
         '403':
           description: |
             The user account you authenticate with lacks `rw` access to the
@@ -902,7 +908,8 @@ paths:
             Returned if the list of available databases can be returned.
         '401':
           description: |
-            The credentials are wrong or the user account is inactive.
+            The credentials are wrong, the user account is inactive, or the
+            specified database doesn't exist.
         '403':
           description: |
             You specified a different user than the one you authenticated with,
@@ -996,7 +1003,8 @@ paths:
             Returned if the access level can be returned
         '401':
           description: |
-            The credentials are wrong or the user account is inactive.
+            The credentials are wrong, the user account is inactive, or the
+            specified database doesn't exist.
         '403':
           description: |
             You specified a different user than the one you authenticated with,
@@ -1074,7 +1082,8 @@ paths:
             Returned if the access level can be returned
         '401':
           description: |
-            The credentials are wrong or the user account is inactive.
+            The credentials are wrong, the user account is inactive, or the
+            specified database doesn't exist.
         '403':
           description: |
             You specified a different user than the one you authenticated with,

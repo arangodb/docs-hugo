@@ -226,7 +226,8 @@ paths:
             is returned if the request is invalid.
         '401':
           description: |
-            The credentials are wrong or the user account is inactive.
+            The credentials are wrong, the user account is inactive, or the
+            specified database doesn't exist.
       tags:
         - Databases
 ```
