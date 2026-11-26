@@ -21,9 +21,7 @@ func AdjustCodeForArangosh(code string) string {
 	hide := false
 	buffer := []string{}
 
-	if !(strings.Contains(code, "EOFD")) {
-		code = fmt.Sprintf("%s\nprint('EOFD');\n\n\n\n", code)
-	}
+	code = fmt.Sprintf("%s\nprint(%q);\n\n\n\n", code, utils.MarkerEOF)
 
 	code = strings.ReplaceAll(code, "\r\n", "\n")
 	re := regexp.MustCompile(`(?m)}\n *catch`)
@@ -32,9 +30,11 @@ func AdjustCodeForArangosh(code string) string {
 	lines := strings.Split(code, "\n")
 
 	for _, line := range lines {
-		// An AQL example is a single db._query("...") line (see AQLFormatter).
-		// The JavaScript rewrites below must not change the text of the query.
-		isQuery := strings.HasPrefix(strings.TrimLeft(line, " \t~"), "db._query(")
+		// An AQL example is a single __docsQuery(db._query("...")) or
+		// db._explain("...") line (see AQLFormatter). The JavaScript rewrites
+		// below must not change the text of the query.
+		trimmed := strings.TrimLeft(line, " \t~")
+		isQuery := strings.HasPrefix(trimmed, "__docsQuery(db._query(") || strings.HasPrefix(trimmed, "db._explain(")
 
 		if !isQuery {
 			re := regexp.MustCompile(`(?m)let |const `)
@@ -54,7 +54,7 @@ func AdjustCodeForArangosh(code string) string {
 		if hide && !tildeRE.MatchString(line) {
 			hide = false
 			hiddenCode := strings.Join(buffer, "\n")
-			out = fmt.Sprintf("%s\nprint('HIDED-START')\n%s\nprint('HIDED-END');\n%s", out, hiddenCode, line)
+			out = fmt.Sprintf("%s\nprint(%q)\n%s\nprint(%q);\n%s", out, utils.MarkerHideStart, hiddenCode, utils.MarkerHideEnd, line)
 			buffer = []string{}
 			continue
 		}
@@ -97,26 +97,18 @@ func (formatter CurlFormatter) FormatCommand(code string) string {
 	return code
 }
 
+// The requests and responses between their markers, without the markers
+var curlRequestRE = regexp.MustCompile(`(?s)` + regexp.QuoteMeta(utils.MarkerRequest) + `(.*?)` + regexp.QuoteMeta(utils.MarkerRequestEnd))
+var curlResponseRE = regexp.MustCompile(`(?s)` + regexp.QuoteMeta(utils.MarkerResponse) + `(.*?)` + regexp.QuoteMeta(utils.MarkerResponseEnd))
+
 func (formatter CurlFormatter) FormatCurlOutput(arangoOutput, renderOption string) (input, output string, err error) {
-	curlRE := regexp2.MustCompile(`(?ms)REQ(.*?)ENDREQ`, 0)
-	curlRequests := utils.Regexp2FindAllString(curlRE, arangoOutput)
-	for _, curl := range curlRequests {
-		input = fmt.Sprintf("%s\n%s", input, curl)
+	for _, match := range curlRequestRE.FindAllStringSubmatch(arangoOutput, -1) {
+		input = fmt.Sprintf("%s\n%s\n", input, match[1])
 	}
 
-	input = strings.ReplaceAll(input, "REQ", "")
-	input = strings.ReplaceAll(input, "ENDREQ", "")
-	input = strings.ReplaceAll(input, "END", "\n")
-
-	respRE := regexp2.MustCompile(`(?ms)RESP(.*?)ENDRESP`, 0)
-	responses := utils.Regexp2FindAllString(respRE, arangoOutput)
-	for _, response := range responses {
-		output = fmt.Sprintf("%s\n%s", output, response)
+	for _, match := range curlResponseRE.FindAllStringSubmatch(arangoOutput, -1) {
+		output = fmt.Sprintf("%s\n%s\n", output, match[1])
 	}
-
-	output = strings.ReplaceAll(output, "RESP", "")
-	output = strings.ReplaceAll(output, "ENDRESP", "")
-	output = strings.ReplaceAll(output, "END", "\n")
 
 	return input, output, nil
 }
@@ -146,15 +138,52 @@ func jsStringLiteral(s string) string {
 // template literal, so that the query reaches the server exactly as written in
 // the example: backslashes are the ones AQL sees, and `${...}` and backticks
 // carry no special meaning.
-func (formatter AQLFormatter) FormatRequestCode(code string, bindVars map[string]interface{}) string {
-	commands := fmt.Sprintf("db._query(%s", jsStringLiteral(code))
-	if len(bindVars) != 0 {
-		bindVarsJson, _ := json.Marshal(bindVars)
-		commands = fmt.Sprintf("%s, %s", commands, bindVarsJson)
+//
+// The query options are the `options` object of the request body (sub-options
+// like `maxRuntime` or `optimizer`). arangosh's db._query() and db._explain()
+// send their third argument as this object.
+//
+// With explain set, the execution plan is printed (without terminal colors)
+// instead of running the query. The query options are forwarded so that they
+// can affect the plan, and so that features that need to be enabled with an
+// option can be explained.
+func (formatter AQLFormatter) FormatRequestCode(code string, bindVars, queryOptions map[string]interface{}, explain bool) string {
+	if explain {
+		explainOptions := map[string]interface{}{}
+		for key, value := range queryOptions {
+			explainOptions[key] = value
+		}
+		explainOptions["colors"] = false
+		return fmt.Sprintf("db._explain(%s, %s, %s);", jsStringLiteral(code), jsonValue(bindVars), jsonValue(explainOptions))
 	}
 
-	commands = commands + ").toArray();"
+	commands := fmt.Sprintf("__docsQuery(db._query(%s", jsStringLiteral(code))
+	if len(bindVars) != 0 || len(queryOptions) != 0 {
+		commands = fmt.Sprintf("%s, %s", commands, jsonValue(bindVars))
+	}
+	if len(queryOptions) != 0 {
+		commands = fmt.Sprintf("%s, %s", commands, jsonValue(queryOptions))
+	}
+
+	// __docsQuery() (see common.js) returns the result and prints the warnings
+	commands = commands + "));"
 	return commands
+}
+
+// jsonValue encodes a map as a JSON object, which is also a JavaScript object
+// literal. Keys are sorted, so the result is deterministic. A nil or empty map
+// becomes {}.
+func jsonValue(value map[string]interface{}) string {
+	if len(value) == 0 {
+		return "{}"
+	}
+	var buf bytes.Buffer
+	encoder := json.NewEncoder(&buf)
+	encoder.SetEscapeHTML(false)
+	if err := encoder.Encode(value); err != nil {
+		return "{}"
+	}
+	return strings.TrimSuffix(buf.String(), "\n")
 }
 
 /*

@@ -121,6 +121,11 @@ In queries, you can define in which directions the edge relations may be followe
   - variable traversal depth between a defined minimum and maximum 
   - breadth-first, depth-first, and weighted traversals
   - optionally with prune conditions
+- [Pattern matching](../aql/high-level-operations/match.md)
+  - nodes and edges described as patterns like `(a:persons) -[:knows]-> (b:persons)`
+  - conditions on every node and edge of a pattern
+  - fixed-length and variable-length paths, cycles, and multiple patterns that
+    share nodes
 - [Shortest Path](../aql/graph-queries/shortest-path.md)
 - [All Shortest Paths](../aql/graph-queries/all-shortest-paths.md)
 - [k Shortest Paths](../aql/graph-queries/k-shortest-paths.md)

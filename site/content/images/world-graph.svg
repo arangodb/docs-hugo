@@ -1,0 +1,279 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="keep-colors" viewBox="-20 -17 899 992" width="899" height="992" role="img" aria-labelledby="world-graph-t world-graph-d" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="world-graph-t">The worldCountry example graph</title>
+  <desc id="world-graph-d">A hierarchy in the worldVertices collection, connected by is-in edges in the worldEdges collection: every capital is in its country, every country is in its continent, and every continent is in the world. Africa: Algeria (Algiers), Angola (Luanda), Botswana (Gaborone), Burkina Faso (Ouagadougou), Burundi (Bujumbura), Cameroon (Yaounde), Chad (N'Djamena), Cote d'Ivoire (Yamoussoukro), Egypt (Cairo), Eritrea (Asmara). Asia: Afghanistan (Kabul), Bahrain (Manama), Bangladesh (Dhaka), Bhutan (Thimphu), Brunei (Bandar Seri Begawan), Cambodia (Phnom Penh), People's Republic of China (Beijing). Australia: Australia (Canberra). Europe: Albania (Tirana), Andorra (Andorra la Vella), Austria (Vienna), Belgium (Brussels), Bosnia and Herzegovina (Sarajevo), Bulgaria (Sofia), Croatia (Zagreb), Czech Republic (Prague), Denmark (Copenhagen), Finland (Helsinki), France (Paris), Germany (Berlin). North America: Antigua and Barbuda (Saint John's), Bahamas (Nassau), Barbados (Bridgetown), Canada (Ottawa). South America: Argentina (Buenos Aires), Bolivia (La Paz), Brazil (Brasilia), Chile (Santiago), Colombia (Bogota), Ecuador (Quito).</desc>
+  <defs><marker id="world-graph-a" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path class="dg-f-accent" d="M0,0 L8,4 L0,8 z" fill="#00576e"/></marker><marker id="world-graph-g" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path class="dg-f-arrow" d="M0,0 L8,4 L0,8 z" fill="#90a1b9"/></marker></defs>
+  <rect class="dg-f-canvas" x="-20" y="-17" width="899" height="992" rx="6" fill="#f1f5f9"/>
+  <rect class="dg-f-node dg-s-accent" x="0.0" y="80.0" width="461.6" height="394.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <line class="dg-s-accent" x1="132.2" y1="155.5" x2="151.2" y2="155.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="329.0" y1="155.5" x2="402.2" y2="155.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="132.2" y1="182.5" x2="151.2" y2="182.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="329.0" y1="182.5" x2="402.2" y2="182.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="132.2" y1="209.5" x2="151.2" y2="209.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="329.0" y1="209.5" x2="402.2" y2="209.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="132.2" y1="236.5" x2="151.2" y2="236.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="329.0" y1="236.5" x2="402.2" y2="236.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="132.2" y1="263.5" x2="151.2" y2="263.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="329.0" y1="263.5" x2="402.2" y2="263.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="132.2" y1="290.5" x2="151.2" y2="290.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="329.0" y1="290.5" x2="402.2" y2="290.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="132.2" y1="317.5" x2="151.2" y2="317.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="329.0" y1="317.5" x2="402.2" y2="317.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="132.2" y1="344.5" x2="151.2" y2="344.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="329.0" y1="344.5" x2="402.2" y2="344.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="132.2" y1="371.5" x2="151.2" y2="371.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="329.0" y1="371.5" x2="402.2" y2="371.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="132.2" y1="398.5" x2="151.2" y2="398.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="329.0" y1="398.5" x2="402.2" y2="398.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="132.2" y1="425.5" x2="151.2" y2="425.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="329.0" y1="425.5" x2="402.2" y2="425.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="132.2" y1="452.5" x2="151.2" y2="452.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="329.0" y1="452.5" x2="402.2" y2="452.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="402.2" y1="452.5" x2="402.2" y2="130.0" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="439.6" y1="106.0" x2="496.6" y2="106.0" stroke="#00576e" stroke-width="2"/>
+  <rect class="dg-f-node dg-s-accent" x="0.0" y="496.0" width="461.6" height="259.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <line class="dg-s-accent" x1="151.1" y1="571.5" x2="170.2" y2="571.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="375.6" y1="571.5" x2="410.0" y2="571.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="151.1" y1="598.5" x2="170.2" y2="598.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="375.6" y1="598.5" x2="410.0" y2="598.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="151.1" y1="625.5" x2="170.2" y2="625.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="375.6" y1="625.5" x2="410.0" y2="625.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="151.1" y1="652.5" x2="170.2" y2="652.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="375.6" y1="652.5" x2="410.0" y2="652.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="151.1" y1="679.5" x2="170.2" y2="679.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="375.6" y1="679.5" x2="410.0" y2="679.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="151.1" y1="706.5" x2="170.2" y2="706.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="375.6" y1="706.5" x2="410.0" y2="706.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="151.1" y1="733.5" x2="170.2" y2="733.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="375.6" y1="733.5" x2="410.0" y2="733.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="410.0" y1="733.5" x2="410.0" y2="546.0" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="439.6" y1="522.0" x2="496.6" y2="522.0" stroke="#00576e" stroke-width="2"/>
+  <rect class="dg-f-node dg-s-accent" x="0.0" y="777.0" width="461.6" height="178.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <line class="dg-s-accent" x1="106.9" y1="852.5" x2="125.9" y2="852.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="283.0" y1="852.5" x2="374.9" y2="852.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="106.9" y1="879.5" x2="125.9" y2="879.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="283.0" y1="879.5" x2="374.9" y2="879.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="106.9" y1="906.5" x2="125.9" y2="906.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="283.0" y1="906.5" x2="374.9" y2="906.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="106.9" y1="933.5" x2="125.9" y2="933.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="283.0" y1="933.5" x2="374.9" y2="933.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="374.9" y1="933.5" x2="374.9" y2="827.0" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="439.6" y1="803.0" x2="496.6" y2="803.0" stroke="#00576e" stroke-width="2"/>
+  <rect class="dg-f-node dg-s-accent" x="531.6" y="116.0" width="327.6" height="340.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <line class="dg-s-accent" x1="752.3" y1="191.5" x2="733.2" y2="191.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="617.6" y1="191.5" x2="591.0" y2="191.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="752.3" y1="218.5" x2="733.2" y2="218.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="617.6" y1="218.5" x2="591.0" y2="218.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="752.3" y1="245.5" x2="733.2" y2="245.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="617.6" y1="245.5" x2="591.0" y2="245.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="752.3" y1="272.5" x2="733.2" y2="272.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="617.6" y1="272.5" x2="591.0" y2="272.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="752.3" y1="299.5" x2="733.2" y2="299.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="617.6" y1="299.5" x2="591.0" y2="299.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="752.3" y1="326.5" x2="733.2" y2="326.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="617.6" y1="326.5" x2="591.0" y2="326.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="752.3" y1="353.5" x2="733.2" y2="353.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="617.6" y1="353.5" x2="591.0" y2="353.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="752.3" y1="380.5" x2="733.2" y2="380.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="617.6" y1="380.5" x2="591.0" y2="380.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="752.3" y1="407.5" x2="733.2" y2="407.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="617.6" y1="407.5" x2="591.0" y2="407.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="752.3" y1="434.5" x2="733.2" y2="434.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="617.6" y1="434.5" x2="591.0" y2="434.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="591.0" y1="434.5" x2="591.0" y2="166.0" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="553.6" y1="142.0" x2="496.6" y2="142.0" stroke="#00576e" stroke-width="2"/>
+  <rect class="dg-f-node dg-s-accent" x="531.6" y="478.0" width="327.6" height="232.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <line class="dg-s-accent" x1="752.3" y1="553.5" x2="733.2" y2="553.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="645.2" y1="553.5" x2="618.3" y2="553.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="752.3" y1="580.5" x2="733.2" y2="580.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="645.2" y1="580.5" x2="618.3" y2="580.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="752.3" y1="607.5" x2="733.2" y2="607.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="645.2" y1="607.5" x2="618.3" y2="607.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="752.3" y1="634.5" x2="733.2" y2="634.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="645.2" y1="634.5" x2="618.3" y2="634.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="752.3" y1="661.5" x2="733.2" y2="661.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="645.2" y1="661.5" x2="618.3" y2="661.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="752.3" y1="688.5" x2="733.2" y2="688.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="645.2" y1="688.5" x2="618.3" y2="688.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="618.3" y1="688.5" x2="618.3" y2="528.0" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="553.6" y1="504.0" x2="496.6" y2="504.0" stroke="#00576e" stroke-width="2"/>
+  <rect class="dg-f-node dg-s-accent" x="531.6" y="732.0" width="327.6" height="97.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <line class="dg-s-accent" x1="777.6" y1="807.5" x2="758.5" y2="807.5" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="670.5" y1="807.5" x2="602.7" y2="807.5" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="602.7" y1="807.5" x2="602.7" y2="782.0" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <line class="dg-s-accent" x1="553.6" y1="758.0" x2="496.6" y2="758.0" stroke="#00576e" stroke-width="2"/>
+  <line class="dg-s-accent" x1="496.6" y1="803.0" x2="496.6" y2="45.0" stroke="#00576e" stroke-width="2" marker-end="url(#world-graph-a)"/>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="144.5" width="119.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="73.6" y="159.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Tirana</text>
+  <rect class="" x="159.2" y="144.5" width="169.8" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="244.1" y="159.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Albania</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="171.5" width="119.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="73.6" y="186.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Andorra la Vella</text>
+  <rect class="" x="159.2" y="171.5" width="169.8" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="244.1" y="186.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Andorra</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="198.5" width="119.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="73.6" y="213.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Vienna</text>
+  <rect class="" x="159.2" y="198.5" width="169.8" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="244.1" y="213.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Austria</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="225.5" width="119.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="73.6" y="240.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Brussels</text>
+  <rect class="" x="159.2" y="225.5" width="169.8" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="244.1" y="240.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Belgium</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="252.5" width="119.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="73.6" y="267.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Sarajevo</text>
+  <rect class="" x="159.2" y="252.5" width="169.8" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="244.1" y="267.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Bosnia and Herzegovina</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="279.5" width="119.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="73.6" y="294.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Sofia</text>
+  <rect class="" x="159.2" y="279.5" width="169.8" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="244.1" y="294.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Bulgaria</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="306.5" width="119.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="73.6" y="321.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Zagreb</text>
+  <rect class="" x="159.2" y="306.5" width="169.8" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="244.1" y="321.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Croatia</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="333.5" width="119.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="73.6" y="348.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Prague</text>
+  <rect class="" x="159.2" y="333.5" width="169.8" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="244.1" y="348.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Czech Republic</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="360.5" width="119.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="73.6" y="375.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Copenhagen</text>
+  <rect class="" x="159.2" y="360.5" width="169.8" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="244.1" y="375.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Denmark</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="387.5" width="119.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="73.6" y="402.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Helsinki</text>
+  <rect class="" x="159.2" y="387.5" width="169.8" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="244.1" y="402.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Finland</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="414.5" width="119.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="73.6" y="429.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Paris</text>
+  <rect class="" x="159.2" y="414.5" width="169.8" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="244.1" y="429.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">France</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="441.5" width="119.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="73.6" y="456.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Berlin</text>
+  <rect class="" x="159.2" y="441.5" width="169.8" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="244.1" y="456.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Germany</text>
+  <rect class="" x="364.8" y="90.0" width="74.8" height="32.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="402.2" y="110.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Europe</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="560.5" width="138.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="83.1" y="575.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Kabul</text>
+  <rect class="" x="178.2" y="560.5" width="197.4" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="276.9" y="575.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Afghanistan</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="587.5" width="138.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="83.1" y="602.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Manama</text>
+  <rect class="" x="178.2" y="587.5" width="197.4" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="276.9" y="602.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Bahrain</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="614.5" width="138.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="83.1" y="629.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Dhaka</text>
+  <rect class="" x="178.2" y="614.5" width="197.4" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="276.9" y="629.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Bangladesh</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="641.5" width="138.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="83.1" y="656.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Thimphu</text>
+  <rect class="" x="178.2" y="641.5" width="197.4" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="276.9" y="656.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Bhutan</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="668.5" width="138.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="83.1" y="683.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Bandar Seri Begawan</text>
+  <rect class="" x="178.2" y="668.5" width="197.4" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="276.9" y="683.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Brunei</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="695.5" width="138.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="83.1" y="710.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Phnom Penh</text>
+  <rect class="" x="178.2" y="695.5" width="197.4" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="276.9" y="710.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Cambodia</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="722.5" width="138.2" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="83.1" y="737.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Beijing</text>
+  <rect class="" x="178.2" y="722.5" width="197.4" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="276.9" y="737.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">People's Republic of China</text>
+  <rect class="" x="380.4" y="506.0" width="59.2" height="32.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="410.0" y="526.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Asia</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="841.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="61.0" y="856.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Saint John's</text>
+  <rect class="" x="133.9" y="841.5" width="149.1" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="208.4" y="856.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Antigua and Barbuda</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="868.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="61.0" y="883.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Nassau</text>
+  <rect class="" x="133.9" y="868.5" width="149.1" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="208.4" y="883.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Bahamas</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="895.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="61.0" y="910.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Bridgetown</text>
+  <rect class="" x="133.9" y="895.5" width="149.1" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="208.4" y="910.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Barbados</text>
+  <rect class="dg-f-node dg-s-accent" x="14.0" y="922.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="61.0" y="937.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Ottawa</text>
+  <rect class="" x="133.9" y="922.5" width="149.1" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="208.4" y="937.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Canada</text>
+  <rect class="" x="310.2" y="787.0" width="129.4" height="32.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="374.9" y="807.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">North America</text>
+  <rect class="dg-f-node dg-s-accent" x="751.3" y="180.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="798.2" y="195.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Algiers</text>
+  <rect class="" x="617.6" y="180.5" width="107.7" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="671.4" y="195.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Algeria</text>
+  <rect class="dg-f-node dg-s-accent" x="751.3" y="207.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="798.2" y="222.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Luanda</text>
+  <rect class="" x="617.6" y="207.5" width="107.7" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="671.4" y="222.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Angola</text>
+  <rect class="dg-f-node dg-s-accent" x="751.3" y="234.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="798.2" y="249.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Gaborone</text>
+  <rect class="" x="617.6" y="234.5" width="107.7" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="671.4" y="249.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Botswana</text>
+  <rect class="dg-f-node dg-s-accent" x="751.3" y="261.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="798.2" y="276.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Ouagadougou</text>
+  <rect class="" x="617.6" y="261.5" width="107.7" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="671.4" y="276.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Burkina Faso</text>
+  <rect class="dg-f-node dg-s-accent" x="751.3" y="288.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="798.2" y="303.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Bujumbura</text>
+  <rect class="" x="617.6" y="288.5" width="107.7" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="671.4" y="303.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Burundi</text>
+  <rect class="dg-f-node dg-s-accent" x="751.3" y="315.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="798.2" y="330.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Yaounde</text>
+  <rect class="" x="617.6" y="315.5" width="107.7" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="671.4" y="330.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Cameroon</text>
+  <rect class="dg-f-node dg-s-accent" x="751.3" y="342.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="798.2" y="357.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">N'Djamena</text>
+  <rect class="" x="617.6" y="342.5" width="107.7" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="671.4" y="357.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Chad</text>
+  <rect class="dg-f-node dg-s-accent" x="751.3" y="369.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="798.2" y="384.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Yamoussoukro</text>
+  <rect class="" x="617.6" y="369.5" width="107.7" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="671.4" y="384.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Cote d'Ivoire</text>
+  <rect class="dg-f-node dg-s-accent" x="751.3" y="396.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="798.2" y="411.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Cairo</text>
+  <rect class="" x="617.6" y="396.5" width="107.7" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="671.4" y="411.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Egypt</text>
+  <rect class="dg-f-node dg-s-accent" x="751.3" y="423.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="798.2" y="438.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Asmara</text>
+  <rect class="" x="617.6" y="423.5" width="107.7" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="671.4" y="438.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Eritrea</text>
+  <rect class="" x="553.6" y="126.0" width="74.8" height="32.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="591.0" y="146.6" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Africa</text>
+  <rect class="dg-f-node dg-s-accent" x="751.3" y="542.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="798.2" y="557.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Buenos Aires</text>
+  <rect class="" x="645.2" y="542.5" width="80.1" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="685.2" y="557.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Argentina</text>
+  <rect class="dg-f-node dg-s-accent" x="751.3" y="569.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="798.2" y="584.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">La Paz</text>
+  <rect class="" x="645.2" y="569.5" width="80.1" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="685.2" y="584.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Bolivia</text>
+  <rect class="dg-f-node dg-s-accent" x="751.3" y="596.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="798.2" y="611.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Brasilia</text>
+  <rect class="" x="645.2" y="596.5" width="80.1" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="685.2" y="611.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Brazil</text>
+  <rect class="dg-f-node dg-s-accent" x="751.3" y="623.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="798.2" y="638.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Santiago</text>
+  <rect class="" x="645.2" y="623.5" width="80.1" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="685.2" y="638.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Chile</text>
+  <rect class="dg-f-node dg-s-accent" x="751.3" y="650.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="798.2" y="665.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Bogota</text>
+  <rect class="" x="645.2" y="650.5" width="80.1" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="685.2" y="665.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Colombia</text>
+  <rect class="dg-f-node dg-s-accent" x="751.3" y="677.5" width="93.9" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="798.2" y="692.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Quito</text>
+  <rect class="" x="645.2" y="677.5" width="80.1" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="685.2" y="692.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Ecuador</text>
+  <rect class="" x="553.6" y="488.0" width="129.4" height="32.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="618.3" y="508.6" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">South America</text>
+  <rect class="dg-f-node dg-s-accent" x="776.6" y="796.5" width="68.6" height="22.0" rx="12" fill="#ffffff" stroke="#00576e" stroke-width="1.5"/>
+  <text class="dg-f-text" x="810.9" y="811.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Canberra</text>
+  <rect class="" x="670.5" y="796.5" width="80.1" height="22.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="710.5" y="811.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#014654">Australia</text>
+  <rect class="" x="553.6" y="742.0" width="98.2" height="32.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="602.7" y="762.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Australia</text>
+  <rect class="" x="448.6" y="3.0" width="96.0" height="34.0" rx="12" fill="#00576e" stroke="#00576e" stroke-width="1.5"/>
+  <text x="496.6" y="24.6" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">World</text>
+</svg>
