@@ -72,8 +72,9 @@ go get github.com/arangodb/go-driver/v3
 
 {{< /tabs >}}
 
-Import the driver in your Go program using the `import` statement.
-Two packages are necessary:
+Import the driver in your Go program using the `import` statement.
+The `arangodb` and `connection` packages are always necessary. The `shared` and
+`utils` packages are optional:
 
 {{< tabs "go-driver-version" >}}
 
@@ -82,6 +83,16 @@ Two packages are necessary:
 import (
     "github.com/arangodb/go-driver/v2/arangodb"
     "github.com/arangodb/go-driver/v2/connection"
+
+    // Optional
+    "github.com/arangodb/go-driver/v2/arangodb/shared"
+    "github.com/arangodb/go-driver/v2/utils"
+)
+
+// Prevent compile errors if the optional packages are unused
+var (
+    _ = shared.IsNoMoreDocuments
+    _ = utils.NewType[bool]
 )
 ```
 {{< /tab >}}
@@ -91,37 +102,32 @@ import (
 import (
     "github.com/arangodb/go-driver/v3/arangodb"
     "github.com/arangodb/go-driver/v3/connection"
+
+    // Optional
+    "github.com/arangodb/go-driver/v3/arangodb/shared"
+    "github.com/arangodb/go-driver/v3/utils"
+)
+
+// Prevent compile errors if the optional packages are unused
+var (
+    _ = shared.IsNoMoreDocuments
+    _ = utils.NewType[bool]
 )
 ```
 {{< /tab >}}
 
 {{< /tabs >}}
 
-You may want to additionally import the following packages:
+The `shared` package provides a `shared.IsNoMoreDocuments` function that makes it
+easy to check whether to stop iterating over the results of functions that return
+a reader, like multi-document operations and listing graphs. The `utils` package
+provides a `utils.NewType` function that lets you conveniently create a pointer to
+a boolean value, for instance.
 
-{{< tabs "go-driver-version" >}}
-
-{{< tab "Driver v2 (ArangoDB 3.x)" >}}
-```go
-    "github.com/arangodb/go-driver/v2/arangodb/shared"
-    "github.com/arangodb/go-driver/v2/utils"
-```
-{{< /tab >}}
-
-{{< tab "Driver v3 (ArangoDB 4.0+)" >}}
-```go
-    "github.com/arangodb/go-driver/v3/arangodb/shared"
-    "github.com/arangodb/go-driver/v3/utils"
-```
-{{< /tab >}}
-
-{{< /tabs >}}
-
-The former provides a `shared.IsNoMoreDocuments` function that makes it easy to
-check whether to stop iterating over the results of functions that return a reader,
-like multi-document operations and listing graphs. The latter provides a
-`utils.NewType` function that lets you conveniently create a pointer to a boolean
-value, for instance.
+Go doesn't compile a program that imports a package without using it. The
+`var` block with the `_ = ...` assignments counts as a use, so you can keep the
+optional imports whether you use them or not. You can also remove the optional
+imports and the `var` block if you don't need them.
 
 If you use Go modules, you can also import the driver and run `go mod tidy`
 instead of using the `go get` command.
