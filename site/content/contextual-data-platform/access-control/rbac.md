@@ -142,6 +142,12 @@ RBAC is enforced at two levels:
   its pod for every decision. Otherwise, ArangoDB uses its
   [classic permissions](authorization.md).
 
+{{< warning >}}
+RBAC is disabled by default. You can [enable it](#enable-rbac) per
+deployment. Once enabled, RBAC always applies to the AI services, and they
+cannot be excluded from it. ArangoDB RBAC remains optional.
+{{< /warning >}}
+
 ## Enable RBAC
 
 You enable RBAC with feature flags of the ArangoDB Kubernetes Operator
@@ -157,10 +163,6 @@ You enable RBAC with feature flags of the ArangoDB Kubernetes Operator
 
 The operator doesn't enable the required flags for you. If one of them is
 missing, RBAC stays off without an error, and every request is allowed.
-
-{{< comment >}}
-TODO: Clarify whether the data platform will enable RBAC by default.
-{{< /comment >}}
 
 The flags result in the following modes:
 
