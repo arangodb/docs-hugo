@@ -46,7 +46,7 @@ curl https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1
 
 You can verify the state of the AutoRAG service via the project endpoint:
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project_by_name/{project_name}" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project_by_name/{database_name}/{project_name}" >}}
 
 For example, the `status` object found within `retrieverServices` may contain the following
 properties:
