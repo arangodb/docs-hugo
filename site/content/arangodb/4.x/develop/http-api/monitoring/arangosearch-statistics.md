@@ -295,8 +295,9 @@ paths:
                     type: string
         '404':
           description: |
-            The specified database doesn't exist.
-            revealed.
+            The specified database doesn't exist. Without access to a database
+            of this name, you get an HTTP `401` error instead, so that it isn't
+            revealed whether the database exists.
           content:
             application/json:
               schema:

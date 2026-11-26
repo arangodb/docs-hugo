@@ -7,6 +7,8 @@ description: >-
 ---
 ## Create a full-text index
 
+{{< tag "API v0 only" >}}
+
 ```openapi
 ---
 apiVersions: [v0]

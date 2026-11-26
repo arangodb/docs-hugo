@@ -76,30 +76,35 @@ paths:
                       - enterprise
                   version:
                     description: |
-                      The server version string in the format `major.minor.sub` (e.g. `3.12.11`).
+                      The server version string in the format `major.minor.sub` (e.g. `4.0.0`).
                       The `major` and `minor` parts are numeric, and `sub` is a
                       number that may have a version suffix starting with
                       a hyphen minus (e.g. `3.11.14-5` or `4.0.0-devel`).
                     type: string
                   apiVersions:
                     description: |
-                     The available versions of the HTTP API.
+                      The available versions of the HTTP API, newest first, in the
+                      format `vMAJOR.MINOR-BRANCH`, e.g. `v1.0-4`. `MAJOR` is the
+                      API version you can select with the `/_arango/v{MAJOR}`
+                      prefix, `MINOR` is the minor version of this API version,
+                      and `BRANCH` is the major version of the ArangoDB server.
                     type: array
                     minItems: 1
                     uniqueItems: true
                     items:
                       type: string
-                      enum: [v1]
+                    example: ["v1.0-4"]
                   deprecatedApiVersions:
                     description: |
                       The versions of the HTTP API that are still supported by
                       this ArangoDB server version but should no longer be used
-                      because of their pending removal in the next major version.
+                      because of their pending removal in the next major version,
+                      in the same format as `apiVersions`.
                     type: array
                     uniqueItems: true
                     items:
                       type: string
-                      enum: [] # Currently no deprecated versions
+                    example: [] # Currently no deprecated versions
                   requestedApiVersion:
                     description: |
                       The HTTP API version specified for this request via the

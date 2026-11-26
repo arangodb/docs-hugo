@@ -91,6 +91,11 @@ Browsers and programming languages often expose these parts under slightly
 different names that include the delimiters, like `protocol` for `http:`,
 `pathname` for the path, and `search` for `?returnOld=true&keepNull=false`.
 
+The path can start with an API version prefix like `/_arango/v1` to select a
+specific version of the HTTP API, followed by `/_db/DATABASE` and the rest of
+the path. Without a prefix, the default API version `v0` applies. See
+[HTTP API versioning](api-versioning.md) for details.
+
 ### How to read endpoint descriptions
 
 The HTTP API documentation mainly describes the available **endpoints**, like
@@ -176,6 +181,9 @@ Content-Length: 160
 
 ArangoDB's HTTP API is documented using the industry-standard
 **OpenAPI Specification**, more specifically [OpenAPI version 3.1](https://swagger.io/specification/).
+ArangoDB servers serve the OpenAPI description of each API version at
+`/_arango/{api-version}/openapi.json`, see
+[HTTP API versioning](api-versioning.md#openapi-description).
 You can explore the API with the interactive **Swagger UI** using the
 [ArangoDB web interface](../../components/web-interface/_index.md).
 

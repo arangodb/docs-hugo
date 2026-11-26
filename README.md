@@ -2643,6 +2643,8 @@ in using front matter at the beginning of `openapi` code blocks:
 ````yaml
 ### Get the service README
 
+{{< tag "API v0 only" >}}
+
 ```openapi
 ---
 apiVersions: [v0]
@@ -2654,6 +2656,13 @@ paths:
 
 A value of `[v0]` for the `apiVersions` option will add the endpoint only to
 `openapi-v0.json`, and `[experimental]` only to `openapi-experimental.json`.
+
+If an endpoint is only available in one of multiple supported API versions
+(with the `experimental` version excluded), add a tag above the `` ```openapi ``
+code block as shown above. This lets readers distinguish between endpoints that
+are available in multiple API versions and the same behavior from the endpoint
+only being available in a single API version – neither uses tabs, there is only
+one description of the endpoint(s).
 
 ````yaml
 ## Get the activities (experimental)

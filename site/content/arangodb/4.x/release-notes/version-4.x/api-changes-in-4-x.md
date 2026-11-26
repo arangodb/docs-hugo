@@ -8,6 +8,51 @@ description: >-
 ---
 ## HTTP API
 
+### API versioning
+
+The HTTP API has a version of its own that is independent of the ArangoDB
+version. Breaking changes are only made in a new major API version, so that
+you can upgrade the server without breaking your client code as long as the
+server serves the API version you use. See
+[HTTP API versioning](../../develop/http-api/api-versioning.md) for details.
+
+ArangoDB 4.x serves the major API version `v1`. It is the default API version,
+so you can call the endpoints with or without the `/_arango/v1` prefix,
+like `/_arango/v1/_db/mydb/_api/collection` or `/_db/mydb/_api/collection`.
+The `v1` API is the same as the `v0` API of ArangoDB 3.12 (and earlier versions),
+except for the changes described in this section.
+
+The following API version features are new or changed compared to ArangoDB 3.12:
+
+- The legacy API version `v0` is not supported anymore. Requests with the
+  `/_arango/v0` prefix fail with an HTTP `404 Not Found` error. Requests without
+  a prefix now use `v1` instead of `v0`.
+
+- API versions are identified by strings of the form `vMAJOR.MINOR-BRANCH`,
+  like `v1.0-4`. `MINOR` is the minor API version that increases with
+  compatible additions, and `BRANCH` is the major version of the ArangoDB
+  release line (`4` for ArangoDB 4.x).
+
+  The `apiVersions` and `deprecatedApiVersions` attributes returned by the
+  `GET /_api/version` endpoint use this format, like `["v1.0-4"]`.
+  The `requestedApiVersion` attribute still only contains the major API
+  version, like `"v1"`.
+
+- You can set the new `x-arango-api-version` HTTP header in requests to the
+  API version your client code is written for, like `v1.0-4`. The server
+  rejects the request with an HTTP `400 Bad Request` error and the new error
+  number `602` (`ERROR_HTTP_API_VERSION_MISMATCH`) if it cannot serve this
+  API version, for example, because the requested minor version is higher
+  than the one the server supports.
+
+  Responses include the `x-arango-api-version` header with the API version
+  that the server used for the request, like `v1.0-4`, or `experimental` for
+  the experimental API.
+
+- The experimental endpoints are available via the `/_arango/experimental`
+  prefix and the OpenAPI description of each API version via
+  `/_arango/{api-version}/openapi.json`, as in ArangoDB 3.12.
+
 ### Behavior changes
 
 #### `fulltext` indexes removed
@@ -62,6 +107,24 @@ setting `overwrite` to `true`.
 The deprecated alias for `writeConcern` has been removed. You can no longer set
 the write concern using `minReplicationFactor` for collections and collections
 also don't report this attribute anymore. Use `writeConcern` instead.
+
+#### Stricter validation when creating collections
+
+The `POST /_api/collection` endpoint now validates the request body strictly.
+Unknown attributes and attributes with a wrong data type are rejected with
+an HTTP `400 Bad Request` error and the error number `10`
+(`ERROR_BAD_PARAMETER`), for example:
+
+```json
+{
+  "code": 400,
+  "error": true,
+  "errorMessage": "Found unexpected attribute 'foo'",
+  "errorNum": 10
+}
+```
+
+Previously, such requests were accepted.
 
 #### Collection statuses removed
 
@@ -126,10 +189,23 @@ The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 
 #### Collections and Views cannot be referenced by ID
 
-Referencing a collection or View by its internal `id` in an endpoint path
-like `/_api/collection/357` or `/_api/view/468` is no longer supported.
-Reference the data source by its name instead, like `/_api/collection/coll`
-or `/_api/view/myView`.
+Referencing a collection by its internal `id` instead of its name is no longer
+supported:
+
+- In endpoint paths like `/_api/collection/357` or `/_api/document/357/docKey`,
+  requests fail with an HTTP `400 Bad Request` error and the error number
+  `400` (`ERROR_HTTP_BAD_PARAMETER`).
+- In the `collection` query parameter of the `/_api/index` endpoints, like
+  `/_api/index?collection=357`, requests fail with an HTTP `400 Bad Request`
+  error and the error number `10` (`ERROR_BAD_PARAMETER`).
+
+Modifying, renaming, or dropping a View by its internal `id`, like
+`DELETE /_api/view/468`, is no longer supported either. Such requests fail
+with an HTTP `403 Forbidden` error and the error number `11`
+(`ERROR_FORBIDDEN`).
+
+Reference the data sources by their names instead, like
+`/_api/collection/coll` or `/_api/view/myView`.
 
 ### Privilege changes
 
@@ -156,7 +232,8 @@ authorization system and Role-Based Access Control (RBAC).
 
   An HTTP `401 Unauthorized` error now only indicates a problem with the
   authentication, for example, wrong credentials, an inactive user account,
-  or a database that doesn't exist.
+  or a database that doesn't exist if the user account has no default access
+  to it (so that it isn't revealed whether the database exists).
 
   Endpoints that don't require access to the specified database are not
   affected, like the [User Management API](../../develop/http-api/users.md)
@@ -171,6 +248,36 @@ authorization system and Role-Based Access Control (RBAC).
   to the `_system` database. Examples are listing all users with
   `GET /_api/user` and fetching another user's data or access levels with
   `GET /_api/user/{user}` and `GET /_api/user/{user}/database`.
+
+  Requests to endpoints that require a superuser JWT still report the error
+  number `ERROR_HTTP_FORBIDDEN` (`403`) if you authenticate with user credentials.
+
+- Creating a graph with insufficient permissions via `POST /_api/gharial`
+  now reports the error number `ERROR_FORBIDDEN` (`11`) instead of
+  `ERROR_ARANGO_READ_ONLY` (`1004`).
+
+- Dropping a collection that you only have `ro` access to now reports the
+  error number `ERROR_ARANGO_READ_ONLY` (`1004`) instead of
+  `ERROR_FORBIDDEN` (`11`).
+
+#### Query results cache permissions
+
+Clearing the AQL query results cache with `DELETE /_api/query-cache` and
+changing its configuration with `PUT /_api/query-cache/properties` now requires
+`rw` access to the `_system` database instead of `ro` access. Lacking this
+permission results in an HTTP `403 Forbidden` error.
+
+Moreover, you can only change the configuration from within the `_system`
+database, like `PUT /_db/_system/_api/query-cache/properties`. In other
+databases, the request fails with an HTTP `403 Forbidden` error and the error
+number `1230` (`ERROR_ARANGO_USE_SYSTEM_DATABASE`).
+
+#### Collection compaction permissions
+
+Compacting a collection with `PUT /_api/collection/{collection-name}/compact`
+now requires `rw` access to the collection. With `ro` access, the request
+fails with an HTTP `403 Forbidden` error and the error number `1004`
+(`ERROR_ARANGO_READ_ONLY`).
 
 ### Endpoint return value changes
 
@@ -407,6 +514,9 @@ JavaScript code for administrative purposes on the server.
 
 The `GET /_api/database/current` endpoint no longer includes a `path` attribute
 in responses. It always returned `"none"`.
+
+The `GET /_api/replication/clusterInventory` endpoint no longer includes a
+`path` attribute in the `properties` of the database either.
 
 ## JavaScript API
 

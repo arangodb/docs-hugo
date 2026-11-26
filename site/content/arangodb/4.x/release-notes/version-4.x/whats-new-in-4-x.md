@@ -290,6 +290,23 @@ To take advantage of the optimizations, you need to recreate the vector indexes
 after upgrading to v3.12.10 or later. Existing vector indexes are not
 automatically rewritten to the new format.
 
+## HTTP API versioning
+
+The HTTP API now has a version of its own that is independent of the ArangoDB
+version. Breaking changes are only made in a new major API version that you
+need to request explicitly, so that a server upgrade doesn't break your client
+code as long as the server serves the API version you use, even across major
+ArangoDB releases.
+
+ArangoDB 4.x serves the API version `v1`, which you can select explicitly with
+the `/_arango/v1` prefix in the URL path, like
+`/_arango/v1/_db/mydb/_api/collection`. Clients can declare the full API version
+they are written for, like `v1.0-4`, with the new `x-arango-api-version` HTTP
+header to let the server reject requests it cannot serve.
+
+See [HTTP API versioning](../../develop/http-api/api-versioning.md) and
+[API changes in ArangoDB 4.x](api-changes-in-4-x.md#api-versioning) for details.
+
 ## Server options
 
 

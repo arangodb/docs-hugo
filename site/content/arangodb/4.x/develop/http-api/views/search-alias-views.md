@@ -316,24 +316,7 @@ paths:
 
 ```curl
 ---
-description: |-
-  Using an identifier:
-name: RestViewGetViewIdentifierArangoSearch
----
-var view = db._createView("productsView", "arangosearch");
-
-var url = "/_api/view/"+ view._id;
-var response = logCurlRequest('GET', url);
-assert(response.code === 200);
-logJsonResponse(response);
-
-db._dropView("productsView");
-```
-
-```curl
----
-description: |-
-  Using a name:
+description: ''
 name: RestViewGetViewNameArangoSearch
 ---
 var view = db._createView("productsView", "arangosearch");
@@ -492,27 +475,7 @@ paths:
 
 ```curl
 ---
-description: |-
-  Using an identifier:
-name: RestViewGetViewPropertiesIdentifierSearchAlias
----
-var coll = db._create("books");
-var idx = coll.ensureIndex({ type: "inverted", name: "inv-idx", fields: [ { name: "title", analyzer: "text_en" } ] });
-var view = db._createView("productsView", "search-alias", { indexes: [ { collection: "books", index: "inv-idx" } ] });
-
-var url = "/_api/view/"+ view._id + "/properties";
-var response = logCurlRequest('GET', url);
-assert(response.code === 200);
-logJsonResponse(response);
-
-db._dropView("productsView");
-db._drop("books");
-```
-
-```curl
----
-description: |-
-  Using a name:
+description: ''
 name: RestViewGetViewPropertiesNameSearchAlias
 ---
 var coll = db._create("books");

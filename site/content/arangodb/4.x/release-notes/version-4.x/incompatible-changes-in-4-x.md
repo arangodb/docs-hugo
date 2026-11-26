@@ -489,6 +489,20 @@ You should check for the following things in particular:
 
 ## HTTP API
 
+### API version `v0` removed
+
+ArangoDB 4.x serves the HTTP API version `v1` and no longer supports the legacy
+API version `v0` of ArangoDB 3.12 (and earlier versions). Requests without an
+API version prefix in the URL path use `v1`, and requests with the
+`/_arango/v0` prefix fail with an HTTP `404 Not Found` error.
+
+The `v1` API is the same as `v0`, except for the endpoints that have been
+removed and the behavior changes described in this section and in
+[API Changes in ArangoDB 4.x](api-changes-in-4-x.md#http-api).
+ArangoDB 3.12 serves `v1` in addition to `v0` from v3.12.15 onward, so that you
+can test your client code with the `/_arango/v1` prefix before you upgrade.
+See [HTTP API versioning](../../develop/http-api/api-versioning.md) for details.
+
 ### Simple Queries endpoints removed
 
 The server-side Simple Queries functionality was deprecated since v3.4.0,
@@ -718,14 +732,33 @@ corresponding `/_api/job*` and `/_api/version` endpoints.
 ### Database `path` removed
 
 The `GET /_api/database/current` endpoint no longer includes a `path` attribute
-in responses. It always returned `"none"`.
+in responses. It always returned `"none"`. The same applies to the `properties`
+of the database returned by the `GET /_api/replication/clusterInventory` endpoint.
 
 ### Collections and Views cannot be referenced by ID
 
-Referencing a collection or View by its internal `id` in an endpoint path
-like `/_api/collection/357` or `/_api/view/468` is no longer supported.
-Reference the data source by its name instead, like `/_api/collection/coll`
-or `/_api/view/myView`.
+Referencing a collection by its internal `id` instead of its name, like
+`/_api/collection/357`, `/_api/document/357/docKey`, or
+`/_api/index?collection=357`, is no longer supported. Neither is modifying,
+renaming, or dropping a View by its internal `id`, like `DELETE /_api/view/468`.
+Reference the data sources by their names instead, like
+`/_api/collection/coll` or `/_api/view/myView`.
+
+### Stricter validation when creating collections
+
+The `POST /_api/collection` endpoint now rejects unknown attributes and
+attributes with a wrong data type in the request body with an HTTP
+`400 Bad Request` error. Previously, such requests were accepted.
+
+### Permission changes for the query results cache and compaction
+
+Clearing the AQL query results cache and changing its configuration now
+requires `rw` access to the `_system` database instead of `ro` access, and you
+can only change the configuration from within the `_system` database.
+Compacting a collection now requires `rw` access to the collection.
+
+See [API Changes in ArangoDB 4.x](api-changes-in-4-x.md#privilege-changes)
+for details.
 
 ## JavaScript API
 

@@ -155,7 +155,8 @@ paths:
         '401':
           description: |
             The credentials are wrong, the user account is inactive, or the
-            specified database doesn't exist.
+            specified database doesn't exist and the user account has no default
+            access to it.
       tags:
         - Databases
 ```

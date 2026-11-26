@@ -569,9 +569,10 @@ paths:
             `waitForSync` was `false`.
         '400':
           description: |
-            The request body does not contain a valid JSON representation
-            of a document. The response body contains
-            an error document in this case.
+            The request body does not contain a valid JSON representation of a
+            document, you specified the removed `overwrite` query parameter, or
+            you specified a numeric collection ID instead of a collection name.
+            The response body contains an error document in this case.
         '403':
           description: |
             If the error code is `1004`, the specified write concern for the
@@ -2126,8 +2127,10 @@ paths:
             The individual operations have been processed and `waitForSync` was `false`.
         '400':
           description: |
-            The request body does not contain a valid JSON representation
-            of an array of documents.
+            The request body does not contain a valid JSON representation of an
+            array of documents, you specified the removed `overwrite` query
+            parameter, or you specified a numeric collection ID instead of a
+            collection name.
         '403':
           description: |
             If the error code is `1004`, the specified write concern for the

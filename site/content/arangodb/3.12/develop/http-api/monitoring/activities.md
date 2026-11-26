@@ -57,16 +57,18 @@ paths:
             to this database and `rw` access to the `_system` database.
           schema:
             type: string
-        # TODO: Forwarding broken in v3.12.11
-        #- name: serverId
-        #  in: query
-        #  required: false
-        #  description: |
-        #    Returns the activities of the specified server (`CRDN-...`,
-        #    `PRMR-...`, or `AGNT-...`). If no `serverId` is specified, the asked
-        #    server replies. This parameter is only meaningful on Coordinators.
-        #  schema:
-        #    type: string
+        - name: serverId
+          in: query
+          required: false
+          description: |
+            Returns the activities of the specified Coordinator (`CRDN-...`) or
+            DB-Server (`PRMR-...`) instead of the asked Coordinator. Agents are
+            not supported, but you can get their activities via the
+            [endpoint for all servers](#get-the-activities-of-all-servers-experimental).
+            This parameter is only meaningful on Coordinators.
+            Forwarding the request to another server works from v3.12.13 onward.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -164,7 +166,8 @@ paths:
         '401':
           description: |
             The credentials are wrong, the user account is inactive, or the
-            specified database doesn't exist.
+            specified database doesn't exist and the user account has no default
+            access to it.
           content:
             application/json:
               schema:
@@ -238,8 +241,42 @@ paths:
                     description: |
                       A descriptive error message.
                     type: string
-        # TODO: '404' if the server specified by the `serverId` query parameter
-        # is not known in the cluster?
+        '404':
+          description: |
+            The specified database doesn't exist (if you have no access to a
+            database of this name, you get an HTTP `401` error instead), or the
+            `serverId` query parameter specifies a server that is unknown in the
+            cluster or that is an Agent.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                      It is `1228` (`ERROR_ARANGO_DATABASE_NOT_FOUND`) for a
+                      database and `400` (`ERROR_HTTP_BAD_PARAMETER`) for a server.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '405':
           description: |
             Returned when an HTTP method other than `GET` is used.
@@ -411,7 +448,8 @@ paths:
         '401':
           description: |
             The credentials are wrong, the user account is inactive, or the
-            specified database doesn't exist.
+            specified database doesn't exist and the user account has no default
+            access to it.
           content:
             application/json:
               schema:

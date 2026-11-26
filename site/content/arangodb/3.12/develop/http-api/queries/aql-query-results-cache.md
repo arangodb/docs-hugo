@@ -106,7 +106,7 @@ paths:
         '401':
           description: |
             The user account you authenticate with has `none` access to the
-            specified database.
+            specified database (with API `v1`, you get an HTTP `403` error instead).
       tags:
         - Queries
 ```
@@ -356,7 +356,7 @@ paths:
         '401':
           description: |
             The user account you authenticate with has `none` access to the
-            specified database.
+            specified database (with API `v1`, you get an HTTP `403` error instead).
       tags:
         - Queries
 ```

@@ -5935,6 +5935,8 @@ db._drop(cn);
 
 ### Load a collection
 
+{{< tag "API v0 only" >}}
+
 ```openapi
 ---
 apiVersions: [v0]
@@ -6129,6 +6131,8 @@ db._drop(cn);
 ```
 
 ### Unload a collection
+
+{{< tag "API v0 only" >}}
 
 ```openapi
 ---

@@ -154,7 +154,8 @@ paths:
           description: |
             The user account you authenticate with has `none` access to the
             specified database, the credentials are wrong, the user account is
-            inactive, or the specified database doesn't exist.
+            inactive, or the specified database doesn't exist and the user
+            account has no default access to it.
       tags:
         - Databases
 ```

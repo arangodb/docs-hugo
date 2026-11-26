@@ -180,7 +180,8 @@ paths:
         '401':
           description: |
             The credentials are wrong, the user account is inactive, or the
-            specified database doesn't exist.
+            specified database doesn't exist and the user account has no default
+            access to it.
         '403':
           description: |
             You specified a different user than the one you authenticated with,
@@ -270,7 +271,8 @@ paths:
         '401':
           description: |
             The credentials are wrong, the user account is inactive, or the
-            specified database doesn't exist.
+            specified database doesn't exist and the user account has no default
+            access to it.
         '403':
           description: |
             You specified a different user than the one you authenticated with,
@@ -338,7 +340,8 @@ paths:
         '401':
           description: |
             The credentials are wrong, the user account is inactive, or the
-            specified database doesn't exist.
+            specified database doesn't exist and the user account has no default
+            access to it.
         '403':
           description: |
             The user account you authenticate with lacks `rw` access to the
@@ -403,7 +406,8 @@ paths:
         '401':
           description: |
             The credentials are wrong, the user account is inactive, or the
-            specified database doesn't exist.
+            specified database doesn't exist and the user account has no default
+            access to it.
         '403':
           description: |
             You specified a different user than the one you authenticated with,
@@ -559,7 +563,8 @@ paths:
         '401':
           description: |
             The credentials are wrong, the user account is inactive, or the
-            specified database doesn't exist.
+            specified database doesn't exist and the user account has no default
+            access to it.
         '403':
           description: |
             The user account you authenticate with lacks `rw` access to the
@@ -656,7 +661,8 @@ paths:
         '401':
           description: |
             The credentials are wrong, the user account is inactive, or the
-            specified database doesn't exist.
+            specified database doesn't exist and the user account has no default
+            access to it.
         '403':
           description: |
             The user account you authenticate with lacks `rw` access to the
@@ -909,7 +915,8 @@ paths:
         '401':
           description: |
             The credentials are wrong, the user account is inactive, or the
-            specified database doesn't exist.
+            specified database doesn't exist and the user account has no default
+            access to it.
         '403':
           description: |
             You specified a different user than the one you authenticated with,
@@ -1004,7 +1011,8 @@ paths:
         '401':
           description: |
             The credentials are wrong, the user account is inactive, or the
-            specified database doesn't exist.
+            specified database doesn't exist and the user account has no default
+            access to it.
         '403':
           description: |
             You specified a different user than the one you authenticated with,
@@ -1083,7 +1091,8 @@ paths:
         '401':
           description: |
             The credentials are wrong, the user account is inactive, or the
-            specified database doesn't exist.
+            specified database doesn't exist and the user account has no default
+            access to it.
         '403':
           description: |
             You specified a different user than the one you authenticated with,

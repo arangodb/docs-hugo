@@ -486,9 +486,7 @@ apiVersions: [v1]
 ---
 paths:
   /_db/{database-name}/_api/version:
-  # /_admin/version is an (undocumented) alias
     get:
-    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getVersion
       description: |
         Returns the server name and version number.
@@ -1287,7 +1285,7 @@ paths:
         '401':
           description: |
             The user account you authenticate with has `none` access to the
-            specified database, the credentials are wrong, or the user account
+            specified database (with API `v1`, you get an HTTP `403` error instead), the credentials are wrong, or the user account
             is inactive.
           content:
             application/json:
@@ -1359,7 +1357,7 @@ paths:
 paths:
   /_db/{database-name}/_admin/time:
     get:
-    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
+    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE (API v0 only, v1 only accepts GET)
       operationId: getTime
       description: |
         The call returns an object with the `time` attribute. This contains the
@@ -1936,6 +1934,8 @@ paths:
 
 ### Get the required database version (deprecated)
 
+{{< tag "API v0 only" >}}
+
 ```openapi
 ---
 apiVersions: [v0]
@@ -1967,7 +1967,7 @@ paths:
 paths:
   /_db/_system/_admin/support-info:
     get:
-      # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
+      # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE (API v0 only, v1 only accepts GET)
       operationId: getSupportInfo
       description: |
         Retrieves deployment information for support purposes. The endpoint returns data
@@ -2093,12 +2093,9 @@ paths:
                 type: object
         '401':
           description: |
-            You tried to authenticate with user credentials but a superuser JWT
-            is required (`--server.options-api` set
-            to `jwt`), the user account you authenticate with has `none` access
-            to the `_system` database
-            (`--server.options-api` set to `public`), the credentials are wrong,
-            or the user account is inactive.
+            The user account you authenticate with has `none` access to the
+            `_system` database (`--server.options-api` set to `public`) (with API `v1`, you get an HTTP `403` error instead), the
+            credentials are wrong, or the user account is inactive.
           content:
             application/json:
               schema:
@@ -2129,9 +2126,11 @@ paths:
                     type: string
         '403':
           description: |
-            The user account you authenticate with lacks `rw` access to the
-            `_system` database (`--server.options-api` set to `admin`) or you
-            tried to access the endpoint using a database other than `_system`.
+            You tried to authenticate with user credentials but a superuser JWT
+            is required (`--server.options-api` set to `jwt`), the user account
+            you authenticate with lacks `rw` access to the `_system` database
+            (`--server.options-api` set to `admin`), or you tried to access the
+            endpoint using a database other than `_system`.
           content:
             application/json:
               schema:
@@ -2277,8 +2276,7 @@ paths:
                 type: object
         '401':
           description: |
-            You tried to authenticate with user credentials but a superuser JWT
-            is required, the credentials are wrong, or the user account is inactive.
+            The credentials are wrong or the user account is inactive.
           content:
             application/json:
               schema:
@@ -2309,9 +2307,10 @@ paths:
                     type: string
         '403':
           description: |
-            The user account you authenticate with lacks `rw` access to the
-            `_system` database or you tried to access the endpoint using a
-            database other than `_system`.
+            You tried to authenticate with user credentials but a superuser JWT
+            is required, the user account you authenticate with lacks `rw` access
+            to the `_system` database, or you tried to access the endpoint using
+            a database other than `_system`.
           content:
             application/json:
               schema:
@@ -2452,7 +2451,7 @@ paths:
         '401':
           description: |
             Authentication is enabled and the user account you authenticated with
-            has `none` access to the specified database, the
+            has `none` access to the specified database (with API `v1`, you get an HTTP `403` error instead), the
             credentials are wrong, or the user account is inactive.
           content:
             application/json:
@@ -2979,7 +2978,7 @@ paths:
         '401':
           description: |
             The user account you authenticate with has `none` access to the
-            specified database.
+            specified database (with API `v1`, you get an HTTP `403` error instead).
           content:
             application/json:
               schema:
@@ -3105,7 +3104,7 @@ paths:
         '401':
           description: |
             Returned if authentication is enabled and the user account you
-            authenticate with has `none` access to the specified database, the
+            authenticate with has `none` access to the specified database (with API `v1`, you get an HTTP `403` error instead), the
             credentials are wrong, or the user account is inactive.
           content:
             application/json:
@@ -3281,7 +3280,7 @@ paths:
         '401':
           description: |
             Returned if authentication is enabled and the user account you
-            authenticate with has `none` access to the specified database, the
+            authenticate with has `none` access to the specified database (with API `v1`, you get an HTTP `403` error instead), the
             credentials are wrong, or the user account is inactive.
           content:
             application/json:
@@ -3480,7 +3479,7 @@ paths:
         '401':
           description: |
             Returned if authentication is enabled and the user account you
-            authenticate with has `none` access to the specified database, the
+            authenticate with has `none` access to the specified database (with API `v1`, you get an HTTP `403` error instead), the
             credentials are wrong, or the user account is inactive.
           content:
             application/json:
@@ -3825,6 +3824,8 @@ logJsonResponse(response);
 
 ### Reload the routing table
 
+{{< tag "API v0 only" >}}
+
 ```openapi
 ---
 apiVersions: [v0]
@@ -3863,6 +3864,8 @@ paths:
 ```
 
 ### Echo a request
+
+{{< tag "API v0 only" >}}
 
 ```openapi
 ---
@@ -4053,6 +4056,8 @@ paths:
 
 ### Execute a script
 
+{{< tag "API v0 only" >}}
+
 ```openapi
 ---
 apiVersions: [v0]
@@ -4133,6 +4138,8 @@ Note that all endpoint management operations can only be accessed via
 the default `_system` database and none of the other databases.
 
 ### List the endpoints of a single server (deprecated)
+
+{{< tag "API v0 only" >}}
 
 ```openapi
 ---
