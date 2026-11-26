@@ -1,4 +1,5 @@
-FROM alpine:3.16 AS base
+# Latest Alpine at build time, like the toolchain images
+FROM alpine:latest AS base
 MAINTAINER Max Neunhoeffer <hackers@arango.ai>
 
 ARG ARANGODB_VERSION=3.12

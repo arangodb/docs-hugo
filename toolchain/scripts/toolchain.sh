@@ -273,6 +273,13 @@ function clean_docker_environment() {
   log "[clean_docker_environment] setup docs_net docker network"
   docker network inspect docs_net >/dev/null 2>&1 || docker network create --driver=bridge --subnet=192.168.129.0/24 docs_net
 
+  ## Join docs_net to query the ArangoDB servers directly (see server_get), as
+  ## their images may not include wget or curl (e.g. Ubuntu-based 4.0+ images).
+  ## The container is still attached if it was started before.
+  if ! docker inspect -f '{{json .NetworkSettings.Networks}}' toolchain 2>/dev/null | grep -q '"docs_net"'; then
+    docker network connect docs_net toolchain || log "[WARNING] Could not connect the toolchain container to docs_net, the servers are unreachable"
+  fi
+
   ## Stop and remove old containers of this ArangoDB docker image
   log "[clean_docker_environment] Cleanup orphan containers"
   docker ps -a --filter name=docs_* -q | xargs -r docker stop | xargs -r docker rm
@@ -843,7 +850,7 @@ function setup_client_container() {
 function check_image_version() {
   local image="$1"
   local version="$2"
-  local server_version=$(docker exec "$3" wget -q -O - 'http://127.0.0.1:8529/_api/version' 2>/dev/null | tr -d ' \n' | sed -n 's/.*"version":"\([^"]*\)".*/\1/p')
+  local server_version=$(server_get "$3" /_api/version | tr -d ' \n' | sed -n 's/.*"version":"\([^"]*\)".*/\1/p')
   if [ -z "$server_version" ]; then
     log "[WARNING] Could not determine the server version of $image"
     return
@@ -856,7 +863,7 @@ function check_image_version() {
 
 ### Warn if the server is a developer build, whose output can differ from releases
 function warn_developer_build() {
-  details=$(docker exec "$1" wget -q -O - 'http://127.0.0.1:8529/_api/version?details=true' 2>/dev/null | tr -d ' \n')
+  details=$(server_get "$1" '/_api/version?details=true' | tr -d ' \n')
   maintainer=false
   assertions=false
   [[ "$details" == *'"maintainer-mode":"true"'* ]] && maintainer=true
@@ -938,6 +945,16 @@ function abort_container_start() {
   exit 1
 }
 
+### Request a path of the ArangoDB server in a container (args: container, path,
+### extra curl args). From the toolchain container (connected to docs_net in
+### clean_docker_environment) instead of with docker exec, as the images may
+### not include wget or curl (e.g. Ubuntu-based 4.0+ images)
+function server_get() {
+  local ip=$(container_ip "$1" 2>/dev/null)
+  [ -n "$ip" ] || return 1
+  curl -s -m 5 "${@:3}" "http://$ip:8529$2" 2>/dev/null
+}
+
 ### Check status of ArangoDB instance until it is up and running
 function wait_for_arangodb_ready() {
   name="$1"
@@ -945,9 +962,7 @@ function wait_for_arangodb_ready() {
     if [ "$(docker inspect -f '{{.State.Running}}' "$name" 2>/dev/null)" != "true" ]; then
       abort_container_start "$name" "is not running"
     fi
-    # Use IPv4 explicitly as localhost can resolve to IPv6 [::1] on which the server isn't listening
-    # Caused by a change in Docker 26.0. Could also be solved with docker run --sysctl net.ipv6.conf.all.disable_ipv6=1 ...
-    res=$(docker exec "$name" wget -q -S -O - http://127.0.0.1:8529/_api/version 2>&1 | grep -m 1 HTTP/ | awk '{print $2}')
+    res=$(server_get "$name" /_api/version -o /dev/null -w '%{http_code}')
     if [ "$res" = "200" ]; then
       log "Server is ready: $name"
       return 0

@@ -309,7 +309,8 @@ The CircleCI pipeline of the `arangodb/arangodb` repository builds the images:
 3. Click the **Trigger Pipeline** button.
 4. Select the `testing` pipeline.
 5. Set the `config-definitions` parameter to an empty string (defaults to `tests.yml`).
-6. Change `create-preview-docker-images` from `none` to `alpine`.
+6. Change `create-preview-docker-images` from `none` to `alpine` for 3.12
+   branches, or to `ubuntu` for 4.x branches (the only option besides `none`).
 7. Click **Run Pipeline**.
 
 The images are multi-arch (amd64 and arm64) and pushed to public ECR under
@@ -325,7 +326,7 @@ The images are multi-arch (amd64 and arm64) and pushed to public ECR under
   branch names use the Alpine-based image.
 - 4.x: `public.ecr.aws/b0b8h2r4/arangodb/core-preview:TAG` and
   `public.ecr.aws/b0b8h2r4/arangodb/client-tools-preview:TAG`, the server and
-  client tools images, Alpine-based only.
+  client tools images, Ubuntu-based.
 
 ### 3.11
 
