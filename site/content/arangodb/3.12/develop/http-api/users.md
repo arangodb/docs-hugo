@@ -88,7 +88,7 @@ paths:
         '401':
           description: |
             The user account you authenticate with has `none` access to the
-            specified database, the credentials are wrong, or the user account
+            specified database (with API `v1`, you get an HTTP `403` error instead), the credentials are wrong, or the user account
             is inactive.
         '403':
           description: |
@@ -475,7 +475,7 @@ paths:
         '401':
           description: |
             The user account you authenticate with has `none` access to the
-            specified database, the credentials are wrong, or the user account
+            specified database (with API `v1`, you get an HTTP `403` error instead), the credentials are wrong, or the user account
             is inactive.
         '403':
           description: |
