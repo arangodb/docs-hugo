@@ -64,11 +64,9 @@ The Agentic AI Suite is composed of the following major components:
   retrievers that answer questions from that Context Graph. Both stages are
   driven from the **AutoGraph Studio** view of the web interface. See
   [GraphRAG Concepts](autograph/concepts.md) for the approach behind them.
-- [**Natural Language to AQL/AQLizer**](natural-language-to-aql/_index.md): Generate AQL
-  queries from natural language to explore your data and gain insights without having
-  to learn the query language first.
-- [**Reasoner**](reasoner/_index.md): Automatically analyze and optimize AQL queries
-  using AI-powered reasoning, with validated performance improvements.
+- [**AQLizer**](aqlizer/_index.md): Generate AQL queries from natural language
+  to explore your data without having to learn the query language first, and
+  optimize AQL queries with validated performance improvements.
 - [**GraphML**](graphml/_index.md): Apply machine learning to graphs for link prediction,
   classification, and computing embeddings.
 - [**Graph Analytics**](graph-analytics/_index.md):

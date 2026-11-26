@@ -24,7 +24,10 @@ endpoint that is not the OpenAI API itself, and you should always set
 services, pointing the `openai` provider at a non-OpenAI URL is **not
 supported**. Natural Language to AQL has no `custom` provider and reaches such
 endpoints with `openai` plus a `chat_api_url`, see
-[Natural Language to AQL setup](natural-language-to-aql/setup.md). Models
+[Natural Language to AQL setup](natural-language-to-aql/setup.md). The AQLizer
+takes a provider ID such as `openai` or `anthropic` and reaches other
+OpenAI-compatible endpoints through `chat_api_url`, see
+[AQLizer language model](aqlizer/_index.md#language-model). Models
 beyond the ones listed below are outside ArangoDB's testing, so validate them in
 your own environment.
 
@@ -51,7 +54,8 @@ The provider and model are set per service, because their parameters differ:
 - [AutoGraph service](autograph/llm-configuration.md)
 - [Importer](autograph/importer/llm-configuration.md)
 - [AutoRAG](autorag/llm-configuration.md)
-- [Natural Language to AQL](natural-language-to-aql/setup.md)
+- [AQLizer](aqlizer/_index.md#language-model)
+- [Natural Language to AQL](natural-language-to-aql/setup.md) (deprecated)
 - [Ada](ada/llm-configuration.md)
 
 API keys are stored once in the [Secrets Manager](secrets-manager.md) and
