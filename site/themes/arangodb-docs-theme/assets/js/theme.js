@@ -1085,8 +1085,9 @@ function hideEmptyOpenapiDiv() {
       var summary = el.querySelector(":scope > summary");
       if (summary) summary.classList.remove("collapsed");
     } else if (el.classList.contains("tab-item") && !el.classList.contains("selected")) {
-      // A link into a tab wins over the tab remembered for that group.
-      switchTab(el.getAttribute("data-tab-group"), el.getAttribute("data-tab-item"));
+      // A link into a tab wins over the tab remembered for that group, but only for this
+      // view. Following a link is no choice of the reader, so don't store it.
+      switchTab(el.getAttribute("data-tab-group"), el.getAttribute("data-tab-item"), undefined, false);
     }
   }
   element.scrollIntoView();

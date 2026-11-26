@@ -231,6 +231,8 @@ test.describe("deep links to OpenAPI properties", () => {
     ["/arangodb/stable/develop/http-api/collections/", "create-a-collection_body_keyOptions_type", ["create-a-collection_body_keyOptions"]],
     // Array items (double underscore)
     ["/arangodb/stable/develop/http-api/queries/aql-query-results-cache/", "list-the-entries-of-the-aql-query-results-cache_res_200__hash", ["list-the-entries-of-the-aql-query-results-cache_res_200"]],
+    // Property name with an underscore (_key), so the ID can't be split into parent IDs
+    ["/arangodb/stable/develop/http-api/graphs/named-graphs/", "add-an-edge-definition_res_201_graph__key", ["add-an-edge-definition_res_201", "add-an-edge-definition_res_201_graph"]],
   ]) {
     test(`open the property and its parents: ${id}`, async ({ page }) => {
       await open(page, `${path}#${id}`);
@@ -261,6 +263,59 @@ test.describe("deep links", () => {
       expect(Math.abs(top - padding)).toBeLessThanOrEqual(4);
     });
   }
+});
+
+test.describe("deep links into a tab that isn't selected", () => {
+  // An API v1 property: nested in details boxes, in the v1 tab while v0 is selected by default
+  const PATH = "/arangodb/stable/develop/http-api/administration/";
+  const ID = "get-the-server-version-apiv1_res_200_details_architecture";
+  const PARENTS = ["get-the-server-version-apiv1_res_200", "get-the-server-version-apiv1_res_200_details"];
+  const REMEMBERED = JSON.stringify({ "arangodb-api": "v0" });
+
+  async function rememberTab(page) {
+    await open(page, "/arangodb/stable/develop/http-api/");
+    await page.evaluate(value => localStorage.setItem("tab-selections", value), REMEMBERED);
+  }
+
+  async function expectRevealed(page) {
+    const selected = page.locator("article .tab-nav-button.selected[data-tab-group='arangodb-api']");
+    await expect(selected.first()).toHaveAttribute("data-tab-item", "v1");
+    for (const target of [...PARENTS, ID]) {
+      const details = page.locator(`[id="${target}"]`);
+      await expect(details).toHaveAttribute("open", "");
+      await expect(details.locator(":scope > summary")).not.toHaveClass(/collapsed/);
+    }
+    await page.waitForLoadState("load");
+    await page.waitForTimeout(1000);
+    const top = await page.locator(`[id="${ID}"]`).evaluate(el => el.getBoundingClientRect().top);
+    const padding = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop));
+    expect(Math.abs(top - padding)).toBeLessThanOrEqual(4);
+    // Only shown for this view, the reader's choice stays
+    expect(await page.evaluate(() => localStorage.getItem("tab-selections"))).toBe(REMEMBERED);
+  }
+
+  test("select the tab and open the parents when loading the page", async ({ page }) => {
+    await rememberTab(page);
+    await open(page, `${PATH}#${ID}`);
+    await expectRevealed(page);
+  });
+
+  test("select the tab and open the parents when following a link", async ({ page }) => {
+    await rememberTab(page);
+    await page.evaluate(() => { window.__sameDocument = true; });
+    // A link at a fixed position, so that clicking it doesn't scroll
+    await page.evaluate(href => {
+      const a = document.createElement("a");
+      a.className = "link"; a.href = href; a.id = "test-link"; a.textContent = "test";
+      a.style.cssText = "position: fixed; top: 100px; left: 50%; z-index: 100000";
+      document.body.append(a);
+    }, `${PATH}#${ID}`);
+    await page.click("#test-link");
+    await waitForApp(page);
+    // Loaded by the app (loadPage), not by a full page load
+    expect(await page.evaluate(() => window.__sameDocument)).toBe(true);
+    await expectRevealed(page);
+  });
 });
 
 test("renders mermaid diagrams", async ({ page }) => {
