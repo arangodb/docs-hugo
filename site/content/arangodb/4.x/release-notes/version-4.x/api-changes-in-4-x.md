@@ -164,6 +164,26 @@ experimental [`MATCH` operation](../../aql/high-level-operations/match.md)
 in AQL. Queries that use `MATCH` fail with error `9` (*not implemented*)
 unless you set this option.
 
+The cursor API returns the following additional statistics under `extra.stats`
+if a query uses a vector index:
+
+- `vectorSearches` (integer): The number of searches in vector indexes, one
+  for each query vector and shard.
+- `vectorListsScanned` (integer): The number of non-empty lists (Voronoi cells)
+  scanned across all searches.
+- `vectorDistancesComputed` (integer): The number of distance calculations
+  between query vectors and indexed vectors.
+- `vectorHeapUpdates` (integer): The number of times an indexed vector entered
+  the set of the closest vectors found so far (top-k heap).
+- `vectorCoarseSearchTime` (number): The time in seconds spent on comparing
+  query vectors against the centroids to select the lists to scan.
+- `vectorListScanTime` (number): The time in seconds spent on scanning the
+  selected lists.
+
+The times are summed up over all searches and shards. See
+[Analyze vector search performance](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#analyze-vector-search-performance)
+for details.
+
 
 
 ### Endpoints moved

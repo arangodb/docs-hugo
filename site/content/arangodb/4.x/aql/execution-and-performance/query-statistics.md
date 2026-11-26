@@ -111,6 +111,35 @@ The meaning of the statistics attributes is as follows:
   `--rocksdb.intermediate-commit-size` thresholds. In a cluster, the
   intermediate commits are tracked per DB-Server that participates in the query
   and are summed up in the end.
+- **vectorSearches** (integer, _optional_):
+  The number of searches performed in vector indexes. Each query vector counts
+  as one search. In a cluster, each shard performs its own search, so the count
+  is multiplied by the number of shards involved.
+  This and the following `vector*` attributes are only present if the query
+  uses a [vector index](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md).
+- **vectorListsScanned** (integer, _optional_):
+  The number of lists (Voronoi cells) scanned in vector indexes across all
+  searches. Empty lists are skipped and not counted. This is at most the number
+  of searches multiplied by `nProbe`.
+- **vectorDistancesComputed** (integer, _optional_):
+  The number of distance calculations between query vectors and indexed vectors
+  during the scans of the lists. This equals the number of indexed vectors
+  that were looked at.
+- **vectorHeapUpdates** (integer, _optional_):
+  The number of times an indexed vector entered the set of the closest vectors
+  found so far (top-k heap) during the scans of the lists.
+- **vectorCoarseSearchTime** (number, _optional_):
+  The time in seconds spent on comparing query vectors against the centroids
+  of vector indexes to select the lists to scan. The time is summed up over all
+  searches, and in a cluster, over all shards. It can thus be higher than
+  the wall-clock time.
+- **vectorListScanTime** (number, _optional_):
+  The time in seconds spent on scanning the selected lists of vector indexes.
+  The time is summed up over all searches, and in a cluster, over all shards.
+  It can thus be higher than the wall-clock time.
+
+  See [Analyze vector search performance](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#analyze-vector-search-performance)
+  for how to interpret the `vector*` statistics.
 - **nodes** (array, _optional_): When the query is executed with the option `profile` set to at least `2`,
   then this value contains runtime statistics per query execution node.
   For a human-readable output you can execute `db._profileQuery(<query>, <bind-vars>)`
