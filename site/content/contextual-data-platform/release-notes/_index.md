@@ -454,7 +454,7 @@ The [Query Editor](../query-editor.md) has been extended with the following capa
 {{< tag "Agentic AI Suite" "Beta" >}}
 
 A new **Optimize** button has been added to query tabs for
-[AI-powered query optimization](../query-editor.md#optimize-queries-reasoner).
+[AI-powered query optimization](../query-editor.md#generate-and-optimize-queries-aqlizer).
 The Reasoner analyzes your AQL query and suggests improvements through a
 streaming chat interface with real-time tool call and validation feedback.
 This feature requires a license.
