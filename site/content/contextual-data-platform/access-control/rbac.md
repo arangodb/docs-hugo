@@ -324,18 +324,18 @@ Keep the following rules in mind when you assign the AI roles:
   their own service identity.
 
 {{< info >}}
-Notebook servers, Container Manager services, and Graph Analytics engines don't
-check AI actions for requests to their own endpoints. Who can install, list,
-and uninstall them is controlled by the Arango Control Plane, based on the
-shared service types in the scope. What the code in a Container Manager service
+Notebook servers and Container Manager services don't check AI actions for
+requests to their own endpoints. Who can install, list, and uninstall them is
+controlled by the Arango Control Plane, based on the shared service types in
+the scope. What the code in a Container Manager service
 is allowed to do is up to your code. Call the APIs of the data platform with the
 token of the user who called your service, never with the service's own token,
 so that the permissions of that user apply.
 {{< /info >}}
 
 {{< comment >}}
-TODO: Verify for notebook servers and Graph Analytics engines with the
-respective teams. The source docs only cover the Container Manager
+TODO: Verify for notebook servers with the respective team. The source docs
+only cover the Container Manager
 (arangoml/user_defined_service docs/RBAC.md).
 {{< /comment >}}
 
