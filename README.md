@@ -2701,7 +2701,7 @@ entirely in many cases. The defaults are:
 - `service: arangodb`
 - `apiVersions`: the `allowedAPIVersions` of the ArangoDB version in
   [`versions.yaml`](site/data/versions.yaml) except for `experimental`,
-  e.g. `[v0]` for 3.12 and `[v1]` for 4.x at the moment
+  e.g. `[v0, v1]` for 3.12 and `[v1]` for 4.x
 
 ### Configure the OpenAPI metadata and API versions
 
