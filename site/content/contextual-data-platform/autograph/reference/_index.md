@@ -23,7 +23,9 @@ works, see the [AutoGraph overview](../_index.md).
   renewal), if your deployment uses it
 - **A role for the AutoGraph actions**, if role-based access control (RBAC) is
   enabled: `ai-user` for reading the state of a project, `ai-developer` for
-  everything else, with a scope that covers the project database. Each
+  everything else, with a
+  [scope](../../access-control/rbac.md#scopes-in-the-http-api) that covers the
+  project database. Each
   endpoint has a **Role-based access control (RBAC)** box below its URL that
   lists the required permission and the predefined roles that grant it. See
   [Role-based access control for AutoGraph](rbac.md)

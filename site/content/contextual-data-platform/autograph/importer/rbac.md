@@ -63,7 +63,8 @@ for the ArangoDB core database system
   identity, whose permissions are limited to the collections and the graph of
   its project. You don't need any permission in ArangoDB to use the Importer.
   To explore the resulting knowledge graph in the web interface or with
-  queries, you still need a `coredb-*` role that covers the project database.
+  queries, you still need a `coredb-*` role with a
+  [scope](../../access-control/rbac.md#scopes-in-the-http-api) that covers the project database.
 
 Reading the status of jobs doesn't access the database with your token in
 either case, and calls to the File Manager and the File Parser always use the

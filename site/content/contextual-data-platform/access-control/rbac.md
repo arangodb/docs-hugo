@@ -149,16 +149,17 @@ You enable RBAC with feature flags of the ArangoDB Kubernetes Operator
 
 | Feature flag | Default | Description |
 |---|---|---|
-| `--deployment.feature.central-services` | Disabled | Runs the central services and evaluates the permissions of every request, but in permissive mode, which allows all requests |
-| `--deployment.feature.rbac-enforced` | Disabled | Denies requests that the permissions don't allow |
-| `--deployment.feature.rbac-coredb` | Disabled | Enables RBAC for the ArangoDB core database system, so that the `coredb-*` roles apply instead of the classic permissions. Requires the two flags above |
+| `--deployment.feature.jwt-asymmetric-key` | Disabled | Uses an asymmetric key to sign the JWTs of the deployment. Required by `gateway-sidecar` |
+| `--deployment.feature.gateway-sidecar` | Disabled | Adds the gateway sidecar to the pods of the deployment. Requires `jwt-asymmetric-key` |
+| `--deployment.feature.central-services` | Disabled | Runs the central services and evaluates the permissions of every request, but in permissive mode, which allows all requests. Requires `gateway-sidecar` |
+| `--deployment.feature.rbac-enforced` | Disabled | Denies requests that the permissions don't allow. Requires `gateway-sidecar` |
+| `--deployment.feature.rbac-coredb` | Disabled | Enables RBAC for the ArangoDB core database system, so that the `coredb-*` roles apply instead of the classic permissions. Requires `central-services` and `rbac-enforced` |
+
+The operator doesn't enable the required flags for you. If one of them is
+missing, RBAC stays off without an error, and every request is allowed.
 
 {{< comment >}}
-TODO: Verify the complete set of flags with the kube-arangodb team.
-`central-services` depends on `gateway-sidecar`, which depends on
-`jwt-asymmetric-key` (both disabled by default) and `jwt-rotation` and
-`gateway` (enabled by default). Dependencies are not enabled automatically.
-Also clarify whether the data platform will enable RBAC by default.
+TODO: Clarify whether the data platform will enable RBAC by default.
 {{< /comment >}}
 
 The flags result in the following modes:
@@ -185,9 +186,11 @@ helm upgrade --install operator \
   "https://github.com/arangodb/kube-arangodb/releases/download/$VERSION_OPERATOR/kube-arangodb-enterprise-$VERSION_OPERATOR.tgz" \
   --set "webhooks.enabled=true" \
   --set "operator.args[0]=--deployment.feature.gateway=true" \
-  --set "operator.args[1]=--deployment.feature.central-services=true" \
-  --set "operator.args[2]=--deployment.feature.rbac-enforced=true" \
-  --set "operator.args[3]=--deployment.feature.rbac-coredb=true" \
+  --set "operator.args[1]=--deployment.feature.jwt-asymmetric-key=true" \
+  --set "operator.args[2]=--deployment.feature.gateway-sidecar=true" \
+  --set "operator.args[3]=--deployment.feature.central-services=true" \
+  --set "operator.args[4]=--deployment.feature.rbac-enforced=true" \
+  --set "operator.args[5]=--deployment.feature.rbac-coredb=true" \
   --set "operator.architectures={amd64}"
 ```
 
@@ -222,13 +225,13 @@ expect the fully qualified name.
 | Role | Purpose |
 |------|---------|
 | `super-admin` | Full access. Reserved - bound automatically to the `root` user and not assignable |
-| `tenant-admin` | Manages users and role bindings |
+| `tenant-admin` | Manages ArangoDB users. Assigning roles needs `root` |
 | `coredb-reader` | Read-only database operations on scoped resources |
 | `coredb-developer` | Read and write database operations on scoped resources |
 | `coredb-admin` | Manages the structure and lifecycle of scoped resources |
 | `ai-user` | Uses the AI services and reads their results, for example, runs AutoRAG queries and views the state of AutoGraph projects, in the scoped databases and shared services |
 | `ai-developer` | Installs, configures, and runs the AI services in the scoped databases and shared services, and reads secrets |
-| `platform-operator` | Operates the data platform and bundled services, views observability, starts containers |
+| `platform-operator` | Intended for operating the data platform and bundled services, viewing observability, and starting containers. Has no permissions yet, so assigning it has no effect |
 | `secret-admin` | Creates, changes, and deletes the secrets that the AI services use, such as API keys of LLM providers |
 
 {{< info >}}

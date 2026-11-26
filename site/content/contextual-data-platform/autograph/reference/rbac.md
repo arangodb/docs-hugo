@@ -84,7 +84,8 @@ also enabled for the ArangoDB core database system
   identity, whose permissions are limited to the collections and graphs of its
   project. You don't need any permission in ArangoDB to use AutoGraph. To
   explore the resulting graphs and collections in the web interface or with
-  queries, you still need a `coredb-*` role that covers the project database.
+  queries, you still need a `coredb-*` role with a
+  [scope](../../access-control/rbac.md#scopes-in-the-http-api) that covers the project database.
 
 In both cases, the AutoGraph actions are checked for every request in the same
 way.

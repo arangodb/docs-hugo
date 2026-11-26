@@ -56,8 +56,9 @@ database in addition to the AutoRAG action:
 - **ArangoDB RBAC disabled**: A
   [classic permission](../access-control/authorization.md) of read-only or
   read/write access to the project database.
-- **ArangoDB RBAC enabled**: A `coredb-*` role like `coredb-reader` with a scope
-  that covers the project database.
+- **ArangoDB RBAC enabled**: A `coredb-*` role like `coredb-reader` with a
+  [scope](../access-control/rbac.md#scopes-in-the-http-api) that covers the
+  project database.
 
 Read access is enough. AutoRAG writes the query history, the answer cache, and
 the indexes and Views that a query needs with its own service identity, so you
