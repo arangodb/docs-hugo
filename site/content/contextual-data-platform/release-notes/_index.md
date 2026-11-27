@@ -40,6 +40,8 @@ interface, or with the HTTP API.
   also need a database role or permission.
 - With RBAC turned on, new users have no access until you assign them a role.
 
+For more information, see
+[Role-Based Access Control](../access-control/rbac.md).
 
 ### AQLizer
 
