@@ -20,8 +20,8 @@ lists them in one place.
 | AutoRAG | [Execute Queries](autorag/executing-queries.md), [Parameters](autorag/parameters.md), [Custom Prompts](autorag/custom-prompts.md), [Error Handling](autorag/error-handling.md) | Query a Context Graph with the different search methods | [Retriever Service](https://apiref.arango.ai/#graphrag_retrievers) |
 | Graph Analytics | [HTTP API for Graph Analytics Engines](graph-analytics/api.md) | Manage engines, load graphs, run algorithms | [Graph Analytics Engine](https://apiref.arango.ai/#gral) |
 | GraphML | [Notebooks & API](graphml/notebooks-api.md) | Control GraphML from Jupyter notebooks or Python | [arangoml API](https://arangoml.github.io/arangoml/api.html) |
-| Natural Language to AQL | [API Reference](natural-language-to-aql/api-reference.md) | Generate AQL from natural language | [Natural Language to AQL](https://apiref.arango.ai/#natural-language-service) |
-| Reasoner | [API Reference](reasoner/api-reference.md) | Analyze and optimize AQL queries | – |
+| AQLizer | [API Reference](aqlizer/api-reference.md) | Generate AQL from natural language and optimize AQL queries | - |
+| Natural Language to AQL (deprecated) | [API Reference](natural-language-to-aql/api-reference.md) | Generate AQL from natural language | [Natural Language to AQL](https://apiref.arango.ai/#natural-language-service) |
 | Container Manager | [Deploy a new service via API](container-manager/deploy-api.md) | Deploy your own services and apps | [File Manager](https://apiref.arango.ai/#mlflow_http_artifact_repository) |
 | Cypher to AQL | [Cypher to AQL Translation Service](cypher-to-aql.md) | Translate Cypher queries to AQL | [HTTP API](cypher-to-aql.md#http-api) |
 | Role-based access control (RBAC) | [RBAC HTTP API](access-control/rbac.md#http-api) | List roles and manage the role assignments of users | – |

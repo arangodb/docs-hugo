@@ -3,10 +3,16 @@ title: Natural Language to AQL Quick Start
 menuTitle: Quick Start
 weight: 2
 description: >-
-  Ask a question in plain language and get an executable AQL query back, using
-  AQLizer
+  Ask a question in plain language and get an executable AQL query back through
+  the Natural Language to AQL API
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
+
+{{< warning >}}
+Natural Language to AQL was the previous version of the AQLizer and is deprecated
+in favor of the new [AQLizer](../aqlizer/_index.md). Use the AQLizer to
+generate and optimize AQL queries.
+{{< /warning >}}
 
 ## Prerequisites
 
@@ -14,40 +20,14 @@ description: >-
   Suite license.
 - An ArangoDB database (note its name).
 - An API key for OpenAI or an OpenAI-compatible LLM provider.
-- For the API: a bearer token from
+- A bearer token from
   `POST https://<EXTERNAL_ENDPOINT>:8529/_open/auth`.
 
 ## Generate your first query
 
-{{< tabs "nl2aql-qs" >}}
+The web interface no longer offers Natural Language to AQL, so use the HTTP
+API.
 
-{{< tab "Web Interface" >}}
-{{< steps >}}
-
-{{< step "Open AQLizer" >}}
-In the Contextual Data Platform, select your database and open the **Query
-Editor**. Click the **AQLizer** button at the bottom of the query tab.
-{{< /step >}}
-
-{{< step "Start the service" >}}
-Provide your OpenAI API key, select a model (for example, `gpt-5.4`), and
-click **Start Service**.
-{{< /step >}}
-
-{{< step "Ask a question" >}}
-Type a natural language question - for example, *"Find all users who made
-purchases in the last month"* - and click **Ask** (or press Return).
-{{< /step >}}
-
-{{< step "Run the generated query" >}}
-Click **Open in Editor** to load the generated AQL into a new tab, then click
-**Run query** to execute it against your database.
-{{< /step >}}
-
-{{< /steps >}}
-{{< /tab >}}
-
-{{< tab "HTTP API" >}}
 {{< steps >}}
 
 {{< step "Deploy the service" >}}
@@ -85,9 +65,6 @@ against your database.
 {{< /step >}}
 
 {{< /steps >}}
-{{< /tab >}}
-
-{{< /tabs >}}
 
 {{< tip >}}
 **You now have** a service that translates plain language into executable AQL
@@ -97,5 +74,4 @@ and runs it against your database.
 ## Next steps
 
 - [Setup](setup.md): Detailed deployment and configuration.
-- [Web Interface](web-interface.md): The full guided experience.
 - [API Reference](api-reference.md): All endpoints and options.

@@ -926,6 +926,40 @@ paths:
                               or `intermediateCommitCount` thresholds. Note: in a cluster, intermediate commits can happen
                               on each participating DB-Server.
                             type: integer
+                          vectorSearches:
+                            description: |
+                              The number of searches performed in vector indexes, one for
+                              each query vector and shard. The `vector*` attributes are
+                              only present if the query uses a vector index.
+                            type: integer
+                          vectorListsScanned:
+                            description: |
+                              The number of non-empty lists (Voronoi cells) scanned in
+                              vector indexes across all searches. This is at most the
+                              number of searches multiplied by `nProbe`.
+                            type: integer
+                          vectorDistancesComputed:
+                            description: |
+                              The number of distance calculations between query vectors
+                              and indexed vectors during the scans of the lists.
+                            type: integer
+                          vectorHeapUpdates:
+                            description: |
+                              The number of times an indexed vector entered the set of
+                              the closest vectors found so far (top-k heap) during the
+                              scans of the lists.
+                            type: integer
+                          vectorCoarseSearchTime:
+                            description: |
+                              The time in seconds spent on comparing query vectors against
+                              the centroids to select the lists to scan, summed up over all
+                              searches and shards.
+                            type: number
+                          vectorListScanTime:
+                            description: |
+                              The time in seconds spent on scanning the selected lists,
+                              summed up over all searches and shards.
+                            type: number
                           nodes:
                             description: |
                               When the query is executed with the `profile` option set to at least `2`,
@@ -1705,6 +1739,40 @@ paths:
                               or `intermediateCommitCount` thresholds. Note: in a cluster, intermediate commits can happen
                               on each participating DB-Server.
                             type: integer
+                          vectorSearches:
+                            description: |
+                              The number of searches performed in vector indexes, one for
+                              each query vector and shard. The `vector*` attributes are
+                              only present if the query uses a vector index.
+                            type: integer
+                          vectorListsScanned:
+                            description: |
+                              The number of non-empty lists (Voronoi cells) scanned in
+                              vector indexes across all searches. This is at most the
+                              number of searches multiplied by `nProbe`.
+                            type: integer
+                          vectorDistancesComputed:
+                            description: |
+                              The number of distance calculations between query vectors
+                              and indexed vectors during the scans of the lists.
+                            type: integer
+                          vectorHeapUpdates:
+                            description: |
+                              The number of times an indexed vector entered the set of
+                              the closest vectors found so far (top-k heap) during the
+                              scans of the lists.
+                            type: integer
+                          vectorCoarseSearchTime:
+                            description: |
+                              The time in seconds spent on comparing query vectors against
+                              the centroids to select the lists to scan, summed up over all
+                              searches and shards.
+                            type: number
+                          vectorListScanTime:
+                            description: |
+                              The time in seconds spent on scanning the selected lists,
+                              summed up over all searches and shards.
+                            type: number
                           nodes:
                             description: |
                               When the query is executed with the `profile` option set to at least `2`,
@@ -2225,6 +2293,40 @@ paths:
                               or `intermediateCommitCount` thresholds. Note: in a cluster, intermediate commits can happen
                               on each participating DB-Server.
                             type: integer
+                          vectorSearches:
+                            description: |
+                              The number of searches performed in vector indexes, one for
+                              each query vector and shard. The `vector*` attributes are
+                              only present if the query uses a vector index.
+                            type: integer
+                          vectorListsScanned:
+                            description: |
+                              The number of non-empty lists (Voronoi cells) scanned in
+                              vector indexes across all searches. This is at most the
+                              number of searches multiplied by `nProbe`.
+                            type: integer
+                          vectorDistancesComputed:
+                            description: |
+                              The number of distance calculations between query vectors
+                              and indexed vectors during the scans of the lists.
+                            type: integer
+                          vectorHeapUpdates:
+                            description: |
+                              The number of times an indexed vector entered the set of
+                              the closest vectors found so far (top-k heap) during the
+                              scans of the lists.
+                            type: integer
+                          vectorCoarseSearchTime:
+                            description: |
+                              The time in seconds spent on comparing query vectors against
+                              the centroids to select the lists to scan, summed up over all
+                              searches and shards.
+                            type: number
+                          vectorListScanTime:
+                            description: |
+                              The time in seconds spent on scanning the selected lists,
+                              summed up over all searches and shards.
+                            type: number
                           nodes:
                             description: |
                               When the query is executed with the `profile` option set to at least `2`,

@@ -21,7 +21,10 @@ The printed execution plan then contains three additional columns:
 - **Runtime**: The total time spent in this stage 
 
 Below the execution plan there are additional sections for the overall runtime
-statistics and the query profile.
+statistics and the query profile. If the query uses a vector index, there is
+also a **Vector Search Statistics** section. See
+[Analyze vector search performance](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#analyze-vector-search-performance)
+for details.
 
 ## Example: Simple AQL query
 

@@ -388,6 +388,125 @@ mirroring the cluster format.
 The top-level `trainingState` is the least-progressed state across all shards,
 with `"unusable"` being the lowest and `"ready"` the highest.
 
+## Analyze vector search performance
+
+A search in a vector index consists of two steps:
+
+1. **Coarse search**: The query vector is compared against the centroids of the
+   index to select the `nProbe` closest lists (Voronoi cells). With the default
+   `factory`, the query vector is compared against every centroid, so the cost
+   of this step grows with `nLists`.
+2. **List scan**: The query vector is compared against every indexed vector in
+   the selected lists. The closest vectors found so far are kept in a heap that
+   holds as many vectors as the `LIMIT` of the query (top-k). The cost of this
+   step grows with the number of vectors in the selected lists, and thus with
+   `nProbe` and the size of the lists.
+
+AQL queries that use a vector index report statistics about both steps, so that
+you can see where the time is spent and how much of the index is searched.
+You can tune the index and the search based on this information.
+
+### Retrieve the vector search statistics
+
+If you profile a query in _arangosh_ with `db._profileQuery()` or with the
+**Profile** button in the web interface, the output includes a
+**Vector Search Statistics** section if the query uses a vector index:
+
+```js
+db._profileQuery(`
+  FOR doc IN coll
+    LET dist = APPROX_NEAR_L2(doc.vector, @q, { nProbe: 64 })
+    SORT dist
+    LIMIT 3
+    RETURN doc._id
+`, { q: [ /* ... */ ] });
+```
+
+```
+...
+Vector Search Statistics:
+ Searches      Lists Scanned      Distances      Heap Updates      Coarse Time [s]      List Scan Time [s]
+        1                 64           3715                17              0.00399                 0.00546
+...
+```
+
+The same information is available for all queries, not only when profiling, as
+part of the [query statistics](../../../aql/execution-and-performance/query-statistics.md)
+in the `extra.stats` attribute of the query result:
+
+| Profile column | Attribute | Description |
+|:---------------|:----------|:------------|
+| Searches | `vectorSearches` | The number of searches. Each query vector counts as one search, for example, once per iteration if the vector search is in a subquery or nested loop. In a cluster, each shard performs its own search, so the count is multiplied by the number of shards. |
+| Lists Scanned | `vectorListsScanned` | The number of lists that were scanned across all searches. Empty lists are skipped and not counted. |
+| Distances | `vectorDistancesComputed` | The number of distance calculations between the query vectors and indexed vectors, i.e. how many indexed vectors were looked at. |
+| Heap Updates | `vectorHeapUpdates` | How many times an indexed vector was closer than the vectors found so far and entered the top-k heap. |
+| Coarse Time [s] | `vectorCoarseSearchTime` | The time in seconds spent on the coarse search. |
+| List Scan Time [s] | `vectorListScanTime` | The time in seconds spent on scanning the lists. |
+
+The counts and times are summed up over all searches and, in cluster
+deployments, over all shards. As shards are searched in parallel, the reported
+times can be higher than the wall-clock execution time of the query.
+
+### Interpret the vector search statistics
+
+The statistics are most useful if you divide them by the number of searches and
+compare the values for different settings, for example, by running the same
+query with different `nProbe` values or against indexes with different
+parameters. Keep in mind that the statistics show how much work is done, but not
+how accurate the results are. To assess the quality of the results (recall),
+compare them with the exact nearest neighbors, which you can determine by
+sorting all documents by a distance function like
+[`L2_DISTANCE()`](../../../aql/functions/numeric.md#l2_distance) or
+[`COSINE_SIMILARITY()`](../../../aql/functions/numeric.md#cosine_similarity)
+without using the vector index.
+
+- **Fraction of the data that is searched**:
+  `vectorDistancesComputed` divided by `vectorSearches` is the number of
+  vectors compared per search. Compare it with the number of documents in the
+  collection, respectively the number of documents per shard in a cluster.
+  With evenly sized lists, the fraction is roughly `nProbe` divided by `nLists`.
+  If it is close to 100%, the search is almost as expensive as comparing
+  against all vectors without an index. If it is very small and the result
+  quality is insufficient, increase `nProbe`.
+
+- **Average size of the scanned lists**:
+  `vectorDistancesComputed` divided by `vectorListsScanned` is the average
+  number of vectors in the scanned lists. Compare it with the number of
+  documents divided by the number of centroids
+  (see [Check the number of centroids of a trained index](#check-the-number-of-centroids-of-a-trained-index)).
+  If the scanned lists are much bigger than the average, the vectors are
+  distributed unevenly across the lists, and queries hit the big ones. This can
+  happen if many documents were added after the training, or if the training
+  sample was not representative of the data. Consider recreating the index so
+  that it is trained on the current data.
+
+- **Fewer lists scanned than expected**:
+  If `vectorListsScanned` is lower than `vectorSearches` multiplied by `nProbe`,
+  then some of the selected lists are empty, or `nProbe` is higher than the
+  number of centroids. Increasing `nProbe` further has little or no effect in
+  the latter case.
+
+- **Coarse search versus list scan time**:
+  - If `vectorListScanTime` dominates, which is typical, the cost is driven by
+    the number of compared vectors. You can lower `nProbe` at the expense of
+    result quality, use more centroids (`nLists`) so that each list holds fewer
+    vectors, or use a compressed encoding like `"IVF{},SQ8"` as the `factory`
+    to speed up the distance calculations at the expense of precision.
+  - If `vectorCoarseSearchTime` makes up a large share, the index likely has
+    many centroids. Use a graph-based coarse search by setting the `factory` to
+    something like `"IVF{}_HNSW32,Flat"` so that the query vector is not
+    compared against every centroid, or use fewer centroids.
+
+- **Heap updates**:
+  `vectorHeapUpdates` divided by `vectorSearches` indicates how often a closer
+  vector was found during a search. It is at least as high as the `LIMIT` if
+  enough vectors are scanned, because the heap is filled first. If you increase
+  `nProbe` and the heap updates barely increase, the additional lists contain
+  hardly any closer vectors. The results are then unlikely to improve further,
+  and you can keep the lower `nProbe` value. If the heap updates keep
+  increasing noticeably, a higher `nProbe` value still finds closer vectors and
+  improves the result quality.
+
 ## Interfaces
 
 ### Create a vector index

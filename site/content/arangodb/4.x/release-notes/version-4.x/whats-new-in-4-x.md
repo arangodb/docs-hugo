@@ -290,6 +290,28 @@ To take advantage of the optimizations, you need to recreate the vector indexes
 after upgrading to v3.12.10 or later. Existing vector indexes are not
 automatically rewritten to the new format.
 
+### Vector search statistics
+
+AQL queries that use a vector index now report statistics about the vector
+search, such as how many lists (Voronoi cells) were scanned, how many distances
+were computed, and how much time was spent on selecting the lists to scan
+compared to scanning them. This helps you tune vector indexes and the `nProbe`
+search parameter, for example, to find out whether increasing `nProbe` is still
+worthwhile.
+
+The statistics are returned as new `vector*` attributes in the
+[query statistics](../../aql/execution-and-performance/query-statistics.md)
+and shown in a new **Vector Search Statistics** section when profiling a query:
+
+```
+Vector Search Statistics:
+ Searches      Lists Scanned      Distances      Heap Updates      Coarse Time [s]      List Scan Time [s]
+        1                 64           3715                17              0.00399                 0.00546
+```
+
+See [Analyze vector search performance](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#analyze-vector-search-performance)
+for how to interpret the statistics.
+
 ## Server options
 
 

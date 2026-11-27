@@ -277,7 +277,7 @@ The AI services check their actions on the following kinds of resources:
 
 Most AI services are **database services**: you install them for a specific
 database, like AutoGraph, the Importer, AutoRAG, Natural Language to AQL, and
-the Reasoner with its MCP server. All of their actions are checked on that
+the AQLizer. All of their actions are checked on that
 database. Projects are not resources of their own either. If the scope of your
 role assignment covers a database, it covers all of its projects and the
 database services installed for it.
@@ -363,8 +363,8 @@ differently depending on whether ArangoDB RBAC is enabled:
 
 AI services that query your data always do so with your token, in both cases:
 [AutoRAG](../autorag/rbac.md),
-[Natural Language to AQL](../natural-language-to-aql/rbac.md), and the tools of
-the MCP server that the [Reasoner](../reasoner/rbac.md) manages. In addition
+[Natural Language to AQL](../natural-language-to-aql/rbac.md), and the
+[AQLizer](../aqlizer/rbac.md). In addition
 to an AI role, you need read access to the database, with a `coredb-*` role if
 ArangoDB RBAC is enabled, or a classic permission otherwise. The same applies
 whenever you want to access the data directly, for example, to explore a graph

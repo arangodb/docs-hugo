@@ -2,12 +2,18 @@
 title: Natural Language to AQL
 menuTitle: Natural Language to AQL
 group: Query & explore
-weight: 220
+weight: 230
 description: >-
-  Query your ArangoDB database using natural language with the AQLizer feature,
-  which automatically translates plain language into AQL queries using generative AI
+  The deprecated Natural Language to AQL service, the previous version of the
+  AQLizer, translates plain language into AQL queries using generative AI
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
+
+{{< warning >}}
+Natural Language to AQL was the previous version of the AQLizer and is deprecated
+in favor of the new [AQLizer](../aqlizer/_index.md). Use the AQLizer to
+generate and optimize AQL queries.
+{{< /warning >}}
 
 {{< embed-svg "AQLizer-Flow" "Natural Language to AQL flow." >}}
 
@@ -40,9 +46,9 @@ natural language input and generate corresponding AQL queries. The workflow is a
 
 ### Schema-aware, data-private
 
-The AQLizer is schema-aware: it inspects your graphs, collections, and indexes,
+The service is schema-aware: it inspects your graphs, collections, and indexes,
 and also samples a small number of documents to understand the document
-structure. It rechecks the schema after 15 minutes. This lets the AQLizer
+structure. It rechecks the schema after 15 minutes. This lets the service
 generate queries that are accurate and efficient. The LLM
 acts purely as a translator. It receives the schema metadata, not your actual
 data. Your raw data never leaves ArangoDB; only the resulting AQL query is sent
@@ -52,7 +58,7 @@ to the database for execution.
 
 The service offers two main capabilities:
 
-**AQLizer — Natural language to AQL**\
+**Natural language to AQL**\
 Converts plain language questions into executable AQL queries and runs them against
 your database. Returns results in natural language, AQL, or JSON format. This is the
 primary capability for querying your data without knowing AQL.
@@ -81,11 +87,8 @@ Useful for general knowledge questions, text analysis, and AQL-related explanati
 
 ### Web interface
 
-The AQLizer feature is integrated directly into the **Query Editor** of the Arango
-Contextual Data Platform. You can generate AQL queries from natural language, verify
-them, and run them without leaving the editor.
-
-See [Web Interface](web-interface.md) for step-by-step instructions.
+The web interface no longer offers Natural Language to AQL. To generate queries
+in the Query Editor, use the [AQLizer](../aqlizer/web-interface.md).
 
 ### API
 
