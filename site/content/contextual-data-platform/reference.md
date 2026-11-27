@@ -24,6 +24,7 @@ lists them in one place.
 | Natural Language to AQL (deprecated) | [API Reference](natural-language-to-aql/api-reference.md) | Generate AQL from natural language | [Natural Language to AQL](https://apiref.arango.ai/#natural-language-service) |
 | Container Manager | [Deploy a new service via API](container-manager/deploy-api.md) | Deploy your own services and apps | [File Manager](https://apiref.arango.ai/#mlflow_http_artifact_repository) |
 | Cypher to AQL | [Cypher to AQL Translation Service](cypher-to-aql.md) | Translate Cypher queries to AQL | [HTTP API](cypher-to-aql.md#http-api) |
+| Role-based access control (RBAC) | [RBAC HTTP API](access-control/rbac.md#http-api) | List roles and manage the role assignments of users | – |
 
 For the HTTP API of the ArangoDB database system itself, see the
 [ArangoDB HTTP API](../arangodb/3.12/develop/http-api/_index.md).

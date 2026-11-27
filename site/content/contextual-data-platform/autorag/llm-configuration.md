@@ -300,6 +300,8 @@ URL of a running AutoRAG service without reinstalling or restarting it:
 
 {{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/projects/{project}/model-config/credentials" >}}
 
+{{< rbac-endpoint "retriever" "PUT /v1/projects/{project}/model-config/credentials" >}}
+
 ### Request
 
 ```json

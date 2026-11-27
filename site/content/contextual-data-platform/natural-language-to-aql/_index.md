@@ -100,3 +100,11 @@ it as part of a larger workflow.
   the deployment.
 - [API Reference](api-reference.md): Runtime endpoint documentation with request
   and response examples.
+
+### Permissions
+
+If role-based access control (RBAC) is enabled, you need the `ai-user` or
+`ai-developer` role with a scope that covers the database that the service is
+installed for. The service reads the database with your token, so you also need
+read access to the database in ArangoDB. See
+[Role-based access control for Natural Language to AQL](rbac.md).

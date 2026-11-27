@@ -35,6 +35,15 @@ paths:
       description: |
         Returns an array of edges starting or ending in the node identified by
         `vertex`.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection}"
       parameters:
         - name: database-name
           in: path

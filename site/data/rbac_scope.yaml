@@ -1,0 +1,60 @@
+# How the resources of permission checks map to the resource types of the
+# scope editor in the web interface (Access Control). Used by the
+# `rbac/scope.html` partial to derive the Scope line of the RBAC boxes, for
+# both the data platform services (site/data/rbac_services/) and the
+# ArangoDB HTTP API (`x-rbac-permissions` OpenAPI extension).
+#
+# Mirrors platform-ui, apps/access-control-ui/src/lib/scope.ts (KIND_LABEL,
+# PREFIX) and lib/aiScope.ts (SERVICE_LABEL). Review it when they change.
+#
+# Assumes that a database scope covers only the database itself, not the
+# collections and other resources in it, as an API user would grant it. The
+# web interface currently adds `db:collection:<database>:*` etc. for a
+# database, which is considered a bug.
+#
+# types: checked in order, the first matching prefix wins.
+#   prefix   start of the resource string
+#   label    the resource type in the web interface, rendered in bold
+#   names    for resources with a name the web interface labels, the label
+#            per name (the rest of the resource string after the prefix)
+#   hidden   true to leave the resource out of the Scope line. Used for
+#            `db:apiversion:*`, which the web interface adds to every
+#            `coredb-*` scope and which the HTTP API page explains once
+#
+# fallback: sentences for resources without a resource type in the web
+#   interface, by namespace (the part before the first colon). `%s` is
+#   replaced with the resource. `everything` is used for the `*` resource.
+
+types:
+  - prefix: "db:apiversion:"
+    hidden: true
+  - prefix: "db:database:"
+    label: Databases
+  - prefix: "db:collection:"
+    label: Collections
+  - prefix: "db:view:"
+    label: Views
+  - prefix: "db:analyzer:"
+    label: Analyzers
+  - prefix: "db:graph:"
+    label: Graphs
+  - prefix: "ai:database:"
+    label: Databases
+  - prefix: "ai:service:"
+    label: Shared services
+    names:
+      arangodb-notebook-images: Notebook servers
+      arango-user-defined: Container Manager
+      arangodb-gral: Graph Analytics
+  - prefix: "ai:secret:"
+    label: Secrets
+
+fallback:
+  db: >-
+    There is no resource type for `%s`. Enter it as a
+    **Name pattern (advanced)**, or choose **Everything**.
+  ai: >-
+    In the web interface, only **Everything** covers `%s`. With the HTTP API,
+    you can add this resource to the scope instead.
+  everything: >-
+    Only **Everything** covers this endpoint.

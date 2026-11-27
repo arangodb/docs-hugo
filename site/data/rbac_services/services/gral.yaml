@@ -1,0 +1,65 @@
+# RBAC of the gral service (Graph Analytics engines), see ../roles.yaml for
+# the structure. Only the endpoints that graph-analytics/api.md documents are
+# listed. Starting, listing, and stopping engines is done via the ACP, see
+# acp.yaml.
+order: 110
+name: Graph Analytics
+page: contextual-data-platform/graph-analytics/_index.md
+rbacPage: contextual-data-platform/graph-analytics/rbac.md
+prefix: /gral/{serviceIdPostfix}
+actions:
+  - name: ai:gral.execute
+    summary: >-
+      Use a running engine: load graphs, run algorithms, read graphs, jobs,
+      and results, store results, and delete graphs and jobs
+    resource: ai:service:arangodb-gral
+    roles: [ai-user, ai-developer]
+endpoints:
+  - method: POST
+    path: /v1/loaddata
+    action: ai:gral.execute
+  - method: POST
+    path: /v1/loaddataaql
+    action: ai:gral.execute
+  - method: POST
+    path: /v1/pagerank
+    action: ai:gral.execute
+  - method: POST
+    path: /v1/wcc
+    action: ai:gral.execute
+  - method: POST
+    path: /v1/scc
+    action: ai:gral.execute
+  - method: POST
+    path: /v1/betweennesscentrality
+    action: ai:gral.execute
+  - method: POST
+    path: /v1/linerank
+    action: ai:gral.execute
+  - method: POST
+    path: /v1/labelpropagation
+    action: ai:gral.execute
+  - method: POST
+    path: /v1/attributepropagation
+    action: ai:gral.execute
+  - method: POST
+    path: /v1/storeresults
+    action: ai:gral.execute
+  - method: GET
+    path: /v1/jobs
+    action: ai:gral.execute
+  - method: GET
+    path: /v1/jobs/{job_id}
+    action: ai:gral.execute
+  - method: DELETE
+    path: /v1/jobs/{job_id}
+    action: ai:gral.execute
+  - method: GET
+    path: /v1/graphs
+    action: ai:gral.execute
+  - method: GET
+    path: /v1/graphs/{graph_id}
+    action: ai:gral.execute
+  - method: DELETE
+    path: /v1/graphs/{graph_id}
+    action: ai:gral.execute

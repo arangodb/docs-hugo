@@ -189,6 +189,13 @@ paths:
         The very same request is forwarded synchronously to that DB-Server.
         It is an error if this attribute is not bound in the Coordinator case.
         {{</* /info */>}}
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -416,6 +423,10 @@ paths:
         {{</* info */>}}
         There will be no distinction between inserts and updates when calling this method.
         {{</* /info */>}}
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -832,6 +843,17 @@ paths:
         This information comes from `Plan/Collections/{DB-Name}/*` in the Agency,
         just that the `indexes` attribute there is relocated to adjust it to
         the data format of arangodump.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - anyOf:
+            - action: db:AdminDump
+            - action: db:Read
+              resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path

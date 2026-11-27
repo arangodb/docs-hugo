@@ -111,3 +111,12 @@ The delete icon is only active when the file is safe to delete.
 ## API
 
 You can manage files programmatically using the [File Manager HTTP API](api.md).
+
+## Permissions
+
+If role-based access control (RBAC) is enabled, the `ai-user` role lets you
+list and download the input files of a database, and the `ai-developer` role
+also lets you upload, delete, and lock or unlock them. The scope of your role
+assignment needs to cover the database. The packages of the Container Manager
+are covered by the **Container Manager** shared service instead. See
+[Role-based access control for the File Manager](rbac.md).

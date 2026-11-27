@@ -1,0 +1,14 @@
+{{- /* Joins a list of strings into an English enumeration:
+       "a", "a and b", "a, b, and c" (with "or" instead of "and" if `conj` is
+       "or"). Takes a dict with `items` and `conj`. */ -}}
+{{- $items := .items -}}
+{{- $n := len $items -}}
+{{- $out := "" -}}
+{{- if eq $n 1 -}}
+  {{- $out = index $items 0 -}}
+{{- else if eq $n 2 -}}
+  {{- $out = printf "%s %s %s" (index $items 0) .conj (index $items 1) -}}
+{{- else if gt $n 2 -}}
+  {{- $out = printf "%s, %s %s" (delimit (first (sub $n 1) $items) ", ") .conj (index $items (sub $n 1)) -}}
+{{- end -}}
+{{- return $out -}}

@@ -1115,6 +1115,23 @@ The following shortcodes also exist but are rarely used:
   the Arango Contextual Data Platform bundles, see
   [Add a Contextual Data Platform release](#add-a-contextual-data-platform-release).
 
+- `{{% rbac-roles %}}`, `{{% rbac-actions "<service>" %}}`,
+  `{{% rbac-endpoints "<service>" %}}`, and
+  `{{< rbac-endpoint "<service>" "<METHOD> <path>" >}}` render the role-based
+  access control (RBAC) information of the data platform services from
+  [`site/data/rbac_services/`](site/data/rbac_services/roles.yaml): the overview
+  of what each predefined AI role grants per service, the actions of a
+  service, the permissions of all its endpoints, and the permission of a
+  single endpoint. Place `rbac-endpoint` below the `endpoint` shortcode of the
+  endpoint, with the path relative to the `prefix` of the service. The build
+  fails if the service or endpoint is not listed in the data file. The comment
+  at the top of `roles.yaml` describes the structure and sources, with one
+  file per service in `services/`. The data
+  only records technical resource names like `ai:database:<database>`; the
+  names in the web interface come from
+  [`site/data/rbac_scope.yaml`](site/data/rbac_scope.yaml). For the endpoints
+  of ArangoDB, see [Predefined RBAC roles](#predefined-rbac-roles).
+
 ### Content Guidelines
 
 - Use American English spelling, e.g. _behavior_ instead of _behaviour_.
@@ -2605,6 +2622,99 @@ entirely in many cases. The defaults are:
 - `apiVersions`: the `allowedAPIVersions` of the ArangoDB version in
   [`versions.yaml`](site/data/versions.yaml) except for `experimental`,
   e.g. `[v0]` for 3.12 and `[v1]` for 4.x at the moment
+
+#### Predefined RBAC roles
+
+ArangoDB endpoints can state which predefined roles of the role-based access
+control (RBAC) of the Arango Contextual Data Platform grant access to them,
+using the `x-rbac-predefined-roles` OpenAPI extension. Place it after the
+`description` and before `parameters`, `requestBody`, and `responses`:
+
+```yaml
+paths:
+  /_db/{database-name}/_api/query/current:
+    get:
+      operationId: listAqlQueries
+      description: |
+        ...
+      x-rbac-predefined-roles:
+        - coredb-reader: Only your own queries
+        - coredb-developer: Only your own queries
+        - coredb-admin
+      parameters:
+        ...
+```
+
+- The value is a list of role names without the `managed:predefined:` prefix,
+  ordered from the least to the most privileged role: `coredb-reader`,
+  `coredb-developer`, `coredb-admin`, `tenant-admin`.
+- List every predefined role that grants access to the endpoint **on its own**,
+  i.e. when it is the only role assigned to a user, with a scope that covers
+  the resources of the request (the database, collection, etc. in the URL).
+- Leave out `super-admin`. It is reserved for the `root` user and grants access
+  to all endpoints except for those that require a superuser token. The
+  `_index.md` page of the HTTP API explains this to readers.
+- To note a limitation for a role, use a single-key object with the role name
+  as the key and a short remark as the value instead of the plain name, like
+  `- coredb-reader: Only your own queries`. Use remarks for cases where a role
+  grants access but with a restriction, for example, it only lets you see your
+  own queries or transactions, it only allows read-only queries, or a query
+  parameter like `details=true` has no effect. Behavior that applies regardless
+  of the role belongs in the `description` instead.
+- Use an empty list (`x-rbac-predefined-roles: []`) if no predefined role grants
+  access, for example, because the endpoint requires a superuser token or is
+  not available with RBAC. Explain the reason in the `description`.
+- Omit the extension for endpoints that require no authentication (use
+  `x-rbac-access` instead), and for endpoints for which the required
+  permissions haven't been determined yet.
+
+Which roles grant access to an endpoint depends on the permission checks the
+ArangoDB server performs for the endpoint, and on the policies of the
+predefined roles, which are defined in the
+[`arangodb-core-rbac-permissions`](https://github.com/arangodb/arangodb-core-rbac-permissions/blob/main/charts/arangodb-core-rbac-permissions/templates/predefined_roles_coredb.yaml)
+Helm chart. If either of them changes, the role lists need to be reviewed.
+The checks can differ between ArangoDB versions, so determine them per version
+folder.
+
+Two further extensions complement the roles, in the same place:
+
+```yaml
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: db:database:{database-name}
+        - action: db:Read
+          resource: db:collection:{database-name}:{collection}
+        - action: db:WriteData
+          resource: db:collection:{database-name}:{collection}
+```
+
+This is `POST /_api/document/{collection}`.
+
+- `x-rbac-permissions` lists the permission checks that the server performs:
+  an `action` and a `resource`, plus an `if` condition for checks that only
+  some requests trigger, like `if: in a cluster`. Use the names of the path
+  parameters as placeholders in the resources, `<collection>` etc. for names
+  from the request body or query string, and `_system` for endpoints that
+  don't take a database. Leave out the `resource` for administrative actions
+  like `db:AdminBackup`. If one of several checks suffices, use an item with
+  `anyOf` and a list of alternative `action`/`resource` items instead. Leave
+  out `db:UseApiVersion` on `db:apiversion:<version>`, which is checked for
+  every request and explained once in the `_index.md` page of the HTTP API.
+  The checks can differ between versions, so determine them per version
+  folder, like the roles.
+- `x-rbac-access: public` marks endpoints that require no authentication, like
+  `POST /_open/auth`. Don't combine it with the other two extensions.
+
+The extensions are rendered in a collapsed **Role-based access control (RBAC)**
+box directly below the endpoint URL, the same box that the `rbac-endpoint`
+shortcode renders for the data platform services (`partials/rbac/box.html`),
+and they are included in the generated `openapi.json` files. The **Scope** line
+of the box is derived from the resources of the unconditional checks, using the
+mapping of resource prefixes to the resource types of the web interface in
+[`site/data/rbac_scope.yaml`](site/data/rbac_scope.yaml).
 
 ### Configure the OpenAPI metadata and API versions
 

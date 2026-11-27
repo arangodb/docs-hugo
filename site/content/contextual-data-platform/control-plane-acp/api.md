@@ -18,9 +18,19 @@ Authentication uses a Bearer token in the `Authorization` header. See
 [Obtaining a Bearer token](_index.md#obtaining-a-bearer-token) for how to
 generate one.
 
+If role-based access control (RBAC) is enabled, every endpoint additionally
+requires a permission. Expand the **Role-based access control (RBAC)** box
+below the URL of an endpoint to see the required permission and the predefined
+roles that grant it. The scope
+of your role assignment needs to cover the resource as well. Without the
+permission, requests fail with `403`. See
+[Role-based access control for the ACP](rbac.md) for details.
+
 ## Health Check
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/health" >}}
+
+{{< rbac-endpoint "acp" "GET /v1/health" >}}
 
 Returns the current health status of the service.
 
@@ -113,6 +123,8 @@ you deploy any Helm chart:
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragimporter" >}}
 
+{{< rbac-endpoint "acp" "POST /v1/<service-type>" >}}
+
 Installs a service of the given type. The example below deploys the
 [Importer](../autograph/importer/_index.md) service.
 
@@ -183,6 +195,8 @@ the Importer install.
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{serviceId}" >}}
 
+{{< rbac-endpoint "acp" "GET /v1/service/{service_id}" >}}
+
 Returns the current state of an installed service.
 
 **Path parameters:**
@@ -220,6 +234,8 @@ documentation for its specific readiness or health check endpoint.
 ### Upgrade a Service
 
 {{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{serviceId}" >}}
+
+{{< rbac-endpoint "acp" "PUT /v1/service/{service_id}" >}}
 
 Use this endpoint to change the environment variables or labels of a running
 service, or to upgrade it to the latest chart version. Every call upgrades the
@@ -284,6 +300,8 @@ upgrade it, and send the full set of values it was installed with.
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{serviceId}" >}}
 
+{{< rbac-endpoint "acp" "DELETE /v1/service/{service_id}" >}}
+
 Removes an installed service from the platform.
 
 **Path parameters:**
@@ -315,6 +333,8 @@ curl -X DELETE https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/arangod
 ### List Services
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services" >}}
+
+{{< rbac-endpoint "acp" "POST /v1/list_services" >}}
 
 Lists all installed services, optionally filtered by labels.
 
@@ -351,9 +371,12 @@ overview, see [Projects](_index.md#projects).
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project" >}}
 
-Creates a project in the specified database. The example below creates a
-project of type `graphrag`, the type used by the Importer, AutoGraph, and
-AutoRAG services:
+{{< rbac-endpoint "acp" "POST /v1/project" >}}
+
+Creates a project in the specified database.
+
+The example below creates a project of type `graphrag`, the type used by the
+Importer, AutoGraph, and AutoRAG services:
 
 ```bash
 curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project \
@@ -385,6 +408,8 @@ Once created, you can reference the project when you deploy a service. See
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/all_project_names/{project_db_name}" >}}
 
+{{< rbac-endpoint "acp" "GET /v1/all_project_names/{project_db_name}" >}}
+
 Lists all project names in a database. This returns only the project names for
 quick reference.
 
@@ -404,6 +429,8 @@ curl -X GET https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/all_project_names/
 ### List Projects
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/all_projects/{project_db_name}" >}}
+
+{{< rbac-endpoint "acp" "GET /v1/all_projects/{project_db_name}" >}}
 
 Lists all projects with full metadata in a database. This returns complete
 project objects including metadata, associated services, and knowledge graph
@@ -425,6 +452,8 @@ curl -X GET https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/all_projects/<proj
 ### Get Project Details
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project_by_name/{project_db_name}/{project_name}" >}}
+
+{{< rbac-endpoint "acp" "GET /v1/project_by_name/{project_db_name}/{project_name}" >}}
 
 Retrieves comprehensive metadata for a specific project.
 
@@ -452,6 +481,8 @@ The response includes:
 ### Delete a Project
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project/{project_db_name}/{project_name}" >}}
+
+{{< rbac-endpoint "acp" "DELETE /v1/project/{project_db_name}/{project_name}" >}}
 
 Deletes a project. The project record is removed entirely; only the external
 resources it referenced (services, collections, graphs) remain.

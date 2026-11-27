@@ -17,9 +17,15 @@ AutoRAG provides two main query endpoints and a health endpoint:
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/graphrag-query" >}}
 
+{{< rbac-endpoint "retriever" "POST /v1/graphrag-query" >}}
+
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/graphrag-query-stream" >}}
 
+{{< rbac-endpoint "retriever" "POST /v1/graphrag-query-stream" >}}
+
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/health" >}}
+
+{{< rbac-endpoint "retriever" "GET /v1/health" >}}
 
 {{< tip >}}
 The streaming endpoint (`/v1/graphrag-query-stream`) returns responses

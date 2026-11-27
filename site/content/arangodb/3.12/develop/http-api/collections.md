@@ -35,6 +35,31 @@ paths:
       description: |
         Returns basic information for all collections in the current database,
         optionally excluding system collections.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_aqlfunctions"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_apps"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_queues"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_appbundles"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_jobs"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_frontend"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_analyzers"
       parameters:
         - name: database-name
           in: path
@@ -155,6 +180,15 @@ paths:
       operationId: getCollection
       description: |
         Returns the basic information about a specific collection.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -285,6 +319,15 @@ paths:
       operationId: getCollectionProperties
       description: |
         Returns all properties of the specified collection.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -736,6 +779,15 @@ paths:
       operationId: getCollectionCount
       description: |
         Get the number of documents in a collection.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -1137,6 +1189,15 @@ paths:
       description: |
         Get the number of documents and additional statistical information
         about the collection.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -1710,6 +1771,15 @@ paths:
         {{</* info */>}}
         This method is only available in cluster deployments on Coordinators.
         {{</* /info */>}}
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -1899,6 +1969,15 @@ paths:
         {{</* info */>}}
         This method is only available in cluster deployments on Coordinators.
         {{</* /info */>}}
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -2416,6 +2495,15 @@ paths:
         The response contains the collection's latest used revision ID.
         The revision ID is a server-generated string that clients can use to
         check whether data in a collection has changed since the last revision check.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -2874,6 +2962,15 @@ paths:
         {{</* info */>}}
         Including user-defined attributes will make the checksumming slower.
         {{</* /info */>}}
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -3048,6 +3145,13 @@ paths:
       operationId: getKeyGenerators
       description: |
         Returns the available key generators for collections.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -3109,6 +3213,15 @@ paths:
       description: |
         Creates a new collection with a given name. The request must contain an
         object with the following attributes.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Create
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -3902,6 +4015,17 @@ paths:
       operationId: deleteCollection
       description: |
         Delete the collection identified by `collection-name` and all its documents.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Drop
+          resource: "db:collection:{database-name}:{collection-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_graphs"
       parameters:
         - name: database-name
           in: path
@@ -4092,6 +4216,16 @@ paths:
       operationId: truncateCollection
       description: |
         Removes all documents from the collection, but leaves the indexes intact.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -4304,6 +4438,18 @@ paths:
         updated. Collection properties **cannot be changed** once a collection is
         created except for the listed properties, as well as the collection name via
         the rename endpoint (but not in clusters).
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
+        - action: db:WriteMeta
+          resource: "db:collection:{database-name}:{collection-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:{collection-name}"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -4899,6 +5045,15 @@ paths:
 
         It is guaranteed that the in-memory cache data is consistent with the stored
         index data at all times.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -5050,6 +5205,17 @@ paths:
 
         If renaming the collection succeeds, then the collection is also renamed in
         all graph definitions inside the `_graphs` collection in the current database.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
+        - action: db:WriteMeta
+          resource: "db:collection:{database-name}:{collection-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -5628,6 +5794,15 @@ paths:
         situations, e.g. after running lots of update/replace or remove operations,
         the disk data for a collection may contain a lot of outdated data for which the
         space shall be reclaimed. In this case the compaction operation can be used.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -5783,6 +5958,15 @@ paths:
 
         Since ArangoDB version 3.9.0 this API does nothing. Previously, it used to
         load a collection into memory.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path
@@ -5978,6 +6162,15 @@ paths:
 
         Since ArangoDB version 3.9.0 this API does nothing. Previously it used to
         unload a collection from memory, while preserving all documents.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:{collection-name}"
       parameters:
         - name: database-name
           in: path

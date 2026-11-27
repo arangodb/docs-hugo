@@ -28,6 +28,8 @@ in `categories`.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate" >}}
 
+{{< rbac-endpoint "autograph" "POST /v1/orchestrate" >}}
+
 Spawn Importer workers for the strategy profiles that are not in the
 knowledge graph yet. Called after RAG strategizer is completed.
 
@@ -225,6 +227,8 @@ curl -X POST \
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate/{orchestration_id}" >}}
 
+{{< rbac-endpoint "autograph" "GET /v1/orchestrate/{orchestration_id}" >}}
+
 Returns the status of the orchestration run that
 [`POST /v1/orchestrate`](#trigger-orchestration) started, using the
 `orchestration_id` from its response. This is where the per-partition results
@@ -394,6 +398,8 @@ curl -H "Authorization: Bearer <token>" \
 ## Cancel an orchestration
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate/{orchestration_id}" >}}
+
+{{< rbac-endpoint "autograph" "DELETE /v1/orchestrate/{orchestration_id}" >}}
 
 Ask the running orchestration to stop and release the single-flight slot of the
 project, so that a wedged run can be cleared without database surgery.

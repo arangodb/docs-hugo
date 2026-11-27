@@ -89,11 +89,21 @@ Before using AutoRAG, you need:
 2. **An LLM provider** configured for AutoRAG. See
    [LLM Configuration](llm-configuration.md) to set up any OpenAI-compatible API.
 
+3. **A role for the AutoRAG actions**, if role-based access control (RBAC) is
+   enabled: `ai-user` for running queries, or `ai-developer` for also changing
+   the model configuration, with a
+   [scope](../access-control/rbac.md#scopes-in-the-http-api) that covers the
+   project database.
+   Because AutoRAG reads the data with your token, you also need read access to
+   the database in ArangoDB. See [Role-based access control for AutoRAG](rbac.md).
+
 ## Installation
 
 To install and start AutoRAG, use the following endpoint:
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragretriever" >}}
+
+{{< rbac-endpoint "acp" "POST /v1/graphragretriever" >}}
 
 For detailed instructions on installing, monitoring, and managing services, see
 [The Arango Control Plane (ACP) service](../control-plane-acp/_index.md).
@@ -115,6 +125,7 @@ For detailed instructions on installing, monitoring, and managing services, see
 - [**Parameter Reference**](parameters.md): Complete list of query parameters.
 - [**Error Handling**](error-handling.md): Status codes, error codes, and the
   failures that arrive with an HTTP `200`.
+- [**RBAC**](rbac.md): The roles and permissions that each endpoint requires.
 
 ## API Reference
 

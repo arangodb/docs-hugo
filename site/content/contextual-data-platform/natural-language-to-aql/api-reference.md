@@ -32,6 +32,12 @@ Use your data platform's external endpoint and the trailing segment of the
 
 Example: `https://localhost:8529/graph-rag/xqfnq/v1/process_text_stream`
 
+If role-based access control (RBAC) is enabled, every endpoint except for the
+health check additionally requires a permission. Expand the
+**Role-based access control (RBAC)** box below the URL of an endpoint to see
+the required permission and the predefined roles that grant it. See
+[Role-based access control for Natural Language to AQL](rbac.md) for details.
+
 ## Endpoints
 
 ### Process Text
@@ -40,6 +46,8 @@ Ask general questions to the LLM and receive natural language responses.
 This endpoint does not query your database.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/process_text" >}}
+
+{{< rbac-endpoint "nls" "POST /v1/process_text" >}}
 
 **Request body:**
 
@@ -73,6 +81,8 @@ Stream responses in real-time as they are generated, rather than waiting for the
 complete response.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/process_text_stream" >}}
+
+{{< rbac-endpoint "nls" "POST /v1/process_text_stream" >}}
 
 **Request body:**
 
@@ -146,6 +156,8 @@ Convert a natural language question into an AQL query and execute it against you
 database. Returns results in one or more formats.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/translate_query" >}}
+
+{{< rbac-endpoint "nls" "POST /v1/translate_query" >}}
 
 **Request body:**
 
@@ -226,6 +238,8 @@ curl --request POST \
 Check whether the service is running and healthy.
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/health" >}}
+
+{{< rbac-endpoint "nls" "GET /v1/health" >}}
 
 **Example:**
 

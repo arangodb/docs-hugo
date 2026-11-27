@@ -44,6 +44,8 @@ one, build it, see [When to use IGU](_index.md#when-to-use-igu).
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/graph/insert" >}}
 
+{{< rbac-endpoint "autograph" "POST /v1/graph/insert" >}}
+
 Adds new documents to an existing category. The API calls this operation
 insert. The call is synchronous.
 
@@ -167,6 +169,8 @@ curl -X POST \
 ## Remove documents
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/graph/delete" >}}
+
+{{< rbac-endpoint "autograph" "POST /v1/graph/delete" >}}
 
 Removes documents from an existing category. The API calls this operation
 delete. The call is synchronous and does the whole removal itself. It cleans up
@@ -341,6 +345,8 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/graph/update" >}}
 
+{{< rbac-endpoint "autograph" "POST /v1/graph/update" >}}
+
 Replaces documents in an existing category with a new version. The API calls
 this operation update. The call is asynchronous.
 
@@ -511,6 +517,8 @@ curl -X POST \
 ## Reorganize partitions
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/graph/recluster" >}}
+
+{{< rbac-endpoint "autograph" "POST /v1/graph/recluster" >}}
 
 Rebuilds the communities of up to five partitions with the FullGraphRAG strategy
 from their current entities. The API calls this operation recluster. The call

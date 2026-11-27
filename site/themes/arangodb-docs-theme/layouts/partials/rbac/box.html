@@ -1,0 +1,56 @@
+{{- /* The "Role-based access control (RBAC)" box of an endpoint, for both the
+       data platform services (rbac-endpoint shortcode) and the ArangoDB HTTP
+       API (OpenAPI rendering), so that both read the same. From the simple to
+       the detailed:
+       - Roles: the predefined roles that each grant access on their own
+       - Scope: what the scope of the role assignment needs to cover, in the
+         terms of the web interface, derived by the rbac/scope.html partial
+       - Checked permissions: the actions and resources that are checked,
+         including those of some requests only
+       followed by an optional remark and a link to further information.
+
+       Takes a dict with:
+       - page:    the page, for rendering the Markdown and its links
+       - access:  "public" (no token needed), "authenticated" (any valid token,
+                  no permission is checked), or empty for checked permissions
+       - roles:   list of role names, or single-key maps from a role name to a
+                  remark. Omit it if the roles are not known
+       - scopes:  list of alternatives, each a dict with `when` (empty if there
+                  is only one case) and `items` (see rbac/scope.html)
+       - checks:  list of Markdown lines describing the checked permissions,
+                  omit it if they are not known
+       - remark:  optional Markdown paragraph
+       - link:    optional Markdown sentence with a link, like "See [...](...)." */ -}}
+{{- $parts := slice -}}
+{{- if eq .access "public" -}}
+  {{- $parts = $parts | append "No authentication is needed. Anyone can call this endpoint." -}}
+{{- else if eq .access "authenticated" -}}
+  {{- $parts = $parts | append "Any authenticated user can call this endpoint. You need a valid token, but no permission is checked." -}}
+{{- else -}}
+  {{- if isset . "roles" -}}
+    {{- $parts = $parts | append (printf "**Roles**: %s" (partial "rbac/roles-or.html" .roles | default "None of the predefined roles grants access, not even `super-admin`")) -}}
+  {{- end -}}
+  {{- with .scopes -}}
+    {{- if eq (len .) 1 -}}
+      {{- with partial "rbac/scope.html" (index . 0).items -}}
+        {{- $parts = $parts | append (printf "**Scope**: %s" .) -}}
+      {{- end -}}
+    {{- else -}}
+      {{- $alts := slice -}}
+      {{- range . -}}
+        {{- $alts = $alts | append (printf "- %s: %s" .when (partial "rbac/scope.html" .items)) -}}
+      {{- end -}}
+      {{- $parts = $parts | append (printf "**Scope**:\n\n%s" (delimit $alts "\n")) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with .checks -}}
+    {{- $parts = $parts | append (printf "**Checked permissions**:\n\n%s" (delimit . "\n")) -}}
+  {{- end -}}
+{{- end -}}
+{{- with .remark -}}{{- $parts = $parts | append . -}}{{- end -}}
+{{- with .link -}}{{- $parts = $parts | append . -}}{{- end -}}
+{{- return partial "details-box.html" (dict
+  "summary" "Role-based access control (RBAC)"
+  "content" (delimit $parts "\n\n" | .page.RenderString (dict "display" "block"))
+  "class"   "details-rbac"
+) -}}

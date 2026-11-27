@@ -24,3 +24,14 @@ cypher2aql:
   externalDocs:
     description: Cypher to AQL Documentation
     url: https://docs.arango.ai/contextual-data-platform/cypher-to-aql/
+
+rbac:
+  title: Data Platform RBAC API
+  summary: Manage the role assignments of the role-based access control of the Arango Contextual Data Platform
+  version: "1.4.7"
+  contact:
+    name: ArangoDB Inc.
+    url: https://arango.ai
+  externalDocs:
+    description: Role-Based Access Control Documentation
+    url: https://docs.arango.ai/contextual-data-platform/access-control/rbac/

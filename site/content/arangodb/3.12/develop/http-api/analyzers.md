@@ -18,6 +18,19 @@ paths:
 
         See the description of [Analyzers](../../indexes-and-search/analyzers.md)
         for an introduction and the available types, properties and features.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteMeta
+          resource: "db:analyzer:{database-name}:<analyzer>"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:_analyzers"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_analyzers"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -114,6 +127,15 @@ paths:
         - `type`: the Analyzer type
         - `properties`: the properties used to configure the specified type
         - `features`: the set of features to set on the Analyzer generated fields
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:analyzer:{database-name}:{analyzer-name}"
       parameters:
         - name: database-name
           in: path
@@ -178,6 +200,17 @@ paths:
         - `type`: the Analyzer type
         - `properties`: the properties used to configure the specified type
         - `features`: the set of features to set on the Analyzer generated fields
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:analyzer:{database-name}:<analyzer>"
+        - action: db:Read
+          resource: "db:database:_system"
       parameters:
         - name: database-name
           in: path
@@ -225,6 +258,19 @@ paths:
         the following attributes:
         - `error`: `false`
         - `name`: The name of the removed Analyzer
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteMeta
+          resource: "db:analyzer:{database-name}:{analyzer-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:_analyzers"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_analyzers"
+          if: on a single server
       parameters:
         - name: database-name
           in: path

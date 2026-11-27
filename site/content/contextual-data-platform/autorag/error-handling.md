@@ -29,8 +29,10 @@ treats them as successes.
 | `200` | The request was accepted. The work itself may still have failed, see [Failures reported with a 200](#failures-reported-with-a-200). |
 | `400` | The request was rejected before any retrieval work. Besides a [`query`](parameters.md#query) larger than 64 KiB, this covers requests the service refuses as contradictory or malformed: conflicting partition parameters, an invalid Custom Retriever tool configuration, or an unknown key in [`custom_prompts`](custom-prompts.md#validation). |
 | `401` | The `Authorization` header is missing or the token is invalid. Every endpoint of the service needs one. |
+| `403` | You lack read access to the database in ArangoDB, or, if role-based access control is enabled, the AutoRAG action on the database. See [Errors](rbac.md#errors) in the RBAC reference. |
 | `404` | The run you asked for does not exist or was deleted, when [getting a single run](verify-and-monitor.md#get-a-single-run). Other operations can also return it when something they look up is missing. |
 | `500` | The service could not complete the request, for example when it cannot reach the collection that stores the query history. A provider failure that no part of the query path handled also arrives here, with its [provider error code](#provider-error-codes) at the front of the message rather than in a field. |
+| `503` | The authorization service of the platform cannot be reached. The request is not carried out, and you can retry it. Only returned if role-based access control is enabled. See [Errors](rbac.md#errors) in the RBAC reference. |
 
 ## Failures reported with a 200
 

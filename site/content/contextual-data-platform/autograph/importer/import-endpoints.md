@@ -20,6 +20,12 @@ Platform routes require authentication. Include a standard `Authorization`
 header (e.g., `Bearer <token>`) on every request to the Importer.
 {{< /info >}}
 
+If role-based access control (RBAC) is enabled, every endpoint except the
+health check additionally requires a permission. Expand the
+**Role-based access control (RBAC)** box below the URL of an endpoint to see
+the required permission and the predefined roles that grant it. See
+[Role-based access control for the Importer](rbac.md) for details.
+
 ## Call sequence
 
 All paths are relative to the service URL
@@ -66,6 +72,8 @@ ideal for testing, small documents, or when you need immediate feedback without
 streaming progress updates.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/import" >}}
+
+{{< rbac-endpoint "importer" "POST /v1/import" >}}
 
 ### Basic example
 
@@ -118,6 +126,8 @@ Knowledge Graph. The request returns immediately with a `job_id` that you use
 to poll for progress via the [jobs API](#monitoring-jobs).
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/import-multiple" >}}
+
+{{< rbac-endpoint "importer" "POST /v1/import-multiple" >}}
 
 The response payload looks like this:
 
@@ -287,6 +297,8 @@ for the full lifecycle.
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/jobs/{job_id}" >}}
 
+{{< rbac-endpoint "importer" "GET /v1/jobs/{job_id}" >}}
+
 ```bash
 curl -sS "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX>/v1/jobs/<JOB_ID>" \
   -H "Authorization: Bearer <your-jwt-token>"
@@ -346,11 +358,15 @@ while True:
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/jobs" >}}
 
+{{< rbac-endpoint "importer" "GET /v1/jobs" >}}
+
 Returns up to `limit` recent job summaries (default `50`), most recent first.
 
 ## Health check
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/health" >}}
+
+{{< rbac-endpoint "importer" "GET /v1/health" >}}
 
 Returns the readiness status of the Importer service. While an import is
 running on the replica, the response is still `success: true` but the

@@ -279,6 +279,15 @@ paths:
         The query details include the query string plus optional query options and
         bind parameters. These values need to be passed in a JSON representation in
         the body of the POST request.
+      x-rbac-predefined-roles:
+        - coredb-reader: Only for queries that don't modify data
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -1446,6 +1455,13 @@ paths:
 
         If the cursor is not fully consumed, the time-to-live for the cursor
         is renewed by this API call.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -1955,6 +1971,13 @@ paths:
 
         If the cursor is not fully consumed, the time-to-live for the cursor
         is renewed by this API call.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -2092,6 +2115,13 @@ paths:
         resources.
 
         The time-to-live for the cursor is renewed by this API call.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -2585,6 +2615,13 @@ paths:
 
         Note: the server will also destroy abandoned cursors automatically after a
         certain server-controlled timeout to avoid resource leakage.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -2661,6 +2698,13 @@ paths:
       operationId: getAqlQueryTrackingProperties
       description: |
         Returns the current query tracking properties of the specified database.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -2797,6 +2841,14 @@ paths:
         Changing the properties is not possible in read-only mode, except with a
         superuser JWT. Up to v3.12.12, any user account with at least `ro`
         access to the database could change the properties.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:UpdateQueryProperties
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -3037,6 +3089,15 @@ paths:
         has `rw` access to the `_system` database (classic authorization) or the
         `coredb-admin` role (RBAC). Requests with a
         [superuser JWT](../authentication.md#jwt-superuser-tokens) are not restricted.
+      x-rbac-predefined-roles:
+        - coredb-reader: Only your own queries
+        - coredb-developer: Only your own queries
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitorAqlQueries
+          if: to see the queries of other users
       parameters:
         - name: database-name
           in: path
@@ -3291,6 +3352,15 @@ paths:
         has `rw` access to the `_system` database (classic authorization) or the
         `coredb-admin` role (RBAC). Requests with a
         [superuser JWT](../authentication.md#jwt-superuser-tokens) are not restricted.
+      x-rbac-predefined-roles:
+        - coredb-reader: Only your own queries
+        - coredb-developer: Only your own queries
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitorAqlQueries
+          if: to see the queries of other users
       parameters:
         - name: database-name
           in: path
@@ -3517,6 +3587,15 @@ paths:
         has `rw` access to the `_system` database (classic authorization) or the
         `coredb-admin` role (RBAC). Requests with a
         [superuser JWT](../authentication.md#jwt-superuser-tokens) are not restricted.
+      x-rbac-predefined-roles:
+        - coredb-reader: Only your own queries
+        - coredb-developer: Only your own queries
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitorAqlQueries
+          if: to clear the entries of other users
       parameters:
         - name: database-name
           in: path
@@ -3619,6 +3698,15 @@ paths:
         has `rw` access to the `_system` database (classic authorization) or the
         `coredb-admin` role (RBAC). Requests with a
         [superuser JWT](../authentication.md#jwt-superuser-tokens) are not restricted.
+      x-rbac-predefined-roles:
+        - coredb-reader: Only your own queries
+        - coredb-developer: Only your own queries
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminKillAqlQueries
+          if: to kill a query of another user
       parameters:
         - name: database-name
           in: path
@@ -3723,6 +3811,15 @@ paths:
 
         - `variables`: array of variables used in the query (note: this may contain
           internal variables created by the optimizer)
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -4052,6 +4149,13 @@ paths:
       description: |
         This endpoint is for query validation only. To actually query the database,
         see `/api/cursor`.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -4140,6 +4244,13 @@ paths:
       operationId: getAqlQueryOptimizerRules
       description: |
         A list of all optimizer rules and their properties.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path

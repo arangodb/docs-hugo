@@ -37,6 +37,13 @@ paths:
       description: |
         Create a new user. You need `rw` access to the `_system` database in order to
         execute this action.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Create
+          resource: "db:user:<user>"
       parameters:
         - name: database-name
           in: path
@@ -129,6 +136,12 @@ paths:
         access levels for databases and collections. You need `rw` access to the `_system`
         database in order to execute this action. Additionally, users can
         change their own data.
+      x-rbac-predefined-roles:
+        - coredb-admin
+        - tenant-admin
+      x-rbac-permissions:
+        - action: db:WriteMeta
+          resource: "db:user:{user}"
       parameters:
         - name: database-name
           in: path
@@ -223,6 +236,12 @@ paths:
         Partially modifies the data of an existing user. You need `rw` access to the `_system`
         database in order to execute this action. Additionally, users can
         change their own data.
+      x-rbac-predefined-roles:
+        - coredb-admin
+        - tenant-admin
+      x-rbac-permissions:
+        - action: db:WriteMeta
+          resource: "db:user:{user}"
       parameters:
         - name: database-name
           in: path
@@ -315,6 +334,12 @@ paths:
 
         You need `rw` access to the `_system` database in order to
         execute this action.
+      x-rbac-predefined-roles:
+        - coredb-admin
+        - tenant-admin
+      x-rbac-permissions:
+        - action: db:Drop
+          resource: "db:user:{user}"
       parameters:
         - name: database-name
           in: path
@@ -381,6 +406,15 @@ paths:
         Fetches data about the specified user. You can fetch information about
         yourself or you need `rw` access to the `_system` database in order to
         execute this action.
+      x-rbac-predefined-roles:
+        - coredb-reader: Only your own user account
+        - coredb-developer: Only your own user account
+        - coredb-admin
+        - tenant-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:user:{user}"
+          if: unless it is your own user
       parameters:
         - name: database-name
           in: path
@@ -456,6 +490,14 @@ paths:
         - `active`: Whether the user account is able to log in to the database system.
         - `extra`: A JSON object with extra user information. It is used by the web
           interface to store graph viewer settings and saved queries.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminReadUsers
+        - action: db:Read
+          resource: "db:user:<user>"
       parameters:
         - name: database-name
           in: path
@@ -499,6 +541,11 @@ logJsonResponse(response);
 
 ## Manage permissions
 
+If [role-based access control (RBAC)](../../../../contextual-data-platform/access-control/rbac.md)
+is enabled, you cannot manage permissions using access levels with the following
+endpoints. With RBAC, user permissions are managed by assigning roles to grant
+actions and scoping them to resources, such as databases and collections.
+
 ### Set a user's database access level
 
 ```openapi
@@ -509,6 +556,12 @@ paths:
       description: |
         Sets the database access levels for the database `dbname` of user `user`. You
         need `rw` access to the `_system` database in order to execute this action.
+
+        In the Arango Contextual Data Platform with role-based access control
+        (RBAC) enabled, this endpoint is not available and returns an error, as
+        permissions are then managed with [role assignments](../../../../contextual-data-platform/access-control/rbac.md)
+        instead of access levels.
+      x-rbac-predefined-roles: []
       requestBody:
         content:
           application/json:
@@ -564,7 +617,8 @@ paths:
             database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            Returned if you have `none` access to the `_system` database,
+            or if RBAC is enabled and access levels are therefore not used.
       tags:
         - Users
 ```
@@ -601,6 +655,12 @@ paths:
         Sets the collection access level for the `collection` in the database `dbname`
         for user `user`. You need `rw` access to the `_system` database in order to
         execute this action.
+
+        In the Arango Contextual Data Platform with role-based access control
+        (RBAC) enabled, this endpoint is not available and returns an error, as
+        permissions are then managed with [role assignments](../../../../contextual-data-platform/access-control/rbac.md)
+        instead of access levels.
+      x-rbac-predefined-roles: []
       requestBody:
         content:
           application/json:
@@ -662,7 +722,8 @@ paths:
             database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            Returned if you have `none` access to the `_system` database,
+            or if RBAC is enabled and access levels are therefore not used.
       tags:
         - Users
 ```
@@ -706,6 +767,12 @@ paths:
 
         You need `rw` access to the `_system`
         database in order to execute this action.
+
+        In the Arango Contextual Data Platform with role-based access control
+        (RBAC) enabled, this endpoint is not available and returns an error, as
+        permissions are then managed with [role assignments](../../../../contextual-data-platform/access-control/rbac.md)
+        instead of access levels.
+      x-rbac-predefined-roles: []
       parameters:
         - name: database-name
           in: path
@@ -739,6 +806,9 @@ paths:
           description: |
             If the JSON representation is malformed or mandatory data is missing
             from the request.
+        '403':
+          description: |
+            Returned if RBAC is enabled and access levels are therefore not used.
       tags:
         - Users
 ```
@@ -779,6 +849,12 @@ paths:
 
         You need `rw` access to the `_system`
         database in order to execute this action.
+
+        In the Arango Contextual Data Platform with role-based access control
+        (RBAC) enabled, this endpoint is not available and returns an error, as
+        permissions are then managed with [role assignments](../../../../contextual-data-platform/access-control/rbac.md)
+        instead of access levels.
+      x-rbac-predefined-roles: []
       parameters:
         - name: database-name
           in: path
@@ -818,6 +894,9 @@ paths:
         '400':
           description: |
             If there was an error
+        '403':
+          description: |
+            Returned if RBAC is enabled and access levels are therefore not used.
       tags:
         - Users
 ```
@@ -871,6 +950,12 @@ paths:
         The access levels are `rw`, `ro`, and `none`. Collections without an
         explicitly set access level are reported as `undefined`, in which case
         the wildcard access level (`*`) applies.
+
+        In the Arango Contextual Data Platform with role-based access control
+        (RBAC) enabled, this endpoint is not available and returns an error, as
+        permissions are then managed with [role assignments](../../../../contextual-data-platform/access-control/rbac.md)
+        instead of access levels.
+      x-rbac-predefined-roles: []
       parameters:
         - name: database-name
           in: path
@@ -910,7 +995,8 @@ paths:
             database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            Returned if you have `none` access to the `_system` database,
+            or if RBAC is enabled and access levels are therefore not used.
       tags:
         - Users
 ```
@@ -965,6 +1051,12 @@ paths:
       operationId: getUserDatabasePermissions
       description: |
         Fetch the database access level for a specific database
+
+        In the Arango Contextual Data Platform with role-based access control
+        (RBAC) enabled, this endpoint is not available and returns an error, as
+        permissions are then managed with [role assignments](../../../../contextual-data-platform/access-control/rbac.md)
+        instead of access levels.
+      x-rbac-predefined-roles: []
       parameters:
         - name: database-name
           in: path
@@ -1003,7 +1095,8 @@ paths:
             database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            Returned if you have `none` access to the `_system` database,
+            or if RBAC is enabled and access levels are therefore not used.
       tags:
         - Users
 ```
@@ -1038,6 +1131,12 @@ paths:
       operationId: getUserCollectionPermissions
       description: |
         Returns the collection access level for a specific collection
+
+        In the Arango Contextual Data Platform with role-based access control
+        (RBAC) enabled, this endpoint is not available and returns an error, as
+        permissions are then managed with [role assignments](../../../../contextual-data-platform/access-control/rbac.md)
+        instead of access levels.
+      x-rbac-predefined-roles: []
       parameters:
         - name: database-name
           in: path
@@ -1083,7 +1182,8 @@ paths:
             database.
         '403':
           description: |
-            Returned if you have `none` access to the `_system` database.
+            Returned if you have `none` access to the `_system` database,
+            or if RBAC is enabled and access levels are therefore not used.
       tags:
         - Users
 ```

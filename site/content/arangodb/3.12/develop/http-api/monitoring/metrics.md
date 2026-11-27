@@ -47,6 +47,12 @@ paths:
 
         The API then needs to be added to the Prometheus configuration file
         for collection.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitoring
       parameters:
         - name: database-name
           in: path
@@ -159,6 +165,12 @@ paths:
         to `enabled-per-shard` to make DB-Servers collect per-shard
         usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
         usage metrics per shard and per user whenever a shard is accessed.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitoringInternal
       parameters:
         - name: database-name
           in: path
@@ -278,6 +290,12 @@ paths:
 
         The API then needs to be added to the Prometheus configuration file
         for collection.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitoring
       parameters:
         - name: database-name
           in: path

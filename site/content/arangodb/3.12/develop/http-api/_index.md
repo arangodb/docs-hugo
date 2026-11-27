@@ -116,6 +116,42 @@ as follows:\
   It can be preceded by `/_db/:database`, with `:database` replaced by a
   database name, to select another database than the default `_system` database.
 
+- **Role-based access control (RBAC)** is a collapsed box that is only
+  relevant for the Arango Contextual Data Platform with
+  [role-based access control (RBAC)](../../../../contextual-data-platform/access-control/rbac.md)
+  enabled. It tells you what to assign to a user for using the endpoint:
+
+  - **Roles**: The predefined roles that each grant access to the endpoint on
+    their own. A remark next to a role indicates a limitation, for example,
+    that the role only lets you see your own queries. The reserved
+    `super-admin` role of the `root` user is not listed, as it grants access to
+    all endpoints except for those that require a superuser token. If no
+    predefined role grants access, not even `super-admin`, the box says so.
+  - **Scope**: What the scope of the role assignment needs to cover, named
+    like the resource types in the web interface, for example, **Databases**
+    and **Collections** for the database and collection in the URL. A role
+    only grants access to an endpoint if the scope covers the resources of the
+    request.
+  - **Checked permissions**: The actions that the server checks and the
+    resources it checks them on, for example, `db:WriteData` on
+    `db:collection:{database-name}:{collection-name}`, with the names of the
+    path parameters as placeholders. Names in angle brackets, like
+    `<collection>`, come from the request body or query string, and names
+    starting with an underscore, like `_graphs`, are system collections that
+    the server accesses on your behalf. Administrative actions, like
+    `db:AdminBackup`, have no resource and only the **Everything** scope covers
+    them. Some checks only apply under a condition, for example, in a cluster
+    or for the queries of other users. This is what you need if you limit the
+    actions in the scope, or to understand a denied request.
+
+  ArangoDB additionally checks the `db:UseApiVersion` action on the
+  `db:apiversion:<version>` resource for every request. The boxes leave it
+  out. The web interface adds `db:apiversion:*` to every scope of a
+  `coredb-*` role automatically, but if you use the HTTP API to assign roles,
+  you need to include it yourself.
+
+  For endpoints that don't require authentication, the box says so instead.
+
 - `:collection` and `:key` (and `:database`) are placeholders called
   **Path Parameters** that you have to replace with a collection name and
   document key (and database name) in this case. They are always required.
@@ -176,6 +212,11 @@ Content-Length: 160
 
 ArangoDB's HTTP API is documented using the industry-standard
 **OpenAPI Specification**, more specifically [OpenAPI version 3.1](https://swagger.io/specification/).
+
+The predefined roles of the data platform's RBAC that grant access to an endpoint
+are included as the `x-rbac-predefined-roles` extension of the operation. It is
+a list of role names, where an item can also be an object that maps the role
+name to a remark, like `{"coredb-reader": "Only your own queries"}`.
 You can explore the API with the interactive **Swagger UI** using the
 [ArangoDB web interface](../../components/web-interface/_index.md).
 

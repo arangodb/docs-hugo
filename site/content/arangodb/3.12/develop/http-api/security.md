@@ -48,6 +48,13 @@ paths:
             JSON string with the SHA256 of the private key.
 
         This API requires authentication.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -84,6 +91,7 @@ paths:
         This endpoint requires a
         [superuser JWT](authentication.md#jwt-superuser-tokens). User accounts,
         including `root`, are not sufficient.
+      x-rbac-predefined-roles: []
       responses:
         '200':
           description: |
@@ -117,6 +125,13 @@ paths:
         is enabled.
 
         This API is not available on Coordinator nodes.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -223,6 +238,7 @@ paths:
         [superuser JWT](authentication.md#jwt-superuser-tokens). User accounts,
         including `root`, are not sufficient.
         This API is not available on Coordinator nodes.
+      x-rbac-predefined-roles: []
       responses:
         '200':
           description: |

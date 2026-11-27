@@ -1,0 +1,46 @@
+# RBAC of the retriever service, see ../roles.yaml for the structure.
+order: 40
+name: AutoRAG
+page: contextual-data-platform/autorag/_index.md
+rbacPage: contextual-data-platform/autorag/rbac.md
+prefix: /graphrag/retriever/{serviceIdPostfix}
+note: the database that the AutoRAG service is installed for
+actions:
+  - name: ai:retriever.query
+    summary: Run queries and list, get, and delete the query history
+    resource: ai:database:<database>
+    roles: [ai-user, ai-developer]
+  - name: ai:retriever.config.manage
+    summary: Change the provider, model, and secret profile settings
+    resource: ai:database:<database>
+    roles: [ai-developer]
+endpoints:
+  - method: GET
+    path: /v1/health
+    access: authenticated
+  - method: POST
+    path: /v1/graphrag-query
+    action: ai:retriever.query
+    remark: &read-access >-
+      You also need read access to the database in ArangoDB, because AutoRAG
+      reads the data with your token: a `coredb-*` role like `coredb-reader`
+      whose scope covers the database if ArangoDB RBAC is enabled, or a
+      classic permission of read access to the database otherwise.
+  - method: POST
+    path: /v1/graphrag-query-stream
+    action: ai:retriever.query
+    remark: *read-access
+  - method: GET
+    path: /v1/retriever-runs
+    action: ai:retriever.query
+    remark: *read-access
+  - method: GET
+    path: /v1/retriever-runs/{run_id}
+    action: ai:retriever.query
+    remark: *read-access
+  - method: DELETE
+    path: /v1/retriever-runs/{run_id}
+    action: ai:retriever.query
+  - method: PUT
+    path: /v1/projects/{project}/model-config/credentials
+    action: ai:retriever.config.manage

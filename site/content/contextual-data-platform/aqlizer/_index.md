@@ -161,6 +161,11 @@ internal MCP server that the data platform starts, connects, and stops along
 with the AQLizer. The MCP server runs the database operations and also stores
 and searches the query templates.
 
+If role-based access control (RBAC) is enabled, you need the `ai-user` or
+`ai-developer` role with a scope that covers the database. The AQLizer works
+with your token, so you also need access to the data in ArangoDB. See
+[Role-based access control for the AQLizer](rbac.md).
+
 {{< info >}}
 The internal MCP server used by the AQLizer is not the same as the
 [ArangoDB MCP Server](../../ecosystem/arangodb-mcp-server.md). The latter is

@@ -1,0 +1,123 @@
+# RBAC of the autograph service, see ../roles.yaml for the structure.
+order: 20
+name: AutoGraph
+page: contextual-data-platform/autograph/_index.md
+rbacPage: contextual-data-platform/autograph/reference/rbac.md
+prefix: /autograph
+note: the database that the AutoGraph service is installed for
+actions:
+  - name: ai:autograph.read
+    summary: >-
+      Get the status of builds, strategizer jobs, and orchestrations, read
+      the strategy and the project overview
+    resource: ai:database:<database>
+    roles: [ai-user, ai-developer]
+  - name: ai:autograph.build
+    summary: >-
+      Import files, run incremental builds, strategize, orchestrate, insert
+      documents, embed a field, and cancel a run
+    resource: ai:database:<database>
+    roles: [ai-developer]
+  - name: ai:autograph.data.manage
+    summary: >-
+      Run full builds, update and delete documents, edit a strategy,
+      recluster, delete a category or the project's data
+    resource: ai:database:<database>
+    roles: [ai-developer]
+  - name: ai:autograph.config.manage
+    summary: >-
+      Change the model, provider, and secret profile settings that all
+      users of the project share
+    resource: ai:database:<database>
+    roles: [ai-developer]
+endpoints:
+  - method: GET
+    path: /v1/health
+    access: authenticated
+  - method: POST
+    path: /v1/import-multiple
+    action: ai:autograph.build
+  - method: POST
+    path: /v1/corpus/builds
+    action: ai:autograph.build
+    also:
+      - actions: [ai:autograph.data.manage]
+        resource: ai:database:<database>
+        if: for a full build (`incremental` set to `false`)
+  - method: GET
+    path: /v1/corpus/builds/{corpus_build_id}
+    action: ai:autograph.read
+  - method: POST
+    path: /v1/embed-field-in-collection
+    action: ai:autograph.build
+  - method: POST
+    path: /v1/rag-strategizer/analyze
+    action: ai:autograph.build
+  - method: GET
+    path: /v1/rag-strategizer/strategy
+    action: ai:autograph.read
+  - method: GET
+    path: /v1/rag-strategizer/jobs/{strategize_job_id}
+    action: ai:autograph.read
+  - method: PATCH
+    path: /v1/rag-strategizer/strategy/{cluster_id}
+    action: ai:autograph.data.manage
+  - method: POST
+    path: /v1/orchestrate
+    action: ai:autograph.build
+    also:
+      - actions: [ai:acp.secret.read]
+        resource: ai:secret:store
+        because: the run uses secret profiles
+      - actions: [ai:autograph.config.manage]
+        resource: ai:database:<database>
+        if: if the request overrides the project's model configuration
+      - actions: [ai:acp.service.read, ai:acp.service.manage, ai:acp.workspace.read]
+        resource: ai:database:<database>
+        if: with ArangoDB RBAC disabled
+        because: the run then starts Importer services on your behalf
+  - method: GET
+    path: /v1/orchestrate/{orchestration_id}
+    action: ai:autograph.read
+  - method: DELETE
+    path: /v1/orchestrate/{orchestration_id}
+    action: ai:autograph.build
+  - method: POST
+    path: /v1/graph/insert
+    action: ai:autograph.build
+  - method: POST
+    path: /v1/graph/update
+    action: ai:autograph.data.manage
+  - method: POST
+    path: /v1/graph/delete
+    action: ai:autograph.data.manage
+  - method: POST
+    path: /v1/graph/recluster
+    action: ai:autograph.data.manage
+    also:
+      - actions: [ai:acp.service.read, ai:acp.service.manage, ai:acp.workspace.read]
+        resource: ai:database:<database>
+        if: with ArangoDB RBAC disabled
+        because: reclustering then starts Importer services on your behalf
+  - method: PUT
+    path: /v1/projects/{project}/model-config/credentials
+    action: ai:autograph.config.manage
+    also:
+      - actions: [ai:acp.secret.read]
+        resource: ai:secret:store
+        because: the settings name secret profiles
+  - method: GET
+    path: /v1/projects/{project}/overview
+    action: ai:autograph.read
+  - method: DELETE
+    path: /v1/projects/{project}/categories/{category}
+    action: ai:autograph.data.manage
+  - method: DELETE
+    path: /v1/projects/{project}
+    action: ai:autograph.data.manage
+    also:
+      - actions: [ai:acp.workspace.read, ai:acp.workspace.manage, ai:acp.service.read, ai:acp.service.manage]
+        resource: ai:database:<database>
+        because: >-
+          the Control Plane deletes the project and its services on your
+          behalf

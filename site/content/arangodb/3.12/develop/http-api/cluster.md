@@ -31,6 +31,13 @@ paths:
         {{</* /warning */>}}
 
         Queries the statistics of the given DB-Server
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
       parameters:
         - name: DBserver
           in: query
@@ -93,6 +100,13 @@ paths:
             - `Leader`: ID of the Agent this node regards as leader.
             - `Leading`: Whether this Agent is the leader (true) or not (false).
             - `LastAckedTime`: Time since last `acked` in seconds.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
       responses:
         '200':
           description: |
@@ -117,6 +131,11 @@ paths:
         Coordinator in the cluster. This method only works on Coordinators in
         cluster mode. In case of an error the `error` attribute is set to
         `true`.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+        - tenant-admin
       responses:
         '200':
           description: |
@@ -172,6 +191,13 @@ paths:
       description: |
         Returns the ID of a server in a cluster. The request will fail if the
         server is not running in cluster mode.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
       responses:
         '200':
           description: |
@@ -193,6 +219,13 @@ paths:
       description: |
         Returns the role of a server in a cluster.
         The server role is returned in the `role` attribute of the result.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
       responses:
         '200':
           description: |
@@ -253,6 +286,12 @@ paths:
         Please be aware that no automatic failovers of any kind will take place
         while the maintenance mode is enabled. The cluster supervision reactivates
         itself automatically at some point after disabling it.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminMaintenance
       requestBody:
         content:
           application/json:
@@ -295,6 +334,12 @@ paths:
       operationId: getDbserverMaintenance
       description: |
         Check whether the specified DB-Server is in maintenance mode and until when.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminMaintenance
       parameters:
         - name: DB-Server-ID
           in: path
@@ -370,6 +415,12 @@ paths:
         maintenance mode, so that no attempts are made to re-distribute the data in a
         cluster for such planned events. DB-Servers in maintenance mode are not
         considered viable failover targets because they are likely restarted soon.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminMaintenance
       parameters:
         - name: DB-Server-ID
           in: path
@@ -660,6 +711,12 @@ paths:
       description: |
         Computes the current cluster imbalance and returns the result.
         It additionally shows the amount of ongoing and pending move shard operations.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminRebalance
       responses:
         '200':
           description: |
@@ -813,6 +870,10 @@ paths:
       operationId: computeClusterRebalancePlan
       description: |
         Compute a set of move shard operations to improve balance.
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminRebalance
       requestBody:
         content:
           application/json:
@@ -1165,6 +1226,10 @@ paths:
         Execute the given set of move shard operations. You can use the
         `POST /_admin/cluster/rebalance` endpoint to calculate these operations to improve
         the balance of shards, leader shards, and follower shards.
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminRebalance
       requestBody:
         content:
           application/json:
@@ -1232,6 +1297,12 @@ paths:
       description: |
         Compute a set of move shard operations to improve balance.
         These moves are then immediately executed.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminRebalance
       requestBody:
         content:
           application/json:
@@ -1594,6 +1665,12 @@ paths:
         Only use this endpoint to resolve issues with the key generation,
         in particular of cluster deployments created with v3.12.5-2 or older.
         {{</* /warning */>}}
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminMaintenance
       parameters:
         - name: number
           in: query

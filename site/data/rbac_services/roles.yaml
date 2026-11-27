@@ -1,0 +1,92 @@
+# Single source of truth for the role-based access control (RBAC) of the
+# services of the Arango Contextual Data Platform: the actions each service
+# checks, the resources they are checked on, which predefined AI roles grant
+# them, and which actions each documented endpoint requires.
+#
+# The data is split into this file with the roles and the documentation of
+# the structure, and one file per service in the services/ folder, named by
+# the service id that the shortcodes use (e.g. services/autograph.yaml).
+#
+# Rendered by the `rbac-roles`, `rbac-actions`, `rbac-endpoints`, and
+# `rbac-endpoint` shortcodes. Update the data HERE rather than editing tables
+# on individual pages.
+#
+# Only technical resource strings are recorded here, like
+# `ai:database:<database>`. What they are called in the scope editor of the web
+# interface is derived from site/data/rbac_scope.yaml.
+#
+# This file is intentionally NOT versioned (no 3.12/4.x subfolder), like
+# llm_models.yaml, because the platform services are versioned independently of
+# ArangoDB.
+#
+# Sources (private repositories, `docs/RBAC.md` of each service). The policies
+# of the predefined AI roles are shipped by the Control Plane chart
+# (arangoml/GenAI-Service, charts/arango-control-plane/templates/
+# predefined-role-extensions.yaml), so its RBAC.md is the reference for the
+# `roles` of every action. Each service's RBAC.md is the reference for its
+# endpoint mapping. Review this file when either changes.
+#
+# The ArangoDB core database system (`db:` actions, `coredb-*` roles) is not
+# covered here. Its per-endpoint information is maintained in the OpenAPI
+# descriptions of the HTTP API via the `x-rbac-*` extensions.
+#
+# Not covered on purpose:
+# - MLflow (`ai:mlflow.read`, `ai:mlflow.manage` on `ai:service:arangodb-mlflow`)
+#   and the MLflow artifact routes of the File Manager
+#   (`ai:filemanager.artifact.manage`), because MLflow is not documented.
+# - Virtual Graph and LLM fine-tuning, which are not released.
+#
+# Structure:
+#
+# roles: the predefined AI roles, in the order of the table columns and of the
+#   role lists.
+#   name      role name without the `managed:predefined:` prefix
+#   summary   one-line description
+#
+# services/<id>.yaml: one file per service. The file name is the id that
+#   the shortcodes use to select the service.
+#   order      position in the overview table, ascending
+#   internal   true for internal services that users never call themselves
+#              and need no role for; left out of the overview table
+#   name       display name
+#   page       content-root-relative path of the main page of the service
+#   rbacPage   content-root-relative path of the service's RBAC page, if any
+#   prefix     URL path prefix of the service behind the gateway
+#   note       where the name of the resource comes from, for all actions of
+#              the service (overridden by the action and the endpoint)
+#   actions    list of actions the service checks:
+#     name       the action name
+#     summary    what it allows
+#     resource   the resource the action is checked on, with a placeholder
+#                for the name, or a list of alternatives
+#     note       where the name of the resource comes from
+#     roles      the predefined roles that grant it
+#   endpoints  the documented endpoints, matched by the `rbac-endpoint`
+#              shortcode by "<method> <path>", path relative to `prefix`:
+#     method, path
+#     access     `authenticated` if any valid token is enough and no permission
+#                is checked, `public` if not even a token is needed. Omit it
+#                for endpoints that check a permission
+#     action     the required action
+#     resource   the checked resource; defaults to the action's resource
+#     note       where the name of the resource comes from
+#     anyOf      instead of `resource`, if the checked resource depends on the
+#                request. A list of alternatives with:
+#       when       the case, like "For a database service"
+#       resource, note
+#     remark     a sentence about the endpoint's authorization behavior
+#     roles      overrides the roles of the action for this endpoint
+#     also       further actions that the request needs:
+#       actions    list of action names
+#       resource   the resource they are checked on
+#       if         the condition, if the actions are not always needed.
+#                  The resources of unconditional actions are part of the scope
+#       because    the reason
+
+roles:
+  - name: ai-user
+    summary: Uses the AI services and reads their results
+  - name: ai-developer
+    summary: Installs, configures, and runs the AI services and reads secrets
+  - name: secret-admin
+    summary: Manages the secrets that the AI services use

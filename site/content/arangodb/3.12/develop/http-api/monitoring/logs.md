@@ -37,6 +37,12 @@ paths:
         API is enabled, accessing it requires admin privileges, or a
         [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
         the value of the `--log.api-enabled` startup option.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminReadLogs
       parameters:
         - name: upto
           in: query
@@ -152,6 +158,12 @@ paths:
         API is enabled, accessing it requires admin privileges, or a
         [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
         the value of the `--log.api-enabled` startup option.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminReadLogs
       parameters:
         - name: upto
           in: query
@@ -299,6 +311,12 @@ paths:
         API is enabled, accessing it requires admin privileges, or a
         [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
         the value of the `--log.api-enabled` startup option.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminReadLogs
       parameters:
         - name: serverId
           in: query
@@ -396,6 +414,12 @@ paths:
         API is enabled, accessing it requires admin privileges, or a
         [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
         the value of the `--log.api-enabled` startup option.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminSetLogLevel
       parameters:
         - name: serverId
           in: query
@@ -756,6 +780,12 @@ paths:
         API is enabled, accessing it requires admin privileges, or a
         [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
         the value of the `--log.api-enabled` startup option.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminSetLogLevel
       parameters:
         - name: serverId
           in: query
@@ -793,6 +823,12 @@ paths:
         API is enabled, accessing it requires admin privileges, or a
         [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
         the value of the `--log.api-enabled` startup option.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminReadLogs
       responses:
         '200':
           description: |
@@ -830,6 +866,12 @@ paths:
         API is enabled, accessing it requires admin privileges, or a
         [superuser JWT](../authentication.md#jwt-superuser-tokens), depending on
         the value of the `--log.api-enabled` startup option.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminSetLogLevel
       requestBody:
         content:
           application/json:
@@ -884,6 +926,12 @@ paths:
         Whether API calls are recorded is independently controlled by the
         `--server.api-call-recording` startup option.
         The endpoint returns an empty list of calls if turned off.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminApiCalls
       parameters:
         - name: database-name
           in: path
@@ -1122,6 +1170,12 @@ paths:
         Whether AQL queries are recorded is independently controlled by the
         `--server.aql-query-recording` startup option.
         The endpoint returns an empty list of queries if turned off.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminAqlQueries
       parameters:
         - name: database-name
           in: path

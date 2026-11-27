@@ -46,6 +46,10 @@ well as to authenticate requests to the [Engine API](#engine-api).
 - Single Sign-On (SSO)
 -->
 
+If RBAC is enabled, you need a role and scope that grant the actions of the
+ACP and the Engine API. See
+[Role-based access control for Graph Analytics](rbac.md).
+
 {{< info >}}
 Note that all cURL examples use placeholder values that you should replace
 with your actual values: `data-platform.example.org` (platform endpoint) and
@@ -63,6 +67,8 @@ if the data platform deployment uses a self-signed certificate (default).
 ### Start a `graphanalytics` service
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphanalytics" >}}
+
+{{< rbac-endpoint "acp" "POST /v1/graphanalytics" >}}
 
 Start a GAE via the ACP service with an empty request body. This returns a
 `serviceId` that you need to construct the Engine API URL in the next section.
@@ -117,6 +123,8 @@ You need it to construct the Engine API URL for running graph analytics operatio
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services" >}}
 
+{{< rbac-endpoint "acp" "POST /v1/list_services" >}}
+
 You can list all running services managed by the ACP service, including the
 `graphanalytics` services:
 
@@ -128,6 +136,8 @@ curl -sSk -H "Authorization: bearer <ADB_TOKEN>" \
 ### Stop a `graphanalytics` service
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{serviceId}" >}}
+
+{{< rbac-endpoint "acp" "DELETE /v1/service/{service_id}" >}}
 
 Delete the desired engine via the ACP service using the `serviceId`:
 
@@ -238,6 +248,8 @@ named graphs as well as sets of node and edge collections (see
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/loaddata" >}}
 
+{{< rbac-endpoint "gral" "POST /v1/loaddata" >}}
+
 **Example:**
 
 ```bash
@@ -303,6 +315,8 @@ A single query can return both vertices and edges at the same time,
 for example, when using AQL traversals.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/loaddataaql" >}}
+
+{{< rbac-endpoint "gral" "POST /v1/loaddataaql" >}}
 
 **Example:**
 
@@ -378,6 +392,8 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/pagerank" >}}
 
+{{< rbac-endpoint "gral" "POST /v1/pagerank" >}}
+
 **Example:**
 
 ```bash
@@ -447,6 +463,8 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/wcc" >}}
 
+{{< rbac-endpoint "gral" "POST /v1/wcc" >}}
+
 **Example:**
 
 ```bash
@@ -472,6 +490,8 @@ obtain different IDs.
 #### Strongly Connected Components (SCC)
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/scc" >}}
+
+{{< rbac-endpoint "gral" "POST /v1/scc" >}}
 
 **Example:**
 
@@ -515,6 +535,8 @@ available, which should be equally usable for most use cases.
 ##### Betweenness Centrality 
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/betweennesscentrality" >}}
+
+{{< rbac-endpoint "gral" "POST /v1/betweennesscentrality" >}}
 
 **Example:**
 
@@ -578,6 +600,8 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/linerank" >}}
 
+{{< rbac-endpoint "gral" "POST /v1/linerank" >}}
+
 **Example:**
 
 ```bash
@@ -625,6 +649,8 @@ based on common location, interests, occupation, etc.
 ##### Label Propagation
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/labelpropagation" >}}
+
+{{< rbac-endpoint "gral" "POST /v1/labelpropagation" >}}
 
 **Example:**
 
@@ -683,6 +709,8 @@ The result is a community ID for each node.
 ##### Attribute Propagation
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/attributepropagation" >}}
+
+{{< rbac-endpoint "gral" "POST /v1/attributepropagation" >}}
 
 **Example:**
 
@@ -761,6 +789,8 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/storeresults" >}}
 
+{{< rbac-endpoint "gral" "POST /v1/storeresults" >}}
+
 **Example:**
 
 ```bash
@@ -799,6 +829,8 @@ Parameters:
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/jobs" >}}
 
+{{< rbac-endpoint "gral" "GET /v1/jobs" >}}
+
 **Example:**
 
 ```bash
@@ -810,6 +842,8 @@ List all active and finished jobs.
 ### Get a job
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/jobs/{JOB_ID}" >}}
+
+{{< rbac-endpoint "gral" "GET /v1/jobs/{job_id}" >}}
 
 **Example:**
 
@@ -824,6 +858,8 @@ Get detailed information about a specific job.
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/jobs/{JOB_ID}" >}}
 
+{{< rbac-endpoint "gral" "DELETE /v1/jobs/{job_id}" >}}
+
 **Example:**
 
 ```bash
@@ -837,6 +873,8 @@ Delete a specific job.
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/graphs" >}}
 
+{{< rbac-endpoint "gral" "GET /v1/graphs" >}}
+
 **Example:**
 
 ```bash
@@ -848,6 +886,8 @@ List all loaded sets of graph data that reside in the memory of the engine node.
 ### Get a graph
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/graphs/{GRAPH_ID}" >}}
+
+{{< rbac-endpoint "gral" "GET /v1/graphs/{graph_id}" >}}
 
 **Example:**
 
@@ -861,6 +901,8 @@ Get detailed information about a specific set of graph data.
 ### Delete a graph
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/graphs/{GRAPH_ID}" >}}
+
+{{< rbac-endpoint "gral" "DELETE /v1/graphs/{graph_id}" >}}
 
 **Example:**
 

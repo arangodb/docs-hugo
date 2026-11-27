@@ -16,6 +16,15 @@ paths:
       description: |
         Creates a new View with a given name and properties if it does not
         already exist.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Create
+          resource: "db:view:{database-name}:<view>"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -837,6 +846,17 @@ paths:
       operationId: getView
       description: |
         Returns the basic information about a specific View.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:view:{database-name}:{view-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -975,6 +995,17 @@ paths:
       operationId: getViewProperties
       description: |
         Returns an object containing the definition of the View identified by `view-name`.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:view:{database-name}:{view-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -1407,6 +1438,17 @@ paths:
       description: |
         Returns an object containing a listing of all Views in the current database,
         regardless of their type.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:view:{database-name}:<view>"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -1502,6 +1544,16 @@ paths:
       operationId: replaceViewProperties
       description: |
         Changes all properties of a View by replacing them, except for immutable properties.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteMeta
+          resource: "db:view:{database-name}:{view-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -2136,6 +2188,16 @@ paths:
       operationId: updateViewProperties
       description: |
         Partially changes the properties of a View by updating the specified attributes.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteMeta
+          resource: "db:view:{database-name}:{view-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path
@@ -2767,6 +2829,15 @@ db._drop("products");
 paths:
   /_db/{database-name}/_api/view/{view-name}/rename:
     put:
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Drop
+          resource: "db:view:{database-name}:{view-name}"
+        - action: db:Create
+          resource: "db:view:{database-name}:<view>"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
     # The PATCH method can be used as an alias
       operationId: renameView
       description: |
@@ -2775,6 +2846,8 @@ paths:
         {{</* info */>}}
         Renaming Views is not supported in cluster deployments.
         {{</* /info */>}}
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -3184,6 +3257,15 @@ paths:
       operationId: deleteView
       description: |
         Deletes the View identified by `view-name`.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Drop
+          resource: "db:view:{database-name}:{view-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path

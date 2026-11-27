@@ -44,6 +44,18 @@ paths:
         until the entire transaction times out.
 
         The transaction description must be passed in the body of the POST request.
+      x-rbac-predefined-roles:
+        - coredb-reader: Only for transactions that don't write
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:<collection>"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -313,6 +325,15 @@ paths:
         transaction returns its final status (`committed` or `aborted`). Once
         the server garbage-collects this record, the same identifier becomes
         unknown and the endpoint returns `404`.
+      x-rbac-predefined-roles:
+        - coredb-reader: Only your own transactions
+        - coredb-developer: Only your own transactions
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitorTransactions
+          if: for a transaction of another user
       parameters:
         - name: database-name
           in: path
@@ -482,6 +503,13 @@ paths:
           transaction returns `400`.
         - Once the server has garbage-collected the transaction's record, the
           identifier is no longer known and the endpoint returns `404`.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -656,6 +684,15 @@ paths:
           it as aborted. Subsequent aborts for the same identifier return `200`
           until the record is garbage-collected, after which the identifier is
           again unknown and the next abort once more returns `404`.
+      x-rbac-predefined-roles:
+        - coredb-reader: Only your own transactions
+        - coredb-developer: Only your own transactions
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminKillTransactions
+          if: to abort a transaction of another user
       parameters:
         - name: database-name
           in: path
@@ -818,6 +855,15 @@ paths:
       description: |
         List the currently running Stream Transactions.
         In a cluster, the list contains the transactions from all Coordinators.
+      x-rbac-predefined-roles:
+        - coredb-reader: Only your own transactions
+        - coredb-developer: Only your own transactions
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitorTransactions
+          if: to see the transactions of other users
       parameters:
         - name: database-name
           in: path

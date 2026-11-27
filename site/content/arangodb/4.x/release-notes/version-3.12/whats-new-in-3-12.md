@@ -2379,11 +2379,27 @@ With RBAC enabled, ArangoDB talks to a service of the data platform to determine
 whether to allow or deny actions on specific resources. Where this service runs
 can be configured with the new `--server.external-rbac-service` startup option,
 which enables RBAC for ArangoDB at the same time.
+In the data platform, the ArangoDB Kubernetes Operator sets this option for
+you if you enable the `rbac-coredb` feature. See
+[Enable RBAC](../../../../contextual-data-platform/access-control/rbac.md#enable-rbac).
 
 | Authorization Type | RBAC | Classic |
 |---|---|---|
 | ArangoDB standalone | – | ✅ |
 | Arango Contextual Data Platform | ✅ | ✅ |
+
+When RBAC is enabled, the access levels of the classic authorization system are
+not used (`rw`/`ro`/`none` access on databases and collections). Therefore, the
+following endpoints related to managing permissions using access levels return
+HTTP status code `403` and inform you that you cannot use them if RBAC is on:
+
+- {{< endpoint "GET" "/_api/user/{user}/database" >}}
+- {{< endpoint "GET" "/_api/user/{user}/database/{db}" >}}
+- {{< endpoint "GET" "/_api/user/{user}/database/{db}/{coll}" >}}
+- {{< endpoint "PUT" "/_api/user/{user}/database/{db}" >}}
+- {{< endpoint "PUT" "/_api/user/{user}/database/{db}/{coll}" >}}
+- {{< endpoint "DELETE" "/_api/user/{user}/database/{db}" >}}
+- {{< endpoint "DELETE" "/_api/user/{user}/database/{db}/{coll}" >}}
 
 A new metric for monitoring how long requests to the RBAC service take has been
 added:

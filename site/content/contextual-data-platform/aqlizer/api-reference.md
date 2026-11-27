@@ -26,6 +26,12 @@ Every endpoint except the health checks requires a JWT in the
 database access during the request, so queries are subject to your permissions
 in the database.
 
+If role-based access control (RBAC) is enabled, the endpoints require a
+permission. Expand the **Role-based access control (RBAC)** box below the URL
+of an endpoint to see the required permission and the predefined roles that
+grant it. See [Role-based access control for the AQLizer](rbac.md) for
+details.
+
 | Endpoint | Operation | Purpose | Call |
 |----------|-----------|---------|------|
 | [`POST /txt2aql`](#generate-a-query) | Generate | Turn a question into an AQL query, run it, and answer the question | Synchronous or streamed |
@@ -37,6 +43,8 @@ in the database.
 ## Generate a query
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/reasoner/{service_id_postfix}/txt2aql" >}}
+
+{{< rbac-endpoint "reasoner" "POST /txt2aql" >}}
 
 Turns a question in natural language into an AQL query, runs it, and returns
 the query, the rows it returned, and a short answer.
@@ -214,6 +222,8 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/reasoner/{service_id_postfix}/query" >}}
 
+{{< rbac-endpoint "reasoner" "POST /query" >}}
+
 Makes an AQL query faster and returns a report with the optimized query.
 
 The AQLizer optimizes when `request` contains the query and one of the terms
@@ -382,6 +392,8 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/reasoner/{service_id_postfix}/query/permission" >}}
 
+{{< rbac-endpoint "reasoner" "POST /query/permission" >}}
+
 Answers a request for permission to run a tool. Some database tools, such as
 the ones that create documents or collections, need your approval before they
 run. When `POST /query` wants to call one, the stream sends a
@@ -449,6 +461,8 @@ curl -X POST \
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/reasoner/{service_id_postfix}/health" >}}
 
+{{< rbac-endpoint "reasoner" "GET /health" >}}
+
 Returns `healthy` whenever the service process is running, regardless of its
 connections. Use it as the Kubernetes liveness probe. No token is needed.
 
@@ -482,6 +496,8 @@ curl -X GET \
 ## Check that the service is ready
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/reasoner/{service_id_postfix}/health/ready" >}}
+
+{{< rbac-endpoint "reasoner" "GET /health/ready" >}}
 
 Checks the connection to the AI agent and the MCP server. The service is ready
 when the AI agent is reachable. The MCP server status is reported for

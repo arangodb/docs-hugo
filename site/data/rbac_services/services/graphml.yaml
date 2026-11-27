@@ -1,0 +1,11 @@
+# RBAC of the graphml service, see ../roles.yaml for the structure.
+# The endpoints are not listed because the GraphML API is not documented.
+order: 100
+name: GraphML
+page: contextual-data-platform/graphml/_index.md
+rbacPage: contextual-data-platform/graphml/rbac.md
+actions:
+  - name: ai:graphml.use
+    summary: Manage projects, run featurization, training, and prediction jobs, and read jobs, models, and their results
+    resource: ai:service:graphml
+    roles: [ai-developer]

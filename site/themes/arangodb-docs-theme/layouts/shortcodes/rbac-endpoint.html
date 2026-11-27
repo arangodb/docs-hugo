@@ -1,0 +1,86 @@
+{{- /* Renders the "Role-based access control (RBAC)" box of one endpoint of a
+       data platform service from site/data/rbac_services/, see
+       partials/rbac/box.html. Place it directly below the `endpoint` shortcode
+       of the endpoint, like the OpenAPI rendering does for ArangoDB endpoints.
+
+       The endpoint is identified by the service id and "<method> <path>",
+       with the path relative to the `prefix` of the service. The build fails
+       if the endpoint is not listed, so that the data file and the pages stay
+       in sync:
+       {{< rbac-endpoint "autograph" "GET /v1/projects/{project}/overview" >}} */ -}}
+{{- $data := partialCached "rbac/data.html" "rbac" -}}
+{{- $svc := partial "rbac/service.html" (dict "id" (.Get 0) "page" .Page) -}}
+{{- $key := .Get 1 -}}
+{{- $ep := dict -}}
+{{- range $svc.endpoints -}}
+  {{- if eq (printf "%s %s" .method .path) $key -}}
+    {{- $ep = . -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $ep -}}
+  {{- errorf "RBAC: endpoint %q of service %q used in %s is not listed in site/data/rbac_services/" $key $svc.id .Page.File.Path -}}
+{{- end -}}
+
+{{- $rbacPath := $svc.rbacPage | default "contextual-data-platform/access-control/rbac.md" -}}
+{{- $rbacPage := site.GetPage (printf "/%s" $rbacPath) -}}
+{{- if not $rbacPage -}}
+  {{- errorf "RBAC: the RBAC page %q of service %q does not exist, see site/data/rbac_services/" $rbacPath $svc.id -}}
+{{- end -}}
+{{- $link := printf "See [%s](%s%s)." $rbacPage.Title (partial "rbac/up.html" .Page) $rbacPath -}}
+
+{{- $box := dict "page" .Page "link" $link "remark" ($ep.remark | default "") "access" ($ep.access | default "") -}}
+{{- if not $ep.access -}}
+  {{- $action := dict -}}
+  {{- range $svc.actions -}}{{- if eq .name $ep.action -}}{{- $action = . -}}{{- end -}}{{- end -}}
+  {{- if not $action -}}
+    {{- errorf "RBAC: endpoint %q of service %q requires the action %q, which is not listed in the actions of the service in site/data/rbac_services/" $key $svc.id $ep.action -}}
+  {{- end -}}
+
+  {{- /* Roles, in the order of the roles list of the data file */ -}}
+  {{- $grant := $ep.roles | default $action.roles -}}
+  {{- $roles := slice -}}
+  {{- range $data.roles -}}{{- if in $grant .name -}}{{- $roles = $roles | append .name -}}{{- end -}}{{- end -}}
+
+  {{- /* The resources of the endpoint: alternatives, or a single one */ -}}
+  {{- $alts := slice -}}
+  {{- with $ep.anyOf -}}
+    {{- $alts = . -}}
+  {{- else -}}
+    {{- $res := $ep.resource | default $action.resource -}}
+    {{- if reflect.IsSlice $res -}}
+      {{- errorf "RBAC: endpoint %q of service %q needs a `resource` or `anyOf`, because its action %q is checked on alternative resources" $key $svc.id $ep.action -}}
+    {{- end -}}
+    {{- $alts = slice (dict "when" "" "resource" $res "note" ($ep.note | default $action.note | default $svc.note | default "")) -}}
+  {{- end -}}
+
+  {{- /* Scope: per alternative, its resource plus the resources of the
+         actions that every request needs */ -}}
+  {{- $always := slice -}}
+  {{- range $ep.also -}}
+    {{- if not .if -}}{{- $always = $always | append (dict "resource" .resource) -}}{{- end -}}
+  {{- end -}}
+  {{- $scopes := slice -}}
+  {{- range $alts -}}
+    {{- $items := slice (dict "resource" .resource "note" (.note | default "")) -}}
+    {{- range $always -}}{{- $items = $items | append . -}}{{- end -}}
+    {{- $scopes = $scopes | append (dict "when" .when "items" $items) -}}
+  {{- end -}}
+
+  {{- /* Checked permissions */ -}}
+  {{- $on := slice -}}
+  {{- range $alts -}}
+    {{- $on = $on | append (printf "`%s`%s" .resource (cond (ne .when "") (printf " (%s)" (lower .when)) "")) -}}
+  {{- end -}}
+  {{- $checks := slice (printf "- `%s` on %s" $ep.action (partial "rbac/list.html" (dict "items" $on "conj" "or"))) -}}
+  {{- range $ep.also -}}
+    {{- $names := slice -}}
+    {{- range .actions -}}{{- $names = $names | append (printf "`%s`" .) -}}{{- end -}}
+    {{- $line := printf "- %s on `%s`" (partial "rbac/list.html" (dict "items" $names "conj" "and")) .resource -}}
+    {{- with .if -}}{{- $line = printf "%s, %s" $line . -}}{{- end -}}
+    {{- with .because -}}{{- $line = printf "%s, because %s" $line . -}}{{- end -}}
+    {{- $checks = $checks | append $line -}}
+  {{- end -}}
+
+  {{- $box = merge $box (dict "roles" $roles "scopes" $scopes "checks" $checks) -}}
+{{- end -}}
+{{- partial "rbac/box.html" $box -}}

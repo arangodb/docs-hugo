@@ -79,6 +79,15 @@ paths:
         an error.
         Any other errors will be returned with any of the return codes
         *HTTP 400*, *HTTP 409*, or *HTTP 500*.
+      x-rbac-predefined-roles:
+        - coredb-reader: Only for transactions that don't write
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:<collection>"
       parameters:
         - name: database-name
           in: path

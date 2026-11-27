@@ -11,6 +11,8 @@ weight: 10
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds" >}}
 
+{{< rbac-endpoint "autograph" "POST /v1/corpus/builds" >}}
+
 Trigger a corpus build from File Manager categories or from files that you have
 imported directly.
 
@@ -252,6 +254,8 @@ curl -X POST \
 ## Monitoring Build Status
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds/{corpus_build_id}" >}}
+
+{{< rbac-endpoint "autograph" "GET /v1/corpus/builds/{corpus_build_id}" >}}
 
 Check the progress of a corpus build.
 

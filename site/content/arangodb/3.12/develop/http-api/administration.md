@@ -19,10 +19,17 @@ paths:
   /_db/{database-name}/_api/version:
   # /_admin/version is an (undocumented) alias
     get:
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getVersion
       description: |
         Returns the server name and version number.
+      x-rbac-predefined-roles:
+        - coredb-reader: Without the server details, `details=true` has no effect
+        - coredb-developer: Without the server details, `details=true` has no effect
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -482,6 +489,13 @@ paths:
         Returns the name of the storage engine the server is configured to use,
         the endianness of its on-disk key format, as well as the index types
         it supports.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -639,6 +653,12 @@ paths:
       description: |
         Returns detailed statistics related to the RocksDB storage engine activity,
         including figures about data size, cache usage, individual column families, etc.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitoringInternal
       parameters:
         - name: database-name
           in: path
@@ -736,11 +756,18 @@ paths:
 paths:
   /_db/{database-name}/_admin/time:
     get:
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getTime
       description: |
         The call returns an object with the `time` attribute. This contains the
         current system time as a Unix timestamp with microsecond precision.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -789,10 +816,16 @@ paths:
 paths:
   /_db/{database-name}/_admin/status:
     get:
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMonitoring
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getStatus
       description: |
         Returns status information about the server.
+      x-rbac-predefined-roles:
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -1057,6 +1090,7 @@ paths:
 
         This is a public API so it does *not* require authentication. It is meant to be
         used only in the context of server monitoring.
+      x-rbac-access: public
       responses:
         '200':
           description: |
@@ -1094,6 +1128,13 @@ paths:
 
         Returns the database version that this server requires.
         The version is returned in the `version` attribute of the result.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
       responses:
         '200':
           description: |
@@ -1120,6 +1161,12 @@ paths:
         accessed from inside the `_system` database. In addition, there is a policy
         control startup option `--server.support-info-api` that controls if and to whom
         the API is made available.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
+        - action: db:AdminMonitoring
       responses:
         '200':
           description: ''
@@ -1222,6 +1269,7 @@ paths:
           `rw` access to the `_system` database.
         - `public`: Every user with read access to the `_system` database can
           access this endpoint.
+      x-rbac-predefined-roles: []
       responses:
         '200':
           description: |
@@ -1356,6 +1404,7 @@ paths:
           `rw` access to the `_system` database.
         - `public`: Every user with read access to the `_system` database can
           access this endpoint.
+      x-rbac-predefined-roles: []
       responses:
         '200':
           description: |
@@ -1535,6 +1584,13 @@ paths:
         [`--server.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api)
         setting, so that the Arango Contextual Data Platform web interface for
         instance can always access the public options.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -1672,6 +1728,13 @@ paths:
         Creating or dropping of databases and collections will also fail with error code `11` (_ERROR_FORBIDDEN_).
 
         This API requires authentication.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -1707,6 +1770,12 @@ paths:
 
         This is a protected API. It requires authentication and administrative
         server rights.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminMaintenance
       parameters:
         - name: database-name
           in: path
@@ -1760,6 +1829,12 @@ paths:
 
         In the Community Edition before v3.12.5, only `{"license":"none"}`
         is returned.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminLicense
       parameters:
         - name: database-name
           in: path
@@ -1920,6 +1995,12 @@ paths:
       description: |
         Set a new license for an Enterprise Edition instance.
         Can be called on single servers, Coordinators, and DB-Servers.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminLicense
       parameters:
         - name: database-name
           in: path
@@ -2087,6 +2168,13 @@ paths:
       operationId: getDeploymentId
       description: |
         Get the unique identifier of this ArangoDB deployment.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
       parameters:
         - name: database-name
           in: path
@@ -2201,6 +2289,12 @@ paths:
         during startup.
 
         This endpoint requires `rw` access to the `_system` database.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminCrashHandler
       parameters:
         - name: database-name
           in: path
@@ -2356,6 +2450,12 @@ paths:
         `<database-directory>/crashes/<uuid>/`.
 
         This endpoint requires `rw` access to the `_system` database.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminCrashHandler
       parameters:
         - name: database-name
           in: path
@@ -2561,6 +2661,12 @@ paths:
         most recent 10 crash dumps. Older ones are removed during startup.
 
         This endpoint requires `rw` access to the `_system` database.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminCrashHandler
       parameters:
         - name: database-name
           in: path
@@ -2755,6 +2861,12 @@ paths:
       operationId: startShutdown
       description: |
         This call initiates a clean shutdown sequence. Requires administrative privileges.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminShutdown
       parameters:
         - name: database-name
           in: path
@@ -2824,6 +2936,12 @@ paths:
          - Ongoing low priority requests
 
         This API is only available on Coordinators.
+      x-rbac-predefined-roles:
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:AdminShutdown
       parameters:
         - name: database-name
           in: path
@@ -2913,6 +3031,7 @@ paths:
 
         This endpoint requires a [superuser JWT](authentication.md#jwt-superuser-tokens).
         User accounts, including `root`, are not sufficient.
+      x-rbac-predefined-roles: []
       requestBody:
         content:
           application/json:
@@ -2963,6 +3082,9 @@ apiVersions: [v0]
 paths:
   /_db/{database-name}/_admin/routing/reload:
     post:
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: reloadRouting
       deprecated: true
@@ -2974,6 +3096,10 @@ paths:
 
         Reloads the routing information from the `_routing` system collection if it
         exists, and makes Foxx rebuild its local routing table on the next request.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -3191,6 +3317,9 @@ apiVersions: [v0]
 paths:
   /_db/{database-name}/_admin/execute:
     post:
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: executeCode
       deprecated: true
@@ -3214,6 +3343,10 @@ paths:
         The default value of this option is `false`, which disables the execution of
         user-defined code and disables this API endpoint entirely.
         This is also the recommended setting for production.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
       parameters:
         - name: database-name
           in: path
@@ -3291,6 +3424,13 @@ paths:
         only. Calling this action in any other database will make the server return
         an error.
         {{</* /info */>}}
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:_system"
       responses:
         '200':
           description: |

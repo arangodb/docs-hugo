@@ -1,0 +1,72 @@
+{{- /* Derives what the scope of a role assignment needs to cover from the
+       resources of permission checks, in the terms of the web interface, using
+       site/data/rbac_scope.yaml. Returns Markdown, like
+       "**Databases** (the database that the service is installed for) and
+       **Secrets**", followed by sentences for resources that have no resource
+       type in the web interface.
+
+       Takes a list of dicts with:
+       - resource: the resource string, like `ai:database:<database>`
+       - note:     optional, where the name of the resource comes from */ -}}
+{{- $map := index hugo.Data "rbac_scope" -}}
+{{- $parts := slice -}}
+{{- $seen := slice -}}
+{{- $sentences := slice -}}
+{{- range . -}}
+  {{- $res := .resource -}}
+  {{- $note := .note | default "" -}}
+  {{- $type := dict -}}
+  {{- range $map.types -}}
+    {{- if and (not $type) (strings.HasPrefix $res .prefix) -}}
+      {{- $type = . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if eq $res "*" -}}
+    {{- $sentences = $sentences | append $map.fallback.everything -}}
+  {{- else if not $type -}}
+    {{- $ns := index (split $res ":") 0 -}}
+    {{- with index $map.fallback $ns -}}
+      {{- $sentences = $sentences | append (printf . $res) -}}
+    {{- else -}}
+      {{- errorf "RBAC: no resource type and no fallback for the resource %q, see site/data/rbac_scope.yaml" $res -}}
+    {{- end -}}
+  {{- else if not $type.hidden -}}
+    {{- /* The label, with what the web interface calls the resource and the
+           note in one pair of parentheses */ -}}
+    {{- $details := slice -}}
+    {{- with $type.names -}}
+      {{- with index . (strings.TrimPrefix $type.prefix $res) -}}
+        {{- $details = $details | append (printf "**%s**" .) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- with $note -}}{{- $details = $details | append . -}}{{- end -}}
+    {{- $label := printf "**%s**" $type.label -}}
+    {{- $text := $label -}}
+    {{- with $details -}}{{- $text = printf "%s (%s)" $label (delimit . ", ") -}}{{- end -}}
+    {{- /* A plain label is redundant if the label is already listed */ -}}
+    {{- $known := false -}}
+    {{- range $seen -}}{{- if or (eq . $text) (and (not $details) (strings.HasPrefix . $label)) -}}{{- $known = true -}}{{- end -}}{{- end -}}
+    {{- if not $known -}}
+      {{- $seen = $seen | append $text -}}
+      {{- $parts = $parts | append $text -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- /* If only Everything covers a resource, the other resources don't matter */ -}}
+{{- if in $sentences $map.fallback.everything -}}
+  {{- $parts = slice -}}
+  {{- $sentences = slice $map.fallback.everything -}}
+{{- end -}}
+{{- $n := len $parts -}}
+{{- $out := "" -}}
+{{- if eq $n 1 -}}
+  {{- $out = index $parts 0 -}}
+{{- else if eq $n 2 -}}
+  {{- $out = delimit $parts " and " -}}
+{{- else if gt $n 2 -}}
+  {{- $out = printf "%s, and %s" (delimit (first (sub $n 1) $parts) ", ") (index $parts (sub $n 1)) -}}
+{{- end -}}
+{{- with $sentences -}}
+  {{- $out = strings.TrimSpace (printf "%s%s %s" $out (cond (ne $out "") "." "") (delimit . " ")) -}}
+{{- end -}}
+{{- return $out -}}

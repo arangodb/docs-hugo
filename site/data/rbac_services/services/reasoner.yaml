@@ -1,0 +1,28 @@
+# RBAC of the reasoner service, see ../roles.yaml for the structure.
+order: 60
+name: AQLizer
+page: contextual-data-platform/aqlizer/_index.md
+rbacPage: contextual-data-platform/aqlizer/rbac.md
+prefix: /reasoner/{service_id_postfix}
+note: the database that the AQLizer is installed for
+actions:
+  - name: ai:reasoner.query
+    summary: Generate and optimize AQL queries
+    resource: ai:database:<database>
+    roles: [ai-user, ai-developer]
+endpoints:
+  - method: POST
+    path: /txt2aql
+    action: ai:reasoner.query
+  - method: POST
+    path: /query
+    action: ai:reasoner.query
+  - method: POST
+    path: /query/permission
+    action: ai:reasoner.query
+  - method: GET
+    path: /health
+    access: authenticated
+  - method: GET
+    path: /health/ready
+    access: authenticated

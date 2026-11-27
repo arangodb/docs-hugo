@@ -37,6 +37,17 @@ paths:
 
         In case of success, HTTP 200 is returned.
         If the function isn't valid etc. HTTP 400 including a detailed error message will be returned.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:_aqlfunctions"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_aqlfunctions"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -200,6 +211,17 @@ paths:
       description: |
         Deletes an existing user-defined function (UDF) or function group identified by
         `name` from the current database.
+      x-rbac-predefined-roles:
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:WriteData
+          resource: "db:collection:{database-name}:_aqlfunctions"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_aqlfunctions"
+          if: on a single server
       parameters:
         - name: database-name
           in: path
@@ -377,6 +399,15 @@ paths:
         current database.
 
         The call returns a JSON array with status codes and all user functions found under `result`.
+      x-rbac-predefined-roles:
+        - coredb-reader
+        - coredb-developer
+        - coredb-admin
+      x-rbac-permissions:
+        - action: db:Read
+          resource: "db:database:{database-name}"
+        - action: db:Read
+          resource: "db:collection:{database-name}:_aqlfunctions"
       parameters:
         - name: database-name
           in: path
