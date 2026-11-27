@@ -16,8 +16,8 @@ The service returns these HTTP status codes:
 | `200` | Success, for synchronous operations. |
 | `202` | Accepted. The corpus build, strategizer run, or orchestration was started in the background. |
 | `400` | Invalid request body or parameters, a corpus build selector the File Manager has nothing for, a rejected model configuration credential, or a latched model configuration. |
-| `401` | Missing or invalid token. [Project Overview](project-operations.md#project-overview) also returns it when the File Manager rejects the credentials of the service. |
-| `403` | Authenticated but not allowed to use the database. [Project Overview](project-operations.md#project-overview) also returns it when the File Manager denies access. |
+| `401` | Missing or invalid token. [Project Overview](project-operations.md#get-the-project-overview) also returns it when the File Manager rejects the credentials of the service. |
+| `403` | Authenticated but not allowed to use the database. [Project Overview](project-operations.md#get-the-project-overview) also returns it when the File Manager denies access. |
 | `404` | Unknown build, job, orchestration, or cluster ID, a collection in an embed request that does not exist, a category that was never built, a project that is not the one the service runs against, or an AutoGraph service node that is missing from the project metadata. |
 | `409` | Another build, orchestration run, strategizer run, or graph mutation is already in progress, a project deletion has started, there is nothing to orchestrate, or none of the given `file_ids` matched. |
 | `500` | Server or configuration error. |
@@ -36,7 +36,7 @@ write a client branch for these two statuses.
   it is reported on the job as `error_code: LLM_RATE_LIMITED` or
   `LLM_QUOTA_EXCEEDED`, which you read from a `200` poll of the failed job. A
   rate limit that the live inference probe of
-  [`PUT /v1/projects/{project}/model-config/credentials`](project-operations.md#update-model-config-credentials)
+  [`PUT /v1/projects/{project}/model-config/credentials`](project-operations.md#update-the-model-configuration-credentials)
   runs into is a `400` with `error_code: RATE_LIMITED` instead, and a
   rate-limited File Manager is reported as `503`.
 - **A single file larger than the whole staging budget** is skipped and
@@ -54,7 +54,7 @@ write a client branch for these two statuses.
 - **`409` from `POST /v1/orchestrate`** with a message that reads
   `Nothing to orchestrate: …` means the knowledge graph is already up to date.
   Do not retry. Check
-  [Project Overview](project-operations.md#project-overview) if you expected
+  [Project Overview](project-operations.md#get-the-project-overview) if you expected
   work to be pending.
 
 ### Successful responses that you still have to inspect
@@ -66,10 +66,10 @@ write a client branch for these two statuses.
   configuration that was accepted and persisted, but `applied_to_running_pod`
   can still be `false`, which means it only takes effect on the next service
   restart. A validation failure is a `400`, see
-  [Update Model Config Credentials](project-operations.md#update-model-config-credentials).
+  [Update Model Config Credentials](project-operations.md#update-the-model-configuration-credentials).
 - `DELETE /v1/projects/{project}` returns `200` for a complete teardown and for
   a partial failure. Key off `deleted`, see
-  [Delete Project](project-operations.md#delete-project).
+  [Delete Project](project-operations.md#delete-a-project).
 - A `POST /v1/graph/insert` or `/v1/graph/update` response can report a failure
   per file while the request itself succeeded.
 
@@ -115,7 +115,7 @@ invalid, or if a pod is still reloading the persisted settings, then
 would fail while embedding. Health checks and read requests are unaffected.
 
 Clear the gate with
-[`PUT /v1/projects/{project}/model-config/credentials`](project-operations.md#update-model-config-credentials).
+[`PUT /v1/projects/{project}/model-config/credentials`](project-operations.md#update-the-model-configuration-credentials).
 Only definitive, non-retryable validation failures latch it. Transient ones such
 as `ENDPOINT_UNREACHABLE`, `TIMEOUT`, `RATE_LIMITED`, and `PROVIDER_ERROR` are
 logged and leave the gate open.
@@ -131,10 +131,10 @@ logged and leave the gate open.
 - A `categories` label on a full corpus build (`incremental: false`) has no
   files in the File Manager, or `file_ids` lists IDs that the File Manager
   cannot resolve. No build is created in either case, see
-  [Create Corpus Build](corpus-build.md#create-corpus-build).
+  [Create Corpus Build](corpus-build.md#start-a-corpus-build).
 - A model configuration credential is rejected by the provider or the secret
   manager, see
-  [Update Model Config Credentials](project-operations.md#update-model-config-credentials).
+  [Update Model Config Credentials](project-operations.md#update-the-model-configuration-credentials).
 - `project` or `complexity` is missing on a RAG Strategizer request.
 - The RAG Strategizer was called before a corpus build finished successfully.
 - An [incremental graph update](../incremental-graph-updates/_index.md) was called
@@ -262,7 +262,7 @@ For the full comparison, see
   File Manager for the same database, so the direct upload alone is not enough.
   A build that does pass `categories` or `file_ids` has its selector checked
   before it is accepted and reports this as a `400` on the request instead, see
-  [Create Corpus Build](corpus-build.md#create-corpus-build).
+  [Create Corpus Build](corpus-build.md#start-a-corpus-build).
 - **RAG Strategizer fails.** Make sure a corpus build has finished and
   produced clusters before you run the Strategizer. Poll
   `GET /v1/rag-strategizer/jobs/{strategize_job_id}` for the outcome of a run.

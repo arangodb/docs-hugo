@@ -121,7 +121,7 @@ You can read it in three places.
 
 | Where | What you get | Notes |
 |-------|--------------|-------|
-| [`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration), per entry of `jobs` | The divergence of every partition the knowledge graph build changed | Read it here after adding or replacing documents. The status is kept in memory only. A new `POST /v1/orchestrate` replaces it, and an unknown or replaced ID returns `404` |
+| [`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-a-knowledge-graph-build), per entry of `jobs` | The divergence of every partition the knowledge graph build changed | Read it here after adding or replacing documents. The status is kept in memory only. A new `POST /v1/orchestrate` replaces it, and an unknown or replaced ID returns `404` |
 | [`POST /v1/graph/delete`](api-reference.md#remove-documents), per file in `results` | The divergence after the removal | Only if `overall_status` is `DELETE_OVERALL_STATUS_COMMITTED`. A removal that is rolled back or fails reports no divergence |
 | The `rags` profile of the partition | The stored values, see [Where the values are stored](#where-the-values-are-stored) | Always available, also after the build status is gone. [`GET /v1/rag-strategizer/strategy`](../reference/rag-strategizer.md#retrieve-rag-strategies) returns the profiles of all partitions, with the values in `parameters` as strings |
 
