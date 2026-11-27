@@ -8,6 +8,78 @@ description: >-
 pageToc:
   maxHeadlineLevel: 2
 ---
+## v4.3.0 (November 2026)
+
+This release adds role-based access control to the data platform and replaces
+the query generation in the Query Editor with a new AQLizer that can also
+optimize queries.
+
+{{< warning >}}
+Upgrading to v4.3.0 requires two additional steps: turning on RBAC enforcement
+before the upgrade, and assigning AI services roles to users after it.
+Otherwise, users cannot use the AI services. See
+[Upgrade the version of the data platform](../install-and-upgrade/upgrade-version.md).
+{{< /warning >}}
+
+### Role-based access control (RBAC)
+
+{{< tag "Platform Suite" "Beta" >}}
+
+You can now control who can do what in the data platform by assigning roles to
+users on the new **Access Control** page in the **Admin** section of the web
+interface, or with the HTTP API.
+
+- Roles are predefined, for example for reading data, developing with the
+  AI services, or managing secrets. A user can hold several roles.
+- You can limit most roles to specific databases, collections, or services.
+  Users with the same role can then work on different data.
+- RBAC is turned off by default. Once you turn it on, it always applies to the
+  AI services; you cannot leave them out. Using RBAC for ArangoDB as well, to
+  control access to databases and collections, is optional.
+- A role for the AI services does not give access to the data itself; users
+  also need a database role or permission.
+- With RBAC turned on, new users have no access until you assign them a role.
+
+For more information, see
+[Role-Based Access Control](../access-control/rbac.md).
+
+### AQLizer
+
+{{< tag "Agentic AI Suite" "Beta" >}}
+
+The AQLizer in the Query Editor of the web interface has been rebuilt and
+improved. It now generates AQL queries from questions in natural language and
+makes queries, including existing ones, faster.
+
+- Ask a question in natural language to get an AQL query, its results,
+  and a short answer. Unlike before, the AQLizer checks its work against
+  your data: it uses field names from real documents, validates the query,
+  and checks it again when the result comes back empty.
+- Submit any AQL query to get a faster version that returns the same results,
+  together with a report of what changed.
+- Through the API, you can save queries as templates. The AQLizer adapts a
+  matching template for similar questions.
+- The AQLizer only runs read-only queries, and it runs them with your
+  permissions.
+- You can use OpenAI, Anthropic, or an OpenAI-compatible endpoint as the
+  language model provider.
+
+For more information, see [AQLizer](../aqlizer/_index.md).
+
+### Deprecations
+
+- The [Natural Language to AQL](../natural-language-to-aql/_index.md) service
+  is deprecated in favor of the new [AQLizer](../aqlizer/_index.md).
+
+### Known issues and limitations
+
+- GraphML works with RBAC for the AI services, but not yet with RBAC for
+  ArangoDB. If you turn on RBAC for ArangoDB, GraphML does not start.
+- With RBAC turned on, the Graph Analytics Engine may experience a performance
+  degradation depending on the users' permissions. A fix will follow in a
+  subsequent release.
+- The [Cypher to AQL](../cypher-to-aql.md) service does not support RBAC.
+
 ## v4.2.0 (November 2026)
 
 This release makes the web interface easier to navigate and improves the

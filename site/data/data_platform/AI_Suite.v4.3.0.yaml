@@ -1,0 +1,90 @@
+---
+
+# ArangoDB AI Suite Release v4.3.0
+
+version: 4.3.0
+date: November 2026
+
+packages:
+  arangodb-platform-ui:
+    version: v1.7.2
+  arangodb-platform-ui-server:
+    version: v1.7.2
+  arangodb-core-ui:
+    version: v1.7.2
+  arango-control-plane:
+    version: v0.0.31
+  arangodb-graph-rag:
+    version: v0.0.21
+  arangodb-graphrag-retriever:
+    version: v0.0.26
+  arangodb-graphrag-importer:
+    version: v0.0.44
+  arangodb-file-parser:
+    version: v0.1.12
+  arangodb-gral:
+    version: v1.1.17
+  arangodb-notebook-images:
+    version: v0.5.61
+# arangodb-mlflow:
+#   version: v0.1.16
+  file-manager:
+    version: v0.0.28
+  arangodb-ml-api:
+    version: v1.0.22
+  arangodb-featurization-cpu:
+    version: v1.0.19
+  arangodb-training-cpu:
+    version: v1.0.20
+  arangodb-training-gpu:
+    version: v1.0.20
+  arangodb-prediction-cpu:
+    version: v1.0.19
+  arangodb-prediction-gpu:
+    version: v1.0.19
+  arango-cypher2aql:
+    version: v0.9.9
+  arangodb-autograph:
+    version: v0.0.27
+  arango-user-defined:
+    version: v0.0.13
+  arangodb-reasoner:
+    version: v0.0.21
+  arangodb-mcp-server:
+    version: v0.0.21
+  platform-monitoring-prometheus:
+    version: v0.0.10
+  platform-monitoring-grafana:
+    version: v0.0.10
+  arangodb-core-rbac-permissions:
+    version: v0.0.4
+releases:
+  arangodb-platform-ui:
+    package: arangodb-platform-ui
+  arangodb-platform-ui-server:
+    package: arangodb-platform-ui-server
+  arangodb-core-ui:
+    package: arangodb-core-ui
+  arango-control-plane:
+    package: arango-control-plane
+  arangodb-mlflow:
+    package: arangodb-mlflow
+    overrides:
+      mlflow_artifact_target: file-manager
+  file-manager:
+    package: file-manager
+  arangodb-file-parser:
+    package: arangodb-file-parser
+    overrides:
+      workerPdf:
+        replicas: 3
+      workerDefault:
+        replicas: 3
+  arangodb-ml-api:
+    package: arangodb-ml-api
+  platform-monitoring-prometheus:
+    package: platform-monitoring-prometheus
+  platform-monitoring-grafana:
+    package: platform-monitoring-grafana
+  arangodb-core-rbac-permissions:
+    package: arangodb-core-rbac-permissions
