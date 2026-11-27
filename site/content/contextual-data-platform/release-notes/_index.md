@@ -62,13 +62,13 @@ For more information, see [AQLizer](../aqlizer/_index.md).
 - The [Natural Language to AQL](../natural-language-to-aql/_index.md) service
   is deprecated in favor of the new [AQLizer](../aqlizer/_index.md).
 
-### Known limitations
+### Known issues and limitations
 
 - GraphML works with RBAC for the AI services, but not yet with RBAC for
   ArangoDB. If you turn on RBAC for ArangoDB, GraphML does not start.
 - With RBAC turned on, the Graph Analytics Engine may experience a performance
-  degradation. Granting affected users [specific permission] resolves this.
-  A fix will follow in a subsequent release.
+  degradation depending on the users' permissions. A fix will follow in a
+  subsequent release.
 - The [Cypher to AQL](../cypher-to-aql.md) service does not support RBAC.
 
 ## v4.2.0 (November 2026)
