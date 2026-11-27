@@ -60,6 +60,13 @@ configured architecture doesn't match the nodes, the operator cannot start the
 deployment.
 {{< /tip >}}
 
+{{< warning >}}
+Upgrading to v4.3.0 or later requires RBAC enforcement. Turn it on when you
+upgrade the operator, before you update the platform services in
+[Step 5](#step-5-update-the-platform-services). For the required flags, see
+[Enable RBAC](../access-control/rbac.md#enable-rbac).
+{{< /warning >}}
+
 The output looks similar to the following on success:
 
 ```
@@ -161,4 +168,13 @@ arangodb_operator_platform --namespace arango package install \
 ```
 
 You can omit the license options if you want to let the tool discover the
-license credentials from the `ArangoDeployment` automatically. 
+license credentials from the `ArangoDeployment` automatically.
+
+### Step 6: Assign roles to users
+
+This step applies if you upgrade to v4.3.0 or later.
+
+With RBAC enforced, users cannot use the AI services until you assign them
+roles. Assign the `ai-user` role to users who work with the AI services, and the
+`ai-developer` role to users who deploy and manage them. See
+[Assign a role to a user](../access-control/rbac.md#assign-a-role-to-a-user). 

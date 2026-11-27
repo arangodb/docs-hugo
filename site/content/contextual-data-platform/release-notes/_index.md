@@ -14,6 +14,13 @@ This release adds role-based access control to the data platform and replaces
 the query generation in the Query Editor with a new AQLizer that can also
 optimize queries.
 
+{{< warning >}}
+Upgrading to v4.3.0 requires two additional steps: turning on RBAC enforcement
+before the upgrade, and assigning AI services roles to users after it.
+Otherwise, users cannot use the AI services. See
+[Upgrade the version of the data platform](../install-and-upgrade/upgrade-version.md).
+{{< /warning >}}
+
 ### Role-based access control (RBAC)
 
 {{< tag "Platform Suite" "Beta" >}}
