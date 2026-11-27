@@ -70,15 +70,15 @@ home:
             link: /contextual-data-platform/autorag/search-methods/
           - title: Execute queries
             link: /contextual-data-platform/autorag/executing-queries/
-      - title: Natural Language to AQL
+      - title: AQLizer
         icon: /img/home/assistant.svg
-        link: /contextual-data-platform/natural-language-to-aql/
-        description: Ask questions of your data in plain language and get AQL queries and answers.
+        link: /contextual-data-platform/aqlizer/
+        description: Turn plain-language questions into AQL queries and make existing queries faster.
         tags:
           - title: Quick start
-            link: /contextual-data-platform/natural-language-to-aql/quick-start/
+            link: /contextual-data-platform/aqlizer/quick-start/
           - title: Web interface
-            link: /contextual-data-platform/natural-language-to-aql/web-interface/
+            link: /contextual-data-platform/aqlizer/web-interface/
       - title: GraphML & Graph Analytics
         icon: /img/home/analytics.svg
         link: /contextual-data-platform/graphml/

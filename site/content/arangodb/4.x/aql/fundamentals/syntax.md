@@ -59,6 +59,7 @@ On the top level, AQL offers the following
 | Operation | Description
 |:----------|:-----------
 | `FOR`     | Array iteration
+| `MATCH`   | Graph pattern matching (experimental)
 | `RETURN`  | Results projection
 | `FILTER`  | Non-View results filtering
 | `SEARCH`  | View results filtering
@@ -162,12 +163,12 @@ reserved keywords. You can use them as collection or attribute names
 without having to quote them. The query parser can identify them as keyword-like
 based on the context:
 
-- `KEEP` –
-  [COLLECT](../high-level-operations/collect.md#discarding-obsolete-variables)
-  operation variant
 - `COUNT` –
   [COLLECT](../high-level-operations/collect.md#group-length-calculation)
   operation variant (`WITH COUNT INTO`)
+- `KEEP` –
+  [COLLECT](../high-level-operations/collect.md#discarding-obsolete-variables)
+  operation variant
 - `OPTIONS` –
   [FOR](../high-level-operations/for.md#options) /
   [SEARCH](../high-level-operations/search.md#search-options) /
@@ -191,6 +192,8 @@ based on the context:
   [All Shortest Paths](../graph-queries/all-shortest-paths.md) /
   [k Shortest Paths](../graph-queries/k-shortest-paths.md) /
   [k Paths](../graph-queries/k-paths.md)
+- `WHERE` –
+  [MATCH](../high-level-operations/match.md#match-nodes) operation
 
 Last but not least, there are special variables which are available in certain
 contexts. Unlike keywords, they are **case-sensitive**:

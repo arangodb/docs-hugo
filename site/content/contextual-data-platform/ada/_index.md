@@ -61,7 +61,7 @@ in use, for example `_system  openai/gpt-4.1`.
   suggested prompts.
 - **[Artifacts](artifacts.md)**: The interactive charts and custom HTML Ada
   renders alongside its answers.
-- **[AQLizer](../natural-language-to-aql/_index.md)**: Generate AQL queries from
-  natural language directly in the Query Editor.
+- **[AQLizer](../aqlizer/_index.md)**: Generate and optimize AQL queries
+  directly in the Query Editor.
 - **[Secrets Manager](../secrets-manager.md)**: Manage the API
   keys used by Ada and other services.

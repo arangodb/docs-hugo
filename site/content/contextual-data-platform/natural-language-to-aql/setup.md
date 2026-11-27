@@ -9,6 +9,12 @@ description: >-
 ---
 {{< tag "Agentic AI Suite" "Beta" >}}
 
+{{< warning >}}
+Natural Language to AQL was the previous version of the AQLizer and is deprecated
+in favor of the new [AQLizer](../aqlizer/_index.md). Use the AQLizer to
+generate and optimize AQL queries.
+{{< /warning >}}
+
 Deploy the Natural Language to AQL service with a single API call to the platform.
 You provide configuration parameters in the request body, and the platform
 automatically provisions the service with those settings.

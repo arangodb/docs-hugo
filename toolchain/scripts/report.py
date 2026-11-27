@@ -112,6 +112,13 @@ def main():
     if len(report) > MAX_LENGTH:
         report = report[:MAX_LENGTH] + "\n\n_(Report cut off)_"
 
+    # The report may already exist, written by root in the toolchain container.
+    # In CI, it's regenerated on the host by another user who can't write to the
+    # file but can replace it because they own the directory.
+    try:
+        os.remove(REPORT)
+    except FileNotFoundError:
+        pass
     with open(REPORT, "w", encoding="utf-8") as f:
         f.write(report + "\n")
     return 1 if errors else 0

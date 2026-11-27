@@ -702,7 +702,7 @@ Trying to access out of bounds, without providing a padding value will result in
 name: aqlArrayReplaceNth_3
 description: ''
 ---
-db._query('RETURN REPLACE_NTH( [ "a", "b", "c" ], 6 , "z")'); // xpError(ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH)
+db._query('RETURN REPLACE_NTH( [ "a", "b", "c" ], 6 , "z")'); // expectedError(ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH)
 ```
 
 ## REMOVE_VALUE()

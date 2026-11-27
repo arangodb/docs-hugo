@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="keep-colors" viewBox="-28 -8 646 216" width="646" height="216" role="img" aria-labelledby="knows-graph-t knows-graph-d" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="knows-graph-t">The knows_graph example graph</title>
+  <desc id="knows-graph-d">Five persons as nodes, connected by knows edges: eve knows alice and bob, alice knows bob, and bob knows charlie and dave.</desc>
+  <defs><marker id="knows-graph-a" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path class="dg-f-accent" d="M0,0 L8,4 L0,8 z" fill="#00576e"/></marker><marker id="knows-graph-g" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path class="dg-f-arrow" d="M0,0 L8,4 L0,8 z" fill="#90a1b9"/></marker></defs>
+  <rect class="dg-f-canvas" x="-28" y="-8" width="646" height="216" rx="6" fill="#f1f5f9"/>
+  <line class="dg-s-accent" x1="80.1" y1="83.5" x2="161.6" y2="49.9" stroke="#00576e" stroke-width="2" marker-end="url(#knows-graph-a)"/>
+  <line class="dg-s-accent" x1="87.0" y1="100.0" x2="324.0" y2="100.0" stroke="#00576e" stroke-width="2" marker-end="url(#knows-graph-a)"/>
+  <line class="dg-s-accent" x1="250.1" y1="46.5" x2="331.6" y2="80.1" stroke="#00576e" stroke-width="2" marker-end="url(#knows-graph-a)"/>
+  <line class="dg-s-accent" x1="420.1" y1="83.5" x2="501.6" y2="49.9" stroke="#00576e" stroke-width="2" marker-end="url(#knows-graph-a)"/>
+  <line class="dg-s-accent" x1="420.1" y1="116.5" x2="501.6" y2="150.1" stroke="#00576e" stroke-width="2" marker-end="url(#knows-graph-a)"/>
+  <rect class="" x="-8.0" y="82.0" width="96.0" height="36.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="40.0" y="104.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">eve</text>
+  <rect class="" x="162.0" y="12.0" width="96.0" height="36.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="210.0" y="34.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">alice</text>
+  <rect class="" x="332.0" y="82.0" width="96.0" height="36.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="380.0" y="104.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">bob</text>
+  <rect class="" x="502.0" y="12.0" width="96.0" height="36.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="550.0" y="34.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">charlie</text>
+  <rect class="" x="502.0" y="152.0" width="96.0" height="36.0" rx="12" fill="#befe99" stroke="#00576e" stroke-width="1.5"/>
+  <text x="550.0" y="174.9" text-anchor="middle" font-size="14" font-weight="700" fill="#014654">dave</text>
+</svg>

@@ -232,6 +232,50 @@ FOR n IN nodes
       RETURN [n, e, m]
 ```
 
+### Graph pattern matching with `MATCH` (experimental)
+
+AQL has a new, experimental `MATCH` operation that lets you query graphs by
+describing the pattern of nodes and edges that you want to find. You write
+nodes in parentheses and edges in square brackets with arrows, and you use
+collection names as labels. The syntax corresponds to a subset of the graph
+patterns of Cypher and GQL, with differences in the details:
+
+```aql
+MATCH (a:persons { name: "Eve" }) -[:knows]-> (b:persons) -[:knows]-> (c:persons)
+  RETURN [a.name, b.name, c.name]
+```
+
+The current implementation supports the following:
+
+- Outbound (`-[ ]->`), inbound (`<-[ ]-`), and any-direction (`-[ ]-`)
+  edge patterns, with multiple edge collections like `-[e:knows|follows]->`
+- Inline filters with attribute values (`(p:persons { name: "Eve" })`) and
+  `WHERE` conditions (`(p:persons WHERE p.age > 30)`)
+- Variable-length edge patterns like `-[p:knows * 1..3]->` whose variable
+  holds the path
+- Path variables like `MATCH path = (a:persons) -[:knows]-> (b:persons)`
+- Multiple comma-separated patterns that share variables
+- References to variables defined before the `MATCH` operation, like `(v)`
+- Projections that limit the attributes of the pattern variables, like
+  `(p:persons RETURN name, profile.age)`
+- Collection bind parameters as labels, like `(p:@@coll)`
+
+The feature is disabled by default. To try it out, set the `matchStatement`
+query option to `"experimental"`:
+
+```js
+db._query(`
+  MATCH (a:persons) -[:knows]-> (b:persons)
+    RETURN [a._key, b._key]
+`, {}, { matchStatement: "experimental" }).toArray();
+```
+
+The syntax and behavior may change in future versions. Don't use it in
+production.
+
+See [`MATCH` operation in AQL](../../aql/high-level-operations/match.md)
+for details.
+
 ## Indexing
 
 ### Upgrading vector indexes
@@ -245,6 +289,28 @@ produced by faiss) since v3.12.10.
 To take advantage of the optimizations, you need to recreate the vector indexes
 after upgrading to v3.12.10 or later. Existing vector indexes are not
 automatically rewritten to the new format.
+
+### Vector search statistics
+
+AQL queries that use a vector index now report statistics about the vector
+search, such as how many lists (Voronoi cells) were scanned, how many distances
+were computed, and how much time was spent on selecting the lists to scan
+compared to scanning them. This helps you tune vector indexes and the `nProbe`
+search parameter, for example, to find out whether increasing `nProbe` is still
+worthwhile.
+
+The statistics are returned as new `vector*` attributes in the
+[query statistics](../../aql/execution-and-performance/query-statistics.md)
+and shown in a new **Vector Search Statistics** section when profiling a query:
+
+```
+Vector Search Statistics:
+ Searches      Lists Scanned      Distances      Heap Updates      Coarse Time [s]      List Scan Time [s]
+        1                 64           3715                17              0.00399                 0.00546
+```
+
+See [Analyze vector search performance](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#analyze-vector-search-performance)
+for how to interpret the statistics.
 
 ## Server options
 
