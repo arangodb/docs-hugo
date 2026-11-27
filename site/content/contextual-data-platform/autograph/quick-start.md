@@ -270,7 +270,7 @@ No collections exist in the database yet.
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/corpus/builds" >}}
 
 AutoGraph reads the documents, links similar ones, and groups them into
-clusters. See [Create Corpus Build](reference/corpus-build.md#create-corpus-build).
+clusters. See [Create Corpus Build](reference/corpus-build.md#start-a-corpus-build).
 
 ```bash
 CB_ID=$(curl -sSk -X POST "$AG/v1/corpus/builds" \
@@ -344,7 +344,7 @@ curl -sSk "$AG/v1/rag-strategizer/jobs/$JOB_ID" -H "Authorization: Bearer $TOKEN
 
 The strategies are stored in the new `enterprise-docs-api_rags` collection, one
 per cluster. See
-[Trigger RAG Strategizer](reference/rag-strategizer.md#trigger-rag-strategizer).
+[Trigger RAG Strategizer](reference/rag-strategizer.md#start-the-rag-strategizer).
 {{< /step >}}
 
 {{< step "Build the knowledge graph" >}}
@@ -352,7 +352,7 @@ per cluster. See
 
 AutoGraph starts Importer workers that extract the entities and relationships of
 each cluster. See
-[Trigger Orchestration](reference/orchestration.md#trigger-orchestration).
+[Trigger Orchestration](reference/orchestration.md#build-the-knowledge-graph).
 
 ```bash
 ORCH_ID=$(curl -sSk -X POST "$AG/v1/orchestrate" \
@@ -412,7 +412,7 @@ by document. See
 
 {{< tip >}}
 At any point,
-[`GET /v1/projects/{project}/overview`](reference/project-operations.md#project-overview)
+[`GET /v1/projects/{project}/overview`](reference/project-operations.md#get-the-project-overview)
 reports where the project stands: the document and cluster counts, and which
 categories still need a build, strategies, or an orchestration.
 {{< /tip >}}

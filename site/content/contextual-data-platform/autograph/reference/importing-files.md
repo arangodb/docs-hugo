@@ -2,8 +2,8 @@
 title: AutoGraph Import Files Reference (Deprecated)
 menuTitle: Import Files (deprecated)
 description: >-
-  The deprecated direct upload of files into the Corpus Graph, superseded by
-  the File Manager
+  The deprecated direct upload of files into the corpus graph, replaced by the
+  File Manager
 weight: 20
 ---
 {{< tag "Agentic AI Suite" >}}
@@ -11,34 +11,51 @@ weight: 20
 {{< warning >}}
 **Do not build new integrations on this endpoint.** `POST /v1/import-multiple`
 is deprecated. It is documented here for integrations that already use it.
-Take the [File Manager path](#upload-through-the-file-manager) instead.
+Upload through the [File Manager](#upload-through-the-file-manager) instead.
 {{< /warning >}}
+
+`POST /v1/import-multiple` uploads files directly to the AutoGraph service and
+labels them with a category, so that a [corpus build](corpus-build.md) without
+a selector can build them. Uploading to the File Manager and building by
+category replaces it.
+
+The endpoint is relative to the path of the project's AutoGraph service,
+`https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}`.
+`service_id_postfix` is the end of the service ID, such as `vyk1t` for
+`arangodb-autograph-vyk1t`. The `serviceUrl` in the project metadata of
+[`GET /_platform/acp/v1/project_by_name/{database}/{project}`](../../control-plane-acp/api.md#get-project-details)
+ends with it, for example `.../autograph/vyk1t/`.
+
+| Endpoint | Operation | Purpose | Call |
+|----------|-----------|---------|------|
+| [`POST /v1/import-multiple`](#import-multiple-files) | Import | Deprecated. Upload files directly and label them with one category | Synchronous |
 
 ## Why the endpoint is deprecated
 
 The endpoint is still served and still accepts files, but it can no longer
-carry an upload on its own:
+handle an upload on its own:
 
-- A new `import-multiple` call **deletes** the files staged by the previous
-  call, together with the category that the previous `module` label created.
-  Earlier versions of the service kept both in place and only superseded the
-  staged files. A version history staged through the endpoint is lost with
-  them.
-- Every imported basename has to exist as a RAG input in the File Manager for
-  the same database as well, so every document has to be uploaded twice.
+- A new `import-multiple` call deletes the files that the previous call staged,
+  together with the category that the `module` label of the previous call
+  created. Earlier versions of the service kept both and only replaced the
+  staged files. A version history that you staged through the endpoint is lost
+  with them.
+- Every imported base name also has to exist as a RAG input in the File Manager
+  for the same database, so you have to upload every document twice.
 - [Incremental graph updates](../incremental-graph-updates/_index.md) identify a
   document by its File Manager `file_id` and cannot reach a document that
-  exists only as a direct upload.
+  only exists as a direct upload.
 
 ## Upload through the File Manager
 
 Upload your files to the
 [File Manager](../../file-manager/api.md#upload-a-rag-input-file)
-under the scope
-`[project, category]`, then call [`POST /v1/corpus/builds`](corpus-build.md)
-with those category labels in `categories`. The service resolves and parses the
-files itself. To add another category later, run another build that lists only
-the new category.
+under the scope `[project, category]`, then call
+[`POST /v1/corpus/builds`](corpus-build.md) with those category labels in
+`categories`. The service resolves and parses the files itself. To add another
+category later, run another build that lists only the new category. For how to
+work with categories, see
+[Designing categories](../design-guide.md#designing-categories).
 
 {{< info >}}
 Documents uploaded through the deprecated endpoint are parsed in-process. File
@@ -46,18 +63,15 @@ Manager builds extract the text through the File Parsing Service instead, see
 [Document parsing](corpus-build.md#document-parsing).
 {{< /info >}}
 
-See [Designing categories](../design-guide.md#designing-categories) for guidance
-on how to work with categories.
+## Import multiple files
 
-## Import multiple files (deprecated)
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/import-multiple" >}}
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/import-multiple" >}}
-
-Each call attaches every file in the request to one category (the `module`
-field) and creates one new partition for that category, and it deletes what the
-previous call staged. Build from the staged files by running a
-[corpus build](corpus-build.md) without a selector. Do not import new files
-while a build is in progress.
+Uploads files and attaches every file of the request to one category, which
+you set in `module`. The call is synchronous. Each call creates one new
+partition for that category and deletes what the previous call staged. To
+build from the staged files, run a [corpus build](corpus-build.md) without a
+selector. Do not import new files while a build is running.
 
 ### Request
 
@@ -81,44 +95,39 @@ while a build is in progress.
 }
 ```
 
-#### Parameters
+### Parameters
 
-| Parameter | Type | Required | Description | Recommended value |
-|-------------|------|----------|-------------|-------------------|
-| `files` | array | Yes | Non-empty list of file objects for this request. | Batch sizes that fit your timeout and payload limits (e.g. tens of small docs or fewer large ones per call). |
-| `files[].doc_name` | string | Yes | Filename as stored for the corpus build. Basename only; requests containing path segments or `..` are rejected with `400`. | Use real extensions (`.md`, `.pdf`, `.docx`, …) so format detection works. Example: `guide.md`. |
-| `files[].content` | string (base64) | Yes | Raw file bytes, **base64-encoded** in JSON. | Encode the entire file in a single field; the endpoint does not support chunked or resumable uploads. |
-| `files[].citable_url` | string | No | Canonical URL shown in citations, for **this direct-upload path only**. On the File Manager path, set `custom_metadata.citable_url` on the RAG input at upload time instead. The URL is preserved through the corpus build and passed to the Importer. Automatic citation extraction and SemanticUnits linking are not yet implemented; see [Known Limitations](error-handling.md#citation-handling). | Provide the source URL for web-sourced documents (for example, `https://docs.example.com/guide`). Omit the field for documents without a canonical web location. |
-| `files[].metadata` | string | No | Opaque string carried in metadata (often JSON as text). | Use for stable IDs, versions, or tags your app parses later. Omit if unused. |
-| `module` | string | No | Category label applied to **every** file in this request. See [Designing categories](../design-guide.md#designing-categories) for naming guidance. | Use a **stable** category label (`legal`, `docs_en`, …). If omitted, files receive the `default` category during corpus build. |
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `files` | object[] | Yes | The files of this request. The list cannot be empty. Choose a batch size that fits your timeout and payload limits, such as tens of small documents or fewer large ones per call. |
+| `files[].doc_name` | string | Yes | The file name to store for the corpus build, such as `guide.md`. Base name only. A name with path segments or `..` is rejected with `400`. Use real extensions, such as `.md`, `.pdf`, or `.docx`, so that the format is detected. |
+| `files[].content` | string | Yes | The raw bytes of the file, Base64-encoded. Encode the entire file in this one field. The endpoint does not support uploads in parts or resuming an upload. |
+| `files[].citable_url` | string | No | The URL shown in citations, only for this direct upload. When you upload through the File Manager, set `custom_metadata.citable_url` on the RAG input instead. The URL is kept through the corpus build and passed to the Importer. Set it for documents that come from the web, such as `https://docs.example.com/guide`, and omit it for documents without a web address. Automatic citation extraction and linking to semantic units are not implemented yet, see [Known limitations](error-handling.md#citation-handling). |
+| `files[].metadata` | string | No | A string that is stored in the metadata as it is, often JSON as text. Use it for stable IDs, versions, or tags that your application reads later. Omit it if you do not need it. |
+| `module` | string | No | The category label for every file of this request. Use a stable label, such as `legal` or `docs_en`. If you omit it, the files get the `default` category during the corpus build. See [Designing categories](../design-guide.md#designing-categories) for naming. |
 
 {{< info >}}
-Duplicate `doc_name` values within a single request are deduplicated before
-upload: only the last entry is kept, and the discarded entries do not produce
-versions of their own.
+If a request contains the same `doc_name` more than once, only the last entry
+is uploaded. The other entries do not create versions of their own.
 
-Versioning happens across requests. Each accepted upload of a `doc_name` that
+Versions are created across requests. Each accepted upload of a `doc_name` that
 already exists creates a new version of that file in the
 [File Manager](../../file-manager/api.md#file-identity-and-versioning),
-within the same
-[scope](../../file-manager/api.md#scopes).
-To build up a version history for a document, upload it in separate requests —
-sending several revisions of the same `doc_name` in one request yields a single
-version, not one per entry.
+within the same [scope](../../file-manager/api.md#scopes). To build up a version
+history for a document, upload it in separate requests. Several revisions of the
+same `doc_name` in one request create a single version, not one per entry.
 
-The `module` label of a request maps onto the *category*, which is the second
-scope level. The first scope level is the project. The same `doc_name` under two
-different categories therefore refers to two separate files with independent
+The `module` label of a request is the category, which is the second scope
+level. The first scope level is the project. The same `doc_name` in two
+different categories therefore refers to two separate files with separate
 version histories.
 
-A version history built this way does not survive the next call, as that call
-deletes the files of the previous one and their category. Upload through the
-File Manager if you rely on versions.
+A version history built this way does not survive the next call, because that
+call deletes the files of the previous one and their category. Upload through
+the File Manager if you rely on versions.
 {{< /info >}}
 
 ### Response
-
-On success:
 
 ```json
 {
@@ -127,25 +136,21 @@ On success:
 }
 ```
 
-#### Response fields
+| Field | Meaning |
+|-------|---------|
+| `success` | `true` if the import succeeded. |
+| `message` | A confirmation, including how many files have been imported. |
+| `error_message` | Only for `success: false` responses from the service behind the endpoint. Validation failures, such as an empty `files` list, are not returned this way. They come back as `400` with a standard JSON error body. |
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `success` | boolean | `true` when the import succeeded. |
-| `message` | string | Confirmation text, including how many files were imported. |
-| `error_message` | string | Reserved for `success: false` responses from the underlying RPC. Validation failures (such as an empty `files` array) are not returned in this envelope; they surface as HTTP `400` with a standard JSON error body. |
-
-#### Status codes
-
-| Status code | Meaning |
+| Status Code | Meaning |
 |-------------|---------|
-| `200` | Files imported successfully. |
-| `400` | Validation failure (empty `files`, invalid `doc_name`, a single file larger than the whole local staging budget, etc.). Returned as a standard JSON error body, not the `success`/`message` shape. |
+| `200` | The files have been imported. |
+| `400` | A validation failure, such as an empty `files` list, an invalid `doc_name`, or a single file larger than the whole local staging space. Returned as a standard JSON error body, not with `success` and `message`. |
 | `401` | Authentication failed. |
-| `409` | A corpus build is already in progress. |
+| `409` | A corpus build is running. |
 | `500` | Server error. |
 
-### HTTP Example
+### HTTP example
 
 ```bash
 curl -X POST \
@@ -166,11 +171,5 @@ curl -X POST \
     ],
     "module": "engineering"
   }' \
-  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/import-multiple
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/{service_id_postfix}/v1/import-multiple
 ```
-
-## Next Steps
-
-- **[Upload a RAG input file](../../file-manager/api.md#upload-a-rag-input-file)**: The upload path that replaces this endpoint
-- **[Create Corpus Build](corpus-build.md)**: Analyze and cluster your uploaded documents
-- **[Monitor Build Status](corpus-build.md#monitoring-build-status)**: Track corpus build progress

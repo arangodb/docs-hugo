@@ -23,7 +23,7 @@ the knowledge graph.
   [RAG Strategizer](../reference/rag-strategizer.md). Without them, added
   documents only reach the corpus graph. To find categories without strategies,
   check `strategies.categories_without_strategies` in the
-  [Project Overview](../reference/project-operations.md#project-overview).
+  [Project Overview](../reference/project-operations.md#get-the-project-overview).
 
 ## How it works
 

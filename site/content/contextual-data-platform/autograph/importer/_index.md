@@ -154,7 +154,7 @@ Under normal operation you do not call the Importer; AutoGraph does. You still
 need its documentation in three situations:
 
 - **Tuning a build.** The `importer_env` map of the
-  [orchestrate request](../reference/orchestration.md#trigger-orchestration) passes
+  [orchestrate request](../reference/orchestration.md#build-the-knowledge-graph) passes
   environment variables to the Importer workers, such as chunk sizes, model
   names, and timeouts. Those keys are documented in
   [Parameters](parameters.md) and [Limits and Quotas](limits.md), and the

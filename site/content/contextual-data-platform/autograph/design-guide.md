@@ -149,7 +149,7 @@ their clusters.
 When you build the Knowledge Graph, AutoGraph creates one Importer job per
 `rags` document. The jobs do not all start at once: they run on a pool of
 Importer workers, and the
-[`replicas`](reference/orchestration.md#trigger-orchestration) setting decides
+[`replicas`](reference/orchestration.md#build-the-knowledge-graph) setting decides
 how many run in parallel (1 by default). Each job reads the files of one
 cluster and writes:
 
@@ -374,7 +374,7 @@ Each kind of change rewrites a different part of the collections:
 | Add a category | New `modules`, `sources`, `domains`, and `corpus_relations` documents for that category only | Build only the new category, with [Corpus Build](reference/corpus-build.md) |
 | Add many files to a built category | The Corpus Graph documents of that category. The Knowledge Graph is not touched. | [Incremental build](reference/corpus-build.md#incremental-builds) |
 | Add, remove, or replace a few files | The affected documents in all three layers. Existing clusters and partitions stay in place at first, but after enough changes AutoGraph flags a FullGraphRAG partition as needing to be [reorganized](incremental-graph-updates/divergence-and-reorganization.md). | [Incremental Graph Updates](incremental-graph-updates/_index.md) |
-| Rebuild one category from scratch | Everything the category wrote, in all three layers | [Delete the category](reference/project-operations.md#delete-category), then build, strategize, and build the Knowledge Graph again |
+| Rebuild one category from scratch | Everything the category wrote, in all three layers | [Delete the category](reference/project-operations.md#delete-a-category), then build, strategize, and build the Knowledge Graph again |
 
 Once a category has data in the Knowledge Graph, you cannot rebuild it in place,
 because the Importer only adds to a partition and cannot remove what a rebuild

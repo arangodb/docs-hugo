@@ -112,7 +112,7 @@ upload it.
 **The response does not include the divergence.** At this point, it would be
 measured before the knowledge graph build has created the entities of the new
 documents. Read it from
-[`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration)
+[`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-a-knowledge-graph-build)
 once the knowledge graph build has run. See
 [Where to read the divergence](divergence-and-reorganization.md#where-to-read-the-divergence).
 {{< /info >}}
@@ -464,7 +464,7 @@ replacement as done.
 [adding](#add-documents), the new version only reaches the knowledge graph
 through a knowledge graph build, so a value here would be measured before the
 new entities exist. Read it from
-[`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration)
+[`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-a-knowledge-graph-build)
 afterwards.
 {{< /info >}}
 
@@ -521,7 +521,7 @@ asynchronously, and only one partition is reorganized at a time.
 Call this endpoint if `needs_reclustering: true` is reported for a partition and
 you decide to rebuild its communities, which is expensive. AutoGraph never
 reorganizes on its own. The flag is reported by
-[`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration),
+[`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-a-knowledge-graph-build),
 by a [removal](#remove-documents) once it has committed, and by the `rags`
 profile of the partition. Adding and replacing do not report it. If a replaced
 document moves to another cluster, the partition it left is reported nowhere
@@ -687,7 +687,7 @@ Removing does not need this call. It removes the knowledge graph data itself.
 
 For the complete list of parameters, the response, the credential handling, and
 the three kinds of `409`, see
-[Trigger Orchestration](../reference/orchestration.md#trigger-orchestration).
+[Trigger Orchestration](../reference/orchestration.md#build-the-knowledge-graph).
 
 ### Identifying documents for the knowledge graph
 
@@ -724,7 +724,7 @@ reported on this response.
 ```
 
 Poll
-[`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-an-orchestration)
+[`GET /v1/orchestrate/{orchestration_id}`](../reference/orchestration.md#monitor-a-knowledge-graph-build)
 until `status` leaves `running`. Each entry of `jobs` has the
 `divergence_score` and `needs_reclustering` of its partition. `jobs` only lists
 the partitions that the build processed. The partitions of removed documents,
