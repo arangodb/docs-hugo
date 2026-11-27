@@ -289,7 +289,6 @@ the following:
 - [Container Manager](../container-manager/_index.md) services, including the
   ones that you install for a specific database
 - [Graph Analytics](../graph-analytics/_index.md) engines
-- MLflow
 - [GraphML](../graphml/_index.md)
 
 They are checked on their service type rather than a database. A shared service
